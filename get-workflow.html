@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Data Access Workflow – POST /authors</title>
+<title>Data Access Workflow – GET /authors</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -21,6 +21,7 @@
     --green-dim: rgba(74, 222, 128, 0.12);
     --orange: #f59e42;
     --purple: #a78bfa;
+    --purple-dim: rgba(167, 139, 250, 0.12);
     --red: #f87171;
     --red-dim: rgba(248, 113, 113, 0.12);
     --white: #ffffff;
@@ -52,7 +53,7 @@
     animation: fadeIn 0.6s ease 0.2s forwards;
   }
   h1 span { color: var(--yellow); }
-  h1 .method { color: var(--green); }
+  h1 .method { color: var(--blue); }
 
   .subtitle {
     color: var(--text-muted);
@@ -136,71 +137,36 @@
     background: var(--code-bg);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 12px 12px;
-    margin-bottom: 10px;
+    padding: 10px 12px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
+    font-size: 11px;
     line-height: 1.6;
+    margin-bottom: 10px;
     opacity: 0;
-    animation: typeIn 0.5s ease forwards;
   }
-
-  .param-box.path-params { animation-delay: 1.8s; }
-  .param-box.query-params { animation-delay: 1.95s; }
-  .param-box.body-params { animation-delay: 2.1s; }
+  .param-box:nth-child(3) { animation: typeIn 0.5s ease 1.8s forwards; }
+  .param-box:nth-child(4) { animation: typeIn 0.5s ease 2.2s forwards; }
+  .param-box:nth-child(5) { animation: typeIn 0.5s ease 2.6s forwards; }
 
   .param-label {
-    font-size: 8px;
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    font-weight: 700;
-    margin-bottom: 6px;
-    display: block;
-  }
-
-  .param-box.path-params .param-label,
-  .param-box.query-params .param-label {
-    color: var(--text-muted);
-  }
-
-  .param-box.body-params .param-label {
-    color: var(--green);
-  }
-
-  .param-desc {
     font-size: 9px;
-    color: var(--text-muted);
-    margin-top: 4px;
-    line-height: 1.5;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
+  .param-label.purple { color: var(--purple); }
+  .param-label.blue { color: var(--blue); }
+  .param-label.muted { color: var(--text-muted); }
 
   .param-content {
-    color: var(--text);
-    margin-top: 4px;
-  }
-
-  .param-box.path-params .param-content,
-  .param-box.query-params .param-content {
     color: var(--text-muted);
-  }
-
-  .param-box.body-params .param-content {
-    color: var(--text);
-  }
-
-  .param-box.body-params {
-    border-color: var(--green);
-    background: rgba(74, 222, 128, 0.05);
-    animation: dataPulse 2s ease 2.1s 1;
-  }
-
-  .code-inline {
-    color: var(--blue);
-    font-weight: 600;
-  }
-
-  .param-box.body-params .code-inline {
-    color: var(--yellow);
+    font-size: 10px;
+    line-height: 1.5;
+    margin-top: 4px;
   }
 
   /* Flask */
@@ -211,7 +177,7 @@
     min-width: 400px;
     animation: nodeAppear 0.7s ease 1.0s forwards;
   }
-  .flask .icon { background: var(--green-dim); color: var(--green); }
+  .flask .icon { background: var(--blue-dim); color: var(--blue); }
 
   .flask-section {
     background: var(--code-bg);
@@ -230,7 +196,7 @@
   .flask-section .section-step {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
-    color: var(--yellow);
+    color: var(--blue);
     font-weight: 600;
     margin-bottom: 8px;
     display: flex;
@@ -238,8 +204,8 @@
     gap: 6px;
   }
   .flask-section .section-step .num {
-    background: var(--yellow-dim);
-    color: var(--yellow);
+    background: var(--blue-dim);
+    color: var(--blue);
     width: 20px; height: 20px;
     border-radius: 50%;
     display: inline-flex; align-items: center; justify-content: center;
@@ -259,27 +225,6 @@
   .code-block .comment { color: #555a73; }
   .code-block .var { color: var(--orange); }
   .code-block .num { color: var(--orange); }
-
-  .validate-box {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 0 0;
-  }
-  .validate-icon {
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    background: var(--green-dim);
-    color: var(--green);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px;
-    animation: checkPop 0.4s ease 4.0s both;
-  }
-  .validate-text {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--green);
-  }
 
   /* Database */
   .database {
@@ -311,7 +256,7 @@
     border: 1px solid #4a8dbe;
   }
 
-  .db-insert {
+  .db-data {
     background: var(--code-bg);
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -323,16 +268,24 @@
     opacity: 0;
     animation: sectionReveal 0.5s ease 5.6s forwards;
   }
-  .db-insert .insert-label {
+  .db-label {
     font-size: 9px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: var(--green);
+    color: var(--yellow);
     margin-bottom: 6px;
     font-weight: 600;
   }
-  .db-insert .tuple-val { color: var(--green); }
-  .db-insert .tuple-num { color: var(--orange); }
+  .db-table-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .tuple-val { color: var(--green); }
+  .tuple-num { color: var(--orange); }
 
   /* ── ARROWS ── */
   .arrow-container {
@@ -493,26 +446,15 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 10px;
     font-weight: 700;
-    background: var(--yellow-dim);
-    color: var(--yellow);
+    background: var(--blue-dim);
+    color: var(--blue);
     flex-shrink: 0;
   }
 
   .step-pill.active {
-    border-color: var(--yellow);
-    background: var(--yellow-dim);
-    color: var(--yellow);
-  }
-
-  /* ── PULSE on data packet ── */
-  @keyframes dataPulse {
-    0% { box-shadow: 0 0 0 0 rgba(245, 197, 66, 0.4); }
-    70% { box-shadow: 0 0 0 10px rgba(245, 197, 66, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(245, 197, 66, 0); }
-  }
-
-  .pulse-yellow {
-    animation: dataPulse 1s ease 2.0s 1;
+    border-color: var(--blue);
+    background: var(--blue-dim);
+    color: var(--blue);
   }
 
   /* ── ANIMATIONS ── */
@@ -556,23 +498,14 @@
     from { opacity: 0; transform: translateY(10px) scale(0.9); }
     to { opacity: 1; transform: translateY(0) scale(1); }
   }
-
-  @keyframes glowBorder {
-    0%, 100% { border-color: var(--border); }
-    50% { border-color: var(--green); }
-  }
-
-  .glow-insert {
-    animation: glowBorder 1.2s ease 5.4s 1;
-  }
 </style>
 </head>
 <body>
 
 <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#8b8fa7;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:13px;padding:16px 24px;transition:color 0.2s;" onmouseover="this.style.color='#f5c542'" onmouseout="this.style.color='#8b8fa7'">← Back to Overview</a>
 
-<h1><span class="method">POST</span> Workflow — <span>/authors</span></h1>
-<p class="subtitle">Flask + PostgreSQL · Create New Resource Lifecycle</p>
+<h1><span class="method">GET</span> Workflow — <span>/authors</span></h1>
+<p class="subtitle">Flask + PostgreSQL · Read Resource Lifecycle</p>
 
 <div class="workflow">
   <!-- ════ CLIENT ════ -->
@@ -581,49 +514,54 @@
       <div class="icon">🖥</div>
       Client
     </div>
-    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Browser / API Consumer</div>
+    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">Browser / API Consumer</div>
     <div class="client-visual"></div>
 
-    <!-- Box 1: No Path Parameters -->
-    <div class="param-box path-params">
-      <span class="param-label">NO PATH PARAMETERS</span>
-      <span class="param-content"><span class="code-inline">POST /authors</span></span>
-      <span class="param-desc">Creates at the collection endpoint, no ID needed</span>
-    </div>
-
-    <!-- Box 2: No Query Parameters -->
-    <div class="param-box query-params">
-      <span class="param-label">NO QUERY PARAMETERS</span>
-      <span class="param-desc">POST sends data in the body, not the URL</span>
-    </div>
-
-    <!-- Box 3: JSON Body (Green accent, pulse animation) -->
-    <div class="param-box body-params">
-      <span class="param-label">JSON BODY</span>
-      <div class="code-block" style="margin-top: 6px;">
-        <span class="str">Content-Type</span>: application/json<br>
-        {<br>
-        &nbsp;&nbsp;<span class="str">"name"</span>: <span class="str">"Ernest Hemingway"</span>,<br>
-        &nbsp;&nbsp;<span class="str">"birth_year"</span>: <span class="num">1899</span>,<br>
-        &nbsp;&nbsp;<span class="str">"nationality"</span>: <span class="str">"American"</span><br>
-        }
+    <!-- Parameter Box 1: URL Path Parameter -->
+    <div class="param-box">
+      <div class="param-label purple">📍 URL Path Parameter</div>
+      <div class="param-content">
+        <div style="margin-bottom: 4px;"><span class="code-block">GET /authors/<span style="color:var(--purple);font-weight:700">&lt;id&gt;</span></span></div>
+        <div style="margin-bottom: 4px; color: var(--green);">GET /authors/1</div>
+        <div style="font-size: 10px; color: var(--text-muted);">→ Fetch a single author by ID</div>
+        <div style="margin-top: 5px; padding: 5px 0; border-top: 1px solid var(--border); font-size: 9px; color: var(--blue);">id = request.view_args["id"]</div>
       </div>
-      <span class="param-desc" style="color: var(--green); margin-top: 6px;">Required — the new resource data</span>
+    </div>
+
+    <!-- Parameter Box 2: URL Query Parameters -->
+    <div class="param-box">
+      <div class="param-label blue">🔍 URL Query Parameters</div>
+      <div class="param-content">
+        <div style="margin-bottom: 4px;"><span class="code-block">GET /authors<span style="color:var(--blue);font-weight:700">?nationality=British&limit=10</span></span></div>
+        <div style="margin-top: 5px; padding: 5px 0; border-top: 1px solid var(--border); font-size: 9px;">
+          <div style="color: var(--blue);">nationality = request.args.get("nationality")</div>
+          <div style="color: var(--blue);">limit = request.args.get("limit", 10, type=int)</div>
+        </div>
+        <div style="margin-top: 4px; font-size: 9px; color: var(--text-muted);">• Optional filters — don't change the resource</div>
+      </div>
+    </div>
+
+    <!-- Parameter Box 3: No Request Body -->
+    <div class="param-box">
+      <div class="param-label muted">✓ NO REQUEST BODY</div>
+      <div class="param-content">
+        <div style="font-size: 10px;">GET requests don't send a body —<br>all data goes through URL</div>
+      </div>
     </div>
   </div>
 
   <!-- ════ ARROWS: Client ↔ Flask ════ -->
   <div class="arrow-container arrows-left">
-    <!-- Arrow 1: POST Request → -->
+    <!-- Arrow 1: GET Request → -->
     <div class="arrow">
       <div class="arrow-num yellow">1</div>
-      <div class="arrow-text yellow">HTTP POST /authors<br><span style="font-size:8px;color:var(--text-muted);">Content-Type: application/json</span></div>
+      <div class="arrow-text yellow">HTTP GET /authors<br>?nationality=British<br><span style="font-size:8px;color:var(--text-muted);">Accept: application/json</span></div>
       <div class="arrow-line right"></div>
     </div>
     <!-- Arrow 7: ← Response -->
     <div class="arrow">
       <div class="arrow-num white">7</div>
-      <div class="arrow-text white">201 Created<br>application/json</div>
+      <div class="arrow-text white">200 OK<br>application/json</div>
       <div class="arrow-line left"></div>
     </div>
   </div>
@@ -635,35 +573,37 @@
       Flask Backend
     </div>
 
-    <!-- Step 2: Parse Request -->
+    <!-- Step 2: Route Definition -->
     <div class="flask-section">
-      <div class="section-step"><span class="num">2</span> Parse Body</div>
+      <div class="section-step"><span class="num">2</span> Route Definition</div>
       <div class="code-block">
-        <span class="var">data</span> = request.<span class="fn">get_json</span>()<br>
-        <span class="var">name</span> = data[<span class="str">"name"</span>]<br>
-        <span class="var">birth_year</span> = data[<span class="str">"birth_year"</span>]<br>
-        <span class="var">nationality</span> = data[<span class="str">"nationality"</span>]
+        <span class="dec">@app.route</span>(<span class="str">"/authors"</span>, methods=[<span class="str">"GET"</span>])<br>
+        <span class="dec">@app.route</span>(<span class="str">"/authors/&lt;int:id&gt;"</span>, methods=[<span class="str">"GET"</span>])
       </div>
     </div>
 
-    <!-- Step 3: Validate -->
+    <!-- Step 3: Extract Parameters -->
     <div class="flask-section">
-      <div class="section-step"><span class="num">3</span> Validate Input</div>
+      <div class="section-step"><span class="num">3</span> Extract Parameters</div>
       <div class="code-block">
-        <span class="comment"># Check required fields &amp; types</span>
-      </div>
-      <div class="validate-box">
-        <div class="validate-icon">✓</div>
-        <span class="validate-text">Input valid</span>
+        <span class="var">nationality</span> = request.args.<span class="fn">get</span>(<span class="str">"nationality"</span>)<br>
+        <span class="var">limit</span> = request.args.<span class="fn">get</span>(<span class="str">"limit"</span>, <span class="num">10</span>, type=<span class="fn">int</span>)<br>
+        <span class="var">author_id</span> = request.view_args.<span class="fn">get</span>(<span class="str">"id"</span>)
       </div>
     </div>
 
-    <!-- Step 6: Receive new ID -->
+    <!-- Step 4 & 5: SQL Query to DB (shown in arrows) -->
+    <!-- Step 6: Transform Data -->
     <div class="flask-section">
-      <div class="section-step"><span class="num">6</span> Commit</div>
+      <div class="section-step"><span class="num">6</span> Transform Data</div>
       <div class="code-block">
-        <span class="var">new_id</span> = cur.<span class="fn">fetchone</span>()[<span class="num">0</span>]<br>
-        connection.<span class="fn">commit</span>()
+        <span class="var">authors_list</span> = [<br>
+        &nbsp;&nbsp;{<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"id"</span>: <span class="var">row</span>[<span class="num">0</span>],<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"name"</span>: <span class="var">row</span>[<span class="num">1</span>],<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"birth_year"</span>: <span class="var">row</span>[<span class="num">2</span>]<br>
+        &nbsp;&nbsp;} <span class="kw">for</span> <span class="var">row</span> <span class="kw">in</span> <span class="var">results</span><br>
+        ]
       </div>
     </div>
 
@@ -671,15 +611,10 @@
     <div class="response-block">
       <div class="resp-label">Response</div>
       <div class="code-block">
-        <span class="kw">return</span> <span class="fn">jsonify</span>({<br>
-        &nbsp;&nbsp;<span class="str">"id"</span>: <span class="num">42</span>,<br>
-        &nbsp;&nbsp;<span class="str">"name"</span>: <span class="str">"Ernest Hemingway"</span>,<br>
-        &nbsp;&nbsp;<span class="str">"birth_year"</span>: <span class="num">1899</span>,<br>
-        &nbsp;&nbsp;<span class="str">"nationality"</span>: <span class="str">"American"</span><br>
-        }), <span class="num">201</span>
+        <span class="kw">return</span> <span class="fn">jsonify</span>(<span class="var">authors_list</span>), <span class="num">200</span>
       </div>
       <div style="margin-top: 8px; display: flex; gap: 8px;">
-        <span class="badge badge-green">201 Created</span>
+        <span class="badge badge-green">200 OK</span>
         <span class="badge badge-blue">application/json</span>
       </div>
     </div>
@@ -687,16 +622,16 @@
 
   <!-- ════ ARROWS: Flask ↔ DB ════ -->
   <div class="arrow-container arrows-right">
-    <!-- Arrow 4: SQL INSERT → -->
+    <!-- Arrow 4: SQL SELECT → -->
     <div class="arrow">
       <div class="arrow-num yellow">4</div>
-      <div class="arrow-text yellow" style="font-size: 9px;">cur.execute(<br>INSERT INTO authors<br>... RETURNING id)</div>
+      <div class="arrow-text yellow" style="font-size: 9px;">cur.execute(<br>SELECT * FROM authors<br>WHERE nationality = %s)</div>
       <div class="arrow-line right"></div>
     </div>
-    <!-- Arrow 5: ← New Row -->
+    <!-- Arrow 5: ← Filtered tuples -->
     <div class="arrow">
       <div class="arrow-num white">5</div>
-      <div class="arrow-text white">New row + ID</div>
+      <div class="arrow-text white">Filtered tuples</div>
       <div class="arrow-line left"></div>
     </div>
   </div>
@@ -713,21 +648,26 @@
       <div class="top"></div>
     </div>
 
-    <div class="db-insert glow-insert">
-      <div class="insert-label">✦ Inserted Row</div>
-      (<span class="tuple-num">42</span>, <span class="tuple-val">"Ernest Hemingway"</span>, <span class="tuple-num">1899</span>, <span class="tuple-val">"American"</span>)
+    <div class="db-data">
+      <div class="db-table-label">authors table</div>
+      (<span class="tuple-num">1</span>, <span class="tuple-val">"George Orwell"</span>, <span class="tuple-num">1903</span>, <span class="tuple-val">"British"</span>)<br>
+      (<span class="tuple-num">2</span>, <span class="tuple-val">"Jane Austen"</span>, <span class="tuple-num">1775</span>, <span class="tuple-val">"British"</span>)<br>
+      (<span class="tuple-num">3</span>, <span class="tuple-val">"Mark Twain"</span>, <span class="tuple-num">1835</span>, <span class="tuple-val">"American"</span>)<br>
+      <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); color: var(--green); font-size: 9px; text-transform: uppercase; font-weight: 600;">↓ Filtered</div>
+      (<span class="tuple-num">1</span>, <span class="tuple-val">"George Orwell"</span>, <span class="tuple-num">1903</span>, <span class="tuple-val">"British"</span>)<br>
+      (<span class="tuple-num">2</span>, <span class="tuple-val">"Jane Austen"</span>, <span class="tuple-num">1775</span>, <span class="tuple-val">"British"</span>)
     </div>
   </div>
 </div>
 
 <!-- ════ STEP LEGEND ════ -->
 <div class="steps-bar">
-  <div class="step-pill"><span class="pill-num">1</span> POST Request</div>
-  <div class="step-pill"><span class="pill-num">2</span> Parse Body</div>
-  <div class="step-pill"><span class="pill-num">3</span> Validate</div>
-  <div class="step-pill"><span class="pill-num">4</span> SQL INSERT</div>
-  <div class="step-pill"><span class="pill-num">5</span> New Row</div>
-  <div class="step-pill"><span class="pill-num">6</span> Commit</div>
+  <div class="step-pill"><span class="pill-num">1</span> GET Request</div>
+  <div class="step-pill"><span class="pill-num">2</span> Route Match</div>
+  <div class="step-pill"><span class="pill-num">3</span> Parse Params</div>
+  <div class="step-pill"><span class="pill-num">4</span> SQL Query</div>
+  <div class="step-pill"><span class="pill-num">5</span> Raw Data</div>
+  <div class="step-pill"><span class="pill-num">6</span> Transform</div>
   <div class="step-pill"><span class="pill-num">7</span> JSON Response</div>
 </div>
 

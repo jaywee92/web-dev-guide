@@ -194,15 +194,15 @@
 <p class="ss">Follow each HTTP method from request to database and back</p>
 
 <div class="cards">
-  <a href="workflow.html" class="card c-get">
+  <a href="get-workflow.html" class="card c-get">
     <div class="ch">
       <div class="ci" style="background:var(--blue-dim);color:var(--blue);">📖</div>
       <div class="ct">GET Request</div>
       <div class="ca">→</div>
     </div>
     <div class="cm" style="background:var(--blue-dim);color:var(--blue);">GET /authors</div>
-    <div class="cd">Read data from the database — HTTP request to SQL query to JSON response.</div>
-    <div class="cs"><span>Route</span><span>SELECT</span><span>jsonify()</span></div>
+    <div class="cd">Read data — path params, query params, SQL SELECT to JSON response.</div>
+    <div class="cs"><span>Path Params</span><span>Query Params</span><span>SELECT</span><span>jsonify()</span></div>
   </a>
 
   <a href="post-workflow.html" class="card c-post">
@@ -212,8 +212,8 @@
       <div class="ca">→</div>
     </div>
     <div class="cm" style="background:var(--green-dim);color:var(--green);">POST /authors</div>
-    <div class="cd">Create a new resource — parse JSON body, validate, insert into DB, return 201.</div>
-    <div class="cs"><span>Parse</span><span>Validate</span><span>INSERT</span><span>201</span></div>
+    <div class="cd">Create a new resource — JSON body, validate, INSERT into DB, return 201.</div>
+    <div class="cs"><span>JSON Body</span><span>Validate</span><span>INSERT</span><span>201</span></div>
   </a>
 
   <a href="put-workflow.html" class="card c-put">
@@ -223,8 +223,8 @@
       <div class="ca">→</div>
     </div>
     <div class="cm" style="background:var(--orange-dim);color:var(--orange);">PUT /authors/&lt;id&gt;</div>
-    <div class="cd">Update an existing resource — extract ID, parse body, run UPDATE, return 200.</div>
-    <div class="cs"><span>URL Param</span><span>Validate</span><span>UPDATE</span><span>200</span></div>
+    <div class="cd">Update an existing resource — path param ID, JSON body, UPDATE, return 200.</div>
+    <div class="cs"><span>Path Param</span><span>JSON Body</span><span>UPDATE</span><span>200</span></div>
   </a>
 
   <a href="delete-workflow.html" class="card c-del">
@@ -234,8 +234,8 @@
       <div class="ca">→</div>
     </div>
     <div class="cm" style="background:var(--red-dim);color:var(--red);">DELETE /authors/&lt;id&gt;</div>
-    <div class="cd">Remove a resource — verify existence, execute DELETE, return 204 No Content.</div>
-    <div class="cs"><span>Check</span><span>Verify</span><span>DELETE</span><span>204</span></div>
+    <div class="cd">Remove a resource — path param ID, verify existence, DELETE, return 204.</div>
+    <div class="cs"><span>Path Param</span><span>Check Exists</span><span>DELETE</span><span>204</span></div>
   </a>
 </div>
 
