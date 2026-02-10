@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Architektur – Visuell Erklärt</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f1117;
+            --surface: #1a1d27;
+            --surface-bright: #222633;
+            --border: #2e3348;
+            --text: #e2e4ed;
+            --text-muted: #8b8fa7;
+            --yellow: #f5c542;
+            --yellow-dim: rgba(245, 197, 66, 0.15);
+            --blue: #5b9cf5;
+            --blue-dim: rgba(91, 156, 245, 0.12);
+            --green: #4ade80;
+            --green-dim: rgba(74, 222, 128, 0.12);
+            --orange: #f59e42;
+            --purple: #a78bfa;
+            --purple-dim: rgba(167, 139, 250, 0.12);
+            --red: #f87171;
+            --white: #ffffff;
+            --code-bg: #13151e;
+            --radius: 14px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            padding: 16px 24px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--yellow);
+        }
+
+        header {
+            padding: 60px 24px 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--yellow), var(--orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 16px;
+            margin-bottom: 40px;
+        }
+
+        section {
+            margin-bottom: 80px;
+            animation: fadeSlideUp 0.6s ease-out;
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-icon {
+            font-size: 32px;
+            display: inline-block;
+        }
+
+        .diagram-box {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .wsgi-layer {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .layer {
+            padding: 20px 24px;
+            border-radius: var(--radius);
+            border: 2px solid var(--border);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .layer:hover {
+            transform: translateX(8px);
+            border-color: var(--yellow);
+        }
+
+        .layer.browser {
+            background-color: var(--blue-dim);
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+
+        .layer.server {
+            background-color: var(--orange-dim, rgba(245, 158, 66, 0.12));
+            border-color: var(--orange);
+            color: var(--orange);
+            margin-left: 24px;
+        }
+
+        .layer.wsgi {
+            background-color: var(--purple-dim);
+            border-color: var(--purple);
+            color: var(--purple);
+            margin-left: 48px;
+        }
+
+        .layer.flask {
+            background-color: var(--yellow-dim);
+            border-color: var(--yellow);
+            color: var(--yellow);
+            margin-left: 72px;
+        }
+
+        .arrow-down {
+            display: flex;
+            justify-content: center;
+            padding: 8px 0;
+            color: var(--text-muted);
+            font-size: 20px;
+        }
+
+        .flow-diagram {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .flow-step {
+            padding: 24px;
+            background-color: var(--surface-bright);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .flow-step:hover {
+            border-color: var(--yellow);
+            background-color: var(--yellow-dim);
+        }
+
+        .flow-step-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .flow-step-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--yellow);
+        }
+
+        .flow-step-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .flow-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--yellow);
+            font-size: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .flow-diagram {
+                grid-template-columns: 1fr;
+            }
+            .flow-arrow {
+                transform: rotate(90deg);
+                margin: 8px 0;
+            }
+        }
+
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .component {
+            padding: 20px;
+            background-color: var(--surface-bright);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            transition: all 0.3s ease;
+        }
+
+        .component:hover {
+            border-color: var(--purple);
+            background-color: var(--purple-dim);
+        }
+
+        .component-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .component-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--purple);
+        }
+
+        .component-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            .components-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .blueprint-diagram {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .blueprint-main {
+            padding: 24px;
+            background: linear-gradient(135deg, var(--yellow-dim), var(--orange-dim, rgba(245, 158, 66, 0.12)));
+            border: 2px solid var(--yellow);
+            border-radius: var(--radius);
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .blueprint-modules {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .blueprint-module {
+            padding: 20px;
+            background-color: var(--surface-bright);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .blueprint-module:hover {
+            border-color: var(--green);
+            background-color: var(--green-dim);
+        }
+
+        .blueprint-module-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .blueprint-module-title {
+            font-weight: 600;
+            color: var(--green);
+            margin-bottom: 4px;
+        }
+
+        .blueprint-module-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            .blueprint-modules {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .middleware-chain {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .middleware-step {
+            padding: 16px 12px;
+            background-color: var(--surface-bright);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .middleware-step:hover {
+            border-color: var(--red);
+            background-color: rgba(248, 113, 113, 0.12);
+        }
+
+        .middleware-step.active {
+            border-color: var(--red);
+            color: var(--red);
+            background-color: rgba(248, 113, 113, 0.12);
+        }
+
+        .middleware-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .middleware-chain {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .middleware-arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        .code-block {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .kw { color: var(--purple); }
+        .fn { color: var(--blue); }
+        .str { color: var(--green); }
+        .dec { color: var(--yellow); }
+        .var { color: var(--orange); }
+        .comment { color: var(--text-muted); font-style: italic; }
+
+        .description {
+            padding: 20px;
+            background-color: var(--surface-bright);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 var(--radius) var(--radius) 0;
+            margin-bottom: 24px;
+            line-height: 1.8;
+        }
+
+        footer {
+            padding: 60px 24px;
+            text-align: center;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            margin-top: 80px;
+        }
+
+        .highlight {
+            color: var(--yellow);
+            font-weight: 600;
+        }
+
+        .info-box {
+            padding: 16px 20px;
+            background-color: var(--blue-dim);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 var(--radius) var(--radius) 0;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .info-box strong {
+            color: var(--blue);
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .comparison-item {
+            padding: 20px;
+            background-color: var(--surface-bright);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+        }
+
+        .comparison-label {
+            font-weight: 600;
+            color: var(--yellow);
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .comparison-content {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 28px;
+            }
+            h2 {
+                font-size: 22px;
+            }
+        }
+
+        .vertical-flow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .vertical-flow-item {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: var(--surface-bright);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .vertical-flow-item:hover {
+            border-color: var(--green);
+            background-color: var(--green-dim);
+        }
+
+        .vertical-arrow {
+            color: var(--text-muted);
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-link">← Zurück zur Übersicht</a>
+
+    <div class="container">
+        <header>
+            <h1>Flask Architektur</h1>
+            <p class="subtitle">Verstehen Sie, wie Flask intern funktioniert</p>
+        </header>
+
+        <!-- WSGI Layer Section -->
+        <section>
+            <h2><span class="section-icon">🔗</span> WSGI Layer</h2>
+
+            <div class="diagram-box">
+                <p style="margin-bottom: 24px; color: var(--text-muted);">Flask sitzt auf der Werkzeug WSGI-Implementierung. Dies ist die Schicht zwischen dem Webserver und Ihrer Anwendung.</p>
+
+                <div class="wsgi-layer">
+                    <div class="layer browser">
+                        <span>🌐</span> Browser
+                    </div>
+                    <div class="arrow-down">↓</div>
+                    <div class="layer server">
+                        <span>⚙️</span> Webserver (Gunicorn / nginx)
+                    </div>
+                    <div class="arrow-down">↓</div>
+                    <div class="layer wsgi">
+                        <span>🔄</span> WSGI Interface (Werkzeug)
+                    </div>
+                    <div class="arrow-down">↓</div>
+                    <div class="layer flask">
+                        <span>🐍</span> Flask Application
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>Was ist WSGI?</strong> Web Server Gateway Interface (WSGI) ist ein Standard-Interface zwischen Webservern und Python-Webanwendungen. Werkzeug, die Bibliothek hinter Flask, implementiert dieses Interface.
+            </div>
+
+            <div class="code-block">
+<span class="comment"># Flask nutzt Werkzeug's WSGI-Implementierung</span>
+<span class="kw">from</span> <span class="var">werkzeug</span>.<span class="var">serving</span> <span class="kw">import</span> <span class="fn">run_simple</span>
+
+<span class="var">app</span> = <span class="fn">Flask</span>(<span class="str">__name__</span>)
+
+<span class="comment"># Unter der Haube: app ist ein WSGI callable</span>
+<span class="fn">run_simple</span>(<span class="str">'127.0.0.1'</span>, <span class="str">5000</span>, <span class="var">app</span>)
+            </div>
+        </section>
+
+        <!-- Request/Response Cycle Section -->
+        <section>
+            <h2><span class="section-icon">🔀</span> Request / Response Zyklus</h2>
+
+            <p style="margin-bottom: 24px; color: var(--text-muted);">So verarbeitet Flask eine HTTP-Anfrage von Anfang bis Ende:</p>
+
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <div class="flow-step-icon">🌐</div>
+                    <div class="flow-step-title">1. HTTP Request</div>
+                    <div class="flow-step-desc">Client sendet eine HTTP-Anfrage an den Server</div>
+                </div>
+
+                <div class="flow-arrow">→</div>
+
+                <div class="flow-step">
+                    <div class="flow-step-icon">📦</div>
+                    <div class="flow-step-title">2. Request-Objekt</div>
+                    <div class="flow-step-desc">Flask erstellt ein Request-Objekt mit allen Daten</div>
+                </div>
+            </div>
+
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <div class="flow-step-icon">🗺️</div>
+                    <div class="flow-step-title">3. URL Routing</div>
+                    <div class="flow-step-desc">Werkzeug Router matcht die URL mit einer Route</div>
+                </div>
+
+                <div class="flow-arrow">→</div>
+
+                <div class="flow-step">
+                    <div class="flow-step-icon">⚡</div>
+                    <div class="flow-step-title">4. View Function</div>
+                    <div class="flow-step-desc">Die entsprechende View-Funktion wird aufgerufen</div>
+                </div>
+            </div>
+
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <div class="flow-step-icon">📝</div>
+                    <div class="flow-step-title">5. Response erstellen</div>
+                    <div class="flow-step-desc">Die View gibt Daten zurück, Flask erstellt Response</div>
+                </div>
+
+                <div class="flow-arrow">→</div>
+
+                <div class="flow-step">
+                    <div class="flow-step-icon">✉️</div>
+                    <div class="flow-step-title">6. HTTP Response</div>
+                    <div class="flow-step-desc">Response wird zum Browser des Clients zurückgesendet</div>
+                </div>
+            </div>
+
+            <div class="code-block">
+<span class="dec">@app.route</span>(<span class="str">'/user/&lt;int:user_id&gt;'</span>)
+<span class="kw">def</span> <span class="fn">get_user</span>(<span class="var">user_id</span>):
+    <span class="comment"># Flask ruft diese Funktion auf wenn die Route matcht</span>
+    <span class="kw">return</span> <span class="fn">jsonify</span>({<span class="str">'id'</span>: <span class="var">user_id</span>})
+
+<span class="comment"># Wenn Browser /user/123 anfagt:</span>
+<span class="comment"># 1. WSGI erhält Request</span>
+<span class="comment"># 2. Flask Route '/user/&lt;int:user_id&gt;' matcht</span>
+<span class="comment"># 3. get_user(123) wird aufgerufen</span>
+<span class="comment"># 4. Response wird erstellt und zurückgesendet</span>
+            </div>
+        </section>
+
+        <!-- Flask App Internals Section -->
+        <section>
+            <h2><span class="section-icon">⚙️</span> Flask App Internals</h2>
+
+            <p style="margin-bottom: 24px; color: var(--text-muted);">Diese Komponenten machen eine Flask-Anwendung aus:</p>
+
+            <div class="components-grid">
+                <div class="component">
+                    <div class="component-icon">🐍</div>
+                    <div class="component-title">app = Flask(__name__)</div>
+                    <div class="component-desc">Das zentrale Flask-Anwendungsobjekt. Speichert alle Konfigurationen und Routinen.</div>
+                </div>
+
+                <div class="component">
+                    <div class="component-icon">⚙️</div>
+                    <div class="component-title">Config</div>
+                    <div class="component-desc">Konfigurationseinstellungen wie DEBUG, SECRET_KEY, Datenbankverbindungen.</div>
+                </div>
+
+                <div class="component">
+                    <div class="component-icon">🗺️</div>
+                    <div class="component-title">URL Map</div>
+                    <div class="component-desc">Werkzeug Map mit allen registrierten Routen und ihren Regeln.</div>
+                </div>
+
+                <div class="component">
+                    <div class="component-icon">⚡</div>
+                    <div class="component-title">View Functions</div>
+                    <div class="component-desc">Die Funktionen, die bei einer bestimmten Route aufgerufen werden.</div>
+                </div>
+
+                <div class="component">
+                    <div class="component-icon">🚨</div>
+                    <div class="component-title">Error Handlers</div>
+                    <div class="component-desc">Spezielle Funktionen für 404, 500 und andere HTTP-Fehler.</div>
+                </div>
+
+                <div class="component">
+                    <div class="component-icon">📄</div>
+                    <div class="component-title">Template Engine</div>
+                    <div class="component-desc">Jinja2 Engine für das Rendering von HTML-Templates.</div>
+                </div>
+
+                <div class="component">
+                    <div class="component-icon">📁</div>
+                    <div class="component-title">Static Files</div>
+                    <div class="component-desc">CSS, JavaScript, Bilder und andere statische Dateien.</div>
+                </div>
+
+                <div class="component">
+                    <div class="component-icon">🧩</div>
+                    <div class="component-title">Blueprints</div>
+                    <div class="component-desc">Modularisierung der Anwendung in wiederverwendbare Komponenten.</div>
+                </div>
+            </div>
+
+            <div class="code-block">
+<span class="kw">from</span> <span class="var">flask</span> <span class="kw">import</span> <span class="fn">Flask</span>
+
+<span class="var">app</span> = <span class="fn">Flask</span>(<span class="str">__name__</span>)
+
+<span class="comment"># Config</span>
+<span class="var">app</span>.<span class="var">config</span>[<span class="str">'DEBUG'</span>] = <span class="kw">True</span>
+<span class="var">app</span>.<span class="var">config</span>[<span class="str">'SECRET_KEY'</span>] = <span class="str">'secret'</span>
+
+<span class="comment"># URL Map (automatisch mit @app.route erstellt)</span>
+<span class="dec">@app.route</span>(<span class="str">'/'</span>)
+<span class="kw">def</span> <span class="fn">home</span>():
+    <span class="kw">return</span> <span class="str">'Hello World'</span>
+
+<span class="comment"># Error Handler</span>
+<span class="dec">@app.errorhandler</span>(<span class="str">404</span>)
+<span class="kw">def</span> <span class="fn">not_found</span>(<span class="var">error</span>):
+    <span class="kw">return</span> <span class="str">'Page not found'</span>, <span class="str">404</span>
+            </div>
+        </section>
+
+        <!-- Blueprints Section -->
+        <section>
+            <h2><span class="section-icon">🧩</span> Blueprints & Modularisierung</h2>
+
+            <p style="margin-bottom: 24px; color: var(--text-muted);">Blueprints ermöglichen es, eine Flask-App in wiederverwendbare Module zu unterteilen:</p>
+
+            <div class="diagram-box">
+                <div class="blueprint-diagram">
+                    <div class="blueprint-main">
+                        <span>🐍</span> Main Flask App
+                    </div>
+
+                    <div class="blueprint-modules">
+                        <div class="blueprint-module">
+                            <div class="blueprint-module-icon">🔐</div>
+                            <div class="blueprint-module-title">auth</div>
+                            <div class="blueprint-module-desc">Login, Registrierung, Sessions</div>
+                        </div>
+
+                        <div class="blueprint-module">
+                            <div class="blueprint-module-icon">📡</div>
+                            <div class="blueprint-module-title">api</div>
+                            <div class="blueprint-module-desc">REST API Endpoints</div>
+                        </div>
+
+                        <div class="blueprint-module">
+                            <div class="blueprint-module-icon">👑</div>
+                            <div class="blueprint-module-title">admin</div>
+                            <div class="blueprint-module-desc">Verwaltungspanel</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-block">
+<span class="comment"># auth/blueprint.py</span>
+<span class="kw">from</span> <span class="var">flask</span> <span class="kw">import</span> <span class="fn">Blueprint</span>
+
+<span class="var">auth_bp</span> = <span class="fn">Blueprint</span>(<span class="str">'auth'</span>, <span class="str">__name__</span>)
+
+<span class="dec">@auth_bp.route</span>(<span class="str">'/login'</span>, <span class="var">methods</span>=<span class="str">['POST']</span>)
+<span class="kw">def</span> <span class="fn">login</span>():
+    <span class="kw">return</span> <span class="fn">jsonify</span>({<span class="str">'status'</span>: <span class="str">'logged in'</span>})
+
+<span class="comment"># app.py</span>
+<span class="var">app</span> = <span class="fn">Flask</span>(<span class="str">__name__</span>)
+<span class="var">app</span>.<span class="fn">register_blueprint</span>(<span class="var">auth_bp</span>, <span class="var">url_prefix</span>=<span class="str">'/auth'</span>)
+            </div>
+
+            <div class="info-box">
+                <strong>Vorteil:</strong> Blueprints ermöglichen saubere Code-Organisation, Wiederverwendbarkeit und bessere Testbarkeit. Sie sind ideal für größere Projekte mit mehreren Modulen.
+            </div>
+        </section>
+
+        <!-- Middleware & Request Lifecycle Section -->
+        <section>
+            <h2><span class="section-icon">🔄</span> Middleware & Request Lifecycle</h2>
+
+            <p style="margin-bottom: 24px; color: var(--text-muted);">Flask führt Code an spezifischen Punkten im Request-Lifecycle aus:</p>
+
+            <div class="diagram-box">
+                <div class="middleware-chain">
+                    <div class="middleware-step">
+                        before_request
+                    </div>
+                    <div class="middleware-arrow">→</div>
+                    <div class="middleware-step active">
+                        View Function
+                    </div>
+                    <div class="middleware-arrow">→</div>
+                    <div class="middleware-step">
+                        after_request
+                    </div>
+                </div>
+
+                <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
+                    <p style="color: var(--text-muted); margin-bottom: 16px; font-size: 13px;">Alle Requests gehen durch:</p>
+                    <div class="middleware-chain">
+                        <div class="middleware-step">
+                            1️⃣ before_request()
+                        </div>
+                        <div class="middleware-arrow">→</div>
+                        <div class="middleware-step">
+                            2️⃣ request()
+                        </div>
+                        <div class="middleware-arrow">→</div>
+                        <div class="middleware-step">
+                            3️⃣ teardown_request()
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison">
+                <div class="comparison-item">
+                    <div class="comparison-label">before_request</div>
+                    <div class="comparison-content">Wird vor jeder View-Funktion ausgeführt. Ideal für Authentifizierung, Rate Limiting, Logging.</div>
+                </div>
+                <div class="comparison-item">
+                    <div class="comparison-label">after_request</div>
+                    <div class="comparison-content">Wird nach der View-Funktion aber vor der Response ausgeführt. Ideal für Response-Modifikation, Header setzen.</div>
+                </div>
+                <div class="comparison-item">
+                    <div class="comparison-label">teardown_request</div>
+                    <div class="comparison-content">Wird am Ende des Request aufgerufen, egal ob Error oder nicht. Ideal für Cleanup.</div>
+                </div>
+                <div class="comparison-item">
+                    <div class="comparison-label">errorhandler</div>
+                    <div class="comparison-content">Behandelt Exceptions. Wird aufgerufen wenn ein Fehler im Request auftritt.</div>
+                </div>
+            </div>
+
+            <div class="code-block">
+<span class="dec">@app.before_request</span>
+<span class="kw">def</span> <span class="fn">before_request</span>():
+    <span class="comment"># Authentifizierung prüfen</span>
+    <span class="kw">if</span> <span class="var">current_user</span> <span class="kw">is</span> <span class="kw">None</span>:
+        <span class="kw">return</span> <span class="fn">redirect</span>(<span class="str">'/login'</span>)
+
+<span class="dec">@app.after_request</span>
+<span class="kw">def</span> <span class="fn">after_request</span>(<span class="var">response</span>):
+    <span class="comment"># CORS Headers hinzufügen</span>
+    <span class="var">response</span>.<span class="var">headers</span>[<span class="str">'Access-Control-Allow-Origin'</span>] = <span class="str">'*'</span>
+    <span class="kw">return</span> <span class="var">response</span>
+
+<span class="dec">@app.teardown_request</span>
+<span class="kw">def</span> <span class="fn">teardown</span>(<span class="var">exception</span>=<span class="kw">None</span>):
+    <span class="comment"># Datenbankverbindung schließen</span>
+    <span class="kw">if</span> <span class="var">db</span> <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span>:
+        <span class="var">db</span>.<span class="fn">close</span>()
+            </div>
+        </section>
+
+        <!-- Advanced Concepts Section -->
+        <section>
+            <h2><span class="section-icon">🚀</span> Weitere wichtige Konzepte</h2>
+
+            <div class="components-grid">
+                <div class="component">
+                    <div class="component-icon">📦</div>
+                    <div class="component-title">Request Context</div>
+                    <div class="component-desc">Flask erstellt einen Request Context für jeden Request. Dies ermöglicht globalen Zugriff auf Request-Daten wie request.args, request.form.</div>
+                </div>
+
+                <div class="component">
+                    <div class="component-icon">🔐</div>
+                    <div class="component-title">Application Context</div>
+                    <div class="component-desc">Der Application Context speichert App-Level Daten. Wird beim App Start erstellt und beim Shutdown zerstört.</div>
+                </div>
+
+                <div class="component">
+                    <div class="component-icon">🎣</div>
+                    <div class="component-title">Hooks & Signals</div>
+                    <div class="component-desc">before_first_request, before_request, after_request, teardown_request - definieren den Request-Lifecycle.</div>
+                </div>
+
+                <div class="component">
+                    <div class="component-icon">⚡</div>
+                    <div class="component-title">Extensions</div>
+                    <div class="component-desc">Flask-SQLAlchemy, Flask-Login, Flask-WTF - erweitern Flask mit zusätzlicher Funktionalität.</div>
+                </div>
+
+                <div class="component">
+                    <div class="component-icon">🔗</div>
+                    <div class="component-title">URL Building</div>
+                    <div class="component-desc">url_for() generiert URLs basierend auf View-Funktionsnamen. Ermöglicht sichere URL-Erzeugung.</div>
+                </div>
+
+                <div class="component">
+                    <div class="component-icon">📝</div>
+                    <div class="component-title">Werkzeug Utilities</div>
+                    <div class="component-desc">Flask nutzt Werkzeug für Request Handling, Routing, Sessions, Cookies und HTTP Utilities.</div>
+                </div>
+            </div>
+
+            <div class="description">
+                <strong>Context Isolation:</strong> Flask isoliert jeden Request in seinen eigenen Context. Das bedeutet, dass Variablen wie <span class="highlight">request</span>, <span class="highlight">g</span> und <span class="highlight">session</span> immer auf den aktuellen Request bezogen sind, ohne dass Sie diese als Parameter übergeben müssen. Dies ist eines der mächtigsten Features von Flask!
+            </div>
+
+            <div class="code-block">
+<span class="comment"># URL Building</span>
+<span class="dec">@app.route</span>(<span class="str">'/user/&lt;int:user_id&gt;'</span>)
+<span class="kw">def</span> <span class="fn">user_profile</span>(<span class="var">user_id</span>):
+    <span class="kw">return</span> <span class="fn">render_template</span>(<span class="str">'profile.html'</span>)
+
+<span class="comment"># In Template oder Python Code:</span>
+<span class="fn">url_for</span>(<span class="str">'user_profile'</span>, <span class="var">user_id</span>=<span class="str">42</span>)  <span class="comment"># → /user/42</span>
+
+<span class="comment"># Context Usage</span>
+<span class="kw">from</span> <span class="var">flask</span> <span class="kw">import</span> <span class="fn">request</span>, <span class="fn">g</span>
+
+<span class="dec">@app.route</span>(<span class="str">'/api/data'</span>)
+<span class="kw">def</span> <span class="fn">api_data</span>():
+    <span class="var">user_id</span> = <span class="var">request</span>.<span class="var">args</span>.<span class="fn">get</span>(<span class="str">'user_id'</span>)  <span class="comment"># Request Context</span>
+    <span class="var">g</span>.<span class="var">user_data</span> = <span class="fn">fetch_user</span>(<span class="var">user_id</span>)  <span class="comment"># Request-scoped storage</span>
+    <span class="kw">return</span> <span class="fn">jsonify</span>(<span class="var">g</span>.<span class="var">user_data</span>)
+            </div>
+        </section>
+
+        <!-- Architecture Summary -->
+        <section>
+            <h2><span class="section-icon">📊</span> Architektur Zusammenfassung</h2>
+
+            <div class="diagram-box">
+                <div class="vertical-flow">
+                    <div class="vertical-flow-item">
+                        <span style="font-size: 20px; display: block; margin-bottom: 8px;">🌐</span>
+                        HTTP Request kommt rein
+                    </div>
+                    <div class="vertical-arrow">↓</div>
+
+                    <div class="vertical-flow-item">
+                        <span style="font-size: 20px; display: block; margin-bottom: 8px;">🔄</span>
+                        WSGI Interface verarbeitet Request
+                    </div>
+                    <div class="vertical-arrow">↓</div>
+
+                    <div class="vertical-flow-item">
+                        <span style="font-size: 20px; display: block; margin-bottom: 8px;">🔗</span>
+                        Werkzeug Router matcht URL
+                    </div>
+                    <div class="vertical-arrow">↓</div>
+
+                    <div class="vertical-flow-item">
+                        <span style="font-size: 20px; display: block; margin-bottom: 8px;">🎣</span>
+                        before_request Hooks ausgeführt
+                    </div>
+                    <div class="vertical-arrow">↓</div>
+
+                    <div class="vertical-flow-item">
+                        <span style="font-size: 20px; display: block; margin-bottom: 8px;">⚡</span>
+                        View Function aufgerufen
+                    </div>
+                    <div class="vertical-arrow">↓</div>
+
+                    <div class="vertical-flow-item">
+                        <span style="font-size: 20px; display: block; margin-bottom: 8px;">📝</span>
+                        Response-Objekt erstellt
+                    </div>
+                    <div class="vertical-arrow">↓</div>
+
+                    <div class="vertical-flow-item">
+                        <span style="font-size: 20px; display: block; margin-bottom: 8px;">🎣</span>
+                        after_request Hooks ausgeführt
+                    </div>
+                    <div class="vertical-arrow">↓</div>
+
+                    <div class="vertical-flow-item">
+                        <span style="font-size: 20px; display: block; margin-bottom: 8px;">✉️</span>
+                        HTTP Response wird gesendet
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Flask Architektur – Eine visuelle Erklärung der internen Struktur</p>
+            <p style="font-size: 12px; margin-top: 16px;">Basierend auf Flask 2.x und Werkzeug</p>
+        </footer>
+    </div>
+
+    <script>
+        // Add animation delay to elements
+        document.querySelectorAll('section').forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.1}s`;
+        });
+
+        // Interactive hover effects
+        document.querySelectorAll('.flow-step, .component, .blueprint-module').forEach(element => {
+            element.addEventListener('click', function() {
+                this.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>

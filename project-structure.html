@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Projekt-Struktur – Visuell Erklärt</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0f1117;
+            --surface: #1a1d27;
+            --surface-bright: #222633;
+            --border: #2e3348;
+            --text: #e2e4ed;
+            --text-muted: #8b8fa7;
+            --yellow: #f5c542;
+            --yellow-dim: rgba(245, 197, 66, 0.15);
+            --blue: #5b9cf5;
+            --blue-dim: rgba(91, 156, 245, 0.12);
+            --green: #4ade80;
+            --green-dim: rgba(74, 222, 128, 0.12);
+            --orange: #f59e42;
+            --orange-dim: rgba(245, 158, 66, 0.12);
+            --purple: #a78bfa;
+            --purple-dim: rgba(167, 139, 250, 0.12);
+            --red: #f87171;
+            --white: #ffffff;
+            --code-bg: #13151e;
+            --radius: 14px;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .header {
+            padding: 0 24px 40px 24px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            padding: 16px 24px;
+            margin: -16px -24px 24px -24px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--yellow);
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--blue), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 60px 24px;
+        }
+
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-icon {
+            font-size: 28px;
+        }
+
+        .file-tree {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            overflow-x: auto;
+            animation: fadeSlideUp 0.6s ease-out;
+        }
+
+        .file-tree-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            color: var(--text-muted);
+        }
+
+        .file-tree-item.folder {
+            color: var(--blue);
+            font-weight: 600;
+        }
+
+        .file-tree-item.python {
+            color: var(--green);
+        }
+
+        .file-tree-item.template {
+            color: var(--blue);
+        }
+
+        .file-tree-item.config {
+            color: var(--yellow);
+        }
+
+        .file-tree-item.static {
+            color: var(--orange);
+        }
+
+        .file-tree-item.env {
+            color: var(--red);
+        }
+
+        .file-tree-line {
+            display: inline-block;
+            width: 16px;
+            color: var(--border);
+        }
+
+        .file-item-card {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .file-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            transition: all 0.3s ease;
+            animation: fadeSlideUp 0.6s ease-out;
+        }
+
+        .file-card:hover {
+            border-color: var(--blue);
+            background-color: var(--surface-bright);
+            transform: translateY(-4px);
+        }
+
+        .file-card-icon {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .file-card-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+            word-break: break-word;
+        }
+
+        .file-card-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .file-card-type {
+            display: inline-block;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin-top: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .file-card-type.python {
+            background-color: var(--green-dim);
+            color: var(--green);
+        }
+
+        .file-card-type.template {
+            background-color: var(--blue-dim);
+            color: var(--blue);
+        }
+
+        .file-card-type.config {
+            background-color: var(--yellow-dim);
+            color: var(--yellow);
+        }
+
+        .file-card-type.static {
+            background-color: var(--orange-dim);
+            color: var(--orange);
+        }
+
+        .file-card-type.env {
+            background-color: var(--red);
+            color: var(--white);
+        }
+
+        .code-block {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            overflow-x: auto;
+            margin-bottom: 24px;
+            animation: fadeSlideUp 0.6s ease-out;
+        }
+
+        .code-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .code-keyword {
+            color: var(--purple);
+        }
+
+        .code-function {
+            color: var(--blue);
+        }
+
+        .code-string {
+            color: var(--green);
+        }
+
+        .code-comment {
+            color: var(--text-muted);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        @media (max-width: 900px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .concept-card {
+            background: linear-gradient(135deg, var(--surface) 0%, var(--surface-bright) 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            animation: fadeSlideUp 0.6s ease-out;
+        }
+
+        .concept-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .concept-card-content {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .venv-diagram {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .venv-box {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            animation: fadeSlideUp 0.6s ease-out;
+        }
+
+        .venv-box-title {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .venv-item {
+            background-color: var(--surface-bright);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .venv-item.isolated {
+            border-color: var(--green);
+            color: var(--green);
+            background-color: var(--green-dim);
+        }
+
+        .arrow {
+            font-size: 24px;
+            color: var(--text-muted);
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .config-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24px;
+        }
+
+        .config-table thead {
+            background-color: var(--surface-bright);
+            border-bottom: 2px solid var(--border);
+        }
+
+        .config-table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .config-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .config-table tbody tr:hover {
+            background-color: var(--surface-bright);
+        }
+
+        .config-table .key {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .highlight {
+            background-color: var(--yellow-dim);
+            color: var(--yellow);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        @media (max-width: 900px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .comparison-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            animation: fadeSlideUp 0.6s ease-out;
+        }
+
+        .comparison-header {
+            background-color: var(--surface-bright);
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comparison-header-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .comparison-header-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .comparison-body {
+            padding: 24px;
+        }
+
+        .comparison-body .file-tree {
+            background-color: var(--code-bg);
+            border: none;
+            margin: 0;
+            animation: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-link">← Zurück zur Übersicht</a>
+        <h1>Flask Projekt-Struktur</h1>
+        <p class="subtitle">Visuell Erklärt – Von minimal bis professionell</p>
+    </div>
+
+    <div class="container">
+        <!-- Section 1: Minimale Struktur -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">🏗️</span>
+                Minimale Struktur
+            </h2>
+            <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
+                Das einfachste Flask-Projekt, perfekt für Anfänger und kleine Prototypen.
+            </p>
+
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <div class="comparison-header">
+                        <div class="comparison-header-title">📁 Dateistruktur</div>
+                        <div class="comparison-header-subtitle">Ordnerübersicht</div>
+                    </div>
+                    <div class="comparison-body">
+                        <div class="file-tree">
+<span class="file-tree-item folder">my_app/</span>
+<span class="file-tree-item python"><span class="file-tree-line">├──</span> app.py</span>
+<span class="file-tree-item config"><span class="file-tree-line">├──</span> requirements.txt</span>
+<span class="file-tree-item env"><span class="file-tree-line">└──</span> venv/</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-card">
+                    <div class="comparison-header">
+                        <div class="comparison-header-title">💻 app.py</div>
+                        <div class="comparison-header-subtitle">Minimale Flask-App</div>
+                    </div>
+                    <div class="comparison-body">
+                        <div class="code-block">
+                            <span class="code-label">Python</span>
+                            <pre class="code"><span class="code-keyword">from</span> flask <span class="code-keyword">import</span> Flask
+
+app = Flask(__name__)
+
+<span class="code-keyword">@</span>app.route(<span class="code-string">'/'</span>)
+<span class="code-keyword">def</span> <span class="code-function">hello</span>():
+    <span class="code-keyword">return</span> <span class="code-string">'Hallo, Flask!'</span>
+
+<span class="code-keyword">if</span> __name__ == <span class="code-string">'__main__'</span>:
+    app.run(debug=<span class="code-keyword">True</span>)</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="file-item-card">
+                <div class="file-card">
+                    <div class="file-card-icon">📄</div>
+                    <div class="file-card-name">app.py</div>
+                    <div class="file-card-desc">
+                        Die Haupt-Anwendungsdatei mit Routen, Konfiguration und Server-Logik.
+                    </div>
+                    <span class="file-card-type python">Python Module</span>
+                </div>
+
+                <div class="file-card">
+                    <div class="file-card-icon">📋</div>
+                    <div class="file-card-name">requirements.txt</div>
+                    <div class="file-card-desc">
+                        Listet alle Python-Abhängigkeiten auf (z.B. flask==2.3.0).
+                    </div>
+                    <span class="file-card-type config">Config</span>
+                </div>
+
+                <div class="file-card">
+                    <div class="file-card-icon">🔒</div>
+                    <div class="file-card-name">venv/</div>
+                    <div class="file-card-desc">
+                        Virtuelle Umgebung mit isoliertem Python und Paketen.
+                    </div>
+                    <span class="file-card-type env">Virtual Env</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Professionelle Struktur -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">🏢</span>
+                Professionelle Struktur
+            </h2>
+            <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
+                Produktionsreife Architektur mit Blueprints, Konfiguration und klarer Trennung der Concerns.
+            </p>
+
+            <div class="file-tree">
+<span class="file-tree-item folder">flask_project/</span>
+<span class="file-tree-item folder"><span class="file-tree-line">├──</span> app/</span>
+<span class="file-tree-item python"><span class="file-tree-line">│   ├──</span> __init__.py <span class="file-tree-line" style="color: var(--text-muted);"># App Factory</span></span>
+<span class="file-tree-item python"><span class="file-tree-line">│   ├──</span> models.py <span class="file-tree-line" style="color: var(--text-muted);"># Datenbank-Modelle</span></span>
+<span class="file-tree-item folder"><span class="file-tree-line">│   ├──</span> routes/</span>
+<span class="file-tree-item python"><span class="file-tree-line">│   │   ├──</span> __init__.py</span>
+<span class="file-tree-item python"><span class="file-tree-line">│   │   ├──</span> auth.py <span class="file-tree-line" style="color: var(--text-muted);"># Auth Blueprint</span></span>
+<span class="file-tree-item python"><span class="file-tree-line">│   │   └──</span> api.py <span class="file-tree-line" style="color: var(--text-muted);"># API Blueprint</span></span>
+<span class="file-tree-item folder"><span class="file-tree-line">│   ├──</span> templates/</span>
+<span class="file-tree-item template"><span class="file-tree-line">│   │   ├──</span> base.html</span>
+<span class="file-tree-item template"><span class="file-tree-line">│   │   └──</span> index.html</span>
+<span class="file-tree-item folder"><span class="file-tree-line">│   └──</span> static/</span>
+<span class="file-tree-item static"><span class="file-tree-line">│       ├──</span> css/</span>
+<span class="file-tree-item static"><span class="file-tree-line">│       └──</span> js/</span>
+<span class="file-tree-item config"><span class="file-tree-line">├──</span> config.py <span class="file-tree-line" style="color: var(--text-muted);"># Konfiguration</span></span>
+<span class="file-tree-item config"><span class="file-tree-line">├──</span> requirements.txt</span>
+<span class="file-tree-item env"><span class="file-tree-line">├──</span> .env <span class="file-tree-line" style="color: var(--text-muted);"># Geheimnisse</span></span>
+<span class="file-tree-item config"><span class="file-tree-line">├──</span> .gitignore</span>
+<span class="file-tree-item python"><span class="file-tree-line">└──</span> run.py <span class="file-tree-line" style="color: var(--text-muted);"># Einstiegspunkt</span></span>
+            </div>
+
+            <h3 style="font-size: 16px; font-weight: 700; color: var(--text); margin-top: 32px; margin-bottom: 16px;">
+                📁 Datei-Übersicht
+            </h3>
+
+            <div class="file-item-card">
+                <div class="file-card">
+                    <div class="file-card-icon">📦</div>
+                    <div class="file-card-name">app/__init__.py</div>
+                    <div class="file-card-desc">
+                        App Factory – erstellt Flask-Instanz mit Blueprints und Erweiterungen.
+                    </div>
+                    <span class="file-card-type python">Python Module</span>
+                </div>
+
+                <div class="file-card">
+                    <div class="file-card-icon">🗄️</div>
+                    <div class="file-card-name">app/models.py</div>
+                    <div class="file-card-desc">
+                        Datenbank-Modelle (SQLAlchemy ORM) für User, Posts, etc.
+                    </div>
+                    <span class="file-card-type python">Python Module</span>
+                </div>
+
+                <div class="file-card">
+                    <div class="file-card-icon">🛣️</div>
+                    <div class="file-card-name">app/routes/</div>
+                    <div class="file-card-desc">
+                        Blueprint-Module für getrennte Route-Handler (Auth, API, etc.).
+                    </div>
+                    <span class="file-card-type python">Python Package</span>
+                </div>
+
+                <div class="file-card">
+                    <div class="file-card-icon">📄</div>
+                    <div class="file-card-name">app/templates/</div>
+                    <div class="file-card-desc">
+                        Jinja2-Templates für HTML-Rendering (base.html für Vererbung).
+                    </div>
+                    <span class="file-card-type template">Templates</span>
+                </div>
+
+                <div class="file-card">
+                    <div class="file-card-icon">🎨</div>
+                    <div class="file-card-name">app/static/</div>
+                    <div class="file-card-desc">
+                        CSS, JavaScript, Bilder – statische Assets für Frontend.
+                    </div>
+                    <span class="file-card-type static">Static Files</span>
+                </div>
+
+                <div class="file-card">
+                    <div class="file-card-icon">⚙️</div>
+                    <div class="file-card-name">config.py</div>
+                    <div class="file-card-desc">
+                        Konfigurationsklassen für Development, Production, Testing.
+                    </div>
+                    <span class="file-card-type config">Config</span>
+                </div>
+
+                <div class="file-card">
+                    <div class="file-card-icon">📋</div>
+                    <div class="file-card-name">requirements.txt</div>
+                    <div class="file-card-desc">
+                        Alle Python-Abhängigkeiten mit Versionsnummern.
+                    </div>
+                    <span class="file-card-type config">Config</span>
+                </div>
+
+                <div class="file-card">
+                    <div class="file-card-icon">🔑</div>
+                    <div class="file-card-name">.env</div>
+                    <div class="file-card-desc">
+                        Umgebungsvariablen: DB_URL, SECRET_KEY, API-Keys (nicht ins Git!).
+                    </div>
+                    <span class="file-card-type env">Secrets</span>
+                </div>
+
+                <div class="file-card">
+                    <div class="file-card-icon">🚫</div>
+                    <div class="file-card-name">.gitignore</div>
+                    <div class="file-card-desc">
+                        Dateien ausschließen: .env, venv/, __pycache__, .DS_Store.
+                    </div>
+                    <span class="file-card-type config">Config</span>
+                </div>
+
+                <div class="file-card">
+                    <div class="file-card-icon">▶️</div>
+                    <div class="file-card-name">run.py</div>
+                    <div class="file-card-desc">
+                        Einstiegspunkt: Flask-App starten (python run.py).
+                    </div>
+                    <span class="file-card-type python">Entry Point</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: App Factory Pattern -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">🏭</span>
+                App Factory Pattern
+            </h2>
+            <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
+                Erstellt die Flask-App dynamisch mit verschiedenen Konfigurationen. Ermöglicht Testing und Multi-Instanz-Deployment.
+            </p>
+
+            <div class="grid-2">
+                <div>
+                    <h3 style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 16px;">
+                        app/__init__.py
+                    </h3>
+                    <div class="code-block">
+                        <span class="code-label">Python</span>
+                        <pre class="code"><span class="code-keyword">from</span> flask <span class="code-keyword">import</span> Flask
+<span class="code-keyword">from</span> flask_sqlalchemy <span class="code-keyword">import</span> SQLAlchemy
+
+db = SQLAlchemy()
+
+<span class="code-keyword">def</span> <span class="code-function">create_app</span>(config_name=<span class="code-string">'default'</span>):
+    app = Flask(__name__)
+    app.config.from_object(
+        config[config_name]
+    )
+
+    <span class="code-comment"># Init Extensions</span>
+    db.init_app(app)
+
+    <span class="code-comment"># Register Blueprints</span>
+    <span class="code-keyword">from</span> .routes.auth <span class="code-keyword">import</span> auth_bp
+    <span class="code-keyword">from</span> .routes.api <span class="code-keyword">import</span> api_bp
+
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(api_bp)
+
+    <span class="code-keyword">return</span> app</pre>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 16px;">
+                        run.py
+                    </h3>
+                    <div class="code-block">
+                        <span class="code-label">Python</span>
+                        <pre class="code"><span class="code-keyword">import</span> os
+<span class="code-keyword">from</span> app <span class="code-keyword">import</span> create_app, db
+
+config_name = os.getenv(
+    <span class="code-string">'FLASK_ENV'</span>,
+    <span class="code-string">'default'</span>
+)
+app = create_app(config_name)
+
+<span class="code-keyword">with</span> app.app_context():
+    db.create_all()
+
+<span class="code-keyword">if</span> __name__ == <span class="code-string">'__main__'</span>:
+    app.run(
+        debug=<span class="code-keyword">True</span>,
+        host=<span class="code-string">'0.0.0.0'</span>
+    )</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-card">
+                <div class="concept-card-title">
+                    ✨ Vorteile des App Factory Pattern
+                </div>
+                <div class="concept-card-content">
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li><span class="highlight">Testbar</span> – Mehrere App-Instanzen für Tests</li>
+                        <li><span class="highlight">Konfigurierbar</span> – Unterschiedliche Settings pro Umgebung</li>
+                        <li><span class="highlight">Erweiterbar</span> – Blueprints einfach hinzufügbar</li>
+                        <li><span class="highlight">Wartbar</span> – Klare Trennung von Concerns</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Blueprints -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">📋</span>
+                Blueprints – Modulare Routes
+            </h2>
+            <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
+                Blueprints ermöglichen es, Routes in separate Module zu organisieren – ideal für große Anwendungen.
+            </p>
+
+            <div class="grid-2">
+                <div>
+                    <h3 style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 16px;">
+                        app/routes/auth.py
+                    </h3>
+                    <div class="code-block">
+                        <span class="code-label">Python</span>
+                        <pre class="code"><span class="code-keyword">from</span> flask <span class="code-keyword">import</span> Blueprint
+
+auth_bp = Blueprint(
+    <span class="code-string">'auth'</span>,
+    __name__,
+    url_prefix=<span class="code-string">'/auth'</span>
+)
+
+<span class="code-keyword">@</span>auth_bp.route(<span class="code-string">'/login'</span>, methods=[<span class="code-string">'POST'</span>])
+<span class="code-keyword">def</span> <span class="code-function">login</span>():
+    <span class="code-keyword">return</span> {<span class="code-string">'msg'</span>: <span class="code-string">'Login erfolgreich'</span>}
+
+<span class="code-keyword">@</span>auth_bp.route(<span class="code-string">'/logout'</span>)
+<span class="code-keyword">def</span> <span class="code-function">logout</span>():
+    <span class="code-keyword">return</span> {<span class="code-string">'msg'</span>: <span class="code-string">'Logout erfolgreich'</span>}</pre>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 16px;">
+                        app/routes/api.py
+                    </h3>
+                    <div class="code-block">
+                        <span class="code-label">Python</span>
+                        <pre class="code"><span class="code-keyword">from</span> flask <span class="code-keyword">import</span> Blueprint, jsonify
+<span class="code-keyword">from</span> app.models <span class="code-keyword">import</span> User
+
+api_bp = Blueprint(
+    <span class="code-string">'api'</span>,
+    __name__,
+    url_prefix=<span class="code-string">'/api'</span>
+)
+
+<span class="code-keyword">@</span>api_bp.route(<span class="code-string">'/users'</span>)
+<span class="code-keyword">def</span> <span class="code-function">get_users</span>():
+    users = User.query.all()
+    <span class="code-keyword">return</span> jsonify([
+        u.to_dict() <span class="code-keyword">for</span> u <span class="code-keyword">in</span> users
+    ])</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="concept-card">
+                <div class="concept-card-title">
+                    🎯 Blueprint-Routing
+                </div>
+                <div class="concept-card-content">
+                    <ul style="margin-left: 20px; line-height: 1.8;">
+                        <li>auth_bp → <span class="highlight">/auth/login</span> und <span class="highlight">/auth/logout</span></li>
+                        <li>api_bp → <span class="highlight">/api/users</span> und weitere API-Routes</li>
+                        <li>Blueprints werden in <span class="highlight">create_app()</span> registriert</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Konfiguration -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">⚙️</span>
+                Konfiguration
+            </h2>
+            <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
+                Unterschiedliche Settings für Development, Production und Testing – ohne Code-Änderungen.
+            </p>
+
+            <h3 style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 16px;">
+                config.py – Konfigurationsklassen
+            </h3>
+            <div class="code-block">
+                <span class="code-label">Python</span>
+                <pre class="code"><span class="code-keyword">import</span> os
+
+<span class="code-keyword">class</span> <span class="code-function">Config</span>:
+    <span class="code-string">"""Basis-Konfiguration"""</span>
+    SECRET_KEY = os.getenv(<span class="code-string">'SECRET_KEY'</span>, <span class="code-string">'dev-key'</span>)
+    SQLALCHEMY_TRACK_MODIFICATIONS = <span class="code-keyword">False</span>
+
+<span class="code-keyword">class</span> <span class="code-function">DevelopmentConfig</span>(Config):
+    <span class="code-string">"""Development-Einstellungen"""</span>
+    DEBUG = <span class="code-keyword">True</span>
+    TESTING = <span class="code-keyword">False</span>
+    SQLALCHEMY_DATABASE_URI = <span class="code-string">'sqlite:///dev.db'</span>
+
+<span class="code-keyword">class</span> <span class="code-function">ProductionConfig</span>(Config):
+    <span class="code-string">"""Production-Einstellungen"""</span>
+    DEBUG = <span class="code-keyword">False</span>
+    SQLALCHEMY_DATABASE_URI = os.getenv(<span class="code-string">'DATABASE_URL'</span>)
+
+<span class="code-keyword">class</span> <span class="code-function">TestingConfig</span>(Config):
+    <span class="code-string">"""Testing-Einstellungen"""</span>
+    TESTING = <span class="code-keyword">True</span>
+    SQLALCHEMY_DATABASE_URI = <span class="code-string">'sqlite:///:memory:'</span>
+
+config = {
+    <span class="code-string">'development'</span>: DevelopmentConfig,
+    <span class="code-string">'production'</span>: ProductionConfig,
+    <span class="code-string">'testing'</span>: TestingConfig,
+    <span class="code-string">'default'</span>: DevelopmentConfig
+}</pre>
+            </div>
+
+            <h3 style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 16px; margin-top: 32px;">
+                .env – Umgebungsvariablen
+            </h3>
+            <div class="code-block">
+                <span class="code-label">Bash / Environment</span>
+                <pre class="code">FLASK_ENV=development
+FLASK_APP=run.py
+SECRET_KEY=super-secret-key-change-in-prod
+DATABASE_URL=postgresql://user:pass@localhost/dbname
+DEBUG=True</pre>
+            </div>
+
+            <h3 style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 16px; margin-top: 32px;">
+                Konfiguration verwenden
+            </h3>
+            <div class="code-block">
+                <span class="code-label">Python – app.py</span>
+                <pre class="code"><span class="code-comment"># Flask-Config in App setzen</span>
+app.config.from_object(config[config_name])
+
+<span class="code-comment"># Auf Settings zugreifen</span>
+SECRET_KEY = app.config[<span class="code-string">'SECRET_KEY'</span>]
+DEBUG = app.config.get(<span class="code-string">'DEBUG'</span>, <span class="code-keyword">False</span>)</pre>
+            </div>
+
+            <table class="config-table">
+                <thead>
+                    <tr>
+                        <th>Einstellung</th>
+                        <th>Development</th>
+                        <th>Production</th>
+                        <th>Testing</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="key">DEBUG</td>
+                        <td><span style="color: var(--green);">True</span></td>
+                        <td><span style="color: var(--red);">False</span></td>
+                        <td><span style="color: var(--blue);">False</span></td>
+                    </tr>
+                    <tr>
+                        <td class="key">DATABASE_URI</td>
+                        <td>sqlite:///dev.db</td>
+                        <td>PostgreSQL (real DB)</td>
+                        <td>sqlite:///:memory:</td>
+                    </tr>
+                    <tr>
+                        <td class="key">SECRET_KEY</td>
+                        <td>dev-key (einfach)</td>
+                        <td>Komplexe .env</td>
+                        <td>test-key</td>
+                    </tr>
+                    <tr>
+                        <td class="key">TESTING</td>
+                        <td><span style="color: var(--red);">False</span></td>
+                        <td><span style="color: var(--red);">False</span></td>
+                        <td><span style="color: var(--green);">True</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Section 6: Virtual Environment -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">🔒</span>
+                Virtual Environment (venv)
+            </h2>
+            <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
+                Isoliert Python-Pakete pro Projekt – verhindert Konflikte zwischen Projekten.
+            </p>
+
+            <div class="venv-diagram">
+                <div class="venv-box">
+                    <div class="venv-box-title">❌ Ohne venv (Gefährlich)</div>
+                    <div class="venv-item">System Python</div>
+                    <div class="venv-item">site-packages/</div>
+                    <div class="venv-item">flask==2.0</div>
+                    <div class="venv-item">requests==2.25</div>
+                    <div style="color: var(--red); font-size: 12px; margin-top: 12px;">⚠️ Alle Projekte teilen sich Pakete – Versions-Konflikte!</div>
+                </div>
+
+                <div class="venv-box">
+                    <div class="venv-box-title">✅ Mit venv (Sicher)</div>
+                    <div class="venv-item isolated">venv/lib/python3.9/</div>
+                    <div class="venv-item isolated">flask==2.3</div>
+                    <div class="venv-item isolated">requests==2.28</div>
+                    <div style="color: var(--green); font-size: 12px; margin-top: 12px;">✓ Isolierte, projektspezifische Pakete</div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 16px; margin-top: 32px;">
+                venv Setup & Workflow
+            </h3>
+            <div class="code-block">
+                <span class="code-label">Bash – Terminal Commands</span>
+                <pre class="code"><span class="code-comment"># 1. Virtuelle Umgebung erstellen</span>
+python -m venv venv
+
+<span class="code-comment"># 2. venv aktivieren</span>
+<span class="code-keyword">source</span> venv/bin/activate  <span class="code-comment"># Linux/Mac</span>
+venv\Scripts\activate        <span class="code-comment"># Windows</span>
+
+<span class="code-comment"># 3. Abhängigkeiten installieren</span>
+pip install flask flask-sqlalchemy python-dotenv
+
+<span class="code-comment"># 4. Abhängigkeiten frieren (speichern)</span>
+pip freeze > requirements.txt
+
+<span class="code-comment"># 5. Später: Abhängigkeiten wiederherstellen</span>
+pip install -r requirements.txt
+
+<span class="code-comment"># 6. venv deaktivieren</span>
+deactivate</pre>
+            </div>
+
+            <div class="concept-card">
+                <div class="concept-card-title">
+                    📦 requirements.txt Beispiel
+                </div>
+                <div class="concept-card-content">
+                    <pre class="code" style="background-color: var(--code-bg); padding: 12px; border-radius: 8px; font-size: 12px;">Flask==2.3.2
+Flask-SQLAlchemy==3.0.3
+python-dotenv==1.0.0
+gunicorn==20.1.0</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7: Zusammenfassung -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">✅</span>
+                Zusammenfassung – Best Practices
+            </h2>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                <div class="concept-card">
+                    <div class="concept-card-title">🏗️ Struktur</div>
+                    <div class="concept-card-content">
+                        <ul style="margin-left: 20px;">
+                            <li>Nutze App Factory für Flexibilität</li>
+                            <li>Blueprints für modulare Routes</li>
+                            <li>Trennung: app/, config/, templates/, static/</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-card-title">🔒 Sicherheit</div>
+                    <div class="concept-card-content">
+                        <ul style="margin-left: 20px;">
+                            <li>.env für Geheimnisse (nicht ins Git!)</li>
+                            <li>venv für Abhängigkeiten</li>
+                            <li>.gitignore für sensitive Dateien</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-card-title">⚙️ Konfiguration</div>
+                    <div class="concept-card-content">
+                        <ul style="margin-left: 20px;">
+                            <li>config.py mit Development/Production/Testing</li>
+                            <li>Umgebungsvariablen via .env</li>
+                            <li>app.config.from_object() zum Laden</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-card-title">📦 Abhängigkeiten</div>
+                    <div class="concept-card-content">
+                        <ul style="margin-left: 20px;">
+                            <li>requirements.txt mit pip freeze</li>
+                            <li>Versionsnummern festlegen</li>
+                            <li>pip install -r requirements.txt zum Restore</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-card-title">🧪 Testing</div>
+                    <div class="concept-card-content">
+                        <ul style="margin-left: 20px;">
+                            <li>create_app() mit test config</li>
+                            <li>In-memory SQLite für Tests</li>
+                            <li>Isolierte Test-Umgebung</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="concept-card">
+                    <div class="concept-card-title">🚀 Deployment</div>
+                    <div class="concept-card-content">
+                        <ul style="margin-left: 20px;">
+                            <li>ProductionConfig mit echter DB</li>
+                            <li>DEBUG=False in Production</li>
+                            <li>gunicorn als WSGI Server</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer spacer -->
+        <div style="height: 40px;"></div>
+    </div>
+</body>
+</html>

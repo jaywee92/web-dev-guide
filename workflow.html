@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Access Workflow – GET /authors</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface-bright: #222633;
+    --border: #2e3348;
+    --text: #e2e4ed;
+    --text-muted: #8b8fa7;
+    --yellow: #f5c542;
+    --yellow-dim: rgba(245, 197, 66, 0.15);
+    --blue: #5b9cf5;
+    --blue-dim: rgba(91, 156, 245, 0.12);
+    --green: #4ade80;
+    --green-dim: rgba(74, 222, 128, 0.12);
+    --orange: #f59e42;
+    --purple: #a78bfa;
+    --white: #ffffff;
+    --code-bg: #13151e;
+    --radius: 14px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 24px;
+    overflow-x: hidden;
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+  h1 span { color: var(--yellow); }
+
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 56px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .workflow {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    max-width: 1200px;
+    width: 100%;
+    position: relative;
+  }
+
+  /* ── NODES ── */
+  .node {
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .node-label {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .node-label .icon {
+    width: 34px; height: 34px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  /* Client */
+  .client {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    width: 180px;
+    align-self: center;
+    margin-top: 120px;
+  }
+  .client .icon { background: var(--blue-dim); color: var(--blue); }
+  .client-visual {
+    width: 80px; height: 56px;
+    margin: 12px auto 0;
+    border-radius: 8px;
+    border: 2px solid var(--border);
+    background: var(--code-bg);
+    position: relative;
+  }
+  .client-visual::before {
+    content: '';
+    position: absolute;
+    top: 8px; left: 10px; right: 10px; height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+  }
+  .client-visual::after {
+    content: '';
+    position: absolute;
+    top: 18px; left: 10px; width: 30px; height: 4px;
+    background: var(--blue-dim);
+    border-radius: 2px;
+  }
+
+  /* Flask */
+  .flask {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    flex: 1;
+    min-width: 380px;
+    margin: 0 0;
+  }
+  .flask .icon { background: var(--green-dim); color: var(--green); }
+
+  .flask-section {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 14px;
+  }
+  .flask-section .section-step {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--yellow);
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .flask-section .section-step .num {
+    background: var(--yellow-dim);
+    color: var(--yellow);
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px;
+  }
+
+  code, .code-block {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .code-block { color: var(--text-muted); }
+  .code-block .kw { color: var(--purple); }
+  .code-block .fn { color: var(--blue); }
+  .code-block .str { color: var(--green); }
+  .code-block .dec { color: var(--yellow); }
+  .code-block .comment { color: #555a73; }
+  .code-block .var { color: var(--orange); }
+
+  /* Database */
+  .database {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    width: 260px;
+    align-self: center;
+    margin-top: 80px;
+  }
+  .database .icon { background: var(--yellow-dim); color: var(--yellow); }
+
+  .db-cylinder {
+    width: 72px; height: 48px;
+    margin: 12px auto 16px;
+    position: relative;
+  }
+  .db-cylinder .body {
+    width: 72px; height: 34px;
+    background: linear-gradient(180deg, #336791 0%, #264d6e 100%);
+    border-radius: 0 0 36px 36px / 0 0 12px 12px;
+    position: absolute; bottom: 0;
+  }
+  .db-cylinder .top {
+    width: 72px; height: 18px;
+    background: #3d7aa8;
+    border-radius: 50%;
+    position: absolute; top: 6px;
+    border: 1px solid #4a8dbe;
+  }
+  .db-cylinder .rim {
+    width: 72px; height: 18px;
+    border: 2px solid #336791;
+    border-radius: 50%;
+    position: absolute; top: 18px;
+    border-top: none;
+  }
+
+  .db-rows {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+  .db-rows .tuple-val { color: var(--green); }
+  .db-rows .tuple-num { color: var(--orange); }
+
+  /* ── ARROWS ── */
+  .arrow-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    flex-shrink: 0;
+    align-self: center;
+    margin-top: 120px;
+    gap: 48px;
+  }
+
+  .arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+  }
+
+  .arrow-num {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .arrow-num.yellow { background: var(--yellow); color: var(--bg); }
+  .arrow-num.white { background: var(--white); color: var(--bg); }
+
+  .arrow-line {
+    position: relative;
+    height: 2px;
+    width: 80px;
+  }
+  .arrow-line.right { background: var(--yellow); }
+  .arrow-line.right::after {
+    content: '';
+    position: absolute;
+    right: -6px; top: -4px;
+    border: 5px solid transparent;
+    border-left: 7px solid var(--yellow);
+  }
+  .arrow-line.left { background: var(--white); }
+  .arrow-line.left::after {
+    content: '';
+    position: absolute;
+    left: -6px; top: -4px;
+    border: 5px solid transparent;
+    border-right: 7px solid var(--white);
+  }
+
+  .arrow-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-align: center;
+    max-width: 110px;
+    line-height: 1.4;
+  }
+  .arrow-text.yellow { color: var(--yellow); }
+  .arrow-text.white { color: rgba(255,255,255,0.8); }
+
+  /* ── STEPS BELOW ── */
+  .steps-bar {
+    margin-top: 56px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  .step-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 8px 16px 8px 10px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .step-pill .pill-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    background: var(--yellow-dim);
+    color: var(--yellow);
+    flex-shrink: 0;
+  }
+
+  /* ── RESPONSE SECTION ── */
+  .response-block {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 14px;
+  }
+  .response-block .resp-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+  }
+  .badge-green { background: var(--green-dim); color: var(--green); }
+  .badge-blue { background: var(--blue-dim); color: var(--blue); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .node, .arrow-container { animation: fadeSlideUp 0.6s ease both; }
+  .client { animation-delay: 0.1s; }
+  .arrow-container:nth-child(2) { animation-delay: 0.25s; }
+  .flask { animation-delay: 0.4s; }
+  .arrow-container:nth-child(4) { animation-delay: 0.55s; }
+  .database { animation-delay: 0.7s; }
+  .steps-bar { animation: fadeSlideUp 0.6s ease 0.85s both; }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(245, 197, 66, 0.3); }
+    50% { box-shadow: 0 0 0 6px rgba(245, 197, 66, 0); }
+  }
+</style>
+</head>
+<body>
+
+<a href="index.html" style="display:inline-flex;align-items:center;gap:8px;color:#8b8fa7;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:13px;padding:16px 24px;transition:color 0.2s;" onmouseover="this.style.color='#f5c542'" onmouseout="this.style.color='#8b8fa7'">← Zurück zur Übersicht</a>
+
+<h1>Data Access Workflow – <span>GET /authors</span></h1>
+<p class="subtitle">Flask + PostgreSQL · Request → Response Lifecycle</p>
+
+<div class="workflow">
+  <!-- ════ CLIENT ════ -->
+  <div class="node client">
+    <div class="node-label">
+      <div class="icon">🖥</div>
+      Client
+    </div>
+    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">Browser / API Consumer</div>
+    <div class="client-visual"></div>
+  </div>
+
+  <!-- ════ ARROWS: Client ↔ Flask ════ -->
+  <div class="arrow-container">
+    <!-- Arrow 1: Request → -->
+    <div class="arrow">
+      <div class="arrow-num yellow">1</div>
+      <div class="arrow-text yellow">HTTP GET /authors</div>
+      <div class="arrow-line right"></div>
+    </div>
+    <!-- Arrow 7: ← Response -->
+    <div class="arrow">
+      <div class="arrow-num white">7</div>
+      <div class="arrow-text white">200 OK<br>application/json</div>
+      <div class="arrow-line left"></div>
+    </div>
+  </div>
+
+  <!-- ════ FLASK BACKEND ════ -->
+  <div class="node flask">
+    <div class="node-label">
+      <div class="icon">⚡</div>
+      Flask Backend
+    </div>
+
+    <!-- Step 2: Route -->
+    <div class="flask-section">
+      <div class="section-step"><span class="num">2</span> Route Definition</div>
+      <div class="code-block">
+        <span class="dec">@app.route</span>(<span class="str">"/authors"</span>, methods=[<span class="str">"GET"</span>])<br>
+        <span class="kw">def</span> <span class="fn">get_authors</span>():
+      </div>
+    </div>
+
+    <!-- Step 3: DB Connection -->
+    <div class="flask-section">
+      <div class="section-step"><span class="num">3</span> Database Connection</div>
+      <div class="code-block">
+        <span class="var">connection</span> = <span class="fn">psycopg2.connect</span>(...)<br>
+        <span class="var">cur</span> = connection.<span class="fn">cursor</span>()
+      </div>
+    </div>
+
+    <!-- Step 6: Transform -->
+    <div class="flask-section">
+      <div class="section-step"><span class="num">6</span> Transform Data</div>
+      <div class="code-block">
+        <span class="comment"># Tuples → Python dicts</span><br>
+        {<br>
+        &nbsp;&nbsp;<span class="str">"id"</span>: <span class="tuple-num">1</span>,<br>
+        &nbsp;&nbsp;<span class="str">"name"</span>: <span class="str">"George Orwell"</span>,<br>
+        &nbsp;&nbsp;<span class="str">"birth_year"</span>: <span class="tuple-num">1903</span><br>
+        }
+      </div>
+    </div>
+
+    <!-- Step 7: Response -->
+    <div class="response-block">
+      <div class="resp-label">Response</div>
+      <div class="code-block">
+        <span class="kw">return</span> <span class="fn">jsonify</span>(<span class="var">authors</span>)
+      </div>
+      <div style="margin-top: 8px; display: flex; gap: 8px;">
+        <span class="badge badge-green">200 OK</span>
+        <span class="badge badge-blue">application/json</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ ARROWS: Flask ↔ DB ════ -->
+  <div class="arrow-container">
+    <!-- Arrow 4: Query → -->
+    <div class="arrow">
+      <div class="arrow-num yellow">4</div>
+      <div class="arrow-text yellow" style="font-size: 9px;">cur.execute(<br>'SELECT * FROM authors')</div>
+      <div class="arrow-line right"></div>
+    </div>
+    <!-- Arrow 5: ← Result -->
+    <div class="arrow">
+      <div class="arrow-num white">5</div>
+      <div class="arrow-text white">Raw tuples</div>
+      <div class="arrow-line left"></div>
+    </div>
+  </div>
+
+  <!-- ════ DATABASE ════ -->
+  <div class="node database">
+    <div class="node-label">
+      <div class="icon">🐘</div>
+      PostgreSQL
+    </div>
+
+    <div class="db-cylinder">
+      <div class="body"></div>
+      <div class="top"></div>
+    </div>
+
+    <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px; font-family: 'JetBrains Mono', monospace;">
+      Raw list of tuples:
+    </div>
+    <div class="db-rows">
+      (<span class="tuple-num">1</span>, <span class="tuple-val">"George Orwell"</span>, <span class="tuple-num">1903</span>)<br>
+      (<span class="tuple-num">2</span>, <span class="tuple-val">"Jane Austen"</span>, <span class="tuple-num">1775</span>)<br>
+      (<span class="tuple-num">3</span>, <span class="tuple-val">"Mark Twain"</span>, <span class="tuple-num">1835</span>)
+    </div>
+  </div>
+</div>
+
+<!-- ════ STEP LEGEND ════ -->
+<div class="steps-bar">
+  <div class="step-pill"><span class="pill-num">1</span> Client Request</div>
+  <div class="step-pill"><span class="pill-num">2</span> Route Match</div>
+  <div class="step-pill"><span class="pill-num">3</span> DB Connect</div>
+  <div class="step-pill"><span class="pill-num">4</span> SQL Query</div>
+  <div class="step-pill"><span class="pill-num">5</span> Raw Data</div>
+  <div class="step-pill"><span class="pill-num">6</span> Transform</div>
+  <div class="step-pill"><span class="pill-num">7</span> JSON Response</div>
+</div>
+
+</body>
+</html>
