@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Structure — Visual Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f1117;
+            --surface: #1a1d27;
+            --surface-bright: #222633;
+            --border: #2e3348;
+            --text: #e2e4ed;
+            --text-muted: #8b8fa7;
+            --yellow: #f5c542;
+            --yellow-dim: rgba(245,197,66,.15);
+            --blue: #5b9cf5;
+            --blue-dim: rgba(91,156,245,.12);
+            --green: #4ade80;
+            --green-dim: rgba(74,222,128,.12);
+            --orange: #f59e42;
+            --orange-dim: rgba(245,158,66,.12);
+            --purple: #a78bfa;
+            --purple-dim: rgba(167,139,250,.12);
+            --cyan: #22d3ee;
+            --cyan-dim: rgba(34,211,238,.12);
+            --pink: #f472b6;
+            --pink-dim: rgba(244,114,182,.12);
+            --red: #f87171;
+            --red-dim: rgba(248,113,113,.12);
+            --white: #fff;
+            --code-bg: #13151e;
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            line-height: 1.5;
+            padding: 12px 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back {
+            display: inline-block;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            padding: 14px 20px;
+            text-decoration: none;
+            margin-bottom: 12px;
+            transition: color 0.2s;
+        }
+
+        .back:hover {
+            color: var(--yellow);
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--cyan);
+            margin-bottom: 8px;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        section {
+            margin-bottom: 24px;
+            animation: fadeSlideUp 0.5s ease-out;
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--cyan);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px;
+        }
+
+        .box-highlight {
+            background: var(--cyan-dim);
+            border-color: var(--cyan);
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            overflow-x: auto;
+            color: var(--text-muted);
+            margin: 6px 0;
+        }
+
+        .kw { color: var(--purple); }
+        .tag { color: var(--cyan); }
+        .attr { color: var(--purple); }
+        .val { color: var(--green); }
+        .str { color: var(--green); }
+        .comment { color: #555a73; }
+
+        .tag-anatomy {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            align-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            margin: 6px 0;
+        }
+
+        .tag-part {
+            background: var(--surface-bright);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .tag-part.tag {
+            color: var(--cyan);
+            border-color: rgba(34,211,238,0.3);
+        }
+
+        .tag-part.attr {
+            color: var(--purple);
+            border-color: rgba(167,139,250,0.3);
+        }
+
+        .tag-part.val {
+            color: var(--green);
+            border-color: rgba(74,222,128,0.3);
+        }
+
+        .tag-part.content {
+            color: var(--text);
+            border-color: rgba(226,228,237,0.2);
+        }
+
+        .element-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 8px;
+            font-size: 12px;
+        }
+
+        .element-card .name {
+            color: var(--cyan);
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 4px;
+        }
+
+        .element-card .desc {
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+
+        .wireframe {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .wireframe-box {
+            border: 1px dashed var(--border);
+            padding: 8px;
+            margin: 4px 0;
+            border-radius: 4px;
+            color: var(--cyan);
+        }
+
+        .doc-structure {
+            position: relative;
+        }
+
+        .doc-layer {
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            padding: 10px;
+            margin: 4px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+        }
+
+        .doc-layer.root {
+            border-color: var(--cyan);
+            background: var(--cyan-dim);
+            color: var(--cyan);
+        }
+
+        .doc-layer.head {
+            border-color: var(--purple);
+            background: var(--purple-dim);
+            color: var(--purple);
+            margin-left: 12px;
+        }
+
+        .doc-layer.body {
+            border-color: var(--green);
+            background: var(--green-dim);
+            color: var(--green);
+            margin-left: 12px;
+        }
+
+        .form-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 10px;
+        }
+
+        .input-example {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 8px;
+            align-items: center;
+            margin: 6px 0;
+            font-size: 11px;
+        }
+
+        .input-label {
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .input-type {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: var(--cyan);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+        }
+
+        .flow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            margin: 6px 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-box {
+            background: var(--surface-bright);
+            border: 1px solid var(--border);
+            padding: 6px 10px;
+            border-radius: 4px;
+            color: var(--text);
+        }
+
+        .flow-box.highlight {
+            background: var(--cyan-dim);
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+
+        .arrow {
+            color: var(--text-muted);
+            font-size: 10px;
+        }
+
+        .row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .col-50 {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            .col-50 {
+                min-width: 100%;
+            }
+            h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back">← Back to Overview</a>
+
+        <h1>HTML Structure — Visual Guide</h1>
+        <p class="subtitle">Understanding the building blocks of web pages</p>
+
+        <!-- Document Structure -->
+        <section>
+            <h2>Document Structure</h2>
+            <div class="doc-structure">
+                <div class="doc-layer root">&lt;!DOCTYPE html&gt;</div>
+                <div class="doc-layer root">&lt;html&gt;
+                    <div class="doc-layer head">
+                        &lt;head&gt;
+                        <div class="code-block" style="margin: 4px 0;">
+                            <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span> <span class="tag">/&gt;</span><br>
+                            <span class="tag">&lt;title&gt;</span>Page Title<span class="tag">&lt;/title&gt;</span><br>
+                            <span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"stylesheet"</span> <span class="tag">/&gt;</span>
+                        </div>
+                        &lt;/head&gt;
+                    </div>
+                    <div class="doc-layer body">
+                        &lt;body&gt;
+                        <div style="color: var(--text-muted); font-size: 10px; margin: 4px 0;">Visible content...</div>
+                        &lt;/body&gt;
+                    </div>
+                &lt;/html&gt;</div>
+            </div>
+        </section>
+
+        <!-- Elements & Tags -->
+        <section>
+            <h2>Elements & Tags</h2>
+            <div class="box">
+                <div style="color: var(--text-muted); font-size: 11px; margin-bottom: 8px;">Opening Tag | Content | Closing Tag</div>
+                <div class="tag-anatomy">
+                    <span class="tag-part tag">&lt;p&gt;</span>
+                    <span class="tag-part content">Hello World</span>
+                    <span class="tag-part tag">&lt;/p&gt;</span>
+                </div>
+                <div class="tag-anatomy">
+                    <span class="tag-part tag">&lt;a</span>
+                    <span class="tag-part attr">href</span>=<span class="tag-part val">"url"</span><span class="tag-part tag">&gt;</span>
+                    <span class="tag-part content">Link Text</span>
+                    <span class="tag-part tag">&lt;/a&gt;</span>
+                </div>
+            </div>
+            <div class="box" style="margin-top: 10px;">
+                <div style="color: var(--text-muted); font-size: 11px; margin-bottom: 8px;">Self-Closing Tags</div>
+                <div class="code-block" style="font-size: 10px;">
+                    <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"file.jpg"</span> <span class="tag">/&gt;</span><br>
+                    <span class="tag">&lt;br</span> <span class="tag">/&gt;</span><br>
+                    <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"text"</span> <span class="tag">/&gt;</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Semantic HTML -->
+        <section>
+            <h2>Semantic HTML — Page Layout</h2>
+            <div class="wireframe">
+                <div class="wireframe-box" style="border-color: var(--cyan);">&lt;header&gt; Logo, Nav, Title</div>
+                <div class="wireframe-box" style="border-color: var(--blue);">&lt;nav&gt; Navigation Links</div>
+                <div class="row" style="margin: 6px 0; gap: 6px;">
+                    <div class="col-50" style="min-width: 150px;">
+                        <div class="wireframe-box" style="border-color: var(--purple); margin-bottom: 6px;">&lt;main&gt;</div>
+                        <div class="wireframe-box" style="border-color: var(--green); margin-left: 12px;">&lt;section&gt; Topic 1</div>
+                        <div class="wireframe-box" style="border-color: var(--green); margin-left: 12px;">&lt;article&gt; Post</div>
+                    </div>
+                    <div class="col-50" style="min-width: 150px;">
+                        <div class="wireframe-box" style="border-color: var(--orange);">&lt;aside&gt; Sidebar</div>
+                    </div>
+                </div>
+                <div class="wireframe-box" style="border-color: var(--pink);">&lt;footer&gt; Copyright, Links</div>
+            </div>
+            <div class="grid-3" style="margin-top: 10px;">
+                <div class="element-card"><div class="name">&lt;header&gt;</div><div class="desc">Top section, logo</div></div>
+                <div class="element-card"><div class="name">&lt;nav&gt;</div><div class="desc">Navigation menu</div></div>
+                <div class="element-card"><div class="name">&lt;main&gt;</div><div class="desc">Primary content</div></div>
+                <div class="element-card"><div class="name">&lt;section&gt;</div><div class="desc">Topic grouping</div></div>
+                <div class="element-card"><div class="name">&lt;article&gt;</div><div class="desc">Self-contained post</div></div>
+                <div class="element-card"><div class="name">&lt;aside&gt;</div><div class="desc">Sidebar content</div></div>
+                <div class="element-card"><div class="name">&lt;footer&gt;</div><div class="desc">Bottom section</div></div>
+            </div>
+        </section>
+
+        <!-- Common Elements -->
+        <section>
+            <h2>Common Elements Reference</h2>
+            <div class="grid-2">
+                <div class="box">
+                    <div style="color: var(--cyan); font-weight: 600; font-size: 12px; margin-bottom: 8px;">Text Elements</div>
+                    <div class="code-block" style="margin: 0;">
+                        <span class="tag">&lt;h1&gt;</span> to <span class="tag">&lt;h6&gt;</span> — Headings<br>
+                        <span class="tag">&lt;p&gt;</span> — Paragraph<br>
+                        <span class="tag">&lt;span&gt;</span> — Inline text<br>
+                        <span class="tag">&lt;strong&gt;</span> — Bold importance<br>
+                        <span class="tag">&lt;em&gt;</span> — Emphasis (italic)<br>
+                        <span class="tag">&lt;a&gt;</span> — Hyperlink
+                    </div>
+                </div>
+                <div class="box">
+                    <div style="color: var(--cyan); font-weight: 600; font-size: 12px; margin-bottom: 8px;">Lists</div>
+                    <div class="code-block" style="margin: 0;">
+                        <span class="tag">&lt;ul&gt;</span> — Unordered list<br>
+                        <span class="tag">&lt;ol&gt;</span> — Ordered list<br>
+                        <span class="tag">&lt;li&gt;</span> — List item<br><br>
+                        <span class="comment">&lt;!-- Nested structure --&gt;</span><br>
+                        <span class="tag">&lt;ul&gt;</span><br>
+                        &nbsp;&nbsp;<span class="tag">&lt;li&gt;</span>Item 1<span class="tag">&lt;/li&gt;</span><br>
+                        <span class="tag">&lt;/ul&gt;</span>
+                    </div>
+                </div>
+                <div class="box">
+                    <div style="color: var(--cyan); font-weight: 600; font-size: 12px; margin-bottom: 8px;">Media</div>
+                    <div class="code-block" style="margin: 0;">
+                        <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">""</span> <span class="tag">/&gt;</span><br>
+                        <span class="tag">&lt;video&gt;&lt;/video&gt;</span><br>
+                        <span class="tag">&lt;audio&gt;&lt;/audio&gt;</span>
+                    </div>
+                </div>
+                <div class="box">
+                    <div style="color: var(--cyan); font-weight: 600; font-size: 12px; margin-bottom: 8px;">Tables</div>
+                    <div class="code-block" style="margin: 0;">
+                        <span class="tag">&lt;table&gt;</span><br>
+                        &nbsp;&nbsp;<span class="tag">&lt;tr&gt;</span> — Table row<br>
+                        &nbsp;&nbsp;<span class="tag">&lt;th&gt;</span> — Header cell<br>
+                        &nbsp;&nbsp;<span class="tag">&lt;td&gt;</span> — Data cell<br>
+                        <span class="tag">&lt;/table&gt;</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Forms & Input Types -->
+        <section>
+            <h2>Forms & Input Types</h2>
+            <div class="form-section">
+                <div style="color: var(--text-muted); font-size: 11px; margin-bottom: 8px;">Common Input Types</div>
+                <div class="input-example">
+                    <span class="input-label">text</span>
+                    <span class="input-type">type="text"</span>
+                </div>
+                <div class="input-example">
+                    <span class="input-label">email</span>
+                    <span class="input-type">type="email"</span>
+                </div>
+                <div class="input-example">
+                    <span class="input-label">password</span>
+                    <span class="input-type">type="password"</span>
+                </div>
+                <div class="input-example">
+                    <span class="input-label">number</span>
+                    <span class="input-type">type="number"</span>
+                </div>
+                <div class="input-example">
+                    <span class="input-label">checkbox</span>
+                    <span class="input-type">type="checkbox"</span>
+                </div>
+                <div class="input-example">
+                    <span class="input-label">radio</span>
+                    <span class="input-type">type="radio"</span>
+                </div>
+                <div class="input-example">
+                    <span class="input-label">submit</span>
+                    <span class="input-type">type="submit"</span>
+                </div>
+            </div>
+            <div class="box" style="margin-top: 10px;">
+                <div style="color: var(--text-muted); font-size: 11px; margin-bottom: 8px;">Form Structure</div>
+                <div class="code-block">
+                    <span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="val">"/submit"</span> <span class="attr">method</span>=<span class="val">"POST"</span><span class="tag">&gt;</span><br>
+                    &nbsp;&nbsp;<span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="val">"name"</span><span class="tag">&gt;</span>Name:<span class="tag">&lt;/label&gt;</span><br>
+                    &nbsp;&nbsp;<span class="tag">&lt;input</span> <span class="attr">id</span>=<span class="val">"name"</span> <span class="attr">name</span>=<span class="val">"name"</span> <span class="tag">/&gt;</span><br>
+                    &nbsp;&nbsp;<span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="val">"submit"</span><span class="tag">&gt;</span>Submit<span class="tag">&lt;/button&gt;</span><br>
+                    <span class="tag">&lt;/form&gt;</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- HTML + Flask -->
+        <section>
+            <h2>HTML + Flask Connection</h2>
+            <div class="box box-highlight" style="margin-bottom: 10px;">
+                <div style="color: var(--cyan); font-weight: 600; font-size: 12px; margin-bottom: 8px;">Jinja2 Template Syntax</div>
+                <div class="code-block">
+                    <span class="str">{{ variable }}</span> — <span class="comment">Output variable</span><br>
+                    <span class="kw">{% for</span> item <span class="kw">in</span> items %}<span class="comment"> Loop</span><br>
+                    <span class="kw">{% if</span> condition %}<span class="comment"> Conditional</span>
+                </div>
+            </div>
+            <div class="flow">
+                <div class="flow-box">Flask Route</div>
+                <span class="arrow">→</span>
+                <div class="flow-box highlight">render_template()</div>
+                <span class="arrow">→</span>
+                <div class="flow-box">HTML File</div>
+                <span class="arrow">→</span>
+                <div class="flow-box">Browser</div>
+            </div>
+            <div class="box" style="margin-top: 10px;">
+                <div style="color: var(--text-muted); font-size: 11px; margin-bottom: 8px;">Example Flask + Jinja2</div>
+                <div class="code-block">
+                    <span class="comment"># app.py</span><br>
+                    <span class="kw">@app.route</span>(<span class="val">'/users'</span>)<br>
+                    <span class="kw">def</span> users():<br>
+                    &nbsp;&nbsp;<span class="kw">return</span> render_template(<span class="val">'users.html'</span>, <span class="attr">users</span>=users_list)<br><br>
+                    <span class="comment">&lt;!-- users.html --&gt;</span><br>
+                    <span class="tag">&lt;ul&gt;</span><br>
+                    &nbsp;&nbsp;<span class="kw">{% for</span> user <span class="kw">in</span> users %}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;li&gt;</span>{{ user.name }}<span class="tag">&lt;/li&gt;</span><br>
+                    &nbsp;&nbsp;<span class="kw">{% endfor</span> %}<br>
+                    <span class="tag">&lt;/ul&gt;</span>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Styling — Visual Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0f1117;
+            --surface: #1a1d27;
+            --surface-bright: #222633;
+            --border: #2e3348;
+            --text: #e2e4ed;
+            --text-muted: #8b8fa7;
+            --yellow: #f5c542;
+            --yellow-dim: rgba(245,197,66,.15);
+            --blue: #5b9cf5;
+            --blue-dim: rgba(91,156,245,.12);
+            --green: #4ade80;
+            --green-dim: rgba(74,222,128,.12);
+            --orange: #f59e42;
+            --orange-dim: rgba(245,158,66,.12);
+            --purple: #a78bfa;
+            --purple-dim: rgba(167,139,250,.12);
+            --cyan: #22d3ee;
+            --cyan-dim: rgba(34,211,238,.12);
+            --pink: #f472b6;
+            --pink-dim: rgba(244,114,182,.12);
+            --red: #f87171;
+            --red-dim: rgba(248,113,113,.12);
+            --code-bg: #13151e;
+            --radius: 12px;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .back {
+            display: inline-block;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            padding: 14px 20px;
+            margin-bottom: 20px;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .back:hover {
+            color: var(--yellow);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: var(--pink);
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 28px;
+            font-size: 13px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+            padding: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            animation: fadeSlideUp 0.6s ease-out;
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section h2 {
+            font-size: 18px;
+            color: var(--pink);
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section p {
+            margin-bottom: 12px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* Code styling */
+        .code-inline {
+            background: var(--code-bg);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--cyan);
+        }
+
+        .sel { color: var(--cyan); }
+        .prop { color: var(--pink); }
+        .val { color: var(--green); }
+        .comment { color: var(--text-muted); }
+
+        /* Grid layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .card {
+            background: var(--surface-bright);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        /* CSS Methods */
+        .method {
+            background: var(--surface-bright);
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 3px solid var(--cyan);
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .method-name {
+            color: var(--pink);
+            font-weight: 600;
+        }
+
+        .method-desc {
+            color: var(--text-muted);
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .cascade {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .cascade-item {
+            padding: 6px 10px;
+            background: var(--surface-bright);
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            min-width: 80px;
+            text-align: center;
+            color: var(--text);
+        }
+
+        .cascade-item.high { background: var(--pink-dim); color: var(--pink); }
+
+        /* Box Model */
+        .box-model {
+            margin: 16px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .bm-outer {
+            background: var(--purple-dim);
+            padding: 14px;
+            border-radius: 8px;
+            border: 2px solid var(--purple);
+            text-align: center;
+        }
+
+        .bm-border {
+            background: transparent;
+            padding: 0;
+            border: 4px solid var(--yellow);
+            border-radius: 4px;
+        }
+
+        .bm-padding {
+            background: var(--green-dim);
+            padding: 12px;
+            border-radius: 4px;
+        }
+
+        .bm-content {
+            background: var(--cyan-dim);
+            padding: 20px 30px;
+            border-radius: 4px;
+            color: var(--cyan);
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        .bm-label {
+            color: var(--text-muted);
+            font-size: 11px;
+            margin-top: 4px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .box-sizing-note {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+            font-size: 11px;
+        }
+
+        .sizing-item {
+            padding: 8px;
+            background: var(--surface-bright);
+            border-radius: 4px;
+            border-left: 2px solid var(--green);
+        }
+
+        /* Flexbox demo */
+        .flex-demo {
+            background: var(--surface-bright);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .flex-container {
+            display: flex;
+            gap: 6px;
+            margin: 8px 0;
+            padding: 8px;
+            background: var(--code-bg);
+            border-radius: 4px;
+            min-height: 60px;
+        }
+
+        .flex-item {
+            flex: 1;
+            background: var(--blue-dim);
+            border: 1px solid var(--blue);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--blue);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* Grid demo */
+        .grid-demo {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding: 12px;
+            background: var(--code-bg);
+            border-radius: 6px;
+            margin: 8px 0;
+        }
+
+        .grid-cell {
+            background: var(--orange-dim);
+            border: 1px solid var(--orange);
+            padding: 12px;
+            border-radius: 4px;
+            text-align: center;
+            color: var(--orange);
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .grid-cell.span-2 {
+            grid-column: span 2;
+        }
+
+        /* Selectors reference */
+        .selector-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .selector-item {
+            padding: 10px;
+            background: var(--surface-bright);
+            border-radius: 6px;
+            border-left: 3px solid var(--cyan);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+        }
+
+        .selector-item strong {
+            color: var(--pink);
+        }
+
+        .selector-item .desc {
+            color: var(--text-muted);
+            font-size: 10px;
+            margin-top: 4px;
+        }
+
+        /* Specificity */
+        .specificity-chart {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .specificity-bar {
+            background: var(--surface-bright);
+            padding: 8px;
+            border-radius: 4px;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            border: 1px solid var(--border);
+        }
+
+        .specificity-bar.high {
+            background: var(--red-dim);
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .specificity-bar.mid {
+            background: var(--yellow-dim);
+            border-color: var(--yellow);
+            color: var(--yellow);
+        }
+
+        .specificity-bar.low {
+            background: var(--blue-dim);
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+
+        /* Flask example */
+        .code-block {
+            background: var(--code-bg);
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+            margin-bottom: 10px;
+        }
+
+        .code-block code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            line-height: 1.5;
+            color: var(--text);
+        }
+
+        .keyword { color: var(--pink); }
+        .string { color: var(--green); }
+        .tag { color: var(--cyan); }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 11px;
+            margin-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back">← Back to Overview</a>
+
+        <h1>CSS Styling — Visual Guide</h1>
+        <p class="subtitle">Master CSS fundamentals with visual examples and interactive demos</p>
+
+        <!-- How CSS Works -->
+        <div class="section">
+            <h2>How CSS Works</h2>
+            <p>There are three ways to add CSS to your HTML pages. They follow a priority cascade:</p>
+
+            <div class="method">
+                <div class="method-name">1. Inline Styles (Highest Priority)</div>
+                <div class="method-desc">Applied directly to elements via the <span class="code-inline">style</span> attribute</div>
+                <div class="code-block"><code>&lt;<span class="tag">p</span> <span class="keyword">style</span>=<span class="string">"color: #f472b6;"</span>&gt;Styled text&lt;/<span class="tag">p</span>&gt;</code></div>
+            </div>
+
+            <div class="method">
+                <div class="method-name">2. Internal Styles</div>
+                <div class="method-desc">Defined in <span class="code-inline">&lt;style&gt;</span> tags in the document head</div>
+                <div class="code-block"><code>&lt;<span class="tag">style</span>&gt;<br/>.<span class="sel">card</span> { <span class="prop">color</span>: <span class="val">#f472b6</span>; }<br/>&lt;/<span class="tag">style</span>&gt;</code></div>
+            </div>
+
+            <div class="method">
+                <div class="method-name">3. External Stylesheets (Lowest Priority)</div>
+                <div class="method-desc">Linked via <span class="code-inline">&lt;link&gt;</span> tags, best for scalable projects</div>
+                <div class="code-block"><code>&lt;<span class="tag">link</span> <span class="keyword">rel</span>=<span class="string">"stylesheet"</span> <span class="keyword">href</span>=<span class="string">"style.css"</span>&gt;</code></div>
+            </div>
+
+            <div class="cascade">
+                <div class="cascade-item high">Inline</div>
+                <span style="color: var(--text-muted);">&gt;</span>
+                <div class="cascade-item">Internal</div>
+                <span style="color: var(--text-muted);">&gt;</span>
+                <div class="cascade-item">External</div>
+                <span style="color: var(--text-muted);">&gt;</span>
+                <div class="cascade-item">Browser Default</div>
+            </div>
+        </div>
+
+        <!-- Selectors -->
+        <div class="section">
+            <h2>CSS Selectors</h2>
+            <p>Selectors target HTML elements to apply styles. Different selectors have different specificity levels:</p>
+
+            <div class="selector-grid">
+                <div class="selector-item">
+                    <strong>Element</strong>
+                    <div class="desc">p { }</div>
+                    <div class="desc">Targets all &lt;p&gt; tags</div>
+                </div>
+                <div class="selector-item">
+                    <strong>Class</strong>
+                    <div class="desc">.card { }</div>
+                    <div class="desc">Targets class="card"</div>
+                </div>
+                <div class="selector-item">
+                    <strong>ID</strong>
+                    <div class="desc">#main { }</div>
+                    <div class="desc">Targets id="main"</div>
+                </div>
+                <div class="selector-item">
+                    <strong>Descendant</strong>
+                    <div class="desc">div p { }</div>
+                    <div class="desc">All &lt;p&gt; inside &lt;div&gt;</div>
+                </div>
+                <div class="selector-item">
+                    <strong>Child</strong>
+                    <div class="desc">div > p { }</div>
+                    <div class="desc">Direct &lt;p&gt; children only</div>
+                </div>
+                <div class="selector-item">
+                    <strong>Adjacent Sibling</strong>
+                    <div class="desc">div + p { }</div>
+                    <div class="desc">First &lt;p&gt; after &lt;div&gt;</div>
+                </div>
+                <div class="selector-item">
+                    <strong>Pseudo-class</strong>
+                    <div class="desc">a:hover { }</div>
+                    <div class="desc">:first-child, :nth-child(n)</div>
+                </div>
+                <div class="selector-item">
+                    <strong>Pseudo-element</strong>
+                    <div class="desc">p::before { }</div>
+                    <div class="desc">Insert content before/after</div>
+                </div>
+                <div class="selector-item">
+                    <strong>Attribute</strong>
+                    <div class="desc">[type="text"] { }</div>
+                    <div class="desc">Match element attributes</div>
+                </div>
+            </div>
+
+            <p style="font-weight: 500; color: var(--text); margin: 12px 0;">Specificity Priority:</p>
+            <div class="specificity-chart">
+                <div class="specificity-bar high">ID<br/>(1,0,0)<br/>Highest</div>
+                <div class="specificity-bar mid">Class<br/>(0,1,0)<br/>Medium</div>
+                <div class="specificity-bar low">Element<br/>(0,0,1)<br/>Lowest</div>
+            </div>
+        </div>
+
+        <!-- Box Model -->
+        <div class="section">
+            <h2>The Box Model</h2>
+            <p>Every element consists of content, padding, border, and margin. This is crucial for spacing and layout:</p>
+
+            <div class="box-model">
+                <div class="bm-outer">
+                    <div class="bm-label">Margin (30px)</div>
+                    <div class="bm-border">
+                        <div class="bm-label">Border (4px)</div>
+                        <div class="bm-padding">
+                            <div class="bm-label">Padding (12px)</div>
+                            <div class="bm-content">Content</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-sizing-note">
+                <div class="sizing-item">
+                    <strong>box-sizing: content-box</strong><br/>
+                    <span class="comment">Width = content only (default)</span>
+                </div>
+                <div class="sizing-item">
+                    <strong>box-sizing: border-box</strong><br/>
+                    <span class="comment">Width = content + padding + border</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flexbox -->
+        <div class="section">
+            <h2>Flexbox Layout</h2>
+            <p>Powerful 1D layout system for rows and columns. Use <span class="code-inline">display: flex</span>:</p>
+
+            <p style="font-weight: 500; color: var(--text); margin-top: 12px;">flex-direction: row (default)</p>
+            <div class="flex-container" style="flex-direction: row;">
+                <div class="flex-item">Item 1</div>
+                <div class="flex-item">Item 2</div>
+                <div class="flex-item">Item 3</div>
+            </div>
+
+            <p style="font-weight: 500; color: var(--text); margin-top: 12px;">flex-direction: column</p>
+            <div class="flex-container" style="flex-direction: column; min-height: auto;">
+                <div class="flex-item">Item 1</div>
+                <div class="flex-item">Item 2</div>
+                <div class="flex-item">Item 3</div>
+            </div>
+
+            <p style="font-weight: 500; color: var(--text); margin-top: 12px;">justify-content: space-between</p>
+            <div class="flex-container" style="justify-content: space-between;">
+                <div class="flex-item" style="flex: 0 0 20%;">1</div>
+                <div class="flex-item" style="flex: 0 0 20%;">2</div>
+                <div class="flex-item" style="flex: 0 0 20%;">3</div>
+            </div>
+
+            <p style="font-weight: 500; color: var(--text); margin-top: 12px;">align-items: center</p>
+            <div class="flex-container" style="align-items: center;">
+                <div class="flex-item">Short</div>
+                <div class="flex-item" style="line-height: 2;">Taller</div>
+                <div class="flex-item">Short</div>
+            </div>
+        </div>
+
+        <!-- Grid -->
+        <div class="section">
+            <h2>CSS Grid Layout</h2>
+            <p>Powerful 2D layout system. Use <span class="code-inline">display: grid</span> for complex layouts:</p>
+
+            <p style="font-weight: 500; color: var(--text); margin-top: 12px;">grid-template-columns: repeat(3, 1fr)</p>
+            <div class="grid-demo">
+                <div class="grid-cell">1</div>
+                <div class="grid-cell">2</div>
+                <div class="grid-cell">3</div>
+                <div class="grid-cell span-2">4 (spans 2)</div>
+                <div class="grid-cell">5</div>
+                <div class="grid-cell">6</div>
+            </div>
+
+            <p style="color: var(--text-muted); font-size: 12px; margin-top: 8px;"><span class="code-inline">gap: 8px</span> adds space between grid items</p>
+        </div>
+
+        <!-- CSS + Flask -->
+        <div class="section">
+            <h2>CSS in Flask Applications</h2>
+            <p>Flask serves static files (CSS, JS, images) from the <span class="code-inline">/static</span> directory:</p>
+
+            <p style="font-weight: 500; color: var(--text); margin-top: 12px;">File Structure:</p>
+            <div class="code-block"><code>project/<br/>├── app.py<br/>├── templates/<br/>│   └── index.html<br/>└── static/<br/>    └── css/<br/>        └── style.css</code></div>
+
+            <p style="font-weight: 500; color: var(--text); margin-top: 12px;">In Your Flask Template:</p>
+            <div class="code-block"><code>&lt;<span class="tag">head</span>&gt;<br/>  &lt;<span class="tag">link</span> <span class="keyword">rel</span>=<span class="string">"stylesheet"</span> <span class="keyword">href</span>=<span class="string">"{{ url_for('static', filename='css/style.css') }}"</span>&gt;<br/>&lt;/<span class="tag">head</span>&gt;</code></div>
+
+            <p style="color: var(--text-muted); font-size: 12px; margin-top: 8px;">Using <span class="code-inline">url_for()</span> ensures your CSS path works regardless of deployment environment.</p>
+        </div>
+
+        <footer>
+            CSS Styling Guide — Master layout, selectors, and responsive design
+        </footer>
+    </div>
+</body>
+</html>
