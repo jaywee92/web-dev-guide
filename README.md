@@ -11,10 +11,10 @@ Interactive visual diagrams explaining HTML, CSS, and Flask — from page struct
 | `css-guide.html` | CSS selectors, box model, Flexbox, Grid |
 | `architecture.html` | Flask internals — WSGI, routing, Blueprints, middleware |
 | `project-structure.html` | Flask project layout & best practices |
-| `workflow.html` | GET /authors — read data |
-| `post-workflow.html` | POST /authors — create resource |
-| `put-workflow.html` | PUT /authors/\<id\> — update resource |
-| `delete-workflow.html` | DELETE /authors/\<id\> — delete resource |
+| `get-workflow.html` | GET /authors — path params, query params, read data |
+| `post-workflow.html` | POST /authors — JSON body, create resource |
+| `put-workflow.html` | PUT /authors/\<id\> — path params + JSON body, update resource |
+| `delete-workflow.html` | DELETE /authors/\<id\> — path params, delete resource |
 
 ## Getting Started
 
