@@ -1,26 +1,25 @@
-# Flask Visuell Erklärt 🧪
+# Web Dev Visual Guide
 
-Interaktive visuelle Diagramme die zeigen, wie Flask aufgebaut ist und wie Client, Backend und Datenbank miteinander kommunizieren.
+Interactive visual diagrams explaining HTML, CSS, and Flask — from page structure to client-server communication.
 
-## Seiten
+## Pages
 
-| Seite | Beschreibung |
-|-------|-------------|
-| `index.html` | Landing Page mit Navigation |
-| `architecture.html` | Flask Architektur (WSGI, Routing, Blueprints, Middleware) |
-| `project-structure.html` | Projekt-Struktur & Best Practices |
-| `workflow.html` | GET /authors – Daten lesen |
-| `post-workflow.html` | POST /authors – Ressource erstellen |
-| `put-workflow.html` | PUT /authors/\<id\> – Ressource aktualisieren |
-| `delete-workflow.html` | DELETE /authors/\<id\> – Ressource löschen |
+| Page | Topic |
+|------|-------|
+| `index.html` | Landing page with navigation |
+| `html-guide.html` | HTML structure, elements, semantic tags, forms |
+| `css-guide.html` | CSS selectors, box model, Flexbox, Grid |
+| `architecture.html` | Flask internals — WSGI, routing, Blueprints, middleware |
+| `project-structure.html` | Flask project layout & best practices |
+| `workflow.html` | GET /authors — read data |
+| `post-workflow.html` | POST /authors — create resource |
+| `put-workflow.html` | PUT /authors/\<id\> — update resource |
+| `delete-workflow.html` | DELETE /authors/\<id\> — delete resource |
 
-## Starten
+## Getting Started
 
-Einfach `index.html` im Browser öffnen — keine Build-Tools oder Server nötig.
+Open `index.html` in a browser — no build tools or server needed.
 
-## Tech Stack
+## Tech
 
-- Reines HTML + CSS (kein JavaScript-Framework)
-- Dark Theme Design
-- CSS Animationen
-- Google Fonts (DM Sans + JetBrains Mono)
+Pure HTML + CSS, dark theme, CSS animations, Google Fonts (DM Sans + JetBrains Mono).

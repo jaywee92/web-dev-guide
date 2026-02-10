@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask Projekt-Struktur – Visuell Erklärt</title>
+    <title>Flask Project Structure – Visual Guide</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -466,27 +466,27 @@
 </head>
 <body>
     <div class="header">
-        <a href="index.html" class="back-link">← Zurück zur Übersicht</a>
-        <h1>Flask Projekt-Struktur</h1>
-        <p class="subtitle">Visuell Erklärt – Von minimal bis professionell</p>
+        <a href="index.html" class="back-link">← Back to Overview</a>
+        <h1>Flask Project Structure</h1>
+        <p class="subtitle">Visual Guide – From minimal to production</p>
     </div>
 
     <div class="container">
-        <!-- Section 1: Minimale Struktur -->
+        <!-- Section 1: Minimal Structure -->
         <div class="section">
             <h2 class="section-title">
                 <span class="section-icon">🏗️</span>
-                Minimale Struktur
+                Minimal Structure
             </h2>
             <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
-                Das einfachste Flask-Projekt, perfekt für Anfänger und kleine Prototypen.
+                The simplest Flask project, perfect for beginners and small prototypes.
             </p>
 
             <div class="comparison-grid">
                 <div class="comparison-card">
                     <div class="comparison-header">
-                        <div class="comparison-header-title">📁 Dateistruktur</div>
-                        <div class="comparison-header-subtitle">Ordnerübersicht</div>
+                        <div class="comparison-header-title">📁 File Structure</div>
+                        <div class="comparison-header-subtitle">Folder Overview</div>
                     </div>
                     <div class="comparison-body">
                         <div class="file-tree">
@@ -501,7 +501,7 @@
                 <div class="comparison-card">
                     <div class="comparison-header">
                         <div class="comparison-header-title">💻 app.py</div>
-                        <div class="comparison-header-subtitle">Minimale Flask-App</div>
+                        <div class="comparison-header-subtitle">Minimal Flask App</div>
                     </div>
                     <div class="comparison-body">
                         <div class="code-block">
@@ -512,7 +512,7 @@ app = Flask(__name__)
 
 <span class="code-keyword">@</span>app.route(<span class="code-string">'/'</span>)
 <span class="code-keyword">def</span> <span class="code-function">hello</span>():
-    <span class="code-keyword">return</span> <span class="code-string">'Hallo, Flask!'</span>
+    <span class="code-keyword">return</span> <span class="code-string">'Hello, Flask!'</span>
 
 <span class="code-keyword">if</span> __name__ == <span class="code-string">'__main__'</span>:
     app.run(debug=<span class="code-keyword">True</span>)</pre>
@@ -526,7 +526,7 @@ app = Flask(__name__)
                     <div class="file-card-icon">📄</div>
                     <div class="file-card-name">app.py</div>
                     <div class="file-card-desc">
-                        Die Haupt-Anwendungsdatei mit Routen, Konfiguration und Server-Logik.
+                        The main application file with routes, configuration, and server logic.
                     </div>
                     <span class="file-card-type python">Python Module</span>
                 </div>
@@ -535,7 +535,7 @@ app = Flask(__name__)
                     <div class="file-card-icon">📋</div>
                     <div class="file-card-name">requirements.txt</div>
                     <div class="file-card-desc">
-                        Listet alle Python-Abhängigkeiten auf (z.B. flask==2.3.0).
+                        Lists all Python dependencies (e.g. flask==2.3.0).
                     </div>
                     <span class="file-card-type config">Config</span>
                 </div>
@@ -544,28 +544,28 @@ app = Flask(__name__)
                     <div class="file-card-icon">🔒</div>
                     <div class="file-card-name">venv/</div>
                     <div class="file-card-desc">
-                        Virtuelle Umgebung mit isoliertem Python und Paketen.
+                        Virtual environment with isolated Python and packages.
                     </div>
                     <span class="file-card-type env">Virtual Env</span>
                 </div>
             </div>
         </div>
 
-        <!-- Section 2: Professionelle Struktur -->
+        <!-- Section 2: Professional Structure -->
         <div class="section">
             <h2 class="section-title">
                 <span class="section-icon">🏢</span>
-                Professionelle Struktur
+                Professional Structure
             </h2>
             <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
-                Produktionsreife Architektur mit Blueprints, Konfiguration und klarer Trennung der Concerns.
+                Production-ready architecture with Blueprints, configuration, and clear separation of concerns.
             </p>
 
             <div class="file-tree">
 <span class="file-tree-item folder">flask_project/</span>
 <span class="file-tree-item folder"><span class="file-tree-line">├──</span> app/</span>
 <span class="file-tree-item python"><span class="file-tree-line">│   ├──</span> __init__.py <span class="file-tree-line" style="color: var(--text-muted);"># App Factory</span></span>
-<span class="file-tree-item python"><span class="file-tree-line">│   ├──</span> models.py <span class="file-tree-line" style="color: var(--text-muted);"># Datenbank-Modelle</span></span>
+<span class="file-tree-item python"><span class="file-tree-line">│   ├──</span> models.py <span class="file-tree-line" style="color: var(--text-muted);"># Database Models</span></span>
 <span class="file-tree-item folder"><span class="file-tree-line">│   ├──</span> routes/</span>
 <span class="file-tree-item python"><span class="file-tree-line">│   │   ├──</span> __init__.py</span>
 <span class="file-tree-item python"><span class="file-tree-line">│   │   ├──</span> auth.py <span class="file-tree-line" style="color: var(--text-muted);"># Auth Blueprint</span></span>
@@ -576,15 +576,15 @@ app = Flask(__name__)
 <span class="file-tree-item folder"><span class="file-tree-line">│   └──</span> static/</span>
 <span class="file-tree-item static"><span class="file-tree-line">│       ├──</span> css/</span>
 <span class="file-tree-item static"><span class="file-tree-line">│       └──</span> js/</span>
-<span class="file-tree-item config"><span class="file-tree-line">├──</span> config.py <span class="file-tree-line" style="color: var(--text-muted);"># Konfiguration</span></span>
+<span class="file-tree-item config"><span class="file-tree-line">├──</span> config.py <span class="file-tree-line" style="color: var(--text-muted);"># Configuration</span></span>
 <span class="file-tree-item config"><span class="file-tree-line">├──</span> requirements.txt</span>
-<span class="file-tree-item env"><span class="file-tree-line">├──</span> .env <span class="file-tree-line" style="color: var(--text-muted);"># Geheimnisse</span></span>
+<span class="file-tree-item env"><span class="file-tree-line">├──</span> .env <span class="file-tree-line" style="color: var(--text-muted);"># Secrets</span></span>
 <span class="file-tree-item config"><span class="file-tree-line">├──</span> .gitignore</span>
-<span class="file-tree-item python"><span class="file-tree-line">└──</span> run.py <span class="file-tree-line" style="color: var(--text-muted);"># Einstiegspunkt</span></span>
+<span class="file-tree-item python"><span class="file-tree-line">└──</span> run.py <span class="file-tree-line" style="color: var(--text-muted);"># Entry Point</span></span>
             </div>
 
             <h3 style="font-size: 16px; font-weight: 700; color: var(--text); margin-top: 32px; margin-bottom: 16px;">
-                📁 Datei-Übersicht
+                📁 File Overview
             </h3>
 
             <div class="file-item-card">
@@ -592,7 +592,7 @@ app = Flask(__name__)
                     <div class="file-card-icon">📦</div>
                     <div class="file-card-name">app/__init__.py</div>
                     <div class="file-card-desc">
-                        App Factory – erstellt Flask-Instanz mit Blueprints und Erweiterungen.
+                        App Factory — creates Flask instance with Blueprints and extensions.
                     </div>
                     <span class="file-card-type python">Python Module</span>
                 </div>
@@ -601,7 +601,7 @@ app = Flask(__name__)
                     <div class="file-card-icon">🗄️</div>
                     <div class="file-card-name">app/models.py</div>
                     <div class="file-card-desc">
-                        Datenbank-Modelle (SQLAlchemy ORM) für User, Posts, etc.
+                        Database Models (SQLAlchemy ORM) for User, Posts, etc.
                     </div>
                     <span class="file-card-type python">Python Module</span>
                 </div>
@@ -610,7 +610,7 @@ app = Flask(__name__)
                     <div class="file-card-icon">🛣️</div>
                     <div class="file-card-name">app/routes/</div>
                     <div class="file-card-desc">
-                        Blueprint-Module für getrennte Route-Handler (Auth, API, etc.).
+                        Blueprint modules for separate route handlers (Auth, API, etc.).
                     </div>
                     <span class="file-card-type python">Python Package</span>
                 </div>
@@ -619,7 +619,7 @@ app = Flask(__name__)
                     <div class="file-card-icon">📄</div>
                     <div class="file-card-name">app/templates/</div>
                     <div class="file-card-desc">
-                        Jinja2-Templates für HTML-Rendering (base.html für Vererbung).
+                        Jinja2 templates for HTML rendering (base.html for inheritance).
                     </div>
                     <span class="file-card-type template">Templates</span>
                 </div>
@@ -628,7 +628,7 @@ app = Flask(__name__)
                     <div class="file-card-icon">🎨</div>
                     <div class="file-card-name">app/static/</div>
                     <div class="file-card-desc">
-                        CSS, JavaScript, Bilder – statische Assets für Frontend.
+                        CSS, JavaScript, images — static assets for the frontend.
                     </div>
                     <span class="file-card-type static">Static Files</span>
                 </div>
@@ -637,7 +637,7 @@ app = Flask(__name__)
                     <div class="file-card-icon">⚙️</div>
                     <div class="file-card-name">config.py</div>
                     <div class="file-card-desc">
-                        Konfigurationsklassen für Development, Production, Testing.
+                        Configuration classes for Development, Production, Testing.
                     </div>
                     <span class="file-card-type config">Config</span>
                 </div>
@@ -646,7 +646,7 @@ app = Flask(__name__)
                     <div class="file-card-icon">📋</div>
                     <div class="file-card-name">requirements.txt</div>
                     <div class="file-card-desc">
-                        Alle Python-Abhängigkeiten mit Versionsnummern.
+                        All Python dependencies with version numbers.
                     </div>
                     <span class="file-card-type config">Config</span>
                 </div>
@@ -655,7 +655,7 @@ app = Flask(__name__)
                     <div class="file-card-icon">🔑</div>
                     <div class="file-card-name">.env</div>
                     <div class="file-card-desc">
-                        Umgebungsvariablen: DB_URL, SECRET_KEY, API-Keys (nicht ins Git!).
+                        Environment variables: DB_URL, SECRET_KEY, API-Keys (not in Git!).
                     </div>
                     <span class="file-card-type env">Secrets</span>
                 </div>
@@ -664,7 +664,7 @@ app = Flask(__name__)
                     <div class="file-card-icon">🚫</div>
                     <div class="file-card-name">.gitignore</div>
                     <div class="file-card-desc">
-                        Dateien ausschließen: .env, venv/, __pycache__, .DS_Store.
+                        Exclude files: .env, venv/, __pycache__, .DS_Store.
                     </div>
                     <span class="file-card-type config">Config</span>
                 </div>
@@ -673,7 +673,7 @@ app = Flask(__name__)
                     <div class="file-card-icon">▶️</div>
                     <div class="file-card-name">run.py</div>
                     <div class="file-card-desc">
-                        Einstiegspunkt: Flask-App starten (python run.py).
+                        Entry point: Start Flask app (python run.py).
                     </div>
                     <span class="file-card-type python">Entry Point</span>
                 </div>
@@ -687,7 +687,7 @@ app = Flask(__name__)
                 App Factory Pattern
             </h2>
             <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
-                Erstellt die Flask-App dynamisch mit verschiedenen Konfigurationen. Ermöglicht Testing und Multi-Instanz-Deployment.
+                Creates the Flask app dynamically with different configurations. Enables testing and multi-instance deployment.
             </p>
 
             <div class="grid-2">
@@ -708,7 +708,7 @@ db = SQLAlchemy()
         config[config_name]
     )
 
-    <span class="code-comment"># Init Extensions</span>
+    <span class="code-comment"># Initialize Extensions</span>
     db.init_app(app)
 
     <span class="code-comment"># Register Blueprints</span>
@@ -751,14 +751,14 @@ app = create_app(config_name)
 
             <div class="concept-card">
                 <div class="concept-card-title">
-                    ✨ Vorteile des App Factory Pattern
+                    ✨ Benefits of App Factory Pattern
                 </div>
                 <div class="concept-card-content">
                     <ul style="margin-left: 20px; line-height: 1.8;">
-                        <li><span class="highlight">Testbar</span> – Mehrere App-Instanzen für Tests</li>
-                        <li><span class="highlight">Konfigurierbar</span> – Unterschiedliche Settings pro Umgebung</li>
-                        <li><span class="highlight">Erweiterbar</span> – Blueprints einfach hinzufügbar</li>
-                        <li><span class="highlight">Wartbar</span> – Klare Trennung von Concerns</li>
+                        <li><span class="highlight">Testable</span> — Multiple app instances for tests</li>
+                        <li><span class="highlight">Configurable</span> — Different settings per environment</li>
+                        <li><span class="highlight">Extensible</span> — Blueprints easily added</li>
+                        <li><span class="highlight">Maintainable</span> — Clear separation of concerns</li>
                     </ul>
                 </div>
             </div>
@@ -768,10 +768,10 @@ app = create_app(config_name)
         <div class="section">
             <h2 class="section-title">
                 <span class="section-icon">📋</span>
-                Blueprints – Modulare Routes
+                Blueprints — Modular Routes
             </h2>
             <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
-                Blueprints ermöglichen es, Routes in separate Module zu organisieren – ideal für große Anwendungen.
+                Blueprints let you organize routes into separate modules — ideal for large applications.
             </p>
 
             <div class="grid-2">
@@ -791,11 +791,11 @@ auth_bp = Blueprint(
 
 <span class="code-keyword">@</span>auth_bp.route(<span class="code-string">'/login'</span>, methods=[<span class="code-string">'POST'</span>])
 <span class="code-keyword">def</span> <span class="code-function">login</span>():
-    <span class="code-keyword">return</span> {<span class="code-string">'msg'</span>: <span class="code-string">'Login erfolgreich'</span>}
+    <span class="code-keyword">return</span> {<span class="code-string">'msg'</span>: <span class="code-string">'Login successful'</span>}
 
 <span class="code-keyword">@</span>auth_bp.route(<span class="code-string">'/logout'</span>)
 <span class="code-keyword">def</span> <span class="code-function">logout</span>():
-    <span class="code-keyword">return</span> {<span class="code-string">'msg'</span>: <span class="code-string">'Logout erfolgreich'</span>}</pre>
+    <span class="code-keyword">return</span> {<span class="code-string">'msg'</span>: <span class="code-string">'Logout successful'</span>}</pre>
                     </div>
                 </div>
 
@@ -826,53 +826,53 @@ api_bp = Blueprint(
 
             <div class="concept-card">
                 <div class="concept-card-title">
-                    🎯 Blueprint-Routing
+                    🎯 Blueprint Routing
                 </div>
                 <div class="concept-card-content">
                     <ul style="margin-left: 20px; line-height: 1.8;">
-                        <li>auth_bp → <span class="highlight">/auth/login</span> und <span class="highlight">/auth/logout</span></li>
-                        <li>api_bp → <span class="highlight">/api/users</span> und weitere API-Routes</li>
-                        <li>Blueprints werden in <span class="highlight">create_app()</span> registriert</li>
+                        <li>auth_bp → <span class="highlight">/auth/login</span> and <span class="highlight">/auth/logout</span></li>
+                        <li>api_bp → <span class="highlight">/api/users</span> and other API routes</li>
+                        <li>Blueprints are registered in <span class="highlight">create_app()</span></li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <!-- Section 5: Konfiguration -->
+        <!-- Section 5: Configuration -->
         <div class="section">
             <h2 class="section-title">
                 <span class="section-icon">⚙️</span>
-                Konfiguration
+                Configuration
             </h2>
             <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
-                Unterschiedliche Settings für Development, Production und Testing – ohne Code-Änderungen.
+                Different settings for Development, Production, and Testing — without code changes.
             </p>
 
             <h3 style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 16px;">
-                config.py – Konfigurationsklassen
+                config.py — Configuration Classes
             </h3>
             <div class="code-block">
                 <span class="code-label">Python</span>
                 <pre class="code"><span class="code-keyword">import</span> os
 
 <span class="code-keyword">class</span> <span class="code-function">Config</span>:
-    <span class="code-string">"""Basis-Konfiguration"""</span>
+    <span class="code-string">"""Base configuration"""</span>
     SECRET_KEY = os.getenv(<span class="code-string">'SECRET_KEY'</span>, <span class="code-string">'dev-key'</span>)
     SQLALCHEMY_TRACK_MODIFICATIONS = <span class="code-keyword">False</span>
 
 <span class="code-keyword">class</span> <span class="code-function">DevelopmentConfig</span>(Config):
-    <span class="code-string">"""Development-Einstellungen"""</span>
+    <span class="code-string">"""Development settings"""</span>
     DEBUG = <span class="code-keyword">True</span>
     TESTING = <span class="code-keyword">False</span>
     SQLALCHEMY_DATABASE_URI = <span class="code-string">'sqlite:///dev.db'</span>
 
 <span class="code-keyword">class</span> <span class="code-function">ProductionConfig</span>(Config):
-    <span class="code-string">"""Production-Einstellungen"""</span>
+    <span class="code-string">"""Production settings"""</span>
     DEBUG = <span class="code-keyword">False</span>
     SQLALCHEMY_DATABASE_URI = os.getenv(<span class="code-string">'DATABASE_URL'</span>)
 
 <span class="code-keyword">class</span> <span class="code-function">TestingConfig</span>(Config):
-    <span class="code-string">"""Testing-Einstellungen"""</span>
+    <span class="code-string">"""Testing settings"""</span>
     TESTING = <span class="code-keyword">True</span>
     SQLALCHEMY_DATABASE_URI = <span class="code-string">'sqlite:///:memory:'</span>
 
@@ -885,7 +885,7 @@ config = {
             </div>
 
             <h3 style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 16px; margin-top: 32px;">
-                .env – Umgebungsvariablen
+                .env — Environment Variables
             </h3>
             <div class="code-block">
                 <span class="code-label">Bash / Environment</span>
@@ -897,7 +897,7 @@ DEBUG=True</pre>
             </div>
 
             <h3 style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 16px; margin-top: 32px;">
-                Konfiguration verwenden
+                Using Configuration
             </h3>
             <div class="code-block">
                 <span class="code-label">Python – app.py</span>
@@ -912,7 +912,7 @@ DEBUG = app.config.get(<span class="code-string">'DEBUG'</span>, <span class="co
             <table class="config-table">
                 <thead>
                     <tr>
-                        <th>Einstellung</th>
+                        <th>Setting</th>
                         <th>Development</th>
                         <th>Production</th>
                         <th>Testing</th>
@@ -933,8 +933,8 @@ DEBUG = app.config.get(<span class="code-string">'DEBUG'</span>, <span class="co
                     </tr>
                     <tr>
                         <td class="key">SECRET_KEY</td>
-                        <td>dev-key (einfach)</td>
-                        <td>Komplexe .env</td>
+                        <td>dev-key (simple)</td>
+                        <td>Complex .env</td>
                         <td>test-key</td>
                     </tr>
                     <tr>
@@ -954,25 +954,25 @@ DEBUG = app.config.get(<span class="code-string">'DEBUG'</span>, <span class="co
                 Virtual Environment (venv)
             </h2>
             <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
-                Isoliert Python-Pakete pro Projekt – verhindert Konflikte zwischen Projekten.
+                Isolates Python packages per project — prevents conflicts between projects.
             </p>
 
             <div class="venv-diagram">
                 <div class="venv-box">
-                    <div class="venv-box-title">❌ Ohne venv (Gefährlich)</div>
+                    <div class="venv-box-title">❌ Without venv (Dangerous)</div>
                     <div class="venv-item">System Python</div>
                     <div class="venv-item">site-packages/</div>
                     <div class="venv-item">flask==2.0</div>
                     <div class="venv-item">requests==2.25</div>
-                    <div style="color: var(--red); font-size: 12px; margin-top: 12px;">⚠️ Alle Projekte teilen sich Pakete – Versions-Konflikte!</div>
+                    <div style="color: var(--red); font-size: 12px; margin-top: 12px;">⚠️ All projects share packages — version conflicts!</div>
                 </div>
 
                 <div class="venv-box">
-                    <div class="venv-box-title">✅ Mit venv (Sicher)</div>
+                    <div class="venv-box-title">✅ With venv (Safe)</div>
                     <div class="venv-item isolated">venv/lib/python3.9/</div>
                     <div class="venv-item isolated">flask==2.3</div>
                     <div class="venv-item isolated">requests==2.28</div>
-                    <div style="color: var(--green); font-size: 12px; margin-top: 12px;">✓ Isolierte, projektspezifische Pakete</div>
+                    <div style="color: var(--green); font-size: 12px; margin-top: 12px;">✓ Isolated, project-specific packages</div>
                 </div>
             </div>
 
@@ -981,23 +981,23 @@ DEBUG = app.config.get(<span class="code-string">'DEBUG'</span>, <span class="co
             </h3>
             <div class="code-block">
                 <span class="code-label">Bash – Terminal Commands</span>
-                <pre class="code"><span class="code-comment"># 1. Virtuelle Umgebung erstellen</span>
+                <pre class="code"><span class="code-comment"># 1. Create virtual environment</span>
 python -m venv venv
 
-<span class="code-comment"># 2. venv aktivieren</span>
+<span class="code-comment"># 2. Activate venv</span>
 <span class="code-keyword">source</span> venv/bin/activate  <span class="code-comment"># Linux/Mac</span>
 venv\Scripts\activate        <span class="code-comment"># Windows</span>
 
-<span class="code-comment"># 3. Abhängigkeiten installieren</span>
+<span class="code-comment"># 3. Install dependencies</span>
 pip install flask flask-sqlalchemy python-dotenv
 
-<span class="code-comment"># 4. Abhängigkeiten frieren (speichern)</span>
+<span class="code-comment"># 4. Freeze dependencies</span>
 pip freeze > requirements.txt
 
-<span class="code-comment"># 5. Später: Abhängigkeiten wiederherstellen</span>
+<span class="code-comment"># 5. Later: Restore dependencies</span>
 pip install -r requirements.txt
 
-<span class="code-comment"># 6. venv deaktivieren</span>
+<span class="code-comment"># 6. Deactivate venv</span>
 deactivate</pre>
             </div>
 
@@ -1014,54 +1014,54 @@ gunicorn==20.1.0</pre>
             </div>
         </div>
 
-        <!-- Section 7: Zusammenfassung -->
+        <!-- Section 7: Summary -->
         <div class="section">
             <h2 class="section-title">
                 <span class="section-icon">✅</span>
-                Zusammenfassung – Best Practices
+                Summary — Best Practices
             </h2>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
                 <div class="concept-card">
-                    <div class="concept-card-title">🏗️ Struktur</div>
+                    <div class="concept-card-title">🏗️ Structure</div>
                     <div class="concept-card-content">
                         <ul style="margin-left: 20px;">
-                            <li>Nutze App Factory für Flexibilität</li>
-                            <li>Blueprints für modulare Routes</li>
-                            <li>Trennung: app/, config/, templates/, static/</li>
+                            <li>Use App Factory for flexibility</li>
+                            <li>Blueprints for modular routes</li>
+                            <li>Separation: app/, config/, templates/, static/</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="concept-card">
-                    <div class="concept-card-title">🔒 Sicherheit</div>
+                    <div class="concept-card-title">🔒 Security</div>
                     <div class="concept-card-content">
                         <ul style="margin-left: 20px;">
-                            <li>.env für Geheimnisse (nicht ins Git!)</li>
-                            <li>venv für Abhängigkeiten</li>
-                            <li>.gitignore für sensitive Dateien</li>
+                            <li>.env for secrets (not in Git!)</li>
+                            <li>venv for dependencies</li>
+                            <li>.gitignore for sensitive files</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="concept-card">
-                    <div class="concept-card-title">⚙️ Konfiguration</div>
+                    <div class="concept-card-title">⚙️ Configuration</div>
                     <div class="concept-card-content">
                         <ul style="margin-left: 20px;">
-                            <li>config.py mit Development/Production/Testing</li>
-                            <li>Umgebungsvariablen via .env</li>
-                            <li>app.config.from_object() zum Laden</li>
+                            <li>config.py with Development/Production/Testing</li>
+                            <li>Environment variables via .env</li>
+                            <li>app.config.from_object() to load</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="concept-card">
-                    <div class="concept-card-title">📦 Abhängigkeiten</div>
+                    <div class="concept-card-title">📦 Dependencies</div>
                     <div class="concept-card-content">
                         <ul style="margin-left: 20px;">
-                            <li>requirements.txt mit pip freeze</li>
-                            <li>Versionsnummern festlegen</li>
-                            <li>pip install -r requirements.txt zum Restore</li>
+                            <li>requirements.txt with pip freeze</li>
+                            <li>Lock version numbers</li>
+                            <li>pip install -r requirements.txt to restore</li>
                         </ul>
                     </div>
                 </div>
@@ -1070,9 +1070,9 @@ gunicorn==20.1.0</pre>
                     <div class="concept-card-title">🧪 Testing</div>
                     <div class="concept-card-content">
                         <ul style="margin-left: 20px;">
-                            <li>create_app() mit test config</li>
-                            <li>In-memory SQLite für Tests</li>
-                            <li>Isolierte Test-Umgebung</li>
+                            <li>create_app() with test config</li>
+                            <li>In-memory SQLite for tests</li>
+                            <li>Isolated test environment</li>
                         </ul>
                     </div>
                 </div>
@@ -1081,9 +1081,9 @@ gunicorn==20.1.0</pre>
                     <div class="concept-card-title">🚀 Deployment</div>
                     <div class="concept-card-content">
                         <ul style="margin-left: 20px;">
-                            <li>ProductionConfig mit echter DB</li>
+                            <li>ProductionConfig with real DB</li>
                             <li>DEBUG=False in Production</li>
-                            <li>gunicorn als WSGI Server</li>
+                            <li>gunicorn as WSGI server</li>
                         </ul>
                     </div>
                 </div>
