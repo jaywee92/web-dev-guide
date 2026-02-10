@@ -33,7 +33,10 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: var(--bg);
+    background:
+      radial-gradient(900px 520px at 12% -10%, rgba(248, 113, 113, 0.12), transparent 60%),
+      radial-gradient(700px 460px at 88% -12%, rgba(91, 156, 245, 0.10), transparent 62%),
+      var(--bg);
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
     min-height: 100vh;
@@ -82,6 +85,7 @@
     position: relative;
     flex-shrink: 0;
     opacity: 0;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
   }
 
   .node-label {
@@ -320,8 +324,7 @@
     font-size: 11px;
     color: var(--text-muted);
     line-height: 1.8;
-    opacity: 0;
-    animation: sectionReveal 0.5s ease 5.6s forwards;
+    opacity: 1;
   }
   .db-label {
     font-size: 9px;
@@ -329,6 +332,19 @@
     letter-spacing: 1px;
     color: var(--red);
     margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .db-sql {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+  .db-sql-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--yellow);
+    margin-bottom: 4px;
     font-weight: 600;
   }
   .tuple-val { color: var(--green); }
@@ -701,7 +717,8 @@
     <div class="db-data glow-delete">
       <div class="db-label">✗ Deleted Row</div>
       <div class="deleted-text">(<span class="tuple-num">3</span>, <span class="tuple-val">"Mark Twain"</span>, <span class="tuple-num">1835</span>, <span class="tuple-val">"American"</span>)</div>
-      <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border);">
+      <div class="db-sql">
+        <div class="db-sql-label">SQL Example</div>
         <div class="code-block" style="font-size: 10px; line-height: 1.6; margin: 0;">
           <span class="kw">DELETE FROM</span> authors<br>
           <span class="kw">WHERE</span> <span class="var">id</span> = <span class="num">3</span>

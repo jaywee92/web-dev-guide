@@ -32,7 +32,10 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: var(--bg);
+    background:
+      radial-gradient(900px 520px at 12% -10%, rgba(91, 156, 245, 0.10), transparent 60%),
+      radial-gradient(700px 460px at 88% -12%, rgba(245, 197, 66, 0.10), transparent 62%),
+      var(--bg);
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
     min-height: 100vh;
@@ -81,6 +84,7 @@
     position: relative;
     flex-shrink: 0;
     opacity: 0;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
   }
 
   .node-label {
@@ -265,8 +269,7 @@
     font-size: 11px;
     color: var(--text-muted);
     line-height: 1.8;
-    opacity: 0;
-    animation: sectionReveal 0.5s ease 5.6s forwards;
+    opacity: 1;
   }
   .db-label {
     font-size: 9px;
