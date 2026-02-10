@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask Project Structure – Visual Guide</title>
+    <title>Flask Project Structure – Visual Interactive Guide</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -30,6 +30,7 @@
             --purple: #a78bfa;
             --purple-dim: rgba(167, 139, 250, 0.12);
             --red: #f87171;
+            --red-dim: rgba(248, 113, 113, 0.12);
             --white: #ffffff;
             --code-bg: #13151e;
             --radius: 14px;
@@ -105,6 +106,7 @@
             font-size: 28px;
         }
 
+        /* INTERACTIVE FILE TREE */
         .file-tree {
             background-color: var(--surface);
             border: 1px solid var(--border);
@@ -118,121 +120,354 @@
             animation: fadeSlideUp 0.6s ease-out;
         }
 
-        .file-tree-item {
+        .tree-item {
             display: flex;
             align-items: center;
             gap: 8px;
             margin-bottom: 4px;
-            color: var(--text-muted);
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
         }
 
-        .file-tree-item.folder {
+        .tree-item:hover {
+            background-color: var(--surface-bright);
+        }
+
+        .tree-item.clickable {
+            cursor: pointer;
+            color: var(--blue);
+        }
+
+        .tree-item.clickable:hover {
+            background-color: var(--blue-dim);
+            border-left: 2px solid var(--blue);
+            padding-left: 6px;
+        }
+
+        .tree-item.folder {
             color: var(--blue);
             font-weight: 600;
         }
 
-        .file-tree-item.python {
+        .tree-item.python {
             color: var(--green);
         }
 
-        .file-tree-item.template {
+        .tree-item.template {
             color: var(--blue);
         }
 
-        .file-tree-item.config {
+        .tree-item.config {
             color: var(--yellow);
         }
 
-        .file-tree-item.static {
+        .tree-item.static {
             color: var(--orange);
         }
 
-        .file-tree-item.env {
+        .tree-item.env {
             color: var(--red);
         }
 
-        .file-tree-line {
+        .tree-line {
             display: inline-block;
             width: 16px;
             color: var(--border);
         }
 
-        .file-item-card {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
-            margin-bottom: 32px;
+        .tree-icon {
+            font-size: 14px;
         }
 
-        .file-card {
+        /* DETAILS/SUMMARY FOR EXPANDABLE FOLDERS */
+        details {
+            margin: 0;
+        }
+
+        details > summary {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            color: var(--blue);
+            font-weight: 600;
+        }
+
+        details > summary:hover {
+            background-color: var(--surface-bright);
+        }
+
+        details > summary::marker {
+            color: var(--text-muted);
+        }
+
+        details[open] > summary {
+            color: var(--yellow);
+        }
+
+        /* MODAL/POPUP */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
             background-color: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 20px;
-            transition: all 0.3s ease;
-            animation: fadeSlideUp 0.6s ease-out;
+            max-width: 700px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 0;
+            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
-        .file-card:hover {
-            border-color: var(--blue);
-            background-color: var(--surface-bright);
-            transform: translateY(-4px);
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(135deg, var(--surface-bright), var(--surface));
+            position: sticky;
+            top: 0;
         }
 
-        .file-card-icon {
+        .modal-header-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-icon {
+            font-size: 28px;
+        }
+
+        .modal-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
             font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background-color: var(--border);
+            color: var(--text);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-section {
+            margin-bottom: 28px;
+        }
+
+        .modal-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .modal-section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+
+        .file-type-badge {
+            display: inline-block;
+            font-size: 10px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
             margin-bottom: 12px;
         }
 
-        .file-card-name {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 8px;
-            word-break: break-word;
-        }
-
-        .file-card-desc {
-            font-size: 12px;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        .file-card-type {
-            display: inline-block;
-            font-size: 10px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            margin-top: 12px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .file-card-type.python {
+        .file-type-badge.python {
             background-color: var(--green-dim);
             color: var(--green);
         }
 
-        .file-card-type.template {
+        .file-type-badge.template {
             background-color: var(--blue-dim);
             color: var(--blue);
         }
 
-        .file-card-type.config {
+        .file-type-badge.config {
             background-color: var(--yellow-dim);
             color: var(--yellow);
         }
 
-        .file-card-type.static {
+        .file-type-badge.static {
             background-color: var(--orange-dim);
             color: var(--orange);
         }
 
-        .file-card-type.env {
-            background-color: var(--red);
+        .file-type-badge.env {
+            background-color: var(--red-dim);
+            color: var(--red);
+        }
+
+        .file-type-badge.folder {
+            background-color: var(--blue-dim);
+            color: var(--blue);
+        }
+
+        .description {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .code-example {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            color: var(--text);
+            overflow-x: auto;
+        }
+
+        .code-example-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .relationships {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .relationship {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background-color: var(--surface-bright);
+            border-left: 3px solid var(--border);
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .relationship.imports {
+            border-left-color: var(--blue);
+        }
+
+        .relationship.imported-by {
+            border-left-color: var(--green);
+        }
+
+        .relationship.extends {
+            border-left-color: var(--purple);
+        }
+
+        .relationship.contains {
+            border-left-color: var(--orange);
+        }
+
+        .relationship-arrow {
+            color: var(--text-muted);
+            font-size: 12px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .related-file {
+            display: inline-block;
+            padding: 4px 8px;
+            background-color: var(--border);
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin: 2px;
+        }
+
+        .related-file:hover {
+            background-color: var(--blue);
             color: var(--white);
         }
 
+        /* ANIMATIONS */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CODE BLOCKS FOR SECTIONS */
         .code-block {
             background-color: var(--code-bg);
             border: 1px solid var(--border);
@@ -271,9 +506,18 @@
         }
 
         .code-comment {
-            color: var(--text-muted);
+            color: #555a73;
         }
 
+        .code-var {
+            color: var(--orange);
+        }
+
+        .code-dec {
+            color: var(--yellow);
+        }
+
+        /* GRID & LAYOUT */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -311,90 +555,6 @@
             line-height: 1.6;
         }
 
-        .venv-diagram {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .venv-box {
-            background-color: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px;
-            text-align: center;
-            animation: fadeSlideUp 0.6s ease-out;
-        }
-
-        .venv-box-title {
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 16px;
-            font-size: 14px;
-        }
-
-        .venv-item {
-            background-color: var(--surface-bright);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 8px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .venv-item.isolated {
-            border-color: var(--green);
-            color: var(--green);
-            background-color: var(--green-dim);
-        }
-
-        .arrow {
-            font-size: 24px;
-            color: var(--text-muted);
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .config-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 24px;
-        }
-
-        .config-table thead {
-            background-color: var(--surface-bright);
-            border-bottom: 2px solid var(--border);
-        }
-
-        .config-table th {
-            padding: 12px 16px;
-            text-align: left;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .config-table td {
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border);
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        .config-table tbody tr:hover {
-            background-color: var(--surface-bright);
-        }
-
-        .config-table .key {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--text);
-            font-weight: 600;
-        }
-
         .highlight {
             background-color: var(--yellow-dim);
             color: var(--yellow);
@@ -403,64 +563,15 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
-        @keyframes fadeSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(16px);
+        @media (max-width: 768px) {
+            .modal-content {
+                max-width: 95vw;
+                margin: 20px;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
 
-        .comparison-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-
-        @media (max-width: 900px) {
-            .comparison-grid {
+            .grid-2 {
                 grid-template-columns: 1fr;
             }
-        }
-
-        .comparison-card {
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            overflow: hidden;
-            animation: fadeSlideUp 0.6s ease-out;
-        }
-
-        .comparison-header {
-            background-color: var(--surface-bright);
-            padding: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .comparison-header-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 4px;
-        }
-
-        .comparison-header-subtitle {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .comparison-body {
-            padding: 24px;
-        }
-
-        .comparison-body .file-tree {
-            background-color: var(--code-bg);
-            border: none;
-            margin: 0;
-            animation: none;
         }
     </style>
 </head>
@@ -468,219 +579,46 @@
     <div class="header">
         <a href="index.html" class="back-link">← Back to Overview</a>
         <h1>Flask Project Structure</h1>
-        <p class="subtitle">Visual Guide – From minimal to production</p>
+        <p class="subtitle">Interactive Visual Guide – Click on files and folders to explore</p>
     </div>
 
     <div class="container">
-        <!-- Section 1: Minimal Structure -->
-        <div class="section">
-            <h2 class="section-title">
-                <span class="section-icon">🏗️</span>
-                Minimal Structure
-            </h2>
-            <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
-                The simplest Flask project, perfect for beginners and small prototypes.
-            </p>
-
-            <div class="comparison-grid">
-                <div class="comparison-card">
-                    <div class="comparison-header">
-                        <div class="comparison-header-title">📁 File Structure</div>
-                        <div class="comparison-header-subtitle">Folder Overview</div>
-                    </div>
-                    <div class="comparison-body">
-                        <div class="file-tree">
-<span class="file-tree-item folder">my_app/</span>
-<span class="file-tree-item python"><span class="file-tree-line">├──</span> app.py</span>
-<span class="file-tree-item config"><span class="file-tree-line">├──</span> requirements.txt</span>
-<span class="file-tree-item env"><span class="file-tree-line">└──</span> venv/</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="comparison-card">
-                    <div class="comparison-header">
-                        <div class="comparison-header-title">💻 app.py</div>
-                        <div class="comparison-header-subtitle">Minimal Flask App</div>
-                    </div>
-                    <div class="comparison-body">
-                        <div class="code-block">
-                            <span class="code-label">Python</span>
-                            <pre class="code"><span class="code-keyword">from</span> flask <span class="code-keyword">import</span> Flask
-
-app = Flask(__name__)
-
-<span class="code-keyword">@</span>app.route(<span class="code-string">'/'</span>)
-<span class="code-keyword">def</span> <span class="code-function">hello</span>():
-    <span class="code-keyword">return</span> <span class="code-string">'Hello, Flask!'</span>
-
-<span class="code-keyword">if</span> __name__ == <span class="code-string">'__main__'</span>:
-    app.run(debug=<span class="code-keyword">True</span>)</pre>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="file-item-card">
-                <div class="file-card">
-                    <div class="file-card-icon">📄</div>
-                    <div class="file-card-name">app.py</div>
-                    <div class="file-card-desc">
-                        The main application file with routes, configuration, and server logic.
-                    </div>
-                    <span class="file-card-type python">Python Module</span>
-                </div>
-
-                <div class="file-card">
-                    <div class="file-card-icon">📋</div>
-                    <div class="file-card-name">requirements.txt</div>
-                    <div class="file-card-desc">
-                        Lists all Python dependencies (e.g. flask==2.3.0).
-                    </div>
-                    <span class="file-card-type config">Config</span>
-                </div>
-
-                <div class="file-card">
-                    <div class="file-card-icon">🔒</div>
-                    <div class="file-card-name">venv/</div>
-                    <div class="file-card-desc">
-                        Virtual environment with isolated Python and packages.
-                    </div>
-                    <span class="file-card-type env">Virtual Env</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Section 2: Professional Structure -->
+        <!-- Section 1: Interactive Professional Structure -->
         <div class="section">
             <h2 class="section-title">
                 <span class="section-icon">🏢</span>
                 Professional Structure
             </h2>
             <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
-                Production-ready architecture with Blueprints, configuration, and clear separation of concerns.
+                Production-ready architecture with Blueprints, configuration, and clear separation of concerns. Click on any file or folder to see details, code examples, and relationships.
             </p>
 
-            <div class="file-tree">
-<span class="file-tree-item folder">flask_project/</span>
-<span class="file-tree-item folder"><span class="file-tree-line">├──</span> app/</span>
-<span class="file-tree-item python"><span class="file-tree-line">│   ├──</span> __init__.py <span class="file-tree-line" style="color: var(--text-muted);"># App Factory</span></span>
-<span class="file-tree-item python"><span class="file-tree-line">│   ├──</span> models.py <span class="file-tree-line" style="color: var(--text-muted);"># Database Models</span></span>
-<span class="file-tree-item folder"><span class="file-tree-line">│   ├──</span> routes/</span>
-<span class="file-tree-item python"><span class="file-tree-line">│   │   ├──</span> __init__.py</span>
-<span class="file-tree-item python"><span class="file-tree-line">│   │   ├──</span> auth.py <span class="file-tree-line" style="color: var(--text-muted);"># Auth Blueprint</span></span>
-<span class="file-tree-item python"><span class="file-tree-line">│   │   └──</span> api.py <span class="file-tree-line" style="color: var(--text-muted);"># API Blueprint</span></span>
-<span class="file-tree-item folder"><span class="file-tree-line">│   ├──</span> templates/</span>
-<span class="file-tree-item template"><span class="file-tree-line">│   │   ├──</span> base.html</span>
-<span class="file-tree-item template"><span class="file-tree-line">│   │   └──</span> index.html</span>
-<span class="file-tree-item folder"><span class="file-tree-line">│   └──</span> static/</span>
-<span class="file-tree-item static"><span class="file-tree-line">│       ├──</span> css/</span>
-<span class="file-tree-item static"><span class="file-tree-line">│       └──</span> js/</span>
-<span class="file-tree-item config"><span class="file-tree-line">├──</span> config.py <span class="file-tree-line" style="color: var(--text-muted);"># Configuration</span></span>
-<span class="file-tree-item config"><span class="file-tree-line">├──</span> requirements.txt</span>
-<span class="file-tree-item env"><span class="file-tree-line">├──</span> .env <span class="file-tree-line" style="color: var(--text-muted);"># Secrets</span></span>
-<span class="file-tree-item config"><span class="file-tree-line">├──</span> .gitignore</span>
-<span class="file-tree-item python"><span class="file-tree-line">└──</span> run.py <span class="file-tree-line" style="color: var(--text-muted);"># Entry Point</span></span>
+            <div class="file-tree" id="fileTree">
+                <!-- Will be populated by JavaScript -->
             </div>
 
-            <h3 style="font-size: 16px; font-weight: 700; color: var(--text); margin-top: 32px; margin-bottom: 16px;">
-                📁 File Overview
-            </h3>
+            <p style="color: var(--text-muted); font-size: 12px; margin-top: 12px;">
+                💡 Tip: Click on any file or folder to view detailed information, code examples, and how files connect to each other.
+            </p>
+        </div>
 
-            <div class="file-item-card">
-                <div class="file-card">
-                    <div class="file-card-icon">📦</div>
-                    <div class="file-card-name">app/__init__.py</div>
-                    <div class="file-card-desc">
-                        App Factory — creates Flask instance with Blueprints and extensions.
+        <!-- Modal for file details -->
+        <div class="modal" id="fileModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-header-title">
+                        <span class="modal-icon" id="modalIcon"></span>
+                        <span class="modal-name" id="modalName"></span>
                     </div>
-                    <span class="file-card-type python">Python Module</span>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
                 </div>
-
-                <div class="file-card">
-                    <div class="file-card-icon">🗄️</div>
-                    <div class="file-card-name">app/models.py</div>
-                    <div class="file-card-desc">
-                        Database Models (SQLAlchemy ORM) for User, Posts, etc.
-                    </div>
-                    <span class="file-card-type python">Python Module</span>
-                </div>
-
-                <div class="file-card">
-                    <div class="file-card-icon">🛣️</div>
-                    <div class="file-card-name">app/routes/</div>
-                    <div class="file-card-desc">
-                        Blueprint modules for separate route handlers (Auth, API, etc.).
-                    </div>
-                    <span class="file-card-type python">Python Package</span>
-                </div>
-
-                <div class="file-card">
-                    <div class="file-card-icon">📄</div>
-                    <div class="file-card-name">app/templates/</div>
-                    <div class="file-card-desc">
-                        Jinja2 templates for HTML rendering (base.html for inheritance).
-                    </div>
-                    <span class="file-card-type template">Templates</span>
-                </div>
-
-                <div class="file-card">
-                    <div class="file-card-icon">🎨</div>
-                    <div class="file-card-name">app/static/</div>
-                    <div class="file-card-desc">
-                        CSS, JavaScript, images — static assets for the frontend.
-                    </div>
-                    <span class="file-card-type static">Static Files</span>
-                </div>
-
-                <div class="file-card">
-                    <div class="file-card-icon">⚙️</div>
-                    <div class="file-card-name">config.py</div>
-                    <div class="file-card-desc">
-                        Configuration classes for Development, Production, Testing.
-                    </div>
-                    <span class="file-card-type config">Config</span>
-                </div>
-
-                <div class="file-card">
-                    <div class="file-card-icon">📋</div>
-                    <div class="file-card-name">requirements.txt</div>
-                    <div class="file-card-desc">
-                        All Python dependencies with version numbers.
-                    </div>
-                    <span class="file-card-type config">Config</span>
-                </div>
-
-                <div class="file-card">
-                    <div class="file-card-icon">🔑</div>
-                    <div class="file-card-name">.env</div>
-                    <div class="file-card-desc">
-                        Environment variables: DB_URL, SECRET_KEY, API-Keys (not in Git!).
-                    </div>
-                    <span class="file-card-type env">Secrets</span>
-                </div>
-
-                <div class="file-card">
-                    <div class="file-card-icon">🚫</div>
-                    <div class="file-card-name">.gitignore</div>
-                    <div class="file-card-desc">
-                        Exclude files: .env, venv/, __pycache__, .DS_Store.
-                    </div>
-                    <span class="file-card-type config">Config</span>
-                </div>
-
-                <div class="file-card">
-                    <div class="file-card-icon">▶️</div>
-                    <div class="file-card-name">run.py</div>
-                    <div class="file-card-desc">
-                        Entry point: Start Flask app (python run.py).
-                    </div>
-                    <span class="file-card-type python">Entry Point</span>
+                <div class="modal-body" id="modalBody">
+                    <!-- Will be populated by JavaScript -->
                 </div>
             </div>
         </div>
 
-        <!-- Section 3: App Factory Pattern -->
+        <!-- Section 2: App Factory Pattern -->
         <div class="section">
             <h2 class="section-title">
                 <span class="section-icon">🏭</span>
@@ -764,7 +702,7 @@ app = create_app(config_name)
             </div>
         </div>
 
-        <!-- Section 4: Blueprints -->
+        <!-- Section 3: Blueprints -->
         <div class="section">
             <h2 class="section-title">
                 <span class="section-icon">📋</span>
@@ -781,7 +719,8 @@ app = create_app(config_name)
                     </h3>
                     <div class="code-block">
                         <span class="code-label">Python</span>
-                        <pre class="code"><span class="code-keyword">from</span> flask <span class="code-keyword">import</span> Blueprint
+                        <pre class="code"><span class="code-keyword">from</span> flask <span class="code-keyword">import</span> Blueprint, request
+<span class="code-keyword">from</span> app.models <span class="code-keyword">import</span> User
 
 auth_bp = Blueprint(
     <span class="code-string">'auth'</span>,
@@ -791,6 +730,10 @@ auth_bp = Blueprint(
 
 <span class="code-keyword">@</span>auth_bp.route(<span class="code-string">'/login'</span>, methods=[<span class="code-string">'POST'</span>])
 <span class="code-keyword">def</span> <span class="code-function">login</span>():
+    data = request.get_json()
+    user = User.query.filter_by(
+        email=data[<span class="code-string">'email'</span>]
+    ).first()
     <span class="code-keyword">return</span> {<span class="code-string">'msg'</span>: <span class="code-string">'Login successful'</span>}
 
 <span class="code-keyword">@</span>auth_bp.route(<span class="code-string">'/logout'</span>)
@@ -806,7 +749,7 @@ auth_bp = Blueprint(
                     <div class="code-block">
                         <span class="code-label">Python</span>
                         <pre class="code"><span class="code-keyword">from</span> flask <span class="code-keyword">import</span> Blueprint, jsonify
-<span class="code-keyword">from</span> app.models <span class="code-keyword">import</span> User
+<span class="code-keyword">from</span> app.models <span class="code-keyword">import</span> User, Post
 
 api_bp = Blueprint(
     <span class="code-string">'api'</span>,
@@ -819,6 +762,13 @@ api_bp = Blueprint(
     users = User.query.all()
     <span class="code-keyword">return</span> jsonify([
         u.to_dict() <span class="code-keyword">for</span> u <span class="code-keyword">in</span> users
+    ])
+
+<span class="code-keyword">@</span>api_bp.route(<span class="code-string">'/posts'</span>)
+<span class="code-keyword">def</span> <span class="code-function">get_posts</span>():
+    posts = Post.query.all()
+    <span class="code-keyword">return</span> jsonify([
+        p.to_dict() <span class="code-keyword">for</span> p <span class="code-keyword">in</span> posts
     ])</pre>
                     </div>
                 </div>
@@ -831,14 +781,14 @@ api_bp = Blueprint(
                 <div class="concept-card-content">
                     <ul style="margin-left: 20px; line-height: 1.8;">
                         <li>auth_bp → <span class="highlight">/auth/login</span> and <span class="highlight">/auth/logout</span></li>
-                        <li>api_bp → <span class="highlight">/api/users</span> and other API routes</li>
+                        <li>api_bp → <span class="highlight">/api/users</span> and <span class="highlight">/api/posts</span></li>
                         <li>Blueprints are registered in <span class="highlight">create_app()</span></li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <!-- Section 5: Configuration -->
+        <!-- Section 4: Configuration -->
         <div class="section">
             <h2 class="section-title">
                 <span class="section-icon">⚙️</span>
@@ -871,15 +821,9 @@ api_bp = Blueprint(
     DEBUG = <span class="code-keyword">False</span>
     SQLALCHEMY_DATABASE_URI = os.getenv(<span class="code-string">'DATABASE_URL'</span>)
 
-<span class="code-keyword">class</span> <span class="code-function">TestingConfig</span>(Config):
-    <span class="code-string">"""Testing settings"""</span>
-    TESTING = <span class="code-keyword">True</span>
-    SQLALCHEMY_DATABASE_URI = <span class="code-string">'sqlite:///:memory:'</span>
-
 config = {
     <span class="code-string">'development'</span>: DevelopmentConfig,
     <span class="code-string">'production'</span>: ProductionConfig,
-    <span class="code-string">'testing'</span>: TestingConfig,
     <span class="code-string">'default'</span>: DevelopmentConfig
 }</pre>
             </div>
@@ -895,126 +839,9 @@ SECRET_KEY=super-secret-key-change-in-prod
 DATABASE_URL=postgresql://user:pass@localhost/dbname
 DEBUG=True</pre>
             </div>
-
-            <h3 style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 16px; margin-top: 32px;">
-                Using Configuration
-            </h3>
-            <div class="code-block">
-                <span class="code-label">Python – app.py</span>
-                <pre class="code"><span class="code-comment"># Flask-Config in App setzen</span>
-app.config.from_object(config[config_name])
-
-<span class="code-comment"># Auf Settings zugreifen</span>
-SECRET_KEY = app.config[<span class="code-string">'SECRET_KEY'</span>]
-DEBUG = app.config.get(<span class="code-string">'DEBUG'</span>, <span class="code-keyword">False</span>)</pre>
-            </div>
-
-            <table class="config-table">
-                <thead>
-                    <tr>
-                        <th>Setting</th>
-                        <th>Development</th>
-                        <th>Production</th>
-                        <th>Testing</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="key">DEBUG</td>
-                        <td><span style="color: var(--green);">True</span></td>
-                        <td><span style="color: var(--red);">False</span></td>
-                        <td><span style="color: var(--blue);">False</span></td>
-                    </tr>
-                    <tr>
-                        <td class="key">DATABASE_URI</td>
-                        <td>sqlite:///dev.db</td>
-                        <td>PostgreSQL (real DB)</td>
-                        <td>sqlite:///:memory:</td>
-                    </tr>
-                    <tr>
-                        <td class="key">SECRET_KEY</td>
-                        <td>dev-key (simple)</td>
-                        <td>Complex .env</td>
-                        <td>test-key</td>
-                    </tr>
-                    <tr>
-                        <td class="key">TESTING</td>
-                        <td><span style="color: var(--red);">False</span></td>
-                        <td><span style="color: var(--red);">False</span></td>
-                        <td><span style="color: var(--green);">True</span></td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
 
-        <!-- Section 6: Virtual Environment -->
-        <div class="section">
-            <h2 class="section-title">
-                <span class="section-icon">🔒</span>
-                Virtual Environment (venv)
-            </h2>
-            <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
-                Isolates Python packages per project — prevents conflicts between projects.
-            </p>
-
-            <div class="venv-diagram">
-                <div class="venv-box">
-                    <div class="venv-box-title">❌ Without venv (Dangerous)</div>
-                    <div class="venv-item">System Python</div>
-                    <div class="venv-item">site-packages/</div>
-                    <div class="venv-item">flask==2.0</div>
-                    <div class="venv-item">requests==2.25</div>
-                    <div style="color: var(--red); font-size: 12px; margin-top: 12px;">⚠️ All projects share packages — version conflicts!</div>
-                </div>
-
-                <div class="venv-box">
-                    <div class="venv-box-title">✅ With venv (Safe)</div>
-                    <div class="venv-item isolated">venv/lib/python3.9/</div>
-                    <div class="venv-item isolated">flask==2.3</div>
-                    <div class="venv-item isolated">requests==2.28</div>
-                    <div style="color: var(--green); font-size: 12px; margin-top: 12px;">✓ Isolated, project-specific packages</div>
-                </div>
-            </div>
-
-            <h3 style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 16px; margin-top: 32px;">
-                venv Setup & Workflow
-            </h3>
-            <div class="code-block">
-                <span class="code-label">Bash – Terminal Commands</span>
-                <pre class="code"><span class="code-comment"># 1. Create virtual environment</span>
-python -m venv venv
-
-<span class="code-comment"># 2. Activate venv</span>
-<span class="code-keyword">source</span> venv/bin/activate  <span class="code-comment"># Linux/Mac</span>
-venv\Scripts\activate        <span class="code-comment"># Windows</span>
-
-<span class="code-comment"># 3. Install dependencies</span>
-pip install flask flask-sqlalchemy python-dotenv
-
-<span class="code-comment"># 4. Freeze dependencies</span>
-pip freeze > requirements.txt
-
-<span class="code-comment"># 5. Later: Restore dependencies</span>
-pip install -r requirements.txt
-
-<span class="code-comment"># 6. Deactivate venv</span>
-deactivate</pre>
-            </div>
-
-            <div class="concept-card">
-                <div class="concept-card-title">
-                    📦 requirements.txt Beispiel
-                </div>
-                <div class="concept-card-content">
-                    <pre class="code" style="background-color: var(--code-bg); padding: 12px; border-radius: 8px; font-size: 12px;">Flask==2.3.2
-Flask-SQLAlchemy==3.0.3
-python-dotenv==1.0.0
-gunicorn==20.1.0</pre>
-                </div>
-            </div>
-        </div>
-
-        <!-- Section 7: Summary -->
+        <!-- Section 5: Summary -->
         <div class="section">
             <h2 class="section-title">
                 <span class="section-icon">✅</span>
@@ -1048,7 +875,7 @@ gunicorn==20.1.0</pre>
                     <div class="concept-card-title">⚙️ Configuration</div>
                     <div class="concept-card-content">
                         <ul style="margin-left: 20px;">
-                            <li>config.py with Development/Production/Testing</li>
+                            <li>config.py with Dev/Prod/Testing</li>
                             <li>Environment variables via .env</li>
                             <li>app.config.from_object() to load</li>
                         </ul>
@@ -1090,8 +917,676 @@ gunicorn==20.1.0</pre>
             </div>
         </div>
 
-        <!-- Footer spacer -->
         <div style="height: 40px;"></div>
     </div>
+
+    <script>
+        // File tree data structure with detailed information
+        const fileTreeData = {
+            name: 'flask_project/',
+            type: 'folder',
+            icon: '📁',
+            children: [
+                {
+                    name: 'app/',
+                    type: 'folder',
+                    icon: '📁',
+                    description: 'Main application package containing all Flask app code',
+                    children: [
+                        {
+                            name: '__init__.py',
+                            type: 'python',
+                            icon: '📦',
+                            description: 'App Factory that creates and configures the Flask application instance',
+                            codeExample: `from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
+
+def create_app(config_name='default'):
+    app = Flask(__name__)
+    app.config.from_object(config[config_name])
+
+    db.init_app(app)
+
+    from .routes.auth import auth_bp
+    from .routes.api import api_bp
+
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(api_bp)
+
+    return app`,
+                            relationships: [
+                                { type: 'imports', label: 'flask, flask_sqlalchemy' },
+                                { type: 'imported-by', label: 'run.py', file: 'run.py' },
+                                { type: 'imports', label: 'routes/auth.py, routes/api.py' },
+                                { type: 'imports', label: 'config.py' },
+                                { type: 'imports', label: 'models.py' }
+                            ]
+                        },
+                        {
+                            name: 'models.py',
+                            type: 'python',
+                            icon: '🗄️',
+                            description: 'SQLAlchemy ORM database models (User, Post, etc.) defining table structure and relationships',
+                            codeExample: `from app import db
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True)
+    username = db.Column(db.String(80))
+    posts = db.relationship('Post', backref='author')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'email': self.email,
+            'username': self.username
+        }
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200))
+    content = db.Column(db.Text)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))`,
+                            relationships: [
+                                { type: 'imported-by', label: 'routes/auth.py' },
+                                { type: 'imported-by', label: 'routes/api.py' },
+                                { type: 'imports', label: 'app/__init__.py (db instance)' }
+                            ]
+                        },
+                        {
+                            name: 'extensions.py',
+                            type: 'python',
+                            icon: '🔧',
+                            description: 'Optional file containing singleton instances of Flask extensions (db, migrate, login_manager, etc.) for import in other modules',
+                            codeExample: `from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_login import LoginManager
+
+db = SQLAlchemy()
+migrate = Migrate()
+login_manager = LoginManager()
+
+# In create_app():
+# db.init_app(app)
+# migrate.init_app(app, db)
+# login_manager.init_app(app)`,
+                            relationships: [
+                                { type: 'imported-by', label: '__init__.py' },
+                                { type: 'imported-by', label: 'models.py' }
+                            ]
+                        },
+                        {
+                            name: 'routes/',
+                            type: 'folder',
+                            icon: '📁',
+                            description: 'Package containing Blueprint modules for organizing routes by feature (auth, api, etc.)',
+                            children: [
+                                {
+                                    name: '__init__.py',
+                                    type: 'python',
+                                    icon: '📄',
+                                    description: 'Makes routes a Python package and optionally imports/registers blueprints',
+                                    relationships: [
+                                        { type: 'contains', label: 'auth.py, api.py' }
+                                    ]
+                                },
+                                {
+                                    name: 'auth.py',
+                                    type: 'python',
+                                    icon: '🔐',
+                                    description: 'Authentication Blueprint with routes for login, register, logout, password reset. Uses User model for validation.',
+                                    codeExample: `from flask import Blueprint, request, jsonify
+from app.models import User
+
+auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
+
+@auth_bp.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    user = User(email=data['email'], username=data['username'])
+    db.session.add(user)
+    db.session.commit()
+    return {'msg': 'User created'}, 201
+
+@auth_bp.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    user = User.query.filter_by(email=data['email']).first()
+    if user and user.check_password(data['password']):
+        return {'token': 'jwt_token_here'}
+    return {'error': 'Invalid credentials'}, 401`,
+                                    relationships: [
+                                        { type: 'imported-by', label: '__init__.py' },
+                                        { type: 'imports', label: 'models.py (User)' },
+                                        { type: 'contains', label: '/auth/register, /auth/login, /auth/logout' }
+                                    ]
+                                },
+                                {
+                                    name: 'api.py',
+                                    type: 'python',
+                                    icon: '🔌',
+                                    description: 'REST API Blueprint with JSON endpoints for CRUD operations. Uses models to query and return data as JSON.',
+                                    codeExample: `from flask import Blueprint, jsonify, request
+from app.models import User, Post
+
+api_bp = Blueprint('api', __name__, url_prefix='/api')
+
+@api_bp.route('/users', methods=['GET'])
+def get_users():
+    users = User.query.all()
+    return jsonify([u.to_dict() for u in users])
+
+@api_bp.route('/users/<id>', methods=['GET'])
+def get_user(id):
+    user = User.query.get_or_404(id)
+    return jsonify(user.to_dict())
+
+@api_bp.route('/posts', methods=['GET'])
+def get_posts():
+    posts = Post.query.all()
+    return jsonify([p.to_dict() for p in posts])`,
+                                    relationships: [
+                                        { type: 'imported-by', label: '__init__.py' },
+                                        { type: 'imports', label: 'models.py (User, Post)' },
+                                        { type: 'contains', label: '/api/users, /api/posts' }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            name: 'templates/',
+                            type: 'folder',
+                            icon: '📁',
+                            description: 'Jinja2 HTML templates for rendering pages. base.html provides template inheritance structure.',
+                            children: [
+                                {
+                                    name: 'base.html',
+                                    type: 'template',
+                                    icon: '📄',
+                                    description: 'Base Jinja2 template with common layout (navigation, footer, CSS links). Extended by all other templates.',
+                                    codeExample: `<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}My App{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav>...</nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>...</footer>
+</body>
+</html>`,
+                                    relationships: [
+                                        { type: 'extends', label: 'index.html, auth/login.html, auth/register.html' }
+                                    ]
+                                },
+                                {
+                                    name: 'index.html',
+                                    type: 'template',
+                                    icon: '🏠',
+                                    description: 'Homepage template extending base.html. Displayed when user visits /',
+                                    codeExample: `{% extends "base.html" %}
+
+{% block title %}Home - My App{% endblock %}
+
+{% block content %}
+<h1>Welcome to Flask App</h1>
+<p>This is the homepage.</p>
+{% endblock %}`,
+                                    relationships: [
+                                        { type: 'extends', label: 'base.html' },
+                                        { type: 'rendered-by', label: 'routes (index route)' }
+                                    ]
+                                },
+                                {
+                                    name: 'auth/',
+                                    type: 'folder',
+                                    icon: '📁',
+                                    description: 'Subfolder containing authentication-related templates',
+                                    children: [
+                                        {
+                                            name: 'login.html',
+                                            type: 'template',
+                                            icon: '🔐',
+                                            description: 'Login form template. Extends base.html and submits to /auth/login route.',
+                                            relationships: [
+                                                { type: 'extends', label: 'base.html' },
+                                                { type: 'submits-to', label: 'routes/auth.py (login)' }
+                                            ]
+                                        },
+                                        {
+                                            name: 'register.html',
+                                            type: 'template',
+                                            icon: '📝',
+                                            description: 'Registration form template. Extends base.html and submits to /auth/register route.',
+                                            relationships: [
+                                                { type: 'extends', label: 'base.html' },
+                                                { type: 'submits-to', label: 'routes/auth.py (register)' }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            name: 'static/',
+                            type: 'folder',
+                            icon: '📁',
+                            description: 'Static files served directly by Flask (CSS, JavaScript, images). Not processed.',
+                            children: [
+                                {
+                                    name: 'css/',
+                                    type: 'folder',
+                                    icon: '📁',
+                                    description: 'Cascading Style Sheets for frontend styling'
+                                },
+                                {
+                                    name: 'js/',
+                                    type: 'folder',
+                                    icon: '📁',
+                                    description: 'JavaScript files for frontend interactivity'
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'tests/',
+                    type: 'folder',
+                    icon: '🧪',
+                    description: 'pytest test files for unit and integration testing',
+                    children: [
+                        {
+                            name: '__init__.py',
+                            type: 'python',
+                            icon: '📄',
+                            description: 'Makes tests a Python package',
+                        },
+                        {
+                            name: 'conftest.py',
+                            type: 'python',
+                            icon: '⚙️',
+                            description: 'pytest configuration file defining fixtures (test app, database) used across test files',
+                            codeExample: `import pytest
+from app import create_app, db
+
+@pytest.fixture
+def app():
+    app = create_app('testing')
+
+    with app.app_context():
+        db.create_all()
+        yield app
+        db.session.remove()
+        db.drop_all()
+
+@pytest.fixture
+def client(app):
+    return app.test_client()
+
+@pytest.fixture
+def runner(app):
+    return app.test_cli_runner()`,
+                            relationships: [
+                                { type: 'imports', label: '__init__.py (create_app, db)' },
+                                { type: 'used-by', label: 'test_auth.py, other test files' }
+                            ]
+                        },
+                        {
+                            name: 'test_auth.py',
+                            type: 'python',
+                            icon: '🧪',
+                            description: 'Unit tests for authentication routes. Uses fixtures from conftest.py',
+                            codeExample: `import pytest
+
+def test_register(client):
+    response = client.post('/auth/register', json={
+        'email': 'test@example.com',
+        'username': 'testuser',
+        'password': 'password123'
+    })
+    assert response.status_code == 201
+
+def test_login(client):
+    client.post('/auth/register', json={...})
+    response = client.post('/auth/login', json={
+        'email': 'test@example.com',
+        'password': 'password123'
+    })
+    assert response.status_code == 200
+    assert 'token' in response.get_json()`,
+                            relationships: [
+                                { type: 'uses', label: 'conftest.py (client fixture)' },
+                                { type: 'tests', label: 'routes/auth.py' }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'config.py',
+                    type: 'config',
+                    icon: '⚙️',
+                    description: 'Configuration classes for Development, Production, and Testing environments. Loaded by app/__init__.py',
+                    codeExample: `import os
+
+class Config:
+    """Base configuration"""
+    SECRET_KEY = os.getenv('SECRET_KEY', 'dev-key')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+class DevelopmentConfig(Config):
+    DEBUG = True
+    TESTING = False
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///dev.db'
+
+class ProductionConfig(Config):
+    DEBUG = False
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
+
+config = {
+    'development': DevelopmentConfig,
+    'production': ProductionConfig,
+    'default': DevelopmentConfig
+}`,
+                    relationships: [
+                        { type: 'imported-by', label: '__init__.py' },
+                        { type: 'uses', label: '.env (for SECRET_KEY, DATABASE_URL)' }
+                    ]
+                },
+                {
+                    name: 'run.py',
+                    type: 'python',
+                    icon: '▶️',
+                    description: 'Entry point script. Run with "python run.py" to start the Flask development server.',
+                    codeExample: `import os
+from app import create_app, db
+
+config_name = os.getenv('FLASK_ENV', 'default')
+app = create_app(config_name)
+
+with app.app_context():
+    db.create_all()
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0', port=5000)`,
+                    relationships: [
+                        { type: 'imports', label: '__init__.py (create_app, db)' },
+                        { type: 'reads', label: '.env (FLASK_ENV)' },
+                        { type: 'uses', label: 'config.py (via create_app)' }
+                    ]
+                },
+                {
+                    name: 'requirements.txt',
+                    type: 'config',
+                    icon: '📋',
+                    description: 'Python package dependencies with version numbers. Generated with "pip freeze > requirements.txt"',
+                    codeExample: `Flask==2.3.2
+Flask-SQLAlchemy==3.0.3
+Flask-Migrate==4.0.4
+Flask-Login==0.6.2
+python-dotenv==1.0.0
+gunicorn==20.1.0
+pytest==7.4.0
+pytest-cov==4.1.0`,
+                    relationships: [
+                        { type: 'defines', label: 'All project dependencies' },
+                        { type: 'installed-by', label: 'pip install -r requirements.txt' }
+                    ]
+                },
+                {
+                    name: '.env',
+                    type: 'env',
+                    icon: '🔑',
+                    description: 'Environment variables file (NOT committed to Git). Contains secrets: DATABASE_URL, SECRET_KEY, API keys, etc.',
+                    codeExample: `FLASK_ENV=development
+FLASK_APP=run.py
+SECRET_KEY=super-secret-key-change-in-prod
+DATABASE_URL=postgresql://user:pass@localhost/mydb
+DEBUG=True
+API_KEY=your-api-key-here`,
+                    relationships: [
+                        { type: 'read-by', label: 'config.py' },
+                        { type: 'read-by', label: 'run.py' },
+                        { type: 'ignored-by', label: '.gitignore' }
+                    ]
+                },
+                {
+                    name: '.gitignore',
+                    type: 'config',
+                    icon: '🚫',
+                    description: 'Git configuration to exclude files from version control (secrets, dependencies, cache)',
+                    codeExample: `# Virtual environment
+venv/
+env/
+ENV/
+
+# Environment variables
+.env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Flask
+instance/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE
+.vscode/
+.idea/
+*.swp`,
+                    relationships: [
+                        { type: 'ignores', label: '.env, venv/, __pycache__/, *.pyc' }
+                    ]
+                },
+                {
+                    name: 'migrations/',
+                    type: 'folder',
+                    icon: '📁',
+                    description: 'Database migration files created by Flask-Migrate. Tracks schema changes over time.',
+                    children: [
+                        {
+                            name: 'versions/',
+                            type: 'folder',
+                            icon: '📁',
+                            description: 'Individual migration scripts numbered sequentially (001, 002, etc.)'
+                        }
+                    ]
+                },
+                {
+                    name: 'README.md',
+                    type: 'config',
+                    icon: '📖',
+                    description: 'Project documentation in Markdown format. Includes setup instructions, API docs, and usage examples.',
+                    relationships: [
+                        { type: 'documents', label: 'Entire project' }
+                    ]
+                }
+            ]
+        };
+
+        // Render the file tree
+        function renderFileTree(data, container = null, depth = 0) {
+            if (!container) {
+                container = document.getElementById('fileTree');
+                container.innerHTML = '';
+            }
+
+            const isRoot = depth === 0;
+            if (isRoot) {
+                renderItem(data, container, depth);
+            } else if (data.children) {
+                data.children.forEach(child => {
+                    renderItem(child, container, depth);
+                });
+            }
+        }
+
+        function renderItem(item, container, depth) {
+            const indent = depth * 20;
+
+            if (item.children) {
+                // Render folder as details/summary
+                const details = document.createElement('details');
+                details.style.marginLeft = indent + 'px';
+
+                const summary = document.createElement('summary');
+                const icon = document.createElement('span');
+                icon.className = 'tree-icon';
+                icon.textContent = item.icon;
+
+                const name = document.createElement('span');
+                name.textContent = item.name;
+
+                summary.appendChild(icon);
+                summary.appendChild(name);
+                details.appendChild(summary);
+
+                // Add content container
+                const content = document.createElement('div');
+                content.style.marginLeft = '0';
+
+                item.children.forEach(child => {
+                    renderItem(child, content, depth + 1);
+                });
+
+                details.appendChild(content);
+                container.appendChild(details);
+            } else {
+                // Render file as clickable item
+                const itemEl = document.createElement('div');
+                itemEl.className = `tree-item clickable ${item.type}`;
+                itemEl.style.marginLeft = indent + 'px';
+
+                const icon = document.createElement('span');
+                icon.className = 'tree-icon';
+                icon.textContent = item.icon;
+
+                const name = document.createElement('span');
+                name.textContent = item.name;
+
+                itemEl.appendChild(icon);
+                itemEl.appendChild(name);
+
+                itemEl.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openModal(item);
+                });
+
+                container.appendChild(itemEl);
+            }
+        }
+
+        // Modal functionality
+        function openModal(item) {
+            const modal = document.getElementById('fileModal');
+            const icon = document.getElementById('modalIcon');
+            const name = document.getElementById('modalName');
+            const body = document.getElementById('modalBody');
+
+            icon.textContent = item.icon;
+            name.textContent = item.name;
+
+            let content = `
+                <div class="modal-section">
+                    <span class="file-type-badge ${item.type}">${getTypeBadgeText(item.type)}</span>
+                </div>
+            `;
+
+            if (item.description) {
+                content += `
+                    <div class="modal-section">
+                        <div class="modal-section-title">Description</div>
+                        <p class="description">${item.description}</p>
+                    </div>
+                `;
+            }
+
+            if (item.codeExample) {
+                content += `
+                    <div class="modal-section">
+                        <div class="modal-section-title">Code Example</div>
+                        <div class="code-example">
+                            <span class="code-example-label">Python</span>
+                            <pre style="margin: 0; white-space: pre-wrap; word-break: break-word;">${escapeHtml(item.codeExample)}</pre>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (item.relationships && item.relationships.length > 0) {
+                content += `
+                    <div class="modal-section">
+                        <div class="modal-section-title">Relationships & Connections</div>
+                        <div class="relationships">
+                            ${item.relationships.map(rel => `
+                                <div class="relationship ${rel.type}">
+                                    <span class="relationship-arrow">→</span>
+                                    <span>${rel.label}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            body.innerHTML = content;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('fileModal');
+            modal.classList.remove('active');
+        }
+
+        function getTypeBadgeText(type) {
+            const badges = {
+                'python': 'Python Module',
+                'template': 'Jinja2 Template',
+                'config': 'Configuration',
+                'static': 'Static Asset',
+                'env': 'Environment File',
+                'folder': 'Folder'
+            };
+            return badges[type] || 'File';
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('fileModal');
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Initialize file tree on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderFileTree(fileTreeData);
+        });
+    </script>
 </body>
 </html>

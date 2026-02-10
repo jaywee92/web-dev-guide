@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,9 +20,11 @@
             --green: #4ade80;
             --green-dim: rgba(74, 222, 128, 0.12);
             --orange: #f59e42;
+            --orange-dim: rgba(245, 158, 66, 0.12);
             --purple: #a78bfa;
             --purple-dim: rgba(167, 139, 250, 0.12);
             --red: #f87171;
+            --red-dim: rgba(248, 113, 113, 0.12);
             --white: #ffffff;
             --code-bg: #13151e;
             --radius: 14px;
@@ -154,7 +156,7 @@
         }
 
         .layer.server {
-            background-color: var(--orange-dim, rgba(245, 158, 66, 0.12));
+            background-color: var(--orange-dim);
             border-color: var(--orange);
             color: var(--orange);
             margin-left: 24px;
@@ -289,7 +291,7 @@
 
         .blueprint-main {
             padding: 24px;
-            background: linear-gradient(135deg, var(--yellow-dim), var(--orange-dim, rgba(245, 158, 66, 0.12)));
+            background: linear-gradient(135deg, var(--yellow-dim), var(--orange-dim));
             border: 2px solid var(--yellow);
             border-radius: var(--radius);
             text-align: center;
@@ -358,13 +360,13 @@
 
         .middleware-step:hover {
             border-color: var(--red);
-            background-color: rgba(248, 113, 113, 0.12);
+            background-color: var(--red-dim);
         }
 
         .middleware-step.active {
             border-color: var(--red);
             color: var(--red);
-            background-color: rgba(248, 113, 113, 0.12);
+            background-color: var(--red-dim);
         }
 
         .middleware-arrow {
@@ -385,16 +387,76 @@
             }
         }
 
-        .code-block {
+        .code-block-wrapper {
             background-color: var(--code-bg);
             border: 1px solid var(--border);
             border-radius: var(--radius);
+            margin-bottom: 24px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .code-block-header {
+            background-color: var(--surface-bright);
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .code-block-header .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .code-block-header .dot.python {
+            background-color: var(--blue);
+        }
+
+        .code-block {
             padding: 20px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 13px;
             overflow-x: auto;
-            margin-bottom: 24px;
+            display: flex;
+            gap: 0;
             line-height: 1.5;
+            color: var(--text);
+        }
+
+        .code-line-numbers {
+            display: flex;
+            flex-direction: column;
+            padding-right: 20px;
+            border-right: 1px solid var(--border);
+            color: #555a73;
+            text-align: right;
+            user-select: none;
+            min-width: 50px;
+        }
+
+        .code-line-number {
+            height: 21.75px;
+        }
+
+        .code-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding-left: 20px;
+        }
+
+        .code-line {
+            height: 21.75px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .kw { color: var(--purple); }
@@ -402,7 +464,8 @@
         .str { color: var(--green); }
         .dec { color: var(--yellow); }
         .var { color: var(--orange); }
-        .comment { color: var(--text-muted); font-style: italic; }
+        .num { color: var(--orange); }
+        .comment { color: #555a73; font-style: italic; }
 
         .description {
             padding: 20px;
@@ -547,14 +610,31 @@
                 <strong>What is WSGI?</strong> Web Server Gateway Interface (WSGI) is a standard interface between web servers and Python web applications. Werkzeug, the library behind Flask, implements this interface.
             </div>
 
-            <div class="code-block">
-<span class="comment"># Flask uses Werkzeug's WSGI implementation</span>
-<span class="kw">from</span> <span class="var">werkzeug</span>.<span class="var">serving</span> <span class="kw">import</span> <span class="fn">run_simple</span>
-
-<span class="var">app</span> = <span class="fn">Flask</span>(<span class="str">__name__</span>)
-
-<span class="comment"># Under the hood: app is a WSGI callable</span>
-<span class="fn">run_simple</span>(<span class="str">'127.0.0.1'</span>, <span class="str">5000</span>, <span class="var">app</span>)
+            <div class="code-block-wrapper">
+                <div class="code-block-header">
+                    <span class="dot python"></span>
+                    <span>wsgi_example.py</span>
+                </div>
+                <div class="code-block">
+                    <div class="code-line-numbers">
+                        <div class="code-line-number">1</div>
+                        <div class="code-line-number">2</div>
+                        <div class="code-line-number">3</div>
+                        <div class="code-line-number">4</div>
+                        <div class="code-line-number">5</div>
+                        <div class="code-line-number">6</div>
+                        <div class="code-line-number">7</div>
+                    </div>
+                    <div class="code-content">
+                        <div class="code-line"><span class="comment"># Flask uses Werkzeug's WSGI implementation</span></div>
+                        <div class="code-line"><span class="kw">from</span> <span class="var">werkzeug</span>.<span class="var">serving</span> <span class="kw">import</span> <span class="fn">run_simple</span></div>
+                        <div class="code-line"><span class="kw">from</span> <span class="var">flask</span> <span class="kw">import</span> <span class="fn">Flask</span></div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="var">app</span> = <span class="fn">Flask</span>(<span class="str">'__main__'</span>)</div>
+                        <div class="code-line"><span class="comment"># Under the hood: app is a WSGI callable</span></div>
+                        <div class="code-line"><span class="fn">run_simple</span>(<span class="str">'127.0.0.1'</span>, <span class="num">5000</span>, <span class="var">app</span>)</div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -575,7 +655,7 @@
 
                 <div class="flow-step">
                     <div class="flow-step-icon">📦</div>
-                    <div class="flow-step-title">2. Request-Objekt</div>
+                    <div class="flow-step-title">2. Request Object</div>
                     <div class="flow-step-desc">Flask creates a Request object with all data</div>
                 </div>
             </div>
@@ -584,7 +664,7 @@
                 <div class="flow-step">
                     <div class="flow-step-icon">🗺️</div>
                     <div class="flow-step-title">3. URL Routing</div>
-                    <div class="flow-step-desc">Werkzeug Router matches the URL with a route</div>
+                    <div class="flow-step-desc">Werkzeug router matches the URL with a route</div>
                 </div>
 
                 <div class="flow-arrow">→</div>
@@ -599,7 +679,7 @@
             <div class="flow-diagram">
                 <div class="flow-step">
                     <div class="flow-step-icon">📝</div>
-                    <div class="flow-step-title">5. Response erstellen</div>
+                    <div class="flow-step-title">5. Response Created</div>
                     <div class="flow-step-desc">The view returns data, Flask creates the Response</div>
                 </div>
 
@@ -612,17 +692,37 @@
                 </div>
             </div>
 
-            <div class="code-block">
-<span class="dec">@app.route</span>(<span class="str">'/user/&lt;int:user_id&gt;'</span>)
-<span class="kw">def</span> <span class="fn">get_user</span>(<span class="var">user_id</span>):
-    <span class="comment"># Flask calls this function when the route matches</span>
-    <span class="kw">return</span> <span class="fn">jsonify</span>({<span class="str">'id'</span>: <span class="var">user_id</span>})
-
-<span class="comment"># When browser requests /user/123:</span>
-<span class="comment"># 1. WSGI receives request</span>
-<span class="comment"># 2. Flask Route '/user/&lt;int:user_id&gt;' matches</span>
-<span class="comment"># 3. get_user(123) is called</span>
-<span class="comment"># 4. Response is created and sent back</span>
+            <div class="code-block-wrapper">
+                <div class="code-block-header">
+                    <span class="dot python"></span>
+                    <span>app.py</span>
+                </div>
+                <div class="code-block">
+                    <div class="code-line-numbers">
+                        <div class="code-line-number">1</div>
+                        <div class="code-line-number">2</div>
+                        <div class="code-line-number">3</div>
+                        <div class="code-line-number">4</div>
+                        <div class="code-line-number">5</div>
+                        <div class="code-line-number">6</div>
+                        <div class="code-line-number">7</div>
+                        <div class="code-line-number">8</div>
+                        <div class="code-line-number">9</div>
+                        <div class="code-line-number">10</div>
+                    </div>
+                    <div class="code-content">
+                        <div class="code-line"><span class="dec">@app.route</span>(<span class="str">'/user/&lt;int:user_id&gt;'</span>)</div>
+                        <div class="code-line"><span class="kw">def</span> <span class="fn">get_user</span>(<span class="var">user_id</span>):</div>
+                        <div class="code-line">    <span class="comment"># Flask calls this function when the route matches</span></div>
+                        <div class="code-line">    <span class="kw">return</span> <span class="fn">jsonify</span>({<span class="str">'id'</span>: <span class="var">user_id</span>})</div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="comment"># When browser requests /user/123:</span></div>
+                        <div class="code-line"><span class="comment"># 1. WSGI receives request</span></div>
+                        <div class="code-line"><span class="comment"># 2. Flask Route '/user/&lt;int:user_id&gt;' matches</span></div>
+                        <div class="code-line"><span class="comment"># 3. get_user(123) is called</span></div>
+                        <div class="code-line"><span class="comment"># 4. Response is created and sent back</span></div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -672,7 +772,7 @@
                 <div class="component">
                     <div class="component-icon">📁</div>
                     <div class="component-title">Static Files</div>
-                    <div class="component-desc">CSS, JavaScript, Bilder und andere statische Dateien.</div>
+                    <div class="component-desc">CSS, JavaScript, images, and other static files.</div>
                 </div>
 
                 <div class="component">
@@ -682,24 +782,49 @@
                 </div>
             </div>
 
-            <div class="code-block">
-<span class="kw">from</span> <span class="var">flask</span> <span class="kw">import</span> <span class="fn">Flask</span>
-
-<span class="var">app</span> = <span class="fn">Flask</span>(<span class="str">__name__</span>)
-
-<span class="comment"># Config</span>
-<span class="var">app</span>.<span class="var">config</span>[<span class="str">'DEBUG'</span>] = <span class="kw">True</span>
-<span class="var">app</span>.<span class="var">config</span>[<span class="str">'SECRET_KEY'</span>] = <span class="str">'secret'</span>
-
-<span class="comment"># URL Map (automatically created with @app.route)</span>
-<span class="dec">@app.route</span>(<span class="str">'/'</span>)
-<span class="kw">def</span> <span class="fn">home</span>():
-    <span class="kw">return</span> <span class="str">'Hello World'</span>
-
-<span class="comment"># Error handler</span>
-<span class="dec">@app.errorhandler</span>(<span class="str">404</span>)
-<span class="kw">def</span> <span class="fn">not_found</span>(<span class="var">error</span>):
-    <span class="kw">return</span> <span class="str">'Page not found'</span>, <span class="str">404</span>
+            <div class="code-block-wrapper">
+                <div class="code-block-header">
+                    <span class="dot python"></span>
+                    <span>app.py</span>
+                </div>
+                <div class="code-block">
+                    <div class="code-line-numbers">
+                        <div class="code-line-number">1</div>
+                        <div class="code-line-number">2</div>
+                        <div class="code-line-number">3</div>
+                        <div class="code-line-number">4</div>
+                        <div class="code-line-number">5</div>
+                        <div class="code-line-number">6</div>
+                        <div class="code-line-number">7</div>
+                        <div class="code-line-number">8</div>
+                        <div class="code-line-number">9</div>
+                        <div class="code-line-number">10</div>
+                        <div class="code-line-number">11</div>
+                        <div class="code-line-number">12</div>
+                        <div class="code-line-number">13</div>
+                        <div class="code-line-number">14</div>
+                        <div class="code-line-number">15</div>
+                    </div>
+                    <div class="code-content">
+                        <div class="code-line"><span class="kw">from</span> <span class="var">flask</span> <span class="kw">import</span> <span class="fn">Flask</span></div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="var">app</span> = <span class="fn">Flask</span>(<span class="str">'__name__'</span>)</div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="comment"># Config</span></div>
+                        <div class="code-line"><span class="var">app</span>.<span class="var">config</span>[<span class="str">'DEBUG'</span>] = <span class="kw">True</span></div>
+                        <div class="code-line"><span class="var">app</span>.<span class="var">config</span>[<span class="str">'SECRET_KEY'</span>] = <span class="str">'secret'</span></div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="comment"># URL Map (automatically created with @app.route)</span></div>
+                        <div class="code-line"><span class="dec">@app.route</span>(<span class="str">'/'</span>)</div>
+                        <div class="code-line"><span class="kw">def</span> <span class="fn">home</span>():</div>
+                        <div class="code-line">    <span class="kw">return</span> <span class="str">'Hello World'</span></div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="comment"># Error handler</span></div>
+                        <div class="code-line"><span class="dec">@app.errorhandler</span>(<span class="num">404</span>)</div>
+                        <div class="code-line"><span class="kw">def</span> <span class="fn">not_found</span>(<span class="var">error</span>):</div>
+                        <div class="code-line">    <span class="kw">return</span> <span class="str">'Page not found'</span>, <span class="num">404</span></div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -725,7 +850,7 @@
                         <div class="blueprint-module">
                             <div class="blueprint-module-icon">📡</div>
                             <div class="blueprint-module-title">api</div>
-                            <div class="blueprint-module-desc">REST API Endpoints</div>
+                            <div class="blueprint-module-desc">REST API endpoints</div>
                         </div>
 
                         <div class="blueprint-module">
@@ -737,19 +862,41 @@
                 </div>
             </div>
 
-            <div class="code-block">
-<span class="comment"># auth/blueprint.py</span>
-<span class="kw">from</span> <span class="var">flask</span> <span class="kw">import</span> <span class="fn">Blueprint</span>
-
-<span class="var">auth_bp</span> = <span class="fn">Blueprint</span>(<span class="str">'auth'</span>, <span class="str">__name__</span>)
-
-<span class="dec">@auth_bp.route</span>(<span class="str">'/login'</span>, <span class="var">methods</span>=<span class="str">['POST']</span>)
-<span class="kw">def</span> <span class="fn">login</span>():
-    <span class="kw">return</span> <span class="fn">jsonify</span>({<span class="str">'status'</span>: <span class="str">'logged in'</span>})
-
-<span class="comment"># app.py</span>
-<span class="var">app</span> = <span class="fn">Flask</span>(<span class="str">__name__</span>)
-<span class="var">app</span>.<span class="fn">register_blueprint</span>(<span class="var">auth_bp</span>, <span class="var">url_prefix</span>=<span class="str">'/auth'</span>)
+            <div class="code-block-wrapper">
+                <div class="code-block-header">
+                    <span class="dot python"></span>
+                    <span>auth/blueprint.py</span>
+                </div>
+                <div class="code-block">
+                    <div class="code-line-numbers">
+                        <div class="code-line-number">1</div>
+                        <div class="code-line-number">2</div>
+                        <div class="code-line-number">3</div>
+                        <div class="code-line-number">4</div>
+                        <div class="code-line-number">5</div>
+                        <div class="code-line-number">6</div>
+                        <div class="code-line-number">7</div>
+                        <div class="code-line-number">8</div>
+                        <div class="code-line-number">9</div>
+                        <div class="code-line-number">10</div>
+                        <div class="code-line-number">11</div>
+                        <div class="code-line-number">12</div>
+                    </div>
+                    <div class="code-content">
+                        <div class="code-line"><span class="comment"># auth/blueprint.py</span></div>
+                        <div class="code-line"><span class="kw">from</span> <span class="var">flask</span> <span class="kw">import</span> <span class="fn">Blueprint</span></div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="var">auth_bp</span> = <span class="fn">Blueprint</span>(<span class="str">'auth'</span>, <span class="str">'__name__'</span>)</div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="dec">@auth_bp.route</span>(<span class="str">'/login'</span>, <span class="var">methods</span>=<span class="str">['POST']</span>)</div>
+                        <div class="code-line"><span class="kw">def</span> <span class="fn">login</span>():</div>
+                        <div class="code-line">    <span class="kw">return</span> <span class="fn">jsonify</span>({<span class="str">'status'</span>: <span class="str">'logged in'</span>})</div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="comment"># app.py</span></div>
+                        <div class="code-line"><span class="var">app</span> = <span class="fn">Flask</span>(<span class="str">'__main__'</span>)</div>
+                        <div class="code-line"><span class="var">app</span>.<span class="fn">register_blueprint</span>(<span class="var">auth_bp</span>, <span class="var">url_prefix</span>=<span class="str">'/auth'</span>)</div>
+                    </div>
+                </div>
             </div>
 
             <div class="info-box">
@@ -815,30 +962,55 @@
                 </div>
             </div>
 
-            <div class="code-block">
-<span class="dec">@app.before_request</span>
-<span class="kw">def</span> <span class="fn">before_request</span>():
-    <span class="comment"># Check authentication</span>
-    <span class="kw">if</span> <span class="var">current_user</span> <span class="kw">is</span> <span class="kw">None</span>:
-        <span class="kw">return</span> <span class="fn">redirect</span>(<span class="str">'/login'</span>)
-
-<span class="dec">@app.after_request</span>
-<span class="kw">def</span> <span class="fn">after_request</span>(<span class="var">response</span>):
-    <span class="comment"># Add CORS headers</span>
-    <span class="var">response</span>.<span class="var">headers</span>[<span class="str">'Access-Control-Allow-Origin'</span>] = <span class="str">'*'</span>
-    <span class="kw">return</span> <span class="var">response</span>
-
-<span class="dec">@app.teardown_request</span>
-<span class="kw">def</span> <span class="fn">teardown</span>(<span class="var">exception</span>=<span class="kw">None</span>):
-    <span class="comment"># Close database connection</span>
-    <span class="kw">if</span> <span class="var">db</span> <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span>:
-        <span class="var">db</span>.<span class="fn">close</span>()
+            <div class="code-block-wrapper">
+                <div class="code-block-header">
+                    <span class="dot python"></span>
+                    <span>app.py</span>
+                </div>
+                <div class="code-block">
+                    <div class="code-line-numbers">
+                        <div class="code-line-number">1</div>
+                        <div class="code-line-number">2</div>
+                        <div class="code-line-number">3</div>
+                        <div class="code-line-number">4</div>
+                        <div class="code-line-number">5</div>
+                        <div class="code-line-number">6</div>
+                        <div class="code-line-number">7</div>
+                        <div class="code-line-number">8</div>
+                        <div class="code-line-number">9</div>
+                        <div class="code-line-number">10</div>
+                        <div class="code-line-number">11</div>
+                        <div class="code-line-number">12</div>
+                        <div class="code-line-number">13</div>
+                        <div class="code-line-number">14</div>
+                        <div class="code-line-number">15</div>
+                    </div>
+                    <div class="code-content">
+                        <div class="code-line"><span class="dec">@app.before_request</span></div>
+                        <div class="code-line"><span class="kw">def</span> <span class="fn">before_request</span>():</div>
+                        <div class="code-line">    <span class="comment"># Check authentication</span></div>
+                        <div class="code-line">    <span class="kw">if</span> <span class="var">current_user</span> <span class="kw">is</span> <span class="kw">None</span>:</div>
+                        <div class="code-line">        <span class="kw">return</span> <span class="fn">redirect</span>(<span class="str">'/login'</span>)</div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="dec">@app.after_request</span></div>
+                        <div class="code-line"><span class="kw">def</span> <span class="fn">after_request</span>(<span class="var">response</span>):</div>
+                        <div class="code-line">    <span class="comment"># Add CORS headers</span></div>
+                        <div class="code-line">    <span class="var">response</span>.<span class="var">headers</span>[<span class="str">'Access-Control-Allow-Origin'</span>] = <span class="str">'*'</span></div>
+                        <div class="code-line">    <span class="kw">return</span> <span class="var">response</span></div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="dec">@app.teardown_request</span></div>
+                        <div class="code-line"><span class="kw">def</span> <span class="fn">teardown</span>(<span class="var">exception</span>=<span class="kw">None</span>):</div>
+                        <div class="code-line">    <span class="comment"># Close database connection</span></div>
+                        <div class="code-line">    <span class="kw">if</span> <span class="var">db</span> <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span>:</div>
+                        <div class="code-line">        <span class="var">db</span>.<span class="fn">close</span>()</div>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- Advanced Concepts Section -->
         <section>
-            <h2><span class="section-icon">🚀</span> More important concepts</h2>
+            <h2><span class="section-icon">🚀</span> Advanced Concepts</h2>
 
             <div class="components-grid">
                 <div class="component">
@@ -882,23 +1054,47 @@
                 <strong>Context Isolation:</strong> Flask isolates each request in its own context. This means variables like <span class="highlight">request</span>, <span class="highlight">g</span>, and <span class="highlight">session</span> always refer to the current request without passing them as parameters. This is one of Flask's most powerful features!
             </div>
 
-            <div class="code-block">
-<span class="comment"># URL building</span>
-<span class="dec">@app.route</span>(<span class="str">'/user/&lt;int:user_id&gt;'</span>)
-<span class="kw">def</span> <span class="fn">user_profile</span>(<span class="var">user_id</span>):
-    <span class="kw">return</span> <span class="fn">render_template</span>(<span class="str">'profile.html'</span>)
-
-<span class="comment"># In template or Python code:</span>
-<span class="fn">url_for</span>(<span class="str">'user_profile'</span>, <span class="var">user_id</span>=<span class="str">42</span>)  <span class="comment"># → /user/42</span>
-
-<span class="comment"># Context usage</span>
-<span class="kw">from</span> <span class="var">flask</span> <span class="kw">import</span> <span class="fn">request</span>, <span class="fn">g</span>
-
-<span class="dec">@app.route</span>(<span class="str">'/api/data'</span>)
-<span class="kw">def</span> <span class="fn">api_data</span>():
-    <span class="var">user_id</span> = <span class="var">request</span>.<span class="var">args</span>.<span class="fn">get</span>(<span class="str">'user_id'</span>)  <span class="comment"># Request context</span>
-    <span class="var">g</span>.<span class="var">user_data</span> = <span class="fn">fetch_user</span>(<span class="var">user_id</span>)  <span class="comment"># Request-scoped storage</span>
-    <span class="kw">return</span> <span class="fn">jsonify</span>(<span class="var">g</span>.<span class="var">user_data</span>)
+            <div class="code-block-wrapper">
+                <div class="code-block-header">
+                    <span class="dot python"></span>
+                    <span>app.py</span>
+                </div>
+                <div class="code-block">
+                    <div class="code-line-numbers">
+                        <div class="code-line-number">1</div>
+                        <div class="code-line-number">2</div>
+                        <div class="code-line-number">3</div>
+                        <div class="code-line-number">4</div>
+                        <div class="code-line-number">5</div>
+                        <div class="code-line-number">6</div>
+                        <div class="code-line-number">7</div>
+                        <div class="code-line-number">8</div>
+                        <div class="code-line-number">9</div>
+                        <div class="code-line-number">10</div>
+                        <div class="code-line-number">11</div>
+                        <div class="code-line-number">12</div>
+                        <div class="code-line-number">13</div>
+                        <div class="code-line-number">14</div>
+                    </div>
+                    <div class="code-content">
+                        <div class="code-line"><span class="comment"># URL building</span></div>
+                        <div class="code-line"><span class="dec">@app.route</span>(<span class="str">'/user/&lt;int:user_id&gt;'</span>)</div>
+                        <div class="code-line"><span class="kw">def</span> <span class="fn">user_profile</span>(<span class="var">user_id</span>):</div>
+                        <div class="code-line">    <span class="kw">return</span> <span class="fn">render_template</span>(<span class="str">'profile.html'</span>)</div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="comment"># In template or Python code:</span></div>
+                        <div class="code-line"><span class="fn">url_for</span>(<span class="str">'user_profile'</span>, <span class="var">user_id</span>=<span class="num">42</span>)  <span class="comment"># → /user/42</span></div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="comment"># Context usage</span></div>
+                        <div class="code-line"><span class="kw">from</span> <span class="var">flask</span> <span class="kw">import</span> <span class="fn">request</span>, <span class="fn">g</span></div>
+                        <div class="code-line"></div>
+                        <div class="code-line"><span class="dec">@app.route</span>(<span class="str">'/api/data'</span>)</div>
+                        <div class="code-line"><span class="kw">def</span> <span class="fn">api_data</span>():</div>
+                        <div class="code-line">    <span class="var">user_id</span> = <span class="var">request</span>.<span class="var">args</span>.<span class="fn">get</span>(<span class="str">'user_id'</span>)  <span class="comment"># Request context</span></div>
+                        <div class="code-line">    <span class="var">g</span>.<span class="var">user_data</span> = <span class="fn">fetch_user</span>(<span class="var">user_id</span>)  <span class="comment"># Request-scoped storage</span></div>
+                        <div class="code-line">    <span class="kw">return</span> <span class="fn">jsonify</span>(<span class="var">g</span>.<span class="var">user_data</span>)</div>
+                    </div>
+                </div>
             </div>
         </section>
 
