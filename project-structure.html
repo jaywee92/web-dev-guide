@@ -31,6 +31,8 @@
             --purple-dim: rgba(167, 139, 250, 0.12);
             --red: #f87171;
             --red-dim: rgba(248, 113, 113, 0.12);
+            --cyan: #22d3ee;
+            --cyan-dim: rgba(34, 211, 238, 0.12);
             --white: #ffffff;
             --code-bg: #13151e;
             --radius: 14px;
@@ -120,6 +122,7 @@
             animation: fadeSlideUp 0.6s ease-out;
         }
 
+        /* TREE ITEM BASE */
         .tree-item {
             display: flex;
             align-items: center;
@@ -128,6 +131,7 @@
             padding: 6px 8px;
             border-radius: 6px;
             transition: all 0.2s ease;
+            position: relative;
         }
 
         .tree-item:hover {
@@ -136,7 +140,6 @@
 
         .tree-item.clickable {
             cursor: pointer;
-            color: var(--blue);
         }
 
         .tree-item.clickable:hover {
@@ -145,45 +148,47 @@
             padding-left: 6px;
         }
 
-        .tree-item.folder {
-            color: var(--blue);
-            font-weight: 600;
+        .tree-item.folder { color: var(--blue); font-weight: 600; }
+        .tree-item.python { color: var(--green); }
+        .tree-item.template { color: var(--blue); }
+        .tree-item.config { color: var(--yellow); }
+        .tree-item.static { color: var(--orange); }
+        .tree-item.env { color: var(--red); }
+
+        .tree-icon { font-size: 14px; }
+
+        /* GROUP BADGES (connection indicators in tree) */
+        .group-badges {
+            display: inline-flex;
+            gap: 4px;
+            margin-left: auto;
+            flex-shrink: 0;
         }
 
-        .tree-item.python {
-            color: var(--green);
-        }
-
-        .tree-item.template {
-            color: var(--blue);
-        }
-
-        .tree-item.config {
-            color: var(--yellow);
-        }
-
-        .tree-item.static {
-            color: var(--orange);
-        }
-
-        .tree-item.env {
-            color: var(--red);
-        }
-
-        .tree-line {
+        .group-badge {
             display: inline-block;
-            width: 16px;
-            color: var(--border);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            opacity: 0.7;
+            transition: opacity 0.2s, transform 0.2s;
         }
 
-        .tree-icon {
-            font-size: 14px;
+        .tree-item:hover .group-badge,
+        details > summary:hover .group-badge {
+            opacity: 1;
+            transform: scale(1.3);
         }
+
+        .group-badge.core { background: var(--blue); }
+        .group-badge.blueprints { background: var(--green); }
+        .group-badge.templates { background: var(--purple); }
+        .group-badge.config-grp { background: var(--yellow); }
+        .group-badge.tests { background: var(--cyan); }
+        .group-badge.entry { background: var(--orange); }
 
         /* DETAILS/SUMMARY FOR EXPANDABLE FOLDERS */
-        details {
-            margin: 0;
-        }
+        details { margin: 0; }
 
         details > summary {
             cursor: pointer;
@@ -196,6 +201,7 @@
             transition: all 0.2s ease;
             color: var(--blue);
             font-weight: 600;
+            position: relative;
         }
 
         details > summary:hover {
@@ -208,6 +214,61 @@
 
         details[open] > summary {
             color: var(--yellow);
+        }
+
+        /* HOVER TOOLTIP */
+        .tree-tooltip {
+            display: none;
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-left: 12px;
+            background: var(--surface-bright);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--text-muted);
+            line-height: 1.5;
+            white-space: nowrap;
+            max-width: 340px;
+            white-space: normal;
+            z-index: 100;
+            pointer-events: none;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            animation: tooltipIn 0.15s ease-out;
+        }
+
+        .tree-tooltip::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 5px solid transparent;
+            border-right-color: var(--border);
+        }
+
+        .tree-tooltip::after {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 4px solid transparent;
+            border-right-color: var(--surface-bright);
+        }
+
+        .tree-item:hover > .tree-tooltip,
+        details > summary:hover > .tree-tooltip {
+            display: block;
+        }
+
+        @keyframes tooltipIn {
+            from { opacity: 0; transform: translateY(-50%) translateX(-4px); }
+            to { opacity: 1; transform: translateY(-50%) translateX(0); }
         }
 
         /* MODAL/POPUP */
@@ -258,9 +319,7 @@
             gap: 12px;
         }
 
-        .modal-icon {
-            font-size: 28px;
-        }
+        .modal-icon { font-size: 28px; }
 
         .modal-name {
             font-family: 'JetBrains Mono', monospace;
@@ -290,22 +349,14 @@
             color: var(--text);
         }
 
-        .modal-body {
-            padding: 24px;
-        }
+        .modal-body { padding: 24px; }
 
-        .modal-section {
-            margin-bottom: 28px;
-        }
-
-        .modal-section:last-child {
-            margin-bottom: 0;
-        }
+        .modal-section { margin-bottom: 28px; }
+        .modal-section:last-child { margin-bottom: 0; }
 
         .modal-section-title {
             font-size: 14px;
             font-weight: 700;
-            color: var(--text);
             margin-bottom: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -322,35 +373,12 @@
             margin-bottom: 12px;
         }
 
-        .file-type-badge.python {
-            background-color: var(--green-dim);
-            color: var(--green);
-        }
-
-        .file-type-badge.template {
-            background-color: var(--blue-dim);
-            color: var(--blue);
-        }
-
-        .file-type-badge.config {
-            background-color: var(--yellow-dim);
-            color: var(--yellow);
-        }
-
-        .file-type-badge.static {
-            background-color: var(--orange-dim);
-            color: var(--orange);
-        }
-
-        .file-type-badge.env {
-            background-color: var(--red-dim);
-            color: var(--red);
-        }
-
-        .file-type-badge.folder {
-            background-color: var(--blue-dim);
-            color: var(--blue);
-        }
+        .file-type-badge.python { background-color: var(--green-dim); color: var(--green); }
+        .file-type-badge.template { background-color: var(--blue-dim); color: var(--blue); }
+        .file-type-badge.config { background-color: var(--yellow-dim); color: var(--yellow); }
+        .file-type-badge.static { background-color: var(--orange-dim); color: var(--orange); }
+        .file-type-badge.env { background-color: var(--red-dim); color: var(--red); }
+        .file-type-badge.folder { background-color: var(--blue-dim); color: var(--blue); }
 
         .description {
             color: var(--text-muted);
@@ -394,21 +422,12 @@
             font-size: 13px;
         }
 
-        .relationship.imports {
-            border-left-color: var(--blue);
-        }
-
-        .relationship.imported-by {
-            border-left-color: var(--green);
-        }
-
-        .relationship.extends {
-            border-left-color: var(--purple);
-        }
-
-        .relationship.contains {
-            border-left-color: var(--orange);
-        }
+        .relationship.imports { border-left-color: var(--blue); }
+        .relationship.imported-by { border-left-color: var(--green); }
+        .relationship.extends { border-left-color: var(--purple); }
+        .relationship.contains { border-left-color: var(--orange); }
+        .relationship.read-by { border-left-color: var(--yellow); }
+        .relationship.used-by { border-left-color: var(--cyan); }
 
         .relationship-arrow {
             color: var(--text-muted);
@@ -435,36 +454,283 @@
             color: var(--white);
         }
 
+        /* FOLDER CONTENTS (shown in modal for folders) */
+        .folder-contents {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .folder-child-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--surface-bright);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .folder-child-badge:hover {
+            border-color: var(--blue);
+            color: var(--blue);
+            background: var(--blue-dim);
+        }
+
+        /* ═══════════════════════════════════════════════ */
+        /* CONNECTION MAP — Visual File Relationships      */
+        /* ═══════════════════════════════════════════════ */
+
+        .connection-map {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .connection-map { grid-template-columns: 1fr; }
+        }
+
+        .conn-group {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .conn-group:hover {
+            border-color: var(--text-muted);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .conn-group-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .conn-group-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .conn-group-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .conn-group.core .conn-group-dot { background: var(--blue); }
+        .conn-group.core .conn-group-title { color: var(--blue); }
+        .conn-group.core { border-color: rgba(91, 156, 245, 0.25); }
+
+        .conn-group.blueprints .conn-group-dot { background: var(--green); }
+        .conn-group.blueprints .conn-group-title { color: var(--green); }
+        .conn-group.blueprints { border-color: rgba(74, 222, 128, 0.25); }
+
+        .conn-group.templates .conn-group-dot { background: var(--purple); }
+        .conn-group.templates .conn-group-title { color: var(--purple); }
+        .conn-group.templates { border-color: rgba(167, 139, 250, 0.25); }
+
+        .conn-group.config-grp .conn-group-dot { background: var(--yellow); }
+        .conn-group.config-grp .conn-group-title { color: var(--yellow); }
+        .conn-group.config-grp { border-color: rgba(245, 197, 66, 0.25); }
+
+        .conn-group.tests .conn-group-dot { background: var(--cyan); }
+        .conn-group.tests .conn-group-title { color: var(--cyan); }
+        .conn-group.tests { border-color: rgba(34, 211, 238, 0.25); }
+
+        .conn-group.entry .conn-group-dot { background: var(--orange); }
+        .conn-group.entry .conn-group-title { color: var(--orange); }
+        .conn-group.entry { border-color: rgba(245, 158, 66, 0.25); }
+
+        .conn-file {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text);
+            margin-bottom: 6px;
+            background: var(--code-bg);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .conn-file:hover {
+            border-color: var(--border);
+            background: var(--surface-bright);
+        }
+
+        .conn-file-icon { font-size: 13px; }
+        .conn-file-desc {
+            font-size: 9px;
+            color: var(--text-muted);
+            font-family: 'DM Sans', sans-serif;
+            margin-top: 2px;
+        }
+
+        /* Connection arrows between groups */
+        .conn-arrows {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border);
+        }
+
+        .conn-arrow {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .conn-arrow-icon {
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .conn-arrow-target {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* Full-width connection flow diagram */
+        .flow-diagram {
+            grid-column: 1 / -1;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-top: 8px;
+        }
+
+        .flow-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .flow-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .flow-node {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .flow-node:hover {
+            border-color: var(--blue);
+            background: var(--blue-dim);
+        }
+
+        .flow-node .fn-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .flow-connector {
+            display: inline-flex;
+            align-items: center;
+            padding: 0 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .flow-connector-label {
+            font-size: 8px;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 2px 6px;
+            background: var(--surface-bright);
+            border-radius: 4px;
+            margin: 0 4px;
+        }
+
+        /* Legend for connection colors */
+        .conn-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 20px;
+            padding: 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+
+        .conn-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .conn-legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
         /* ANIMATIONS */
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @keyframes fadeSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(16px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* CODE BLOCKS FOR SECTIONS */
@@ -493,29 +759,12 @@
             color: var(--text);
         }
 
-        .code-keyword {
-            color: var(--purple);
-        }
-
-        .code-function {
-            color: var(--blue);
-        }
-
-        .code-string {
-            color: var(--green);
-        }
-
-        .code-comment {
-            color: #555a73;
-        }
-
-        .code-var {
-            color: var(--orange);
-        }
-
-        .code-dec {
-            color: var(--yellow);
-        }
+        .code-keyword { color: var(--purple); }
+        .code-function { color: var(--blue); }
+        .code-string { color: var(--green); }
+        .code-comment { color: #555a73; }
+        .code-var { color: var(--orange); }
+        .code-dec { color: var(--yellow); }
 
         /* GRID & LAYOUT */
         .grid-2 {
@@ -526,9 +775,7 @@
         }
 
         @media (max-width: 900px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
+            .grid-2 { grid-template-columns: 1fr; }
         }
 
         .concept-card {
@@ -568,38 +815,45 @@
                 max-width: 95vw;
                 margin: 20px;
             }
-
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
+            .grid-2 { grid-template-columns: 1fr; }
+            .tree-tooltip { display: none !important; }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <a href="index.html" class="back-link">← Back to Overview</a>
+        <a href="index.html" class="back-link">&larr; Back to Overview</a>
         <h1>Flask Project Structure</h1>
-        <p class="subtitle">Interactive Visual Guide – Click on files and folders to explore</p>
+        <p class="subtitle">Interactive Visual Guide &ndash; Hover for quick info, click for details &amp; code examples</p>
     </div>
 
     <div class="container">
         <!-- Section 1: Interactive Professional Structure -->
         <div class="section">
             <h2 class="section-title">
-                <span class="section-icon">🏢</span>
+                <span class="section-icon">&#127970;</span>
                 Professional Structure
             </h2>
             <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
-                Production-ready architecture with Blueprints, configuration, and clear separation of concerns. Click on any file or folder to see details, code examples, and relationships.
+                Production-ready architecture with Blueprints, configuration, and clear separation of concerns.
+                <strong style="color: var(--text);">Hover</strong> for quick descriptions,
+                <strong style="color: var(--text);">click</strong> for detailed code examples &amp; relationships.
+                Colored dots show which group a file belongs to.
             </p>
 
             <div class="file-tree" id="fileTree">
-                <!-- Will be populated by JavaScript -->
+                <!-- Populated by JavaScript -->
             </div>
 
-            <p style="color: var(--text-muted); font-size: 12px; margin-top: 12px;">
-                💡 Tip: Click on any file or folder to view detailed information, code examples, and how files connect to each other.
-            </p>
+            <!-- Legend for group colors -->
+            <div class="conn-legend">
+                <div class="conn-legend-item"><div class="conn-legend-dot" style="background:var(--blue)"></div> App Core</div>
+                <div class="conn-legend-item"><div class="conn-legend-dot" style="background:var(--green)"></div> Blueprints / Routes</div>
+                <div class="conn-legend-item"><div class="conn-legend-dot" style="background:var(--purple)"></div> Templates</div>
+                <div class="conn-legend-item"><div class="conn-legend-dot" style="background:var(--yellow)"></div> Configuration</div>
+                <div class="conn-legend-item"><div class="conn-legend-dot" style="background:var(--cyan)"></div> Tests</div>
+                <div class="conn-legend-item"><div class="conn-legend-dot" style="background:var(--orange)"></div> Entry / Deployment</div>
+            </div>
         </div>
 
         <!-- Modal for file details -->
@@ -613,15 +867,291 @@
                     <button class="modal-close" onclick="closeModal()">&times;</button>
                 </div>
                 <div class="modal-body" id="modalBody">
-                    <!-- Will be populated by JavaScript -->
+                    <!-- Populated by JavaScript -->
                 </div>
             </div>
         </div>
 
-        <!-- Section 2: App Factory Pattern -->
+        <!-- ═══════════════════════════════════════════════ -->
+        <!-- Section: Visual File Connections                -->
+        <!-- ═══════════════════════════════════════════════ -->
         <div class="section">
             <h2 class="section-title">
-                <span class="section-icon">🏭</span>
+                <span class="section-icon">&#128279;</span>
+                File Connections &amp; Dependencies
+            </h2>
+            <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
+                How the files relate to each other &ndash; grouped by responsibility.
+                Arrows show import/dependency direction. Click any file to see its details.
+            </p>
+
+            <div class="connection-map" id="connectionMap">
+                <!-- Entry & Config -->
+                <div class="conn-group entry">
+                    <div class="conn-group-header">
+                        <div class="conn-group-dot"></div>
+                        <div class="conn-group-title">Entry &amp; Deployment</div>
+                    </div>
+                    <div class="conn-file" data-file="run.py">
+                        <span class="conn-file-icon">&#9654;&#65039;</span>
+                        <div>
+                            <div>run.py</div>
+                            <div class="conn-file-desc">Application entry point</div>
+                        </div>
+                    </div>
+                    <div class="conn-file" data-file="requirements.txt">
+                        <span class="conn-file-icon">&#128203;</span>
+                        <div>
+                            <div>requirements.txt</div>
+                            <div class="conn-file-desc">Package dependencies</div>
+                        </div>
+                    </div>
+                    <div class="conn-arrows">
+                        <div class="conn-arrow">
+                            <span class="conn-arrow-icon">&#8594;</span>
+                            imports <span class="conn-arrow-target">__init__.py</span> (create_app)
+                        </div>
+                        <div class="conn-arrow">
+                            <span class="conn-arrow-icon">&#8594;</span>
+                            reads <span class="conn-arrow-target">.env</span> (FLASK_ENV)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- App Core -->
+                <div class="conn-group core">
+                    <div class="conn-group-header">
+                        <div class="conn-group-dot"></div>
+                        <div class="conn-group-title">App Core</div>
+                    </div>
+                    <div class="conn-file" data-file="__init__.py">
+                        <span class="conn-file-icon">&#128230;</span>
+                        <div>
+                            <div>__init__.py</div>
+                            <div class="conn-file-desc">App Factory &amp; Blueprint registration</div>
+                        </div>
+                    </div>
+                    <div class="conn-file" data-file="models.py">
+                        <span class="conn-file-icon">&#128452;&#65039;</span>
+                        <div>
+                            <div>models.py</div>
+                            <div class="conn-file-desc">SQLAlchemy ORM models</div>
+                        </div>
+                    </div>
+                    <div class="conn-file" data-file="extensions.py">
+                        <span class="conn-file-icon">&#128295;</span>
+                        <div>
+                            <div>extensions.py</div>
+                            <div class="conn-file-desc">Flask extension instances</div>
+                        </div>
+                    </div>
+                    <div class="conn-arrows">
+                        <div class="conn-arrow">
+                            <span class="conn-arrow-icon">&#8594;</span>
+                            registers <span class="conn-arrow-target">auth_bp</span> + <span class="conn-arrow-target">api_bp</span>
+                        </div>
+                        <div class="conn-arrow">
+                            <span class="conn-arrow-icon">&#8594;</span>
+                            loads <span class="conn-arrow-target">config.py</span>
+                        </div>
+                        <div class="conn-arrow">
+                            <span class="conn-arrow-icon">&#8592;</span>
+                            models used by <span class="conn-arrow-target">routes/*</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuration -->
+                <div class="conn-group config-grp">
+                    <div class="conn-group-header">
+                        <div class="conn-group-dot"></div>
+                        <div class="conn-group-title">Configuration</div>
+                    </div>
+                    <div class="conn-file" data-file="config.py">
+                        <span class="conn-file-icon">&#9881;&#65039;</span>
+                        <div>
+                            <div>config.py</div>
+                            <div class="conn-file-desc">Dev / Prod / Test settings</div>
+                        </div>
+                    </div>
+                    <div class="conn-file" data-file=".env">
+                        <span class="conn-file-icon">&#128273;</span>
+                        <div>
+                            <div>.env</div>
+                            <div class="conn-file-desc">Secret environment variables</div>
+                        </div>
+                    </div>
+                    <div class="conn-file" data-file=".gitignore">
+                        <span class="conn-file-icon">&#128683;</span>
+                        <div>
+                            <div>.gitignore</div>
+                            <div class="conn-file-desc">Excludes .env, venv, __pycache__</div>
+                        </div>
+                    </div>
+                    <div class="conn-arrows">
+                        <div class="conn-arrow">
+                            <span class="conn-arrow-icon">&#8592;</span>
+                            loaded by <span class="conn-arrow-target">__init__.py</span>
+                        </div>
+                        <div class="conn-arrow">
+                            <span class="conn-arrow-icon">&#8592;</span>
+                            .env read by <span class="conn-arrow-target">config.py</span> + <span class="conn-arrow-target">run.py</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blueprints -->
+                <div class="conn-group blueprints">
+                    <div class="conn-group-header">
+                        <div class="conn-group-dot"></div>
+                        <div class="conn-group-title">Blueprints / Routes</div>
+                    </div>
+                    <div class="conn-file" data-file="auth.py">
+                        <span class="conn-file-icon">&#128272;</span>
+                        <div>
+                            <div>routes/auth.py</div>
+                            <div class="conn-file-desc">/auth/login, /auth/register, /auth/logout</div>
+                        </div>
+                    </div>
+                    <div class="conn-file" data-file="api.py">
+                        <span class="conn-file-icon">&#128268;</span>
+                        <div>
+                            <div>routes/api.py</div>
+                            <div class="conn-file-desc">/api/users, /api/posts</div>
+                        </div>
+                    </div>
+                    <div class="conn-arrows">
+                        <div class="conn-arrow">
+                            <span class="conn-arrow-icon">&#8592;</span>
+                            registered by <span class="conn-arrow-target">__init__.py</span>
+                        </div>
+                        <div class="conn-arrow">
+                            <span class="conn-arrow-icon">&#8594;</span>
+                            import <span class="conn-arrow-target">models.py</span> (User, Post)
+                        </div>
+                        <div class="conn-arrow">
+                            <span class="conn-arrow-icon">&#8594;</span>
+                            render <span class="conn-arrow-target">templates/*</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Templates -->
+                <div class="conn-group templates">
+                    <div class="conn-group-header">
+                        <div class="conn-group-dot"></div>
+                        <div class="conn-group-title">Templates (Jinja2)</div>
+                    </div>
+                    <div class="conn-file" data-file="base.html">
+                        <span class="conn-file-icon">&#128196;</span>
+                        <div>
+                            <div>base.html</div>
+                            <div class="conn-file-desc">Master layout (nav, footer, CSS)</div>
+                        </div>
+                    </div>
+                    <div class="conn-file" data-file="index.html">
+                        <span class="conn-file-icon">&#127968;</span>
+                        <div>
+                            <div>index.html</div>
+                            <div class="conn-file-desc">Homepage &ndash; extends base.html</div>
+                        </div>
+                    </div>
+                    <div class="conn-file" data-file="login.html">
+                        <span class="conn-file-icon">&#128272;</span>
+                        <div>
+                            <div>auth/login.html</div>
+                            <div class="conn-file-desc">Login form &ndash; extends base.html</div>
+                        </div>
+                    </div>
+                    <div class="conn-arrows">
+                        <div class="conn-arrow">
+                            <span class="conn-arrow-icon">&#8593;</span>
+                            all extend <span class="conn-arrow-target">base.html</span>
+                        </div>
+                        <div class="conn-arrow">
+                            <span class="conn-arrow-icon">&#8592;</span>
+                            rendered by <span class="conn-arrow-target">routes/*</span>
+                        </div>
+                        <div class="conn-arrow">
+                            <span class="conn-arrow-icon">&#8594;</span>
+                            reference <span class="conn-arrow-target">static/css, static/js</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tests -->
+                <div class="conn-group tests">
+                    <div class="conn-group-header">
+                        <div class="conn-group-dot"></div>
+                        <div class="conn-group-title">Tests</div>
+                    </div>
+                    <div class="conn-file" data-file="conftest.py">
+                        <span class="conn-file-icon">&#9881;&#65039;</span>
+                        <div>
+                            <div>conftest.py</div>
+                            <div class="conn-file-desc">pytest fixtures (app, client, db)</div>
+                        </div>
+                    </div>
+                    <div class="conn-file" data-file="test_auth.py">
+                        <span class="conn-file-icon">&#129514;</span>
+                        <div>
+                            <div>test_auth.py</div>
+                            <div class="conn-file-desc">Auth route unit tests</div>
+                        </div>
+                    </div>
+                    <div class="conn-arrows">
+                        <div class="conn-arrow">
+                            <span class="conn-arrow-icon">&#8594;</span>
+                            conftest imports <span class="conn-arrow-target">create_app</span>
+                        </div>
+                        <div class="conn-arrow">
+                            <span class="conn-arrow-icon">&#8594;</span>
+                            tests exercise <span class="conn-arrow-target">routes/auth.py</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Full-width connection flow -->
+                <div class="flow-diagram">
+                    <div class="flow-title">Request Lifecycle &ndash; How Files Connect at Runtime</div>
+                    <div class="flow-row">
+                        <div class="flow-node" data-file="run.py"><div class="fn-dot" style="background:var(--orange)"></div> run.py</div>
+                        <div class="flow-connector">&rarr;<span class="flow-connector-label">calls create_app()</span>&rarr;</div>
+                        <div class="flow-node" data-file="__init__.py"><div class="fn-dot" style="background:var(--blue)"></div> __init__.py</div>
+                        <div class="flow-connector">&rarr;<span class="flow-connector-label">loads config</span>&rarr;</div>
+                        <div class="flow-node" data-file="config.py"><div class="fn-dot" style="background:var(--yellow)"></div> config.py</div>
+                        <div class="flow-connector">&rarr;<span class="flow-connector-label">reads secrets</span>&rarr;</div>
+                        <div class="flow-node" data-file=".env"><div class="fn-dot" style="background:var(--yellow)"></div> .env</div>
+                    </div>
+                    <div class="flow-row" style="margin-top: 6px;">
+                        <div style="width: 80px;"></div>
+                        <div class="flow-connector" style="transform: rotate(90deg); padding: 4px 0;">&#8595;</div>
+                    </div>
+                    <div class="flow-row">
+                        <div class="flow-node" data-file="__init__.py"><div class="fn-dot" style="background:var(--blue)"></div> __init__.py</div>
+                        <div class="flow-connector">&rarr;<span class="flow-connector-label">registers blueprints</span>&rarr;</div>
+                        <div class="flow-node" data-file="auth.py"><div class="fn-dot" style="background:var(--green)"></div> auth.py</div>
+                        <div class="flow-connector">&rarr;<span class="flow-connector-label">queries</span>&rarr;</div>
+                        <div class="flow-node" data-file="models.py"><div class="fn-dot" style="background:var(--blue)"></div> models.py</div>
+                        <div class="flow-connector">&rarr;<span class="flow-connector-label">renders</span>&rarr;</div>
+                        <div class="flow-node" data-file="base.html"><div class="fn-dot" style="background:var(--purple)"></div> templates</div>
+                    </div>
+                    <div class="flow-row" style="margin-top: 4px;">
+                        <div style="width: 240px;"></div>
+                        <div class="flow-node" data-file="api.py"><div class="fn-dot" style="background:var(--green)"></div> api.py</div>
+                        <div class="flow-connector">&rarr;<span class="flow-connector-label">queries</span>&rarr;</div>
+                        <div class="flow-node" data-file="models.py"><div class="fn-dot" style="background:var(--blue)"></div> models.py</div>
+                        <div class="flow-connector">&rarr;<span class="flow-connector-label">returns</span>&rarr;</div>
+                        <div class="flow-node" style="border-color:var(--green);"><div class="fn-dot" style="background:var(--green)"></div> JSON</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section: App Factory Pattern -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="section-icon">&#127981;</span>
                 App Factory Pattern
             </h2>
             <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
@@ -689,27 +1219,27 @@ app = create_app(config_name)
 
             <div class="concept-card">
                 <div class="concept-card-title">
-                    ✨ Benefits of App Factory Pattern
+                    &#10024; Benefits of App Factory Pattern
                 </div>
                 <div class="concept-card-content">
                     <ul style="margin-left: 20px; line-height: 1.8;">
-                        <li><span class="highlight">Testable</span> — Multiple app instances for tests</li>
-                        <li><span class="highlight">Configurable</span> — Different settings per environment</li>
-                        <li><span class="highlight">Extensible</span> — Blueprints easily added</li>
-                        <li><span class="highlight">Maintainable</span> — Clear separation of concerns</li>
+                        <li><span class="highlight">Testable</span> &mdash; Multiple app instances for tests</li>
+                        <li><span class="highlight">Configurable</span> &mdash; Different settings per environment</li>
+                        <li><span class="highlight">Extensible</span> &mdash; Blueprints easily added</li>
+                        <li><span class="highlight">Maintainable</span> &mdash; Clear separation of concerns</li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <!-- Section 3: Blueprints -->
+        <!-- Section: Blueprints -->
         <div class="section">
             <h2 class="section-title">
-                <span class="section-icon">📋</span>
-                Blueprints — Modular Routes
+                <span class="section-icon">&#128203;</span>
+                Blueprints &mdash; Modular Routes
             </h2>
             <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
-                Blueprints let you organize routes into separate modules — ideal for large applications.
+                Blueprints let you organize routes into separate modules &mdash; ideal for large applications.
             </p>
 
             <div class="grid-2">
@@ -776,30 +1306,30 @@ api_bp = Blueprint(
 
             <div class="concept-card">
                 <div class="concept-card-title">
-                    🎯 Blueprint Routing
+                    &#127919; Blueprint Routing
                 </div>
                 <div class="concept-card-content">
                     <ul style="margin-left: 20px; line-height: 1.8;">
-                        <li>auth_bp → <span class="highlight">/auth/login</span> and <span class="highlight">/auth/logout</span></li>
-                        <li>api_bp → <span class="highlight">/api/users</span> and <span class="highlight">/api/posts</span></li>
+                        <li>auth_bp &rarr; <span class="highlight">/auth/login</span> and <span class="highlight">/auth/logout</span></li>
+                        <li>api_bp &rarr; <span class="highlight">/api/users</span> and <span class="highlight">/api/posts</span></li>
                         <li>Blueprints are registered in <span class="highlight">create_app()</span></li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <!-- Section 4: Configuration -->
+        <!-- Section: Configuration -->
         <div class="section">
             <h2 class="section-title">
-                <span class="section-icon">⚙️</span>
+                <span class="section-icon">&#9881;&#65039;</span>
                 Configuration
             </h2>
             <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">
-                Different settings for Development, Production, and Testing — without code changes.
+                Different settings for Development, Production, and Testing &mdash; without code changes.
             </p>
 
             <h3 style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 16px;">
-                config.py — Configuration Classes
+                config.py &mdash; Configuration Classes
             </h3>
             <div class="code-block">
                 <span class="code-label">Python</span>
@@ -829,7 +1359,7 @@ config = {
             </div>
 
             <h3 style="font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 16px; margin-top: 32px;">
-                .env — Environment Variables
+                .env &mdash; Environment Variables
             </h3>
             <div class="code-block">
                 <span class="code-label">Bash / Environment</span>
@@ -841,16 +1371,16 @@ DEBUG=True</pre>
             </div>
         </div>
 
-        <!-- Section 5: Summary -->
+        <!-- Section: Summary -->
         <div class="section">
             <h2 class="section-title">
-                <span class="section-icon">✅</span>
-                Summary — Best Practices
+                <span class="section-icon">&#9989;</span>
+                Summary &mdash; Best Practices
             </h2>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
                 <div class="concept-card">
-                    <div class="concept-card-title">🏗️ Structure</div>
+                    <div class="concept-card-title">&#127959;&#65039; Structure</div>
                     <div class="concept-card-content">
                         <ul style="margin-left: 20px;">
                             <li>Use App Factory for flexibility</li>
@@ -859,9 +1389,8 @@ DEBUG=True</pre>
                         </ul>
                     </div>
                 </div>
-
                 <div class="concept-card">
-                    <div class="concept-card-title">🔒 Security</div>
+                    <div class="concept-card-title">&#128274; Security</div>
                     <div class="concept-card-content">
                         <ul style="margin-left: 20px;">
                             <li>.env for secrets (not in Git!)</li>
@@ -870,9 +1399,8 @@ DEBUG=True</pre>
                         </ul>
                     </div>
                 </div>
-
                 <div class="concept-card">
-                    <div class="concept-card-title">⚙️ Configuration</div>
+                    <div class="concept-card-title">&#9881;&#65039; Configuration</div>
                     <div class="concept-card-content">
                         <ul style="margin-left: 20px;">
                             <li>config.py with Dev/Prod/Testing</li>
@@ -881,9 +1409,8 @@ DEBUG=True</pre>
                         </ul>
                     </div>
                 </div>
-
                 <div class="concept-card">
-                    <div class="concept-card-title">📦 Dependencies</div>
+                    <div class="concept-card-title">&#128230; Dependencies</div>
                     <div class="concept-card-content">
                         <ul style="margin-left: 20px;">
                             <li>requirements.txt with pip freeze</li>
@@ -892,9 +1419,8 @@ DEBUG=True</pre>
                         </ul>
                     </div>
                 </div>
-
                 <div class="concept-card">
-                    <div class="concept-card-title">🧪 Testing</div>
+                    <div class="concept-card-title">&#129514; Testing</div>
                     <div class="concept-card-content">
                         <ul style="margin-left: 20px;">
                             <li>create_app() with test config</li>
@@ -903,9 +1429,8 @@ DEBUG=True</pre>
                         </ul>
                     </div>
                 </div>
-
                 <div class="concept-card">
-                    <div class="concept-card-title">🚀 Deployment</div>
+                    <div class="concept-card-title">&#128640; Deployment</div>
                     <div class="concept-card-content">
                         <ul style="margin-left: 20px;">
                             <li>ProductionConfig with real DB</li>
@@ -921,74 +1446,43 @@ DEBUG=True</pre>
     </div>
 
     <script>
-        // File tree data structure with detailed information
+        // ═══════════════════════════════════════════════
+        // FILE TREE DATA with groups for visual connections
+        // ═══════════════════════════════════════════════
         const fileTreeData = {
             name: 'flask_project/',
             type: 'folder',
-            icon: '📁',
+            icon: '\u{1F4C1}',
+            description: 'Root project directory containing all Flask application files',
             children: [
                 {
                     name: 'app/',
                     type: 'folder',
-                    icon: '📁',
-                    description: 'Main application package containing all Flask app code',
+                    icon: '\u{1F4C1}',
+                    description: 'Main application package \u2014 contains all Flask app code, models, routes, and templates',
+                    groups: ['core'],
                     children: [
                         {
                             name: '__init__.py',
                             type: 'python',
-                            icon: '📦',
-                            description: 'App Factory that creates and configures the Flask application instance',
-                            codeExample: `from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
-
-def create_app(config_name='default'):
-    app = Flask(__name__)
-    app.config.from_object(config[config_name])
-
-    db.init_app(app)
-
-    from .routes.auth import auth_bp
-    from .routes.api import api_bp
-
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(api_bp)
-
-    return app`,
+                            icon: '\u{1F4E6}',
+                            description: 'App Factory \u2014 creates and configures the Flask instance, initializes extensions, and registers Blueprints',
+                            groups: ['core', 'blueprints', 'config-grp'],
+                            codeExample: `from flask import Flask\nfrom flask_sqlalchemy import SQLAlchemy\n\ndb = SQLAlchemy()\n\ndef create_app(config_name='default'):\n    app = Flask(__name__)\n    app.config.from_object(config[config_name])\n\n    db.init_app(app)\n\n    from .routes.auth import auth_bp\n    from .routes.api import api_bp\n\n    app.register_blueprint(auth_bp)\n    app.register_blueprint(api_bp)\n\n    return app`,
                             relationships: [
                                 { type: 'imports', label: 'flask, flask_sqlalchemy' },
-                                { type: 'imported-by', label: 'run.py', file: 'run.py' },
+                                { type: 'imported-by', label: 'run.py' },
                                 { type: 'imports', label: 'routes/auth.py, routes/api.py' },
-                                { type: 'imports', label: 'config.py' },
-                                { type: 'imports', label: 'models.py' }
+                                { type: 'imports', label: 'config.py' }
                             ]
                         },
                         {
                             name: 'models.py',
                             type: 'python',
-                            icon: '🗄️',
-                            description: 'SQLAlchemy ORM database models (User, Post, etc.) defining table structure and relationships',
-                            codeExample: `from app import db
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), unique=True)
-    username = db.Column(db.String(80))
-    posts = db.relationship('Post', backref='author')
-
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'email': self.email,
-            'username': self.username
-        }
-
-class Post(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200))
-    content = db.Column(db.Text)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))`,
+                            icon: '\u{1F5C4}\uFE0F',
+                            description: 'SQLAlchemy ORM models (User, Post) \u2014 defines table structure, columns, and relationships',
+                            groups: ['core'],
+                            codeExample: `from app import db\n\nclass User(db.Model):\n    id = db.Column(db.Integer, primary_key=True)\n    email = db.Column(db.String(120), unique=True)\n    username = db.Column(db.String(80))\n    posts = db.relationship('Post', backref='author')\n\n    def to_dict(self):\n        return {\n            'id': self.id,\n            'email': self.email,\n            'username': self.username\n        }\n\nclass Post(db.Model):\n    id = db.Column(db.Integer, primary_key=True)\n    title = db.Column(db.String(200))\n    content = db.Column(db.Text)\n    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))`,
                             relationships: [
                                 { type: 'imported-by', label: 'routes/auth.py' },
                                 { type: 'imported-by', label: 'routes/api.py' },
@@ -998,20 +1492,10 @@ class Post(db.Model):
                         {
                             name: 'extensions.py',
                             type: 'python',
-                            icon: '🔧',
-                            description: 'Optional file containing singleton instances of Flask extensions (db, migrate, login_manager, etc.) for import in other modules',
-                            codeExample: `from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from flask_login import LoginManager
-
-db = SQLAlchemy()
-migrate = Migrate()
-login_manager = LoginManager()
-
-# In create_app():
-# db.init_app(app)
-# migrate.init_app(app, db)
-# login_manager.init_app(app)`,
+                            icon: '\u{1F527}',
+                            description: 'Singleton instances of Flask extensions (db, migrate, login_manager) for clean imports across modules',
+                            groups: ['core'],
+                            codeExample: `from flask_sqlalchemy import SQLAlchemy\nfrom flask_migrate import Migrate\nfrom flask_login import LoginManager\n\ndb = SQLAlchemy()\nmigrate = Migrate()\nlogin_manager = LoginManager()\n\n# In create_app():\n# db.init_app(app)\n# migrate.init_app(app, db)\n# login_manager.init_app(app)`,
                             relationships: [
                                 { type: 'imported-by', label: '__init__.py' },
                                 { type: 'imported-by', label: 'models.py' }
@@ -1020,14 +1504,16 @@ login_manager = LoginManager()
                         {
                             name: 'routes/',
                             type: 'folder',
-                            icon: '📁',
-                            description: 'Package containing Blueprint modules for organizing routes by feature (auth, api, etc.)',
+                            icon: '\u{1F4C1}',
+                            description: 'Blueprint modules \u2014 each file defines a set of URL routes grouped by feature (auth, api)',
+                            groups: ['blueprints'],
                             children: [
                                 {
                                     name: '__init__.py',
                                     type: 'python',
-                                    icon: '📄',
-                                    description: 'Makes routes a Python package and optionally imports/registers blueprints',
+                                    icon: '\u{1F4C4}',
+                                    description: 'Makes routes/ a Python package. Optionally imports and exports all Blueprints for convenience.',
+                                    groups: ['blueprints'],
                                     relationships: [
                                         { type: 'contains', label: 'auth.py, api.py' }
                                     ]
@@ -1035,30 +1521,12 @@ login_manager = LoginManager()
                                 {
                                     name: 'auth.py',
                                     type: 'python',
-                                    icon: '🔐',
-                                    description: 'Authentication Blueprint with routes for login, register, logout, password reset. Uses User model for validation.',
-                                    codeExample: `from flask import Blueprint, request, jsonify
-from app.models import User
-
-auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
-
-@auth_bp.route('/register', methods=['POST'])
-def register():
-    data = request.get_json()
-    user = User(email=data['email'], username=data['username'])
-    db.session.add(user)
-    db.session.commit()
-    return {'msg': 'User created'}, 201
-
-@auth_bp.route('/login', methods=['POST'])
-def login():
-    data = request.get_json()
-    user = User.query.filter_by(email=data['email']).first()
-    if user and user.check_password(data['password']):
-        return {'token': 'jwt_token_here'}
-    return {'error': 'Invalid credentials'}, 401`,
+                                    icon: '\u{1F510}',
+                                    description: 'Authentication Blueprint \u2014 login, register, logout routes. Uses User model for validation.',
+                                    groups: ['blueprints', 'core'],
+                                    codeExample: `from flask import Blueprint, request, jsonify\nfrom app.models import User\n\nauth_bp = Blueprint('auth', __name__, url_prefix='/auth')\n\n@auth_bp.route('/register', methods=['POST'])\ndef register():\n    data = request.get_json()\n    user = User(email=data['email'], username=data['username'])\n    db.session.add(user)\n    db.session.commit()\n    return {'msg': 'User created'}, 201\n\n@auth_bp.route('/login', methods=['POST'])\ndef login():\n    data = request.get_json()\n    user = User.query.filter_by(email=data['email']).first()\n    if user and user.check_password(data['password']):\n        return {'token': 'jwt_token_here'}\n    return {'error': 'Invalid credentials'}, 401`,
                                     relationships: [
-                                        { type: 'imported-by', label: '__init__.py' },
+                                        { type: 'imported-by', label: '__init__.py (registered as Blueprint)' },
                                         { type: 'imports', label: 'models.py (User)' },
                                         { type: 'contains', label: '/auth/register, /auth/login, /auth/logout' }
                                     ]
@@ -1066,29 +1534,12 @@ def login():
                                 {
                                     name: 'api.py',
                                     type: 'python',
-                                    icon: '🔌',
-                                    description: 'REST API Blueprint with JSON endpoints for CRUD operations. Uses models to query and return data as JSON.',
-                                    codeExample: `from flask import Blueprint, jsonify, request
-from app.models import User, Post
-
-api_bp = Blueprint('api', __name__, url_prefix='/api')
-
-@api_bp.route('/users', methods=['GET'])
-def get_users():
-    users = User.query.all()
-    return jsonify([u.to_dict() for u in users])
-
-@api_bp.route('/users/<id>', methods=['GET'])
-def get_user(id):
-    user = User.query.get_or_404(id)
-    return jsonify(user.to_dict())
-
-@api_bp.route('/posts', methods=['GET'])
-def get_posts():
-    posts = Post.query.all()
-    return jsonify([p.to_dict() for p in posts])`,
+                                    icon: '\u{1F50C}',
+                                    description: 'REST API Blueprint \u2014 JSON CRUD endpoints. Uses models to query data and returns JSON responses.',
+                                    groups: ['blueprints', 'core'],
+                                    codeExample: `from flask import Blueprint, jsonify, request\nfrom app.models import User, Post\n\napi_bp = Blueprint('api', __name__, url_prefix='/api')\n\n@api_bp.route('/users', methods=['GET'])\ndef get_users():\n    users = User.query.all()\n    return jsonify([u.to_dict() for u in users])\n\n@api_bp.route('/users/<id>', methods=['GET'])\ndef get_user(id):\n    user = User.query.get_or_404(id)\n    return jsonify(user.to_dict())\n\n@api_bp.route('/posts', methods=['GET'])\ndef get_posts():\n    posts = Post.query.all()\n    return jsonify([p.to_dict() for p in posts])`,
                                     relationships: [
-                                        { type: 'imported-by', label: '__init__.py' },
+                                        { type: 'imported-by', label: '__init__.py (registered as Blueprint)' },
                                         { type: 'imports', label: 'models.py (User, Post)' },
                                         { type: 'contains', label: '/api/users, /api/posts' }
                                     ]
@@ -1098,76 +1549,60 @@ def get_posts():
                         {
                             name: 'templates/',
                             type: 'folder',
-                            icon: '📁',
-                            description: 'Jinja2 HTML templates for rendering pages. base.html provides template inheritance structure.',
+                            icon: '\u{1F4C1}',
+                            description: 'Jinja2 HTML templates \u2014 base.html provides the master layout, child templates extend it',
+                            groups: ['templates'],
                             children: [
                                 {
                                     name: 'base.html',
                                     type: 'template',
-                                    icon: '📄',
-                                    description: 'Base Jinja2 template with common layout (navigation, footer, CSS links). Extended by all other templates.',
-                                    codeExample: `<!DOCTYPE html>
-<html>
-<head>
-    <title>{% block title %}My App{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <nav>...</nav>
-
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-
-    <footer>...</footer>
-</body>
-</html>`,
+                                    icon: '\u{1F4C4}',
+                                    description: 'Master Jinja2 template \u2014 defines nav, footer, CSS links. All other templates extend this.',
+                                    groups: ['templates'],
+                                    codeExample: `<!DOCTYPE html>\n<html>\n<head>\n    <title>{% block title %}My App{% endblock %}</title>\n    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">\n</head>\n<body>\n    <nav>...</nav>\n\n    <main>\n        {% block content %}{% endblock %}\n    </main>\n\n    <footer>...</footer>\n</body>\n</html>`,
                                     relationships: [
-                                        { type: 'extends', label: 'index.html, auth/login.html, auth/register.html' }
+                                        { type: 'extends', label: 'Extended by: index.html, login.html, register.html' }
                                     ]
                                 },
                                 {
                                     name: 'index.html',
                                     type: 'template',
-                                    icon: '🏠',
-                                    description: 'Homepage template extending base.html. Displayed when user visits /',
-                                    codeExample: `{% extends "base.html" %}
-
-{% block title %}Home - My App{% endblock %}
-
-{% block content %}
-<h1>Welcome to Flask App</h1>
-<p>This is the homepage.</p>
-{% endblock %}`,
+                                    icon: '\u{1F3E0}',
+                                    description: 'Homepage template \u2014 extends base.html, shown when user visits /',
+                                    groups: ['templates'],
+                                    codeExample: `{% extends "base.html" %}\n\n{% block title %}Home - My App{% endblock %}\n\n{% block content %}\n<h1>Welcome to Flask App</h1>\n<p>This is the homepage.</p>\n{% endblock %}`,
                                     relationships: [
                                         { type: 'extends', label: 'base.html' },
-                                        { type: 'rendered-by', label: 'routes (index route)' }
+                                        { type: 'used-by', label: 'routes (index route)' }
                                     ]
                                 },
                                 {
                                     name: 'auth/',
                                     type: 'folder',
-                                    icon: '📁',
-                                    description: 'Subfolder containing authentication-related templates',
+                                    icon: '\u{1F4C1}',
+                                    description: 'Auth-specific templates \u2014 login and registration forms, all extending base.html',
+                                    groups: ['templates', 'blueprints'],
                                     children: [
                                         {
                                             name: 'login.html',
                                             type: 'template',
-                                            icon: '🔐',
-                                            description: 'Login form template. Extends base.html and submits to /auth/login route.',
+                                            icon: '\u{1F510}',
+                                            description: 'Login form \u2014 extends base.html, submits to /auth/login',
+                                            groups: ['templates', 'blueprints'],
                                             relationships: [
                                                 { type: 'extends', label: 'base.html' },
-                                                { type: 'submits-to', label: 'routes/auth.py (login)' }
+                                                { type: 'used-by', label: 'routes/auth.py (login)' }
                                             ]
                                         },
                                         {
                                             name: 'register.html',
                                             type: 'template',
-                                            icon: '📝',
-                                            description: 'Registration form template. Extends base.html and submits to /auth/register route.',
+                                            icon: '\u{1F4DD}',
+                                            description: 'Registration form \u2014 extends base.html, submits to /auth/register',
+                                            groups: ['templates', 'blueprints'],
                                             relationships: [
                                                 { type: 'extends', label: 'base.html' },
-                                                { type: 'submits-to', label: 'routes/auth.py (register)' }
+                                                { type: 'used-by', label: 'routes/auth.py (register)' }
                                             ]
                                         }
                                     ]
@@ -1177,21 +1612,11 @@ def get_posts():
                         {
                             name: 'static/',
                             type: 'folder',
-                            icon: '📁',
-                            description: 'Static files served directly by Flask (CSS, JavaScript, images). Not processed.',
+                            icon: '\u{1F4C1}',
+                            description: 'Static files (CSS, JS, images) \u2014 served directly by Flask, not processed by Jinja2',
                             children: [
-                                {
-                                    name: 'css/',
-                                    type: 'folder',
-                                    icon: '📁',
-                                    description: 'Cascading Style Sheets for frontend styling'
-                                },
-                                {
-                                    name: 'js/',
-                                    type: 'folder',
-                                    icon: '📁',
-                                    description: 'JavaScript files for frontend interactivity'
-                                }
+                                { name: 'css/', type: 'folder', icon: '\u{1F4C1}', description: 'Stylesheets for frontend styling' },
+                                { name: 'js/', type: 'folder', icon: '\u{1F4C1}', description: 'JavaScript files for frontend interactivity' }
                             ]
                         }
                     ]
@@ -1199,40 +1624,18 @@ def get_posts():
                 {
                     name: 'tests/',
                     type: 'folder',
-                    icon: '🧪',
-                    description: 'pytest test files for unit and integration testing',
+                    icon: '\u{1F9EA}',
+                    description: 'pytest test suite \u2014 unit and integration tests with fixtures from conftest.py',
+                    groups: ['tests'],
                     children: [
-                        {
-                            name: '__init__.py',
-                            type: 'python',
-                            icon: '📄',
-                            description: 'Makes tests a Python package',
-                        },
+                        { name: '__init__.py', type: 'python', icon: '\u{1F4C4}', description: 'Makes tests/ a Python package', groups: ['tests'] },
                         {
                             name: 'conftest.py',
                             type: 'python',
-                            icon: '⚙️',
-                            description: 'pytest configuration file defining fixtures (test app, database) used across test files',
-                            codeExample: `import pytest
-from app import create_app, db
-
-@pytest.fixture
-def app():
-    app = create_app('testing')
-
-    with app.app_context():
-        db.create_all()
-        yield app
-        db.session.remove()
-        db.drop_all()
-
-@pytest.fixture
-def client(app):
-    return app.test_client()
-
-@pytest.fixture
-def runner(app):
-    return app.test_cli_runner()`,
+                            icon: '\u2699\uFE0F',
+                            description: 'pytest configuration \u2014 defines fixtures: test app (with TestConfig), test client, and database setup/teardown',
+                            groups: ['tests', 'core'],
+                            codeExample: `import pytest\nfrom app import create_app, db\n\n@pytest.fixture\ndef app():\n    app = create_app('testing')\n\n    with app.app_context():\n        db.create_all()\n        yield app\n        db.session.remove()\n        db.drop_all()\n\n@pytest.fixture\ndef client(app):\n    return app.test_client()\n\n@pytest.fixture\ndef runner(app):\n    return app.test_cli_runner()`,
                             relationships: [
                                 { type: 'imports', label: '__init__.py (create_app, db)' },
                                 { type: 'used-by', label: 'test_auth.py, other test files' }
@@ -1241,29 +1644,13 @@ def runner(app):
                         {
                             name: 'test_auth.py',
                             type: 'python',
-                            icon: '🧪',
-                            description: 'Unit tests for authentication routes. Uses fixtures from conftest.py',
-                            codeExample: `import pytest
-
-def test_register(client):
-    response = client.post('/auth/register', json={
-        'email': 'test@example.com',
-        'username': 'testuser',
-        'password': 'password123'
-    })
-    assert response.status_code == 201
-
-def test_login(client):
-    client.post('/auth/register', json={...})
-    response = client.post('/auth/login', json={
-        'email': 'test@example.com',
-        'password': 'password123'
-    })
-    assert response.status_code == 200
-    assert 'token' in response.get_json()`,
+                            icon: '\u{1F9EA}',
+                            description: 'Unit tests for auth routes \u2014 tests register, login using fixtures from conftest.py',
+                            groups: ['tests', 'blueprints'],
+                            codeExample: `import pytest\n\ndef test_register(client):\n    response = client.post('/auth/register', json={\n        'email': 'test@example.com',\n        'username': 'testuser',\n        'password': 'password123'\n    })\n    assert response.status_code == 201\n\ndef test_login(client):\n    client.post('/auth/register', json={...})\n    response = client.post('/auth/login', json={\n        'email': 'test@example.com',\n        'password': 'password123'\n    })\n    assert response.status_code == 200\n    assert 'token' in response.get_json()`,
                             relationships: [
-                                { type: 'uses', label: 'conftest.py (client fixture)' },
-                                { type: 'tests', label: 'routes/auth.py' }
+                                { type: 'used-by', label: 'conftest.py (client fixture)' },
+                                { type: 'imports', label: 'Tests routes/auth.py endpoints' }
                             ]
                         }
                     ]
@@ -1271,179 +1658,131 @@ def test_login(client):
                 {
                     name: 'config.py',
                     type: 'config',
-                    icon: '⚙️',
-                    description: 'Configuration classes for Development, Production, and Testing environments. Loaded by app/__init__.py',
-                    codeExample: `import os
-
-class Config:
-    """Base configuration"""
-    SECRET_KEY = os.getenv('SECRET_KEY', 'dev-key')
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-class DevelopmentConfig(Config):
-    DEBUG = True
-    TESTING = False
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///dev.db'
-
-class ProductionConfig(Config):
-    DEBUG = False
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
-
-config = {
-    'development': DevelopmentConfig,
-    'production': ProductionConfig,
-    'default': DevelopmentConfig
-}`,
+                    icon: '\u2699\uFE0F',
+                    description: 'Configuration classes \u2014 Dev, Prod, Test environments. Loaded by __init__.py via app.config.from_object()',
+                    groups: ['config-grp', 'core'],
+                    codeExample: `import os\n\nclass Config:\n    """Base configuration"""\n    SECRET_KEY = os.getenv('SECRET_KEY', 'dev-key')\n    SQLALCHEMY_TRACK_MODIFICATIONS = False\n\nclass DevelopmentConfig(Config):\n    DEBUG = True\n    TESTING = False\n    SQLALCHEMY_DATABASE_URI = 'sqlite:///dev.db'\n\nclass ProductionConfig(Config):\n    DEBUG = False\n    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')\n\nconfig = {\n    'development': DevelopmentConfig,\n    'production': ProductionConfig,\n    'default': DevelopmentConfig\n}`,
                     relationships: [
                         { type: 'imported-by', label: '__init__.py' },
-                        { type: 'uses', label: '.env (for SECRET_KEY, DATABASE_URL)' }
+                        { type: 'read-by', label: '.env (for SECRET_KEY, DATABASE_URL)' }
                     ]
                 },
                 {
                     name: 'run.py',
                     type: 'python',
-                    icon: '▶️',
-                    description: 'Entry point script. Run with "python run.py" to start the Flask development server.',
-                    codeExample: `import os
-from app import create_app, db
-
-config_name = os.getenv('FLASK_ENV', 'default')
-app = create_app(config_name)
-
-with app.app_context():
-    db.create_all()
-
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)`,
+                    icon: '\u25B6\uFE0F',
+                    description: 'Entry point \u2014 run with "python run.py" to start the Flask dev server. Calls create_app() from __init__.py.',
+                    groups: ['entry', 'core'],
+                    codeExample: `import os\nfrom app import create_app, db\n\nconfig_name = os.getenv('FLASK_ENV', 'default')\napp = create_app(config_name)\n\nwith app.app_context():\n    db.create_all()\n\nif __name__ == '__main__':\n    app.run(debug=True, host='0.0.0.0', port=5000)`,
                     relationships: [
                         { type: 'imports', label: '__init__.py (create_app, db)' },
-                        { type: 'reads', label: '.env (FLASK_ENV)' },
-                        { type: 'uses', label: 'config.py (via create_app)' }
+                        { type: 'read-by', label: '.env (FLASK_ENV)' },
+                        { type: 'used-by', label: 'config.py (via create_app)' }
                     ]
                 },
                 {
                     name: 'requirements.txt',
                     type: 'config',
-                    icon: '📋',
-                    description: 'Python package dependencies with version numbers. Generated with "pip freeze > requirements.txt"',
-                    codeExample: `Flask==2.3.2
-Flask-SQLAlchemy==3.0.3
-Flask-Migrate==4.0.4
-Flask-Login==0.6.2
-python-dotenv==1.0.0
-gunicorn==20.1.0
-pytest==7.4.0
-pytest-cov==4.1.0`,
+                    icon: '\u{1F4CB}',
+                    description: 'Python dependencies with pinned versions \u2014 generated with "pip freeze > requirements.txt"',
+                    groups: ['entry'],
+                    codeExample: `Flask==2.3.2\nFlask-SQLAlchemy==3.0.3\nFlask-Migrate==4.0.4\nFlask-Login==0.6.2\npython-dotenv==1.0.0\ngunicorn==20.1.0\npytest==7.4.0\npytest-cov==4.1.0`,
                     relationships: [
-                        { type: 'defines', label: 'All project dependencies' },
-                        { type: 'installed-by', label: 'pip install -r requirements.txt' }
+                        { type: 'imports', label: 'Defines all project dependencies' },
+                        { type: 'used-by', label: 'pip install -r requirements.txt' }
                     ]
                 },
                 {
                     name: '.env',
                     type: 'env',
-                    icon: '🔑',
-                    description: 'Environment variables file (NOT committed to Git). Contains secrets: DATABASE_URL, SECRET_KEY, API keys, etc.',
-                    codeExample: `FLASK_ENV=development
-FLASK_APP=run.py
-SECRET_KEY=super-secret-key-change-in-prod
-DATABASE_URL=postgresql://user:pass@localhost/mydb
-DEBUG=True
-API_KEY=your-api-key-here`,
+                    icon: '\u{1F511}',
+                    description: 'Secret environment variables (NOT in Git!) \u2014 DATABASE_URL, SECRET_KEY, API keys',
+                    groups: ['config-grp'],
+                    codeExample: `FLASK_ENV=development\nFLASK_APP=run.py\nSECRET_KEY=super-secret-key-change-in-prod\nDATABASE_URL=postgresql://user:pass@localhost/mydb\nDEBUG=True\nAPI_KEY=your-api-key-here`,
                     relationships: [
                         { type: 'read-by', label: 'config.py' },
                         { type: 'read-by', label: 'run.py' },
-                        { type: 'ignored-by', label: '.gitignore' }
+                        { type: 'imports', label: 'Ignored by .gitignore' }
                     ]
                 },
                 {
                     name: '.gitignore',
                     type: 'config',
-                    icon: '🚫',
-                    description: 'Git configuration to exclude files from version control (secrets, dependencies, cache)',
-                    codeExample: `# Virtual environment
-venv/
-env/
-ENV/
-
-# Environment variables
-.env
-.env.local
-
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-
-# Flask
-instance/
-
-# Database
-*.db
-*.sqlite
-*.sqlite3
-
-# IDE
-.vscode/
-.idea/
-*.swp`,
+                    icon: '\u{1F6AB}',
+                    description: 'Git exclusion rules \u2014 keeps secrets (.env), dependencies (venv/), and cache (__pycache__/) out of version control',
+                    groups: ['config-grp'],
+                    codeExample: `# Virtual environment\nvenv/\nenv/\nENV/\n\n# Environment variables\n.env\n.env.local\n\n# Python\n__pycache__/\n*.py[cod]\n*$py.class\n*.so\n\n# Flask\ninstance/\n\n# Database\n*.db\n*.sqlite\n*.sqlite3\n\n# IDE\n.vscode/\n.idea/\n*.swp`,
                     relationships: [
-                        { type: 'ignores', label: '.env, venv/, __pycache__/, *.pyc' }
+                        { type: 'imports', label: 'Ignores: .env, venv/, __pycache__/, *.pyc' }
                     ]
                 },
                 {
                     name: 'migrations/',
                     type: 'folder',
-                    icon: '📁',
-                    description: 'Database migration files created by Flask-Migrate. Tracks schema changes over time.',
+                    icon: '\u{1F4C1}',
+                    description: 'Flask-Migrate database migrations \u2014 auto-generated scripts that track schema changes over time',
                     children: [
-                        {
-                            name: 'versions/',
-                            type: 'folder',
-                            icon: '📁',
-                            description: 'Individual migration scripts numbered sequentially (001, 002, etc.)'
-                        }
+                        { name: 'versions/', type: 'folder', icon: '\u{1F4C1}', description: 'Individual migration scripts numbered sequentially' }
                     ]
                 },
                 {
                     name: 'README.md',
                     type: 'config',
-                    icon: '📖',
-                    description: 'Project documentation in Markdown format. Includes setup instructions, API docs, and usage examples.',
+                    icon: '\u{1F4D6}',
+                    description: 'Project documentation \u2014 setup instructions, API docs, usage examples',
                     relationships: [
-                        { type: 'documents', label: 'Entire project' }
+                        { type: 'imports', label: 'Documents entire project' }
                     ]
                 }
             ]
         };
 
-        // Render the file tree
+        // ═══════════════════════════════════════════════
+        // RENDER FILE TREE with hover tooltips + group badges
+        // ═══════════════════════════════════════════════
         function renderFileTree(data, container = null, depth = 0) {
             if (!container) {
                 container = document.getElementById('fileTree');
                 container.innerHTML = '';
             }
 
-            const isRoot = depth === 0;
-            if (isRoot) {
+            if (depth === 0) {
                 renderItem(data, container, depth);
             } else if (data.children) {
-                data.children.forEach(child => {
-                    renderItem(child, container, depth);
-                });
+                data.children.forEach(child => renderItem(child, container, depth));
             }
+        }
+
+        function createTooltip(text) {
+            const tip = document.createElement('div');
+            tip.className = 'tree-tooltip';
+            tip.textContent = text;
+            return tip;
+        }
+
+        function createGroupBadges(groups) {
+            if (!groups || groups.length === 0) return null;
+            const container = document.createElement('span');
+            container.className = 'group-badges';
+            groups.forEach(g => {
+                const dot = document.createElement('span');
+                dot.className = 'group-badge ' + g;
+                dot.title = g.replace('-grp', '').replace(/^\w/, c => c.toUpperCase());
+                container.appendChild(dot);
+            });
+            return container;
         }
 
         function renderItem(item, container, depth) {
             const indent = depth * 20;
 
             if (item.children) {
-                // Render folder as details/summary
+                // Folder: details/summary (clickable to expand + hover tooltip + click for modal)
                 const details = document.createElement('details');
                 details.style.marginLeft = indent + 'px';
 
                 const summary = document.createElement('summary');
+
                 const icon = document.createElement('span');
                 icon.className = 'tree-icon';
                 icon.textContent = item.icon;
@@ -1453,20 +1792,37 @@ instance/
 
                 summary.appendChild(icon);
                 summary.appendChild(name);
-                details.appendChild(summary);
 
-                // Add content container
-                const content = document.createElement('div');
-                content.style.marginLeft = '0';
+                // Group badges
+                const badges = createGroupBadges(item.groups);
+                if (badges) summary.appendChild(badges);
 
-                item.children.forEach(child => {
-                    renderItem(child, content, depth + 1);
+                // Tooltip on hover
+                if (item.description) {
+                    summary.appendChild(createTooltip(item.description));
+                }
+
+                // Click on icon area opens modal for folder details
+                summary.addEventListener('click', (e) => {
+                    // Only open modal on double-click or if it has detailed info
+                    // Single click toggles the folder
                 });
 
+                // Right-click or long-press opens folder modal
+                summary.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    openModal(item);
+                });
+
+                details.appendChild(summary);
+
+                const content = document.createElement('div');
+                content.style.marginLeft = '0';
+                item.children.forEach(child => renderItem(child, content, depth + 1));
                 details.appendChild(content);
                 container.appendChild(details);
             } else {
-                // Render file as clickable item
+                // File: clickable item with tooltip + group badges
                 const itemEl = document.createElement('div');
                 itemEl.className = `tree-item clickable ${item.type}`;
                 itemEl.style.marginLeft = indent + 'px';
@@ -1481,6 +1837,15 @@ instance/
                 itemEl.appendChild(icon);
                 itemEl.appendChild(name);
 
+                // Group badges
+                const badges = createGroupBadges(item.groups);
+                if (badges) itemEl.appendChild(badges);
+
+                // Tooltip on hover
+                if (item.description) {
+                    itemEl.appendChild(createTooltip(item.description));
+                }
+
                 itemEl.addEventListener('click', (e) => {
                     e.stopPropagation();
                     openModal(item);
@@ -1490,19 +1855,21 @@ instance/
             }
         }
 
-        // Modal functionality
+        // ═══════════════════════════════════════════════
+        // MODAL — shows detail for both files AND folders
+        // ═══════════════════════════════════════════════
         function openModal(item) {
             const modal = document.getElementById('fileModal');
-            const icon = document.getElementById('modalIcon');
-            const name = document.getElementById('modalName');
+            const iconEl = document.getElementById('modalIcon');
+            const nameEl = document.getElementById('modalName');
             const body = document.getElementById('modalBody');
 
-            icon.textContent = item.icon;
-            name.textContent = item.name;
+            iconEl.textContent = item.icon;
+            nameEl.textContent = item.name;
 
             let content = `
                 <div class="modal-section">
-                    <span class="file-type-badge ${item.type}">${getTypeBadgeText(item.type)}</span>
+                    <span class="file-type-badge ${item.children ? 'folder' : item.type}">${item.children ? 'Folder' : getTypeBadgeText(item.type)}</span>
                 </div>
             `;
 
@@ -1515,28 +1882,81 @@ instance/
                 `;
             }
 
+            // Folder: show contents
+            if (item.children && item.children.length > 0) {
+                content += `
+                    <div class="modal-section">
+                        <div class="modal-section-title">Contents</div>
+                        <div class="folder-contents">
+                            ${item.children.map(c => `
+                                <div class="folder-child-badge" onclick="closeModal(); setTimeout(() => { const items = document.querySelectorAll('.tree-item'); items.forEach(i => { if (i.textContent.trim().startsWith('${c.name.replace("'", "\\'")}')) { i.click(); } }); }, 200);">
+                                    <span>${c.icon}</span>
+                                    <span>${c.name}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Code example
             if (item.codeExample) {
+                const lang = item.type === 'template' ? 'Jinja2 / HTML' : item.type === 'env' ? 'Environment' : item.type === 'config' ? 'Config' : 'Python';
                 content += `
                     <div class="modal-section">
                         <div class="modal-section-title">Code Example</div>
                         <div class="code-example">
-                            <span class="code-example-label">Python</span>
+                            <span class="code-example-label">${lang}</span>
                             <pre style="margin: 0; white-space: pre-wrap; word-break: break-word;">${escapeHtml(item.codeExample)}</pre>
                         </div>
                     </div>
                 `;
             }
 
+            // Relationships
             if (item.relationships && item.relationships.length > 0) {
                 content += `
                     <div class="modal-section">
-                        <div class="modal-section-title">Relationships & Connections</div>
+                        <div class="modal-section-title">Relationships &amp; Connections</div>
                         <div class="relationships">
                             ${item.relationships.map(rel => `
                                 <div class="relationship ${rel.type}">
-                                    <span class="relationship-arrow">→</span>
+                                    <span class="relationship-arrow">\u2192</span>
                                     <span>${rel.label}</span>
                                 </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Group membership
+            if (item.groups && item.groups.length > 0) {
+                const groupNames = {
+                    'core': 'App Core',
+                    'blueprints': 'Blueprints / Routes',
+                    'templates': 'Templates',
+                    'config-grp': 'Configuration',
+                    'tests': 'Tests',
+                    'entry': 'Entry / Deployment'
+                };
+                const groupColors = {
+                    'core': 'var(--blue)',
+                    'blueprints': 'var(--green)',
+                    'templates': 'var(--purple)',
+                    'config-grp': 'var(--yellow)',
+                    'tests': 'var(--cyan)',
+                    'entry': 'var(--orange)'
+                };
+                content += `
+                    <div class="modal-section">
+                        <div class="modal-section-title">Belongs To</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            ${item.groups.map(g => `
+                                <span style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: ${groupColors[g]}15; border: 1px solid ${groupColors[g]}40; border-radius: 6px; font-size: 12px; color: ${groupColors[g]};">
+                                    <span style="width: 8px; height: 8px; border-radius: 50%; background: ${groupColors[g]};"></span>
+                                    ${groupNames[g] || g}
+                                </span>
                             `).join('')}
                         </div>
                     </div>
@@ -1548,8 +1968,7 @@ instance/
         }
 
         function closeModal() {
-            const modal = document.getElementById('fileModal');
-            modal.classList.remove('active');
+            document.getElementById('fileModal').classList.remove('active');
         }
 
         function getTypeBadgeText(type) {
@@ -1565,25 +1984,44 @@ instance/
         }
 
         function escapeHtml(text) {
-            const map = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#039;'
-            };
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
             return text.replace(/[&<>"']/g, m => map[m]);
         }
 
-        // Close modal when clicking outside
+        // Close modal on outside click or Escape
         window.addEventListener('click', (e) => {
-            const modal = document.getElementById('fileModal');
-            if (e.target === modal) {
-                closeModal();
-            }
+            if (e.target === document.getElementById('fileModal')) closeModal();
+        });
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
         });
 
-        // Initialize file tree on page load
+        // Connection map: clicking a file card opens its modal
+        document.addEventListener('click', (e) => {
+            const connFile = e.target.closest('.conn-file');
+            const flowNode = e.target.closest('.flow-node');
+            const target = connFile || flowNode;
+            if (!target) return;
+
+            const fileName = target.dataset.file;
+            if (!fileName) return;
+
+            const item = findFileByName(fileTreeData, fileName);
+            if (item) openModal(item);
+        });
+
+        function findFileByName(node, name) {
+            if (node.name && (node.name === name || node.name === name + '/' || node.name.replace('/', '') === name)) return node;
+            if (node.children) {
+                for (const child of node.children) {
+                    const found = findFileByName(child, name);
+                    if (found) return found;
+                }
+            }
+            return null;
+        }
+
+        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             renderFileTree(fileTreeData);
         });
