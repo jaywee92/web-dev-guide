@@ -642,7 +642,8 @@
       <div class="code-block">
         <span class="dec">@app.route</span>(<span class="str">"/authors/&lt;int:id&gt;"</span>, methods=[<span class="str">"DELETE"</span>])<br>
         <span class="kw">def</span> <span class="fn">delete_author</span>(<span class="var">id</span>):<br>
-        &nbsp;&nbsp;<span class="var">id</span> = request.view_args[<span class="str">"id"</span>]
+        &nbsp;&nbsp;<span class="comment"># id is injected by the route decorator</span><br>
+        &nbsp;&nbsp;<span class="comment"># no need for request.view_args</span>
       </div>
     </div>
 
