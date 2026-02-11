@@ -398,22 +398,18 @@
     background: var(--yellow);
     transform: scaleX(0);
     transform-origin: left;
-    animation: lineGrow 0.4s ease forwards;
-    animation-play-state: paused;
   }
   .arrow-line.left {
     background: var(--white);
     transform: scaleX(0);
     transform-origin: right;
-    animation: lineGrow 0.4s ease forwards;
-    animation-play-state: paused;
   }
 
-  /* Trigger line animations when parent arrow is visible */
-  .arrows-left .arrow:nth-child(1) .arrow-line { animation-delay: 1.9s; animation-play-state: running; }
-  .arrows-left .arrow:nth-child(2) .arrow-line { animation-delay: 8.3s; animation-play-state: running; }
-  .arrows-right .arrow:nth-child(1) .arrow-line { animation-delay: 4.7s; animation-play-state: running; }
-  .arrows-right .arrow:nth-child(2) .arrow-line { animation-delay: 6.1s; animation-play-state: running; }
+  /* Arrow line animations – explicit full shorthand for reliable playback */
+  .arrows-left .arrow:nth-child(1) .arrow-line { animation: lineGrow 0.4s ease 1.9s forwards; }
+  .arrows-left .arrow:nth-child(2) .arrow-line { animation: lineGrow 0.4s ease 8.3s forwards; }
+  .arrows-right .arrow:nth-child(1) .arrow-line { animation: lineGrow 0.4s ease 4.7s forwards; }
+  .arrows-right .arrow:nth-child(2) .arrow-line { animation: lineGrow 0.4s ease 6.1s forwards; }
 
   .arrow-line.right::after {
     content: '';
