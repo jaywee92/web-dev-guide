@@ -118,7 +118,7 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 13px;
             line-height: 1.8;
-            overflow-x: auto;
+            overflow: visible;
             animation: fadeSlideUp 0.6s ease-out;
         }
 
@@ -977,6 +977,52 @@
             font-weight: 600;
         }
 
+        /* COMMENT TOGGLE in modal */
+        .code-toggle-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 8px;
+        }
+
+        .code-toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .code-toggle-btn:hover {
+            background: var(--surface-bright);
+            color: var(--text);
+            border-color: var(--text-muted);
+        }
+
+        .code-toggle-btn.active {
+            background: var(--green-dim);
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .comment-line {
+            display: inline;
+        }
+
+        .comments-hidden .comment-line {
+            display: none;
+        }
+
+        .comments-hidden .sh-comment {
+            display: none;
+        }
+
         @media (max-width: 768px) {
             .modal-content {
                 max-width: 95vw;
@@ -1627,22 +1673,22 @@ DEBUG=True</pre>
             name: 'flask_project/',
             type: 'folder',
             icon: '\u{1F4C1}',
-            description: 'Root project directory containing all Flask application files',
+            description: 'The main project folder \u2014 everything for your Flask app lives here',
             children: [
                 {
                     name: 'app/',
                     type: 'folder',
                     icon: '\u{1F4C1}',
-                    description: 'Main application package \u2014 contains all Flask app code, models, routes, and templates',
+                    description: 'Your main app folder \u2014 all your Python code, routes, and HTML templates live in here',
                     groups: ['core'],
                     children: [
                         {
                             name: '__init__.py',
                             type: 'python',
                             icon: '\u{1F4E6}',
-                            description: 'App Factory \u2014 creates and configures the Flask instance, initializes extensions, and registers Blueprints',
+                            description: 'The heart of your app! Creates the Flask app and connects everything (routes, database, config)',
                             groups: ['core', 'blueprints', 'config-grp'],
-                            codeExample: `from flask import Flask\nfrom flask_sqlalchemy import SQLAlchemy\n\ndb = SQLAlchemy()\n\ndef create_app(config_name='default'):\n    app = Flask(__name__)\n    app.config.from_object(config[config_name])\n\n    db.init_app(app)\n\n    from .routes.auth import auth_bp\n    from .routes.api import api_bp\n\n    app.register_blueprint(auth_bp)\n    app.register_blueprint(api_bp)\n\n    return app`,
+                            codeExample: `from flask import Flask  # Import the Flask framework\nfrom flask_sqlalchemy import SQLAlchemy  # Database toolkit\n\ndb = SQLAlchemy()  # Create database instance (shared across app)\n\ndef create_app(config_name='default'):  # Factory: creates a new Flask app\n    app = Flask(__name__)  # Create the Flask application\n    app.config.from_object(  # Load settings (dev/prod/test)\n        config[config_name]\n    )\n\n    db.init_app(app)  # Connect database to this app\n\n    # Import and register Blueprints (route modules)\n    from .routes.auth import auth_bp  # Auth routes (/auth/login, etc.)\n    from .routes.api import api_bp  # API routes (/api/users, etc.)\n\n    app.register_blueprint(auth_bp)  # Activate auth routes\n    app.register_blueprint(api_bp)  # Activate API routes\n\n    return app  # Return the fully configured app`,
                             relationships: [
                                 { type: 'imports', label: 'flask, flask_sqlalchemy' },
                                 { type: 'imported-by', label: 'run.py' },
@@ -1654,9 +1700,9 @@ DEBUG=True</pre>
                             name: 'models.py',
                             type: 'python',
                             icon: '\u{1F5C4}\uFE0F',
-                            description: 'SQLAlchemy ORM models (User, Post) \u2014 defines table structure, columns, and relationships',
+                            description: 'Your database tables as Python classes \u2014 each class (e.g. User, Post) becomes a table in the database',
                             groups: ['core'],
-                            codeExample: `from app import db\n\nclass User(db.Model):\n    id = db.Column(db.Integer, primary_key=True)\n    email = db.Column(db.String(120), unique=True)\n    username = db.Column(db.String(80))\n    posts = db.relationship('Post', backref='author')\n\n    def to_dict(self):\n        return {\n            'id': self.id,\n            'email': self.email,\n            'username': self.username\n        }\n\nclass Post(db.Model):\n    id = db.Column(db.Integer, primary_key=True)\n    title = db.Column(db.String(200))\n    content = db.Column(db.Text)\n    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))`,
+                            codeExample: `from app import db  # Import shared database instance\n\nclass User(db.Model):  # 'User' table in your database\n    id = db.Column(  # Unique ID (auto-incremented)\n        db.Integer, primary_key=True)\n    email = db.Column(  # Email (must be unique)\n        db.String(120), unique=True)\n    username = db.Column(db.String(80))  # Display name\n    posts = db.relationship(  # All posts by this user\n        'Post', backref='author')\n\n    def to_dict(self):  # Convert to dict (for JSON output)\n        return {\n            'id': self.id,\n            'email': self.email,\n            'username': self.username\n        }\n\nclass Post(db.Model):  # 'Post' table in your database\n    id = db.Column(  # Unique post ID\n        db.Integer, primary_key=True)\n    title = db.Column(db.String(200))  # Post title\n    content = db.Column(db.Text)  # Post body (unlimited length)\n    user_id = db.Column(db.Integer,  # Foreign key -> User.id\n        db.ForeignKey('user.id'))`,
                             relationships: [
                                 { type: 'imported-by', label: 'routes/auth.py' },
                                 { type: 'imported-by', label: 'routes/api.py' },
@@ -1667,9 +1713,9 @@ DEBUG=True</pre>
                             name: 'extensions.py',
                             type: 'python',
                             icon: '\u{1F527}',
-                            description: 'Singleton instances of Flask extensions (db, migrate, login_manager) for clean imports across modules',
+                            description: 'Shared tools (database, login system) created here once, so all other files can import and use them',
                             groups: ['core'],
-                            codeExample: `from flask_sqlalchemy import SQLAlchemy\nfrom flask_migrate import Migrate\nfrom flask_login import LoginManager\n\ndb = SQLAlchemy()\nmigrate = Migrate()\nlogin_manager = LoginManager()\n\n# In create_app():\n# db.init_app(app)\n# migrate.init_app(app, db)\n# login_manager.init_app(app)`,
+                            codeExample: `from flask_sqlalchemy import SQLAlchemy  # Database toolkit\nfrom flask_migrate import Migrate  # DB migration tool\nfrom flask_login import LoginManager  # User session management\n\ndb = SQLAlchemy()  # Database instance\nmigrate = Migrate()  # Migration manager\nlogin_manager = LoginManager()  # Login/session handler\n\n# These get connected in create_app():\n# db.init_app(app)\n# migrate.init_app(app, db)\n# login_manager.init_app(app)`,
                             relationships: [
                                 { type: 'imported-by', label: '__init__.py' },
                                 { type: 'imported-by', label: 'models.py' }
@@ -1679,14 +1725,14 @@ DEBUG=True</pre>
                             name: 'routes/',
                             type: 'folder',
                             icon: '\u{1F4C1}',
-                            description: 'Blueprint modules \u2014 each file defines a set of URL routes grouped by feature (auth, api)',
+                            description: 'Your URL routes \u2014 each file handles a different part of your website (login, API, etc.)',
                             groups: ['blueprints'],
                             children: [
                                 {
                                     name: '__init__.py',
                                     type: 'python',
                                     icon: '\u{1F4C4}',
-                                    description: 'Makes routes/ a Python package. Optionally imports and exports all Blueprints for convenience.',
+                                    description: 'Makes this folder a Python package \u2014 Python needs this file to use import from the routes/ folder',
                                     groups: ['blueprints'],
                                     relationships: [
                                         { type: 'contains', label: 'auth.py, api.py' }
@@ -1696,9 +1742,9 @@ DEBUG=True</pre>
                                     name: 'auth.py',
                                     type: 'python',
                                     icon: '\u{1F510}',
-                                    description: 'Authentication Blueprint \u2014 login, register, logout routes. Uses User model for validation.',
+                                    description: 'Login, registration & logout \u2014 handles all URLs starting with /auth/ (e.g. /auth/login)',
                                     groups: ['blueprints', 'core'],
-                                    codeExample: `from flask import Blueprint, request, jsonify\nfrom app.models import User\n\nauth_bp = Blueprint('auth', __name__, url_prefix='/auth')\n\n@auth_bp.route('/register', methods=['POST'])\ndef register():\n    data = request.get_json()\n    user = User(email=data['email'], username=data['username'])\n    db.session.add(user)\n    db.session.commit()\n    return {'msg': 'User created'}, 201\n\n@auth_bp.route('/login', methods=['POST'])\ndef login():\n    data = request.get_json()\n    user = User.query.filter_by(email=data['email']).first()\n    if user and user.check_password(data['password']):\n        return {'token': 'jwt_token_here'}\n    return {'error': 'Invalid credentials'}, 401`,
+                                    codeExample: `from flask import Blueprint, request, jsonify  # Flask tools\nfrom app.models import User  # User database model\n\n# Create a Blueprint: a group of related routes\nauth_bp = Blueprint('auth', __name__,\n    url_prefix='/auth')  # All URLs start with /auth\n\n@auth_bp.route('/register', methods=['POST'])  # POST /auth/register\ndef register():\n    data = request.get_json()  # Get JSON from request body\n    user = User(  # Create new User object\n        email=data['email'],\n        username=data['username'])\n    db.session.add(user)  # Add to database session\n    db.session.commit()  # Save to database\n    return {'msg': 'User created'}, 201  # 201 = Created\n\n@auth_bp.route('/login', methods=['POST'])  # POST /auth/login\ndef login():\n    data = request.get_json()  # Get login credentials\n    user = User.query.filter_by(  # Find user by email\n        email=data['email']).first()\n    if user and user.check_password(  # Verify password\n            data['password']):\n        return {'token': 'jwt_token_here'}  # Return auth token\n    return {'error': 'Invalid credentials'}, 401  # 401 = Unauthorized`,
                                     relationships: [
                                         { type: 'imported-by', label: '__init__.py (registered as Blueprint)' },
                                         { type: 'imports', label: 'models.py (User)' },
@@ -1709,9 +1755,9 @@ DEBUG=True</pre>
                                     name: 'api.py',
                                     type: 'python',
                                     icon: '\u{1F50C}',
-                                    description: 'REST API Blueprint \u2014 JSON CRUD endpoints. Uses models to query data and returns JSON responses.',
+                                    description: 'JSON data endpoints (like /api/users) \u2014 used by frontend JS or mobile apps to get/send data',
                                     groups: ['blueprints', 'core'],
-                                    codeExample: `from flask import Blueprint, jsonify, request\nfrom app.models import User, Post\n\napi_bp = Blueprint('api', __name__, url_prefix='/api')\n\n@api_bp.route('/users', methods=['GET'])\ndef get_users():\n    users = User.query.all()\n    return jsonify([u.to_dict() for u in users])\n\n@api_bp.route('/users/<id>', methods=['GET'])\ndef get_user(id):\n    user = User.query.get_or_404(id)\n    return jsonify(user.to_dict())\n\n@api_bp.route('/posts', methods=['GET'])\ndef get_posts():\n    posts = Post.query.all()\n    return jsonify([p.to_dict() for p in posts])`,
+                                    codeExample: `from flask import Blueprint, jsonify, request  # Flask tools\nfrom app.models import User, Post  # Database models\n\n# Create API Blueprint (URLs start with /api)\napi_bp = Blueprint('api', __name__,\n    url_prefix='/api')\n\n@api_bp.route('/users', methods=['GET'])  # GET /api/users\ndef get_users():\n    users = User.query.all()  # Fetch all users from DB\n    return jsonify(  # Convert to JSON response\n        [u.to_dict() for u in users])\n\n@api_bp.route('/users/<id>', methods=['GET'])  # GET /api/users/123\ndef get_user(id):  # id comes from the URL\n    user = User.query.get_or_404(id)  # Find or return 404\n    return jsonify(user.to_dict())  # Return as JSON\n\n@api_bp.route('/posts', methods=['GET'])  # GET /api/posts\ndef get_posts():\n    posts = Post.query.all()  # Fetch all posts\n    return jsonify(  # Return as JSON array\n        [p.to_dict() for p in posts])`,
                                     relationships: [
                                         { type: 'imported-by', label: '__init__.py (registered as Blueprint)' },
                                         { type: 'imports', label: 'models.py (User, Post)' },
@@ -1724,16 +1770,16 @@ DEBUG=True</pre>
                             name: 'templates/',
                             type: 'folder',
                             icon: '\u{1F4C1}',
-                            description: 'Jinja2 HTML templates \u2014 base.html provides the master layout, child templates extend it',
+                            description: 'Your HTML pages with dynamic content \u2014 Flask fills in the {{ placeholders }} before sending to browser',
                             groups: ['templates'],
                             children: [
                                 {
                                     name: 'base.html',
                                     type: 'template',
                                     icon: '\u{1F4C4}',
-                                    description: 'Master Jinja2 template \u2014 defines nav, footer, CSS links. All other templates extend this.',
+                                    description: 'The master layout \u2014 navigation, footer & CSS. All other pages inherit from this via {% extends %}',
                                     groups: ['templates'],
-                                    codeExample: `<!DOCTYPE html>\n<html>\n<head>\n    <title>{% block title %}My App{% endblock %}</title>\n    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">\n</head>\n<body>\n    <nav>...</nav>\n\n    <main>\n        {% block content %}{% endblock %}\n    </main>\n\n    <footer>...</footer>\n</body>\n</html>`,
+                                    codeExample: `<!DOCTYPE html>\n<html>\n<head>\n    <!-- Page title: child templates can override this -->\n    <title>{% block title %}My App{% endblock %}</title>\n    <!-- Load your CSS stylesheet -->\n    <link rel="stylesheet"\n        href="{{ url_for('static', filename='css/style.css') }}">\n</head>\n<body>\n    <nav><!-- Navigation bar --></nav>\n\n    <main>\n        <!-- Child templates insert their content here -->\n        {% block content %}{% endblock %}\n    </main>\n\n    <footer><!-- Footer --></footer>\n</body>\n</html>`,
                                     relationships: [
                                         { type: 'extends', label: 'Extended by: index.html, login.html, register.html' }
                                     ]
@@ -1742,9 +1788,9 @@ DEBUG=True</pre>
                                     name: 'index.html',
                                     type: 'template',
                                     icon: '\u{1F3E0}',
-                                    description: 'Homepage template \u2014 extends base.html, shown when user visits /',
+                                    description: 'Your homepage \u2014 shown when someone visits the root URL (/). Inherits layout from base.html',
                                     groups: ['templates'],
-                                    codeExample: `{% extends "base.html" %}\n\n{% block title %}Home - My App{% endblock %}\n\n{% block content %}\n<h1>Welcome to Flask App</h1>\n<p>This is the homepage.</p>\n{% endblock %}`,
+                                    codeExample: `{% extends "base.html" %}\n\n{% block title %}Home - My App{% endblock %}\n\n{% block content %}\n<!-- This replaces the content block in base.html -->\n<h1>Welcome to Flask App</h1>\n<p>This is the homepage.</p>\n{% endblock %}`,
                                     relationships: [
                                         { type: 'extends', label: 'base.html' },
                                         { type: 'used-by', label: 'routes (index route)' }
@@ -1754,14 +1800,14 @@ DEBUG=True</pre>
                                     name: 'auth/',
                                     type: 'folder',
                                     icon: '\u{1F4C1}',
-                                    description: 'Auth-specific templates \u2014 login and registration forms, all extending base.html',
+                                    description: 'Login & signup page templates \u2014 the forms users see when signing in or creating an account',
                                     groups: ['templates', 'blueprints'],
                                     children: [
                                         {
                                             name: 'login.html',
                                             type: 'template',
                                             icon: '\u{1F510}',
-                                            description: 'Login form \u2014 extends base.html, submits to /auth/login',
+                                            description: 'The login page \u2014 a form where users enter email & password to sign in',
                                             groups: ['templates', 'blueprints'],
                                             relationships: [
                                                 { type: 'extends', label: 'base.html' },
@@ -1772,7 +1818,7 @@ DEBUG=True</pre>
                                             name: 'register.html',
                                             type: 'template',
                                             icon: '\u{1F4DD}',
-                                            description: 'Registration form \u2014 extends base.html, submits to /auth/register',
+                                            description: 'The signup page \u2014 a form where new users create their account',
                                             groups: ['templates', 'blueprints'],
                                             relationships: [
                                                 { type: 'extends', label: 'base.html' },
@@ -1787,10 +1833,10 @@ DEBUG=True</pre>
                             name: 'static/',
                             type: 'folder',
                             icon: '\u{1F4C1}',
-                            description: 'Static files (CSS, JS, images) \u2014 served directly by Flask, not processed by Jinja2',
+                            description: 'Files that never change: CSS, JavaScript, images \u2014 the browser loads them directly',
                             children: [
-                                { name: 'css/', type: 'folder', icon: '\u{1F4C1}', description: 'Stylesheets for frontend styling' },
-                                { name: 'js/', type: 'folder', icon: '\u{1F4C1}', description: 'JavaScript files for frontend interactivity' }
+                                { name: 'css/', type: 'folder', icon: '\u{1F4C1}', description: 'Your CSS stylesheets \u2014 controls colors, fonts, layout and design of your website' },
+                                { name: 'js/', type: 'folder', icon: '\u{1F4C1}', description: 'Your JavaScript files \u2014 adds interactivity like click handlers, animations, form validation' }
                             ]
                         }
                     ]
@@ -1799,17 +1845,17 @@ DEBUG=True</pre>
                     name: 'tests/',
                     type: 'folder',
                     icon: '\u{1F9EA}',
-                    description: 'pytest test suite \u2014 unit and integration tests with fixtures from conftest.py',
+                    description: 'Automated tests that check your app works correctly \u2014 run with pytest before every deploy!',
                     groups: ['tests'],
                     children: [
-                        { name: '__init__.py', type: 'python', icon: '\u{1F4C4}', description: 'Makes tests/ a Python package', groups: ['tests'] },
+                        { name: '__init__.py', type: 'python', icon: '\u{1F4C4}', description: 'Makes tests/ a Python package \u2014 required so pytest can discover and run your test files', groups: ['tests'] },
                         {
                             name: 'conftest.py',
                             type: 'python',
                             icon: '\u2699\uFE0F',
-                            description: 'pytest configuration \u2014 defines fixtures: test app (with TestConfig), test client, and database setup/teardown',
+                            description: 'Shared test setup \u2014 creates a fresh test app and database before each test, cleans up afterwards',
                             groups: ['tests', 'core'],
-                            codeExample: `import pytest\nfrom app import create_app, db\n\n@pytest.fixture\ndef app():\n    app = create_app('testing')\n\n    with app.app_context():\n        db.create_all()\n        yield app\n        db.session.remove()\n        db.drop_all()\n\n@pytest.fixture\ndef client(app):\n    return app.test_client()\n\n@pytest.fixture\ndef runner(app):\n    return app.test_cli_runner()`,
+                            codeExample: `import pytest  # Testing framework\nfrom app import create_app, db  # App factory + database\n\n@pytest.fixture  # Fixture: runs before each test\ndef app():\n    app = create_app('testing')  # Create app with test settings\n\n    with app.app_context():  # Activate app context\n        db.create_all()  # Create all tables\n        yield app  # Run the test\n        db.session.remove()  # Clean up session\n        db.drop_all()  # Delete all tables\n\n@pytest.fixture  # Test client fixture\ndef client(app):\n    return app.test_client()  # Simulates browser requests\n\n@pytest.fixture  # CLI runner fixture\ndef runner(app):\n    return app.test_cli_runner()  # Simulates CLI commands`,
                             relationships: [
                                 { type: 'imports', label: '__init__.py (create_app, db)' },
                                 { type: 'used-by', label: 'test_auth.py, other test files' }
@@ -1819,9 +1865,9 @@ DEBUG=True</pre>
                             name: 'test_auth.py',
                             type: 'python',
                             icon: '\u{1F9EA}',
-                            description: 'Unit tests for auth routes \u2014 tests register, login using fixtures from conftest.py',
+                            description: 'Tests for login & registration \u2014 checks if signup works, login returns a token, errors are handled',
                             groups: ['tests', 'blueprints'],
-                            codeExample: `import pytest\n\ndef test_register(client):\n    response = client.post('/auth/register', json={\n        'email': 'test@example.com',\n        'username': 'testuser',\n        'password': 'password123'\n    })\n    assert response.status_code == 201\n\ndef test_login(client):\n    client.post('/auth/register', json={...})\n    response = client.post('/auth/login', json={\n        'email': 'test@example.com',\n        'password': 'password123'\n    })\n    assert response.status_code == 200\n    assert 'token' in response.get_json()`,
+                            codeExample: `import pytest\n\ndef test_register(client):  # Test user registration\n    response = client.post(  # Send POST request\n        '/auth/register', json={\n        'email': 'test@example.com',\n        'username': 'testuser',\n        'password': 'password123'\n    })\n    assert response.status_code == 201  # Should return 201 Created\n\ndef test_login(client):  # Test user login\n    # First create a user\n    client.post('/auth/register', json={...})\n    response = client.post(  # Then try to log in\n        '/auth/login', json={\n        'email': 'test@example.com',\n        'password': 'password123'\n    })\n    assert response.status_code == 200  # Should return 200 OK\n    assert 'token' in response.get_json()  # Should have auth token`,
                             relationships: [
                                 { type: 'used-by', label: 'conftest.py (client fixture)' },
                                 { type: 'imports', label: 'Tests routes/auth.py endpoints' }
@@ -1833,9 +1879,9 @@ DEBUG=True</pre>
                     name: 'config.py',
                     type: 'config',
                     icon: '\u2699\uFE0F',
-                    description: 'Configuration classes \u2014 Dev, Prod, Test environments. Loaded by __init__.py via app.config.from_object()',
+                    description: 'Settings for different environments: Development (debug on), Production (debug off), Testing (test DB)',
                     groups: ['config-grp', 'core'],
-                    codeExample: `import os\n\nclass Config:\n    """Base configuration"""\n    SECRET_KEY = os.getenv('SECRET_KEY', 'dev-key')\n    SQLALCHEMY_TRACK_MODIFICATIONS = False\n\nclass DevelopmentConfig(Config):\n    DEBUG = True\n    TESTING = False\n    SQLALCHEMY_DATABASE_URI = 'sqlite:///dev.db'\n\nclass ProductionConfig(Config):\n    DEBUG = False\n    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')\n\nconfig = {\n    'development': DevelopmentConfig,\n    'production': ProductionConfig,\n    'default': DevelopmentConfig\n}`,
+                    codeExample: `import os  # Access environment variables\n\nclass Config:  # Base settings (shared by all)\n    SECRET_KEY = os.getenv(  # Secret key for sessions\n        'SECRET_KEY', 'dev-key')\n    SQLALCHEMY_TRACK_MODIFICATIONS = False  # Disable tracking\n\nclass DevelopmentConfig(Config):  # Local development\n    DEBUG = True  # Show detailed error pages\n    TESTING = False\n    SQLALCHEMY_DATABASE_URI = (  # Use local SQLite DB\n        'sqlite:///dev.db')\n\nclass ProductionConfig(Config):  # Live server\n    DEBUG = False  # Hide error details\n    SQLALCHEMY_DATABASE_URI = os.getenv(  # Real DB from .env\n        'DATABASE_URL')\n\nconfig = {  # Map names to config classes\n    'development': DevelopmentConfig,\n    'production': ProductionConfig,\n    'default': DevelopmentConfig\n}`,
                     relationships: [
                         { type: 'imported-by', label: '__init__.py' },
                         { type: 'read-by', label: '.env (for SECRET_KEY, DATABASE_URL)' }
@@ -1845,9 +1891,9 @@ DEBUG=True</pre>
                     name: 'run.py',
                     type: 'python',
                     icon: '\u25B6\uFE0F',
-                    description: 'Entry point \u2014 run with "python run.py" to start the Flask dev server. Calls create_app() from __init__.py.',
+                    description: 'Start your app with "python run.py" \u2014 the first file that runs and launches the web server',
                     groups: ['entry', 'core'],
-                    codeExample: `import os\nfrom app import create_app, db\n\nconfig_name = os.getenv('FLASK_ENV', 'default')\napp = create_app(config_name)\n\nwith app.app_context():\n    db.create_all()\n\nif __name__ == '__main__':\n    app.run(debug=True, host='0.0.0.0', port=5000)`,
+                    codeExample: `import os  # Access environment variables\nfrom app import create_app, db  # Import app factory + DB\n\nconfig_name = os.getenv(  # Read environment from .env\n    'FLASK_ENV', 'default')\napp = create_app(config_name)  # Create the Flask app\n\nwith app.app_context():  # Inside app context:\n    db.create_all()  # Create database tables\n\nif __name__ == '__main__':  # Only when run directly\n    app.run(  # Start the dev server\n        debug=True,\n        host='0.0.0.0',  # Accept external connections\n        port=5000)  # Listen on port 5000`,
                     relationships: [
                         { type: 'imports', label: '__init__.py (create_app, db)' },
                         { type: 'read-by', label: '.env (FLASK_ENV)' },
@@ -1858,9 +1904,9 @@ DEBUG=True</pre>
                     name: 'requirements.txt',
                     type: 'config',
                     icon: '\u{1F4CB}',
-                    description: 'Python dependencies with pinned versions \u2014 generated with "pip freeze > requirements.txt"',
+                    description: 'List of all Python packages your project needs \u2014 install with "pip install -r requirements.txt"',
                     groups: ['entry'],
-                    codeExample: `Flask==2.3.2\nFlask-SQLAlchemy==3.0.3\nFlask-Migrate==4.0.4\nFlask-Login==0.6.2\npython-dotenv==1.0.0\ngunicorn==20.1.0\npytest==7.4.0\npytest-cov==4.1.0`,
+                    codeExample: `# Core Framework\nFlask==2.3.2  # The Flask web framework\nFlask-SQLAlchemy==3.0.3  # Database ORM integration\n# Database Migrations\nFlask-Migrate==4.0.4  # Track DB schema changes\n# Authentication\nFlask-Login==0.6.2  # User session management\n# Utilities\npython-dotenv==1.0.0  # Load .env file variables\n# Production Server\ngunicorn==20.1.0  # WSGI server for deployment\n# Testing\npytest==7.4.0  # Test framework\npytest-cov==4.1.0  # Test coverage reporting`,
                     relationships: [
                         { type: 'imports', label: 'Defines all project dependencies' },
                         { type: 'used-by', label: 'pip install -r requirements.txt' }
@@ -1870,9 +1916,9 @@ DEBUG=True</pre>
                     name: '.env',
                     type: 'env',
                     icon: '\u{1F511}',
-                    description: 'Secret environment variables (NOT in Git!) \u2014 DATABASE_URL, SECRET_KEY, API keys',
+                    description: 'Secret settings (passwords, API keys) \u2014 NEVER upload to GitHub! Each dev has their own copy',
                     groups: ['config-grp'],
-                    codeExample: `FLASK_ENV=development\nFLASK_APP=run.py\nSECRET_KEY=super-secret-key-change-in-prod\nDATABASE_URL=postgresql://user:pass@localhost/mydb\nDEBUG=True\nAPI_KEY=your-api-key-here`,
+                    codeExample: `# Flask Settings\nFLASK_ENV=development\nFLASK_APP=run.py\n# Security\nSECRET_KEY=super-secret-key-change-in-prod\n# Database Connection\nDATABASE_URL=postgresql://user:pass@localhost/mydb\n# Debug Mode\nDEBUG=True\n# External API\nAPI_KEY=your-api-key-here`,
                     relationships: [
                         { type: 'read-by', label: 'config.py' },
                         { type: 'read-by', label: 'run.py' },
@@ -1883,9 +1929,9 @@ DEBUG=True</pre>
                     name: '.gitignore',
                     type: 'config',
                     icon: '\u{1F6AB}',
-                    description: 'Git exclusion rules \u2014 keeps secrets (.env), dependencies (venv/), and cache (__pycache__/) out of version control',
+                    description: 'Tells Git which files to ignore \u2014 prevents secrets, large folders and cache from being uploaded',
                     groups: ['config-grp'],
-                    codeExample: `# Virtual environment\nvenv/\nenv/\nENV/\n\n# Environment variables\n.env\n.env.local\n\n# Python\n__pycache__/\n*.py[cod]\n*$py.class\n*.so\n\n# Flask\ninstance/\n\n# Database\n*.db\n*.sqlite\n*.sqlite3\n\n# IDE\n.vscode/\n.idea/\n*.swp`,
+                    codeExample: `# Virtual environment (installed packages)\nvenv/\nenv/\nENV/\n\n# Secret settings (never upload!)\n.env\n.env.local\n\n# Python cache (auto-generated)\n__pycache__/\n*.py[cod]\n*$py.class\n*.so\n\n# Flask instance folder\ninstance/\n\n# Database files (local dev only)\n*.db\n*.sqlite\n*.sqlite3\n\n# IDE settings (personal preference)\n.vscode/\n.idea/\n*.swp`,
                     relationships: [
                         { type: 'imports', label: 'Ignores: .env, venv/, __pycache__/, *.pyc' }
                     ]
@@ -1894,16 +1940,16 @@ DEBUG=True</pre>
                     name: 'migrations/',
                     type: 'folder',
                     icon: '\u{1F4C1}',
-                    description: 'Flask-Migrate database migrations \u2014 auto-generated scripts that track schema changes over time',
+                    description: 'Database change history \u2014 tracks every change to your tables so you can update or rollback',
                     children: [
-                        { name: 'versions/', type: 'folder', icon: '\u{1F4C1}', description: 'Individual migration scripts numbered sequentially' }
+                        { name: 'versions/', type: 'folder', icon: '\u{1F4C1}', description: 'Individual migration scripts \u2014 each file describes one specific change to your database' }
                     ]
                 },
                 {
                     name: 'README.md',
                     type: 'config',
                     icon: '\u{1F4D6}',
-                    description: 'Project documentation \u2014 setup instructions, API docs, usage examples',
+                    description: 'Project documentation \u2014 explains what your app does, how to set it up, and how to use it',
                     relationships: [
                         { type: 'imports', label: 'Documents entire project' }
                     ]
@@ -2050,7 +2096,7 @@ DEBUG=True</pre>
         function highlightSyntax(code, type) {
             let html = escapeHtml(code);
 
-            if (type === 'env' || type === 'config' && code.includes('=') && !code.includes('class ')) {
+            if (type === 'env' || (type === 'config' && code.includes('=') && !code.includes('class '))) {
                 // Environment / plain config
                 html = html.replace(/(#.*)/gm, '<span class="sh-comment">$1</span>');
                 html = html.replace(/^(\w+)(=)/gm, '<span class="sh-var">$1</span><span class="sh-kw">$2</span>');
@@ -2058,23 +2104,39 @@ DEBUG=True</pre>
             }
 
             if (type === 'template') {
-                // Jinja2 / HTML
+                // Jinja2 / HTML: highlight comments first
+                html = html.replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="sh-comment">$1</span>');
                 html = html.replace(/(&lt;\/?[\w]+(?:\s[^&]*?)?&gt;)/g, '<span class="sh-fn">$1</span>');
                 html = html.replace(/(\{%.*?%\})/g, '<span class="sh-dec">$1</span>');
                 html = html.replace(/(\{\{.*?\}\})/g, '<span class="sh-var">$1</span>');
-                html = html.replace(/(&#039;[^&#]*?&#039;|&quot;[^&]*?&quot;)/g, '<span class="sh-str">$1</span>');
+                html = html.replace(/(&#039;[^&\n]*?&#039;|&quot;[^&\n]*?&quot;)/g, '<span class="sh-str">$1</span>');
                 return html;
             }
 
             // Python syntax highlighting
             html = html.replace(/(#.*)/gm, '<span class="sh-comment">$1</span>');
-            html = html.replace(/("""[\s\S]*?"""|&#039;&#039;&#039;[\s\S]*?&#039;&#039;&#039;)/g, '<span class="sh-str">$1</span>');
-            html = html.replace(/(&#039;[^&#\n]*?&#039;|&quot;[^&\n]*?&quot;)/g, '<span class="sh-str">$1</span>');
+            html = html.replace(/(&quot;&quot;&quot;[\s\S]*?&quot;&quot;&quot;|&#039;&#039;&#039;[\s\S]*?&#039;&#039;&#039;)/g, '<span class="sh-str">$1</span>');
+            html = html.replace(/(&#039;[^&\n]*?&#039;|&quot;[^&\n]*?&quot;)/g, '<span class="sh-str">$1</span>');
             html = html.replace(/\b(from|import|class|def|return|if|else|elif|for|in|not|and|or|with|as|yield|True|False|None|try|except|finally|raise|pass|break|continue|assert|lambda|while|del|global|is)\b/g, '<span class="sh-kw">$1</span>');
             html = html.replace(/(@[\w.]+)/g, '<span class="sh-dec">$1</span>');
             html = html.replace(/\b(\d+)\b/g, '<span class="sh-num">$1</span>');
 
             return html;
+        }
+
+        // ═══════════════════════════════════════════════
+        // WRAP COMMENT LINES for toggle functionality
+        // ═══════════════════════════════════════════════
+        function wrapCommentLines(html) {
+            return html.split('\n').map(line => {
+                // Strip HTML tags to check raw text
+                const raw = line.replace(/<[^>]*>/g, '').trim();
+                // If the entire line is a comment (starts with # or HTML comment)
+                if ((raw.startsWith('#') || raw.startsWith('&lt;!--')) && line.includes('sh-comment')) {
+                    return '<span class="comment-line">' + line + '</span>';
+                }
+                return line;
+            }).join('\n');
         }
 
         // ═══════════════════════════════════════════════
@@ -2144,15 +2206,22 @@ DEBUG=True</pre>
                 `;
             }
 
-            // Code example with syntax highlighting
+            // Code example with syntax highlighting + comment toggle
             if (item.codeExample) {
                 const lang = item.type === 'template' ? 'Jinja2 / HTML' : item.type === 'env' ? 'Environment' : item.type === 'config' ? 'Config' : 'Python';
+                const highlighted = wrapCommentLines(highlightSyntax(item.codeExample, item.type));
+                const codeId = 'codeBlock_' + Math.random().toString(36).substr(2, 9);
                 content += `
                     <div class="modal-section">
                         <div class="modal-section-title">Code Example</div>
-                        <div class="code-example">
+                        <div class="code-toggle-bar">
+                            <button class="code-toggle-btn active" id="toggleBtn_${codeId}" onclick="toggleComments('${codeId}')">
+                                &#128172; Kommentare AN
+                            </button>
+                        </div>
+                        <div class="code-example" id="${codeId}">
                             <span class="code-example-label">${lang}</span>
-                            <pre style="margin: 0; white-space: pre-wrap; word-break: break-word;">${highlightSyntax(item.codeExample, item.type)}</pre>
+                            <pre style="margin: 0; white-space: pre-wrap; word-break: break-word;">${highlighted}</pre>
                         </div>
                     </div>
                 `;
@@ -2214,6 +2283,24 @@ DEBUG=True</pre>
 
         function closeModal() {
             document.getElementById('fileModal').classList.remove('active');
+        }
+
+        // ═══════════════════════════════════════════════
+        // TOGGLE COMMENTS in code examples
+        // ═══════════════════════════════════════════════
+        function toggleComments(codeId) {
+            const codeBlock = document.getElementById(codeId);
+            const btn = document.getElementById('toggleBtn_' + codeId);
+            if (!codeBlock || !btn) return;
+
+            const isHidden = codeBlock.classList.toggle('comments-hidden');
+            if (isHidden) {
+                btn.classList.remove('active');
+                btn.innerHTML = '&#128172; Kommentare AUS';
+            } else {
+                btn.classList.add('active');
+                btn.innerHTML = '&#128172; Kommentare AN';
+            }
         }
 
         function getTypeBadgeText(type) {
