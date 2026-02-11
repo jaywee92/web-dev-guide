@@ -810,6 +810,173 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
+        /* TREE TOOLBAR */
+        .tree-toolbar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .tree-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tree-btn:hover {
+            background: var(--surface-bright);
+            color: var(--text);
+            border-color: var(--text-muted);
+        }
+
+        .tree-btn.active {
+            background: var(--blue-dim);
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+
+        .tree-toolbar-sep {
+            width: 1px;
+            height: 24px;
+            background: var(--border);
+            margin: 0 4px;
+        }
+
+        /* SYNTAX HIGHLIGHTING in modal code examples */
+        .sh-kw { color: var(--purple); }
+        .sh-fn { color: var(--blue); }
+        .sh-str { color: var(--green); }
+        .sh-comment { color: #555a73; font-style: italic; }
+        .sh-dec { color: var(--yellow); }
+        .sh-var { color: var(--orange); }
+        .sh-num { color: var(--orange); }
+        .sh-cls { color: var(--blue); font-weight: 600; }
+
+        /* CROSS-HIGHLIGHT in connection map */
+        .conn-file.highlighted {
+            border-color: var(--yellow) !important;
+            background: var(--yellow-dim) !important;
+            box-shadow: 0 0 12px rgba(245, 197, 66, 0.15);
+        }
+
+        .conn-file.dimmed {
+            opacity: 0.35;
+        }
+
+        /* GROUP FILTER — clickable legend */
+        .conn-legend-item {
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .conn-legend-item:hover {
+            background: var(--surface-bright);
+        }
+
+        .conn-legend-item.active {
+            background: var(--surface-bright);
+            border-color: var(--text-muted);
+        }
+
+        .tree-item.group-dimmed,
+        details.group-dimmed > summary {
+            opacity: 0.25;
+        }
+
+        .tree-item.group-glow {
+            background: var(--blue-dim);
+            border-radius: 6px;
+        }
+
+        /* FOLDER INFO BUTTON */
+        .folder-info-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--surface-bright);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-left: 4px;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .folder-info-btn:hover {
+            background: var(--blue-dim);
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+
+        /* PULSE on flow arrows */
+        .flow-connector {
+            position: relative;
+        }
+
+        .flow-connector::after {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            background: var(--yellow);
+            border-radius: 50%;
+            animation: flowPulse 2s ease-in-out infinite;
+            margin-left: 2px;
+            vertical-align: middle;
+        }
+
+        @keyframes flowPulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* BREADCRUMB in modal */
+        .modal-breadcrumb {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .modal-breadcrumb span {
+            color: var(--text-muted);
+        }
+
+        .modal-breadcrumb .bc-sep {
+            color: var(--border);
+            font-size: 10px;
+        }
+
+        .modal-breadcrumb .bc-current {
+            color: var(--text);
+            font-weight: 600;
+        }
+
         @media (max-width: 768px) {
             .modal-content {
                 max-width: 95vw;
@@ -840,6 +1007,13 @@
                 <strong style="color: var(--text);">click</strong> for detailed code examples &amp; relationships.
                 Colored dots show which group a file belongs to.
             </p>
+
+            <div class="tree-toolbar">
+                <button class="tree-btn" onclick="expandAll()" title="Expand all folders">&#9660; Expand All</button>
+                <button class="tree-btn" onclick="collapseAll()" title="Collapse all folders">&#9654; Collapse All</button>
+                <div class="tree-toolbar-sep"></div>
+                <button class="tree-btn" id="btnFilterClear" onclick="clearGroupFilter()" style="display:none;">&#10005; Clear Filter</button>
+            </div>
 
             <div class="file-tree" id="fileTree">
                 <!-- Populated by JavaScript -->
@@ -1777,9 +1951,10 @@ DEBUG=True</pre>
             const indent = depth * 20;
 
             if (item.children) {
-                // Folder: details/summary (clickable to expand + hover tooltip + click for modal)
+                // Folder: details/summary with info button
                 const details = document.createElement('details');
                 details.style.marginLeft = indent + 'px';
+                if (item.groups) details.dataset.groups = item.groups.join(',');
 
                 const summary = document.createElement('summary');
 
@@ -1790,8 +1965,20 @@ DEBUG=True</pre>
                 const name = document.createElement('span');
                 name.textContent = item.name;
 
+                // Info button (opens modal for folder)
+                const infoBtn = document.createElement('span');
+                infoBtn.className = 'folder-info-btn';
+                infoBtn.textContent = 'i';
+                infoBtn.title = 'Show details';
+                infoBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openModal(item);
+                });
+
                 summary.appendChild(icon);
                 summary.appendChild(name);
+                summary.appendChild(infoBtn);
 
                 // Group badges
                 const badges = createGroupBadges(item.groups);
@@ -1801,18 +1988,6 @@ DEBUG=True</pre>
                 if (item.description) {
                     summary.appendChild(createTooltip(item.description));
                 }
-
-                // Click on icon area opens modal for folder details
-                summary.addEventListener('click', (e) => {
-                    // Only open modal on double-click or if it has detailed info
-                    // Single click toggles the folder
-                });
-
-                // Right-click or long-press opens folder modal
-                summary.addEventListener('contextmenu', (e) => {
-                    e.preventDefault();
-                    openModal(item);
-                });
 
                 details.appendChild(summary);
 
@@ -1826,6 +2001,7 @@ DEBUG=True</pre>
                 const itemEl = document.createElement('div');
                 itemEl.className = `tree-item clickable ${item.type}`;
                 itemEl.style.marginLeft = indent + 'px';
+                if (item.groups) itemEl.dataset.groups = item.groups.join(',');
 
                 const icon = document.createElement('span');
                 icon.className = 'tree-icon';
@@ -1856,8 +2032,76 @@ DEBUG=True</pre>
         }
 
         // ═══════════════════════════════════════════════
+        // EXPAND / COLLAPSE ALL
+        // ═══════════════════════════════════════════════
+        function expandAll() {
+            document.querySelectorAll('#fileTree details').forEach(d => d.open = true);
+        }
+        function collapseAll() {
+            document.querySelectorAll('#fileTree details').forEach(d => d.open = false);
+        }
+
+        // ═══════════════════════════════════════════════
         // MODAL — shows detail for both files AND folders
         // ═══════════════════════════════════════════════
+        // ═══════════════════════════════════════════════
+        // SYNTAX HIGHLIGHTING for code examples
+        // ═══════════════════════════════════════════════
+        function highlightSyntax(code, type) {
+            let html = escapeHtml(code);
+
+            if (type === 'env' || type === 'config' && code.includes('=') && !code.includes('class ')) {
+                // Environment / plain config
+                html = html.replace(/(#.*)/gm, '<span class="sh-comment">$1</span>');
+                html = html.replace(/^(\w+)(=)/gm, '<span class="sh-var">$1</span><span class="sh-kw">$2</span>');
+                return html;
+            }
+
+            if (type === 'template') {
+                // Jinja2 / HTML
+                html = html.replace(/(&lt;\/?[\w]+(?:\s[^&]*?)?&gt;)/g, '<span class="sh-fn">$1</span>');
+                html = html.replace(/(\{%.*?%\})/g, '<span class="sh-dec">$1</span>');
+                html = html.replace(/(\{\{.*?\}\})/g, '<span class="sh-var">$1</span>');
+                html = html.replace(/(&#039;[^&#]*?&#039;|&quot;[^&]*?&quot;)/g, '<span class="sh-str">$1</span>');
+                return html;
+            }
+
+            // Python syntax highlighting
+            html = html.replace(/(#.*)/gm, '<span class="sh-comment">$1</span>');
+            html = html.replace(/("""[\s\S]*?"""|&#039;&#039;&#039;[\s\S]*?&#039;&#039;&#039;)/g, '<span class="sh-str">$1</span>');
+            html = html.replace(/(&#039;[^&#\n]*?&#039;|&quot;[^&\n]*?&quot;)/g, '<span class="sh-str">$1</span>');
+            html = html.replace(/\b(from|import|class|def|return|if|else|elif|for|in|not|and|or|with|as|yield|True|False|None|try|except|finally|raise|pass|break|continue|assert|lambda|while|del|global|is)\b/g, '<span class="sh-kw">$1</span>');
+            html = html.replace(/(@[\w.]+)/g, '<span class="sh-dec">$1</span>');
+            html = html.replace(/\b(\d+)\b/g, '<span class="sh-num">$1</span>');
+
+            return html;
+        }
+
+        // ═══════════════════════════════════════════════
+        // BREADCRUMB — find path to item in tree
+        // ═══════════════════════════════════════════════
+        function findPath(node, targetName, path = []) {
+            if (node.name === targetName) return [...path, node.name];
+            if (node.children) {
+                for (const child of node.children) {
+                    const result = findPath(child, targetName, [...path, node.name]);
+                    if (result) return result;
+                }
+            }
+            return null;
+        }
+
+        function buildBreadcrumb(item) {
+            const path = findPath(fileTreeData, item.name);
+            if (!path || path.length <= 1) return '';
+            return `<div class="modal-breadcrumb">${
+                path.map((p, i) => i === path.length - 1
+                    ? `<span class="bc-current">${p}</span>`
+                    : `<span>${p}</span><span class="bc-sep">/</span>`
+                ).join('')
+            }</div>`;
+        }
+
         function openModal(item) {
             const modal = document.getElementById('fileModal');
             const iconEl = document.getElementById('modalIcon');
@@ -1869,6 +2113,7 @@ DEBUG=True</pre>
 
             let content = `
                 <div class="modal-section">
+                    ${buildBreadcrumb(item)}
                     <span class="file-type-badge ${item.children ? 'folder' : item.type}">${item.children ? 'Folder' : getTypeBadgeText(item.type)}</span>
                 </div>
             `;
@@ -1899,7 +2144,7 @@ DEBUG=True</pre>
                 `;
             }
 
-            // Code example
+            // Code example with syntax highlighting
             if (item.codeExample) {
                 const lang = item.type === 'template' ? 'Jinja2 / HTML' : item.type === 'env' ? 'Environment' : item.type === 'config' ? 'Config' : 'Python';
                 content += `
@@ -1907,7 +2152,7 @@ DEBUG=True</pre>
                         <div class="modal-section-title">Code Example</div>
                         <div class="code-example">
                             <span class="code-example-label">${lang}</span>
-                            <pre style="margin: 0; white-space: pre-wrap; word-break: break-word;">${escapeHtml(item.codeExample)}</pre>
+                            <pre style="margin: 0; white-space: pre-wrap; word-break: break-word;">${highlightSyntax(item.codeExample, item.type)}</pre>
                         </div>
                     </div>
                 `;
@@ -2020,6 +2265,158 @@ DEBUG=True</pre>
             }
             return null;
         }
+
+        // ═══════════════════════════════════════════════
+        // CROSS-HIGHLIGHTING — hover a conn-file to
+        // highlight related files across all groups
+        // ═══════════════════════════════════════════════
+        (function initCrossHighlight() {
+            const map = document.getElementById('connectionMap');
+            if (!map) return;
+
+            // Build a relation map: fileName → Set of related fileNames
+            // We parse the conn-arrows text within each group to find targets
+            function buildRelationMap() {
+                const relations = {};
+                map.querySelectorAll('.conn-group').forEach(group => {
+                    const files = [...group.querySelectorAll('.conn-file')].map(f => f.dataset.file);
+                    // All files within the same group are related
+                    files.forEach(f => {
+                        if (!relations[f]) relations[f] = new Set();
+                        files.forEach(f2 => { if (f2 !== f) relations[f].add(f2); });
+                    });
+                    // Also parse conn-arrow targets
+                    group.querySelectorAll('.conn-arrow-target').forEach(targetEl => {
+                        const targetText = targetEl.textContent.trim();
+                        files.forEach(f => {
+                            if (!relations[f]) relations[f] = new Set();
+                            // Try to match target to a file in the connection map
+                            map.querySelectorAll('.conn-file').forEach(cf => {
+                                const cfName = cf.dataset.file;
+                                if (cfName && (targetText.includes(cfName) || cfName.includes(targetText))) {
+                                    relations[f].add(cfName);
+                                    if (!relations[cfName]) relations[cfName] = new Set();
+                                    relations[cfName].add(f);
+                                }
+                            });
+                        });
+                    });
+                });
+                return relations;
+            }
+
+            const relations = buildRelationMap();
+            const allConnFiles = map.querySelectorAll('.conn-file');
+
+            map.addEventListener('mouseover', (e) => {
+                const connFile = e.target.closest('.conn-file');
+                if (!connFile || !connFile.dataset.file) return;
+
+                const hoveredFile = connFile.dataset.file;
+                const related = relations[hoveredFile] || new Set();
+
+                allConnFiles.forEach(cf => {
+                    const cfName = cf.dataset.file;
+                    if (cfName === hoveredFile || related.has(cfName)) {
+                        cf.classList.add('highlighted');
+                        cf.classList.remove('dimmed');
+                    } else {
+                        cf.classList.add('dimmed');
+                        cf.classList.remove('highlighted');
+                    }
+                });
+            });
+
+            map.addEventListener('mouseout', (e) => {
+                const connFile = e.target.closest('.conn-file');
+                if (!connFile) return;
+                // Check if we're still inside another conn-file
+                const related = e.relatedTarget ? e.relatedTarget.closest('.conn-file') : null;
+                if (!related) {
+                    allConnFiles.forEach(cf => {
+                        cf.classList.remove('highlighted', 'dimmed');
+                    });
+                }
+            });
+        })();
+
+        // ═══════════════════════════════════════════════
+        // GROUP FILTER — click legend items to highlight
+        // matching files in the tree
+        // ═══════════════════════════════════════════════
+        let activeGroupFilter = null;
+
+        function clearGroupFilter() {
+            activeGroupFilter = null;
+            document.querySelectorAll('.conn-legend-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('#fileTree .tree-item, #fileTree details').forEach(el => {
+                el.classList.remove('group-dimmed', 'group-glow');
+            });
+            document.getElementById('btnFilterClear').style.display = 'none';
+        }
+
+        (function initGroupFilter() {
+            const groupMap = {
+                'var(--blue)': 'core',
+                'var(--green)': 'blueprints',
+                'var(--purple)': 'templates',
+                'var(--yellow)': 'config-grp',
+                'var(--cyan)': 'tests',
+                'var(--orange)': 'entry'
+            };
+
+            document.querySelectorAll('.conn-legend-item').forEach(legendItem => {
+                legendItem.addEventListener('click', () => {
+                    const dot = legendItem.querySelector('.conn-legend-dot');
+                    if (!dot) return;
+
+                    const bgColor = dot.style.background;
+                    const groupName = groupMap[bgColor];
+                    if (!groupName) return;
+
+                    // Toggle off if same group clicked again
+                    if (activeGroupFilter === groupName) {
+                        clearGroupFilter();
+                        return;
+                    }
+
+                    activeGroupFilter = groupName;
+
+                    // Update legend items
+                    document.querySelectorAll('.conn-legend-item').forEach(el => el.classList.remove('active'));
+                    legendItem.classList.add('active');
+
+                    // Show clear button
+                    document.getElementById('btnFilterClear').style.display = 'inline-flex';
+
+                    // Apply glow/dim to tree items
+                    document.querySelectorAll('#fileTree .tree-item').forEach(el => {
+                        const groups = el.dataset.groups || '';
+                        if (groups.includes(groupName)) {
+                            el.classList.add('group-glow');
+                            el.classList.remove('group-dimmed');
+                        } else {
+                            el.classList.add('group-dimmed');
+                            el.classList.remove('group-glow');
+                        }
+                    });
+
+                    // Apply to folder summaries (details elements)
+                    document.querySelectorAll('#fileTree details').forEach(el => {
+                        const groups = el.dataset.groups || '';
+                        if (groups.includes(groupName)) {
+                            el.classList.add('group-glow');
+                            el.classList.remove('group-dimmed');
+                            // Auto-expand matching folders
+                            el.open = true;
+                        } else {
+                            el.classList.add('group-dimmed');
+                            el.classList.remove('group-glow');
+                        }
+                    });
+                });
+            });
+        })();
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
