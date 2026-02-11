@@ -216,14 +216,12 @@
             color: var(--yellow);
         }
 
-        /* HOVER TOOLTIP */
+        /* HOVER TOOLTIP — shown below the item, inside the tree box */
         .tree-tooltip {
             display: none;
             position: absolute;
-            left: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-            margin-left: 12px;
+            left: 8px;
+            top: calc(100% + 4px);
             background: var(--surface-bright);
             border: 1px solid var(--border);
             border-radius: 8px;
@@ -232,9 +230,9 @@
             font-weight: 400;
             color: var(--text-muted);
             line-height: 1.5;
-            white-space: nowrap;
-            max-width: 340px;
             white-space: normal;
+            max-width: 400px;
+            min-width: 200px;
             z-index: 100;
             pointer-events: none;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
@@ -244,21 +242,19 @@
         .tree-tooltip::before {
             content: '';
             position: absolute;
-            left: -6px;
-            top: 50%;
-            transform: translateY(-50%);
+            left: 24px;
+            top: -6px;
             border: 5px solid transparent;
-            border-right-color: var(--border);
+            border-bottom-color: var(--border);
         }
 
         .tree-tooltip::after {
             content: '';
             position: absolute;
-            left: -4px;
-            top: 50%;
-            transform: translateY(-50%);
+            left: 25px;
+            top: -4px;
             border: 4px solid transparent;
-            border-right-color: var(--surface-bright);
+            border-bottom-color: var(--surface-bright);
         }
 
         .tree-item:hover > .tree-tooltip,
@@ -267,8 +263,8 @@
         }
 
         @keyframes tooltipIn {
-            from { opacity: 0; transform: translateY(-50%) translateX(-4px); }
-            to { opacity: 1; transform: translateY(-50%) translateX(0); }
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* MODAL/POPUP */
@@ -1015,20 +1011,13 @@
             display: inline;
         }
 
-        .comments-hidden .comment-line {
-            display: none;
-        }
-
-        .comments-hidden .sh-comment {
-            display: none;
-        }
-
         @media (max-width: 768px) {
             .modal-content {
                 max-width: 95vw;
                 margin: 20px;
             }
             .grid-2 { grid-template-columns: 1fr; }
+            .file-tree { overflow-x: auto; }
             .tree-tooltip { display: none !important; }
         }
     </style>
@@ -2093,47 +2082,122 @@ DEBUG=True</pre>
         // ═══════════════════════════════════════════════
         // SYNTAX HIGHLIGHTING for code examples
         // ═══════════════════════════════════════════════
+        // ═══════════════════════════════════════════════
+        // SYNTAX HIGHLIGHTING — line-by-line to avoid
+        // broken nested spans
+        // ═══════════════════════════════════════════════
+
+        // Highlight a single code part (no comments) for Python
+        function highlightCodePart(code) {
+            let r = code;
+            // 1. Replace strings with placeholders first
+            const strings = [];
+            r = r.replace(/(&#039;[^&\n]*?&#039;|&quot;[^&\n]*?&quot;)/g, (m) => {
+                strings.push(m);
+                return '\uE000S' + (strings.length - 1) + '\uE001';
+            });
+            // 2. Keywords (safe: strings are placeholdered)
+            r = r.replace(/\b(from|import|class|def|return|if|else|elif|for|in|not|and|or|with|as|yield|True|False|None|try|except|finally|raise|pass|break|continue|assert|lambda|while|del|global|is)\b/g, '<span class="sh-kw">$1</span>');
+            // 3. Decorators
+            r = r.replace(/(@[\w.]+)/g, '<span class="sh-dec">$1</span>');
+            // 4. Numbers
+            r = r.replace(/\b(\d+)\b/g, '<span class="sh-num">$1</span>');
+            // 5. Restore strings with highlighting
+            r = r.replace(/\uE000S(\d+)\uE001/g, (_, i) => '<span class="sh-str">' + strings[parseInt(i)] + '</span>');
+            return r;
+        }
+
+        // Find start of inline comment (  #) not inside a string
+        function findCommentStart(line) {
+            let inStr = false, delim = '';
+            for (let i = 0; i < line.length; i++) {
+                if (line.substr(i, 6) === '&#039;') {
+                    if (!inStr) { inStr = true; delim = '&#039;'; i += 5; continue; }
+                    else if (delim === '&#039;') { inStr = false; i += 5; continue; }
+                }
+                if (line.substr(i, 6) === '&quot;') {
+                    if (!inStr) { inStr = true; delim = '&quot;'; i += 5; continue; }
+                    else if (delim === '&quot;') { inStr = false; i += 5; continue; }
+                }
+                if (!inStr && line[i] === '#' && i >= 2 && line[i-1] === ' ' && line[i-2] === ' ') {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         function highlightSyntax(code, type) {
-            let html = escapeHtml(code);
+            const html = escapeHtml(code);
+            const lines = html.split('\n');
 
+            // ENV / plain config files
             if (type === 'env' || (type === 'config' && code.includes('=') && !code.includes('class '))) {
-                // Environment / plain config
-                html = html.replace(/(#.*)/gm, '<span class="sh-comment">$1</span>');
-                html = html.replace(/^(\w+)(=)/gm, '<span class="sh-var">$1</span><span class="sh-kw">$2</span>');
-                return html;
+                return lines.map(line => {
+                    const t = line.trim();
+                    if (t.startsWith('#') || t === '') {
+                        return t.startsWith('#')
+                            ? '<span class="sh-comment">' + line + '</span>'
+                            : line;
+                    }
+                    return line.replace(/^(\w+)(=)/, '<span class="sh-var">$1</span><span class="sh-kw">$2</span>');
+                }).join('\n');
             }
 
+            // Jinja2 / HTML templates
             if (type === 'template') {
-                // Jinja2 / HTML: highlight comments first
-                html = html.replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="sh-comment">$1</span>');
-                html = html.replace(/(&lt;\/?[\w]+(?:\s[^&]*?)?&gt;)/g, '<span class="sh-fn">$1</span>');
-                html = html.replace(/(\{%.*?%\})/g, '<span class="sh-dec">$1</span>');
-                html = html.replace(/(\{\{.*?\}\})/g, '<span class="sh-var">$1</span>');
-                html = html.replace(/(&#039;[^&\n]*?&#039;|&quot;[^&\n]*?&quot;)/g, '<span class="sh-str">$1</span>');
-                return html;
+                return lines.map(line => {
+                    let r = line;
+                    r = r.replace(/(&lt;!--.*?--&gt;)/g, '<span class="sh-comment">$1</span>');
+                    r = r.replace(/(\{%.*?%\})/g, '<span class="sh-dec">$1</span>');
+                    r = r.replace(/(\{\{.*?\}\})/g, '<span class="sh-var">$1</span>');
+                    // HTML tags (only those not already inside a span)
+                    r = r.replace(/(&lt;\/?[\w]+(?:\s[^&]*?)?&gt;)/g, '<span class="sh-fn">$1</span>');
+                    return r;
+                }).join('\n');
             }
 
-            // Python syntax highlighting
-            html = html.replace(/(#.*)/gm, '<span class="sh-comment">$1</span>');
-            html = html.replace(/(&quot;&quot;&quot;[\s\S]*?&quot;&quot;&quot;|&#039;&#039;&#039;[\s\S]*?&#039;&#039;&#039;)/g, '<span class="sh-str">$1</span>');
-            html = html.replace(/(&#039;[^&\n]*?&#039;|&quot;[^&\n]*?&quot;)/g, '<span class="sh-str">$1</span>');
-            html = html.replace(/\b(from|import|class|def|return|if|else|elif|for|in|not|and|or|with|as|yield|True|False|None|try|except|finally|raise|pass|break|continue|assert|lambda|while|del|global|is)\b/g, '<span class="sh-kw">$1</span>');
-            html = html.replace(/(@[\w.]+)/g, '<span class="sh-dec">$1</span>');
-            html = html.replace(/\b(\d+)\b/g, '<span class="sh-num">$1</span>');
+            // Python — process line by line
+            return lines.map(line => {
+                const trimmed = line.trimStart();
 
-            return html;
+                // Pure comment line (whole line is a comment)
+                if (trimmed.startsWith('#')) {
+                    return '<span class="sh-comment">' + line + '</span>';
+                }
+
+                // Empty line
+                if (trimmed === '') return line;
+
+                // Split code from inline comment
+                let codePart = line;
+                let commentPart = '';
+                const cIdx = findCommentStart(line);
+                if (cIdx >= 0) {
+                    codePart = line.substring(0, cIdx);
+                    commentPart = line.substring(cIdx);
+                }
+
+                // Highlight code, then append comment
+                let result = highlightCodePart(codePart);
+                if (commentPart) {
+                    result += '<span class="sh-comment">' + commentPart + '</span>';
+                }
+                return result;
+            }).join('\n');
         }
 
         // ═══════════════════════════════════════════════
         // WRAP COMMENT LINES for toggle functionality
         // ═══════════════════════════════════════════════
-        function wrapCommentLines(html) {
-            return html.split('\n').map(line => {
-                // Strip HTML tags to check raw text
-                const raw = line.replace(/<[^>]*>/g, '').trim();
-                // If the entire line is a comment (starts with # or HTML comment)
-                if ((raw.startsWith('#') || raw.startsWith('&lt;!--')) && line.includes('sh-comment')) {
-                    return '<span class="comment-line">' + line + '</span>';
+        function wrapCommentLines(highlighted) {
+            return highlighted.split('\n').map(line => {
+                // A pure comment line starts with the sh-comment span
+                // and the raw text (without tags) starts with # or whitespace+#
+                if (line.trim().startsWith('<span class="sh-comment">')) {
+                    const raw = line.replace(/<[^>]*>/g, '').trim();
+                    if (raw.startsWith('#') || raw.startsWith('&lt;!--')) {
+                        return '<span class="comment-line">' + line + '</span>';
+                    }
                 }
                 return line;
             }).join('\n');
@@ -2216,7 +2280,7 @@ DEBUG=True</pre>
                         <div class="modal-section-title">Code Example</div>
                         <div class="code-toggle-bar">
                             <button class="code-toggle-btn active" id="toggleBtn_${codeId}" onclick="toggleComments('${codeId}')">
-                                &#128172; Kommentare AN
+                                &#128172; Comments ON
                             </button>
                         </div>
                         <div class="code-example" id="${codeId}">
@@ -2293,13 +2357,33 @@ DEBUG=True</pre>
             const btn = document.getElementById('toggleBtn_' + codeId);
             if (!codeBlock || !btn) return;
 
-            const isHidden = codeBlock.classList.toggle('comments-hidden');
-            if (isHidden) {
+            const pre = codeBlock.querySelector('pre');
+            if (!pre) return;
+
+            // Store original highlighted HTML on first toggle
+            if (!codeBlock.dataset.origHtml) {
+                codeBlock.dataset.origHtml = pre.innerHTML;
+            }
+
+            if (btn.classList.contains('active')) {
+                // Currently showing comments → hide them
+                let html = codeBlock.dataset.origHtml;
+                // 1. Remove full comment lines (comment-line wrapping sh-comment) + trailing newline
+                html = html.replace(/<span class="comment-line"><span class="sh-comment">[^<]*<\/span><\/span>\n?/g, '');
+                // 2. Remove remaining inline comments (sh-comment not inside comment-line)
+                html = html.replace(/<span class="sh-comment">[^<]*<\/span>/g, '');
+                // 3. Trim trailing whitespace left behind on code lines
+                html = html.replace(/[ \t]+$/gm, '');
+                // 4. Remove any resulting double blank lines
+                html = html.replace(/\n{3,}/g, '\n\n');
+                pre.innerHTML = html;
                 btn.classList.remove('active');
-                btn.innerHTML = '&#128172; Kommentare AUS';
+                btn.innerHTML = '&#128172; Comments OFF';
             } else {
+                // Currently hiding comments → restore original
+                pre.innerHTML = codeBlock.dataset.origHtml;
                 btn.classList.add('active');
-                btn.innerHTML = '&#128172; Kommentare AN';
+                btn.innerHTML = '&#128172; Comments ON';
             }
         }
 
