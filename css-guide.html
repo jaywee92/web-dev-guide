@@ -590,6 +590,34 @@
             transform: translateY(-50%) translateX(15px);
         }
 
+        /* INFO ICON FOR TREE ITEMS */
+        .info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--blue);
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            opacity: 0.7;
+        }
+
+        .info-icon:hover {
+            opacity: 1;
+            transform: scale(1.2);
+            box-shadow: 0 2px 8px rgba(91, 156, 245, 0.5);
+        }
+
+        .tree-item:hover .info-icon {
+            opacity: 0.9;
+        }
+
         .tree-item.base { color: var(--blue); }
         .tree-item.components { color: var(--purple); }
         .tree-item.layout { color: var(--cyan); }
@@ -896,6 +924,15 @@
                 <strong>Hover</strong> for descriptions, <strong>click</strong> folders to expand.
             </p>
 
+            <div style="margin-bottom: 16px; display: flex; gap: 12px;">
+                <button onclick="expandAll()" style="padding: 8px 16px; background: var(--blue); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s ease;">
+                    📂 Expand All
+                </button>
+                <button onclick="collapseAll()" style="padding: 8px 16px; background: var(--surface-bright); color: var(--text); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s ease;">
+                    📁 Collapse All
+                </button>
+            </div>
+
             <div class="file-tree">
                 <details open>
                     <summary>📁 styles/</summary>
@@ -903,59 +940,59 @@
                         <details open>
                             <summary>📁 base/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item base" data-info="CSS Reset - Normalize browser defaults">🎨 _reset.scss <span class="group-badge base"></span></div>
-                                <div class="tree-item base" data-info="Typography - Fonts, sizes, line-heights, headings">🎨 _typography.scss <span class="group-badge base"></span></div>
-                                <div class="tree-item base" data-info="Variables - Colors, spacing, breakpoints (SCSS)">🎨 _variables.scss <span class="group-badge base"></span></div>
+                                <div class="tree-item base" data-info="CSS Reset - Normalize browser defaults">🎨 _reset.scss <span class="info-icon" onclick="showModal(\'file-reset\')">ℹ️</span><span class="group-badge base"></span></div>
+                                <div class="tree-item base" data-info="Typography - Fonts, sizes, line-heights, headings">🎨 _typography.scss <span class="info-icon" onclick="showModal(\'file-typography\')">ℹ️</span><span class="group-badge base"></span></div>
+                                <div class="tree-item base" data-info="Variables - Colors, spacing, breakpoints (SCSS)">🎨 _variables.scss <span class="info-icon" onclick="showModal(\'file-variables\')">ℹ️</span><span class="group-badge base"></span></div>
                             </div>
                         </details>
 
                         <details open>
                             <summary>📁 components/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item components" data-info="Button styles - Primary, secondary, sizes, states">🧩 _buttons.scss <span class="group-badge components"></span></div>
-                                <div class="tree-item components" data-info="Card component - Content containers with shadows">🧩 _cards.scss <span class="group-badge components"></span></div>
-                                <div class="tree-item components" data-info="Form elements - Inputs, selects, validation states">🧩 _forms.scss <span class="group-badge components"></span></div>
-                                <div class="tree-item components" data-info="Modal dialogs - Overlays, animations, close buttons">🧩 _modals.scss <span class="group-badge components"></span></div>
+                                <div class="tree-item components" data-info="Button styles - Primary, secondary, sizes, states">🧩 _buttons.scss <span class="info-icon" onclick="showModal(\'file-buttons\')">ℹ️</span><span class="group-badge components"></span></div>
+                                <div class="tree-item components" data-info="Card component - Content containers with shadows">🧩 _cards.scss <span class="info-icon" onclick="showModal(\'file-cards\')">ℹ️</span><span class="group-badge components"></span></div>
+                                <div class="tree-item components" data-info="Form elements - Inputs, selects, validation states">🧩 _forms.scss <span class="info-icon" onclick="showModal(\'file-forms\')">ℹ️</span><span class="group-badge components"></span></div>
+                                <div class="tree-item components" data-info="Modal dialogs - Overlays, animations, close buttons">🧩 _modals.scss <span class="info-icon" onclick="showModal(\'file-modals\')">ℹ️</span><span class="group-badge components"></span></div>
                             </div>
                         </details>
 
                         <details>
                             <summary>📁 layout/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item layout" data-info="Header layout - Logo positioning, navigation bar">📐 _header.scss <span class="group-badge layout"></span></div>
-                                <div class="tree-item layout" data-info="Footer layout - Copyright, links, multi-column">📐 _footer.scss <span class="group-badge layout"></span></div>
-                                <div class="tree-item layout" data-info="Grid system - Column layouts, responsive breakpoints">📐 _grid.scss <span class="group-badge layout"></span></div>
-                                <div class="tree-item layout" data-info="Sidebar layout - Fixed/sticky positioning, widths">📐 _sidebar.scss <span class="group-badge layout"></span></div>
+                                <div class="tree-item layout" data-info="Header layout - Logo positioning, navigation bar">📐 _header.scss <span class="info-icon" onclick="showModal(\'file-header-scss\')">ℹ️</span><span class="group-badge layout"></span></div>
+                                <div class="tree-item layout" data-info="Footer layout - Copyright, links, multi-column">📐 _footer.scss <span class="info-icon" onclick="showModal(\'file-footer-scss\')">ℹ️</span><span class="group-badge layout"></span></div>
+                                <div class="tree-item layout" data-info="Grid system - Column layouts, responsive breakpoints">📐 _grid.scss <span class="info-icon" onclick="showModal(\'file-grid\')">ℹ️</span><span class="group-badge layout"></span></div>
+                                <div class="tree-item layout" data-info="Sidebar layout - Fixed/sticky positioning, widths">📐 _sidebar.scss <span class="info-icon" onclick="showModal(\'file-sidebar\')">ℹ️</span><span class="group-badge layout"></span></div>
                             </div>
                         </details>
 
                         <details>
                             <summary>📁 utilities/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item utilities" data-info="Mixins - Reusable SCSS code blocks (flexbox, media queries)">⚡ _mixins.scss <span class="group-badge utilities"></span></div>
-                                <div class="tree-item utilities" data-info="Functions - SCSS functions for calculations (rem, colors)">⚡ _functions.scss <span class="group-badge utilities"></span></div>
-                                <div class="tree-item utilities" data-info="Helper classes - Utility classes (text-center, mt-2, hidden)">⚡ _helpers.scss <span class="group-badge utilities"></span></div>
+                                <div class="tree-item utilities" data-info="Mixins - Reusable SCSS code blocks (flexbox, media queries)">⚡ _mixins.scss <span class="info-icon" onclick="showModal(\'file-mixins\')">ℹ️</span><span class="group-badge utilities"></span></div>
+                                <div class="tree-item utilities" data-info="Functions - SCSS functions for calculations (rem, colors)">⚡ _functions.scss <span class="info-icon" onclick="showModal(\'file-functions\')">ℹ️</span><span class="group-badge utilities"></span></div>
+                                <div class="tree-item utilities" data-info="Helper classes - Utility classes (text-center, mt-2, hidden)">⚡ _helpers.scss <span class="info-icon" onclick="showModal(\'file-helpers\')">ℹ️</span><span class="group-badge utilities"></span></div>
                             </div>
                         </details>
 
                         <details>
                             <summary>📁 pages/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item pages" data-info="Homepage styles - Hero section, feature grid, testimonials">📄 _home.scss <span class="group-badge pages"></span></div>
-                                <div class="tree-item pages" data-info="About page - Team grid, company timeline, mission section">📄 _about.scss <span class="group-badge pages"></span></div>
-                                <div class="tree-item pages" data-info="Contact page - Form styling, map integration, office locations">📄 _contact.scss <span class="group-badge pages"></span></div>
+                                <div class="tree-item pages" data-info="Homepage styles - Hero section, feature grid, testimonials">📄 _home.scss <span class="info-icon" onclick="showModal(\'file-home\')">ℹ️</span><span class="group-badge pages"></span></div>
+                                <div class="tree-item pages" data-info="About page - Team grid, company timeline, mission section">📄 _about.scss <span class="info-icon" onclick="showModal(\'file-about-scss\')">ℹ️</span><span class="group-badge pages"></span></div>
+                                <div class="tree-item pages" data-info="Contact page - Form styling, map integration, office locations">📄 _contact.scss <span class="info-icon" onclick="showModal(\'file-contact-scss\')">ℹ️</span><span class="group-badge pages"></span></div>
                             </div>
                         </details>
 
                         <details>
                             <summary>📁 themes/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item themes" data-info="Dark theme - Dark backgrounds, light text, reduced brightness">🎨 _dark.scss <span class="group-badge themes"></span></div>
-                                <div class="tree-item themes" data-info="Light theme - Default theme, light backgrounds, dark text">🎨 _light.scss <span class="group-badge themes"></span></div>
+                                <div class="tree-item themes" data-info="Dark theme - Dark backgrounds, light text, reduced brightness">🎨 _dark.scss <span class="info-icon" onclick="showModal(\'file-dark\')">ℹ️</span><span class="group-badge themes"></span></div>
+                                <div class="tree-item themes" data-info="Light theme - Default theme, light backgrounds, dark text">🎨 _light.scss <span class="info-icon" onclick="showModal(\'file-light\')">ℹ️</span><span class="group-badge themes"></span></div>
                             </div>
                         </details>
 
-                        <div class="tree-item main" data-info="Main entry - Imports all partials in correct order">📦 main.scss <span class="group-badge main"></span></div>
+                        <div class="tree-item main" data-info="Main entry - Imports all partials in correct order">📦 main.scss <span class="info-icon" onclick="showModal(\'file-main\')">ℹ️</span><span class="group-badge main"></span></div>
                     </div>
                 </details>
             </div>
@@ -2012,6 +2049,27 @@
                     }
                 ]
             }
+,
+            'file-reset': { icon: '🎨', name: '_reset.scss', sections: [{title: 'Purpose', content: 'CSS Reset - Normalizes browser default styles for consistency across browsers.'}, {title: 'Example', code: `* { margin: 0; padding: 0; box-sizing: border-box; }`}]},
+            'file-typography': { icon: '🎨', name: '_typography.scss', sections: [{title: 'Purpose', content: 'Typography styles - Font families, sizes, weights, line-heights, and heading styles.'}]},
+            'file-variables': { icon: '🎨', name: '_variables.scss', sections: [{title: 'Purpose', content: 'SCSS variables - Colors, spacing units, breakpoints, and reusable values.'}]},
+            'file-buttons': { icon: '🧩', name: '_buttons.scss', sections: [{title: 'Purpose', content: 'Button component styles - Primary, secondary buttons with different sizes and states.'}]},
+            'file-cards': { icon: '🧩', name: '_cards.scss', sections: [{title: 'Purpose', content: 'Card component - Content containers with padding, shadows, and hover effects.'}]},
+            'file-forms': { icon: '🧩', name: '_forms.scss', sections: [{title: 'Purpose', content: 'Form element styles - Inputs, selects, textareas with focus states and validation.'}]},
+            'file-modals': { icon: '🧩', name: '_modals.scss', sections: [{title: 'Purpose', content: 'Modal dialog styles - Overlays, animations, and close button styling.'}]},
+            'file-header-scss': { icon: '📐', name: '_header.scss', sections: [{title: 'Purpose', content: 'Header layout - Logo positioning, navigation bar, and mobile menu styles.'}]},
+            'file-footer-scss': { icon: '📐', name: '_footer.scss', sections: [{title: 'Purpose', content: 'Footer layout - Multi-column footer with links and copyright information.'}]},
+            'file-grid': { icon: '📐', name: '_grid.scss', sections: [{title: 'Purpose', content: 'Grid system - Responsive column layouts with breakpoints and gutters.'}]},
+            'file-sidebar': { icon: '📐', name: '_sidebar.scss', sections: [{title: 'Purpose', content: 'Sidebar layout - Fixed or sticky sidebar with configurable widths.'}]},
+            'file-mixins': { icon: '⚡', name: '_mixins.scss', sections: [{title: 'Purpose', content: 'SCSS Mixins - Reusable code blocks for flexbox, media queries, and common patterns.'}]},
+            'file-functions': { icon: '⚡', name: '_functions.scss', sections: [{title: 'Purpose', content: 'SCSS Functions - Calculations for rem conversion, color manipulation, and utilities.'}]},
+            'file-helpers': { icon: '⚡', name: '_helpers.scss', sections: [{title: 'Purpose', content: 'Helper classes - Utility classes like .text-center, .mt-2, .hidden for quick styling.'}]},
+            'file-home': { icon: '📄', name: '_home.scss', sections: [{title: 'Purpose', content: 'Homepage styles - Hero section, feature grid, and page-specific components.'}]},
+            'file-about-scss': { icon: '📄', name: '_about.scss', sections: [{title: 'Purpose', content: 'About page styles - Team grid, timeline, and mission section styling.'}]},
+            'file-contact-scss': { icon: '📄', name: '_contact.scss', sections: [{title: 'Purpose', content: 'Contact page styles - Form layout, map integration, and office locations.'}]},
+            'file-dark': { icon: '🎨', name: '_dark.scss', sections: [{title: 'Purpose', content: 'Dark theme - Dark backgrounds, light text, reduced brightness for night mode.'}]},
+            'file-light': { icon: '🎨', name: '_light.scss', sections: [{title: 'Purpose', content: 'Light theme - Default theme with light backgrounds and dark text.'}]},
+            'file-main': { icon: '📦', name: 'main.scss', sections: [{title: 'Purpose', content: 'Main entry file - Imports all SCSS partials in correct order for compilation.'}]},
         };
 
         function showModal(key) {
@@ -2082,6 +2140,18 @@
                 this.style.animation = '';
             });
         });
+
+        function expandAll() {
+            document.querySelectorAll('.file-tree details').forEach(detail => {
+                detail.open = true;
+            });
+        }
+
+        function collapseAll() {
+            document.querySelectorAll('.file-tree details').forEach(detail => {
+                detail.open = false;
+            });
+        }
     </script>
 </body>
 </html>

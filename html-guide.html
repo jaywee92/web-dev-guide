@@ -586,6 +586,34 @@
             transform: translateY(-50%) translateX(15px);
         }
 
+        /* INFO ICON FOR TREE ITEMS */
+        .info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--blue);
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            margin-left: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            opacity: 0.7;
+        }
+
+        .info-icon:hover {
+            opacity: 1;
+            transform: scale(1.2);
+            box-shadow: 0 2px 8px rgba(91, 156, 245, 0.5);
+        }
+
+        .tree-item:hover .info-icon {
+            opacity: 0.9;
+        }
+
         .tree-item.html { color: var(--blue); }
         .tree-item.css { color: var(--cyan); }
         .tree-item.js { color: var(--yellow); }
@@ -904,6 +932,15 @@
                 <strong>Hover</strong> for descriptions, <strong>click</strong> folders to expand.
             </p>
 
+            <div style="margin-bottom: 16px; display: flex; gap: 12px;">
+                <button onclick="expandAll()" style="padding: 8px 16px; background: var(--blue); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s ease;">
+                    📂 Expand All
+                </button>
+                <button onclick="collapseAll()" style="padding: 8px 16px; background: var(--surface-bright); color: var(--text); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s ease;">
+                    📁 Collapse All
+                </button>
+            </div>
+
             <div class="file-tree">
                 <!-- Show a typical web project structure -->
                 <details open>
@@ -912,25 +949,25 @@
                         <details open>
                             <summary>📁 src/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item html" data-info="Homepage - Main entry point">📄 index.html <span class="group-badge html"></span></div>
-                                <div class="tree-item html" data-info="About page - Company/project information">📄 about.html <span class="group-badge html"></span></div>
-                                <div class="tree-item html" data-info="Contact page - Form and contact details">📄 contact.html <span class="group-badge html"></span></div>
+                                <div class="tree-item html" data-info="Homepage - Main entry point">📄 index.html <span class="info-icon" onclick="showModal('file-index')">ℹ️</span><span class="group-badge html"></span></div>
+                                <div class="tree-item html" data-info="About page - Company/project information">📄 about.html <span class="info-icon" onclick="showModal('file-about')">ℹ️</span><span class="group-badge html"></span></div>
+                                <div class="tree-item html" data-info="Contact page - Form and contact details">📄 contact.html <span class="info-icon" onclick="showModal('file-contact')">ℹ️</span><span class="group-badge html"></span></div>
                             </div>
                         </details>
 
                         <details open>
                             <summary>📁 css/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item css" data-info="Main stylesheet - Global styles and components">🎨 style.css <span class="group-badge css"></span></div>
-                                <div class="tree-item css" data-info="Media queries - Mobile, tablet, desktop breakpoints">🎨 responsive.css <span class="group-badge css"></span></div>
+                                <div class="tree-item css" data-info="Main stylesheet - Global styles and components">🎨 style.css <span class="info-icon" onclick="showModal('file-style')">ℹ️</span><span class="group-badge css"></span></div>
+                                <div class="tree-item css" data-info="Media queries - Mobile, tablet, desktop breakpoints">🎨 responsive.css <span class="info-icon" onclick="showModal('file-responsive')">ℹ️</span><span class="group-badge css"></span></div>
                             </div>
                         </details>
 
                         <details>
                             <summary>📁 js/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item js" data-info="Main JavaScript - App initialization and logic">⚡ app.js <span class="group-badge js"></span></div>
-                                <div class="tree-item js" data-info="Helper functions - Reusable utilities">⚡ utils.js <span class="group-badge js"></span></div>
+                                <div class="tree-item js" data-info="Main JavaScript - App initialization and logic">⚡ app.js <span class="info-icon" onclick="showModal('file-app')">ℹ️</span><span class="group-badge js"></span></div>
+                                <div class="tree-item js" data-info="Helper functions - Reusable utilities">⚡ utils.js <span class="info-icon" onclick="showModal('file-utils')">ℹ️</span><span class="group-badge js"></span></div>
                             </div>
                         </details>
 
@@ -940,14 +977,14 @@
                                 <details>
                                     <summary>📁 images/</summary>
                                     <div style="margin-left: 20px;">
-                                        <div class="tree-item assets" data-info="Site logo - SVG or PNG format recommended">🖼️ logo.png <span class="group-badge assets"></span></div>
-                                        <div class="tree-item assets" data-info="Hero image - Optimized for web (WebP preferred)">🖼️ hero.jpg <span class="group-badge assets"></span></div>
+                                        <div class="tree-item assets" data-info="Site logo - SVG or PNG format recommended">🖼️ logo.png <span class="info-icon" onclick="showModal(\'file-logo\')">ℹ️</span><span class="group-badge assets"></span></div>
+                                        <div class="tree-item assets" data-info="Hero image - Optimized for web (WebP preferred)">🖼️ hero.jpg <span class="info-icon" onclick="showModal(\'file-hero\')">ℹ️</span><span class="group-badge assets"></span></div>
                                     </div>
                                 </details>
                                 <details>
                                     <summary>📁 fonts/</summary>
                                     <div style="margin-left: 20px;">
-                                        <div class="tree-item assets" data-info="Web font - WOFF2 format for best compression">🔤 font.woff2 <span class="group-badge assets"></span></div>
+                                        <div class="tree-item assets" data-info="Web font - WOFF2 format for best compression">🔤 font.woff2 <span class="info-icon" onclick="showModal(\'file-font\')">ℹ️</span><span class="group-badge assets"></span></div>
                                     </div>
                                 </details>
                             </div>
@@ -956,15 +993,15 @@
                         <details>
                             <summary>📁 components/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item html" data-info="Header component - Logo, navigation, reusable across pages">🧩 header.html <span class="group-badge components"></span></div>
-                                <div class="tree-item html" data-info="Footer component - Copyright, links, social media">🧩 footer.html <span class="group-badge components"></span></div>
-                                <div class="tree-item html" data-info="Navigation component - Menu structure, mobile-friendly">🧩 nav.html <span class="group-badge components"></span></div>
+                                <div class="tree-item html" data-info="Header component - Logo, navigation, reusable across pages">🧩 header.html <span class="info-icon" onclick="showModal(\'file-header\')">ℹ️</span><span class="group-badge components"></span></div>
+                                <div class="tree-item html" data-info="Footer component - Copyright, links, social media">🧩 footer.html <span class="info-icon" onclick="showModal(\'file-footer\')">ℹ️</span><span class="group-badge components"></span></div>
+                                <div class="tree-item html" data-info="Navigation component - Menu structure, mobile-friendly">🧩 nav.html <span class="info-icon" onclick="showModal(\'file-nav\')">ℹ️</span><span class="group-badge components"></span></div>
                             </div>
                         </details>
 
-                        <div class="tree-item config" data-info="NPM configuration - Dependencies, scripts, project metadata">⚙️ package.json <span class="group-badge config"></span></div>
-                        <div class="tree-item config" data-info="Git ignore file - Excludes node_modules, build files from version control">⚙️ .gitignore <span class="group-badge config"></span></div>
-                        <div class="tree-item" data-info="Documentation - Project setup, usage instructions">📝 README.md</div>
+                        <div class="tree-item config" data-info="NPM configuration - Dependencies, scripts, project metadata">⚙️ package.json <span class="info-icon" onclick="showModal(\'file-package\')">ℹ️</span><span class="group-badge config"></span></div>
+                        <div class="tree-item config" data-info="Git ignore file - Excludes node_modules, build files from version control">⚙️ .gitignore <span class="info-icon" onclick="showModal(\'file-gitignore\')">ℹ️</span><span class="group-badge config"></span></div>
+                        <div class="tree-item" data-info="Documentation - Project setup, usage instructions">📝 README.md <span class="info-icon" onclick="showModal(\'file-readme\')">ℹ️</span></div>
                     </div>
                 </details>
             </div>
@@ -1972,6 +2009,18 @@
                 this.style.animation = '';
             });
         });
+
+        function expandAll() {
+            document.querySelectorAll('.file-tree details').forEach(detail => {
+                detail.open = true;
+            });
+        }
+
+        function collapseAll() {
+            document.querySelectorAll('.file-tree details').forEach(detail => {
+                detail.open = false;
+            });
+        }
     </script>
 </body>
 </html>
