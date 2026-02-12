@@ -606,14 +606,17 @@
                     },
                     {
                         title: 'Syntax',
-                        code: `<span class="kw">p</span> {
+                        code: `<span class="comment">/* Style all paragraphs */</span>
+<span class="kw">p</span> {
     <span class="var">color</span>: <span class="str">blue</span>;
 }
 
+<span class="comment">/* Style all divs */</span>
 <span class="kw">div</span> {
     <span class="var">background</span>: <span class="str">#f0f0f0</span>;
 }
 
+<span class="comment">/* Remove underline from links */</span>
 <span class="kw">a</span> {
     <span class="var">text-decoration</span>: <span class="str">none</span>;
 }`
@@ -634,12 +637,14 @@
                     },
                     {
                         title: 'Syntax',
-                        code: `<span class="kw">.btn</span> {
+                        code: `<span class="comment">/* Style all elements with btn class */</span>
+<span class="kw">.btn</span> {
     <span class="var">padding</span>: <span class="str">10px 20px</span>;
     <span class="var">background</span>: <span class="str">blue</span>;
     <span class="var">color</span>: <span class="str">white</span>;
 }
 
+<span class="comment">/* Style danger alert boxes */</span>
 <span class="kw">.alert-danger</span> {
     <span class="var">background</span>: <span class="str">#f8d7da</span>;
     <span class="var">color</span>: <span class="str">#721c24</span>;
@@ -662,11 +667,13 @@
                     },
                     {
                         title: 'Syntax',
-                        code: `<span class="kw">#header</span> {
+                        code: `<span class="comment">/* Style unique header element */</span>
+<span class="kw">#header</span> {
     <span class="var">background</span>: <span class="str">navy</span>;
     <span class="var">color</span>: <span class="str">white</span>;
 }
 
+<span class="comment">/* Style main content area with max width */</span>
 <span class="kw">#main-content</span> {
     <span class="var">max-width</span>: <span class="str">1200px</span>;
     <span class="var">margin</span>: <span class="str">0 auto</span>;
@@ -688,19 +695,23 @@
                     },
                     {
                         title: 'Common Examples',
-                        code: `<span class="kw">a:hover</span> {
+                        code: `<span class="comment">/* Link hover effect */</span>
+<span class="kw">a:hover</span> {
     <span class="var">color</span>: <span class="str">red</span>;
     <span class="var">text-decoration</span>: <span class="str">underline</span>;
 }
 
+<span class="comment">/* Button click effect */</span>
 <span class="kw">button:active</span> {
     <span class="var">transform</span>: <span class="str">scale(0.98)</span>;
 }
 
+<span class="comment">/* Alternate row colors */</span>
 <span class="kw">li:nth-child(odd)</span> {
     <span class="var">background</span>: <span class="str">#f9f9f9</span>;
 }
 
+<span class="comment">/* Input field focus state */</span>
 <span class="kw">input:focus</span> {
     <span class="var">outline</span>: <span class="str">2px solid blue</span>;
 }`
@@ -717,17 +728,17 @@
                     },
                     {
                         title: 'Examples',
-                        code: `<span class="comment">/* Exact attribute value */</span>
+                        code: `<span class="comment">/* Select text input fields */</span>
 <span class="kw">input[type="text"]</span> {
     <span class="var">border</span>: <span class="str">1px solid #ccc</span>;
 }
 
-<span class="comment">/* Attribute contains value */</span>
+<span class="comment">/* Select links containing 'example' */</span>
 <span class="kw">a[href*="example"]</span> {
     <span class="var">color</span>: <span class="str">green</span>;
 }
 
-<span class="comment">/* Attribute starts with value */</span>
+<span class="comment">/* Select secure images (https) */</span>
 <span class="kw">img[src^="https"]</span> {
     <span class="var">border</span>: <span class="str">2px solid green</span>;
 }`
@@ -744,17 +755,21 @@
                     },
                     {
                         title: 'Types',
-                        code: `<span class="comment">/* Descendant (space) */</span>
-<span class="kw">div p</span> { } <span class="comment">/* All p inside div */</span>
+                        code: `<span class="comment">/* Descendant selector (space) */</span>
+<span class="kw">div p</span> { }
+<span class="comment">/* Selects all p elements inside any div */</span>
 
-<span class="comment">/* Child (>) */</span>
-<span class="kw">div > p</span> { } <span class="comment">/* Direct p children of div */</span>
+<span class="comment">/* Child selector (>) */</span>
+<span class="kw">div > p</span> { }
+<span class="comment">/* Selects p elements that are direct children of div */</span>
 
-<span class="comment">/* Adjacent sibling (+) */</span>
-<span class="kw">h2 + p</span> { } <span class="comment">/* p immediately after h2 */</span>
+<span class="comment">/* Adjacent sibling selector (+) */</span>
+<span class="kw">h2 + p</span> { }
+<span class="comment">/* Selects p element immediately after h2 */</span>
 
-<span class="comment">/* General sibling (~) */</span>
-<span class="kw">h2 ~ p</span> { } <span class="comment">/* All p after h2 */</span>`
+<span class="comment">/* General sibling selector (~) */</span>
+<span class="kw">h2 ~ p</span> { }
+<span class="comment">/* Selects all p elements after h2 at same level */</span>`
                     }
                 ]
             },
@@ -768,22 +783,22 @@
                     },
                     {
                         title: 'Syntax',
-                        code: `<span class="comment">/* All sides */</span>
+                        code: `<span class="comment">/* Equal margin on all sides */</span>
 <span class="kw">margin</span>: <span class="str">20px</span>;
 
-<span class="comment">/* Vertical | Horizontal */</span>
+<span class="comment">/* Top/bottom | Left/right */</span>
 <span class="kw">margin</span>: <span class="str">10px 20px</span>;
 
-<span class="comment">/* Top | Right | Bottom | Left */</span>
+<span class="comment">/* Top | Right | Bottom | Left (clockwise) */</span>
 <span class="kw">margin</span>: <span class="str">10px 15px 10px 15px</span>;
 
-<span class="comment">/* Individual sides */</span>
+<span class="comment">/* Set each side individually */</span>
 <span class="kw">margin-top</span>: <span class="str">20px</span>;
 <span class="kw">margin-right</span>: <span class="str">15px</span>;
 <span class="kw">margin-bottom</span>: <span class="str">20px</span>;
 <span class="kw">margin-left</span>: <span class="str">15px</span>;
 
-<span class="comment">/* Center element (block) */</span>
+<span class="comment">/* Center block element horizontally */</span>
 <span class="kw">margin</span>: <span class="str">0 auto</span>;`
                     }
                 ]
@@ -798,17 +813,20 @@
                     },
                     {
                         title: 'Syntax',
-                        code: `<span class="comment">/* Shorthand */</span>
+                        code: `<span class="comment">/* Shorthand: width style color */</span>
 <span class="kw">border</span>: <span class="str">2px solid blue</span>;
 
-<span class="comment">/* Individual properties */</span>
+<span class="comment">/* Individual border properties */</span>
 <span class="kw">border-width</span>: <span class="str">2px</span>;
-<span class="kw">border-style</span>: <span class="str">solid</span>; <span class="comment">/* solid, dashed, dotted, double */</span>
+<span class="kw">border-style</span>: <span class="str">solid</span>;
+<span class="comment">/* Style options: solid, dashed, dotted, double */</span>
 <span class="kw">border-color</span>: <span class="str">blue</span>;
 
-<span class="comment">/* Rounded corners */</span>
+<span class="comment">/* Add rounded corners */</span>
 <span class="kw">border-radius</span>: <span class="str">8px</span>;
-<span class="kw">border-radius</span>: <span class="str">50%</span>; <span class="comment">/* Circle */</span>`
+
+<span class="comment">/* Create perfect circle */</span>
+<span class="kw">border-radius</span>: <span class="str">50%</span>;`
                     }
                 ]
             },
@@ -822,16 +840,16 @@
                     },
                     {
                         title: 'Syntax',
-                        code: `<span class="comment">/* All sides */</span>
+                        code: `<span class="comment">/* Equal padding on all sides */</span>
 <span class="kw">padding</span>: <span class="str">20px</span>;
 
 <span class="comment">/* Vertical | Horizontal */</span>
 <span class="kw">padding</span>: <span class="str">10px 20px</span>;
 
-<span class="comment">/* Top | Right | Bottom | Left */</span>
+<span class="comment">/* Top | Right | Bottom | Left (clockwise) */</span>
 <span class="kw">padding</span>: <span class="str">10px 15px 10px 15px</span>;
 
-<span class="comment">/* Individual sides */</span>
+<span class="comment">/* Set each side individually */</span>
 <span class="kw">padding-top</span>: <span class="str">10px</span>;
 <span class="kw">padding-right</span>: <span class="str">15px</span>;
 <span class="kw">padding-bottom</span>: <span class="str">10px</span>;
@@ -850,14 +868,26 @@
                     {
                         title: 'Sizing',
                         code: `<span class="kw">div</span> {
-    <span class="var">width</span>: <span class="str">200px</span>;      <span class="comment">/* Fixed */</span>
-    <span class="var">width</span>: <span class="str">50%</span>;        <span class="comment">/* Relative */</span>
-    <span class="var">width</span>: <span class="str">100vw</span>;      <span class="comment">/* Viewport width */</span>
-    <span class="var">max-width</span>: <span class="str">800px</span>;  <span class="comment">/* Maximum */</span>
-    <span class="var">min-width</span>: <span class="str">300px</span>;  <span class="comment">/* Minimum */</span>
+    <span class="comment">/* Fixed width in pixels */</span>
+    <span class="var">width</span>: <span class="str">200px</span>;
 
+    <span class="comment">/* Percentage of parent width */</span>
+    <span class="var">width</span>: <span class="str">50%</span>;
+
+    <span class="comment">/* Full viewport width */</span>
+    <span class="var">width</span>: <span class="str">100vw</span>;
+
+    <span class="comment">/* Don't exceed this width */</span>
+    <span class="var">max-width</span>: <span class="str">800px</span>;
+
+    <span class="comment">/* Don't go below this width */</span>
+    <span class="var">min-width</span>: <span class="str">300px</span>;
+
+    <span class="comment">/* Set height */</span>
     <span class="var">height</span>: <span class="str">300px</span>;
-    <span class="var">overflow</span>: <span class="str">hidden</span>;  <span class="comment">/* Hide overflow */</span>
+
+    <span class="comment">/* Hide content that overflows */</span>
+    <span class="var">overflow</span>: <span class="str">hidden</span>;
 }`
                     }
                 ]
@@ -868,17 +898,23 @@
                 sections: [
                     {
                         title: 'Units',
-                        code: `<span class="comment">/* Absolute units */</span>
-<span class="kw">width</span>: <span class="str">200px</span>;    <span class="comment">/* Pixels */</span>
+                        code: `<span class="comment">/* Absolute unit - fixed size */</span>
+<span class="kw">width</span>: <span class="str">200px</span>;
 
 <span class="comment">/* Relative units */</span>
-<span class="kw">width</span>: <span class="str">50%</span>;      <span class="comment">/* Percentage of parent */</span>
-<span class="kw">font-size</span>: <span class="str">1.5em</span>;  <span class="comment">/* Relative to parent font */</span>
-<span class="kw">font-size</span>: <span class="str">1.5rem</span>; <span class="comment">/* Relative to root font */</span>
 
-<span class="comment">/* Viewport units */</span>
-<span class="kw">width</span>: <span class="str">100vw</span>;    <span class="comment">/* Full viewport width */</span>
-<span class="kw">height</span>: <span class="str">100vh</span>;   <span class="comment">/* Full viewport height */</span>`
+<span class="comment">/* Percentage relative to parent */</span>
+<span class="kw">width</span>: <span class="str">50%</span>;
+
+<span class="comment">/* Relative to parent font size */</span>
+<span class="kw">font-size</span>: <span class="str">1.5em</span>;
+
+<span class="comment">/* Relative to root html font size */</span>
+<span class="kw">font-size</span>: <span class="str">1.5rem</span>;
+
+<span class="comment">/* Viewport units - full screen */</span>
+<span class="kw">width</span>: <span class="str">100vw</span>;
+<span class="kw">height</span>: <span class="str">100vh</span>;`
                     }
                 ]
             },
@@ -893,14 +929,14 @@
                     {
                         title: 'Values',
                         code: `<span class="comment">/* Content-box (default) */</span>
+<span class="comment">/* Width includes only content */</span>
 <span class="kw">box-sizing</span>: <span class="str">content-box</span>;
-<span class="comment">/* width = content only */</span>
 
-<span class="comment">/* Border-box (recommended) */</span>
+<span class="comment">/* Border-box (recommended for modern CSS) */</span>
+<span class="comment">/* Width includes padding and border */</span>
 <span class="kw">box-sizing</span>: <span class="str">border-box</span>;
-<span class="comment">/* width = content + padding + border */</span>
 
-<span class="comment">/* Reset all elements */</span>
+<span class="comment">/* Apply border-box to all elements */</span>
 <span class="kw">*</span> {
     <span class="var">box-sizing</span>: <span class="str">border-box</span>;
 }`
@@ -918,20 +954,36 @@
                     {
                         title: 'Container (Parent)',
                         code: `<span class="kw">.container</span> {
+    <span class="comment">/* Enable flexbox layout */</span>
     <span class="var">display</span>: <span class="str">flex</span>;
-    <span class="var">flex-direction</span>: <span class="str">row</span>;      <span class="comment">/* row | column */</span>
-    <span class="var">justify-content</span>: <span class="str">center</span>; <span class="comment">/* Main axis alignment */</span>
-    <span class="var">align-items</span>: <span class="str">center</span>;    <span class="comment">/* Cross axis alignment */</span>
-    <span class="var">gap</span>: <span class="str">20px</span>;           <span class="comment">/* Space between items */</span>
+
+    <span class="comment">/* Arrange items: row or column */</span>
+    <span class="var">flex-direction</span>: <span class="str">row</span>;
+
+    <span class="comment">/* Align items along main axis */</span>
+    <span class="var">justify-content</span>: <span class="str">center</span>;
+
+    <span class="comment">/* Align items along cross axis */</span>
+    <span class="var">align-items</span>: <span class="str">center</span>;
+
+    <span class="comment">/* Space between flex items */</span>
+    <span class="var">gap</span>: <span class="str">20px</span>;
 }`
                     },
                     {
                         title: 'Item (Child)',
                         code: `<span class="kw">.item</span> {
-    <span class="var">flex</span>: <span class="str">1</span>;  <span class="comment">/* Grow and shrink equally */</span>
-    <span class="var">flex-grow</span>: <span class="str">1</span>;    <span class="comment">/* Growth factor */</span>
-    <span class="var">flex-shrink</span>: <span class="str">1</span>;  <span class="comment">/* Shrink factor */</span>
-    <span class="var">flex-basis</span>: <span class="str">200px</span>; <span class="comment">/* Base size */</span>
+    <span class="comment">/* Shorthand: grow shrink basis */</span>
+    <span class="var">flex</span>: <span class="str">1</span>;
+
+    <span class="comment">/* How much item grows when space available */</span>
+    <span class="var">flex-grow</span>: <span class="str">1</span>;
+
+    <span class="comment">/* How much item shrinks when needed */</span>
+    <span class="var">flex-shrink</span>: <span class="str">1</span>;
+
+    <span class="comment">/* Base size before growing/shrinking */</span>
+    <span class="var">flex-basis</span>: <span class="str">200px</span>;
 }`
                     }
                 ]
@@ -947,14 +999,22 @@
                     {
                         title: 'Container',
                         code: `<span class="kw">.grid</span> {
+    <span class="comment">/* Enable CSS Grid layout */</span>
     <span class="var">display</span>: <span class="str">grid</span>;
+
+    <span class="comment">/* 3 columns: 1x, 2x, 1x flexible units */</span>
     <span class="var">grid-template-columns</span>: <span class="str">1fr 2fr 1fr</span>;
+
+    <span class="comment">/* 3 rows: auto, flexible, auto */</span>
     <span class="var">grid-template-rows</span>: <span class="str">auto 1fr auto</span>;
+
+    <span class="comment">/* Space between grid items */</span>
     <span class="var">gap</span>: <span class="str">20px</span>;
 }
 
-<span class="comment">/* Responsive grid */</span>
+<span class="comment">/* Responsive grid - auto-fit columns */</span>
 <span class="kw">.grid-auto</span> {
+    <span class="comment">/* Auto-create columns min 250px, max flexible */</span>
     <span class="var">grid-template-columns</span>: <span class="str">repeat(auto-fit, minmax(250px, 1fr))</span>;
 }`
                     }
@@ -966,20 +1026,31 @@
                 sections: [
                     {
                         title: 'Values',
-                        code: `<span class="kw">static</span>     <span class="comment">/* Default - normal flow */</span>
-<span class="kw">relative</span>   <span class="comment">/* Relative to normal position */</span>
-<span class="kw">absolute</span>   <span class="comment">/* Relative to positioned parent */</span>
-<span class="kw">fixed</span>      <span class="comment">/* Relative to viewport */</span>
-<span class="kw">sticky</span>     <span class="comment">/* Toggle between relative and fixed */</span>`
+                        code: `<span class="comment">/* Default - follows document flow */</span>
+<span class="kw">position</span>: <span class="str">static</span>;
+
+<span class="comment">/* Positioned relative to normal location */</span>
+<span class="kw">position</span>: <span class="str">relative</span>;
+
+<span class="comment">/* Positioned relative to nearest positioned parent */</span>
+<span class="kw">position</span>: <span class="str">absolute</span>;
+
+<span class="comment">/* Fixed to viewport - doesn't scroll */</span>
+<span class="kw">position</span>: <span class="str">fixed</span>;
+
+<span class="comment">/* Toggles between relative and fixed */</span>
+<span class="kw">position</span>: <span class="str">sticky</span>;`
                     },
                     {
                         title: 'Examples',
-                        code: `<span class="comment">/* Fixed header */</span>
+                        code: `<span class="comment">/* Fixed header that stays at top */</span>
 <span class="kw">header</span> {
     <span class="var">position</span>: <span class="str">fixed</span>;
     <span class="var">top</span>: <span class="str">0</span>;
     <span class="var">left</span>: <span class="str">0</span>;
     <span class="var">right</span>: <span class="str">0</span>;
+
+    <span class="comment">/* Display above other elements */</span>
     <span class="var">z-index</span>: <span class="str">100</span>;
 }`
                     }
@@ -991,12 +1062,23 @@
                 sections: [
                     {
                         title: 'Common Values',
-                        code: `<span class="kw">block</span>          <span class="comment">/* Full width, new line */</span>
-<span class="kw">inline</span>         <span class="comment">/* Flows inline, no width/height */</span>
-<span class="kw">inline-block</span>   <span class="comment">/* Inline but accepts width/height */</span>
-<span class="kw">none</span>           <span class="comment">/* Hidden, not in layout */</span>
-<span class="kw">flex</span>           <span class="comment">/* Flexbox container */</span>
-<span class="kw">grid</span>           <span class="comment">/* Grid container */</span>`
+                        code: `<span class="comment">/* Takes full width, creates line break */</span>
+<span class="kw">display</span>: <span class="str">block</span>;
+
+<span class="comment">/* Flows inline with text, no width/height */</span>
+<span class="kw">display</span>: <span class="str">inline</span>;
+
+<span class="comment">/* Inline but accepts width and height */</span>
+<span class="kw">display</span>: <span class="str">inline-block</span>;
+
+<span class="comment">/* Hide element from layout completely */</span>
+<span class="kw">display</span>: <span class="str">none</span>;
+
+<span class="comment">/* Flexbox layout system */</span>
+<span class="kw">display</span>: <span class="str">flex</span>;
+
+<span class="comment">/* CSS Grid layout system */</span>
+<span class="kw">display</span>: <span class="str">grid</span>;`
                     }
                 ]
             },
@@ -1016,7 +1098,7 @@
     <span class="var">margin-right</span>: <span class="str">20px</span>;
 }
 
-<span class="comment">/* Clear floats */</span>
+<span class="comment">/* Clear floats after element */</span>
 <span class="kw">.clearfix</span>::<span class="var">after</span> {
     <span class="var">content</span>: <span class="str">""</span>;
     <span class="var">display</span>: <span class="str">table</span>;
@@ -1035,16 +1117,19 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">.header</span> {
+                        code: `<span class="comment">/* Header on top of most elements */</span>
+<span class="kw">.header</span> {
     <span class="var">position</span>: <span class="str">fixed</span>;
     <span class="var">z-index</span>: <span class="str">100</span>;
 }
 
+<span class="comment">/* Modal dialog above everything */</span>
 <span class="kw">.modal</span> {
     <span class="var">position</span>: <span class="str">fixed</span>;
     <span class="var">z-index</span>: <span class="str">1000</span>;
 }
 
+<span class="comment">/* Dropdown below header */</span>
 <span class="kw">.dropdown</span> {
     <span class="var">position</span>: <span class="str">absolute</span>;
     <span class="var">z-index</span>: <span class="str">10</span>;
@@ -1058,12 +1143,22 @@
                 sections: [
                     {
                         title: 'Color Formats',
-                        code: `<span class="kw">color</span>: <span class="str">red</span>;           <span class="comment">/* Named */</span>
-<span class="kw">color</span>: <span class="str">#ff0000</span>;      <span class="comment">/* Hex */</span>
-<span class="kw">color</span>: <span class="str">rgb(255, 0, 0)</span>; <span class="comment">/* RGB */</span>
-<span class="kw">color</span>: <span class="str">rgba(255, 0, 0, 0.5)</span>; <span class="comment">/* RGBA */</span>
+                        code: `<span class="comment">/* Named color */</span>
+<span class="kw">color</span>: <span class="str">red</span>;
 
+<span class="comment">/* Hexadecimal color */</span>
+<span class="kw">color</span>: <span class="str">#ff0000</span>;
+
+<span class="comment">/* RGB format */</span>
+<span class="kw">color</span>: <span class="str">rgb(255, 0, 0)</span>;
+
+<span class="comment">/* RGBA with transparency (0-1) */</span>
+<span class="kw">color</span>: <span class="str">rgba(255, 0, 0, 0.5)</span>;
+
+<span class="comment">/* Linear gradient - left to right */</span>
 <span class="kw">background</span>: <span class="str">linear-gradient(90deg, red, blue)</span>;
+
+<span class="comment">/* Radial gradient - from center */</span>
 <span class="kw">background</span>: <span class="str">radial-gradient(circle, red, blue)</span>;`
                     }
                 ]
@@ -1074,13 +1169,28 @@
                 sections: [
                     {
                         title: 'Font Properties',
-                        code: `<span class="kw">font-family</span>: <span class="str">'Arial', sans-serif</span>;
+                        code: `<span class="comment">/* Font family fallback list */</span>
+<span class="kw">font-family</span>: <span class="str">'Arial', sans-serif</span>;
+
+<span class="comment">/* Size of text */</span>
 <span class="kw">font-size</span>: <span class="str">16px</span>;
-<span class="kw">font-weight</span>: <span class="str">bold</span>; <span class="comment">/* normal, bold, 100-900 */</span>
+
+<span class="comment">/* Weight: normal, bold, or 100-900 */</span>
+<span class="kw">font-weight</span>: <span class="str">bold</span>;
+
+<span class="comment">/* Italic or normal */</span>
 <span class="kw">font-style</span>: <span class="str">italic</span>;
+
+<span class="comment">/* Space between lines */</span>
 <span class="kw">line-height</span>: <span class="str">1.5</span>;
+
+<span class="comment">/* Space between characters */</span>
 <span class="kw">letter-spacing</span>: <span class="str">2px</span>;
+
+<span class="comment">/* Horizontal alignment */</span>
 <span class="kw">text-align</span>: <span class="str">center</span>;
+
+<span class="comment">/* Transform text case */</span>
 <span class="kw">text-transform</span>: <span class="str">uppercase</span>;`
                     }
                 ]
@@ -1091,17 +1201,17 @@
                 sections: [
                     {
                         title: 'Box Shadow',
-                        code: `<span class="comment">/* offset-x | offset-y | blur-radius | spread-radius | color */</span>
+                        code: `<span class="comment">/* Shadow: offset-x offset-y blur spread color */</span>
 <span class="kw">box-shadow</span>: <span class="str">0 4px 8px rgba(0,0,0,0.2)</span>;
 
-<span class="comment">/* Multiple shadows */</span>
-<span class="kw">box-shadow</span>: <span class="str">0 2px 4px rgba(0,0,0,0.1),</span>
+<span class="comment">/* Multiple layered shadows */</span>
+<span class="kw">box-shadow</span>: <span class="str">0 2px 4px rgba(0,0,0,0.1)</span>,
            <span class="str">0 8px 16px rgba(0,0,0,0.2)</span>;
 
-<span class="comment">/* Text shadow */</span>
+<span class="comment">/* Text shadow effect */</span>
 <span class="kw">text-shadow</span>: <span class="str">2px 2px 4px rgba(0,0,0,0.5)</span>;
 
-<span class="comment">/* Opacity */</span>
+<span class="comment">/* Transparency: 0=transparent, 1=opaque */</span>
 <span class="kw">opacity</span>: <span class="str">0.8</span>;`
                     }
                 ]
@@ -1112,20 +1222,22 @@
                 sections: [
                     {
                         title: 'Transform Functions',
-                        code: `<span class="comment">/* Rotation */</span>
+                        code: `<span class="comment">/* Rotate element by degrees */</span>
 <span class="kw">transform</span>: <span class="str">rotate(45deg)</span>;
 
-<span class="comment">/* Scaling */</span>
+<span class="comment">/* Scale element uniformly */</span>
 <span class="kw">transform</span>: <span class="str">scale(1.5)</span>;
+
+<span class="comment">/* Scale only horizontally */</span>
 <span class="kw">transform</span>: <span class="str">scaleX(2)</span>;
 
-<span class="comment">/* Translation */</span>
+<span class="comment">/* Move element by pixels */</span>
 <span class="kw">transform</span>: <span class="str">translate(10px, 20px)</span>;
 
-<span class="comment">/* Skew */</span>
+<span class="comment">/* Skew element */</span>
 <span class="kw">transform</span>: <span class="str">skew(10deg)</span>;
 
-<span class="comment">/* Combined */</span>
+<span class="comment">/* Combine multiple transforms */</span>
 <span class="kw">transform</span>: <span class="str">translate(50%, -50%) rotate(45deg)</span>;`
                     }
                 ]
@@ -1136,15 +1248,20 @@
                 sections: [
                     {
                         title: 'Syntax',
-                        code: `<span class="kw">@keyframes</span> <span class="var">slide-in</span> {
+                        code: `<span class="comment">/* Define animation keyframes */</span>
+<span class="kw">@keyframes</span> <span class="var">slide-in</span> {
+    <span class="comment">/* Start position */</span>
     <span class="kw">from</span> {
         <span class="var">transform</span>: <span class="str">translateX(-100%)</span>;
     }
+
+    <span class="comment">/* End position */</span>
     <span class="kw">to</span> {
         <span class="var">transform</span>: <span class="str">translateX(0)</span>;
     }
 }
 
+<span class="comment">/* Apply animation to element */</span>
 <span class="kw">.element</span> {
     <span class="var">animation</span>: <span class="str">slide-in 0.5s ease-in-out</span>;
 }`
@@ -1161,20 +1278,21 @@
                     },
                     {
                         title: 'Syntax',
-                        code: `<span class="comment">/* Single property */</span>
+                        code: `<span class="comment">/* Transition one property */</span>
 <span class="kw">transition</span>: <span class="str">background-color 0.3s ease</span>;
 
-<span class="comment">/* Multiple properties */</span>
+<span class="comment">/* Transition multiple properties */</span>
 <span class="kw">transition</span>: <span class="str">background-color 0.3s, color 0.2s</span>;
 
-<span class="comment">/* All properties */</span>
+<span class="comment">/* Transition all properties */</span>
 <span class="kw">transition</span>: <span class="str">all 0.3s ease</span>;
 
-<span class="comment">/* With hover */</span>
+<span class="comment">/* Transition on hover state */</span>
 <span class="kw">button</span> {
     <span class="var">background</span>: <span class="str">blue</span>;
     <span class="var">transition</span>: <span class="str">background 0.3s</span>;
 }
+
 <span class="kw">button:hover</span> {
     <span class="var">background</span>: <span class="str">darkblue</span>;
 }`
