@@ -3,9 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML Structure — Visual Guide</title>
+    <title>HTML Guide – Interactive Tutorial</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         :root {
             --bg: #0f1117;
             --surface: #1a1d27;
@@ -14,83 +20,92 @@
             --text: #e2e4ed;
             --text-muted: #8b8fa7;
             --yellow: #f5c542;
-            --yellow-dim: rgba(245,197,66,.15);
+            --yellow-dim: rgba(245, 197, 66, 0.15);
             --blue: #5b9cf5;
-            --blue-dim: rgba(91,156,245,.12);
+            --blue-dim: rgba(91, 156, 245, 0.12);
             --green: #4ade80;
-            --green-dim: rgba(74,222,128,.12);
+            --green-dim: rgba(74, 222, 128, 0.12);
             --orange: #f59e42;
-            --orange-dim: rgba(245,158,66,.12);
+            --orange-dim: rgba(245, 158, 66, 0.12);
             --purple: #a78bfa;
-            --purple-dim: rgba(167,139,250,.12);
-            --cyan: #22d3ee;
-            --cyan-dim: rgba(34,211,238,.12);
-            --pink: #f472b6;
-            --pink-dim: rgba(244,114,182,.12);
+            --purple-dim: rgba(167, 139, 250, 0.12);
             --red: #f87171;
-            --red-dim: rgba(248,113,113,.12);
-            --white: #fff;
+            --red-dim: rgba(248, 113, 113, 0.12);
+            --cyan: #22d3ee;
+            --cyan-dim: rgba(34, 211, 238, 0.12);
+            --white: #ffffff;
             --code-bg: #13151e;
-            --radius: 12px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            --radius: 14px;
         }
 
         body {
             background-color: var(--bg);
             color: var(--text);
             font-family: 'DM Sans', sans-serif;
-            line-height: 1.5;
-            padding: 12px 16px;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            padding: 16px 24px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--blue);
+        }
+
+        .header {
+            padding: 40px 24px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+            animation: fadeSlideDown 0.6s ease-out;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--blue), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 16px;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 24px 60px;
         }
 
-        .back {
-            display: inline-block;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            padding: 14px 20px;
-            text-decoration: none;
-            margin-bottom: 12px;
-            transition: color 0.2s;
+        .section {
+            margin-bottom: 60px;
+            animation: fadeSlideUp 0.6s ease-out;
+            animation-fill-mode: both;
         }
 
-        .back:hover {
-            color: var(--yellow);
-        }
-
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--cyan);
-            margin-bottom: 8px;
-            font-family: 'DM Sans', sans-serif;
-        }
-
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 13px;
-            margin-bottom: 20px;
-        }
-
-        section {
-            margin-bottom: 24px;
-            animation: fadeSlideUp 0.5s ease-out;
-        }
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
 
         @keyframes fadeSlideUp {
             from {
                 opacity: 0;
-                transform: translateY(12px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -98,469 +113,1130 @@
             }
         }
 
-        h2 {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--cyan);
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        @keyframes fadeSlideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .grid-2 {
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text);
+        }
+
+        .section-icon {
+            font-size: 28px;
+        }
+
+        /* COMPONENT GRID */
+        .component-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 12px;
         }
 
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-
-        .box {
+        .component-card {
             background: var(--surface);
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
             border-radius: var(--radius);
-            padding: 12px;
-        }
-
-        .box-highlight {
-            background: var(--cyan-dim);
-            border-color: var(--cyan);
-        }
-
-        .code-block {
-            background: var(--code-bg);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 10px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            overflow-x: auto;
-            color: var(--text-muted);
-            margin: 6px 0;
-        }
-
-        .kw { color: var(--purple); }
-        .tag { color: var(--cyan); }
-        .attr { color: var(--purple); }
-        .val { color: var(--green); }
-        .str { color: var(--green); }
-        .comment { color: #555a73; }
-
-        .tag-anatomy {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-            align-items: center;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            margin: 6px 0;
-        }
-
-        .tag-part {
-            background: var(--surface-bright);
-            padding: 4px 8px;
-            border-radius: 4px;
-            border: 1px solid var(--border);
-        }
-
-        .tag-part.tag {
-            color: var(--cyan);
-            border-color: rgba(34,211,238,0.3);
-        }
-
-        .tag-part.attr {
-            color: var(--purple);
-            border-color: rgba(167,139,250,0.3);
-        }
-
-        .tag-part.val {
-            color: var(--green);
-            border-color: rgba(74,222,128,0.3);
-        }
-
-        .tag-part.content {
-            color: var(--text);
-            border-color: rgba(226,228,237,0.2);
-        }
-
-        .element-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 8px;
-            font-size: 12px;
-        }
-
-        .element-card .name {
-            color: var(--cyan);
-            font-weight: 600;
-            font-family: 'JetBrains Mono', monospace;
-            margin-bottom: 4px;
-        }
-
-        .element-card .desc {
-            color: var(--text-muted);
-            font-size: 11px;
-        }
-
-        .wireframe {
-            background: var(--code-bg);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            color: var(--text-muted);
-        }
-
-        .wireframe-box {
-            border: 1px dashed var(--border);
-            padding: 8px;
-            margin: 4px 0;
-            border-radius: 4px;
-            color: var(--cyan);
-        }
-
-        .doc-structure {
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
             position: relative;
         }
 
-        .doc-layer {
-            border: 2px solid var(--border);
-            border-radius: var(--radius);
-            padding: 10px;
-            margin: 4px 0;
+        .component-card:hover {
+            border-color: var(--blue);
+            background: var(--blue-dim);
+            transform: scale(1.02);
+        }
+
+        .component-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .component-title {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: var(--blue);
             font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
         }
 
-        .doc-layer.root {
-            border-color: var(--cyan);
-            background: var(--cyan-dim);
-            color: var(--cyan);
+        .component-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
         }
 
-        .doc-layer.head {
-            border-color: var(--purple);
-            background: var(--purple-dim);
-            color: var(--purple);
-            margin-left: 12px;
+        /* INFO BOX */
+        .info-box {
+            background: var(--blue-dim);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 var(--radius) var(--radius) 0;
+            padding: 16px 20px;
+            margin: 16px 0;
+            font-size: 14px;
+            line-height: 1.7;
         }
 
-        .doc-layer.body {
-            border-color: var(--green);
-            background: var(--green-dim);
-            color: var(--green);
-            margin-left: 12px;
+        .info-box strong {
+            color: var(--blue);
         }
 
-        .form-section {
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 10px;
+            max-width: 700px;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
         }
 
-        .input-example {
-            display: grid;
-            grid-template-columns: 80px 1fr;
-            gap: 8px;
-            align-items: center;
-            margin: 6px 0;
-            font-size: 11px;
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .input-label {
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .input-type {
-            background: var(--code-bg);
-            border: 1px solid var(--border);
-            padding: 4px 8px;
-            border-radius: 4px;
-            color: var(--cyan);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-        }
-
-        .flow {
+        .modal-header {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            margin: 6px 0;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(135deg, var(--surface-bright), var(--surface));
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
-        .flow-box {
-            background: var(--surface-bright);
-            border: 1px solid var(--border);
-            padding: 6px 10px;
-            border-radius: 4px;
+        .modal-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 28px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--border);
             color: var(--text);
         }
 
-        .flow-box.highlight {
-            background: var(--cyan-dim);
-            border-color: var(--cyan);
-            color: var(--cyan);
+        .modal-body {
+            padding: 24px;
         }
 
-        .arrow {
+        .modal-section {
+            margin-bottom: 24px;
+        }
+
+        .modal-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .modal-section-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             color: var(--text-muted);
-            font-size: 10px;
-        }
-
-        .row {
-            display: flex;
-            gap: 12px;
             margin-bottom: 12px;
-            flex-wrap: wrap;
         }
 
-        .col-50 {
-            flex: 1;
-            min-width: 300px;
+        .code-example {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            overflow-x: auto;
         }
 
-        @media (max-width: 768px) {
-            .grid-2, .grid-3 {
-                grid-template-columns: 1fr;
-            }
-            .col-50 {
-                min-width: 100%;
-            }
-            h1 {
-                font-size: 22px;
-            }
+        .kw { color: var(--purple); }
+        .fn { color: var(--blue); }
+        .str { color: var(--green); }
+        .dec { color: var(--yellow); }
+        .var { color: var(--orange); }
+        .num { color: var(--orange); }
+        .comment { color: #555a73; font-style: italic; }
+
+        .description {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background: var(--surface-bright);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 4px 4px 4px 0;
+        }
+
+        .tag.blue { background: var(--blue-dim); border-color: var(--blue); color: var(--blue); }
+        .tag.green { background: var(--green-dim); border-color: var(--green); color: var(--green); }
+        .tag.yellow { background: var(--yellow-dim); border-color: var(--yellow); color: var(--yellow); }
+        .tag.purple { background: var(--purple-dim); border-color: var(--purple); color: var(--purple); }
+        .tag.orange { background: var(--orange-dim); border-color: var(--orange); color: var(--orange); }
+
+        footer {
+            padding: 40px 24px;
+            text-align: center;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+        }
+
+        .highlight {
+            color: var(--blue);
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="index.html" class="back">← Back to Overview</a>
+    <a href="index.html" class="back-link">← Back to Overview</a>
 
-        <h1>HTML Structure — Visual Guide</h1>
-        <p class="subtitle">Understanding the building blocks of web pages</p>
-
-        <!-- Document Structure -->
-        <section>
-            <h2>Document Structure</h2>
-            <div class="doc-structure">
-                <div class="doc-layer root">&lt;!DOCTYPE html&gt;</div>
-                <div class="doc-layer root">&lt;html&gt;
-                    <div class="doc-layer head">
-                        &lt;head&gt;
-                        <div class="code-block" style="margin: 4px 0;">
-                            <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span> <span class="tag">/&gt;</span><br>
-                            <span class="tag">&lt;title&gt;</span>Page Title<span class="tag">&lt;/title&gt;</span><br>
-                            <span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="val">"stylesheet"</span> <span class="tag">/&gt;</span>
-                        </div>
-                        &lt;/head&gt;
-                    </div>
-                    <div class="doc-layer body">
-                        &lt;body&gt;
-                        <div style="color: var(--text-muted); font-size: 10px; margin: 4px 0;">Visible content...</div>
-                        &lt;/body&gt;
-                    </div>
-                &lt;/html&gt;</div>
-            </div>
-        </section>
-
-        <!-- Elements & Tags -->
-        <section>
-            <h2>Elements & Tags</h2>
-            <div class="box">
-                <div style="color: var(--text-muted); font-size: 11px; margin-bottom: 8px;">Opening Tag | Content | Closing Tag</div>
-                <div class="tag-anatomy">
-                    <span class="tag-part tag">&lt;p&gt;</span>
-                    <span class="tag-part content">Hello World</span>
-                    <span class="tag-part tag">&lt;/p&gt;</span>
-                </div>
-                <div class="tag-anatomy">
-                    <span class="tag-part tag">&lt;a</span>
-                    <span class="tag-part attr">href</span>=<span class="tag-part val">"url"</span><span class="tag-part tag">&gt;</span>
-                    <span class="tag-part content">Link Text</span>
-                    <span class="tag-part tag">&lt;/a&gt;</span>
-                </div>
-            </div>
-            <div class="box" style="margin-top: 10px;">
-                <div style="color: var(--text-muted); font-size: 11px; margin-bottom: 8px;">Self-Closing Tags</div>
-                <div class="code-block" style="font-size: 10px;">
-                    <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"file.jpg"</span> <span class="tag">/&gt;</span><br>
-                    <span class="tag">&lt;br</span> <span class="tag">/&gt;</span><br>
-                    <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"text"</span> <span class="tag">/&gt;</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Semantic HTML -->
-        <section>
-            <h2>Semantic HTML — Page Layout</h2>
-            <div class="wireframe">
-                <div class="wireframe-box" style="border-color: var(--cyan);">&lt;header&gt; Logo, Nav, Title</div>
-                <div class="wireframe-box" style="border-color: var(--blue);">&lt;nav&gt; Navigation Links</div>
-                <div class="row" style="margin: 6px 0; gap: 6px;">
-                    <div class="col-50" style="min-width: 150px;">
-                        <div class="wireframe-box" style="border-color: var(--purple); margin-bottom: 6px;">&lt;main&gt;</div>
-                        <div class="wireframe-box" style="border-color: var(--green); margin-left: 12px;">&lt;section&gt; Topic 1</div>
-                        <div class="wireframe-box" style="border-color: var(--green); margin-left: 12px;">&lt;article&gt; Post</div>
-                    </div>
-                    <div class="col-50" style="min-width: 150px;">
-                        <div class="wireframe-box" style="border-color: var(--orange);">&lt;aside&gt; Sidebar</div>
-                    </div>
-                </div>
-                <div class="wireframe-box" style="border-color: var(--pink);">&lt;footer&gt; Copyright, Links</div>
-            </div>
-            <div class="grid-3" style="margin-top: 10px;">
-                <div class="element-card"><div class="name">&lt;header&gt;</div><div class="desc">Top section, logo</div></div>
-                <div class="element-card"><div class="name">&lt;nav&gt;</div><div class="desc">Navigation menu</div></div>
-                <div class="element-card"><div class="name">&lt;main&gt;</div><div class="desc">Primary content</div></div>
-                <div class="element-card"><div class="name">&lt;section&gt;</div><div class="desc">Topic grouping</div></div>
-                <div class="element-card"><div class="name">&lt;article&gt;</div><div class="desc">Self-contained post</div></div>
-                <div class="element-card"><div class="name">&lt;aside&gt;</div><div class="desc">Sidebar content</div></div>
-                <div class="element-card"><div class="name">&lt;footer&gt;</div><div class="desc">Bottom section</div></div>
-            </div>
-        </section>
-
-        <!-- Common Elements -->
-        <section>
-            <h2>Common Elements Reference</h2>
-            <div class="grid-2">
-                <div class="box">
-                    <div style="color: var(--cyan); font-weight: 600; font-size: 12px; margin-bottom: 8px;">Text Elements</div>
-                    <div class="code-block" style="margin: 0;">
-                        <span class="tag">&lt;h1&gt;</span> to <span class="tag">&lt;h6&gt;</span> — Headings<br>
-                        <span class="tag">&lt;p&gt;</span> — Paragraph<br>
-                        <span class="tag">&lt;span&gt;</span> — Inline text<br>
-                        <span class="tag">&lt;strong&gt;</span> — Bold importance<br>
-                        <span class="tag">&lt;em&gt;</span> — Emphasis (italic)<br>
-                        <span class="tag">&lt;a&gt;</span> — Hyperlink
-                    </div>
-                </div>
-                <div class="box">
-                    <div style="color: var(--cyan); font-weight: 600; font-size: 12px; margin-bottom: 8px;">Lists</div>
-                    <div class="code-block" style="margin: 0;">
-                        <span class="tag">&lt;ul&gt;</span> — Unordered list<br>
-                        <span class="tag">&lt;ol&gt;</span> — Ordered list<br>
-                        <span class="tag">&lt;li&gt;</span> — List item<br><br>
-                        <span class="comment">&lt;!-- Nested structure --&gt;</span><br>
-                        <span class="tag">&lt;ul&gt;</span><br>
-                        &nbsp;&nbsp;<span class="tag">&lt;li&gt;</span>Item 1<span class="tag">&lt;/li&gt;</span><br>
-                        <span class="tag">&lt;/ul&gt;</span>
-                    </div>
-                </div>
-                <div class="box">
-                    <div style="color: var(--cyan); font-weight: 600; font-size: 12px; margin-bottom: 8px;">Media</div>
-                    <div class="code-block" style="margin: 0;">
-                        <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">""</span> <span class="tag">/&gt;</span><br>
-                        <span class="tag">&lt;video&gt;&lt;/video&gt;</span><br>
-                        <span class="tag">&lt;audio&gt;&lt;/audio&gt;</span>
-                    </div>
-                </div>
-                <div class="box">
-                    <div style="color: var(--cyan); font-weight: 600; font-size: 12px; margin-bottom: 8px;">Tables</div>
-                    <div class="code-block" style="margin: 0;">
-                        <span class="tag">&lt;table&gt;</span><br>
-                        &nbsp;&nbsp;<span class="tag">&lt;tr&gt;</span> — Table row<br>
-                        &nbsp;&nbsp;<span class="tag">&lt;th&gt;</span> — Header cell<br>
-                        &nbsp;&nbsp;<span class="tag">&lt;td&gt;</span> — Data cell<br>
-                        <span class="tag">&lt;/table&gt;</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Forms & Input Types -->
-        <section>
-            <h2>Forms & Input Types</h2>
-            <div class="form-section">
-                <div style="color: var(--text-muted); font-size: 11px; margin-bottom: 8px;">Common Input Types</div>
-                <div class="input-example">
-                    <span class="input-label">text</span>
-                    <span class="input-type">type="text"</span>
-                </div>
-                <div class="input-example">
-                    <span class="input-label">email</span>
-                    <span class="input-type">type="email"</span>
-                </div>
-                <div class="input-example">
-                    <span class="input-label">password</span>
-                    <span class="input-type">type="password"</span>
-                </div>
-                <div class="input-example">
-                    <span class="input-label">number</span>
-                    <span class="input-type">type="number"</span>
-                </div>
-                <div class="input-example">
-                    <span class="input-label">checkbox</span>
-                    <span class="input-type">type="checkbox"</span>
-                </div>
-                <div class="input-example">
-                    <span class="input-label">radio</span>
-                    <span class="input-type">type="radio"</span>
-                </div>
-                <div class="input-example">
-                    <span class="input-label">submit</span>
-                    <span class="input-type">type="submit"</span>
-                </div>
-            </div>
-            <div class="box" style="margin-top: 10px;">
-                <div style="color: var(--text-muted); font-size: 11px; margin-bottom: 8px;">Form Structure</div>
-                <div class="code-block">
-                    <span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="val">"/submit"</span> <span class="attr">method</span>=<span class="val">"POST"</span><span class="tag">&gt;</span><br>
-                    &nbsp;&nbsp;<span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="val">"name"</span><span class="tag">&gt;</span>Name:<span class="tag">&lt;/label&gt;</span><br>
-                    &nbsp;&nbsp;<span class="tag">&lt;input</span> <span class="attr">id</span>=<span class="val">"name"</span> <span class="attr">name</span>=<span class="val">"name"</span> <span class="tag">/&gt;</span><br>
-                    &nbsp;&nbsp;<span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="val">"submit"</span><span class="tag">&gt;</span>Submit<span class="tag">&lt;/button&gt;</span><br>
-                    <span class="tag">&lt;/form&gt;</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- HTML + Flask -->
-        <section>
-            <h2>HTML + Flask Connection</h2>
-            <div class="box box-highlight" style="margin-bottom: 10px;">
-                <div style="color: var(--cyan); font-weight: 600; font-size: 12px; margin-bottom: 8px;">Jinja2 Template Syntax</div>
-                <div class="code-block">
-                    <span class="str">{{ variable }}</span> — <span class="comment">Output variable</span><br>
-                    <span class="kw">{% for</span> item <span class="kw">in</span> items %}<span class="comment"> Loop</span><br>
-                    <span class="kw">{% if</span> condition %}<span class="comment"> Conditional</span>
-                </div>
-            </div>
-            <div class="flow">
-                <div class="flow-box">Flask Route</div>
-                <span class="arrow">→</span>
-                <div class="flow-box highlight">render_template()</div>
-                <span class="arrow">→</span>
-                <div class="flow-box">HTML File</div>
-                <span class="arrow">→</span>
-                <div class="flow-box">Browser</div>
-            </div>
-            <div class="box" style="margin-top: 10px;">
-                <div style="color: var(--text-muted); font-size: 11px; margin-bottom: 8px;">Example Flask + Jinja2</div>
-                <div class="code-block">
-                    <span class="comment"># app.py</span><br>
-                    <span class="kw">@app.route</span>(<span class="val">'/users'</span>)<br>
-                    <span class="kw">def</span> users():<br>
-                    &nbsp;&nbsp;<span class="kw">return</span> render_template(<span class="val">'users.html'</span>, <span class="attr">users</span>=users_list)<br><br>
-                    <span class="comment">&lt;!-- users.html --&gt;</span><br>
-                    <span class="tag">&lt;ul&gt;</span><br>
-                    &nbsp;&nbsp;<span class="kw">{% for</span> user <span class="kw">in</span> users %}<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;li&gt;</span>{{ user.name }}<span class="tag">&lt;/li&gt;</span><br>
-                    &nbsp;&nbsp;<span class="kw">{% endfor</span> %}<br>
-                    <span class="tag">&lt;/ul&gt;</span>
-                </div>
-            </div>
-        </section>
-
+    <div class="header">
+        <h1>HTML Guide</h1>
+        <p class="subtitle">Interactive HTML tutorial • Click elements to explore code examples</p>
     </div>
+
+    <div class="container">
+        <!-- HTML STRUCTURE -->
+        <section class="section">
+            <h2 class="section-title">
+                <span class="section-icon">🏗️</span>
+                HTML Structure
+            </h2>
+
+            <div class="component-grid">
+                <div class="component-card" onclick="showModal('doctype')">
+                    <span class="component-icon">📄</span>
+                    <div class="component-title">DOCTYPE</div>
+                    <div class="component-desc">Declares HTML5 document type</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('html')">
+                    <span class="component-icon">🌍</span>
+                    <div class="component-title">&lt;html&gt;</div>
+                    <div class="component-desc">Root element of the document</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('head')">
+                    <span class="component-icon">🧠</span>
+                    <div class="component-title">&lt;head&gt;</div>
+                    <div class="component-desc">Metadata and document configuration</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('body')">
+                    <span class="component-icon">💪</span>
+                    <div class="component-title">&lt;body&gt;</div>
+                    <div class="component-desc">Content visible in the browser</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>Basic Structure:</strong> Every HTML document starts with &lt;!DOCTYPE html&gt;, then has an &lt;html&gt; tag containing &lt;head&gt; and &lt;body&gt; elements.
+            </div>
+        </section>
+
+        <!-- COMMON ELEMENTS -->
+        <section class="section">
+            <h2 class="section-title">
+                <span class="section-icon">📦</span>
+                Common Elements
+            </h2>
+
+            <div class="component-grid">
+                <div class="component-card" onclick="showModal('div')">
+                    <span class="component-icon">📦</span>
+                    <div class="component-title">&lt;div&gt;</div>
+                    <div class="component-desc">Generic container / block element</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('p')">
+                    <span class="component-icon">📝</span>
+                    <div class="component-title">&lt;p&gt;</div>
+                    <div class="component-desc">Paragraph text</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('a')">
+                    <span class="component-icon">🔗</span>
+                    <div class="component-title">&lt;a&gt;</div>
+                    <div class="component-desc">Hyperlink</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('img')">
+                    <span class="component-icon">🖼️</span>
+                    <div class="component-title">&lt;img&gt;</div>
+                    <div class="component-desc">Image element</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('h1')">
+                    <span class="component-icon">📊</span>
+                    <div class="component-title">&lt;h1&gt; - &lt;h6&gt;</div>
+                    <div class="component-desc">Headings (levels 1-6)</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('span')">
+                    <span class="component-icon">✂️</span>
+                    <div class="component-title">&lt;span&gt;</div>
+                    <div class="component-desc">Inline text container</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('ul')">
+                    <span class="component-icon">📋</span>
+                    <div class="component-title">&lt;ul&gt; &lt;li&gt;</div>
+                    <div class="component-desc">Unordered lists</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('ol')">
+                    <span class="component-icon">🔢</span>
+                    <div class="component-title">&lt;ol&gt; &lt;li&gt;</div>
+                    <div class="component-desc">Ordered lists</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>Block vs Inline:</strong> Block elements take full width (&lt;div&gt;, &lt;p&gt;). Inline elements only take needed space (&lt;span&gt;, &lt;a&gt;).
+            </div>
+        </section>
+
+        <!-- FORMS -->
+        <section class="section">
+            <h2 class="section-title">
+                <span class="section-icon">📋</span>
+                Forms & Input
+            </h2>
+
+            <div class="component-grid">
+                <div class="component-card" onclick="showModal('form')">
+                    <span class="component-icon">📝</span>
+                    <div class="component-title">&lt;form&gt;</div>
+                    <div class="component-desc">Form container</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('input')">
+                    <span class="component-icon">⌨️</span>
+                    <div class="component-title">&lt;input&gt;</div>
+                    <div class="component-desc">Text/email/password/number fields</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('textarea')">
+                    <span class="component-icon">📄</span>
+                    <div class="component-title">&lt;textarea&gt;</div>
+                    <div class="component-desc">Multi-line text input</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('label')">
+                    <span class="component-icon">🏷️</span>
+                    <div class="component-title">&lt;label&gt;</div>
+                    <div class="component-desc">Form input labels</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('button')">
+                    <span class="component-icon">🔘</span>
+                    <div class="component-title">&lt;button&gt;</div>
+                    <div class="component-desc">Clickable button</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('select')">
+                    <span class="component-icon">📌</span>
+                    <div class="component-title">&lt;select&gt; &lt;option&gt;</div>
+                    <div class="component-desc">Dropdown menu</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>Form Submission:</strong> Use the &lt;form&gt; element with method="POST" or method="GET" and an action attribute to send data to a server.
+            </div>
+        </section>
+
+        <!-- SEMANTIC HTML -->
+        <section class="section">
+            <h2 class="section-title">
+                <span class="section-icon">🔤</span>
+                Semantic HTML5
+            </h2>
+
+            <div class="component-grid">
+                <div class="component-card" onclick="showModal('header')">
+                    <span class="component-icon">🎯</span>
+                    <div class="component-title">&lt;header&gt;</div>
+                    <div class="component-desc">Page or section header</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('nav')">
+                    <span class="component-icon">🧭</span>
+                    <div class="component-title">&lt;nav&gt;</div>
+                    <div class="component-desc">Navigation links</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('main')">
+                    <span class="component-icon">⭐</span>
+                    <div class="component-title">&lt;main&gt;</div>
+                    <div class="component-desc">Main content of the page</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('article')">
+                    <span class="component-icon">📰</span>
+                    <div class="component-title">&lt;article&gt;</div>
+                    <div class="component-desc">Self-contained content</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('section')">
+                    <span class="component-icon">📑</span>
+                    <div class="component-title">&lt;section&gt;</div>
+                    <div class="component-desc">Thematic content grouping</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('aside')">
+                    <span class="component-icon">📌</span>
+                    <div class="component-title">&lt;aside&gt;</div>
+                    <div class="component-desc">Sidebar or tangential content</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('footer')">
+                    <span class="component-icon">🔚</span>
+                    <div class="component-title">&lt;footer&gt;</div>
+                    <div class="component-desc">Page or section footer</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('figcaption')">
+                    <span class="component-icon">🖼️</span>
+                    <div class="component-title">&lt;figure&gt; &lt;figcaption&gt;</div>
+                    <div class="component-desc">Images with captions</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>Semantic HTML:</strong> Using semantic elements (&lt;header&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;footer&gt;) improves SEO, accessibility, and code readability.
+            </div>
+        </section>
+    </div>
+
+    <!-- MODALS -->
+    <div id="modal" class="modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <span id="modal-icon"></span>
+                    <span id="modal-name"></span>
+                </div>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>HTML Guide – Learn HTML fundamentals interactively</p>
+        <p style="font-size: 12px; margin-top: 8px; color: #555a73;">Complete reference for HTML5 elements and best practices</p>
+    </footer>
+
+    <script>
+        const modalData = {
+            doctype: {
+                icon: '📄',
+                name: 'DOCTYPE Declaration',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The DOCTYPE declaration tells the browser this is an HTML5 document. It must be the first line of every HTML file.'
+                    },
+                    {
+                        title: 'Syntax',
+                        code: `<span class="comment">&lt;!DOCTYPE html&gt;</span>`
+                    },
+                    {
+                        title: 'Complete Document',
+                        code: `<span class="comment">&lt;!DOCTYPE html&gt;</span>
+<span class="kw">&lt;html</span> <span class="var">lang</span>=<span class="str">"en"</span><span class="kw">&gt;</span>
+<span class="kw">&lt;head&gt;</span>
+    <span class="kw">&lt;meta</span> <span class="var">charset</span>=<span class="str">"UTF-8"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;title&gt;</span>My Page<span class="kw">&lt;/title&gt;</span>
+<span class="kw">&lt;/head&gt;</span>
+<span class="kw">&lt;body&gt;</span>
+    <span class="kw">&lt;h1&gt;</span>Hello World<span class="kw">&lt;/h1&gt;</span>
+<span class="kw">&lt;/body&gt;</span>
+<span class="kw">&lt;/html&gt;</span>`
+                    }
+                ]
+            },
+            html: {
+                icon: '🌍',
+                name: 'HTML Root Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;html&gt; element is the root element that wraps all other HTML elements. The lang attribute specifies the document language.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;html</span> <span class="var">lang</span>=<span class="str">"en"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;head&gt;</span>...<span class="kw">&lt;/head&gt;</span>
+    <span class="kw">&lt;body&gt;</span>...<span class="kw">&lt;/body&gt;</span>
+<span class="kw">&lt;/html&gt;</span>`
+                    },
+                    {
+                        title: 'Attributes',
+                        tags: ['lang="en"', 'lang="es"', 'lang="fr"']
+                    }
+                ]
+            },
+            head: {
+                icon: '🧠',
+                name: 'Head Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;head&gt; element contains metadata about the document: title, character set, styles, scripts, and links to external resources. Content here is NOT visible in the browser.'
+                    },
+                    {
+                        title: 'Common Head Elements',
+                        code: `<span class="kw">&lt;head&gt;</span>
+    <span class="kw">&lt;meta</span> <span class="var">charset</span>=<span class="str">"UTF-8"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;meta</span> <span class="var">name</span>=<span class="str">"viewport"</span> <span class="var">content</span>=<span class="str">"width=device-width"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;title&gt;</span>My Website<span class="kw">&lt;/title&gt;</span>
+    <span class="kw">&lt;link</span> <span class="var">rel</span>=<span class="str">"stylesheet"</span> <span class="var">href</span>=<span class="str">"style.css"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;script</span> <span class="var">src</span>=<span class="str">"script.js"</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;/head&gt;</span>`
+                    }
+                ]
+            },
+            body: {
+                icon: '💪',
+                name: 'Body Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;body&gt; element contains all visible content: text, images, videos, forms, etc. This is what users see in the browser.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;body&gt;</span>
+    <span class="kw">&lt;h1&gt;</span>Welcome<span class="kw">&lt;/h1&gt;</span>
+    <span class="kw">&lt;p&gt;</span>This is visible content<span class="kw">&lt;/p&gt;</span>
+    <span class="kw">&lt;img</span> <span class="var">src</span>=<span class="str">"image.jpg"</span><span class="var">alt</span>=<span class="str">"Description"</span><span class="kw">&gt;</span>
+<span class="kw">&lt;/body&gt;</span>`
+                    }
+                ]
+            },
+            div: {
+                icon: '📦',
+                name: 'Div Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;div&gt; element is a generic block-level container. It takes up the full width available and creates a line break. Used for grouping and styling content.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;div</span> <span class="var">class</span>=<span class="str">"container"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;h2&gt;</span>Card Title<span class="kw">&lt;/h2&gt;</span>
+    <span class="kw">&lt;p&gt;</span>Card content<span class="kw">&lt;/p&gt;</span>
+<span class="kw">&lt;/div&gt;</span>
+
+<span class="kw">&lt;div</span> <span class="var">id</span>=<span class="str">"header"</span><span class="kw">&gt;</span>
+    <span class="comment">&lt;!-- Header content --&gt;</span>
+<span class="kw">&lt;/div&gt;</span>`
+                    },
+                    {
+                        title: 'When to use',
+                        content: 'Use &lt;div&gt; for grouping content. For semantic meaning, prefer &lt;header&gt;, &lt;section&gt;, &lt;article&gt;, etc.'
+                    }
+                ]
+            },
+            p: {
+                icon: '📝',
+                name: 'Paragraph Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;p&gt; element represents a paragraph of text. Browsers automatically add space before and after paragraphs.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;p&gt;</span>This is a paragraph.<span class="kw">&lt;/p&gt;</span>
+<span class="kw">&lt;p&gt;</span>This is another paragraph.<span class="kw">&lt;/p&gt;</span>
+
+<span class="kw">&lt;p&gt;</span>
+    Paragraphs can contain <span class="kw">&lt;strong&gt;</span>bold text<span class="kw">&lt;/strong&gt;</span>
+    and <span class="kw">&lt;em&gt;</span>italic text<span class="kw">&lt;/em&gt;</span>.
+<span class="kw">&lt;/p&gt;</span>`
+                    }
+                ]
+            },
+            a: {
+                icon: '🔗',
+                name: 'Link Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;a&gt; (anchor) element creates hyperlinks. Users can click to navigate to another page or resource.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="comment">&lt;!-- External link --&gt;</span>
+<span class="kw">&lt;a</span> <span class="var">href</span>=<span class="str">"https://example.com"</span><span class="kw">&gt;</span>Visit Example<span class="kw">&lt;/a&gt;</span>
+
+<span class="comment">&lt;!-- Internal link --&gt;</span>
+<span class="kw">&lt;a</span> <span class="var">href</span>=<span class="str">"/about"</span><span class="kw">&gt;</span>About Us<span class="kw">&lt;/a&gt;</span>
+
+<span class="comment">&lt;!-- Link to email --&gt;</span>
+<span class="kw">&lt;a</span> <span class="var">href</span>=<span class="str">"mailto:hello@example.com"</span><span class="kw">&gt;</span>Email<span class="kw">&lt;/a&gt;</span>
+
+<span class="comment">&lt;!-- Link with target --&gt;</span>
+<span class="kw">&lt;a</span> <span class="var">href</span>=<span class="str">"https://example.com"</span> <span class="var">target</span>=<span class="str">"_blank"</span><span class="kw">&gt;</span>New Tab<span class="kw">&lt;/a&gt;</span>`
+                    }
+                ]
+            },
+            img: {
+                icon: '🖼️',
+                name: 'Image Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;img&gt; element embeds images in the page. It\'s a self-closing tag. Always include alt text for accessibility and SEO.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;img</span> <span class="var">src</span>=<span class="str">"photo.jpg"</span> <span class="var">alt</span>=<span class="str">"A beautiful sunset"</span><span class="kw">&gt;</span>
+
+<span class="comment">&lt;!-- With width/height --&gt;</span>
+<span class="kw">&lt;img</span> <span class="var">src</span>=<span class="str">"logo.png"</span>
+     <span class="var">alt</span>=<span class="str">"Company logo"</span>
+     <span class="var">width</span>=<span class="str">"200"</span>
+     <span class="var">height</span>=<span class="str">"100"</span><span class="kw">&gt;</span>`
+                    },
+                    {
+                        title: 'Best Practices',
+                        content: 'Always use descriptive alt text. Optimize image files for web. Consider using responsive images with srcset.'
+                    }
+                ]
+            },
+            h1: {
+                icon: '📊',
+                name: 'Headings H1-H6',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Heading elements (&lt;h1&gt; through &lt;h6&gt;) define headings. H1 is the largest/most important, H6 is smallest. Use one H1 per page.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;h1&gt;</span>Main Page Heading<span class="kw">&lt;/h1&gt;</span>
+<span class="kw">&lt;h2&gt;</span>Section Heading<span class="kw">&lt;/h2&gt;</span>
+<span class="kw">&lt;h3&gt;</span>Subsection<span class="kw">&lt;/h3&gt;</span>
+<span class="kw">&lt;h4&gt;</span>Sub-subsection<span class="kw">&lt;/h4&gt;</span>
+<span class="kw">&lt;h5&gt;</span>Minor heading<span class="kw">&lt;/h5&gt;</span>
+<span class="kw">&lt;h6&gt;</span>Smallest heading<span class="kw">&lt;/h6&gt;</span>`
+                    }
+                ]
+            },
+            span: {
+                icon: '✂️',
+                name: 'Span Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;span&gt; element is an inline container. Unlike &lt;div&gt;, it doesn\'t create line breaks and only takes up as much space as needed.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;p&gt;</span>
+    This is <span class="kw">&lt;span</span> <span class="var">class</span>=<span class="str">"highlight"</span><span class="kw">&gt;</span>highlighted<span class="kw">&lt;/span&gt;</span> text.
+<span class="kw">&lt;/p&gt;</span>
+
+<span class="kw">&lt;p&gt;</span>
+    Price: <span class="kw">&lt;span</span> <span class="var">class</span>=<span class="str">"price"</span><span class="kw">&gt;</span>$9.99<span class="kw">&lt;/span&gt;</span>
+<span class="kw">&lt;/p&gt;</span>`
+                    }
+                ]
+            },
+            ul: {
+                icon: '📋',
+                name: 'Unordered Lists',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;ul&gt; element creates an unordered (bulleted) list. Each item is wrapped in &lt;li&gt; (list item) tags.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;ul&gt;</span>
+    <span class="kw">&lt;li&gt;</span>First item<span class="kw">&lt;/li&gt;</span>
+    <span class="kw">&lt;li&gt;</span>Second item<span class="kw">&lt;/li&gt;</span>
+    <span class="kw">&lt;li&gt;</span>Third item<span class="kw">&lt;/li&gt;</span>
+<span class="kw">&lt;/ul&gt;</span>
+
+<span class="comment">&lt;!-- Nested list --&gt;</span>
+<span class="kw">&lt;ul&gt;</span>
+    <span class="kw">&lt;li&gt;</span>
+        Parent item
+        <span class="kw">&lt;ul&gt;</span>
+            <span class="kw">&lt;li&gt;</span>Child item<span class="kw">&lt;/li&gt;</span>
+        <span class="kw">&lt;/ul&gt;</span>
+    <span class="kw">&lt;/li&gt;</span>
+<span class="kw">&lt;/ul&gt;</span>`
+                    }
+                ]
+            },
+            ol: {
+                icon: '🔢',
+                name: 'Ordered Lists',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;ol&gt; element creates an ordered (numbered) list. Each item is a &lt;li&gt; element. Perfect for steps or rankings.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;ol&gt;</span>
+    <span class="kw">&lt;li&gt;</span>First step<span class="kw">&lt;/li&gt;</span>
+    <span class="kw">&lt;li&gt;</span>Second step<span class="kw">&lt;/li&gt;</span>
+    <span class="kw">&lt;li&gt;</span>Third step<span class="kw">&lt;/li&gt;</span>
+<span class="kw">&lt;/ol&gt;</span>
+
+<span class="comment">&lt;!-- Reversed list --&gt;</span>
+<span class="kw">&lt;ol</span> <span class="var">reversed</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;li&gt;</span>3<span class="kw">&lt;/li&gt;</span>
+    <span class="kw">&lt;li&gt;</span>2<span class="kw">&lt;/li&gt;</span>
+    <span class="kw">&lt;li&gt;</span>1<span class="kw">&lt;/li&gt;</span>
+<span class="kw">&lt;/ol&gt;</span>`
+                    }
+                ]
+            },
+            form: {
+                icon: '📝',
+                name: 'Form Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;form&gt; element wraps form controls. It has a method (GET/POST) and action (where data is sent).'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;form</span> <span class="var">method</span>=<span class="str">"POST"</span> <span class="var">action</span>=<span class="str">"/submit"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;label&gt;</span>Name: <span class="kw">&lt;/label&gt;</span>
+    <span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"text"</span> <span class="var">name</span>=<span class="str">"username"</span> <span class="var">required</span><span class="kw">&gt;</span>
+
+    <span class="kw">&lt;label&gt;</span>Email: <span class="kw">&lt;/label&gt;</span>
+    <span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"email"</span> <span class="var">name</span>=<span class="str">"email"</span><span class="kw">&gt;</span>
+
+    <span class="kw">&lt;button</span> <span class="var">type</span>=<span class="str">"submit"</span><span class="kw">&gt;</span>Submit<span class="kw">&lt;/button&gt;</span>
+<span class="kw">&lt;/form&gt;</span>`
+                    }
+                ]
+            },
+            input: {
+                icon: '⌨️',
+                name: 'Input Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;input&gt; element creates interactive form controls. Type attribute determines what kind of input (text, email, password, number, etc.)'
+                    },
+                    {
+                        title: 'Input Types',
+                        code: `<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"text"</span><span class="kw">&gt;</span>         <span class="comment">&lt;!-- Text input --&gt;</span>
+<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"email"</span><span class="kw">&gt;</span>        <span class="comment">&lt;!-- Email --&gt;</span>
+<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"password"</span><span class="kw">&gt;</span>    <span class="comment">&lt;!-- Password --&gt;</span>
+<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"number"</span><span class="kw">&gt;</span>      <span class="comment">&lt;!-- Number --&gt;</span>
+<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"checkbox"</span><span class="kw">&gt;</span>    <span class="comment">&lt;!-- Checkbox --&gt;</span>
+<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"radio"</span><span class="kw">&gt;</span>       <span class="comment">&lt;!-- Radio button --&gt;</span>
+<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"date"</span><span class="kw">&gt;</span>        <span class="comment">&lt;!-- Date picker --&gt;</span>
+<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"file"</span><span class="kw">&gt;</span>        <span class="comment">&lt;!-- File upload --&gt;</span>`
+                    }
+                ]
+            },
+            textarea: {
+                icon: '📄',
+                name: 'Textarea Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;textarea&gt; element creates a multi-line text input. Perfect for comments, messages, or longer text.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;label&gt;</span>Comments:<span class="kw">&lt;/label&gt;</span>
+<span class="kw">&lt;textarea</span> <span class="var">name</span>=<span class="str">"comments"</span>
+          <span class="var">rows</span>=<span class="str">"4"</span>
+          <span class="var">cols</span>=<span class="str">"50"</span><span class="kw">&gt;&lt;/textarea&gt;</span>
+
+<span class="comment">&lt;!-- With placeholder --&gt;</span>
+<span class="kw">&lt;textarea</span> <span class="var">placeholder</span>=<span class="str">"Enter your message..."</span><span class="kw">&gt;&lt;/textarea&gt;</span>`
+                    }
+                ]
+            },
+            label: {
+                icon: '🏷️',
+                name: 'Label Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;label&gt; element associates text with form inputs. Use the "for" attribute to link it to an input by ID. Improves accessibility and usability.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="comment">&lt;!-- Method 1: for attribute --&gt;</span>
+<span class="kw">&lt;label</span> <span class="var">for</span>=<span class="str">"username"</span><span class="kw">&gt;</span>Username:<span class="kw">&lt;/label&gt;</span>
+<span class="kw">&lt;input</span> <span class="var">id</span>=<span class="str">"username"</span> <span class="var">type</span>=<span class="str">"text"</span><span class="kw">&gt;</span>
+
+<span class="comment">&lt;!-- Method 2: wrap input --&gt;</span>
+<span class="kw">&lt;label&gt;</span>
+    <span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"checkbox"</span><span class="kw">&gt;</span>
+    Remember me
+<span class="kw">&lt;/label&gt;</span>`
+                    }
+                ]
+            },
+            button: {
+                icon: '🔘',
+                name: 'Button Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;button&gt; element creates a clickable button. The type attribute determines function: submit, reset, or button (custom action).'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="comment">&lt;!-- Submit form --&gt;</span>
+<span class="kw">&lt;button</span> <span class="var">type</span>=<span class="str">"submit"</span><span class="kw">&gt;</span>Send<span class="kw">&lt;/button&gt;</span>
+
+<span class="comment">&lt;!-- Reset form --&gt;</span>
+<span class="kw">&lt;button</span> <span class="var">type</span>=<span class="str">"reset"</span><span class="kw">&gt;</span>Clear<span class="kw">&lt;/button&gt;</span>
+
+<span class="comment">&lt;!-- Custom action (needs JavaScript) --&gt;</span>
+<span class="kw">&lt;button</span> <span class="var">type</span>=<span class="str">"button"</span> <span class="var">onclick</span>=<span class="str">"doSomething()"</span><span class="kw">&gt;</span>Click Me<span class="kw">&lt;/button&gt;</span>`
+                    }
+                ]
+            },
+            select: {
+                icon: '📌',
+                name: 'Select Dropdown',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;select&gt; element creates a dropdown menu. Each &lt;option&gt; is a choice the user can select.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;label&gt;</span>Choose a color:<span class="kw">&lt;/label&gt;</span>
+<span class="kw">&lt;select</span> <span class="var">name</span>=<span class="str">"colors"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;option</span> <span class="var">value</span>=<span class="str">"red"</span><span class="kw">&gt;</span>Red<span class="kw">&lt;/option&gt;</span>
+    <span class="kw">&lt;option</span> <span class="var">value</span>=<span class="str">"blue"</span> <span class="var">selected</span><span class="kw">&gt;</span>Blue<span class="kw">&lt;/option&gt;</span>
+    <span class="kw">&lt;option</span> <span class="var">value</span>=<span class="str">"green"</span><span class="kw">&gt;</span>Green<span class="kw">&lt;/option&gt;</span>
+<span class="kw">&lt;/select&gt;</span>`
+                    }
+                ]
+            },
+            header: {
+                icon: '🎯',
+                name: 'Header Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;header&gt; element represents introductory content. Usually contains the site logo, navigation, or page heading. Semantic HTML5 element.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;header&gt;</span>
+    <span class="kw">&lt;img</span> <span class="var">src</span>=<span class="str">"logo.png"</span> <span class="var">alt</span>=<span class="str">"Logo"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;h1&gt;</span>My Website<span class="kw">&lt;/h1&gt;</span>
+    <span class="kw">&lt;nav&gt;</span>
+        <span class="kw">&lt;ul&gt;</span>
+            <span class="kw">&lt;li&gt;&lt;a</span> <span class="var">href</span>=<span class="str">"/"</span><span class="kw">&gt;</span>Home<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
+            <span class="kw">&lt;li&gt;&lt;a</span> <span class="var">href</span>=<span class="str">"/about"</span><span class="kw">&gt;</span>About<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="kw">&lt;/ul&gt;</span>
+    <span class="kw">&lt;/nav&gt;</span>
+<span class="kw">&lt;/header&gt;</span>`
+                    }
+                ]
+            },
+            nav: {
+                icon: '🧭',
+                name: 'Nav Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;nav&gt; element contains navigation links. Used for main site navigation, breadcrumbs, or pagination. Semantic HTML5 element.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;nav&gt;</span>
+    <span class="kw">&lt;ul&gt;</span>
+        <span class="kw">&lt;li&gt;&lt;a</span> <span class="var">href</span>=<span class="str">"/home"</span><span class="kw">&gt;</span>Home<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="kw">&lt;li&gt;&lt;a</span> <span class="var">href</span>=<span class="str">"/products"</span><span class="kw">&gt;</span>Products<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="kw">&lt;li&gt;&lt;a</span> <span class="var">href</span>=<span class="str">"/contact"</span><span class="kw">&gt;</span>Contact<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="kw">&lt;/ul&gt;</span>
+<span class="kw">&lt;/nav&gt;</span>`
+                    }
+                ]
+            },
+            main: {
+                icon: '⭐',
+                name: 'Main Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;main&gt; element specifies the main content of the page. There should be only one &lt;main&gt; per page. Improves accessibility and SEO.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;main&gt;</span>
+    <span class="kw">&lt;article&gt;</span>
+        <span class="kw">&lt;h1&gt;</span>Blog Post Title<span class="kw">&lt;/h1&gt;</span>
+        <span class="kw">&lt;p&gt;</span>Article content...<span class="kw">&lt;/p&gt;</span>
+    <span class="kw">&lt;/article&gt;</span>
+<span class="kw">&lt;/main&gt;</span>`
+                    }
+                ]
+            },
+            article: {
+                icon: '📰',
+                name: 'Article Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;article&gt; element represents self-contained content: blog posts, news articles, forum posts, etc. Can be used independently or nested.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;article&gt;</span>
+    <span class="kw">&lt;h2&gt;</span>Article Title<span class="kw">&lt;/h2&gt;</span>
+    <span class="kw">&lt;p&gt;</span><span class="var">By</span> John Doe <span class="var">on</span> January 15, 2024<span class="kw">&lt;/p&gt;</span>
+    <span class="kw">&lt;p&gt;</span>Article content goes here...<span class="kw">&lt;/p&gt;</span>
+<span class="kw">&lt;/article&gt;</span>`
+                    }
+                ]
+            },
+            section: {
+                icon: '📑',
+                name: 'Section Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;section&gt; element groups thematic content. Use it to organize content into logical sections with headings.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;section&gt;</span>
+    <span class="kw">&lt;h2&gt;</span>Our Services<span class="kw">&lt;/h2&gt;</span>
+    <span class="kw">&lt;p&gt;</span>We offer...<span class="kw">&lt;/p&gt;</span>
+<span class="kw">&lt;/section&gt;</span>
+
+<span class="kw">&lt;section&gt;</span>
+    <span class="kw">&lt;h2&gt;</span>Pricing<span class="kw">&lt;/h2&gt;</span>
+    <span class="kw">&lt;p&gt;</span>Our plans...<span class="kw">&lt;/p&gt;</span>
+<span class="kw">&lt;/section&gt;</span>`
+                    }
+                ]
+            },
+            aside: {
+                icon: '📌',
+                name: 'Aside Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;aside&gt; element contains tangential content: sidebars, related links, ads, or supplementary info. Not the main focus of the page.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;aside&gt;</span>
+    <span class="kw">&lt;h3&gt;</span>Related Posts<span class="kw">&lt;/h3&gt;</span>
+    <span class="kw">&lt;ul&gt;</span>
+        <span class="kw">&lt;li&gt;&lt;a</span> <span class="var">href</span>=<span class="str">"#"</span><span class="kw">&gt;</span>Post 1<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="kw">&lt;li&gt;&lt;a</span> <span class="var">href</span>=<span class="str">"#"</span><span class="kw">&gt;</span>Post 2<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="kw">&lt;/ul&gt;</span>
+<span class="kw">&lt;/aside&gt;</span>`
+                    }
+                ]
+            },
+            footer: {
+                icon: '🔚',
+                name: 'Footer Element',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;footer&gt; element contains footer information: copyright, links, contact info. Usually at the bottom of the page or section.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;footer&gt;</span>
+    <span class="kw">&lt;p&gt;</span><span class="comment">&amp;copy;</span> 2024 My Company<span class="kw">&lt;/p&gt;</span>
+    <span class="kw">&lt;nav&gt;</span>
+        <span class="kw">&lt;ul&gt;</span>
+            <span class="kw">&lt;li&gt;&lt;a</span> <span class="var">href</span>=<span class="str">"#"</span><span class="kw">&gt;</span>Privacy<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
+            <span class="kw">&lt;li&gt;&lt;a</span> <span class="var">href</span>=<span class="str">"#"</span><span class="kw">&gt;</span>Terms<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="kw">&lt;/ul&gt;</span>
+    <span class="kw">&lt;/nav&gt;</span>
+<span class="kw">&lt;/footer&gt;</span>`
+                    }
+                ]
+            },
+            figcaption: {
+                icon: '🖼️',
+                name: 'Figure & Figcaption',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The &lt;figure&gt; element contains images, diagrams, or illustrations with captions. &lt;figcaption&gt; provides the caption.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">&lt;figure&gt;</span>
+    <span class="kw">&lt;img</span> <span class="var">src</span>=<span class="str">"chart.png"</span> <span class="var">alt</span>=<span class="str">"Sales Chart"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;figcaption&gt;</span>
+        Sales data for Q4 2024
+    <span class="kw">&lt;/figcaption&gt;</span>
+<span class="kw">&lt;/figure&gt;</span>`
+                    }
+                ]
+            }
+        };
+
+        function showModal(key) {
+            const data = modalData[key];
+            if (!data) return;
+
+            document.getElementById('modal-icon').textContent = data.icon;
+            document.getElementById('modal-name').textContent = data.name;
+
+            const body = document.getElementById('modal-body');
+            body.innerHTML = '';
+
+            data.sections.forEach(section => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'modal-section';
+
+                const title = document.createElement('div');
+                title.className = 'modal-section-title';
+                title.textContent = section.title;
+                sectionDiv.appendChild(title);
+
+                if (section.content) {
+                    const desc = document.createElement('div');
+                    desc.className = 'description';
+                    desc.innerHTML = section.content;
+                    sectionDiv.appendChild(desc);
+                }
+
+                if (section.code) {
+                    const code = document.createElement('div');
+                    code.className = 'code-example';
+                    code.innerHTML = section.code;
+                    sectionDiv.appendChild(code);
+                }
+
+                if (section.tags) {
+                    const tagsDiv = document.createElement('div');
+                    const colors = ['blue', 'green', 'yellow', 'purple', 'orange'];
+                    section.tags.forEach((tag, idx) => {
+                        const tagSpan = document.createElement('span');
+                        tagSpan.className = `tag ${colors[idx % colors.length]}`;
+                        tagSpan.textContent = tag;
+                        tagsDiv.appendChild(tagSpan);
+                    });
+                    sectionDiv.appendChild(tagsDiv);
+                }
+
+                body.appendChild(sectionDiv);
+            });
+
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal(event) {
+            if (event && event.target.className !== 'modal') return;
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        document.querySelectorAll('.component-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.animation = 'pulse 0.5s ease';
+            });
+            card.addEventListener('animationend', function() {
+                this.style.animation = '';
+            });
+        });
+    </script>
 </body>
 </html>
