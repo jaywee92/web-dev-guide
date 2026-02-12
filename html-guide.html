@@ -622,12 +622,22 @@
                     },
                     {
                         title: 'Complete Document',
-                        code: `<span class="comment">&lt;!DOCTYPE html&gt;</span>
+                        code: `<span class="comment">&lt;!-- HTML5 declaration --&gt;</span>
+<span class="comment">&lt;!DOCTYPE html&gt;</span>
+
+<span class="comment">&lt;!-- Root element --&gt;</span>
 <span class="kw">&lt;html</span> <span class="var">lang</span>=<span class="str">"en"</span><span class="kw">&gt;</span>
+
+<span class="comment">&lt;!-- Document metadata and configuration --&gt;</span>
 <span class="kw">&lt;head&gt;</span>
+    <span class="comment">&lt;!-- Set character encoding --&gt;</span>
     <span class="kw">&lt;meta</span> <span class="var">charset</span>=<span class="str">"UTF-8"</span><span class="kw">&gt;</span>
+
+    <span class="comment">&lt;!-- Browser tab title --&gt;</span>
     <span class="kw">&lt;title&gt;</span>My Page<span class="kw">&lt;/title&gt;</span>
 <span class="kw">&lt;/head&gt;</span>
+
+<span class="comment">&lt;!-- Visible page content --&gt;</span>
 <span class="kw">&lt;body&gt;</span>
     <span class="kw">&lt;h1&gt;</span>Hello World<span class="kw">&lt;/h1&gt;</span>
 <span class="kw">&lt;/body&gt;</span>
@@ -645,8 +655,12 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;html</span> <span class="var">lang</span>=<span class="str">"en"</span><span class="kw">&gt;</span>
+                        code: `<span class="comment">&lt;!-- Root element with language attribute --&gt;</span>
+<span class="kw">&lt;html</span> <span class="var">lang</span>=<span class="str">"en"</span><span class="kw">&gt;</span>
+    <span class="comment">&lt;!-- Document head with metadata --&gt;</span>
     <span class="kw">&lt;head&gt;</span>...<span class="kw">&lt;/head&gt;</span>
+
+    <span class="comment">&lt;!-- Document body with visible content --&gt;</span>
     <span class="kw">&lt;body&gt;</span>...<span class="kw">&lt;/body&gt;</span>
 <span class="kw">&lt;/html&gt;</span>`
                     },
@@ -667,10 +681,19 @@
                     {
                         title: 'Common Head Elements',
                         code: `<span class="kw">&lt;head&gt;</span>
+    <span class="comment">&lt;!-- Set character encoding to UTF-8 --&gt;</span>
     <span class="kw">&lt;meta</span> <span class="var">charset</span>=<span class="str">"UTF-8"</span><span class="kw">&gt;</span>
+
+    <span class="comment">&lt;!-- Make site responsive on mobile --&gt;</span>
     <span class="kw">&lt;meta</span> <span class="var">name</span>=<span class="str">"viewport"</span> <span class="var">content</span>=<span class="str">"width=device-width"</span><span class="kw">&gt;</span>
+
+    <span class="comment">&lt;!-- Browser tab title --&gt;</span>
     <span class="kw">&lt;title&gt;</span>My Website<span class="kw">&lt;/title&gt;</span>
+
+    <span class="comment">&lt;!-- Link external stylesheet --&gt;</span>
     <span class="kw">&lt;link</span> <span class="var">rel</span>=<span class="str">"stylesheet"</span> <span class="var">href</span>=<span class="str">"style.css"</span><span class="kw">&gt;</span>
+
+    <span class="comment">&lt;!-- Link external JavaScript file --&gt;</span>
     <span class="kw">&lt;script</span> <span class="var">src</span>=<span class="str">"script.js"</span><span class="kw">&gt;&lt;/script&gt;</span>
 <span class="kw">&lt;/head&gt;</span>`
                     }
@@ -686,10 +709,16 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;body&gt;</span>
+                        code: `<span class="comment">&lt;!-- Body contains all visible content --&gt;</span>
+<span class="kw">&lt;body&gt;</span>
+    <span class="comment">&lt;!-- Main heading --&gt;</span>
     <span class="kw">&lt;h1&gt;</span>Welcome<span class="kw">&lt;/h1&gt;</span>
+
+    <span class="comment">&lt;!-- Paragraph text --&gt;</span>
     <span class="kw">&lt;p&gt;</span>This is visible content<span class="kw">&lt;/p&gt;</span>
-    <span class="kw">&lt;img</span> <span class="var">src</span>=<span class="str">"image.jpg"</span><span class="var">alt</span>=<span class="str">"Description"</span><span class="kw">&gt;</span>
+
+    <span class="comment">&lt;!-- Image with alt text --&gt;</span>
+    <span class="kw">&lt;img</span> <span class="var">src</span>=<span class="str">"image.jpg"</span> <span class="var">alt</span>=<span class="str">"Description"</span><span class="kw">&gt;</span>
 <span class="kw">&lt;/body&gt;</span>`
                     }
                 ]
@@ -704,11 +733,13 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;div</span> <span class="var">class</span>=<span class="str">"container"</span><span class="kw">&gt;</span>
+                        code: `<span class="comment">&lt;!-- Div with class for styling --&gt;</span>
+<span class="kw">&lt;div</span> <span class="var">class</span>=<span class="str">"container"</span><span class="kw">&gt;</span>
     <span class="kw">&lt;h2&gt;</span>Card Title<span class="kw">&lt;/h2&gt;</span>
     <span class="kw">&lt;p&gt;</span>Card content<span class="kw">&lt;/p&gt;</span>
 <span class="kw">&lt;/div&gt;</span>
 
+<span class="comment">&lt;!-- Div with id for unique identification --&gt;</span>
 <span class="kw">&lt;div</span> <span class="var">id</span>=<span class="str">"header"</span><span class="kw">&gt;</span>
     <span class="comment">&lt;!-- Header content --&gt;</span>
 <span class="kw">&lt;/div&gt;</span>`
@@ -729,9 +760,13 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;p&gt;</span>This is a paragraph.<span class="kw">&lt;/p&gt;</span>
+                        code: `<span class="comment">&lt;!-- Simple paragraph --&gt;</span>
+<span class="kw">&lt;p&gt;</span>This is a paragraph.<span class="kw">&lt;/p&gt;</span>
+
+<span class="comment">&lt;!-- Another paragraph --&gt;</span>
 <span class="kw">&lt;p&gt;</span>This is another paragraph.<span class="kw">&lt;/p&gt;</span>
 
+<span class="comment">&lt;!-- Paragraph with text formatting --&gt;</span>
 <span class="kw">&lt;p&gt;</span>
     Paragraphs can contain <span class="kw">&lt;strong&gt;</span>bold text<span class="kw">&lt;/strong&gt;</span>
     and <span class="kw">&lt;em&gt;</span>italic text<span class="kw">&lt;/em&gt;</span>.
@@ -749,16 +784,16 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="comment">&lt;!-- External link --&gt;</span>
+                        code: `<span class="comment">&lt;!-- Link to external website --&gt;</span>
 <span class="kw">&lt;a</span> <span class="var">href</span>=<span class="str">"https://example.com"</span><span class="kw">&gt;</span>Visit Example<span class="kw">&lt;/a&gt;</span>
 
-<span class="comment">&lt;!-- Internal link --&gt;</span>
+<span class="comment">&lt;!-- Link to another page on same site --&gt;</span>
 <span class="kw">&lt;a</span> <span class="var">href</span>=<span class="str">"/about"</span><span class="kw">&gt;</span>About Us<span class="kw">&lt;/a&gt;</span>
 
-<span class="comment">&lt;!-- Link to email --&gt;</span>
+<span class="comment">&lt;!-- Link that opens email client --&gt;</span>
 <span class="kw">&lt;a</span> <span class="var">href</span>=<span class="str">"mailto:hello@example.com"</span><span class="kw">&gt;</span>Email<span class="kw">&lt;/a&gt;</span>
 
-<span class="comment">&lt;!-- Link with target --&gt;</span>
+<span class="comment">&lt;!-- Link that opens in new browser tab --&gt;</span>
 <span class="kw">&lt;a</span> <span class="var">href</span>=<span class="str">"https://example.com"</span> <span class="var">target</span>=<span class="str">"_blank"</span><span class="kw">&gt;</span>New Tab<span class="kw">&lt;/a&gt;</span>`
                     }
                 ]
@@ -773,9 +808,10 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;img</span> <span class="var">src</span>=<span class="str">"photo.jpg"</span> <span class="var">alt</span>=<span class="str">"A beautiful sunset"</span><span class="kw">&gt;</span>
+                        code: `<span class="comment">&lt;!-- Simple image with alt text --&gt;</span>
+<span class="kw">&lt;img</span> <span class="var">src</span>=<span class="str">"photo.jpg"</span> <span class="var">alt</span>=<span class="str">"A beautiful sunset"</span><span class="kw">&gt;</span>
 
-<span class="comment">&lt;!-- With width/height --&gt;</span>
+<span class="comment">&lt;!-- Image with size specification --&gt;</span>
 <span class="kw">&lt;img</span> <span class="var">src</span>=<span class="str">"logo.png"</span>
      <span class="var">alt</span>=<span class="str">"Company logo"</span>
      <span class="var">width</span>=<span class="str">"200"</span>
@@ -797,9 +833,16 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;h1&gt;</span>Main Page Heading<span class="kw">&lt;/h1&gt;</span>
+                        code: `<span class="comment">&lt;!-- Level 1 - Main page title --&gt;</span>
+<span class="kw">&lt;h1&gt;</span>Main Page Heading<span class="kw">&lt;/h1&gt;</span>
+
+<span class="comment">&lt;!-- Level 2 - Major section --&gt;</span>
 <span class="kw">&lt;h2&gt;</span>Section Heading<span class="kw">&lt;/h2&gt;</span>
+
+<span class="comment">&lt;!-- Level 3 - Subsection --&gt;</span>
 <span class="kw">&lt;h3&gt;</span>Subsection<span class="kw">&lt;/h3&gt;</span>
+
+<span class="comment">&lt;!-- Level 4-6 - Less important headings --&gt;</span>
 <span class="kw">&lt;h4&gt;</span>Sub-subsection<span class="kw">&lt;/h4&gt;</span>
 <span class="kw">&lt;h5&gt;</span>Minor heading<span class="kw">&lt;/h5&gt;</span>
 <span class="kw">&lt;h6&gt;</span>Smallest heading<span class="kw">&lt;/h6&gt;</span>`
@@ -816,10 +859,12 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;p&gt;</span>
+                        code: `<span class="comment">&lt;!-- Span for styling specific text --&gt;</span>
+<span class="kw">&lt;p&gt;</span>
     This is <span class="kw">&lt;span</span> <span class="var">class</span>=<span class="str">"highlight"</span><span class="kw">&gt;</span>highlighted<span class="kw">&lt;/span&gt;</span> text.
 <span class="kw">&lt;/p&gt;</span>
 
+<span class="comment">&lt;!-- Span to apply class to price --&gt;</span>
 <span class="kw">&lt;p&gt;</span>
     Price: <span class="kw">&lt;span</span> <span class="var">class</span>=<span class="str">"price"</span><span class="kw">&gt;</span>$9.99<span class="kw">&lt;/span&gt;</span>
 <span class="kw">&lt;/p&gt;</span>`
@@ -836,16 +881,18 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;ul&gt;</span>
+                        code: `<span class="comment">&lt;!-- Simple bullet list --&gt;</span>
+<span class="kw">&lt;ul&gt;</span>
     <span class="kw">&lt;li&gt;</span>First item<span class="kw">&lt;/li&gt;</span>
     <span class="kw">&lt;li&gt;</span>Second item<span class="kw">&lt;/li&gt;</span>
     <span class="kw">&lt;li&gt;</span>Third item<span class="kw">&lt;/li&gt;</span>
 <span class="kw">&lt;/ul&gt;</span>
 
-<span class="comment">&lt;!-- Nested list --&gt;</span>
+<span class="comment">&lt;!-- Nested list with parent and children --&gt;</span>
 <span class="kw">&lt;ul&gt;</span>
     <span class="kw">&lt;li&gt;</span>
         Parent item
+        <span class="comment">&lt;!-- Nested items inside parent --&gt;</span>
         <span class="kw">&lt;ul&gt;</span>
             <span class="kw">&lt;li&gt;</span>Child item<span class="kw">&lt;/li&gt;</span>
         <span class="kw">&lt;/ul&gt;</span>
@@ -864,13 +911,14 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;ol&gt;</span>
+                        code: `<span class="comment">&lt;!-- Numbered list (auto-numbered) --&gt;</span>
+<span class="kw">&lt;ol&gt;</span>
     <span class="kw">&lt;li&gt;</span>First step<span class="kw">&lt;/li&gt;</span>
     <span class="kw">&lt;li&gt;</span>Second step<span class="kw">&lt;/li&gt;</span>
     <span class="kw">&lt;li&gt;</span>Third step<span class="kw">&lt;/li&gt;</span>
 <span class="kw">&lt;/ol&gt;</span>
 
-<span class="comment">&lt;!-- Reversed list --&gt;</span>
+<span class="comment">&lt;!-- List with reversed numbering --&gt;</span>
 <span class="kw">&lt;ol</span> <span class="var">reversed</span><span class="kw">&gt;</span>
     <span class="kw">&lt;li&gt;</span>3<span class="kw">&lt;/li&gt;</span>
     <span class="kw">&lt;li&gt;</span>2<span class="kw">&lt;/li&gt;</span>
@@ -889,13 +937,17 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;form</span> <span class="var">method</span>=<span class="str">"POST"</span> <span class="var">action</span>=<span class="str">"/submit"</span><span class="kw">&gt;</span>
+                        code: `<span class="comment">&lt;!-- Form sends data via POST to /submit --&gt;</span>
+<span class="kw">&lt;form</span> <span class="var">method</span>=<span class="str">"POST"</span> <span class="var">action</span>=<span class="str">"/submit"</span><span class="kw">&gt;</span>
+    <span class="comment">&lt;!-- Username field with label --&gt;</span>
     <span class="kw">&lt;label&gt;</span>Name: <span class="kw">&lt;/label&gt;</span>
     <span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"text"</span> <span class="var">name</span>=<span class="str">"username"</span> <span class="var">required</span><span class="kw">&gt;</span>
 
+    <span class="comment">&lt;!-- Email field --&gt;</span>
     <span class="kw">&lt;label&gt;</span>Email: <span class="kw">&lt;/label&gt;</span>
     <span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"email"</span> <span class="var">name</span>=<span class="str">"email"</span><span class="kw">&gt;</span>
 
+    <span class="comment">&lt;!-- Submit button --&gt;</span>
     <span class="kw">&lt;button</span> <span class="var">type</span>=<span class="str">"submit"</span><span class="kw">&gt;</span>Submit<span class="kw">&lt;/button&gt;</span>
 <span class="kw">&lt;/form&gt;</span>`
                     }
@@ -911,14 +963,29 @@
                     },
                     {
                         title: 'Input Types',
-                        code: `<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"text"</span><span class="kw">&gt;</span>         <span class="comment">&lt;!-- Text input --&gt;</span>
-<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"email"</span><span class="kw">&gt;</span>        <span class="comment">&lt;!-- Email --&gt;</span>
-<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"password"</span><span class="kw">&gt;</span>    <span class="comment">&lt;!-- Password --&gt;</span>
-<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"number"</span><span class="kw">&gt;</span>      <span class="comment">&lt;!-- Number --&gt;</span>
-<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"checkbox"</span><span class="kw">&gt;</span>    <span class="comment">&lt;!-- Checkbox --&gt;</span>
-<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"radio"</span><span class="kw">&gt;</span>       <span class="comment">&lt;!-- Radio button --&gt;</span>
-<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"date"</span><span class="kw">&gt;</span>        <span class="comment">&lt;!-- Date picker --&gt;</span>
-<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"file"</span><span class="kw">&gt;</span>        <span class="comment">&lt;!-- File upload --&gt;</span>`
+                        code: `<span class="comment">&lt;!-- Text input field --&gt;</span>
+<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"text"</span><span class="kw">&gt;</span>
+
+<span class="comment">&lt;!-- Email input (validates format) --&gt;</span>
+<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"email"</span><span class="kw">&gt;</span>
+
+<span class="comment">&lt;!-- Password input (hides characters) --&gt;</span>
+<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"password"</span><span class="kw">&gt;</span>
+
+<span class="comment">&lt;!-- Number input (numeric only) --&gt;</span>
+<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"number"</span><span class="kw">&gt;</span>
+
+<span class="comment">&lt;!-- Checkbox (can select multiple) --&gt;</span>
+<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"checkbox"</span><span class="kw">&gt;</span>
+
+<span class="comment">&lt;!-- Radio button (select one option) --&gt;</span>
+<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"radio"</span><span class="kw">&gt;</span>
+
+<span class="comment">&lt;!-- Date picker field --&gt;</span>
+<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"date"</span><span class="kw">&gt;</span>
+
+<span class="comment">&lt;!-- File upload field --&gt;</span>
+<span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"file"</span><span class="kw">&gt;</span>`
                     }
                 ]
             },
@@ -932,12 +999,15 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;label&gt;</span>Comments:<span class="kw">&lt;/label&gt;</span>
+                        code: `<span class="comment">&lt;!-- Label for textarea --&gt;</span>
+<span class="kw">&lt;label&gt;</span>Comments:<span class="kw">&lt;/label&gt;</span>
+
+<span class="comment">&lt;!-- Multi-line text area with 4 rows and 50 columns --&gt;</span>
 <span class="kw">&lt;textarea</span> <span class="var">name</span>=<span class="str">"comments"</span>
           <span class="var">rows</span>=<span class="str">"4"</span>
           <span class="var">cols</span>=<span class="str">"50"</span><span class="kw">&gt;&lt;/textarea&gt;</span>
 
-<span class="comment">&lt;!-- With placeholder --&gt;</span>
+<span class="comment">&lt;!-- Textarea with placeholder text --&gt;</span>
 <span class="kw">&lt;textarea</span> <span class="var">placeholder</span>=<span class="str">"Enter your message..."</span><span class="kw">&gt;&lt;/textarea&gt;</span>`
                     }
                 ]
@@ -952,12 +1022,14 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="comment">&lt;!-- Method 1: for attribute --&gt;</span>
+                        code: `<span class="comment">&lt;!-- Method 1: using 'for' attribute --&gt;</span>
+<span class="comment">&lt;!-- Links label to input via id --&gt;</span>
 <span class="kw">&lt;label</span> <span class="var">for</span>=<span class="str">"username"</span><span class="kw">&gt;</span>Username:<span class="kw">&lt;/label&gt;</span>
 <span class="kw">&lt;input</span> <span class="var">id</span>=<span class="str">"username"</span> <span class="var">type</span>=<span class="str">"text"</span><span class="kw">&gt;</span>
 
-<span class="comment">&lt;!-- Method 2: wrap input --&gt;</span>
+<span class="comment">&lt;!-- Method 2: wrapping input inside label --&gt;</span>
 <span class="kw">&lt;label&gt;</span>
+    <span class="comment">&lt;!-- Input nested within label --&gt;</span>
     <span class="kw">&lt;input</span> <span class="var">type</span>=<span class="str">"checkbox"</span><span class="kw">&gt;</span>
     Remember me
 <span class="kw">&lt;/label&gt;</span>`
@@ -974,13 +1046,13 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="comment">&lt;!-- Submit form --&gt;</span>
+                        code: `<span class="comment">&lt;!-- Submit button - sends form data --&gt;</span>
 <span class="kw">&lt;button</span> <span class="var">type</span>=<span class="str">"submit"</span><span class="kw">&gt;</span>Send<span class="kw">&lt;/button&gt;</span>
 
-<span class="comment">&lt;!-- Reset form --&gt;</span>
+<span class="comment">&lt;!-- Reset button - clears all form fields --&gt;</span>
 <span class="kw">&lt;button</span> <span class="var">type</span>=<span class="str">"reset"</span><span class="kw">&gt;</span>Clear<span class="kw">&lt;/button&gt;</span>
 
-<span class="comment">&lt;!-- Custom action (needs JavaScript) --&gt;</span>
+<span class="comment">&lt;!-- Generic button - triggers JavaScript function --&gt;</span>
 <span class="kw">&lt;button</span> <span class="var">type</span>=<span class="str">"button"</span> <span class="var">onclick</span>=<span class="str">"doSomething()"</span><span class="kw">&gt;</span>Click Me<span class="kw">&lt;/button&gt;</span>`
                     }
                 ]
@@ -995,10 +1067,18 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;label&gt;</span>Choose a color:<span class="kw">&lt;/label&gt;</span>
+                        code: `<span class="comment">&lt;!-- Label for dropdown --&gt;</span>
+<span class="kw">&lt;label&gt;</span>Choose a color:<span class="kw">&lt;/label&gt;</span>
+
+<span class="comment">&lt;!-- Dropdown menu with options --&gt;</span>
 <span class="kw">&lt;select</span> <span class="var">name</span>=<span class="str">"colors"</span><span class="kw">&gt;</span>
+    <span class="comment">&lt;!-- First option --&gt;</span>
     <span class="kw">&lt;option</span> <span class="var">value</span>=<span class="str">"red"</span><span class="kw">&gt;</span>Red<span class="kw">&lt;/option&gt;</span>
+
+    <span class="comment">&lt;!-- Pre-selected option --&gt;</span>
     <span class="kw">&lt;option</span> <span class="var">value</span>=<span class="str">"blue"</span> <span class="var">selected</span><span class="kw">&gt;</span>Blue<span class="kw">&lt;/option&gt;</span>
+
+    <span class="comment">&lt;!-- Third option --&gt;</span>
     <span class="kw">&lt;option</span> <span class="var">value</span>=<span class="str">"green"</span><span class="kw">&gt;</span>Green<span class="kw">&lt;/option&gt;</span>
 <span class="kw">&lt;/select&gt;</span>`
                     }
@@ -1014,9 +1094,15 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;header&gt;</span>
+                        code: `<span class="comment">&lt;!-- Header contains logo and navigation --&gt;</span>
+<span class="kw">&lt;header&gt;</span>
+    <span class="comment">&lt;!-- Site logo --&gt;</span>
     <span class="kw">&lt;img</span> <span class="var">src</span>=<span class="str">"logo.png"</span> <span class="var">alt</span>=<span class="str">"Logo"</span><span class="kw">&gt;</span>
+
+    <span class="comment">&lt;!-- Site title --&gt;</span>
     <span class="kw">&lt;h1&gt;</span>My Website<span class="kw">&lt;/h1&gt;</span>
+
+    <span class="comment">&lt;!-- Navigation menu --&gt;</span>
     <span class="kw">&lt;nav&gt;</span>
         <span class="kw">&lt;ul&gt;</span>
             <span class="kw">&lt;li&gt;&lt;a</span> <span class="var">href</span>=<span class="str">"/"</span><span class="kw">&gt;</span>Home<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
@@ -1037,8 +1123,10 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;nav&gt;</span>
+                        code: `<span class="comment">&lt;!-- Navigation menu --&gt;</span>
+<span class="kw">&lt;nav&gt;</span>
     <span class="kw">&lt;ul&gt;</span>
+        <span class="comment">&lt;!-- Navigation links --&gt;</span>
         <span class="kw">&lt;li&gt;&lt;a</span> <span class="var">href</span>=<span class="str">"/home"</span><span class="kw">&gt;</span>Home<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
         <span class="kw">&lt;li&gt;&lt;a</span> <span class="var">href</span>=<span class="str">"/products"</span><span class="kw">&gt;</span>Products<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
         <span class="kw">&lt;li&gt;&lt;a</span> <span class="var">href</span>=<span class="str">"/contact"</span><span class="kw">&gt;</span>Contact<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
@@ -1057,7 +1145,9 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;main&gt;</span>
+                        code: `<span class="comment">&lt;!-- Main content area --&gt;</span>
+<span class="kw">&lt;main&gt;</span>
+    <span class="comment">&lt;!-- Article within main content --&gt;</span>
     <span class="kw">&lt;article&gt;</span>
         <span class="kw">&lt;h1&gt;</span>Blog Post Title<span class="kw">&lt;/h1&gt;</span>
         <span class="kw">&lt;p&gt;</span>Article content...<span class="kw">&lt;/p&gt;</span>
@@ -1076,9 +1166,15 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;article&gt;</span>
+                        code: `<span class="comment">&lt;!-- Self-contained article --&gt;</span>
+<span class="kw">&lt;article&gt;</span>
+    <span class="comment">&lt;!-- Article heading --&gt;</span>
     <span class="kw">&lt;h2&gt;</span>Article Title<span class="kw">&lt;/h2&gt;</span>
+
+    <span class="comment">&lt;!-- Metadata: author and date --&gt;</span>
     <span class="kw">&lt;p&gt;</span><span class="var">By</span> John Doe <span class="var">on</span> January 15, 2024<span class="kw">&lt;/p&gt;</span>
+
+    <span class="comment">&lt;!-- Article body --&gt;</span>
     <span class="kw">&lt;p&gt;</span>Article content goes here...<span class="kw">&lt;/p&gt;</span>
 <span class="kw">&lt;/article&gt;</span>`
                     }
@@ -1094,11 +1190,13 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;section&gt;</span>
+                        code: `<span class="comment">&lt;!-- Section for services --&gt;</span>
+<span class="kw">&lt;section&gt;</span>
     <span class="kw">&lt;h2&gt;</span>Our Services<span class="kw">&lt;/h2&gt;</span>
     <span class="kw">&lt;p&gt;</span>We offer...<span class="kw">&lt;/p&gt;</span>
 <span class="kw">&lt;/section&gt;</span>
 
+<span class="comment">&lt;!-- Section for pricing --&gt;</span>
 <span class="kw">&lt;section&gt;</span>
     <span class="kw">&lt;h2&gt;</span>Pricing<span class="kw">&lt;/h2&gt;</span>
     <span class="kw">&lt;p&gt;</span>Our plans...<span class="kw">&lt;/p&gt;</span>
@@ -1116,8 +1214,12 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;aside&gt;</span>
+                        code: `<span class="comment">&lt;!-- Sidebar with related content --&gt;</span>
+<span class="kw">&lt;aside&gt;</span>
+    <span class="comment">&lt;!-- Related posts heading --&gt;</span>
     <span class="kw">&lt;h3&gt;</span>Related Posts<span class="kw">&lt;/h3&gt;</span>
+
+    <span class="comment">&lt;!-- List of related links --&gt;</span>
     <span class="kw">&lt;ul&gt;</span>
         <span class="kw">&lt;li&gt;&lt;a</span> <span class="var">href</span>=<span class="str">"#"</span><span class="kw">&gt;</span>Post 1<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
         <span class="kw">&lt;li&gt;&lt;a</span> <span class="var">href</span>=<span class="str">"#"</span><span class="kw">&gt;</span>Post 2<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
@@ -1136,8 +1238,12 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;footer&gt;</span>
+                        code: `<span class="comment">&lt;!-- Page footer --&gt;</span>
+<span class="kw">&lt;footer&gt;</span>
+    <span class="comment">&lt;!-- Copyright notice --&gt;</span>
     <span class="kw">&lt;p&gt;</span><span class="comment">&amp;copy;</span> 2024 My Company<span class="kw">&lt;/p&gt;</span>
+
+    <span class="comment">&lt;!-- Footer navigation links --&gt;</span>
     <span class="kw">&lt;nav&gt;</span>
         <span class="kw">&lt;ul&gt;</span>
             <span class="kw">&lt;li&gt;&lt;a</span> <span class="var">href</span>=<span class="str">"#"</span><span class="kw">&gt;</span>Privacy<span class="kw">&lt;/a&gt;&lt;/li&gt;</span>
@@ -1158,8 +1264,12 @@
                     },
                     {
                         title: 'Usage',
-                        code: `<span class="kw">&lt;figure&gt;</span>
+                        code: `<span class="comment">&lt;!-- Figure with image and caption --&gt;</span>
+<span class="kw">&lt;figure&gt;</span>
+    <span class="comment">&lt;!-- Image --&gt;</span>
     <span class="kw">&lt;img</span> <span class="var">src</span>=<span class="str">"chart.png"</span> <span class="var">alt</span>=<span class="str">"Sales Chart"</span><span class="kw">&gt;</span>
+
+    <span class="comment">&lt;!-- Figure caption --&gt;</span>
     <span class="kw">&lt;figcaption&gt;</span>
         Sales data for Q4 2024
     <span class="kw">&lt;/figcaption&gt;</span>
