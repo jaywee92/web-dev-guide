@@ -1,0 +1,29 @@
+Enhanced CSS Guide Features Added:
+
+1. **Interactive Box Model Visualization** - Shows nested layers:
+   - Margin (pink/outer layer)
+   - Border (yellow layer)
+   - Padding (green layer)
+   - Content (cyan/center)
+   - Clickable, hoverable, animated
+
+2. **Multiple Animation Styles**:
+   - fadeSlideUp
+   - fadeSlideLeft  
+   - fadeSlideRight
+   - fadeScale
+   - fadeRotate
+   - bounce
+   - glow
+
+3. **Visual Enhancements**:
+   - Color-coded layers with live hover effects
+   - Pulsing animations on icons
+   - Gradient borders with glow effects
+   - Interactive hover states on all visualizations
+
+4. **Improved UX**:
+   - Sections animate in from different directions
+   - Cards pulse on hover
+   - Smooth transitions throughout
+   - Visual feedback for all interactions
