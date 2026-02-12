@@ -364,6 +364,97 @@
             color: var(--blue);
             font-weight: 600;
         }
+
+        /* FILE TREE STYLES */
+        .file-tree {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            overflow: visible;
+            animation: fadeSlideUp 0.6s ease-out;
+        }
+
+        /* TREE ITEM BASE */
+        .tree-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .tree-item:hover {
+            background-color: var(--surface-bright);
+        }
+
+        .tree-item.html { color: var(--blue); }
+        .tree-item.css { color: var(--cyan); }
+        .tree-item.js { color: var(--yellow); }
+        .tree-item.assets { color: var(--orange); }
+        .tree-item.components { color: var(--purple); }
+        .tree-item.config { color: var(--green); }
+
+        .tree-icon { font-size: 14px; }
+
+        /* GROUP BADGES */
+        .group-badge {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            opacity: 0.7;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .tree-item:hover .group-badge,
+        details > summary:hover .group-badge {
+            opacity: 1;
+            transform: scale(1.3);
+        }
+
+        .group-badge.html { background: var(--blue); }
+        .group-badge.css { background: var(--cyan); }
+        .group-badge.js { background: var(--yellow); }
+        .group-badge.assets { background: var(--orange); }
+        .group-badge.components { background: var(--purple); }
+        .group-badge.config { background: var(--green); }
+
+        /* DETAILS/SUMMARY FOR EXPANDABLE FOLDERS */
+        details { margin: 0; }
+
+        details > summary {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            color: var(--blue);
+            font-weight: 600;
+            position: relative;
+        }
+
+        details > summary:hover {
+            background-color: var(--surface-bright);
+        }
+
+        details > summary::marker {
+            color: var(--text-muted);
+        }
+
+        details[open] > summary {
+            color: var(--yellow);
+        }
     </style>
 </head>
 <body>
@@ -594,46 +685,102 @@
                 Professional Structure
             </h2>
 
-            <div class="component-grid">
-                <div class="component-card" onclick="showModal('project-org')">
-                    <span class="component-icon">📁</span>
-                    <div class="component-title">Project Organization</div>
-                    <div class="component-desc">Folder structure and file management</div>
-                </div>
+            <p style="margin-bottom: 20px; color: var(--text-muted);">
+                Production-ready project structure with organized folders and clear separation of concerns.
+                <strong>Hover</strong> for descriptions, <strong>click</strong> folders to expand.
+            </p>
 
-                <div class="component-card" onclick="showModal('file-naming')">
-                    <span class="component-icon">📝</span>
-                    <div class="component-title">File Naming</div>
-                    <div class="component-desc">Conventions and best practices</div>
-                </div>
+            <div class="file-tree">
+                <!-- Show a typical web project structure -->
+                <details open>
+                    <summary>📁 website_project/</summary>
+                    <div style="margin-left: 20px;">
+                        <details open>
+                            <summary>📁 src/</summary>
+                            <div style="margin-left: 20px;">
+                                <div class="tree-item html">📄 index.html <span class="group-badge html"></span></div>
+                                <div class="tree-item html">📄 about.html <span class="group-badge html"></span></div>
+                                <div class="tree-item html">📄 contact.html <span class="group-badge html"></span></div>
+                            </div>
+                        </details>
 
-                <div class="component-card" onclick="showModal('template-arch')">
-                    <span class="component-icon">🧩</span>
-                    <div class="component-title">Template Architecture</div>
-                    <div class="component-desc">Base templates and components</div>
-                </div>
+                        <details open>
+                            <summary>📁 css/</summary>
+                            <div style="margin-left: 20px;">
+                                <div class="tree-item css">🎨 style.css <span class="group-badge css"></span></div>
+                                <div class="tree-item css">🎨 responsive.css <span class="group-badge css"></span></div>
+                            </div>
+                        </details>
 
-                <div class="component-card" onclick="showModal('multipage-struct')">
-                    <span class="component-icon">📄</span>
-                    <div class="component-title">Multi-page Structure</div>
-                    <div class="component-desc">Organizing multiple HTML files</div>
-                </div>
+                        <details>
+                            <summary>📁 js/</summary>
+                            <div style="margin-left: 20px;">
+                                <div class="tree-item js">⚡ app.js <span class="group-badge js"></span></div>
+                                <div class="tree-item js">⚡ utils.js <span class="group-badge js"></span></div>
+                            </div>
+                        </details>
 
-                <div class="component-card" onclick="showModal('component-org')">
-                    <span class="component-icon">🔧</span>
-                    <div class="component-title">Component Organization</div>
-                    <div class="component-desc">Reusable HTML components</div>
-                </div>
+                        <details>
+                            <summary>📁 assets/</summary>
+                            <div style="margin-left: 20px;">
+                                <details>
+                                    <summary>📁 images/</summary>
+                                    <div style="margin-left: 20px;">
+                                        <div class="tree-item assets">🖼️ logo.png <span class="group-badge assets"></span></div>
+                                        <div class="tree-item assets">🖼️ hero.jpg <span class="group-badge assets"></span></div>
+                                    </div>
+                                </details>
+                                <details>
+                                    <summary>📁 fonts/</summary>
+                                    <div style="margin-left: 20px;">
+                                        <div class="tree-item assets">🔤 font.woff2 <span class="group-badge assets"></span></div>
+                                    </div>
+                                </details>
+                            </div>
+                        </details>
 
-                <div class="component-card" onclick="showModal('build-tools')">
-                    <span class="component-icon">⚙️</span>
-                    <div class="component-title">Build Tools</div>
-                    <div class="component-desc">Webpack, Parcel, Vite bundling</div>
-                </div>
+                        <details>
+                            <summary>📁 components/</summary>
+                            <div style="margin-left: 20px;">
+                                <div class="tree-item html">🧩 header.html <span class="group-badge components"></span></div>
+                                <div class="tree-item html">🧩 footer.html <span class="group-badge components"></span></div>
+                                <div class="tree-item html">🧩 nav.html <span class="group-badge components"></span></div>
+                            </div>
+                        </details>
+
+                        <div class="tree-item config">⚙️ package.json <span class="group-badge config"></span></div>
+                        <div class="tree-item config">⚙️ .gitignore <span class="group-badge config"></span></div>
+                        <div class="tree-item">📝 README.md</div>
+                    </div>
+                </details>
             </div>
 
-            <div class="info-box">
-                <strong>Professional Development:</strong> Well-organized projects are easier to maintain, scale, and collaborate on. Use consistent naming, modular structure, and build tools.
+            <!-- Legend -->
+            <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-top: 20px; padding: 16px; background: var(--surface-bright); border-radius: 8px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="group-badge html" style="width: 12px; height: 12px;"></span>
+                    <span style="font-size: 12px; color: var(--text-muted);">HTML Files</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="group-badge css" style="width: 12px; height: 12px;"></span>
+                    <span style="font-size: 12px; color: var(--text-muted);">CSS Styles</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="group-badge js" style="width: 12px; height: 12px;"></span>
+                    <span style="font-size: 12px; color: var(--text-muted);">JavaScript</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="group-badge assets" style="width: 12px; height: 12px;"></span>
+                    <span style="font-size: 12px; color: var(--text-muted);">Assets</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="group-badge components" style="width: 12px; height: 12px;"></span>
+                    <span style="font-size: 12px; color: var(--text-muted);">Components</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="group-badge config" style="width: 12px; height: 12px;"></span>
+                    <span style="font-size: 12px; color: var(--text-muted);">Configuration</span>
+                </div>
             </div>
         </section>
     </div>
