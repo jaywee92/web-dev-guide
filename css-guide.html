@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS Styling — Visual Guide</title>
+    <title>CSS Guide – Interactive Tutorial</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -20,80 +20,92 @@
             --text: #e2e4ed;
             --text-muted: #8b8fa7;
             --yellow: #f5c542;
-            --yellow-dim: rgba(245,197,66,.15);
+            --yellow-dim: rgba(245, 197, 66, 0.15);
             --blue: #5b9cf5;
-            --blue-dim: rgba(91,156,245,.12);
+            --blue-dim: rgba(91, 156, 245, 0.12);
             --green: #4ade80;
-            --green-dim: rgba(74,222,128,.12);
+            --green-dim: rgba(74, 222, 128, 0.12);
             --orange: #f59e42;
-            --orange-dim: rgba(245,158,66,.12);
+            --orange-dim: rgba(245, 158, 66, 0.12);
             --purple: #a78bfa;
-            --purple-dim: rgba(167,139,250,.12);
-            --cyan: #22d3ee;
-            --cyan-dim: rgba(34,211,238,.12);
-            --pink: #f472b6;
-            --pink-dim: rgba(244,114,182,.12);
+            --purple-dim: rgba(167, 139, 250, 0.12);
             --red: #f87171;
-            --red-dim: rgba(248,113,113,.12);
+            --red-dim: rgba(248, 113, 113, 0.12);
+            --cyan: #22d3ee;
+            --cyan-dim: rgba(34, 211, 238, 0.12);
+            --white: #ffffff;
             --code-bg: #13151e;
-            --radius: 12px;
+            --radius: 14px;
         }
 
         body {
-            background: var(--bg);
+            background-color: var(--bg);
             color: var(--text);
             font-family: 'DM Sans', sans-serif;
             line-height: 1.6;
-            font-size: 14px;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 24px;
-        }
-
-        .back {
-            display: inline-block;
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            padding: 14px 20px;
-            margin-bottom: 20px;
             text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            padding: 16px 24px;
             transition: color 0.2s;
         }
 
-        .back:hover {
-            color: var(--yellow);
+        .back-link:hover {
+            color: var(--green);
+        }
+
+        .header {
+            padding: 40px 24px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+            animation: fadeSlideDown 0.6s ease-out;
         }
 
         h1 {
-            font-size: 28px;
-            margin-bottom: 8px;
-            color: var(--pink);
+            font-size: 42px;
             font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--green), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .subtitle {
             color: var(--text-muted);
-            margin-bottom: 28px;
-            font-size: 13px;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 60px;
         }
 
         .section {
-            margin-bottom: 32px;
-            padding: 20px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
+            margin-bottom: 60px;
             animation: fadeSlideUp 0.6s ease-out;
+            animation-fill-mode: both;
         }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
 
         @keyframes fadeSlideUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -101,514 +113,1144 @@
             }
         }
 
-        .section h2 {
-            font-size: 18px;
-            color: var(--pink);
-            margin-bottom: 14px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border);
+        @keyframes fadeSlideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .section p {
-            margin-bottom: 12px;
-            color: var(--text-muted);
-            font-size: 13px;
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
-        /* Code styling */
-        .code-inline {
-            background: var(--code-bg);
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            color: var(--cyan);
-        }
-
-        .sel { color: var(--cyan); }
-        .prop { color: var(--pink); }
-        .val { color: var(--green); }
-        .comment { color: var(--text-muted); }
-
-        /* Grid layouts */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
             gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .grid-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .card {
-            background: var(--surface-bright);
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-        }
-
-        /* CSS Methods */
-        .method {
-            background: var(--surface-bright);
-            padding: 10px;
-            border-radius: 6px;
-            border-left: 3px solid var(--cyan);
-            margin-bottom: 8px;
-            font-size: 12px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .method-name {
-            color: var(--pink);
-            font-weight: 600;
-        }
-
-        .method-desc {
-            color: var(--text-muted);
-            font-size: 11px;
-            margin-top: 4px;
-        }
-
-        .cascade {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 10px;
-            font-size: 11px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .cascade-item {
-            padding: 6px 10px;
-            background: var(--surface-bright);
-            border-radius: 4px;
-            border: 1px solid var(--border);
-            min-width: 80px;
-            text-align: center;
             color: var(--text);
         }
 
-        .cascade-item.high { background: var(--pink-dim); color: var(--pink); }
-
-        /* Box Model */
-        .box-model {
-            margin: 16px 0;
-            display: flex;
-            justify-content: center;
+        .section-icon {
+            font-size: 28px;
         }
 
-        .bm-outer {
-            background: var(--purple-dim);
-            padding: 14px;
-            border-radius: 8px;
-            border: 2px solid var(--purple);
-            text-align: center;
+        /* COMPONENT GRID */
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
         }
 
-        .bm-border {
-            background: transparent;
-            padding: 0;
-            border: 4px solid var(--yellow);
-            border-radius: 4px;
+        .component-card {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
-        .bm-padding {
+        .component-card:hover {
+            border-color: var(--green);
             background: var(--green-dim);
-            padding: 12px;
-            border-radius: 4px;
+            transform: scale(1.02);
         }
 
-        .bm-content {
-            background: var(--cyan-dim);
-            padding: 20px 30px;
-            border-radius: 4px;
-            color: var(--cyan);
-            font-weight: 600;
+        .component-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .component-title {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: var(--green);
             font-family: 'JetBrains Mono', monospace;
+        }
+
+        .component-desc {
             font-size: 12px;
-        }
-
-        .bm-label {
             color: var(--text-muted);
-            font-size: 11px;
-            margin-top: 4px;
-            font-family: 'JetBrains Mono', monospace;
+            line-height: 1.5;
         }
 
-        .box-sizing-note {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 10px;
-            font-size: 11px;
+        /* INFO BOX */
+        .info-box {
+            background: var(--green-dim);
+            border-left: 4px solid var(--green);
+            border-radius: 0 var(--radius) var(--radius) 0;
+            padding: 16px 20px;
+            margin: 16px 0;
+            font-size: 14px;
+            line-height: 1.7;
         }
 
-        .sizing-item {
-            padding: 8px;
-            background: var(--surface-bright);
-            border-radius: 4px;
-            border-left: 2px solid var(--green);
+        .info-box strong {
+            color: var(--green);
         }
 
-        /* Flexbox demo */
-        .flex-demo {
-            background: var(--surface-bright);
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 10px;
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            animation: fadeIn 0.2s ease-out;
         }
 
-        .flex-container {
-            display: flex;
-            gap: 6px;
-            margin: 8px 0;
-            padding: 8px;
-            background: var(--code-bg);
-            border-radius: 4px;
-            min-height: 60px;
-        }
-
-        .flex-item {
-            flex: 1;
-            background: var(--blue-dim);
-            border: 1px solid var(--blue);
-            border-radius: 4px;
+        .modal.active {
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--blue);
-            font-size: 11px;
-            font-weight: 600;
+            padding: 20px;
         }
 
-        /* Grid demo */
-        .grid-demo {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            padding: 12px;
-            background: var(--code-bg);
-            border-radius: 6px;
-            margin: 8px 0;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        .grid-cell {
-            background: var(--orange-dim);
-            border: 1px solid var(--orange);
-            padding: 12px;
-            border-radius: 4px;
-            text-align: center;
-            color: var(--orange);
-            font-weight: 600;
-            font-size: 12px;
+        .modal-content {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            max-width: 700px;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
         }
 
-        .grid-cell.span-2 {
-            grid-column: span 2;
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        /* Selectors reference */
-        .selector-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 12px;
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(135deg, var(--surface-bright), var(--surface));
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
-        .selector-item {
-            padding: 10px;
-            background: var(--surface-bright);
-            border-radius: 6px;
-            border-left: 3px solid var(--cyan);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
+        .modal-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 700;
         }
 
-        .selector-item strong {
-            color: var(--pink);
-        }
-
-        .selector-item .desc {
+        .modal-close {
+            background: none;
+            border: none;
             color: var(--text-muted);
-            font-size: 10px;
-            margin-top: 4px;
-        }
-
-        /* Specificity */
-        .specificity-chart {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .specificity-bar {
-            background: var(--surface-bright);
-            padding: 8px;
-            border-radius: 4px;
-            text-align: center;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            border: 1px solid var(--border);
-        }
-
-        .specificity-bar.high {
-            background: var(--red-dim);
-            border-color: var(--red);
-            color: var(--red);
-        }
-
-        .specificity-bar.mid {
-            background: var(--yellow-dim);
-            border-color: var(--yellow);
-            color: var(--yellow);
-        }
-
-        .specificity-bar.low {
-            background: var(--blue-dim);
-            border-color: var(--blue);
-            color: var(--blue);
-        }
-
-        /* Flask example */
-        .code-block {
-            background: var(--code-bg);
-            padding: 12px;
+            font-size: 28px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             border-radius: 6px;
-            border: 1px solid var(--border);
-            overflow-x: auto;
-            margin-bottom: 10px;
+            transition: all 0.2s;
         }
 
-        .code-block code {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            line-height: 1.5;
+        .modal-close:hover {
+            background: var(--border);
             color: var(--text);
         }
 
-        .keyword { color: var(--pink); }
-        .string { color: var(--green); }
-        .tag { color: var(--cyan); }
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-section {
+            margin-bottom: 24px;
+        }
+
+        .modal-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .modal-section-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .code-example {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .kw { color: var(--purple); }
+        .fn { color: var(--blue); }
+        .str { color: var(--green); }
+        .dec { color: var(--yellow); }
+        .var { color: var(--orange); }
+        .num { color: var(--orange); }
+        .comment { color: #555a73; font-style: italic; }
+
+        .description {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background: var(--surface-bright);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 4px 4px 4px 0;
+        }
+
+        .tag.blue { background: var(--blue-dim); border-color: var(--blue); color: var(--blue); }
+        .tag.green { background: var(--green-dim); border-color: var(--green); color: var(--green); }
+        .tag.yellow { background: var(--yellow-dim); border-color: var(--yellow); color: var(--yellow); }
+        .tag.purple { background: var(--purple-dim); border-color: var(--purple); color: var(--purple); }
+        .tag.orange { background: var(--orange-dim); border-color: var(--orange); color: var(--orange); }
 
         footer {
+            padding: 40px 24px;
             text-align: center;
-            padding: 20px;
             color: var(--text-muted);
-            font-size: 11px;
-            margin-top: 32px;
             border-top: 1px solid var(--border);
+            margin-top: 60px;
+        }
+
+        .highlight {
+            color: var(--green);
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="index.html" class="back">← Back to Overview</a>
+    <a href="index.html" class="back-link">← Back to Overview</a>
 
-        <h1>CSS Styling — Visual Guide</h1>
-        <p class="subtitle">Master CSS fundamentals with visual examples and interactive demos</p>
-
-        <!-- How CSS Works -->
-        <div class="section">
-            <h2>How CSS Works</h2>
-            <p>There are three ways to add CSS to your HTML pages. They follow a priority cascade:</p>
-
-            <div class="method">
-                <div class="method-name">1. Inline Styles (Highest Priority)</div>
-                <div class="method-desc">Applied directly to elements via the <span class="code-inline">style</span> attribute</div>
-                <div class="code-block"><code>&lt;<span class="tag">p</span> <span class="keyword">style</span>=<span class="string">"color: #f472b6;"</span>&gt;Styled text&lt;/<span class="tag">p</span>&gt;</code></div>
-            </div>
-
-            <div class="method">
-                <div class="method-name">2. Internal Styles</div>
-                <div class="method-desc">Defined in <span class="code-inline">&lt;style&gt;</span> tags in the document head</div>
-                <div class="code-block"><code>&lt;<span class="tag">style</span>&gt;<br/>.<span class="sel">card</span> { <span class="prop">color</span>: <span class="val">#f472b6</span>; }<br/>&lt;/<span class="tag">style</span>&gt;</code></div>
-            </div>
-
-            <div class="method">
-                <div class="method-name">3. External Stylesheets (Lowest Priority)</div>
-                <div class="method-desc">Linked via <span class="code-inline">&lt;link&gt;</span> tags, best for scalable projects</div>
-                <div class="code-block"><code>&lt;<span class="tag">link</span> <span class="keyword">rel</span>=<span class="string">"stylesheet"</span> <span class="keyword">href</span>=<span class="string">"style.css"</span>&gt;</code></div>
-            </div>
-
-            <div class="cascade">
-                <div class="cascade-item high">Inline</div>
-                <span style="color: var(--text-muted);">&gt;</span>
-                <div class="cascade-item">Internal</div>
-                <span style="color: var(--text-muted);">&gt;</span>
-                <div class="cascade-item">External</div>
-                <span style="color: var(--text-muted);">&gt;</span>
-                <div class="cascade-item">Browser Default</div>
-            </div>
-        </div>
-
-        <!-- Selectors -->
-        <div class="section">
-            <h2>CSS Selectors</h2>
-            <p>Selectors target HTML elements to apply styles. Different selectors have different specificity levels:</p>
-
-            <div class="selector-grid">
-                <div class="selector-item">
-                    <strong>Element</strong>
-                    <div class="desc">p { }</div>
-                    <div class="desc">Targets all &lt;p&gt; tags</div>
-                </div>
-                <div class="selector-item">
-                    <strong>Class</strong>
-                    <div class="desc">.card { }</div>
-                    <div class="desc">Targets class="card"</div>
-                </div>
-                <div class="selector-item">
-                    <strong>ID</strong>
-                    <div class="desc">#main { }</div>
-                    <div class="desc">Targets id="main"</div>
-                </div>
-                <div class="selector-item">
-                    <strong>Descendant</strong>
-                    <div class="desc">div p { }</div>
-                    <div class="desc">All &lt;p&gt; inside &lt;div&gt;</div>
-                </div>
-                <div class="selector-item">
-                    <strong>Child</strong>
-                    <div class="desc">div > p { }</div>
-                    <div class="desc">Direct &lt;p&gt; children only</div>
-                </div>
-                <div class="selector-item">
-                    <strong>Adjacent Sibling</strong>
-                    <div class="desc">div + p { }</div>
-                    <div class="desc">First &lt;p&gt; after &lt;div&gt;</div>
-                </div>
-                <div class="selector-item">
-                    <strong>Pseudo-class</strong>
-                    <div class="desc">a:hover { }</div>
-                    <div class="desc">:first-child, :nth-child(n)</div>
-                </div>
-                <div class="selector-item">
-                    <strong>Pseudo-element</strong>
-                    <div class="desc">p::before { }</div>
-                    <div class="desc">Insert content before/after</div>
-                </div>
-                <div class="selector-item">
-                    <strong>Attribute</strong>
-                    <div class="desc">[type="text"] { }</div>
-                    <div class="desc">Match element attributes</div>
-                </div>
-            </div>
-
-            <p style="font-weight: 500; color: var(--text); margin: 12px 0;">Specificity Priority:</p>
-            <div class="specificity-chart">
-                <div class="specificity-bar high">ID<br/>(1,0,0)<br/>Highest</div>
-                <div class="specificity-bar mid">Class<br/>(0,1,0)<br/>Medium</div>
-                <div class="specificity-bar low">Element<br/>(0,0,1)<br/>Lowest</div>
-            </div>
-        </div>
-
-        <!-- Box Model -->
-        <div class="section">
-            <h2>The Box Model</h2>
-            <p>Every element consists of content, padding, border, and margin. This is crucial for spacing and layout:</p>
-
-            <div class="box-model">
-                <div class="bm-outer">
-                    <div class="bm-label">Margin (30px)</div>
-                    <div class="bm-border">
-                        <div class="bm-label">Border (4px)</div>
-                        <div class="bm-padding">
-                            <div class="bm-label">Padding (12px)</div>
-                            <div class="bm-content">Content</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="box-sizing-note">
-                <div class="sizing-item">
-                    <strong>box-sizing: content-box</strong><br/>
-                    <span class="comment">Width = content only (default)</span>
-                </div>
-                <div class="sizing-item">
-                    <strong>box-sizing: border-box</strong><br/>
-                    <span class="comment">Width = content + padding + border</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Flexbox -->
-        <div class="section">
-            <h2>Flexbox Layout</h2>
-            <p>Powerful 1D layout system for rows and columns. Use <span class="code-inline">display: flex</span>:</p>
-
-            <p style="font-weight: 500; color: var(--text); margin-top: 12px;">flex-direction: row (default)</p>
-            <div class="flex-container" style="flex-direction: row;">
-                <div class="flex-item">Item 1</div>
-                <div class="flex-item">Item 2</div>
-                <div class="flex-item">Item 3</div>
-            </div>
-
-            <p style="font-weight: 500; color: var(--text); margin-top: 12px;">flex-direction: column</p>
-            <div class="flex-container" style="flex-direction: column; min-height: auto;">
-                <div class="flex-item">Item 1</div>
-                <div class="flex-item">Item 2</div>
-                <div class="flex-item">Item 3</div>
-            </div>
-
-            <p style="font-weight: 500; color: var(--text); margin-top: 12px;">justify-content: space-between</p>
-            <div class="flex-container" style="justify-content: space-between;">
-                <div class="flex-item" style="flex: 0 0 20%;">1</div>
-                <div class="flex-item" style="flex: 0 0 20%;">2</div>
-                <div class="flex-item" style="flex: 0 0 20%;">3</div>
-            </div>
-
-            <p style="font-weight: 500; color: var(--text); margin-top: 12px;">align-items: center</p>
-            <div class="flex-container" style="align-items: center;">
-                <div class="flex-item">Short</div>
-                <div class="flex-item" style="line-height: 2;">Taller</div>
-                <div class="flex-item">Short</div>
-            </div>
-        </div>
-
-        <!-- Grid -->
-        <div class="section">
-            <h2>CSS Grid Layout</h2>
-            <p>Powerful 2D layout system. Use <span class="code-inline">display: grid</span> for complex layouts:</p>
-
-            <p style="font-weight: 500; color: var(--text); margin-top: 12px;">grid-template-columns: repeat(3, 1fr)</p>
-            <div class="grid-demo">
-                <div class="grid-cell">1</div>
-                <div class="grid-cell">2</div>
-                <div class="grid-cell">3</div>
-                <div class="grid-cell span-2">4 (spans 2)</div>
-                <div class="grid-cell">5</div>
-                <div class="grid-cell">6</div>
-            </div>
-
-            <p style="color: var(--text-muted); font-size: 12px; margin-top: 8px;"><span class="code-inline">gap: 8px</span> adds space between grid items</p>
-        </div>
-
-        <!-- CSS + Flask -->
-        <div class="section">
-            <h2>CSS in Flask Applications</h2>
-            <p>Flask serves static files (CSS, JS, images) from the <span class="code-inline">/static</span> directory:</p>
-
-            <p style="font-weight: 500; color: var(--text); margin-top: 12px;">File Structure:</p>
-            <div class="code-block"><code>project/<br/>├── app.py<br/>├── templates/<br/>│   └── index.html<br/>└── static/<br/>    └── css/<br/>        └── style.css</code></div>
-
-            <p style="font-weight: 500; color: var(--text); margin-top: 12px;">In Your Flask Template:</p>
-            <div class="code-block"><code>&lt;<span class="tag">head</span>&gt;<br/>  &lt;<span class="tag">link</span> <span class="keyword">rel</span>=<span class="string">"stylesheet"</span> <span class="keyword">href</span>=<span class="string">"{{ url_for('static', filename='css/style.css') }}"</span>&gt;<br/>&lt;/<span class="tag">head</span>&gt;</code></div>
-
-            <p style="color: var(--text-muted); font-size: 12px; margin-top: 8px;">Using <span class="code-inline">url_for()</span> ensures your CSS path works regardless of deployment environment.</p>
-        </div>
-
-        <footer>
-            CSS Styling Guide — Master layout, selectors, and responsive design
-        </footer>
+    <div class="header">
+        <h1>CSS Guide</h1>
+        <p class="subtitle">Interactive CSS tutorial • Click elements to explore examples and best practices</p>
     </div>
+
+    <div class="container">
+        <!-- SELECTORS -->
+        <section class="section">
+            <h2 class="section-title">
+                <span class="section-icon">🎯</span>
+                CSS Selectors
+            </h2>
+
+            <div class="component-grid">
+                <div class="component-card" onclick="showModal('element')">
+                    <span class="component-icon">📝</span>
+                    <div class="component-title">Element Selector</div>
+                    <div class="component-desc">Selects HTML elements by tag name</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('class')">
+                    <span class="component-icon">🏷️</span>
+                    <div class="component-title">Class Selector</div>
+                    <div class="component-desc">Selects elements by .class attribute</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('id')">
+                    <span class="component-icon">#️⃣</span>
+                    <div class="component-title">ID Selector</div>
+                    <div class="component-desc">Selects element by #id attribute</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('pseudo')">
+                    <span class="component-icon">✨</span>
+                    <div class="component-title">Pseudo-classes</div>
+                    <div class="component-desc">:hover, :focus, :active, :nth-child()</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('attribute')">
+                    <span class="component-icon">⚙️</span>
+                    <div class="component-title">Attribute Selector</div>
+                    <div class="component-desc">Selects elements by attributes</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('combinator')">
+                    <span class="component-icon">🔗</span>
+                    <div class="component-title">Combinators</div>
+                    <div class="component-desc">Descendant, child, sibling selectors</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>Selector Specificity:</strong> ID (100) > Class (10) > Element (1). Inline styles (1000) override everything. Use !important rarely.
+            </div>
+        </section>
+
+        <!-- BOX MODEL -->
+        <section class="section">
+            <h2 class="section-title">
+                <span class="section-icon">📦</span>
+                Box Model
+            </h2>
+
+            <div class="component-grid">
+                <div class="component-card" onclick="showModal('margin')">
+                    <span class="component-icon">🌫️</span>
+                    <div class="component-title">Margin</div>
+                    <div class="component-desc">Space outside the element</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('border')">
+                    <span class="component-icon">🟪</span>
+                    <div class="component-title">Border</div>
+                    <div class="component-desc">Line around the element</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('padding')">
+                    <span class="component-icon">📦</span>
+                    <div class="component-title">Padding</div>
+                    <div class="component-desc">Space inside the element</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('content')">
+                    <span class="component-icon">📄</span>
+                    <div class="component-title">Content</div>
+                    <div class="component-desc">The actual element content</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('sizing')">
+                    <span class="component-icon">📐</span>
+                    <div class="component-title">Width & Height</div>
+                    <div class="component-desc">Element dimensions (px, %, em, etc.)</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('boxsizing')">
+                    <span class="component-icon">⚙️</span>
+                    <div class="component-title">box-sizing</div>
+                    <div class="component-desc">Include/exclude padding and border</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>Box Model Order:</strong> Content → Padding → Border → Margin. Use box-sizing: border-box for easier calculations.
+            </div>
+        </section>
+
+        <!-- LAYOUT -->
+        <section class="section">
+            <h2 class="section-title">
+                <span class="section-icon">📐</span>
+                Layout Systems
+            </h2>
+
+            <div class="component-grid">
+                <div class="component-card" onclick="showModal('flexbox')">
+                    <span class="component-icon">🔀</span>
+                    <div class="component-title">Flexbox</div>
+                    <div class="component-desc">1D layout (rows or columns)</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('grid')">
+                    <span class="component-icon">📊</span>
+                    <div class="component-title">CSS Grid</div>
+                    <div class="component-desc">2D layout (rows and columns)</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('position')">
+                    <span class="component-icon">📍</span>
+                    <div class="component-title">Position</div>
+                    <div class="component-desc">static, relative, absolute, fixed, sticky</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('display')">
+                    <span class="component-icon">👁️</span>
+                    <div class="component-title">Display</div>
+                    <div class="component-desc">block, inline, inline-block, none</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('float')">
+                    <span class="component-icon">⛵</span>
+                    <div class="component-title">Float (Legacy)</div>
+                    <div class="component-desc">Old layout method, mostly deprecated</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('zindex')">
+                    <span class="component-icon">📚</span>
+                    <div class="component-title">Z-index</div>
+                    <div class="component-desc">Stacking order of elements</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>Modern CSS:</strong> Use Flexbox for 1D layouts, Grid for 2D. Avoid float for layout and use it only for text wrapping.
+            </div>
+        </section>
+
+        <!-- STYLING PROPERTIES -->
+        <section class="section">
+            <h2 class="section-title">
+                <span class="section-icon">🎨</span>
+                Styling Properties
+            </h2>
+
+            <div class="component-grid">
+                <div class="component-card" onclick="showModal('color')">
+                    <span class="component-icon">🌈</span>
+                    <div class="component-title">Colors</div>
+                    <div class="component-desc">text color, background color, gradients</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('fonts')">
+                    <span class="component-icon">🔤</span>
+                    <div class="component-title">Typography</div>
+                    <div class="component-desc">font-family, font-size, font-weight, etc.</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('shadows')">
+                    <span class="component-icon">👥</span>
+                    <div class="component-title">Shadows & Effects</div>
+                    <div class="component-desc">box-shadow, text-shadow, opacity</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('transform')">
+                    <span class="component-icon">🔄</span>
+                    <div class="component-title">Transform</div>
+                    <div class="component-desc">rotate, scale, translate, skew</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('animation')">
+                    <span class="component-icon">⚡</span>
+                    <div class="component-title">Animation</div>
+                    <div class="component-desc">@keyframes, animation properties</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('transition')">
+                    <span class="component-icon">➡️</span>
+                    <div class="component-title">Transition</div>
+                    <div class="component-desc">Smooth property changes over time</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>Performance Tip:</strong> Prefer transform and opacity for animations. Avoid animating width/height as they trigger layout recalculations.
+            </div>
+        </section>
+    </div>
+
+    <!-- MODALS -->
+    <div id="modal" class="modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <span id="modal-icon"></span>
+                    <span id="modal-name"></span>
+                </div>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>CSS Guide – Master CSS styling and layout interactively</p>
+        <p style="font-size: 12px; margin-top: 8px; color: #555a73;">Complete reference for CSS selectors, layouts, and modern techniques</p>
+    </footer>
+
+    <script>
+        const modalData = {
+            element: {
+                icon: '📝',
+                name: 'Element Selector',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Selects all HTML elements of a specific type. This is the most basic selector.'
+                    },
+                    {
+                        title: 'Syntax',
+                        code: `<span class="kw">p</span> {
+    <span class="var">color</span>: <span class="str">blue</span>;
+}
+
+<span class="kw">div</span> {
+    <span class="var">background</span>: <span class="str">#f0f0f0</span>;
+}
+
+<span class="kw">a</span> {
+    <span class="var">text-decoration</span>: <span class="str">none</span>;
+}`
+                    },
+                    {
+                        title: 'When to use',
+                        content: 'Use for global styles that apply to all instances of an element. Lowest specificity (1).'
+                    }
+                ]
+            },
+            class: {
+                icon: '🏷️',
+                name: 'Class Selector',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Selects elements with a specific class attribute. Classes start with a dot (.) and can be reused.'
+                    },
+                    {
+                        title: 'Syntax',
+                        code: `<span class="kw">.btn</span> {
+    <span class="var">padding</span>: <span class="str">10px 20px</span>;
+    <span class="var">background</span>: <span class="str">blue</span>;
+    <span class="var">color</span>: <span class="str">white</span>;
+}
+
+<span class="kw">.alert-danger</span> {
+    <span class="var">background</span>: <span class="str">#f8d7da</span>;
+    <span class="var">color</span>: <span class="str">#721c24</span>;
+}`
+                    },
+                    {
+                        title: 'HTML Usage',
+                        code: `<span class="kw">&lt;button</span> <span class="var">class</span>=<span class="str">"btn"</span><span class="kw">&gt;</span>Click<span class="kw">&lt;/button&gt;</span>
+<span class="kw">&lt;div</span> <span class="var">class</span>=<span class="str">"alert-danger"</span><span class="kw">&gt;</span>Error!<span class="kw">&lt;/div&gt;</span>`
+                    }
+                ]
+            },
+            id: {
+                icon: '#️⃣',
+                name: 'ID Selector',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Selects a single element with a specific id. IDs must be unique per page. Highest specificity (100).'
+                    },
+                    {
+                        title: 'Syntax',
+                        code: `<span class="kw">#header</span> {
+    <span class="var">background</span>: <span class="str">navy</span>;
+    <span class="var">color</span>: <span class="str">white</span>;
+}
+
+<span class="kw">#main-content</span> {
+    <span class="var">max-width</span>: <span class="str">1200px</span>;
+    <span class="var">margin</span>: <span class="str">0 auto</span>;
+}`
+                    },
+                    {
+                        title: 'When to use',
+                        content: 'Use sparingly. IDs override classes and elements. Prefer classes for reusability and flexibility.'
+                    }
+                ]
+            },
+            pseudo: {
+                icon: '✨',
+                name: 'Pseudo-classes',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Selects elements in a specific state or position. Common: :hover, :focus, :active, :nth-child(), :first-child, :last-child'
+                    },
+                    {
+                        title: 'Common Examples',
+                        code: `<span class="kw">a:hover</span> {
+    <span class="var">color</span>: <span class="str">red</span>;
+    <span class="var">text-decoration</span>: <span class="str">underline</span>;
+}
+
+<span class="kw">button:active</span> {
+    <span class="var">transform</span>: <span class="str">scale(0.98)</span>;
+}
+
+<span class="kw">li:nth-child(odd)</span> {
+    <span class="var">background</span>: <span class="str">#f9f9f9</span>;
+}
+
+<span class="kw">input:focus</span> {
+    <span class="var">outline</span>: <span class="str">2px solid blue</span>;
+}`
+                    }
+                ]
+            },
+            attribute: {
+                icon: '⚙️',
+                name: 'Attribute Selector',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Selects elements based on HTML attributes. Very useful for form inputs and data attributes.'
+                    },
+                    {
+                        title: 'Examples',
+                        code: `<span class="comment">/* Exact attribute value */</span>
+<span class="kw">input[type="text"]</span> {
+    <span class="var">border</span>: <span class="str">1px solid #ccc</span>;
+}
+
+<span class="comment">/* Attribute contains value */</span>
+<span class="kw">a[href*="example"]</span> {
+    <span class="var">color</span>: <span class="str">green</span>;
+}
+
+<span class="comment">/* Attribute starts with value */</span>
+<span class="kw">img[src^="https"]</span> {
+    <span class="var">border</span>: <span class="str">2px solid green</span>;
+}`
+                    }
+                ]
+            },
+            combinator: {
+                icon: '🔗',
+                name: 'Combinators',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Combinators show relationships between selectors: descendant, child, adjacent sibling, general sibling.'
+                    },
+                    {
+                        title: 'Types',
+                        code: `<span class="comment">/* Descendant (space) */</span>
+<span class="kw">div p</span> { } <span class="comment">/* All p inside div */</span>
+
+<span class="comment">/* Child (>) */</span>
+<span class="kw">div > p</span> { } <span class="comment">/* Direct p children of div */</span>
+
+<span class="comment">/* Adjacent sibling (+) */</span>
+<span class="kw">h2 + p</span> { } <span class="comment">/* p immediately after h2 */</span>
+
+<span class="comment">/* General sibling (~) */</span>
+<span class="kw">h2 ~ p</span> { } <span class="comment">/* All p after h2 */</span>`
+                    }
+                ]
+            },
+            margin: {
+                icon: '🌫️',
+                name: 'Margin',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Space outside the element border. Creates spacing between elements. Can be negative.'
+                    },
+                    {
+                        title: 'Syntax',
+                        code: `<span class="comment">/* All sides */</span>
+<span class="kw">margin</span>: <span class="str">20px</span>;
+
+<span class="comment">/* Vertical | Horizontal */</span>
+<span class="kw">margin</span>: <span class="str">10px 20px</span>;
+
+<span class="comment">/* Top | Right | Bottom | Left */</span>
+<span class="kw">margin</span>: <span class="str">10px 15px 10px 15px</span>;
+
+<span class="comment">/* Individual sides */</span>
+<span class="kw">margin-top</span>: <span class="str">20px</span>;
+<span class="kw">margin-right</span>: <span class="str">15px</span>;
+<span class="kw">margin-bottom</span>: <span class="str">20px</span>;
+<span class="kw">margin-left</span>: <span class="str">15px</span>;
+
+<span class="comment">/* Center element (block) */</span>
+<span class="kw">margin</span>: <span class="str">0 auto</span>;`
+                    }
+                ]
+            },
+            border: {
+                icon: '🟪',
+                name: 'Border',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Line around an element. Can have width, style, color, and radius.'
+                    },
+                    {
+                        title: 'Syntax',
+                        code: `<span class="comment">/* Shorthand */</span>
+<span class="kw">border</span>: <span class="str">2px solid blue</span>;
+
+<span class="comment">/* Individual properties */</span>
+<span class="kw">border-width</span>: <span class="str">2px</span>;
+<span class="kw">border-style</span>: <span class="str">solid</span>; <span class="comment">/* solid, dashed, dotted, double */</span>
+<span class="kw">border-color</span>: <span class="str">blue</span>;
+
+<span class="comment">/* Rounded corners */</span>
+<span class="kw">border-radius</span>: <span class="str">8px</span>;
+<span class="kw">border-radius</span>: <span class="str">50%</span>; <span class="comment">/* Circle */</span>`
+                    }
+                ]
+            },
+            padding: {
+                icon: '📦',
+                name: 'Padding',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Space inside the element, between content and border. Always positive (cannot be negative).'
+                    },
+                    {
+                        title: 'Syntax',
+                        code: `<span class="comment">/* All sides */</span>
+<span class="kw">padding</span>: <span class="str">20px</span>;
+
+<span class="comment">/* Vertical | Horizontal */</span>
+<span class="kw">padding</span>: <span class="str">10px 20px</span>;
+
+<span class="comment">/* Top | Right | Bottom | Left */</span>
+<span class="kw">padding</span>: <span class="str">10px 15px 10px 15px</span>;
+
+<span class="comment">/* Individual sides */</span>
+<span class="kw">padding-top</span>: <span class="str">10px</span>;
+<span class="kw">padding-right</span>: <span class="str">15px</span>;
+<span class="kw">padding-bottom</span>: <span class="str">10px</span>;
+<span class="kw">padding-left</span>: <span class="str">15px</span>;`
+                    }
+                ]
+            },
+            content: {
+                icon: '📄',
+                name: 'Content Area',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The actual content of the element (text, images, etc.). Size determined by width and height properties.'
+                    },
+                    {
+                        title: 'Sizing',
+                        code: `<span class="kw">div</span> {
+    <span class="var">width</span>: <span class="str">200px</span>;      <span class="comment">/* Fixed */</span>
+    <span class="var">width</span>: <span class="str">50%</span>;        <span class="comment">/* Relative */</span>
+    <span class="var">width</span>: <span class="str">100vw</span>;      <span class="comment">/* Viewport width */</span>
+    <span class="var">max-width</span>: <span class="str">800px</span>;  <span class="comment">/* Maximum */</span>
+    <span class="var">min-width</span>: <span class="str">300px</span>;  <span class="comment">/* Minimum */</span>
+
+    <span class="var">height</span>: <span class="str">300px</span>;
+    <span class="var">overflow</span>: <span class="str">hidden</span>;  <span class="comment">/* Hide overflow */</span>
+}`
+                    }
+                ]
+            },
+            sizing: {
+                icon: '📐',
+                name: 'Width & Height',
+                sections: [
+                    {
+                        title: 'Units',
+                        code: `<span class="comment">/* Absolute units */</span>
+<span class="kw">width</span>: <span class="str">200px</span>;    <span class="comment">/* Pixels */</span>
+
+<span class="comment">/* Relative units */</span>
+<span class="kw">width</span>: <span class="str">50%</span>;      <span class="comment">/* Percentage of parent */</span>
+<span class="kw">font-size</span>: <span class="str">1.5em</span>;  <span class="comment">/* Relative to parent font */</span>
+<span class="kw">font-size</span>: <span class="str">1.5rem</span>; <span class="comment">/* Relative to root font */</span>
+
+<span class="comment">/* Viewport units */</span>
+<span class="kw">width</span>: <span class="str">100vw</span>;    <span class="comment">/* Full viewport width */</span>
+<span class="kw">height</span>: <span class="str">100vh</span>;   <span class="comment">/* Full viewport height */</span>`
+                    }
+                ]
+            },
+            boxsizing: {
+                icon: '⚙️',
+                name: 'box-sizing',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Determines whether padding and border are included in width/height calculations. border-box is recommended for modern CSS.'
+                    },
+                    {
+                        title: 'Values',
+                        code: `<span class="comment">/* Content-box (default) */</span>
+<span class="kw">box-sizing</span>: <span class="str">content-box</span>;
+<span class="comment">/* width = content only */</span>
+
+<span class="comment">/* Border-box (recommended) */</span>
+<span class="kw">box-sizing</span>: <span class="str">border-box</span>;
+<span class="comment">/* width = content + padding + border */</span>
+
+<span class="comment">/* Reset all elements */</span>
+<span class="kw">*</span> {
+    <span class="var">box-sizing</span>: <span class="str">border-box</span>;
+}`
+                    }
+                ]
+            },
+            flexbox: {
+                icon: '🔀',
+                name: 'Flexbox',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Flexible Box Layout for 1D layouts (rows or columns). Great for alignment and distribution.'
+                    },
+                    {
+                        title: 'Container (Parent)',
+                        code: `<span class="kw">.container</span> {
+    <span class="var">display</span>: <span class="str">flex</span>;
+    <span class="var">flex-direction</span>: <span class="str">row</span>;      <span class="comment">/* row | column */</span>
+    <span class="var">justify-content</span>: <span class="str">center</span>; <span class="comment">/* Main axis alignment */</span>
+    <span class="var">align-items</span>: <span class="str">center</span>;    <span class="comment">/* Cross axis alignment */</span>
+    <span class="var">gap</span>: <span class="str">20px</span>;           <span class="comment">/* Space between items */</span>
+}`
+                    },
+                    {
+                        title: 'Item (Child)',
+                        code: `<span class="kw">.item</span> {
+    <span class="var">flex</span>: <span class="str">1</span>;  <span class="comment">/* Grow and shrink equally */</span>
+    <span class="var">flex-grow</span>: <span class="str">1</span>;    <span class="comment">/* Growth factor */</span>
+    <span class="var">flex-shrink</span>: <span class="str">1</span>;  <span class="comment">/* Shrink factor */</span>
+    <span class="var">flex-basis</span>: <span class="str">200px</span>; <span class="comment">/* Base size */</span>
+}`
+                    }
+                ]
+            },
+            grid: {
+                icon: '📊',
+                name: 'CSS Grid',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Powerful 2D layout system for rows and columns. Perfect for complex page layouts.'
+                    },
+                    {
+                        title: 'Container',
+                        code: `<span class="kw">.grid</span> {
+    <span class="var">display</span>: <span class="str">grid</span>;
+    <span class="var">grid-template-columns</span>: <span class="str">1fr 2fr 1fr</span>;
+    <span class="var">grid-template-rows</span>: <span class="str">auto 1fr auto</span>;
+    <span class="var">gap</span>: <span class="str">20px</span>;
+}
+
+<span class="comment">/* Responsive grid */</span>
+<span class="kw">.grid-auto</span> {
+    <span class="var">grid-template-columns</span>: <span class="str">repeat(auto-fit, minmax(250px, 1fr))</span>;
+}`
+                    }
+                ]
+            },
+            position: {
+                icon: '📍',
+                name: 'Position Property',
+                sections: [
+                    {
+                        title: 'Values',
+                        code: `<span class="kw">static</span>     <span class="comment">/* Default - normal flow */</span>
+<span class="kw">relative</span>   <span class="comment">/* Relative to normal position */</span>
+<span class="kw">absolute</span>   <span class="comment">/* Relative to positioned parent */</span>
+<span class="kw">fixed</span>      <span class="comment">/* Relative to viewport */</span>
+<span class="kw">sticky</span>     <span class="comment">/* Toggle between relative and fixed */</span>`
+                    },
+                    {
+                        title: 'Examples',
+                        code: `<span class="comment">/* Fixed header */</span>
+<span class="kw">header</span> {
+    <span class="var">position</span>: <span class="str">fixed</span>;
+    <span class="var">top</span>: <span class="str">0</span>;
+    <span class="var">left</span>: <span class="str">0</span>;
+    <span class="var">right</span>: <span class="str">0</span>;
+    <span class="var">z-index</span>: <span class="str">100</span>;
+}`
+                    }
+                ]
+            },
+            display: {
+                icon: '👁️',
+                name: 'Display Property',
+                sections: [
+                    {
+                        title: 'Common Values',
+                        code: `<span class="kw">block</span>          <span class="comment">/* Full width, new line */</span>
+<span class="kw">inline</span>         <span class="comment">/* Flows inline, no width/height */</span>
+<span class="kw">inline-block</span>   <span class="comment">/* Inline but accepts width/height */</span>
+<span class="kw">none</span>           <span class="comment">/* Hidden, not in layout */</span>
+<span class="kw">flex</span>           <span class="comment">/* Flexbox container */</span>
+<span class="kw">grid</span>           <span class="comment">/* Grid container */</span>`
+                    }
+                ]
+            },
+            float: {
+                icon: '⛵',
+                name: 'Float (Legacy)',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Old layout method, now mostly replaced by Flexbox and Grid. Still used for wrapping text around images.'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="comment">/* Float image left, text wraps right */</span>
+<span class="kw">img</span> {
+    <span class="var">float</span>: <span class="str">left</span>;
+    <span class="var">margin-right</span>: <span class="str">20px</span>;
+}
+
+<span class="comment">/* Clear floats */</span>
+<span class="kw">.clearfix</span>::<span class="var">after</span> {
+    <span class="var">content</span>: <span class="str">""</span>;
+    <span class="var">display</span>: <span class="str">table</span>;
+    <span class="var">clear</span>: <span class="str">both</span>;
+}`
+                    }
+                ]
+            },
+            zindex: {
+                icon: '📚',
+                name: 'Z-index',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Controls stacking order of positioned elements. Higher values appear on top. Only works with positioned elements (position != static).'
+                    },
+                    {
+                        title: 'Usage',
+                        code: `<span class="kw">.header</span> {
+    <span class="var">position</span>: <span class="str">fixed</span>;
+    <span class="var">z-index</span>: <span class="str">100</span>;
+}
+
+<span class="kw">.modal</span> {
+    <span class="var">position</span>: <span class="str">fixed</span>;
+    <span class="var">z-index</span>: <span class="str">1000</span>;
+}
+
+<span class="kw">.dropdown</span> {
+    <span class="var">position</span>: <span class="str">absolute</span>;
+    <span class="var">z-index</span>: <span class="str">10</span>;
+}`
+                    }
+                ]
+            },
+            color: {
+                icon: '🌈',
+                name: 'Colors & Gradients',
+                sections: [
+                    {
+                        title: 'Color Formats',
+                        code: `<span class="kw">color</span>: <span class="str">red</span>;           <span class="comment">/* Named */</span>
+<span class="kw">color</span>: <span class="str">#ff0000</span>;      <span class="comment">/* Hex */</span>
+<span class="kw">color</span>: <span class="str">rgb(255, 0, 0)</span>; <span class="comment">/* RGB */</span>
+<span class="kw">color</span>: <span class="str">rgba(255, 0, 0, 0.5)</span>; <span class="comment">/* RGBA */</span>
+
+<span class="kw">background</span>: <span class="str">linear-gradient(90deg, red, blue)</span>;
+<span class="kw">background</span>: <span class="str">radial-gradient(circle, red, blue)</span>;`
+                    }
+                ]
+            },
+            fonts: {
+                icon: '🔤',
+                name: 'Typography',
+                sections: [
+                    {
+                        title: 'Font Properties',
+                        code: `<span class="kw">font-family</span>: <span class="str">'Arial', sans-serif</span>;
+<span class="kw">font-size</span>: <span class="str">16px</span>;
+<span class="kw">font-weight</span>: <span class="str">bold</span>; <span class="comment">/* normal, bold, 100-900 */</span>
+<span class="kw">font-style</span>: <span class="str">italic</span>;
+<span class="kw">line-height</span>: <span class="str">1.5</span>;
+<span class="kw">letter-spacing</span>: <span class="str">2px</span>;
+<span class="kw">text-align</span>: <span class="str">center</span>;
+<span class="kw">text-transform</span>: <span class="str">uppercase</span>;`
+                    }
+                ]
+            },
+            shadows: {
+                icon: '👥',
+                name: 'Shadows & Effects',
+                sections: [
+                    {
+                        title: 'Box Shadow',
+                        code: `<span class="comment">/* offset-x | offset-y | blur-radius | spread-radius | color */</span>
+<span class="kw">box-shadow</span>: <span class="str">0 4px 8px rgba(0,0,0,0.2)</span>;
+
+<span class="comment">/* Multiple shadows */</span>
+<span class="kw">box-shadow</span>: <span class="str">0 2px 4px rgba(0,0,0,0.1),</span>
+           <span class="str">0 8px 16px rgba(0,0,0,0.2)</span>;
+
+<span class="comment">/* Text shadow */</span>
+<span class="kw">text-shadow</span>: <span class="str">2px 2px 4px rgba(0,0,0,0.5)</span>;
+
+<span class="comment">/* Opacity */</span>
+<span class="kw">opacity</span>: <span class="str">0.8</span>;`
+                    }
+                ]
+            },
+            transform: {
+                icon: '🔄',
+                name: 'Transform',
+                sections: [
+                    {
+                        title: 'Transform Functions',
+                        code: `<span class="comment">/* Rotation */</span>
+<span class="kw">transform</span>: <span class="str">rotate(45deg)</span>;
+
+<span class="comment">/* Scaling */</span>
+<span class="kw">transform</span>: <span class="str">scale(1.5)</span>;
+<span class="kw">transform</span>: <span class="str">scaleX(2)</span>;
+
+<span class="comment">/* Translation */</span>
+<span class="kw">transform</span>: <span class="str">translate(10px, 20px)</span>;
+
+<span class="comment">/* Skew */</span>
+<span class="kw">transform</span>: <span class="str">skew(10deg)</span>;
+
+<span class="comment">/* Combined */</span>
+<span class="kw">transform</span>: <span class="str">translate(50%, -50%) rotate(45deg)</span>;`
+                    }
+                ]
+            },
+            animation: {
+                icon: '⚡',
+                name: 'Animation',
+                sections: [
+                    {
+                        title: 'Syntax',
+                        code: `<span class="kw">@keyframes</span> <span class="var">slide-in</span> {
+    <span class="kw">from</span> {
+        <span class="var">transform</span>: <span class="str">translateX(-100%)</span>;
+    }
+    <span class="kw">to</span> {
+        <span class="var">transform</span>: <span class="str">translateX(0)</span>;
+    }
+}
+
+<span class="kw">.element</span> {
+    <span class="var">animation</span>: <span class="str">slide-in 0.5s ease-in-out</span>;
+}`
+                    }
+                ]
+            },
+            transition: {
+                icon: '➡️',
+                name: 'Transition',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Creates smooth property changes. Simpler than animation for state changes.'
+                    },
+                    {
+                        title: 'Syntax',
+                        code: `<span class="comment">/* Single property */</span>
+<span class="kw">transition</span>: <span class="str">background-color 0.3s ease</span>;
+
+<span class="comment">/* Multiple properties */</span>
+<span class="kw">transition</span>: <span class="str">background-color 0.3s, color 0.2s</span>;
+
+<span class="comment">/* All properties */</span>
+<span class="kw">transition</span>: <span class="str">all 0.3s ease</span>;
+
+<span class="comment">/* With hover */</span>
+<span class="kw">button</span> {
+    <span class="var">background</span>: <span class="str">blue</span>;
+    <span class="var">transition</span>: <span class="str">background 0.3s</span>;
+}
+<span class="kw">button:hover</span> {
+    <span class="var">background</span>: <span class="str">darkblue</span>;
+}`
+                    }
+                ]
+            }
+        };
+
+        function showModal(key) {
+            const data = modalData[key];
+            if (!data) return;
+
+            document.getElementById('modal-icon').textContent = data.icon;
+            document.getElementById('modal-name').textContent = data.name;
+
+            const body = document.getElementById('modal-body');
+            body.innerHTML = '';
+
+            data.sections.forEach(section => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'modal-section';
+
+                const title = document.createElement('div');
+                title.className = 'modal-section-title';
+                title.textContent = section.title;
+                sectionDiv.appendChild(title);
+
+                if (section.content) {
+                    const desc = document.createElement('div');
+                    desc.className = 'description';
+                    desc.innerHTML = section.content;
+                    sectionDiv.appendChild(desc);
+                }
+
+                if (section.code) {
+                    const code = document.createElement('div');
+                    code.className = 'code-example';
+                    code.innerHTML = section.code;
+                    sectionDiv.appendChild(code);
+                }
+
+                if (section.tags) {
+                    const tagsDiv = document.createElement('div');
+                    const colors = ['blue', 'green', 'yellow', 'purple', 'orange'];
+                    section.tags.forEach((tag, idx) => {
+                        const tagSpan = document.createElement('span');
+                        tagSpan.className = `tag ${colors[idx % colors.length]}`;
+                        tagSpan.textContent = tag;
+                        tagsDiv.appendChild(tagSpan);
+                    });
+                    sectionDiv.appendChild(tagsDiv);
+                }
+
+                body.appendChild(sectionDiv);
+            });
+
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal(event) {
+            if (event && event.target.className !== 'modal') return;
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        document.querySelectorAll('.component-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.animation = 'pulse 0.5s ease';
+            });
+            card.addEventListener('animationend', function() {
+                this.style.animation = '';
+            });
+        });
+    </script>
 </body>
 </html>
