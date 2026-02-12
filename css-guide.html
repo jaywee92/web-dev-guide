@@ -557,6 +557,37 @@
 
         .tree-item:hover {
             background-color: var(--surface-bright);
+            cursor: help;
+        }
+
+        /* TREE ITEM TOOLTIPS */
+        .tree-item {
+            position: relative;
+        }
+
+        .tree-item::after {
+            content: attr(data-info);
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%) translateX(10px);
+            background: var(--surface-bright);
+            color: var(--text);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s, transform 0.2s;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+
+        .tree-item:hover::after {
+            opacity: 1;
+            transform: translateY(-50%) translateX(15px);
         }
 
         .tree-item.base { color: var(--blue); }
@@ -872,59 +903,59 @@
                         <details open>
                             <summary>📁 base/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item base">🎨 _reset.scss <span class="group-badge base"></span></div>
-                                <div class="tree-item base">🎨 _typography.scss <span class="group-badge base"></span></div>
-                                <div class="tree-item base">🎨 _variables.scss <span class="group-badge base"></span></div>
+                                <div class="tree-item base" data-info="CSS Reset - Normalize browser defaults">🎨 _reset.scss <span class="group-badge base"></span></div>
+                                <div class="tree-item base" data-info="Typography - Fonts, sizes, line-heights, headings">🎨 _typography.scss <span class="group-badge base"></span></div>
+                                <div class="tree-item base" data-info="Variables - Colors, spacing, breakpoints (SCSS)">🎨 _variables.scss <span class="group-badge base"></span></div>
                             </div>
                         </details>
 
                         <details open>
                             <summary>📁 components/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item components">🧩 _buttons.scss <span class="group-badge components"></span></div>
-                                <div class="tree-item components">🧩 _cards.scss <span class="group-badge components"></span></div>
-                                <div class="tree-item components">🧩 _forms.scss <span class="group-badge components"></span></div>
-                                <div class="tree-item components">🧩 _modals.scss <span class="group-badge components"></span></div>
+                                <div class="tree-item components" data-info="Button styles - Primary, secondary, sizes, states">🧩 _buttons.scss <span class="group-badge components"></span></div>
+                                <div class="tree-item components" data-info="Card component - Content containers with shadows">🧩 _cards.scss <span class="group-badge components"></span></div>
+                                <div class="tree-item components" data-info="Form elements - Inputs, selects, validation states">🧩 _forms.scss <span class="group-badge components"></span></div>
+                                <div class="tree-item components" data-info="Modal dialogs - Overlays, animations, close buttons">🧩 _modals.scss <span class="group-badge components"></span></div>
                             </div>
                         </details>
 
                         <details>
                             <summary>📁 layout/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item layout">📐 _header.scss <span class="group-badge layout"></span></div>
-                                <div class="tree-item layout">📐 _footer.scss <span class="group-badge layout"></span></div>
-                                <div class="tree-item layout">📐 _grid.scss <span class="group-badge layout"></span></div>
-                                <div class="tree-item layout">📐 _sidebar.scss <span class="group-badge layout"></span></div>
+                                <div class="tree-item layout" data-info="Header layout - Logo positioning, navigation bar">📐 _header.scss <span class="group-badge layout"></span></div>
+                                <div class="tree-item layout" data-info="Footer layout - Copyright, links, multi-column">📐 _footer.scss <span class="group-badge layout"></span></div>
+                                <div class="tree-item layout" data-info="Grid system - Column layouts, responsive breakpoints">📐 _grid.scss <span class="group-badge layout"></span></div>
+                                <div class="tree-item layout" data-info="Sidebar layout - Fixed/sticky positioning, widths">📐 _sidebar.scss <span class="group-badge layout"></span></div>
                             </div>
                         </details>
 
                         <details>
                             <summary>📁 utilities/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item utilities">⚡ _mixins.scss <span class="group-badge utilities"></span></div>
-                                <div class="tree-item utilities">⚡ _functions.scss <span class="group-badge utilities"></span></div>
-                                <div class="tree-item utilities">⚡ _helpers.scss <span class="group-badge utilities"></span></div>
+                                <div class="tree-item utilities" data-info="Mixins - Reusable SCSS code blocks (flexbox, media queries)">⚡ _mixins.scss <span class="group-badge utilities"></span></div>
+                                <div class="tree-item utilities" data-info="Functions - SCSS functions for calculations (rem, colors)">⚡ _functions.scss <span class="group-badge utilities"></span></div>
+                                <div class="tree-item utilities" data-info="Helper classes - Utility classes (text-center, mt-2, hidden)">⚡ _helpers.scss <span class="group-badge utilities"></span></div>
                             </div>
                         </details>
 
                         <details>
                             <summary>📁 pages/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item pages">📄 _home.scss <span class="group-badge pages"></span></div>
-                                <div class="tree-item pages">📄 _about.scss <span class="group-badge pages"></span></div>
-                                <div class="tree-item pages">📄 _contact.scss <span class="group-badge pages"></span></div>
+                                <div class="tree-item pages" data-info="Homepage styles - Hero section, feature grid, testimonials">📄 _home.scss <span class="group-badge pages"></span></div>
+                                <div class="tree-item pages" data-info="About page - Team grid, company timeline, mission section">📄 _about.scss <span class="group-badge pages"></span></div>
+                                <div class="tree-item pages" data-info="Contact page - Form styling, map integration, office locations">📄 _contact.scss <span class="group-badge pages"></span></div>
                             </div>
                         </details>
 
                         <details>
                             <summary>📁 themes/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item themes">🎨 _dark.scss <span class="group-badge themes"></span></div>
-                                <div class="tree-item themes">🎨 _light.scss <span class="group-badge themes"></span></div>
+                                <div class="tree-item themes" data-info="Dark theme - Dark backgrounds, light text, reduced brightness">🎨 _dark.scss <span class="group-badge themes"></span></div>
+                                <div class="tree-item themes" data-info="Light theme - Default theme, light backgrounds, dark text">🎨 _light.scss <span class="group-badge themes"></span></div>
                             </div>
                         </details>
 
-                        <div class="tree-item main">📦 main.scss <span class="group-badge main"></span></div>
+                        <div class="tree-item main" data-info="Main entry - Imports all partials in correct order">📦 main.scss <span class="group-badge main"></span></div>
                     </div>
                 </details>
             </div>
