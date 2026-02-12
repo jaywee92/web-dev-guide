@@ -364,6 +364,99 @@
             color: var(--green);
             font-weight: 600;
         }
+
+        /* FILE TREE STYLES */
+        .file-tree {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            overflow: visible;
+            animation: fadeSlideUp 0.6s ease-out;
+        }
+
+        /* TREE ITEM BASE */
+        .tree-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .tree-item:hover {
+            background-color: var(--surface-bright);
+        }
+
+        .tree-item.base { color: var(--blue); }
+        .tree-item.components { color: var(--purple); }
+        .tree-item.layout { color: var(--cyan); }
+        .tree-item.utilities { color: var(--yellow); }
+        .tree-item.pages { color: var(--green); }
+        .tree-item.themes { color: var(--orange); }
+        .tree-item.main { color: var(--red); }
+
+        .tree-icon { font-size: 14px; }
+
+        /* GROUP BADGES */
+        .group-badge {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            opacity: 0.7;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .tree-item:hover .group-badge,
+        details > summary:hover .group-badge {
+            opacity: 1;
+            transform: scale(1.3);
+        }
+
+        .group-badge.base { background: var(--blue); }
+        .group-badge.components { background: var(--purple); }
+        .group-badge.layout { background: var(--cyan); }
+        .group-badge.utilities { background: var(--yellow); }
+        .group-badge.pages { background: var(--green); }
+        .group-badge.themes { background: var(--orange); }
+        .group-badge.main { background: var(--red); }
+
+        /* DETAILS/SUMMARY FOR EXPANDABLE FOLDERS */
+        details { margin: 0; }
+
+        details > summary {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            color: var(--blue);
+            font-weight: 600;
+            position: relative;
+        }
+
+        details > summary:hover {
+            background-color: var(--surface-bright);
+        }
+
+        details > summary::marker {
+            color: var(--text-muted);
+        }
+
+        details[open] > summary {
+            color: var(--yellow);
+        }
     </style>
 </head>
 <body>
@@ -582,46 +675,105 @@
                 Professional Structure
             </h2>
 
-            <div class="component-grid">
-                <div class="component-card" onclick="showModal('css-architecture')">
-                    <span class="component-icon">🏗️</span>
-                    <div class="component-title">CSS Architecture</div>
-                    <div class="component-desc">BEM, SMACSS, ITCSS methodologies</div>
-                </div>
+            <p style="margin-bottom: 20px; color: var(--text-muted);">
+                Professional CSS architecture with SCSS, organized by purpose.
+                <strong>Hover</strong> for descriptions, <strong>click</strong> folders to expand.
+            </p>
 
-                <div class="component-card" onclick="showModal('file-organization')">
-                    <span class="component-icon">📁</span>
-                    <div class="component-title">File Organization</div>
-                    <div class="component-desc">Folder structure and imports</div>
-                </div>
+            <div class="file-tree">
+                <details open>
+                    <summary>📁 styles/</summary>
+                    <div style="margin-left: 20px;">
+                        <details open>
+                            <summary>📁 base/</summary>
+                            <div style="margin-left: 20px;">
+                                <div class="tree-item base">🎨 _reset.scss <span class="group-badge base"></span></div>
+                                <div class="tree-item base">🎨 _typography.scss <span class="group-badge base"></span></div>
+                                <div class="tree-item base">🎨 _variables.scss <span class="group-badge base"></span></div>
+                            </div>
+                        </details>
 
-                <div class="component-card" onclick="showModal('css-variables')">
-                    <span class="component-icon">💾</span>
-                    <div class="component-title">CSS Variables</div>
-                    <div class="component-desc">Custom properties for theming</div>
-                </div>
+                        <details open>
+                            <summary>📁 components/</summary>
+                            <div style="margin-left: 20px;">
+                                <div class="tree-item components">🧩 _buttons.scss <span class="group-badge components"></span></div>
+                                <div class="tree-item components">🧩 _cards.scss <span class="group-badge components"></span></div>
+                                <div class="tree-item components">🧩 _forms.scss <span class="group-badge components"></span></div>
+                                <div class="tree-item components">🧩 _modals.scss <span class="group-badge components"></span></div>
+                            </div>
+                        </details>
 
-                <div class="component-card" onclick="showModal('preprocessors')">
-                    <span class="component-icon">🔧</span>
-                    <div class="component-title">Preprocessors</div>
-                    <div class="component-desc">SCSS/SASS structure and mixins</div>
-                </div>
+                        <details>
+                            <summary>📁 layout/</summary>
+                            <div style="margin-left: 20px;">
+                                <div class="tree-item layout">📐 _header.scss <span class="group-badge layout"></span></div>
+                                <div class="tree-item layout">📐 _footer.scss <span class="group-badge layout"></span></div>
+                                <div class="tree-item layout">📐 _grid.scss <span class="group-badge layout"></span></div>
+                                <div class="tree-item layout">📐 _sidebar.scss <span class="group-badge layout"></span></div>
+                            </div>
+                        </details>
 
-                <div class="component-card" onclick="showModal('css-frameworks')">
-                    <span class="component-icon">📚</span>
-                    <div class="component-title">CSS Frameworks</div>
-                    <div class="component-desc">Bootstrap, Tailwind comparison</div>
-                </div>
+                        <details>
+                            <summary>📁 utilities/</summary>
+                            <div style="margin-left: 20px;">
+                                <div class="tree-item utilities">⚡ _mixins.scss <span class="group-badge utilities"></span></div>
+                                <div class="tree-item utilities">⚡ _functions.scss <span class="group-badge utilities"></span></div>
+                                <div class="tree-item utilities">⚡ _helpers.scss <span class="group-badge utilities"></span></div>
+                            </div>
+                        </details>
 
-                <div class="component-card" onclick="showModal('css-performance')">
-                    <span class="component-icon">⚡</span>
-                    <div class="component-title">Performance</div>
-                    <div class="component-desc">Minification and loading strategies</div>
-                </div>
+                        <details>
+                            <summary>📁 pages/</summary>
+                            <div style="margin-left: 20px;">
+                                <div class="tree-item pages">📄 _home.scss <span class="group-badge pages"></span></div>
+                                <div class="tree-item pages">📄 _about.scss <span class="group-badge pages"></span></div>
+                                <div class="tree-item pages">📄 _contact.scss <span class="group-badge pages"></span></div>
+                            </div>
+                        </details>
+
+                        <details>
+                            <summary>📁 themes/</summary>
+                            <div style="margin-left: 20px;">
+                                <div class="tree-item themes">🎨 _dark.scss <span class="group-badge themes"></span></div>
+                                <div class="tree-item themes">🎨 _light.scss <span class="group-badge themes"></span></div>
+                            </div>
+                        </details>
+
+                        <div class="tree-item main">📦 main.scss <span class="group-badge main"></span></div>
+                    </div>
+                </details>
             </div>
 
-            <div class="info-box">
-                <strong>Professional CSS:</strong> Use consistent architecture, organize files logically, leverage CSS variables for theming, and optimize for performance.
+            <!-- Legend -->
+            <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-top: 20px; padding: 16px; background: var(--surface-bright); border-radius: 8px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="group-badge base" style="width: 12px; height: 12px;"></span>
+                    <span style="font-size: 12px; color: var(--text-muted);">Base Styles</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="group-badge components" style="width: 12px; height: 12px;"></span>
+                    <span style="font-size: 12px; color: var(--text-muted);">Components</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="group-badge layout" style="width: 12px; height: 12px;"></span>
+                    <span style="font-size: 12px; color: var(--text-muted);">Layout</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="group-badge utilities" style="width: 12px; height: 12px;"></span>
+                    <span style="font-size: 12px; color: var(--text-muted);">Utilities</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="group-badge pages" style="width: 12px; height: 12px;"></span>
+                    <span style="font-size: 12px; color: var(--text-muted);">Pages</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="group-badge themes" style="width: 12px; height: 12px;"></span>
+                    <span style="font-size: 12px; color: var(--text-muted);">Themes</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="group-badge main" style="width: 12px; height: 12px;"></span>
+                    <span style="font-size: 12px; color: var(--text-muted);">Main Entry</span>
+                </div>
             </div>
         </section>
     </div>
