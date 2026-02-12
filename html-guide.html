@@ -1905,4 +1905,73 @@
         };
 
 
-        function showModal(key) {
+        function showModal(key) {            const data = modalData[key];
+            if (!data) return;
+
+            document.getElementById('modal-icon').textContent = data.icon;
+            document.getElementById('modal-name').textContent = data.name;
+
+            const body = document.getElementById('modal-body');
+            body.innerHTML = '';
+
+            data.sections.forEach(section => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'modal-section';
+
+                const title = document.createElement('div');
+                title.className = 'modal-section-title';
+                title.textContent = section.title;
+                sectionDiv.appendChild(title);
+
+                if (section.content) {
+                    const desc = document.createElement('div');
+                    desc.className = 'description';
+                    desc.innerHTML = section.content;
+                    sectionDiv.appendChild(desc);
+                }
+
+                if (section.code) {
+                    const code = document.createElement('div');
+                    code.className = 'code-example';
+                    code.innerHTML = section.code;
+                    sectionDiv.appendChild(code);
+                }
+
+                if (section.tags) {
+                    const tagsDiv = document.createElement('div');
+                    const colors = ['blue', 'green', 'yellow', 'purple', 'orange'];
+                    section.tags.forEach((tag, idx) => {
+                        const tagSpan = document.createElement('span');
+                        tagSpan.className = `tag ${colors[idx % colors.length]}`;
+                        tagSpan.textContent = tag;
+                        tagsDiv.appendChild(tagSpan);
+                    });
+                    sectionDiv.appendChild(tagsDiv);
+                }
+
+                body.appendChild(sectionDiv);
+            });
+
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal(event) {
+            if (event && event.target.className !== 'modal') return;
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        document.querySelectorAll('.component-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.animation = 'pulse 0.5s ease';
+            });
+            card.addEventListener('animationend', function() {
+                this.style.animation = '';
+            });
+        });
+    </script>
+</body>
+</html>
