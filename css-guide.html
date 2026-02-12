@@ -97,11 +97,22 @@
             animation-fill-mode: both;
         }
 
-        .section:nth-child(1) { animation-delay: 0.1s; }
-        .section:nth-child(2) { animation-delay: 0.2s; }
-        .section:nth-child(3) { animation-delay: 0.3s; }
-        .section:nth-child(4) { animation-delay: 0.4s; }
-        .section:nth-child(5) { animation-delay: 0.5s; }
+        /* DIFFERENT ANIMATIONS FOR VARIETY */
+        .section:nth-child(1) {
+            animation: fadeSlideUp 0.6s ease-out 0.1s;
+        }
+        .section:nth-child(2) {
+            animation: fadeSlideLeft 0.6s ease-out 0.2s;
+        }
+        .section:nth-child(3) {
+            animation: fadeSlideRight 0.6s ease-out 0.3s;
+        }
+        .section:nth-child(4) {
+            animation: fadeScale 0.6s ease-out 0.4s;
+        }
+        .section:nth-child(5) {
+            animation: fadeRotate 0.6s ease-out 0.5s;
+        }
 
         @keyframes fadeSlideUp {
             from {
@@ -125,9 +136,63 @@
             }
         }
 
+        @keyframes fadeSlideLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeSlideRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeRotate {
+            from {
+                opacity: 0;
+                transform: rotate(-2deg) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: rotate(0) scale(1);
+            }
+        }
+
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(74, 222, 128, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(74, 222, 128, 0.6); }
         }
 
         .section-title {
@@ -142,6 +207,105 @@
 
         .section-icon {
             font-size: 28px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        /* CSS BOX MODEL VISUALIZATION */
+        .box-model-viz {
+            background: linear-gradient(135deg, var(--surface), var(--surface-bright));
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            padding: 40px;
+            margin: 24px 0;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box-model-viz::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--green), var(--cyan), var(--purple));
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .box-layer {
+            border: 3px solid;
+            border-radius: 8px;
+            padding: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .box-layer:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .box-label {
+            position: absolute;
+            top: 8px;
+            left: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .margin-layer {
+            border-color: var(--pink);
+            background: rgba(236, 72, 153, 0.08);
+        }
+
+        .margin-layer .box-label {
+            background: var(--pink);
+            color: white;
+        }
+
+        .border-layer {
+            border-color: var(--yellow);
+            background: rgba(245, 197, 66, 0.08);
+        }
+
+        .border-layer .box-label {
+            background: var(--yellow);
+            color: #1a1d27;
+        }
+
+        .padding-layer {
+            border-color: var(--green);
+            background: rgba(74, 222, 128, 0.08);
+        }
+
+        .padding-layer .box-label {
+            background: var(--green);
+            color: white;
+        }
+
+        .content-layer {
+            border-color: var(--cyan);
+            background: rgba(34, 211, 238, 0.12);
+            padding: 40px;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: var(--cyan);
+            font-weight: 600;
+        }
+
+        .content-layer .box-label {
+            background: var(--cyan);
+            color: #1a1d27;
         }
 
         /* COMPONENT GRID */
@@ -522,8 +686,29 @@
         <section class="section">
             <h2 class="section-title">
                 <span class="section-icon">📦</span>
-                Box Model
+                CSS Box Model
             </h2>
+
+            <!-- INTERACTIVE BOX MODEL VISUALIZATION -->
+            <div class="box-model-viz">
+                <div class="box-layer margin-layer">
+                    <div class="box-label">Margin</div>
+
+                    <div class="box-layer border-layer">
+                        <div class="box-label">Border</div>
+
+                        <div class="box-layer padding-layer">
+                            <div class="box-label">Padding</div>
+
+                            <div class="box-layer content-layer">
+                                <div class="box-label">Content</div>
+                                CONTENT AREA<br>
+                                Text, Images, etc.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="component-grid">
                 <div class="component-card" onclick="showModal('margin')">
