@@ -101,6 +101,7 @@
         .section:nth-child(2) { animation-delay: 0.2s; }
         .section:nth-child(3) { animation-delay: 0.3s; }
         .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
 
         @keyframes fadeSlideUp {
             from {
@@ -583,6 +584,56 @@
 
             <div class="info-box">
                 <strong>Semantic HTML:</strong> Using semantic elements (&lt;header&gt;, &lt;nav&gt;, &lt;main&gt;, &lt;footer&gt;) improves SEO, accessibility, and code readability.
+            </div>
+        </section>
+
+        <!-- PROFESSIONAL STRUCTURE -->
+        <section class="section">
+            <h2 class="section-title">
+                <span class="section-icon">🏢</span>
+                Professional Structure
+            </h2>
+
+            <div class="component-grid">
+                <div class="component-card" onclick="showModal('project-org')">
+                    <span class="component-icon">📁</span>
+                    <div class="component-title">Project Organization</div>
+                    <div class="component-desc">Folder structure and file management</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('file-naming')">
+                    <span class="component-icon">📝</span>
+                    <div class="component-title">File Naming</div>
+                    <div class="component-desc">Conventions and best practices</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('template-arch')">
+                    <span class="component-icon">🧩</span>
+                    <div class="component-title">Template Architecture</div>
+                    <div class="component-desc">Base templates and components</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('multipage-struct')">
+                    <span class="component-icon">📄</span>
+                    <div class="component-title">Multi-page Structure</div>
+                    <div class="component-desc">Organizing multiple HTML files</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('component-org')">
+                    <span class="component-icon">🔧</span>
+                    <div class="component-title">Component Organization</div>
+                    <div class="component-desc">Reusable HTML components</div>
+                </div>
+
+                <div class="component-card" onclick="showModal('build-tools')">
+                    <span class="component-icon">⚙️</span>
+                    <div class="component-title">Build Tools</div>
+                    <div class="component-desc">Webpack, Parcel, Vite bundling</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <strong>Professional Development:</strong> Well-organized projects are easier to maintain, scale, and collaborate on. Use consistent naming, modular structure, and build tools.
             </div>
         </section>
     </div>
@@ -1274,6 +1325,219 @@
         Sales data for Q4 2024
     <span class="kw">&lt;/figcaption&gt;</span>
 <span class="kw">&lt;/figure&gt;</span>`
+                    }
+                ]
+            },
+            'project-org': {
+                icon: '📁',
+                name: 'Project Organization',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'A well-organized project structure makes development easier, improves collaboration, and helps scale projects. Separate concerns into logical folders.'
+                    },
+                    {
+                        title: 'Recommended Folder Structure',
+                        code: `<span class="comment">project-root/</span>
+├── <span class="kw">index.html</span>
+├── <span class="kw">about.html</span>
+├── <span class="kw">contact.html</span>
+├── <span class="var">html/</span>
+│   ├── <span class="kw">header.html</span>
+│   ├── <span class="kw">footer.html</span>
+│   └── <span class="kw">nav.html</span>
+├── <span class="var">css/</span>
+│   ├── <span class="kw">style.css</span>
+│   └── <span class="kw">responsive.css</span>
+├── <span class="var">js/</span>
+│   ├── <span class="kw">main.js</span>
+│   └── <span class="kw">utils.js</span>
+├── <span class="var">assets/</span>
+│   ├── <span class="var">images/</span>
+│   ├── <span class="var">fonts/</span>
+│   └── <span class="var">icons/</span>
+└── <span class="var">docs/</span>
+    └── <span class="kw">README.md</span>`
+                    },
+                    {
+                        title: 'Benefits',
+                        content: 'Organized structure helps find files quickly, makes it easier to work in teams, improves project maintenance, and simplifies scaling.'
+                    }
+                ]
+            },
+            'file-naming': {
+                icon: '📝',
+                name: 'File Naming Conventions',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Consistent file naming conventions make projects more maintainable and easier to navigate. Follow a standard pattern across all files.'
+                    },
+                    {
+                        title: 'Best Practices',
+                        code: `<span class="comment">/* Use kebab-case (lowercase with hyphens) */</span>
+
+<span class="comment">/* Good: descriptive and lowercase */</span>
+<span class="str">index.html</span>
+<span class="str">contact-form.html</span>
+<span class="str">product-card.html</span>
+<span class="str">navigation-menu.html</span>
+
+<span class="comment">/* Avoid: unclear names */</span>
+<span class="str">page1.html</span> <span class="comment">// Too vague</span>
+<span class="str">CONTACT.HTML</span> <span class="comment">// Inconsistent case</span>
+<span class="str">contact_form.html</span> <span class="comment">// Use hyphens not underscores</span>
+<span class="str">contactForm.html</span> <span class="comment">// camelCase not recommended for files</span>
+
+<span class="comment">/* Use meaningful prefixes/suffixes */</span>
+<span class="str">partial-header.html</span> <span class="comment">// Shows it's a reusable partial</span>
+<span class="str">layout-main.html</span> <span class="comment">// Indicates it's a layout</span>`
+                    },
+                    {
+                        title: 'Naming Rules',
+                        tags: ['lowercase', 'kebab-case', 'descriptive', 'avoid spaces', 'use hyphens']
+                    }
+                ]
+            },
+            'template-arch': {
+                icon: '🧩',
+                name: 'Template Architecture',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Use base templates and reusable partials to reduce code duplication. Separate layout, components, and page-specific content.'
+                    },
+                    {
+                        title: 'Template Example',
+                        code: `<span class="comment">&lt;!-- layout/base.html - Main template --&gt;</span>
+<span class="kw">&lt;!DOCTYPE</span> <span class="var">html</span><span class="kw">&gt;</span>
+<span class="kw">&lt;html&gt;</span>
+    <span class="kw">&lt;head&gt;</span>
+        <span class="kw">&lt;title&gt;</span>{{ page_title }}<span class="kw">&lt;/title&gt;</span>
+    <span class="kw">&lt;/head&gt;</span>
+    <span class="kw">&lt;body&gt;</span>
+        <span class="comment">&lt;!-- Include partial components --&gt;</span>
+        {% <span class="kw">include</span> <span class="str">'partials/header.html'</span> %}
+
+        <span class="comment">&lt;!-- Main content varies by page --&gt;</span>
+        <span class="kw">&lt;main&gt;</span>
+            {% <span class="kw">block</span> <span class="var">content</span> %}{% <span class="kw">endblock</span> %}
+        <span class="kw">&lt;/main&gt;</span>
+
+        {% <span class="kw">include</span> <span class="str">'partials/footer.html'</span> %}
+    <span class="kw">&lt;/body&gt;</span>
+<span class="kw">&lt;/html&gt;</span>`
+                    },
+                    {
+                        title: 'Structure',
+                        tags: ['partials/', 'layouts/', 'components/', 'templates/', 'blocks']
+                    }
+                ]
+            },
+            'multipage-struct': {
+                icon: '📄',
+                name: 'Multi-page Structure',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'For multi-page websites, use consistent file structure with shared components (header, nav, footer) to maintain consistency.'
+                    },
+                    {
+                        title: 'Project Layout',
+                        code: `<span class="comment">website/</span>
+├── <span class="kw">index.html</span>         <span class="comment">/* Home page */</span>
+├── <span class="kw">about.html</span>         <span class="comment">/* About page */</span>
+├── <span class="kw">services.html</span>      <span class="comment">/* Services page */</span>
+├── <span class="kw">contact.html</span>       <span class="comment">/* Contact page */</span>
+├── <span class="kw">blog.html</span>          <span class="comment">/* Blog listing */</span>
+│
+├── <span class="var">blog/</span>
+│   ├── <span class="kw">post-1.html</span>
+│   ├── <span class="kw">post-2.html</span>
+│   └── <span class="kw">post-3.html</span>
+│
+├── <span class="var">partials/</span>
+│   ├── <span class="kw">header.html</span>
+│   ├── <span class="kw">navigation.html</span>
+│   └── <span class="kw">footer.html</span>
+│
+├── <span class="var">css/</span>
+└── <span class="var">assets/</span>`
+                    },
+                    {
+                        title: 'Linking Between Pages',
+                        code: `<span class="comment">&lt;!-- Use relative paths for internal links --&gt;</span>
+<span class="kw">&lt;a</span> <span class="var">href</span>=<span class="str">"/index.html"</span><span class="kw">&gt;</span>Home<span class="kw">&lt;/a&gt;</span>
+<span class="kw">&lt;a</span> <span class="var">href</span>=<span class="str">"./about.html"</span><span class="kw">&gt;</span>About<span class="kw">&lt;/a&gt;</span>
+<span class="kw">&lt;a</span> <span class="var">href</span>=<span class="str">"../contact.html"</span><span class="kw">&gt;</span>Contact<span class="kw">&lt;/a&gt;</span>
+<span class="kw">&lt;a</span> <span class="var">href</span>=<span class="str">"./blog/post-1.html"</span><span class="kw">&gt;</span>Blog Post<span class="kw">&lt;/a&gt;</span>`
+                    }
+                ]
+            },
+            'component-org': {
+                icon: '🔧',
+                name: 'Component Organization',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Build reusable HTML components to maintain DRY (Don\'t Repeat Yourself) principle. Organize common elements as separate files.'
+                    },
+                    {
+                        title: 'Reusable Components',
+                        code: `<span class="comment">&lt;!-- components/card.html --&gt;</span>
+<span class="kw">&lt;div</span> <span class="var">class</span>=<span class="str">"card"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;img</span> <span class="var">src</span>=<span class="str">"{image}"</span> <span class="var">alt</span>=<span class="str">"{title}"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;h3&gt;</span>{title}<span class="kw">&lt;/h3&gt;</span>
+    <span class="kw">&lt;p&gt;</span>{description}<span class="kw">&lt;/p&gt;</span>
+    <span class="kw">&lt;a</span> <span class="var">href</span>=<span class="str">"{link}"</span> <span class="var">class</span>=<span class="str">"btn"</span><span class="kw">&gt;</span>Learn More<span class="kw">&lt;/a&gt;</span>
+<span class="kw">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- components/button.html --&gt;</span>
+<span class="kw">&lt;button</span> <span class="var">class</span>=<span class="str">"{type}"</span><span class="kw">&gt;</span>{text}<span class="kw">&lt;/button&gt;</span>
+
+<span class="comment">&lt;!-- components/form-input.html --&gt;</span>
+<span class="kw">&lt;div</span> <span class="var">class</span>=<span class="str">"form-group"</span><span class="kw">&gt;</span>
+    <span class="kw">&lt;label</span> <span class="var">for</span>=<span class="str">"{id}"</span><span class="kw">&gt;</span>{label}<span class="kw">&lt;/label&gt;</span>
+    <span class="kw">&lt;input</span> <span class="var">id</span>=<span class="str">"{id}"</span> <span class="var">type</span>=<span class="str">"{type}"</span> <span class="var">name</span>=<span class="str">"{name}"</span><span class="kw">&gt;</span>
+<span class="kw">&lt;/div&gt;</span>`
+                    },
+                    {
+                        title: 'Component Library',
+                        tags: ['modular', 'reusable', 'components/', 'DRY principle', 'maintainable']
+                    }
+                ]
+            },
+            'build-tools': {
+                icon: '⚙️',
+                name: 'Build Tools & Bundling',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Use build tools to automate tasks like bundling, minification, and file processing. Popular tools: Webpack, Parcel, Vite.'
+                    },
+                    {
+                        title: 'Common Build Tools',
+                        code: `<span class="comment">/* Webpack - Most powerful, complex setup */</span>
+<span class="str">npm install --save-dev webpack webpack-cli</span>
+
+<span class="comment">/* Parcel - Zero-config bundler, fast */</span>
+<span class="str">npm install --save-dev parcel</span>
+
+<span class="comment">/* Vite - Modern, lightning-fast build tool */</span>
+<span class="str">npm install --save-dev vite</span>
+
+<span class="comment">/* Basic npm scripts in package.json */</span>
+{
+  <span class="str">"scripts"</span>: {
+    <span class="str">"dev"</span>: <span class="str">"vite"</span>,
+    <span class="str">"build"</span>: <span class="str">"vite build"</span>,
+    <span class="str">"preview"</span>: <span class="str">"vite preview"</span>
+  }
+}`
+                    },
+                    {
+                        title: 'Benefits',
+                        tags: ['bundling', 'minification', 'optimization', 'automation', 'development server']
                     }
                 ]
             }
