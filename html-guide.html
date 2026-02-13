@@ -95,7 +95,7 @@
 
         .section {
             margin-bottom: 60px;
-            animation-fill-mode: both;
+            animation: fadeSlideUp 0.6s ease-out both;
         }
 
         /* DIFFERENT ANIMATIONS FOR VARIETY */
@@ -586,32 +586,52 @@
             transform: translateY(-50%) translateX(15px);
         }
 
-        /* INFO ICON FOR TREE ITEMS */
-        .info-icon {
+        /* FOLDER INFO BUTTON */
+        .folder-info-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 16px;
-            height: 16px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
-            background: var(--blue);
-            color: white;
-            font-size: 10px;
-            font-weight: bold;
-            margin-left: 6px;
+            background: var(--surface-bright);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-left: 4px;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .folder-info-btn:hover {
+            background: var(--blue-dim);
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+
+        /* TREE BUTTONS (Expand/Collapse) */
+        .tree-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
             cursor: pointer;
             transition: all 0.2s ease;
-            opacity: 0.7;
         }
 
-        .info-icon:hover {
-            opacity: 1;
-            transform: scale(1.2);
-            box-shadow: 0 2px 8px rgba(91, 156, 245, 0.5);
-        }
-
-        .tree-item:hover .info-icon {
-            opacity: 0.9;
+        .tree-btn:hover {
+            background: var(--surface-bright);
+            color: var(--text);
+            border-color: var(--text-muted);
         }
 
         .tree-item.html { color: var(--blue); }
@@ -686,7 +706,7 @@
 
     <div class="container">
         <!-- HTML STRUCTURE -->
-        <section class="section">
+        <section class="section" style="animation-delay: 0.1s;">
             <h2 class="section-title">
                 <span class="section-icon">🏗️</span>
                 HTML Document Structure
@@ -747,7 +767,7 @@
         </section>
 
         <!-- COMMON ELEMENTS -->
-        <section class="section">
+        <section class="section" style="animation-delay: 0.2s;">
             <h2 class="section-title">
                 <span class="section-icon">📦</span>
                 Common Elements
@@ -809,7 +829,7 @@
         </section>
 
         <!-- FORMS -->
-        <section class="section">
+        <section class="section" style="animation-delay: 0.3s;">
             <h2 class="section-title">
                 <span class="section-icon">📋</span>
                 Forms & Input
@@ -859,7 +879,7 @@
         </section>
 
         <!-- SEMANTIC HTML -->
-        <section class="section">
+        <section class="section" style="animation-delay: 0.4s;">
             <h2 class="section-title">
                 <span class="section-icon">🔤</span>
                 Semantic HTML5
@@ -921,7 +941,7 @@
         </section>
 
         <!-- PROFESSIONAL STRUCTURE -->
-        <section class="section">
+        <section class="section" style="animation-delay: 0.5s;">
             <h2 class="section-title">
                 <span class="section-icon">🏢</span>
                 Professional Structure
@@ -932,13 +952,9 @@
                 <strong>Hover</strong> for descriptions, <strong>click</strong> folders to expand.
             </p>
 
-            <div style="margin-bottom: 16px; display: flex; gap: 12px;">
-                <button onclick="expandAll()" style="padding: 8px 16px; background: var(--blue); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s ease;">
-                    📂 Expand All
-                </button>
-                <button onclick="collapseAll()" style="padding: 8px 16px; background: var(--surface-bright); color: var(--text); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s ease;">
-                    📁 Collapse All
-                </button>
+            <div style="margin-bottom: 16px; display: flex; gap: 8px;">
+                <button class="tree-btn" onclick="expandAll()" title="Expand all folders">&#9660; Expand All</button>
+                <button class="tree-btn" onclick="collapseAll()" title="Collapse all folders">&#9654; Collapse All</button>
             </div>
 
             <div class="file-tree">
@@ -949,25 +965,25 @@
                         <details open>
                             <summary>📁 src/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item html" data-info="Homepage - Main entry point">📄 index.html <span class="info-icon" onclick="showModal('file-index')">ℹ️</span><span class="group-badge html"></span></div>
-                                <div class="tree-item html" data-info="About page - Company/project information">📄 about.html <span class="info-icon" onclick="showModal('file-about')">ℹ️</span><span class="group-badge html"></span></div>
-                                <div class="tree-item html" data-info="Contact page - Form and contact details">📄 contact.html <span class="info-icon" onclick="showModal('file-contact')">ℹ️</span><span class="group-badge html"></span></div>
+                                <div class="tree-item html" data-info="Homepage - Main entry point">📄 index.html <span class="folder-info-btn" onclick="showModal('file-index')">i</span><span class="group-badge html"></span></div>
+                                <div class="tree-item html" data-info="About page - Company/project information">📄 about.html <span class="folder-info-btn" onclick="showModal('file-about')">i</span><span class="group-badge html"></span></div>
+                                <div class="tree-item html" data-info="Contact page - Form and contact details">📄 contact.html <span class="folder-info-btn" onclick="showModal('file-contact')">i</span><span class="group-badge html"></span></div>
                             </div>
                         </details>
 
                         <details open>
                             <summary>📁 css/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item css" data-info="Main stylesheet - Global styles and components">🎨 style.css <span class="info-icon" onclick="showModal('file-style')">ℹ️</span><span class="group-badge css"></span></div>
-                                <div class="tree-item css" data-info="Media queries - Mobile, tablet, desktop breakpoints">🎨 responsive.css <span class="info-icon" onclick="showModal('file-responsive')">ℹ️</span><span class="group-badge css"></span></div>
+                                <div class="tree-item css" data-info="Main stylesheet - Global styles and components">🎨 style.css <span class="folder-info-btn" onclick="showModal('file-style')">i</span><span class="group-badge css"></span></div>
+                                <div class="tree-item css" data-info="Media queries - Mobile, tablet, desktop breakpoints">🎨 responsive.css <span class="folder-info-btn" onclick="showModal('file-responsive')">i</span><span class="group-badge css"></span></div>
                             </div>
                         </details>
 
                         <details>
                             <summary>📁 js/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item js" data-info="Main JavaScript - App initialization and logic">⚡ app.js <span class="info-icon" onclick="showModal('file-app')">ℹ️</span><span class="group-badge js"></span></div>
-                                <div class="tree-item js" data-info="Helper functions - Reusable utilities">⚡ utils.js <span class="info-icon" onclick="showModal('file-utils')">ℹ️</span><span class="group-badge js"></span></div>
+                                <div class="tree-item js" data-info="Main JavaScript - App initialization and logic">⚡ app.js <span class="folder-info-btn" onclick="showModal('file-app')">i</span><span class="group-badge js"></span></div>
+                                <div class="tree-item js" data-info="Helper functions - Reusable utilities">⚡ utils.js <span class="folder-info-btn" onclick="showModal('file-utils')">i</span><span class="group-badge js"></span></div>
                             </div>
                         </details>
 
@@ -977,14 +993,14 @@
                                 <details>
                                     <summary>📁 images/</summary>
                                     <div style="margin-left: 20px;">
-                                        <div class="tree-item assets" data-info="Site logo - SVG or PNG format recommended">🖼️ logo.png <span class="info-icon" onclick="showModal(\'file-logo\')">ℹ️</span><span class="group-badge assets"></span></div>
-                                        <div class="tree-item assets" data-info="Hero image - Optimized for web (WebP preferred)">🖼️ hero.jpg <span class="info-icon" onclick="showModal(\'file-hero\')">ℹ️</span><span class="group-badge assets"></span></div>
+                                        <div class="tree-item assets" data-info="Site logo - SVG or PNG format recommended">🖼️ logo.png <span class="folder-info-btn" onclick="showModal('file-logo')">i</span><span class="group-badge assets"></span></div>
+                                        <div class="tree-item assets" data-info="Hero image - Optimized for web (WebP preferred)">🖼️ hero.jpg <span class="folder-info-btn" onclick="showModal('file-hero')">i</span><span class="group-badge assets"></span></div>
                                     </div>
                                 </details>
                                 <details>
                                     <summary>📁 fonts/</summary>
                                     <div style="margin-left: 20px;">
-                                        <div class="tree-item assets" data-info="Web font - WOFF2 format for best compression">🔤 font.woff2 <span class="info-icon" onclick="showModal(\'file-font\')">ℹ️</span><span class="group-badge assets"></span></div>
+                                        <div class="tree-item assets" data-info="Web font - WOFF2 format for best compression">🔤 font.woff2 <span class="folder-info-btn" onclick="showModal('file-font')">i</span><span class="group-badge assets"></span></div>
                                     </div>
                                 </details>
                             </div>
@@ -993,15 +1009,15 @@
                         <details>
                             <summary>📁 components/</summary>
                             <div style="margin-left: 20px;">
-                                <div class="tree-item html" data-info="Header component - Logo, navigation, reusable across pages">🧩 header.html <span class="info-icon" onclick="showModal(\'file-header\')">ℹ️</span><span class="group-badge components"></span></div>
-                                <div class="tree-item html" data-info="Footer component - Copyright, links, social media">🧩 footer.html <span class="info-icon" onclick="showModal(\'file-footer\')">ℹ️</span><span class="group-badge components"></span></div>
-                                <div class="tree-item html" data-info="Navigation component - Menu structure, mobile-friendly">🧩 nav.html <span class="info-icon" onclick="showModal(\'file-nav\')">ℹ️</span><span class="group-badge components"></span></div>
+                                <div class="tree-item html" data-info="Header component - Logo, navigation, reusable across pages">🧩 header.html <span class="folder-info-btn" onclick="showModal('file-header')">i</span><span class="group-badge components"></span></div>
+                                <div class="tree-item html" data-info="Footer component - Copyright, links, social media">🧩 footer.html <span class="folder-info-btn" onclick="showModal('file-footer')">i</span><span class="group-badge components"></span></div>
+                                <div class="tree-item html" data-info="Navigation component - Menu structure, mobile-friendly">🧩 nav.html <span class="folder-info-btn" onclick="showModal('file-nav')">i</span><span class="group-badge components"></span></div>
                             </div>
                         </details>
 
-                        <div class="tree-item config" data-info="NPM configuration - Dependencies, scripts, project metadata">⚙️ package.json <span class="info-icon" onclick="showModal(\'file-package\')">ℹ️</span><span class="group-badge config"></span></div>
-                        <div class="tree-item config" data-info="Git ignore file - Excludes node_modules, build files from version control">⚙️ .gitignore <span class="info-icon" onclick="showModal(\'file-gitignore\')">ℹ️</span><span class="group-badge config"></span></div>
-                        <div class="tree-item" data-info="Documentation - Project setup, usage instructions">📝 README.md <span class="info-icon" onclick="showModal(\'file-readme\')">ℹ️</span></div>
+                        <div class="tree-item config" data-info="NPM configuration - Dependencies, scripts, project metadata">⚙️ package.json <span class="folder-info-btn" onclick="showModal('file-package')">i</span><span class="group-badge config"></span></div>
+                        <div class="tree-item config" data-info="Git ignore file - Excludes node_modules, build files from version control">⚙️ .gitignore <span class="folder-info-btn" onclick="showModal('file-gitignore')">i</span><span class="group-badge config"></span></div>
+                        <div class="tree-item" data-info="Documentation - Project setup, usage instructions">📝 README.md <span class="folder-info-btn" onclick="showModal('file-readme')">i</span></div>
                     </div>
                 </details>
             </div>
