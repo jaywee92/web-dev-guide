@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostgreSQL Guide - Flask Web Development</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f1117;
+            --surface: #1a1d27;
+            --surface-bright: #222633;
+            --border: #2e3348;
+            --text: #e2e4ed;
+            --text-muted: #8b8fa7;
+            --yellow: #f5c542;
+            --yellow-dim: rgba(245, 197, 66, 0.15);
+            --blue: #5b9cf5;
+            --blue-dim: rgba(91, 156, 245, 0.12);
+            --green: #4ade80;
+            --green-dim: rgba(74, 222, 128, 0.12);
+            --orange: #f59e42;
+            --orange-dim: rgba(245, 158, 66, 0.12);
+            --purple: #a78bfa;
+            --purple-dim: rgba(167, 139, 250, 0.12);
+            --red: #f87171;
+            --red-dim: rgba(248, 113, 113, 0.12);
+            --cyan: #22d3ee;
+            --cyan-dim: rgba(34, 211, 238, 0.12);
+            --white: #ffffff;
+            --code-bg: #13151e;
+            --radius: 14px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: var(--blue);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--cyan);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            border-color: var(--blue);
+            background-color: var(--blue-dim);
+        }
+
+        .header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--yellow), var(--orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeSlideUp 0.6s ease forwards;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-icon {
+            font-size: 1.8rem;
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .component-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .component-card:hover {
+            border-color: var(--yellow);
+            background-color: var(--yellow-dim);
+            transform: scale(1.02);
+        }
+
+        .component-icon {
+            font-size: 2rem;
+        }
+
+        .component-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .component-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .info-box {
+            background-color: var(--surface-bright);
+            border-left: 3px solid var(--yellow);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .info-box strong {
+            color: var(--yellow);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideIn 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background-color: var(--surface);
+        }
+
+        .modal-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--text);
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--yellow);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-section-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--yellow);
+            margin-bottom: 0.75rem;
+        }
+
+        .description {
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .code-example {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .kw {
+            color: var(--purple);
+            font-weight: 500;
+        }
+
+        .fn {
+            color: var(--blue);
+        }
+
+        .str {
+            color: var(--green);
+        }
+
+        .dec {
+            color: var(--yellow);
+        }
+
+        .var {
+            color: var(--orange);
+        }
+
+        .num {
+            color: var(--orange);
+        }
+
+        .comment {
+            color: #555a73;
+            font-style: italic;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .tag.blue {
+            background-color: var(--blue-dim);
+            color: var(--blue);
+        }
+
+        .tag.green {
+            background-color: var(--green-dim);
+            color: var(--green);
+        }
+
+        .tag.yellow {
+            background-color: var(--yellow-dim);
+            color: var(--yellow);
+        }
+
+        .tag.purple {
+            background-color: var(--purple-dim);
+            color: var(--purple);
+        }
+
+        .tag.orange {
+            background-color: var(--orange-dim);
+            color: var(--orange);
+        }
+
+        .tag.red {
+            background-color: var(--red-dim);
+            color: var(--red);
+        }
+
+        .tag.cyan {
+            background-color: var(--cyan-dim);
+            color: var(--cyan);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            margin-top: 3rem;
+            font-size: 0.95rem;
+        }
+
+        /* VISUAL OVERVIEW FLOW */
+        .overview-flow {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 40px;
+            animation: fadeSlideUp 0.6s ease-out 0.1s both;
+        }
+
+        .flow-node {
+            width: 100%;
+            max-width: 500px;
+            padding: 16px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .flow-node::after {
+            content: '→';
+            position: absolute;
+            right: 16px;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .flow-node:hover::after { opacity: 1; transform: translateX(4px); }
+        .flow-node:hover { transform: translateX(8px); }
+
+        .flow-node.n-app { background: var(--blue-dim); border: 2px solid var(--blue); color: var(--blue); }
+        .flow-node.n-orm { background: var(--green-dim); border: 2px solid var(--green); color: var(--green); }
+        .flow-node.n-pg { background: var(--yellow-dim); border: 2px solid var(--yellow); color: var(--yellow); }
+        .flow-node.n-tables { background: var(--purple-dim); border: 2px solid var(--purple); color: var(--purple); }
+        .flow-node.n-sql { background: var(--orange-dim); border: 2px solid var(--orange); color: var(--orange); }
+
+        .flow-arrow {
+            font-size: 24px;
+            color: var(--text-muted);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .flow-node-label { font-size: 14px; }
+        .flow-node-desc { font-size: 11px; font-weight: 400; opacity: 0.7; margin-left: auto; font-family: 'JetBrains Mono', monospace; }
+
+        /* LEARNING BADGES */
+        .learn-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 16px;
+            animation: fadeSlideUp 0.6s ease-out 0.15s both;
+        }
+
+        .learn-badge {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 5px 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .learn-badge .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(245, 197, 66, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(245, 197, 66, 0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .component-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                max-width: 90vw;
+                max-height: 90vh;
+            }
+
+            .modal-header {
+                padding: 1.5rem;
+            }
+
+            .modal-body {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-link">← Back to Overview</a>
+            <h1>🐘 PostgreSQL Guide</h1>
+            <p class="subtitle">Interactive database reference for Flask developers</p>
+
+            <div class="learn-badges">
+                <span class="learn-badge"><span class="dot" style="background:var(--yellow);"></span>SQL Basics</span>
+                <span class="learn-badge"><span class="dot" style="background:var(--cyan);"></span>Data Types</span>
+                <span class="learn-badge"><span class="dot" style="background:var(--purple);"></span>Tables</span>
+                <span class="learn-badge"><span class="dot" style="background:var(--orange);"></span>JOINs</span>
+                <span class="learn-badge"><span class="dot" style="background:var(--blue);"></span>Flask ORM</span>
+                <span class="learn-badge"><span class="dot" style="background:var(--red);"></span>Admin</span>
+            </div>
+        </div>
+
+        <!-- Visual Overview: Data Flow -->
+        <div class="overview-flow">
+            <a href="#sec-flask" class="flow-node n-app">
+                <span>🌐</span>
+                <span class="flow-node-label">Flask Web App</span>
+                <span class="flow-node-desc">Python Backend</span>
+            </a>
+            <div class="flow-arrow">↓</div>
+            <a href="#sec-flask" class="flow-node n-orm">
+                <span>🐍</span>
+                <span class="flow-node-label">SQLAlchemy ORM</span>
+                <span class="flow-node-desc">Python ↔ SQL</span>
+            </a>
+            <div class="flow-arrow">↓</div>
+            <a href="#sec-crud" class="flow-node n-sql">
+                <span>📝</span>
+                <span class="flow-node-label">SQL Queries</span>
+                <span class="flow-node-desc">SELECT · INSERT · UPDATE · DELETE</span>
+            </a>
+            <div class="flow-arrow">↓</div>
+            <a href="#sec-basics" class="flow-node n-pg">
+                <span>🐘</span>
+                <span class="flow-node-label">PostgreSQL Server</span>
+                <span class="flow-node-desc">Database Engine</span>
+            </a>
+            <div class="flow-arrow">↓</div>
+            <a href="#sec-tables" class="flow-node n-tables">
+                <span>📐</span>
+                <span class="flow-node-label">Tables, Rows &amp; Relationships</span>
+                <span class="flow-node-desc">Structured Data</span>
+            </a>
+        </div>
+
+        <!-- Section 1: Basics -->
+        <section id="sec-basics" class="section" style="animation-delay: 0.1s;">
+            <h2 class="section-title"><span class="section-icon">🐘</span> Basics</h2>
+            <div class="component-grid">
+                <div class="component-card" onclick="showModal('what-is-pg')">
+                    <span class="component-icon">🐘</span>
+                    <div class="component-title">What is PostgreSQL</div>
+                    <div class="component-desc">Powerful, open-source relational database system</div>
+                </div>
+                <div class="component-card" onclick="showModal('relational-model')">
+                    <span class="component-icon">📊</span>
+                    <div class="component-title">Relational Model</div>
+                    <div class="component-desc">Tables, rows, and columns concept explained</div>
+                </div>
+                <div class="component-card" onclick="showModal('pg-in-stack')">
+                    <span class="component-icon">🏗️</span>
+                    <div class="component-title">PostgreSQL in Stack</div>
+                    <div class="component-desc">Client → Flask → PostgreSQL architecture</div>
+                </div>
+                <div class="component-card" onclick="showModal('installation')">
+                    <span class="component-icon">🔌</span>
+                    <div class="component-title">Setup & Connection</div>
+                    <div class="component-desc">Install, connect, and configure PostgreSQL</div>
+                </div>
+            </div>
+            <div class="info-box"><strong>Tip:</strong> PostgreSQL is ACID-compliant, meaning your data stays consistent and reliable even with failures.</div>
+        </section>
+
+        <!-- Section 2: Data Types -->
+        <section id="sec-types" class="section" style="animation-delay: 0.2s;">
+            <h2 class="section-title"><span class="section-icon">📦</span> Data Types</h2>
+            <div class="component-grid">
+                <div class="component-card" onclick="showModal('integer-types')">
+                    <span class="component-icon">🔢</span>
+                    <div class="component-title">Integer Types</div>
+                    <div class="component-desc">SMALLINT, INTEGER, BIGINT, SERIAL</div>
+                </div>
+                <div class="component-card" onclick="showModal('text-types')">
+                    <span class="component-icon">📝</span>
+                    <div class="component-title">Text Types</div>
+                    <div class="component-desc">VARCHAR, CHAR, and TEXT storage options</div>
+                </div>
+                <div class="component-card" onclick="showModal('numeric-types')">
+                    <span class="component-icon">💰</span>
+                    <div class="component-title">Numeric Types</div>
+                    <div class="component-desc">NUMERIC, DECIMAL, FLOAT, REAL for precise numbers</div>
+                </div>
+                <div class="component-card" onclick="showModal('boolean-type')">
+                    <span class="component-icon">✅</span>
+                    <div class="component-title">Boolean</div>
+                    <div class="component-desc">TRUE and FALSE values</div>
+                </div>
+                <div class="component-card" onclick="showModal('temporal-types')">
+                    <span class="component-icon">📅</span>
+                    <div class="component-title">Date & Time</div>
+                    <div class="component-desc">DATE, TIME, TIMESTAMP, INTERVAL types</div>
+                </div>
+                <div class="component-card" onclick="showModal('json-types')">
+                    <span class="component-icon">📋</span>
+                    <div class="component-title">JSON Types</div>
+                    <div class="component-desc">JSON vs JSONB, storing complex data</div>
+                </div>
+            </div>
+            <div class="info-box"><strong>Tip:</strong> Use NUMERIC or DECIMAL for money calculations to avoid floating-point precision issues.</div>
+        </section>
+
+        <!-- Section 3: Tables & Schema -->
+        <section id="sec-tables" class="section" style="animation-delay: 0.3s;">
+            <h2 class="section-title"><span class="section-icon">📐</span> Tables & Schema</h2>
+            <div class="component-grid">
+                <div class="component-card" onclick="showModal('create-table')">
+                    <span class="component-icon">📐</span>
+                    <div class="component-title">CREATE TABLE</div>
+                    <div class="component-desc">Basic table creation syntax and structure</div>
+                </div>
+                <div class="component-card" onclick="showModal('primary-key')">
+                    <span class="component-icon">🔑</span>
+                    <div class="component-title">PRIMARY KEY</div>
+                    <div class="component-desc">SERIAL, auto-increment, and IDENTITY</div>
+                </div>
+                <div class="component-card" onclick="showModal('constraints')">
+                    <span class="component-icon">🛡️</span>
+                    <div class="component-title">Constraints</div>
+                    <div class="component-desc">NOT NULL, UNIQUE, CHECK, DEFAULT values</div>
+                </div>
+                <div class="component-card" onclick="showModal('alter-table')">
+                    <span class="component-icon">🔧</span>
+                    <div class="component-title">ALTER TABLE</div>
+                    <div class="component-desc">Add, drop, and rename columns</div>
+                </div>
+                <div class="component-card" onclick="showModal('indexes')">
+                    <span class="component-icon">⚡</span>
+                    <div class="component-title">Indexes</div>
+                    <div class="component-desc">CREATE INDEX for faster queries</div>
+                </div>
+            </div>
+            <div class="info-box"><strong>Tip:</strong> Always define a PRIMARY KEY for every table to uniquely identify each row and ensure data integrity.</div>
+        </section>
+
+        <!-- Section 4: CRUD SQL -->
+        <section id="sec-crud" class="section" style="animation-delay: 0.4s;">
+            <h2 class="section-title"><span class="section-icon">🔄</span> CRUD SQL</h2>
+            <div class="component-grid">
+                <div class="component-card" onclick="showModal('select-query')">
+                    <span class="component-icon">📖</span>
+                    <div class="component-title">SELECT</div>
+                    <div class="component-desc">Basic queries, filtering, ordering, limiting</div>
+                </div>
+                <div class="component-card" onclick="showModal('insert-query')">
+                    <span class="component-icon">➕</span>
+                    <div class="component-title">INSERT</div>
+                    <div class="component-desc">Add new rows, INSERT INTO VALUES</div>
+                </div>
+                <div class="component-card" onclick="showModal('update-query')">
+                    <span class="component-icon">✏️</span>
+                    <div class="component-title">UPDATE</div>
+                    <div class="component-desc">Modify existing rows with conditions</div>
+                </div>
+                <div class="component-card" onclick="showModal('delete-query')">
+                    <span class="component-icon">🗑️</span>
+                    <div class="component-title">DELETE</div>
+                    <div class="component-desc">Remove rows with WHERE clause</div>
+                </div>
+                <div class="component-card" onclick="showModal('aggregates')">
+                    <span class="component-icon">📊</span>
+                    <div class="component-title">Aggregates</div>
+                    <div class="component-desc">COUNT, SUM, AVG, GROUP BY, HAVING</div>
+                </div>
+            </div>
+            <div class="info-box"><strong>Tip:</strong> Always use WHERE clauses in UPDATE and DELETE to avoid modifying/deleting all rows accidentally.</div>
+        </section>
+
+        <!-- Section 5: Relationships & JOINs -->
+        <section id="sec-joins" class="section" style="animation-delay: 0.5s;">
+            <h2 class="section-title"><span class="section-icon">🔗</span> Relationships & JOINs</h2>
+            <div class="component-grid">
+                <div class="component-card" onclick="showModal('one-to-many')">
+                    <span class="component-icon">1️⃣</span>
+                    <div class="component-title">One-to-Many</div>
+                    <div class="component-desc">FOREIGN KEY relationships parent-child</div>
+                </div>
+                <div class="component-card" onclick="showModal('many-to-many')">
+                    <span class="component-icon">🔄</span>
+                    <div class="component-title">Many-to-Many</div>
+                    <div class="component-desc">Junction table patterns and design</div>
+                </div>
+                <div class="component-card" onclick="showModal('inner-join')">
+                    <span class="component-icon">🔗</span>
+                    <div class="component-title">INNER JOIN</div>
+                    <div class="component-desc">Matching rows from both tables</div>
+                </div>
+                <div class="component-card" onclick="showModal('left-join')">
+                    <span class="component-icon">⬅️</span>
+                    <div class="component-title">LEFT JOIN</div>
+                    <div class="component-desc">All left rows plus matching right rows</div>
+                </div>
+                <div class="component-card" onclick="showModal('foreign-keys')">
+                    <span class="component-icon">🛡️</span>
+                    <div class="component-title">Foreign Key Constraints</div>
+                    <div class="component-desc">ON DELETE CASCADE, SET NULL, RESTRICT</div>
+                </div>
+            </div>
+            <div class="info-box"><strong>Tip:</strong> Use JOINs to combine data from multiple tables efficiently instead of making separate queries.</div>
+        </section>
+
+        <!-- Section 6: Flask + SQLAlchemy -->
+        <section id="sec-flask" class="section" style="animation-delay: 0.6s;">
+            <h2 class="section-title"><span class="section-icon">🐍</span> Flask + SQLAlchemy</h2>
+            <div class="component-grid">
+                <div class="component-card" onclick="showModal('sqlalchemy-setup')">
+                    <span class="component-icon">⚙️</span>
+                    <div class="component-title">Setup</div>
+                    <div class="component-desc">Flask-SQLAlchemy initialization and config</div>
+                </div>
+                <div class="component-card" onclick="showModal('model-definition')">
+                    <span class="component-icon">🗂️</span>
+                    <div class="component-title">Models</div>
+                    <div class="component-desc">Python classes map to database tables</div>
+                </div>
+                <div class="component-card" onclick="showModal('model-relationships')">
+                    <span class="component-icon">🔗</span>
+                    <div class="component-title">Model Relationships</div>
+                    <div class="component-desc">relationship() and backref configuration</div>
+                </div>
+                <div class="component-card" onclick="showModal('querying')">
+                    <span class="component-icon">🔍</span>
+                    <div class="component-title">Querying</div>
+                    <div class="component-desc">filter_by(), all(), first(), get() methods</div>
+                </div>
+                <div class="component-card" onclick="showModal('migrations')">
+                    <span class="component-icon">📦</span>
+                    <div class="component-title">Migrations</div>
+                    <div class="component-desc">Flask-Migrate, alembic, upgrade/downgrade</div>
+                </div>
+            </div>
+            <div class="info-box"><strong>Tip:</strong> Use Flask-Migrate to version control your database schema changes alongside your application code.</div>
+        </section>
+
+        <!-- Section 7: Useful Commands -->
+        <section id="sec-commands" class="section" style="animation-delay: 0.7s;">
+            <h2 class="section-title"><span class="section-icon">🛠️</span> Useful Commands</h2>
+            <div class="component-grid">
+                <div class="component-card" onclick="showModal('psql-commands')">
+                    <span class="component-icon">💻</span>
+                    <div class="component-title">psql Commands</div>
+                    <div class="component-desc">\l, \dt, \d, \c, \q and more</div>
+                </div>
+                <div class="component-card" onclick="showModal('backup-restore')">
+                    <span class="component-icon">💾</span>
+                    <div class="component-title">Backup & Restore</div>
+                    <div class="component-desc">pg_dump and pg_restore utilities</div>
+                </div>
+                <div class="component-card" onclick="showModal('user-management')">
+                    <span class="component-icon">👥</span>
+                    <div class="component-title">User Management</div>
+                    <div class="component-desc">CREATE USER, GRANT, REVOKE permissions</div>
+                </div>
+                <div class="component-card" onclick="showModal('troubleshooting')">
+                    <span class="component-icon">🔧</span>
+                    <div class="component-title">Troubleshooting</div>
+                    <div class="component-desc">Common errors and how to fix them</div>
+                </div>
+            </div>
+            <div class="info-box"><strong>Tip:</strong> Regularly backup your databases using pg_dump to protect against data loss.</div>
+        </section>
+
+        <!-- Modal -->
+        <div id="modal" class="modal" onclick="closeModal(event)">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <div class="modal-header">
+                    <div class="modal-title">
+                        <span id="modal-icon"></span>
+                        <span id="modal-name"></span>
+                    </div>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body" id="modal-body"></div>
+            </div>
+        </div>
+
+        <footer>
+            <p>PostgreSQL Guide – Interactive database reference for Flask developers</p>
+            <p style="font-size: 12px; margin-top: 8px; color: #555a73;">Based on PostgreSQL 15+ and SQLAlchemy 2.x</p>
+        </footer>
+    </div>
+
+    <script>
+        const modalData = {
+            // Section 1: Basics
+            'what-is-pg': {
+                icon: '🐘',
+                name: 'What is PostgreSQL',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'PostgreSQL is a powerful, open-source relational database management system (RDBMS) known for reliability, robustness, and advanced features. It\'s ACID-compliant, meaning your data remains consistent even during failures. PostgreSQL is ideal for web applications and supports complex queries, JSON, full-text search, and more. It\'s free, actively maintained by a large community, and used by companies like Spotify, Apple, and Instagram.'
+                    },
+                    {
+                        title: 'Key Features',
+                        content: '<strong>ACID Compliance:</strong> Ensures data integrity and consistency. <strong>Open Source:</strong> Free to use and modify. <strong>Advanced Features:</strong> JSON support, full-text search, window functions, CTEs. <strong>Scalability:</strong> Handles large datasets efficiently. <strong>Security:</strong> Role-based access control and encryption support.'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Database', 'Open-Source', 'RDBMS', 'Reliable', 'Free']
+                    }
+                ]
+            },
+            'relational-model': {
+                icon: '📊',
+                name: 'Relational Model',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The relational model organizes data into tables (also called relations) composed of rows (tuples) and columns (attributes). Each row represents a unique entity, and each column represents a property of that entity. This structure makes data organization logical, queryable, and maintainable. The relational model enforces data integrity through keys and constraints.'
+                    },
+                    {
+                        title: 'Core Concepts',
+                        content: '<strong>Table:</strong> Collection of related data organized in rows and columns. <strong>Row:</strong> Single record with values for each column. <strong>Column:</strong> Named field that holds one type of data. <strong>Primary Key:</strong> Uniquely identifies each row. <strong>Schema:</strong> The structure defining tables and their relationships.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="comment">-- Users table with columns and relationships</span><br><span class="kw">CREATE TABLE</span> users (<br>&nbsp;&nbsp;id <span class="kw">INTEGER PRIMARY KEY</span>,<br>&nbsp;&nbsp;name <span class="kw">VARCHAR</span>(<span class="num">100</span>),<br>&nbsp;&nbsp;email <span class="kw">VARCHAR</span>(<span class="num">100</span>) <span class="kw">UNIQUE</span><br>);'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Data', 'Organization', 'Tables', 'Rows', 'Columns']
+                    }
+                ]
+            },
+            'pg-in-stack': {
+                icon: '🏗️',
+                name: 'PostgreSQL in Web Stack',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'In a typical Flask web application, PostgreSQL serves as the persistent data storage layer. The architecture flows from the client (browser) to the Flask backend, which processes requests and queries PostgreSQL for data. Flask communicates with PostgreSQL using drivers like psycopg2 or SQLAlchemy. This three-tier architecture separates concerns: presentation (frontend), business logic (Flask), and data persistence (PostgreSQL).'
+                    },
+                    {
+                        title: 'Architecture Flow',
+                        content: '<strong>Client (Browser):</strong> Sends HTTP requests and receives responses. <strong>Flask App:</strong> Handles routing, validation, and business logic. <strong>SQLAlchemy ORM:</strong> Maps Python objects to database tables. <strong>PostgreSQL:</strong> Stores data persistently and returns query results. <strong>psycopg2:</strong> The driver that enables Flask-SQLAlchemy to communicate with PostgreSQL.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="comment"># Flask app querying PostgreSQL through SQLAlchemy</span><br><span class="kw">from</span> flask <span class="kw">import</span> Flask<br><span class="kw">from</span> flask_sqlalchemy <span class="kw">import</span> SQLAlchemy<br><br>app = Flask(__name__)<br>db = SQLAlchemy(app)<br><br><span class="comment"># Query the database</span><br>users = db.session.query(User).all()'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Architecture', 'Stack', 'Flask', 'Layer', 'Integration']
+                    }
+                ]
+            },
+            'installation': {
+                icon: '🔌',
+                name: 'Setup & Connection',
+                sections: [
+                    {
+                        title: 'Installation Steps',
+                        content: '<strong>macOS:</strong> Use Homebrew: <code>brew install postgresql</code>. <strong>Linux (Ubuntu/Debian):</strong> Use apt: <code>sudo apt install postgresql postgresql-contrib</code>. <strong>Windows:</strong> Download the PostgreSQL installer from postgresql.org and follow the setup wizard. <strong>Docker:</strong> Use <code>docker run -d postgres:15</code> for a containerized instance.'
+                    },
+                    {
+                        title: 'Connection URI Format',
+                        code: '<span class="comment"># Standard PostgreSQL connection URI</span><br>postgresql://username:password@localhost:5432/database_name<br><br><span class="comment"># In Flask config</span><br>SQLALCHEMY_DATABASE_URI = <span class="str">\'postgresql://user:pass@localhost/myapp\'</span>'
+                    },
+                    {
+                        title: 'Connect to Database',
+                        code: '<span class="comment">-- Connect using psql command-line tool</span><br>psql -U postgres -h localhost<br><br><span class="comment">-- Create a new database</span><br><span class="kw">CREATE DATABASE</span> myapp_db;<br><br><span class="comment">-- Connect to specific database</span><br><span class="kw">\\c</span> myapp_db;'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Setup', 'Connection', 'URI', 'Installation', 'Configuration']
+                    }
+                ]
+            },
+
+            // Section 2: Data Types
+            'integer-types': {
+                icon: '🔢',
+                name: 'Integer Types',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'PostgreSQL offers several integer types for storing whole numbers. SMALLINT uses 2 bytes and stores values from -32,768 to 32,767. INTEGER (the default) uses 4 bytes for values -2 billion to +2 billion. BIGINT uses 8 bytes for much larger values. SERIAL is a special type that auto-increments, useful for primary keys. Use the smallest type that fits your needs to save storage space.'
+                    },
+                    {
+                        title: 'Type Comparison',
+                        content: '<strong>SMALLINT:</strong> 2 bytes, -32,768 to 32,767. <strong>INTEGER:</strong> 4 bytes, -2,147,483,648 to 2,147,483,647. <strong>BIGINT:</strong> 8 bytes, very large numbers. <strong>SERIAL:</strong> Auto-incrementing integer (SMALLSERIAL, SERIAL, BIGSERIAL). <strong>Use INTEGER for most cases.</strong>'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="kw">CREATE TABLE</span> products (<br>&nbsp;&nbsp;id <span class="kw">SERIAL PRIMARY KEY</span>,<br>&nbsp;&nbsp;stock <span class="kw">INTEGER</span> <span class="kw">NOT NULL</span>,<br>&nbsp;&nbsp;price_cents <span class="kw">INTEGER</span>,<br>&nbsp;&nbsp;user_id <span class="kw">BIGINT</span><br>);'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Numeric', 'Integers', 'Storage', 'Efficiency', 'Auto-increment']
+                    }
+                ]
+            },
+            'text-types': {
+                icon: '📝',
+                name: 'Text Types',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'PostgreSQL provides three text types for storing character data. VARCHAR(n) stores variable-length strings up to n characters, useful when you have a maximum length. CHAR(n) stores fixed-length strings, padding with spaces if needed (rarely used today). TEXT stores variable-length strings without a length limit, ideal for descriptions, comments, or content where length is unpredictable. All three are equally performant; choose based on your data constraints.'
+                    },
+                    {
+                        title: 'Type Comparison',
+                        content: '<strong>VARCHAR(n):</strong> Variable-length, max n chars. Good for emails, usernames, phone numbers. <strong>CHAR(n):</strong> Fixed-length, padded with spaces. Rarely used. <strong>TEXT:</strong> No length limit, variable-length. Perfect for descriptions, articles, long-form content. All support Unicode. Prefer VARCHAR or TEXT in modern apps.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="kw">CREATE TABLE</span> users (<br>&nbsp;&nbsp;id <span class="kw">SERIAL PRIMARY KEY</span>,<br>&nbsp;&nbsp;username <span class="kw">VARCHAR</span>(<span class="num">50</span>) <span class="kw">NOT NULL UNIQUE</span>,<br>&nbsp;&nbsp;email <span class="kw">VARCHAR</span>(<span class="num">255</span>) <span class="kw">NOT NULL</span>,<br>&nbsp;&nbsp;bio <span class="kw">TEXT</span><br>);'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Text', 'Strings', 'Storage', 'Variable-length', 'Characters']
+                    }
+                ]
+            },
+            'numeric-types': {
+                icon: '💰',
+                name: 'Numeric Types',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'PostgreSQL provides numeric types for decimal numbers with various precision levels. NUMERIC(precision, scale) stores exact decimal values—use this for financial data like prices and amounts. DECIMAL is an alias for NUMERIC. FLOAT and REAL use floating-point representation and are faster but less precise, suitable for scientific calculations where small rounding errors are acceptable. For money, always use NUMERIC to avoid precision loss.'
+                    },
+                    {
+                        title: 'Type Comparison',
+                        content: '<strong>NUMERIC(10,2):</strong> 10 total digits, 2 after decimal. Perfect for currency: $123456.78. <strong>DECIMAL:</strong> Alias for NUMERIC. <strong>FLOAT:</strong> 8 bytes, approximate floating-point. <strong>REAL:</strong> 4 bytes, approximate floating-point. Never use FLOAT/REAL for money!'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="kw">CREATE TABLE</span> orders (<br>&nbsp;&nbsp;id <span class="kw">SERIAL PRIMARY KEY</span>,<br>&nbsp;&nbsp;total_price <span class="kw">NUMERIC</span>(<span class="num">10</span>, <span class="num">2</span>) <span class="kw">NOT NULL</span>,<br>&nbsp;&nbsp;tax_rate <span class="kw">NUMERIC</span>(<span class="num">5</span>, <span class="num">4</span>),<br>&nbsp;&nbsp;weight <span class="kw">FLOAT</span><br>);'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Decimal', 'Money', 'Precision', 'Financial', 'Accurate']
+                    }
+                ]
+            },
+            'boolean-type': {
+                icon: '✅',
+                name: 'Boolean',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'The BOOLEAN type stores true/false values, perfect for flags and status fields. In PostgreSQL, BOOLEAN accepts TRUE, FALSE, and NULL (unknown). When inserting, you can use true/false, yes/no, on/off, or 1/0 (PostgreSQL converts them). BOOLEAN columns typically default to FALSE for new rows. Using BOOLEAN is cleaner and more efficient than integer flags (0/1).'
+                    },
+                    {
+                        title: 'Values & Representation',
+                        content: '<strong>TRUE values:</strong> true, yes, on, 1, y, t. <strong>FALSE values:</strong> false, no, off, 0, n, f. <strong>NULL:</strong> Unknown value (not FALSE, distinct from false). <strong>Storage:</strong> 1 byte per value. <strong>Default:</strong> Often NULL or FALSE depending on application needs.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="kw">CREATE TABLE</span> users (<br>&nbsp;&nbsp;id <span class="kw">SERIAL PRIMARY KEY</span>,<br>&nbsp;&nbsp;email_verified <span class="kw">BOOLEAN DEFAULT FALSE</span>,<br>&nbsp;&nbsp;is_admin <span class="kw">BOOLEAN</span> <span class="kw">NOT NULL DEFAULT FALSE</span>,<br>&nbsp;&nbsp;newsletter_opt_in <span class="kw">BOOLEAN</span><br>);'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Boolean', 'Flags', 'True/False', 'Status', 'Simple']
+                    }
+                ]
+            },
+            'temporal-types': {
+                icon: '📅',
+                name: 'Date & Time',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'PostgreSQL provides four temporal types: DATE stores calendar dates (year, month, day) without time. TIME stores time of day (hours, minutes, seconds) without a date. TIMESTAMP stores both date and time together, ideal for recording when events occur. INTERVAL represents a duration or time span. All temporal types support flexible input formats and have precise output. Use TIMESTAMP WITH TIME ZONE for applications spanning multiple time zones.'
+                    },
+                    {
+                        title: 'Type Details',
+                        content: '<strong>DATE:</strong> Store 2000-01-31, occupies 4 bytes. <strong>TIME:</strong> Store 14:30:45, occupies 8 bytes. <strong>TIMESTAMP:</strong> Both date and time: 2000-01-31 14:30:45, 8 bytes. <strong>TIMESTAMP WITH TIME ZONE:</strong> Includes timezone info for global apps. <strong>INTERVAL:</strong> Duration: 10 days 12:30:00. Use TIMESTAMP (WITH TIME ZONE) most often.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="kw">CREATE TABLE</span> events (<br>&nbsp;&nbsp;id <span class="kw">SERIAL PRIMARY KEY</span>,<br>&nbsp;&nbsp;event_date <span class="kw">DATE NOT NULL</span>,<br>&nbsp;&nbsp;start_time <span class="kw">TIME</span>,<br>&nbsp;&nbsp;created_at <span class="kw">TIMESTAMP DEFAULT CURRENT_TIMESTAMP</span>,<br>&nbsp;&nbsp;duration <span class="kw">INTERVAL</span><br>);'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Date', 'Time', 'Temporal', 'Timestamp', 'Interval']
+                    }
+                ]
+            },
+            'json-types': {
+                icon: '📋',
+                name: 'JSON Types',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'PostgreSQL supports two JSON types: JSON stores JSON as plain text and validates the structure, but doesn\'t optimize for querying. JSONB (binary JSON) stores JSON in a parsed binary format, enabling indexing and faster queries, but uses more storage. For most applications, JSONB is superior because you can query and index JSON fields efficiently. Use JSON only if you need to preserve formatting or rarely query the data.'
+                    },
+                    {
+                        title: 'JSON vs JSONB',
+                        content: '<strong>JSON:</strong> Text-based storage, preserves formatting, slower queries, no indexing support. <strong>JSONB:</strong> Binary format, optimized for storage and queries, supports indexes, faster lookups, removes insignificant whitespace. Modern choice: Use JSONB unless you specifically need JSON\'s formatting preservation.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="kw">CREATE TABLE</span> products (<br>&nbsp;&nbsp;id <span class="kw">SERIAL PRIMARY KEY</span>,<br>&nbsp;&nbsp;name <span class="kw">VARCHAR</span>(<span class="num">100</span>),<br>&nbsp;&nbsp;metadata <span class="kw">JSONB</span>,<br>&nbsp;&nbsp;tags <span class="kw">JSONB</span> <span class="kw">DEFAULT</span> <span class="str">\'[]\'</span>::jsonb<br>);<br><br><span class="comment">-- Query JSON field</span><br><span class="kw">SELECT</span> * <span class="kw">FROM</span> products <span class="kw">WHERE</span> metadata-&gt;&gt;<span class="str">\'color\'</span> = <span class="str">\'blue\'</span>;'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['JSON', 'Flexible', 'Nested', 'Indexing', 'Complex']
+                    }
+                ]
+            },
+
+            // Section 3: Tables & Schema
+            'create-table': {
+                icon: '📐',
+                name: 'CREATE TABLE',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'CREATE TABLE defines a new table with columns, data types, and constraints. Each column has a name, data type, and optional constraints (NOT NULL, UNIQUE, PRIMARY KEY, DEFAULT, CHECK). The table name should be descriptive and typically plural (users, products, orders). Column definitions are comma-separated. Constraints ensure data quality and relationships.'
+                    },
+                    {
+                        title: 'Syntax',
+                        content: '<strong>Column Definition:</strong> name TYPE [constraints]. <strong>Common Constraints:</strong> NOT NULL (required), UNIQUE (no duplicates), PRIMARY KEY (unique identifier), DEFAULT value (default value when not specified), CHECK (condition on values). <strong>Table Constraint:</strong> PRIMARY KEY can be table-level or column-level.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="kw">CREATE TABLE</span> users (<br>&nbsp;&nbsp;id <span class="kw">SERIAL PRIMARY KEY</span>,<br>&nbsp;&nbsp;username <span class="kw">VARCHAR</span>(<span class="num">50</span>) <span class="kw">NOT NULL UNIQUE</span>,<br>&nbsp;&nbsp;email <span class="kw">VARCHAR</span>(<span class="num">255</span>) <span class="kw">NOT NULL UNIQUE</span>,<br>&nbsp;&nbsp;age <span class="kw">INTEGER CHECK</span> (age &gt;= <span class="num">18</span>),<br>&nbsp;&nbsp;is_active <span class="kw">BOOLEAN DEFAULT TRUE</span>,<br>&nbsp;&nbsp;created_at <span class="kw">TIMESTAMP DEFAULT CURRENT_TIMESTAMP</span><br>);'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['DDL', 'Schema', 'Structure', 'Columns', 'Definition']
+                    }
+                ]
+            },
+            'primary-key': {
+                icon: '🔑',
+                name: 'PRIMARY KEY',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'A PRIMARY KEY uniquely identifies each row in a table. Every table should have exactly one primary key. You can use SERIAL (auto-incrementing integer) or IDENTITY (SQL standard) for auto-generated keys. The primary key cannot contain NULL values and must have UNIQUE values. Primary keys are automatically indexed for fast lookups. Use natural keys (like email) only when truly unique; surrogate keys (SERIAL) are more flexible.'
+                    },
+                    {
+                        title: 'Key Types',
+                        content: '<strong>SERIAL:</strong> Auto-incrementing integer, legacy but still common. Returns generated value with RETURNING. <strong>IDENTITY (SQL Standard):</strong> Modern approach, recommended for new code. GENERATED ALWAYS or GENERATED BY DEFAULT. <strong>Natural Key:</strong> Meaningful column like email or UUID. <strong>Composite Key:</strong> Multiple columns forming the unique identifier.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="comment">-- Using SERIAL (traditional)</span><br><span class="kw">CREATE TABLE</span> posts (<br>&nbsp;&nbsp;id <span class="kw">SERIAL PRIMARY KEY</span>,<br>&nbsp;&nbsp;title <span class="kw">VARCHAR</span>(<span class="num">200</span>) <span class="kw">NOT NULL</span><br>);<br><br><span class="comment">-- Using IDENTITY (modern)</span><br><span class="kw">CREATE TABLE</span> comments (<br>&nbsp;&nbsp;id <span class="kw">INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY</span>,<br>&nbsp;&nbsp;content <span class="kw">TEXT NOT NULL</span><br>);'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Key', 'Identity', 'Unique', 'Index', 'Auto-increment']
+                    }
+                ]
+            },
+            'constraints': {
+                icon: '🛡️',
+                name: 'Constraints',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Constraints enforce data integrity by restricting the values allowed in columns. NOT NULL ensures a column always has a value. UNIQUE prevents duplicate values. PRIMARY KEY combines NOT NULL and UNIQUE for row identification. DEFAULT provides a value if none is specified. CHECK enforces a condition on values. FOREIGN KEY creates relationships between tables. Using constraints prevents invalid data from entering your database.'
+                    },
+                    {
+                        title: 'Constraint Types',
+                        content: '<strong>NOT NULL:</strong> Column must have a value. <strong>UNIQUE:</strong> All values must be different (can have multiple NULLs). <strong>PRIMARY KEY:</strong> Combines NOT NULL + UNIQUE + indexed. <strong>DEFAULT:</strong> Default value for new rows. <strong>CHECK:</strong> Custom condition (e.g., age &gt; 0). <strong>FOREIGN KEY:</strong> References another table\'s primary key. Constraints prevent data errors at the database level.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="kw">CREATE TABLE</span> products (<br>&nbsp;&nbsp;id <span class="kw">SERIAL PRIMARY KEY</span>,<br>&nbsp;&nbsp;name <span class="kw">VARCHAR</span>(<span class="num">100</span>) <span class="kw">NOT NULL</span>,<br>&nbsp;&nbsp;price <span class="kw">NUMERIC</span>(<span class="num">10</span>, <span class="num">2</span>) <span class="kw">NOT NULL CHECK</span> (price &gt; <span class="num">0</span>),<br>&nbsp;&nbsp;stock <span class="kw">INTEGER DEFAULT</span> <span class="num">0</span>,<br>&nbsp;&nbsp;sku <span class="kw">VARCHAR</span>(<span class="num">50</span>) <span class="kw">UNIQUE NOT NULL</span><br>);'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Integrity', 'Validation', 'Rules', 'Enforcement', 'Quality']
+                    }
+                ]
+            },
+            'alter-table': {
+                icon: '🔧',
+                name: 'ALTER TABLE',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'ALTER TABLE modifies an existing table structure without losing data. You can add new columns, drop existing columns, rename columns, change data types, add or remove constraints, and modify defaults. Be cautious when altering tables in production—it can lock the table briefly. Some operations (like adding NOT NULL) may require careful planning. Always backup your database before major schema changes.'
+                    },
+                    {
+                        title: 'Common Operations',
+                        content: '<strong>ADD COLUMN:</strong> Add new field. <strong>DROP COLUMN:</strong> Remove a field. <strong>RENAME COLUMN:</strong> Rename existing field. <strong>ALTER COLUMN TYPE:</strong> Change data type (careful with data conversion). <strong>ADD CONSTRAINT:</strong> Add constraint after creation. <strong>DROP CONSTRAINT:</strong> Remove a constraint. <strong>SET DEFAULT:</strong> Change default value.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="comment">-- Add a new column</span><br><span class="kw">ALTER TABLE</span> users <span class="kw">ADD COLUMN</span> phone <span class="kw">VARCHAR</span>(<span class="num">20</span>);<br><br><span class="comment">-- Drop a column</span><br><span class="kw">ALTER TABLE</span> users <span class="kw">DROP COLUMN</span> phone;<br><br><span class="comment">-- Rename column</span><br><span class="kw">ALTER TABLE</span> users <span class="kw">RENAME COLUMN</span> email <span class="kw">TO</span> user_email;<br><br><span class="comment">-- Add constraint</span><br><span class="kw">ALTER TABLE</span> users <span class="kw">ADD CONSTRAINT</span> valid_age <span class="kw">CHECK</span> (age &gt;= <span class="num">0</span>);'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['DDL', 'Modification', 'Schema', 'Evolution', 'Migration']
+                    }
+                ]
+            },
+            'indexes': {
+                icon: '⚡',
+                name: 'Indexes',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Indexes speed up data retrieval by creating a data structure that allows PostgreSQL to find rows faster. Without indexes, PostgreSQL performs full table scans. Indexes use additional storage but improve query performance dramatically. B-tree indexes (default) work well for most queries. Primary keys and unique constraints automatically create indexes. Create indexes on columns frequently used in WHERE, JOIN, and ORDER BY clauses. Over-indexing slows down inserts and updates.'
+                    },
+                    {
+                        title: 'Index Types',
+                        content: '<strong>B-tree (default):</strong> Best for general queries, range queries, sorting. <strong>Hash:</strong> Fast equality comparisons only. <strong>GiST:</strong> Complex data types, geometric data. <strong>GIN:</strong> Full-text search, arrays, JSON. <strong>BRIN:</strong> Large tables with sorted data. <strong>Primary Key Index:</strong> Auto-created. <strong>UNIQUE Index:</strong> Enforces uniqueness. Create indexes on columns in WHERE clauses and JOINs.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="comment">-- Create simple index on email column</span><br><span class="kw">CREATE INDEX</span> idx_users_email <span class="kw">ON</span> users(email);<br><br><span class="comment">-- Create composite index on multiple columns</span><br><span class="kw">CREATE INDEX</span> idx_posts_user_date <span class="kw">ON</span> posts(user_id, created_at);<br><br><span class="comment">-- Check if index is used</span><br><span class="kw">EXPLAIN SELECT</span> * <span class="kw">FROM</span> users <span class="kw">WHERE</span> email = <span class="str">\'user@example.com\'</span>;'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Performance', 'Speed', 'Query', 'Search', 'Optimization']
+                    }
+                ]
+            },
+
+            // Section 4: CRUD SQL
+            'select-query': {
+                icon: '📖',
+                name: 'SELECT',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'SELECT retrieves data from tables. You specify which columns to retrieve (or * for all), which table, and optionally filter conditions (WHERE), ordering (ORDER BY), and limits (LIMIT). SELECT is a read-only operation and doesn\'t modify data. You can retrieve data from multiple tables using JOINs. Use DISTINCT to remove duplicates, LIMIT to cap results, and ORDER BY to sort results.'
+                    },
+                    {
+                        title: 'Syntax & Clauses',
+                        content: '<strong>SELECT columns:</strong> Which fields to return. <strong>FROM table:</strong> Which table to query. <strong>WHERE condition:</strong> Filter rows (optional). <strong>ORDER BY column:</strong> Sort results ascending/descending (optional). <strong>LIMIT n:</strong> Return only n rows (optional). <strong>OFFSET n:</strong> Skip first n rows for pagination (optional). <strong>DISTINCT:</strong> Remove duplicate rows (optional).'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="comment">-- Get all users</span><br><span class="kw">SELECT</span> * <span class="kw">FROM</span> users;<br><br><span class="comment">-- Get specific columns with filter</span><br><span class="kw">SELECT</span> name, email <span class="kw">FROM</span> users <span class="kw">WHERE</span> age &gt; <span class="num">18</span>;<br><br><span class="comment">-- Get sorted, limited results</span><br><span class="kw">SELECT</span> name, created_at <span class="kw">FROM</span> users<br><span class="kw">ORDER BY</span> created_at <span class="kw">DESC</span> <span class="kw">LIMIT</span> <span class="num">10</span>;<br><br><span class="comment">-- Pagination</span><br><span class="kw">SELECT</span> * <span class="kw">FROM</span> posts <span class="kw">ORDER BY</span> id <span class="kw">LIMIT</span> <span class="num">10</span> <span class="kw">OFFSET</span> <span class="num">20</span>;'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Retrieve', 'Query', 'Filter', 'Read', 'Data']
+                    }
+                ]
+            },
+            'insert-query': {
+                icon: '➕',
+                name: 'INSERT',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'INSERT adds new rows to a table. You specify the table name, column names, and values to insert. If you insert into all columns in order, you can omit the column list. INSERT returns the number of rows inserted. Use RETURNING to get the inserted data back (useful for auto-generated IDs). You can insert multiple rows at once by providing multiple value tuples.'
+                    },
+                    {
+                        title: 'Syntax',
+                        content: '<strong>INSERT INTO table (columns):</strong> Specify which columns. <strong>VALUES (values):</strong> Provide values for each column. <strong>RETURNING *:</strong> Return inserted row(s). <strong>Multiple Rows:</strong> (val1, val2), (val3, val4), .... <strong>Column Order:</strong> Must match value order. <strong>Column Omission:</strong> Omitted columns use DEFAULT or NULL.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="comment">-- Insert single row</span><br><span class="kw">INSERT INTO</span> users (username, email, age)<br><span class="kw">VALUES</span> (<span class="str">\'john\'</span>, <span class="str">\'john@example.com\'</span>, <span class="num">25</span>);<br><br><span class="comment">-- Insert with RETURNING to get ID</span><br><span class="kw">INSERT INTO</span> users (username, email)<br><span class="kw">VALUES</span> (<span class="str">\'jane\'</span>, <span class="str">\'jane@example.com\'</span>)<br><span class="kw">RETURNING</span> id, username;<br><br><span class="comment">-- Insert multiple rows</span><br><span class="kw">INSERT INTO</span> users (username, email) <span class="kw">VALUES</span><br>(<span class="str">\'user1\'</span>, <span class="str">\'user1@example.com\'</span>),<br>(<span class="str">\'user2\'</span>, <span class="str">\'user2@example.com\'</span>),<br>(<span class="str">\'user3\'</span>, <span class="str">\'user3@example.com\'</span>);'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Create', 'Add', 'Write', 'New', 'Records']
+                    }
+                ]
+            },
+            'update-query': {
+                icon: '✏️',
+                name: 'UPDATE',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'UPDATE modifies existing rows in a table. You specify which columns to change and their new values, and which rows to update using a WHERE clause. The WHERE clause is critical—without it, all rows are updated! UPDATE returns the number of rows modified. Use RETURNING to get the updated rows back. You can update multiple columns at once.'
+                    },
+                    {
+                        title: 'Syntax',
+                        content: '<strong>UPDATE table SET:</strong> Specify which columns to change. <strong>WHERE condition:</strong> Which rows to update (MUST specify!). <strong>column = value:</strong> New value for column. <strong>Multiple columns:</strong> col1 = val1, col2 = val2, .... <strong>RETURNING:</strong> Get updated row(s) back. <strong>Always use WHERE!</strong> Omitting WHERE updates all rows.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="comment">-- Update single column</span><br><span class="kw">UPDATE</span> users <span class="kw">SET</span> age = <span class="num">26</span><br><span class="kw">WHERE</span> id = <span class="num">1</span>;<br><br><span class="comment">-- Update multiple columns</span><br><span class="kw">UPDATE</span> users <span class="kw">SET</span><br>&nbsp;&nbsp;email = <span class="str">\'newemail@example.com\'</span>,<br>&nbsp;&nbsp;updated_at = CURRENT_TIMESTAMP<br><span class="kw">WHERE</span> username = <span class="str">\'john\'</span>;<br><br><span class="comment">-- Update with RETURNING</span><br><span class="kw">UPDATE</span> products <span class="kw">SET</span> price = price * <span class="num">1.1</span><br><span class="kw">WHERE</span> category = <span class="str">\'electronics\'</span><br><span class="kw">RETURNING</span> id, name, price;'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Modify', 'Change', 'Edit', 'Update', 'Write']
+                    }
+                ]
+            },
+            'delete-query': {
+                icon: '🗑️',
+                name: 'DELETE',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'DELETE removes rows from a table. You specify which rows to delete using a WHERE clause. The WHERE clause is critical—without it, all rows are deleted! DELETE returns the number of rows removed. Use RETURNING to see which rows were deleted before they\'re gone. DELETE is permanent unless wrapped in a transaction. Be extremely careful with DELETE in production.'
+                    },
+                    {
+                        title: 'Syntax',
+                        content: '<strong>DELETE FROM table:</strong> Which table to delete from. <strong>WHERE condition:</strong> Which rows to delete (MUST specify!). <strong>RETURNING:</strong> See deleted row(s) before deletion. <strong>CASCADE:</strong> Handled by FOREIGN KEY constraints. <strong>Always use WHERE!</strong> Omitting WHERE deletes all rows. Use transactions for safety: BEGIN; DELETE...; COMMIT;'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="comment">-- Delete single row by ID</span><br><span class="kw">DELETE FROM</span> users <span class="kw">WHERE</span> id = <span class="num">5</span>;<br><br><span class="comment">-- Delete multiple rows with condition</span><br><span class="kw">DELETE FROM</span> logs <span class="kw">WHERE</span> created_at &lt; <span class="str">\'2024-01-01\'</span>;<br><br><span class="comment">-- Delete with RETURNING to confirm</span><br><span class="kw">DELETE FROM</span> posts <span class="kw">WHERE</span> user_id = <span class="num">10</span><br><span class="kw">RETURNING</span> id, title;<br><br><span class="comment">-- Safe delete in transaction</span><br><span class="kw">BEGIN</span>; <span class="kw">DELETE FROM</span> users <span class="kw">WHERE</span> id = <span class="num">1</span>; <span class="kw">COMMIT</span>;'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Remove', 'Delete', 'Destroy', 'Permanent', 'Careful']
+                    }
+                ]
+            },
+            'aggregates': {
+                icon: '📊',
+                name: 'Aggregates',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Aggregate functions calculate summary values from groups of rows. COUNT counts rows, SUM totals numeric values, AVG calculates average, MIN/MAX find extremes. GROUP BY groups rows by column values, applying aggregates per group. HAVING filters groups based on aggregate results. Aggregates ignore NULL values (except COUNT(*)). Common use: find total sales per month, count orders per user, average price per category.'
+                    },
+                    {
+                        title: 'Common Functions',
+                        content: '<strong>COUNT(*):</strong> Count all rows. <strong>COUNT(column):</strong> Count non-NULL values. <strong>SUM(column):</strong> Sum numeric values. <strong>AVG(column):</strong> Average value. <strong>MIN(column):</strong> Minimum value. <strong>MAX(column):</strong> Maximum value. <strong>GROUP BY:</strong> Group by column. <strong>HAVING:</strong> Filter groups. Order aggregates by combining functions.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="comment">-- Count total users</span><br><span class="kw">SELECT COUNT</span>(*) <span class="kw">FROM</span> users;<br><br><span class="comment">-- Total sales per user</span><br><span class="kw">SELECT</span> user_id, <span class="fn">SUM</span>(amount) <span class="kw">FROM</span> orders<br><span class="kw">GROUP BY</span> user_id;<br><br><span class="comment">-- Average price per category</span><br><span class="kw">SELECT</span> category, <span class="fn">AVG</span>(price)<br><span class="kw">FROM</span> products <span class="kw">GROUP BY</span> category;<br><br><span class="comment">-- Users with more than 5 orders</span><br><span class="kw">SELECT</span> user_id, <span class="fn">COUNT</span>(*) <span class="kw">FROM</span> orders<br><span class="kw">GROUP BY</span> user_id <span class="kw">HAVING COUNT</span>(*) &gt; <span class="num">5</span>;'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Aggregate', 'Summary', 'Statistics', 'Grouping', 'Analysis']
+                    }
+                ]
+            },
+
+            // Section 5: Relationships & JOINs
+            'one-to-many': {
+                icon: '1️⃣',
+                name: 'One-to-Many',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'One-to-Many relationships connect a single parent row to multiple child rows. For example, one user has many posts; one post belongs to one user. Create this relationship using a FOREIGN KEY in the child table referencing the parent\'s PRIMARY KEY. The foreign key column in the child table must match the type and size of the parent\'s primary key. This is the most common relationship type in databases.'
+                    },
+                    {
+                        title: 'Implementation',
+                        content: '<strong>Parent Table:</strong> users with id (PRIMARY KEY). <strong>Child Table:</strong> posts with user_id (FOREIGN KEY). <strong>Relationship:</strong> One user → Many posts. <strong>Foreign Key Syntax:</strong> FOREIGN KEY (user_id) REFERENCES users(id). <strong>Constraints:</strong> ON DELETE CASCADE (delete posts when user deleted) or SET NULL. <strong>Query:</strong> Join tables to get user and their posts.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="kw">CREATE TABLE</span> users (<br>&nbsp;&nbsp;id <span class="kw">SERIAL PRIMARY KEY</span>,<br>&nbsp;&nbsp;username <span class="kw">VARCHAR</span>(<span class="num">100</span>) <span class="kw">NOT NULL</span><br>);<br><br><span class="kw">CREATE TABLE</span> posts (<br>&nbsp;&nbsp;id <span class="kw">SERIAL PRIMARY KEY</span>,<br>&nbsp;&nbsp;title <span class="kw">VARCHAR</span>(<span class="num">200</span>) <span class="kw">NOT NULL</span>,<br>&nbsp;&nbsp;user_id <span class="kw">INTEGER NOT NULL</span>,<br>&nbsp;&nbsp;<span class="kw">FOREIGN KEY</span> (user_id) <span class="kw">REFERENCES</span> users(id) <span class="kw">ON DELETE CASCADE</span><br>);<br><br><span class="comment">-- Query user with posts</span><br><span class="kw">SELECT</span> u.username, p.title <span class="kw">FROM</span> users u<br><span class="kw">JOIN</span> posts p <span class="kw">ON</span> u.id = p.user_id;'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Relationship', 'Foreign Key', 'Parent-Child', 'Reference', 'Common']
+                    }
+                ]
+            },
+            'many-to-many': {
+                icon: '🔄',
+                name: 'Many-to-Many',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Many-to-Many relationships connect multiple rows from one table to multiple rows in another. For example, many students take many courses. Implement this using a junction (or association) table with foreign keys to both tables. The junction table stores pairs of IDs. Each row in the junction table represents a relationship between one student and one course. Always create a composite primary key on the two foreign keys to prevent duplicates.'
+                    },
+                    {
+                        title: 'Implementation',
+                        content: '<strong>Table 1: students</strong> with id. <strong>Table 2: courses</strong> with id. <strong>Junction Table: student_courses</strong> with student_id and course_id as foreign keys. <strong>Primary Key:</strong> (student_id, course_id) composite key. <strong>Query:</strong> Join through junction table to get students taking courses. <strong>Add Relationship:</strong> INSERT into junction table. <strong>Remove Relationship:</strong> DELETE from junction table.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="kw">CREATE TABLE</span> students (<br>&nbsp;&nbsp;id <span class="kw">SERIAL PRIMARY KEY</span>,<br>&nbsp;&nbsp;name <span class="kw">VARCHAR</span>(<span class="num">100</span>) <span class="kw">NOT NULL</span><br>);<br><br><span class="kw">CREATE TABLE</span> courses (<br>&nbsp;&nbsp;id <span class="kw">SERIAL PRIMARY KEY</span>,<br>&nbsp;&nbsp;name <span class="kw">VARCHAR</span>(<span class="num">100</span>) <span class="kw">NOT NULL</span><br>);<br><br><span class="kw">CREATE TABLE</span> student_courses (<br>&nbsp;&nbsp;student_id <span class="kw">INTEGER NOT NULL REFERENCES</span> students(id),<br>&nbsp;&nbsp;course_id <span class="kw">INTEGER NOT NULL REFERENCES</span> courses(id),<br>&nbsp;&nbsp;<span class="kw">PRIMARY KEY</span> (student_id, course_id)<br>);<br><br><span class="comment">-- Query: Find courses for a student</span><br><span class="kw">SELECT</span> c.name <span class="kw">FROM</span> courses c<br><span class="kw">JOIN</span> student_courses sc <span class="kw">ON</span> c.id = sc.course_id<br><span class="kw">WHERE</span> sc.student_id = <span class="num">1</span>;'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Junction', 'Association', 'Multiple', 'Complex', 'Design']
+                    }
+                ]
+            },
+            'inner-join': {
+                icon: '🔗',
+                name: 'INNER JOIN',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'INNER JOIN returns rows where there are matching values in both tables. It\'s the most commonly used join. If a row in the left table has no match in the right table, it\'s excluded. Use INNER JOIN to find related data, like users with their orders. The join condition (ON) specifies how rows match. Multiple INNER JOINs can chain to connect more than two tables.'
+                    },
+                    {
+                        title: 'Syntax',
+                        content: '<strong>SELECT columns FROM table1 INNER JOIN table2 ON condition</strong> returns rows matching the condition. <strong>ON clause:</strong> Defines the relationship, usually comparing foreign keys. <strong>Multiple JOINs:</strong> Chain them: table1 JOIN table2 JOIN table3. <strong>Aliases:</strong> Use AS to shorten names: users AS u. <strong>Only Matches:</strong> Rows with no match are excluded from results.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="comment">-- Get users and their orders</span><br><span class="kw">SELECT</span> u.username, o.total <span class="kw">FROM</span> users u<br><span class="kw">INNER JOIN</span> orders o <span class="kw">ON</span> u.id = o.user_id;<br><br><span class="comment">-- Get posts with author and comments</span><br><span class="kw">SELECT</span> p.title, u.username, c.text<br><span class="kw">FROM</span> posts p<br><span class="kw">INNER JOIN</span> users u <span class="kw">ON</span> p.user_id = u.id<br><span class="kw">INNER JOIN</span> comments c <span class="kw">ON</span> p.id = c.post_id;<br><br><span class="comment">-- Only orders with customers (matches required)</span><br><span class="kw">SELECT</span> u.name, <span class="fn">COUNT</span>(o.id) <span class="kw">FROM</span> users u<br><span class="kw">INNER JOIN</span> orders o <span class="kw">ON</span> u.id = o.user_id<br><span class="kw">GROUP BY</span> u.id;'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Join', 'Combine', 'Match', 'Relationships', 'Matching']
+                    }
+                ]
+            },
+            'left-join': {
+                icon: '⬅️',
+                name: 'LEFT JOIN',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'LEFT JOIN returns all rows from the left table and matching rows from the right table. If a row in the left table has no match in the right table, NULL values appear for the right table columns. Useful when you want to find items without related records, like users without orders. LEFT JOIN includes unmatched rows from the left table, unlike INNER JOIN which requires matches.'
+                    },
+                    {
+                        title: 'Syntax',
+                        content: '<strong>SELECT columns FROM table1 LEFT JOIN table2 ON condition</strong> returns all left rows + matches. <strong>NULL values:</strong> Appear for non-matching right table columns. <strong>Finding Unmatched:</strong> WHERE right_id IS NULL shows left table rows with no match. <strong>Left Table Fully Included:</strong> All its rows appear regardless of matches. <strong>Right Table Partial:</strong> Only matching rows appear.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="comment">-- All users, with their orders if they have any</span><br><span class="kw">SELECT</span> u.username, o.total <span class="kw">FROM</span> users u<br><span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> u.id = o.user_id;<br><br><span class="comment">-- Find users with no orders</span><br><span class="kw">SELECT</span> u.username <span class="kw">FROM</span> users u<br><span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> u.id = o.user_id<br><span class="kw">WHERE</span> o.id <span class="kw">IS NULL</span>;<br><br><span class="comment">-- Count orders per user (including 0)</span><br><span class="kw">SELECT</span> u.username, <span class="fn">COUNT</span>(o.id)<br><span class="kw">FROM</span> users u<br><span class="kw">LEFT JOIN</span> orders o <span class="kw">ON</span> u.id = o.user_id<br><span class="kw">GROUP BY</span> u.id;'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Join', 'Outer', 'All', 'Include', 'Unmatched']
+                    }
+                ]
+            },
+            'foreign-keys': {
+                icon: '🛡️',
+                name: 'Foreign Key Constraints',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Foreign Key constraints enforce referential integrity—they ensure that values in a child table exist in the parent table. When you DELETE or UPDATE a parent row, the constraint specifies what happens to dependent child rows. ON DELETE CASCADE deletes dependent rows automatically. ON DELETE SET NULL sets the foreign key to NULL. ON DELETE RESTRICT prevents deletion if dependent rows exist. Foreign keys prevent orphaned records and data inconsistency.'
+                    },
+                    {
+                        title: 'Options',
+                        content: '<strong>ON DELETE CASCADE:</strong> Delete child rows automatically. <strong>ON DELETE SET NULL:</strong> Set FK to NULL (requires nullable column). <strong>ON DELETE RESTRICT:</strong> Prevent deletion if children exist (default). <strong>ON UPDATE CASCADE:</strong> Update FK values if parent key changes. Choose based on your data model: CASCADE for owned relationships, RESTRICT for shared relationships.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="comment">-- Posts cascade delete with user</span><br><span class="kw">CREATE TABLE</span> posts (<br>&nbsp;&nbsp;id <span class="kw">SERIAL PRIMARY KEY</span>,<br>&nbsp;&nbsp;title <span class="kw">VARCHAR</span>(<span class="num">200</span>),<br>&nbsp;&nbsp;user_id <span class="kw">INTEGER NOT NULL</span>,<br>&nbsp;&nbsp;<span class="kw">FOREIGN KEY</span> (user_id) <span class="kw">REFERENCES</span> users(id)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">ON DELETE CASCADE</span><br>);<br><br><span class="comment">-- Comments set to NULL if post deleted</span><br><span class="kw">CREATE TABLE</span> comments (<br>&nbsp;&nbsp;id <span class="kw">SERIAL PRIMARY KEY</span>,<br>&nbsp;&nbsp;post_id <span class="kw">INTEGER</span>,<br>&nbsp;&nbsp;<span class="kw">FOREIGN KEY</span> (post_id) <span class="kw">REFERENCES</span> posts(id)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">ON DELETE SET NULL</span><br>);'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Integrity', 'Reference', 'Constraint', 'Consistency', 'Relationships']
+                    }
+                ]
+            },
+
+            // Section 6: Flask + SQLAlchemy
+            'sqlalchemy-setup': {
+                icon: '⚙️',
+                name: 'Setup',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'SQLAlchemy is an ORM (Object-Relational Mapper) that lets you interact with PostgreSQL using Python objects instead of raw SQL. Flask-SQLAlchemy is a Flask extension that simplifies SQLAlchemy setup. Initialize it in your Flask app by creating a SQLAlchemy instance with the app. Configure the database URI in app.config to point to your PostgreSQL database. The URI format is: postgresql://username:password@host:port/database'
+                    },
+                    {
+                        title: 'Configuration',
+                        content: '<strong>Install:</strong> pip install Flask-SQLAlchemy. <strong>DATABASE_URI:</strong> postgresql://user:pass@localhost/myapp. <strong>SQLALCHEMY_TRACK_MODIFICATIONS:</strong> Set to False to suppress warnings. <strong>SQLALCHEMY_ECHO:</strong> Set to True to see generated SQL (debugging). <strong>Connection Pool:</strong> Manages database connections automatically.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="kw">from</span> flask <span class="kw">import</span> Flask<br><span class="kw">from</span> flask_sqlalchemy <span class="kw">import</span> SQLAlchemy<br><br>app = Flask(__name__)<br>app.config[<span class="str">\'SQLALCHEMY_DATABASE_URI\'</span>] = <br>&nbsp;&nbsp;<span class="str">\'postgresql://user:password@localhost/myapp\'</span><br>app.config[<span class="str">\'SQLALCHEMY_TRACK_MODIFICATIONS\'</span>] = <span class="kw">False</span><br><br>db = SQLAlchemy(app)<br><br><span class="comment"># Now use db to define models and query</span>'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Setup', 'Configuration', 'ORM', 'Initialization', 'Database']
+                    }
+                ]
+            },
+            'model-definition': {
+                icon: '🗂️',
+                name: 'Models',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Models are Python classes that represent database tables. Each class attribute becomes a column. Column types (Integer, String, DateTime) map to PostgreSQL types. Primary keys, defaults, and constraints are specified in column definitions. Models inherit from db.Model. Once defined, models can be created in the database using db.create_all(). Models make it easy to work with data as Python objects instead of raw dictionaries.'
+                    },
+                    {
+                        title: 'Model Attributes',
+                        content: '<strong>db.Column():</strong> Defines a column. <strong>db.Integer, db.String, db.DateTime:</strong> Column types. <strong>primary_key=True:</strong> Primary key. <strong>nullable=False:</strong> NOT NULL constraint. <strong>default=:</strong> Default value. <strong>unique=True:</strong> UNIQUE constraint. <strong>index=True:</strong> Create index. <strong>ForeignKey():</strong> Foreign key reference.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="kw">from</span> datetime <span class="kw">import</span> datetime<br><br><span class="kw">class</span> User(db.Model):<br>&nbsp;&nbsp;__tablename__ = <span class="str">\'users\'</span><br>&nbsp;&nbsp;<br>&nbsp;&nbsp;id = db.Column(db.Integer, <span class="dec">primary_key=True</span>)<br>&nbsp;&nbsp;username = db.Column(db.String(<span class="num">80</span>), <br>&nbsp;&nbsp;&nbsp;&nbsp;nullable=False, <span class="dec">unique=True</span>)<br>&nbsp;&nbsp;email = db.Column(db.String(<span class="num">120</span>), <br>&nbsp;&nbsp;&nbsp;&nbsp;nullable=False)<br>&nbsp;&nbsp;is_admin = db.Column(db.Boolean, <span class="dec">default=False</span>)<br>&nbsp;&nbsp;created_at = db.Column(db.DateTime,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec">default=datetime.utcnow</span>)<br>&nbsp;&nbsp;<br>&nbsp;&nbsp;<span class="kw">def</span> __repr__(self):<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <span class="str">f\'&lt;User {self.username}&gt;\'</span>'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Class', 'Mapping', 'Definition', 'Attributes', 'Types']
+                    }
+                ]
+            },
+            'model-relationships': {
+                icon: '🔗',
+                name: 'Model Relationships',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'SQLAlchemy relationships make it easy to access related data. Use db.relationship() to define relationships on the model. For one-to-many, put the relationship on the parent (optional) or child. For many-to-many, use secondary with a junction table. backref creates a reverse relationship automatically. lazy=\'select\' loads related data when accessed. Relationships let you access related objects as attributes, like user.posts or post.author.'
+                    },
+                    {
+                        title: 'Relationship Types',
+                        content: '<strong>One-to-Many:</strong> Parent has many children. Use db.relationship() on parent. <strong>backref:</strong> Creates reverse relationship on child. <strong>many-to-many:</strong> Use secondary with junction table. <strong>lazy options:</strong> \'select\' (default), \'joined\', \'dynamic\'. <strong>cascade:</strong> Delete/clear behavior. <strong>foreign_keys:</strong> Specify FK if ambiguous.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="kw">class</span> User(db.Model):<br>&nbsp;&nbsp;id = db.Column(db.Integer, <span class="dec">primary_key=True</span>)<br>&nbsp;&nbsp;username = db.Column(db.String(<span class="num">80</span>))<br>&nbsp;&nbsp;posts = db.relationship(<span class="str">\'Post\'</span>, <span class="dec">backref=\'author\'</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="dec">cascade=\'all, delete-orphan\'</span>)<br><br><span class="kw">class</span> Post(db.Model):<br>&nbsp;&nbsp;id = db.Column(db.Integer, <span class="dec">primary_key=True</span>)<br>&nbsp;&nbsp;title = db.Column(db.String(<span class="num">200</span>))<br>&nbsp;&nbsp;user_id = db.Column(db.Integer, <br>&nbsp;&nbsp;&nbsp;&nbsp;db.ForeignKey(<span class="str">\'user.id\'</span>), <span class="dec">nullable=False</span>)<br><br><span class="comment"># Usage: user.posts returns all posts by user</span><br><span class="comment"># post.author returns the user who wrote it</span>'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Relationship', 'Navigation', 'Foreign Key', 'Backref', 'Query']
+                    }
+                ]
+            },
+            'querying': {
+                icon: '🔍',
+                name: 'Querying',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'SQLAlchemy provides methods to query data without writing SQL. db.session.query(Model) starts a query. filter_by(column=value) filters by column equality. filter(Model.column == value) allows complex conditions. all() returns all matching rows, first() returns one, get(id) retrieves by primary key. order_by() sorts results, limit() caps results. Queries are lazy—they don\'t execute until you call all(), first(), etc.'
+                    },
+                    {
+                        title: 'Common Methods',
+                        content: '<strong>query(Model):</strong> Start query. <strong>filter_by(col=val):</strong> Simple equality. <strong>filter(condition):</strong> Complex conditions. <strong>.all():</strong> Get all matching rows. <strong>.first():</strong> Get first match or None. <strong>.get(id):</strong> Get by ID. <strong>.count():</strong> Count results. <strong>.order_by():</strong> Sort. <strong>.limit(n):</strong> Limit results. <strong>.join():</strong> Join tables.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="comment"># Get all users</span><br>users = db.session.query(User).all()<br><br><span class="comment"># Get user by ID</span><br>user = db.session.query(User).get(<span class="num">1</span>)<br>&nbsp;&nbsp;<span class="comment"># or shorthand:</span><br>user = User.query.get(<span class="num">1</span>)<br><br><span class="comment"># Filter by email</span><br>user = User.query.filter_by(email=<span class="str">\'user@example.com\'</span>).first()<br><br><span class="comment"># Complex filter</span><br>posts = Post.query.filter(<br>&nbsp;&nbsp;Post.created_at &gt; datetime(<span class="num">2024</span>, <span class="num">1</span>, <span class="num">1</span>)<br>).order_by(Post.created_at.desc()).limit(<span class="num">10</span>).all()<br><br><span class="comment"># Count</span><br>count = User.query.count()'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Select', 'Filter', 'Fetch', 'Query', 'Database']
+                    }
+                ]
+            },
+            'migrations': {
+                icon: '📦',
+                name: 'Migrations',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'Flask-Migrate manages database schema changes using Alembic. Initialize migrations with flask db init. Create a migration when your models change: flask db migrate. Apply migrations with flask db upgrade. Migrations track schema changes in version-controlled files. downgrade() reverts changes if needed. Migrations are essential for team development and production deployments. They separate code changes from database changes.'
+                    },
+                    {
+                        title: 'Commands',
+                        content: '<strong>flask db init:</strong> Create migrations folder. <strong>flask db migrate -m \'msg\':</strong> Create new migration. <strong>flask db upgrade:</strong> Apply migrations. <strong>flask db downgrade:</strong> Revert last migration. <strong>flask db current:</strong> Show current revision. <strong>flask db history:</strong> Show all revisions. Always review auto-generated migrations before applying!'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="comment"># Initialize migrations (once per project)</span><br>flask db init<br><br><span class="comment"># After changing models</span><br>flask db migrate -m <span class="str">\'Add email to users\'</span><br><br><span class="comment"># Review migrations/versions/xxxx_add_email_to_users.py</span><br><span class="comment"># Apply migration</span><br>flask db upgrade<br><br><span class="comment"># Revert if needed</span><br>flask db downgrade'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Version', 'Control', 'Schema', 'Change', 'Evolution']
+                    }
+                ]
+            },
+
+            // Section 7: Useful Commands
+            'psql-commands': {
+                icon: '💻',
+                name: 'psql Commands',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'psql is the PostgreSQL command-line interface. It\'s used for interactive database management, queries, and administration. You can run SQL statements, check database structure, and manage users. Start psql with psql -U username -h hostname. Common commands start with backslash (\\). These meta-commands help you explore databases and tables without SQL.'
+                    },
+                    {
+                        title: 'Essential Commands',
+                        content: '<strong>\\l:</strong> List databases. <strong>\\c dbname:</strong> Connect to database. <strong>\\dt:</strong> List tables. <strong>\\d tablename:</strong> Describe table (columns, types). <strong>\\du:</strong> List users/roles. <strong>\\q:</strong> Quit psql. <strong>\\h:</strong> Help on SQL commands. <strong>\\i file.sql:</strong> Execute SQL from file. <strong>\\e:</strong> Edit previous query in editor.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="comment">-- Connect to PostgreSQL</span><br>psql -U postgres -h localhost<br><br><span class="comment">-- Or in psql, connect to a database</span><br>\\c myapp_db<br><br><span class="comment">-- List tables in current database</span><br>\\dt<br><br><span class="comment">-- Describe table structure</span><br>\\d users<br><br><span class="comment">-- List all databases</span><br>\\l<br><br><span class="comment">-- Run SQL query</span><br><span class="kw">SELECT</span> * <span class="kw">FROM</span> users;<br><br><span class="comment">-- Exit</span><br>\\q'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['CLI', 'Administration', 'Interactive', 'Command-line', 'Exploration']
+                    }
+                ]
+            },
+            'backup-restore': {
+                icon: '💾',
+                name: 'Backup & Restore',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'pg_dump exports your database to a file for backup or migration. pg_restore imports the file back. Backups protect against data loss from accidents, failures, or attacks. Create regular backups of production databases. pg_dump can export as plain text SQL or binary format. Large databases benefit from binary format and compression. Store backups securely in multiple locations. Schedule automated backups for production systems.'
+                    },
+                    {
+                        title: 'Backup & Restore Syntax',
+                        content: '<strong>pg_dump:</strong> Backup single database. <strong>pg_dumpall:</strong> Backup all databases and users. <strong>-U username:</strong> Database user. <strong>-h host:</strong> Database host. <strong>-Fc:</strong> Custom format (binary, compressed). <strong>-Fp:</strong> Plain text SQL format. <strong>pg_restore:</strong> Restore from custom format. <strong>psql &lt; file.sql:</strong> Restore plain text. Compress backups: gzip filename.dump'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="comment">-- Backup to plain SQL file</span><br>pg_dump -U postgres myapp_db &gt; backup.sql<br><br><span class="comment">-- Backup to compressed binary format</span><br>pg_dump -U postgres -Fc myapp_db &gt; backup.dump<br>gzip backup.dump<br><br><span class="comment">-- Backup all databases</span><br>pg_dumpall -U postgres &gt; all_databases.sql<br><br><span class="comment">-- Restore from plain SQL</span><br>psql -U postgres &lt; backup.sql<br><br><span class="comment">-- Restore from binary format</span><br>pg_restore -U postgres -d myapp_db backup.dump<br><br><span class="comment">-- Schedule daily backup (cron)</span><br>0 2 * * * pg_dump -U postgres myapp &gt; /backups/$(date +\\%Y-\\%m-\\%d).sql'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Backup', 'Recovery', 'Export', 'Import', 'Safety']
+                    }
+                ]
+            },
+            'user-management': {
+                icon: '👥',
+                name: 'User Management',
+                sections: [
+                    {
+                        title: 'Description',
+                        content: 'PostgreSQL users (roles) control database access. Create users for different applications and permissions. Assign specific privileges to each user—principle of least privilege. One user per application in production. Default superuser is postgres. GRANT gives permissions, REVOKE removes them. Permissions include: CONNECT (access database), SELECT (read), INSERT, UPDATE, DELETE, CREATE (create tables), DROP (delete tables).'
+                    },
+                    {
+                        title: 'User Commands',
+                        content: '<strong>CREATE USER name WITH PASSWORD \'pass\':</strong> Create user. <strong>CREATE ROLE name:</strong> Create role. <strong>ALTER USER name WITH PASSWORD \'newpass\':</strong> Change password. <strong>GRANT permission ON database TO user:</strong> Grant privilege. <strong>REVOKE permission ON database FROM user:</strong> Remove privilege. <strong>DROP USER name:</strong> Delete user. <strong>\\du:</strong> List users in psql. Default user: postgres.'
+                    },
+                    {
+                        title: 'Example',
+                        code: '<span class="comment">-- Create user for Flask app</span><br><span class="kw">CREATE USER</span> app_user <span class="kw">WITH PASSWORD</span> <span class="str">\'secure_password\'</span>;<br><br><span class="comment">-- Create database</span><br><span class="kw">CREATE DATABASE</span> myapp_db <span class="kw">OWNER</span> app_user;<br><br><span class="comment">-- Grant permissions on database</span><br><span class="kw">GRANT CONNECT ON DATABASE</span> myapp_db <span class="kw">TO</span> app_user;<br><br><span class="comment">-- Grant table permissions</span><br><span class="kw">GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO</span> app_user;<br><br><span class="comment">-- Change password</span><br><span class="kw">ALTER USER</span> app_user <span class="kw">WITH PASSWORD</span> <span class="str">\'new_secure_password\'</span>;<br><br><span class="comment">-- Revoke permission</span><br><span class="kw">REVOKE DELETE ON ALL TABLES IN SCHEMA public FROM</span> app_user;'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Security', 'Permissions', 'Access', 'Control', 'Privileges']
+                    }
+                ]
+            },
+            'troubleshooting': {
+                icon: '🔧',
+                name: 'Troubleshooting',
+                sections: [
+                    {
+                        title: 'Common Issues',
+                        content: '<strong>Connection Refused:</strong> PostgreSQL not running. Start with: sudo service postgresql start. <strong>Authentication Failed:</strong> Wrong password or user doesn\'t exist. Verify credentials. <strong>Database Does Not Exist:</strong> Create with CREATE DATABASE name. <strong>Permission Denied:</strong> Grant permissions with GRANT. <strong>Table Does Not Exist:</strong> Check spelling and schema. Use \\dt to list tables. <strong>Port Already in Use:</strong> Change port in postgresql.conf or stop process using the port.'
+                    },
+                    {
+                        title: 'Debugging Tips',
+                        content: '<strong>Check PostgreSQL Status:</strong> sudo service postgresql status. <strong>View Logs:</strong> tail -f /var/log/postgresql/postgresql.log. <strong>Test Connection:</strong> psql -U user -h localhost -d dbname. <strong>SQLALCHEMY_ECHO=True:</strong> Log all SQL in Flask. <strong>Check Constraints:</strong> \\d table to see constraints. <strong>Slow Queries:</strong> Use EXPLAIN ANALYZE to profile. <strong>Verify Foreign Keys:</strong> Use \\d to see relationships.'
+                    },
+                    {
+                        title: 'Example Solutions',
+                        code: '<span class="comment">-- Cannot create table: Check user permissions</span><br><span class="kw">GRANT CREATE ON SCHEMA public TO</span> app_user;<br><br><span class="comment">-- Foreign key violation: Check referenced data exists</span><br><span class="kw">SELECT</span> * <span class="kw">FROM</span> users <span class="kw">WHERE</span> id = <span class="num">999</span>;<br><br><span class="comment">-- Cannot connect: Test with psql directly</span><br>psql -U postgres -h localhost<br><br><span class="comment">-- See generated SQL in Flask</span><br>app.config[<span class="str">\'SQLALCHEMY_ECHO\'</span>] = <span class="kw">True</span><br><br><span class="comment">-- Analyze slow query</span><br><span class="kw">EXPLAIN ANALYZE SELECT</span> * <span class="kw">FROM</span> users <span class="kw">WHERE</span> id = <span class="num">1</span>;'
+                    },
+                    {
+                        title: 'Tags',
+                        tags: ['Debug', 'Error', 'Problem-solving', 'Fix', 'Help']
+                    }
+                ]
+            }
+        };
+
+        function showModal(key) {
+            const data = modalData[key];
+            if (!data) return;
+
+            document.getElementById('modal-icon').textContent = data.icon;
+            document.getElementById('modal-name').textContent = data.name;
+
+            const body = document.getElementById('modal-body');
+            body.innerHTML = '';
+
+            data.sections.forEach(section => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'modal-section';
+
+                const title = document.createElement('div');
+                title.className = 'modal-section-title';
+                title.textContent = section.title;
+                sectionDiv.appendChild(title);
+
+                if (section.content) {
+                    const desc = document.createElement('div');
+                    desc.className = 'description';
+                    desc.innerHTML = section.content;
+                    sectionDiv.appendChild(desc);
+                }
+
+                if (section.code) {
+                    const code = document.createElement('div');
+                    code.className = 'code-example';
+                    code.innerHTML = section.code;
+                    sectionDiv.appendChild(code);
+                }
+
+                if (section.tags) {
+                    const tagsDiv = document.createElement('div');
+                    tagsDiv.style.marginTop = '0.75rem';
+                    const colors = ['blue', 'green', 'yellow', 'purple', 'orange'];
+                    section.tags.forEach((tag, idx) => {
+                        const tagSpan = document.createElement('span');
+                        tagSpan.className = 'tag ' + colors[idx % colors.length];
+                        tagSpan.textContent = tag;
+                        tagsDiv.appendChild(tagSpan);
+                    });
+                    sectionDiv.appendChild(tagsDiv);
+                }
+
+                body.appendChild(sectionDiv);
+            });
+
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal(event) {
+            if (event && event.target.id !== 'modal') return;
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        document.querySelectorAll('.component-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.animation = 'pulse 0.5s ease';
+            });
+            card.addEventListener('animationend', function() {
+                this.style.animation = '';
+            });
+        });
+    </script>
+</body>
+</html>

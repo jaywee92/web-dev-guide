@@ -63,6 +63,7 @@
   .c-put::before { background:var(--orange); }  .c-del::before { background:var(--red); }
   .c-arch::before { background:var(--purple); } .c-str::before { background:var(--yellow); }
   .c-html::before { background:var(--cyan); }   .c-css::before { background:var(--pink); }
+  .c-pg::before { background:var(--yellow); }
   .ch { display:flex; align-items:center; gap:10px; }
   .ci { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
   .ct { font-weight:700; font-size:14px; }
@@ -186,6 +187,23 @@
     <div class="cm" style="background:var(--yellow-dim);color:var(--yellow);">SETUP</div>
     <div class="cd">How a Flask project is organized — folder layout, configuration, virtual environments, and best practices.</div>
     <div class="cs"><span>app.py</span><span>models/</span><span>routes/</span><span>venv</span></div>
+  </a>
+</div>
+
+<!-- ── Database ── -->
+<h2 class="sh">Database</h2>
+<p class="ss">Learn how data is stored, queried, and managed</p>
+
+<div class="cards">
+  <a href="postgresql-guide.html" class="card c-pg">
+    <div class="ch">
+      <div class="ci" style="background:var(--yellow-dim);color:var(--yellow);">🐘</div>
+      <div class="ct">PostgreSQL</div>
+      <div class="ca">→</div>
+    </div>
+    <div class="cm" style="background:var(--yellow-dim);color:var(--yellow);">DATABASE</div>
+    <div class="cd">Relational databases, SQL queries, table design, relationships, and how PostgreSQL integrates with Flask via SQLAlchemy.</div>
+    <div class="cs"><span>SQL</span><span>Tables</span><span>JOINs</span><span>ORM</span><span>Migrations</span></div>
   </a>
 </div>
 
