@@ -103,12 +103,20 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         .section {
             margin-bottom: 3rem;
             opacity: 0;
-            animation: fadeSlideUp 0.6s ease forwards;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(.4,0,.2,1);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .section-title {
@@ -132,8 +140,8 @@
         }
 
         .component-card {
-            background-color: var(--surface);
-            border: 1px solid var(--border);
+            background: rgba(26,29,39,.7);
+            border: 1px solid rgba(255,255,255,.06);
             border-radius: var(--radius);
             padding: 1.5rem;
             cursor: pointer;
@@ -141,12 +149,32 @@
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
+            backdrop-filter: blur(12px);
+            overflow: hidden;
+            position: relative;
         }
 
         .component-card:hover {
             border-color: var(--yellow);
             background-color: var(--yellow-dim);
             transform: scale(1.02);
+        }
+
+        .component-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,.03), transparent);
+            pointer-events: none;
+            transition: none;
+        }
+
+        .component-card:hover::after {
+            left: 100%;
+            transition: left .7s ease;
         }
 
         .component-icon {
@@ -367,6 +395,8 @@
             gap: 8px;
             margin-bottom: 40px;
             animation: fadeSlideUp 0.6s ease-out 0.1s both;
+            perspective: 1000px;
+            transform-style: preserve-3d;
         }
 
         .flow-node {
@@ -385,6 +415,22 @@
             color: inherit;
         }
 
+        .flow-node::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, transparent 40%, currentColor 50%, transparent 60%);
+            opacity: 0;
+            transition: opacity .3s;
+            z-index: -1;
+            filter: blur(4px);
+        }
+
+        .flow-node:hover::before {
+            opacity: .3;
+        }
+
         .flow-node::after {
             content: '→';
             position: absolute;
@@ -394,7 +440,7 @@
         }
 
         .flow-node:hover::after { opacity: 1; transform: translateX(4px); }
-        .flow-node:hover { transform: translateX(8px); }
+        .flow-node:hover { transform: translateX(8px) translateZ(15px) scale(1.03); box-shadow: 0 10px 30px rgba(0,0,0,.3); }
 
         .flow-node.n-app { background: var(--blue-dim); border: 2px solid var(--blue); color: var(--blue); }
         .flow-node.n-orm { background: var(--green-dim); border: 2px solid var(--green); color: var(--green); }
@@ -406,11 +452,33 @@
             font-size: 24px;
             color: var(--text-muted);
             animation: bounce 2s infinite;
+            position: relative;
+        }
+
+        .flow-arrow::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: -4px;
+            width: 8px;
+            height: 8px;
+            margin-left: -4px;
+            background: var(--yellow);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--yellow);
+            animation: dataFlowDown 2s ease-in-out infinite;
         }
 
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-5px); }
+        }
+
+        @keyframes dataFlowDown {
+            0% { top: -4px; opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { top: calc(100% - 4px); opacity: 0; }
         }
 
         .flow-node-label { font-size: 14px; }
@@ -476,6 +544,60 @@
             }
         }
 
+        /* ANIMATED GRADIENT BACKGROUND ORBS */
+        .bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: .07;
+            animation: orbFloat 20s ease-in-out infinite;
+        }
+
+        .bg-orb:nth-child(1) {
+            width: 500px;
+            height: 500px;
+            background: #f5c542;
+            top: -150px;
+            left: -100px;
+        }
+
+        .bg-orb:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            background: #5b9cf5;
+            top: 50%;
+            right: -150px;
+            animation-delay: -7s;
+            animation-duration: 25s;
+        }
+
+        .bg-orb:nth-child(3) {
+            width: 350px;
+            height: 350px;
+            background: #a78bfa;
+            bottom: -100px;
+            left: 30%;
+            animation-delay: -14s;
+            animation-duration: 22s;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(80px, -60px) scale(1.1); }
+            50% { transform: translate(-40px, 80px) scale(.9); }
+            75% { transform: translate(60px, 40px) scale(1.05); }
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 1rem;
@@ -502,9 +624,183 @@
                 padding: 1.5rem;
             }
         }
+
+        /* ── Interactive SQL JOIN Visualizer ── */
+        .join-viz {
+            background: rgba(26,29,39,.6);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,.06);
+            border-radius: 16px;
+            padding: 32px;
+            margin-top: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .join-viz::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, var(--orange), var(--yellow), var(--green));
+            opacity: .6;
+        }
+        .join-viz-title {
+            text-align: center; font-size: 1.3rem; font-weight: 700; margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--orange), var(--yellow));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .join-viz-sub {
+            text-align: center; font-size: 12px; color: var(--text-muted); margin-bottom: 24px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* JOIN type tabs */
+        .join-tabs {
+            display: flex; justify-content: center; gap: 8px; margin-bottom: 28px; flex-wrap: wrap;
+        }
+        .join-tab {
+            padding: 8px 18px; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 600;
+            border: 1px solid var(--border); background: var(--surface); color: var(--text-muted);
+            transition: all .3s ease; font-family: 'JetBrains Mono', monospace;
+        }
+        .join-tab:hover { border-color: var(--orange); color: var(--orange); }
+        .join-tab.active {
+            background: var(--orange-dim); border-color: var(--orange); color: var(--orange);
+            box-shadow: 0 0 16px rgba(245,158,66,.15);
+        }
+
+        /* Tables area */
+        .join-tables-area {
+            display: flex; align-items: flex-start; justify-content: center; gap: 24px;
+            margin-bottom: 24px; position: relative; min-height: 220px;
+        }
+        .join-table-wrap { flex: 0 0 auto; }
+        .join-table-label {
+            font-weight: 700; font-size: 14px; margin-bottom: 8px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .join-table-label.left-label { color: var(--green); }
+        .join-table-label.right-label { color: var(--purple); }
+
+        .join-tbl {
+            border-collapse: collapse; font-size: 13px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .join-tbl th {
+            padding: 8px 16px; text-align: center; font-weight: 600; font-size: 12px;
+        }
+        .join-tbl .left-hdr th { background: var(--green); color: #0f1117; }
+        .join-tbl .right-hdr th { background: var(--purple); color: #fff; }
+        .join-tbl td {
+            padding: 8px 16px; text-align: center; border: 1px solid var(--border);
+            background: var(--surface); transition: all .4s ease; position: relative;
+        }
+        .join-tbl tr.row-highlight td {
+            background: rgba(245,158,66,.12); border-color: var(--orange);
+            box-shadow: 0 0 8px rgba(245,158,66,.1);
+        }
+        .join-tbl tr.row-null td {
+            background: rgba(248,113,113,.08); color: var(--text-muted); font-style: italic;
+        }
+
+        /* SVG connection area */
+        .join-svg-area {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 2;
+        }
+        .join-svg-area line {
+            stroke: var(--orange); stroke-width: 2; opacity: 0;
+            transition: opacity .5s ease; stroke-dasharray: 6 3;
+        }
+        .join-svg-area line.visible { opacity: .7; }
+        .join-svg-area circle {
+            fill: var(--orange); opacity: 0; transition: opacity .5s ease;
+        }
+        .join-svg-area circle.visible { opacity: 1; }
+
+        /* Venn diagram */
+        .join-venn-wrap {
+            display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 24px;
+        }
+        .join-venn {
+            width: 180px; height: 110px; position: relative;
+        }
+        .join-venn-circle {
+            position: absolute; width: 90px; height: 90px; border-radius: 50%;
+            border: 2px solid; top: 10px; transition: all .5s ease;
+        }
+        .join-venn-circle.venn-left {
+            left: 10px; border-color: var(--green); background: transparent;
+        }
+        .join-venn-circle.venn-right {
+            right: 10px; border-color: var(--purple); background: transparent;
+        }
+        .join-venn-circle.venn-active { opacity: 1; }
+        .join-venn-overlap {
+            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+            width: 40px; height: 90px; transition: all .5s ease; opacity: 0;
+        }
+        .join-venn-label {
+            font-size: 10px; font-family: 'JetBrains Mono', monospace;
+            color: var(--text-muted); text-align: center;
+        }
+        .join-venn-labels {
+            display: flex; justify-content: center; gap: 50px; margin-top: 4px;
+        }
+        .join-venn-labels span:first-child { color: var(--green); }
+        .join-venn-labels span:last-child { color: var(--purple); }
+
+        /* SQL display */
+        .join-sql {
+            background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px;
+            padding: 16px 20px; margin-bottom: 20px; font-family: 'JetBrains Mono', monospace;
+            font-size: 12px; line-height: 1.7; overflow-x: auto; position: relative;
+        }
+        .join-sql .kw { color: var(--purple); font-weight: 600; }
+        .join-sql .tbl { color: var(--green); }
+        .join-sql .col { color: var(--blue); }
+        .join-sql .jt { color: var(--orange); font-weight: 700; }
+        .join-sql .op { color: var(--yellow); }
+
+        /* Result table */
+        .join-result-label {
+            font-weight: 600; font-size: 13px; margin-bottom: 10px; color: var(--yellow);
+            font-family: 'JetBrains Mono', monospace;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .join-result-label::before {
+            content: '↓'; display: inline-flex; width: 20px; height: 20px; border-radius: 50%;
+            background: var(--yellow-dim); color: var(--yellow); align-items: center;
+            justify-content: center; font-size: 11px;
+        }
+        .join-result {
+            border-collapse: collapse; width: 100%; font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .join-result th {
+            padding: 8px 12px; text-align: left; font-weight: 600; font-size: 11px;
+            background: var(--surface-bright); color: var(--yellow); border-bottom: 2px solid var(--yellow);
+        }
+        .join-result td {
+            padding: 8px 12px; border-bottom: 1px solid var(--border);
+            background: var(--surface); transition: all .3s ease;
+        }
+        .join-result tr { opacity: 0; transform: translateX(-10px); }
+        .join-result tr.show { opacity: 1; transform: translateX(0); transition: all .4s ease; }
+        .join-result td.null-val { color: var(--red); font-style: italic; opacity: .6; }
+
+        @media (max-width: 768px) {
+            .join-tables-area { flex-direction: column; align-items: center; }
+            .join-svg-area { display: none; }
+            .join-viz { padding: 20px 16px; }
+            .join-tabs { gap: 6px; }
+            .join-tab { padding: 6px 12px; font-size: 11px; }
+        }
     </style>
 </head>
 <body>
+    <div class="bg-canvas">
+        <div class="bg-orb"></div>
+        <div class="bg-orb"></div>
+        <div class="bg-orb"></div>
+    </div>
     <div class="container">
         <div class="header">
             <a href="index.html" class="back-link">← Back to Overview</a>
@@ -717,6 +1013,64 @@
                 </div>
             </div>
             <div class="info-box"><strong>Tip:</strong> Use JOINs to combine data from multiple tables efficiently instead of making separate queries.</div>
+
+            <!-- ── Interactive SQL JOIN Visualizer ── -->
+            <div class="join-viz" id="joinViz">
+                <div class="join-viz-title">Interactive SQL JOIN Visualizer</div>
+                <div class="join-viz-sub">Click a JOIN type to see how tables combine</div>
+
+                <div class="join-tabs">
+                    <div class="join-tab active" data-join="inner">INNER JOIN</div>
+                    <div class="join-tab" data-join="left">LEFT JOIN</div>
+                    <div class="join-tab" data-join="right">RIGHT JOIN</div>
+                    <div class="join-tab" data-join="full">FULL JOIN</div>
+                </div>
+
+                <div class="join-tables-area" id="joinTablesArea">
+                    <div class="join-table-wrap">
+                        <div class="join-table-label left-label">users</div>
+                        <table class="join-tbl" id="leftTable">
+                            <tr class="left-hdr"><th>id</th><th>name</th><th>employer_id</th></tr>
+                            <tr data-uid="1"><td>1</td><td>Tim</td><td>1</td></tr>
+                            <tr data-uid="2"><td>2</td><td>John</td><td></td></tr>
+                            <tr data-uid="3"><td>3</td><td>Mark</td><td>2</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="join-table-wrap">
+                        <div class="join-table-label right-label">employer</div>
+                        <table class="join-tbl" id="rightTable">
+                            <tr class="right-hdr"><th>id</th><th>name</th></tr>
+                            <tr data-eid="1"><td>1</td><td>Apple</td></tr>
+                            <tr data-eid="2"><td>2</td><td>Meta</td></tr>
+                            <tr data-eid="3"><td>3</td><td>Google</td></tr>
+                        </table>
+                    </div>
+
+                    <svg class="join-svg-area" id="joinSvg"></svg>
+                </div>
+
+                <!-- Venn diagram -->
+                <div class="join-venn-wrap">
+                    <div class="join-venn" id="joinVenn">
+                        <div class="join-venn-circle venn-left" id="vennLeft"></div>
+                        <div class="join-venn-circle venn-right" id="vennRight"></div>
+                    </div>
+                    <div class="join-venn-labels">
+                        <span>users</span>
+                        <span>employer</span>
+                    </div>
+                </div>
+
+                <!-- SQL code -->
+                <div class="join-sql" id="joinSql"></div>
+
+                <!-- Result table -->
+                <div class="join-result-label">Result</div>
+                <div style="overflow-x:auto;">
+                    <table class="join-result" id="joinResult"></table>
+                </div>
+            </div>
         </section>
 
         <!-- Section 6: Flask + SQLAlchemy -->
@@ -1630,6 +1984,291 @@
                 this.style.animation = '';
             });
         });
+
+        // Scroll-triggered section reveals
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.section').forEach(el => revealObserver.observe(el));
+
+        // 3D tilt on component cards
+        document.querySelectorAll('.component-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - .5;
+                const y = (e.clientY - rect.top) / rect.height - .5;
+                card.style.transform = `perspective(600px) rotateX(${y * -8}deg) rotateY(${x * 8}deg) scale(1.03)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+
+        // 3D tilt on flow diagram
+        const overviewFlow = document.querySelector('.overview-flow');
+        if (overviewFlow) {
+            overviewFlow.addEventListener('mousemove', e => {
+                const rect = overviewFlow.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - .5;
+                const y = (e.clientY - rect.top) / rect.height - .5;
+                overviewFlow.style.transform = `perspective(800px) rotateX(${y * -6}deg) rotateY(${x * 6}deg)`;
+            });
+            overviewFlow.addEventListener('mouseleave', () => {
+                overviewFlow.style.transform = '';
+            });
+        }
+
+        // ── Interactive SQL JOIN Visualizer ──
+        (function() {
+            const users = [
+                { id: 1, name: 'Tim', employer_id: 1 },
+                { id: 2, name: 'John', employer_id: null },
+                { id: 3, name: 'Mark', employer_id: 2 }
+            ];
+            const employers = [
+                { id: 1, name: 'Apple' },
+                { id: 2, name: 'Meta' },
+                { id: 3, name: 'Google' }
+            ];
+
+            const joinData = {
+                inner: {
+                    leftHighlight: [1, 3],
+                    rightHighlight: [1, 2],
+                    connections: [[1, 1], [3, 2]],
+                    venn: { left: false, right: false, overlap: true },
+                    sql: `<span class="kw">SELECT</span>\n  <span class="col">users.id</span>, <span class="col">users.name</span>, <span class="col">employer.name</span> <span class="kw">AS</span> <span class="col">employerName</span>\n<span class="kw">FROM</span>\n  <span class="tbl">users</span>\n  <span class="jt">JOIN</span> <span class="tbl">employer</span> <span class="kw">ON</span> <span class="col">users.employer_id</span> <span class="op">=</span> <span class="col">employer.id</span>;`,
+                    result: [
+                        { id: 1, name: 'Tim', employerName: 'Apple' },
+                        { id: 3, name: 'Mark', employerName: 'Meta' }
+                    ]
+                },
+                left: {
+                    leftHighlight: [1, 2, 3],
+                    rightHighlight: [1, 2],
+                    connections: [[1, 1], [3, 2]],
+                    nullRows: [2],
+                    venn: { left: true, right: false, overlap: true },
+                    sql: `<span class="kw">SELECT</span>\n  <span class="col">users.id</span>, <span class="col">users.name</span>, <span class="col">employer.name</span> <span class="kw">AS</span> <span class="col">employerName</span>\n<span class="kw">FROM</span>\n  <span class="tbl">users</span>\n  <span class="jt">LEFT JOIN</span> <span class="tbl">employer</span> <span class="kw">ON</span> <span class="col">users.employer_id</span> <span class="op">=</span> <span class="col">employer.id</span>;`,
+                    result: [
+                        { id: 1, name: 'Tim', employerName: 'Apple' },
+                        { id: 2, name: 'John', employerName: 'NULL' },
+                        { id: 3, name: 'Mark', employerName: 'Meta' }
+                    ]
+                },
+                right: {
+                    leftHighlight: [1, 3],
+                    rightHighlight: [1, 2, 3],
+                    connections: [[1, 1], [3, 2]],
+                    nullRows: [],
+                    rightNullRows: [3],
+                    venn: { left: false, right: true, overlap: true },
+                    sql: `<span class="kw">SELECT</span>\n  <span class="col">users.id</span>, <span class="col">users.name</span>, <span class="col">employer.name</span> <span class="kw">AS</span> <span class="col">employerName</span>\n<span class="kw">FROM</span>\n  <span class="tbl">users</span>\n  <span class="jt">RIGHT JOIN</span> <span class="tbl">employer</span> <span class="kw">ON</span> <span class="col">users.employer_id</span> <span class="op">=</span> <span class="col">employer.id</span>;`,
+                    result: [
+                        { id: 1, name: 'Tim', employerName: 'Apple' },
+                        { id: 3, name: 'Mark', employerName: 'Meta' },
+                        { id: 'NULL', name: 'NULL', employerName: 'Google' }
+                    ]
+                },
+                full: {
+                    leftHighlight: [1, 2, 3],
+                    rightHighlight: [1, 2, 3],
+                    connections: [[1, 1], [3, 2]],
+                    nullRows: [2],
+                    rightNullRows: [3],
+                    venn: { left: true, right: true, overlap: true },
+                    sql: `<span class="kw">SELECT</span>\n  <span class="col">users.id</span>, <span class="col">users.name</span>, <span class="col">employer.name</span> <span class="kw">AS</span> <span class="col">employerName</span>\n<span class="kw">FROM</span>\n  <span class="tbl">users</span>\n  <span class="jt">FULL JOIN</span> <span class="tbl">employer</span> <span class="kw">ON</span> <span class="col">users.employer_id</span> <span class="op">=</span> <span class="col">employer.id</span>;`,
+                    result: [
+                        { id: 1, name: 'Tim', employerName: 'Apple' },
+                        { id: 2, name: 'John', employerName: 'NULL' },
+                        { id: 3, name: 'Mark', employerName: 'Meta' },
+                        { id: 'NULL', name: 'NULL', employerName: 'Google' }
+                    ]
+                }
+            };
+
+            const tabs = document.querySelectorAll('.join-tab');
+            const leftTable = document.getElementById('leftTable');
+            const rightTable = document.getElementById('rightTable');
+            const joinSvg = document.getElementById('joinSvg');
+            const joinSql = document.getElementById('joinSql');
+            const joinResult = document.getElementById('joinResult');
+            const vennLeft = document.getElementById('vennLeft');
+            const vennRight = document.getElementById('vennRight');
+
+            function drawConnections(connections) {
+                joinSvg.innerHTML = '';
+                const area = document.getElementById('joinTablesArea');
+                const areaRect = area.getBoundingClientRect();
+
+                setTimeout(() => {
+                    connections.forEach(([uid, eid], i) => {
+                        const leftRow = leftTable.querySelector(`tr[data-uid="${uid}"]`);
+                        const rightRow = rightTable.querySelector(`tr[data-eid="${eid}"]`);
+                        if (!leftRow || !rightRow) return;
+
+                        const lr = leftRow.getBoundingClientRect();
+                        const rr = rightRow.getBoundingClientRect();
+
+                        const x1 = lr.right - areaRect.left;
+                        const y1 = lr.top + lr.height / 2 - areaRect.top;
+                        const x2 = rr.left - areaRect.left;
+                        const y2 = rr.top + rr.height / 2 - areaRect.top;
+
+                        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                        line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+                        line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+                        joinSvg.appendChild(line);
+
+                        // Animated dot on the line
+                        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                        circle.setAttribute('r', '4');
+                        circle.setAttribute('cx', x1); circle.setAttribute('cy', y1);
+                        joinSvg.appendChild(circle);
+
+                        // Animate: show line then dot
+                        setTimeout(() => { line.classList.add('visible'); }, i * 200 + 100);
+                        setTimeout(() => {
+                            circle.classList.add('visible');
+                            // Animate dot along line
+                            const dur = 600;
+                            const start = performance.now();
+                            function animDot(now) {
+                                const t = Math.min((now - start) / dur, 1);
+                                const ease = t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+                                circle.setAttribute('cx', x1 + (x2 - x1) * ease);
+                                circle.setAttribute('cy', y1 + (y2 - y1) * ease);
+                                if (t < 1) requestAnimationFrame(animDot);
+                            }
+                            requestAnimationFrame(animDot);
+                        }, i * 200 + 300);
+                    });
+                }, 50);
+            }
+
+            function updateVenn(vennConfig) {
+                // Reset
+                vennLeft.style.background = 'transparent';
+                vennRight.style.background = 'transparent';
+
+                if (vennConfig.left && vennConfig.overlap && vennConfig.right) {
+                    // FULL: both circles filled
+                    vennLeft.style.background = 'rgba(74,222,128,.2)';
+                    vennRight.style.background = 'rgba(167,139,250,.2)';
+                } else if (vennConfig.left && vennConfig.overlap) {
+                    // LEFT: left circle filled including overlap
+                    vennLeft.style.background = 'rgba(74,222,128,.2)';
+                } else if (vennConfig.right && vennConfig.overlap) {
+                    // RIGHT: right circle filled including overlap
+                    vennRight.style.background = 'rgba(167,139,250,.2)';
+                } else if (vennConfig.overlap) {
+                    // INNER: use clip-path for intersection only
+                    vennLeft.style.background = 'rgba(245,158,66,.15)';
+                    vennRight.style.background = 'rgba(245,158,66,.15)';
+                }
+            }
+
+            function updateResult(result) {
+                if (!result || !result.length) { joinResult.innerHTML = ''; return; }
+                let html = '<thead><tr>';
+                Object.keys(result[0]).forEach(k => {
+                    const label = k === 'employerName' ? 'employer_name' : k;
+                    html += `<th>${label}</th>`;
+                });
+                html += '</tr></thead><tbody>';
+                result.forEach((row, i) => {
+                    html += `<tr style="transition-delay: ${i * 80}ms">`;
+                    Object.values(row).forEach(v => {
+                        const isNull = v === 'NULL' || v === null;
+                        html += `<td${isNull ? ' class="null-val"' : ''}>${isNull ? 'NULL' : v}</td>`;
+                    });
+                    html += '</tr>';
+                });
+                html += '</tbody>';
+                joinResult.innerHTML = html;
+
+                // Animate rows in
+                setTimeout(() => {
+                    joinResult.querySelectorAll('tbody tr').forEach((row, i) => {
+                        setTimeout(() => row.classList.add('show'), i * 100);
+                    });
+                }, 400);
+            }
+
+            function activateJoin(type) {
+                const data = joinData[type];
+                if (!data) return;
+
+                // Update tabs
+                tabs.forEach(t => t.classList.toggle('active', t.dataset.join === type));
+
+                // Clear highlights
+                leftTable.querySelectorAll('tr').forEach(r => { r.classList.remove('row-highlight', 'row-null'); });
+                rightTable.querySelectorAll('tr').forEach(r => { r.classList.remove('row-highlight', 'row-null'); });
+
+                // Highlight left rows
+                data.leftHighlight.forEach(uid => {
+                    const row = leftTable.querySelector(`tr[data-uid="${uid}"]`);
+                    if (row) row.classList.add('row-highlight');
+                });
+                // Mark null rows on left
+                if (data.nullRows) {
+                    data.nullRows.forEach(uid => {
+                        const row = leftTable.querySelector(`tr[data-uid="${uid}"]`);
+                        if (row) row.classList.add('row-null');
+                    });
+                }
+
+                // Highlight right rows
+                data.rightHighlight.forEach(eid => {
+                    const row = rightTable.querySelector(`tr[data-eid="${eid}"]`);
+                    if (row) row.classList.add('row-highlight');
+                });
+                // Mark null rows on right
+                if (data.rightNullRows) {
+                    data.rightNullRows.forEach(eid => {
+                        const row = rightTable.querySelector(`tr[data-eid="${eid}"]`);
+                        if (row) row.classList.add('row-null');
+                    });
+                }
+
+                // Draw SVG connections
+                drawConnections(data.connections || []);
+
+                // Update Venn diagram
+                updateVenn(data.venn);
+
+                // Update SQL
+                joinSql.innerHTML = data.sql;
+
+                // Update result table
+                updateResult(data.result);
+            }
+
+            // Click handlers
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => activateJoin(tab.dataset.join));
+            });
+
+            // Initialize with INNER JOIN
+            activateJoin('inner');
+
+            // Redraw connections on resize
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    const activeTab = document.querySelector('.join-tab.active');
+                    if (activeTab) activateJoin(activeTab.dataset.join);
+                }, 200);
+            });
+        })();
     </script>
 </body>
 </html>

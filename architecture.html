@@ -56,6 +56,8 @@
             font-size: 13px;
             padding: 16px 24px;
             transition: color 0.2s;
+            position: relative;
+            z-index: 1;
         }
 
         .back-link:hover {
@@ -68,6 +70,8 @@
             border-bottom: 1px solid var(--border);
             margin-bottom: 40px;
             animation: fadeSlideDown 0.6s ease-out;
+            position: relative;
+            z-index: 1;
         }
 
         h1 {
@@ -89,18 +93,21 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 24px 60px;
+            position: relative;
+            z-index: 1;
         }
 
         .section {
             margin-bottom: 60px;
-            animation: fadeSlideUp 0.6s ease-out;
-            animation-fill-mode: both;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(.4,0,.2,1);
         }
 
-        .section:nth-child(1) { animation-delay: 0.1s; }
-        .section:nth-child(2) { animation-delay: 0.2s; }
-        .section:nth-child(3) { animation-delay: 0.3s; }
-        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         @keyframes fadeSlideUp {
             from {
@@ -129,6 +136,19 @@
             50% { transform: scale(1.05); }
         }
 
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(80px, -60px) scale(1.1); }
+            50% { transform: translate(-40px, 80px) scale(.9); }
+            75% { transform: translate(60px, 40px) scale(1.05); }
+        }
+
+        .bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .bg-orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: .07; animation: orbFloat 20s ease-in-out infinite; }
+        .bg-orb:nth-child(1) { width: 500px; height: 500px; background: #a78bfa; top: -150px; left: -100px; }
+        .bg-orb:nth-child(2) { width: 400px; height: 400px; background: #f59e42; top: 50%; right: -150px; animation-delay: -7s; animation-duration: 25s; }
+        .bg-orb:nth-child(3) { width: 350px; height: 350px; background: #5b9cf5; bottom: -100px; left: 30%; animation-delay: -14s; animation-duration: 22s; }
+
         .section-title {
             font-size: 24px;
             font-weight: 700;
@@ -153,6 +173,8 @@
             flex-direction: column;
             align-items: center;
             gap: 8px;
+            perspective: 1000px;
+            transform-style: preserve-3d;
         }
 
         .flow-layer {
@@ -164,9 +186,10 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             cursor: pointer;
             position: relative;
+            transform-style: preserve-3d;
         }
 
         .flow-layer::after {
@@ -183,7 +206,8 @@
         }
 
         .flow-layer:hover {
-            transform: translateX(8px);
+            transform: translateX(8px) translateZ(20px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,.3);
         }
 
         .flow-layer.browser {
@@ -242,9 +266,10 @@
             padding: 20px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.35s ease;
             position: relative;
             overflow: hidden;
+            transform-style: preserve-3d;
         }
 
         .cycle-card::before {
@@ -260,6 +285,22 @@
 
         .cycle-card:hover::before {
             left: 100%;
+        }
+
+        .cycle-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,.04), transparent);
+            pointer-events: none;
+        }
+
+        .cycle-card:hover::after {
+            left: 100%;
+            transition: left .7s ease;
         }
 
         .cycle-card:hover {
@@ -308,13 +349,16 @@
         }
 
         .component-card {
-            background: var(--surface);
-            border: 2px solid var(--border);
+            background: rgba(26,29,39,.7);
+            border: 1px solid rgba(255,255,255,.06);
             border-radius: var(--radius);
             padding: 16px;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transform-style: preserve-3d;
         }
 
         .component-card:hover {
@@ -566,6 +610,12 @@
     </style>
 </head>
 <body>
+    <div class="bg-canvas">
+        <div class="bg-orb"></div>
+        <div class="bg-orb"></div>
+        <div class="bg-orb"></div>
+    </div>
+
     <a href="index.html" class="back-link">← Back to Overview</a>
 
     <div class="header">
@@ -1257,14 +1307,37 @@ Accept: application/json`
             if (e.key === 'Escape') closeModal();
         });
 
-        // Add hover pulse animation to cards
-        document.querySelectorAll('.cycle-card, .component-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.animation = 'pulse 0.5s ease';
+        // Scroll-triggered section reveals
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
             });
-            card.addEventListener('animationend', function() {
-                this.style.animation = '';
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.section').forEach(el => revealObserver.observe(el));
+
+        // 3D tilt on cycle cards
+        document.querySelectorAll('.cycle-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - .5;
+                const y = (e.clientY - rect.top) / rect.height - .5;
+                card.style.transform = `perspective(600px) rotateX(${y * -8}deg) rotateY(${x * 8}deg) scale(1.03)`;
             });
+            card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+        });
+
+        // 3D tilt on component cards
+        document.querySelectorAll('.component-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - .5;
+                const y = (e.clientY - rect.top) / rect.height - .5;
+                card.style.transform = `perspective(600px) rotateX(${y * -8}deg) rotateY(${x * 8}deg) scale(1.03)`;
+            });
+            card.addEventListener('mouseleave', () => { card.style.transform = ''; });
         });
     </script>
 </body>

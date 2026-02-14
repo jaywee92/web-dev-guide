@@ -48,6 +48,60 @@
             overflow-x: hidden;
         }
 
+        /* ANIMATED GRADIENT BACKGROUND ORBS */
+        .bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.07;
+            animation: orbFloat 20s ease-in-out infinite;
+        }
+
+        .bg-orb:nth-child(1) {
+            width: 500px;
+            height: 500px;
+            background: #5b9cf5;
+            top: -150px;
+            left: -100px;
+        }
+
+        .bg-orb:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            background: #22d3ee;
+            top: 50%;
+            right: -150px;
+            animation-delay: -7s;
+            animation-duration: 25s;
+        }
+
+        .bg-orb:nth-child(3) {
+            width: 350px;
+            height: 350px;
+            background: #a78bfa;
+            bottom: -100px;
+            left: 30%;
+            animation-delay: -14s;
+            animation-duration: 22s;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(80px, -60px) scale(1.1); }
+            50% { transform: translate(-40px, 80px) scale(0.9); }
+            75% { transform: translate(60px, 40px) scale(1.05); }
+        }
+
         .back-link {
             display: inline-flex;
             align-items: center;
@@ -58,6 +112,8 @@
             font-size: 13px;
             padding: 16px 24px;
             transition: color 0.2s;
+            position: relative;
+            z-index: 1;
         }
 
         .back-link:hover {
@@ -70,6 +126,8 @@
             border-bottom: 1px solid var(--border);
             margin-bottom: 40px;
             animation: fadeSlideDown 0.6s ease-out;
+            position: relative;
+            z-index: 1;
         }
 
         h1 {
@@ -91,28 +149,20 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 24px 60px;
+            position: relative;
+            z-index: 1;
         }
 
         .section {
             margin-bottom: 60px;
-            animation: fadeSlideUp 0.6s ease-out both;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* DIFFERENT ANIMATIONS FOR VARIETY */
-        .section:nth-child(1) {
-            animation: fadeSlideUp 0.6s ease-out 0.1s;
-        }
-        .section:nth-child(2) {
-            animation: fadeSlideLeft 0.6s ease-out 0.2s;
-        }
-        .section:nth-child(3) {
-            animation: fadeSlideRight 0.6s ease-out 0.3s;
-        }
-        .section:nth-child(4) {
-            animation: fadeScale 0.6s ease-out 0.4s;
-        }
-        .section:nth-child(5) {
-            animation: fadeRotate 0.6s ease-out 0.5s;
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         @keyframes fadeSlideUp {
@@ -220,6 +270,9 @@
             margin: 24px 0;
             position: relative;
             overflow: hidden;
+            perspective: 1200px;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
         }
 
         .html-structure-viz::before {
@@ -239,8 +292,9 @@
             padding: 20px;
             margin: 10px 0;
             position: relative;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             cursor: pointer;
+            transform-style: preserve-3d;
         }
 
         .nested-box:hover {
@@ -261,6 +315,11 @@
         .doctype-box {
             border-color: var(--purple);
             background: var(--purple-dim);
+            transform: translateZ(0px);
+        }
+
+        .doctype-box:hover {
+            box-shadow: 0 0 20px rgba(167, 139, 250, 0.25);
         }
 
         .doctype-box .nested-box-label {
@@ -271,6 +330,11 @@
         .html-box {
             border-color: var(--blue);
             background: var(--blue-dim);
+            transform: translateZ(15px);
+        }
+
+        .html-box:hover {
+            box-shadow: 0 0 20px rgba(91, 156, 245, 0.25);
         }
 
         .html-box .nested-box-label {
@@ -281,6 +345,11 @@
         .head-box {
             border-color: var(--cyan);
             background: var(--cyan-dim);
+            transform: translateZ(30px);
+        }
+
+        .head-box:hover {
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.25);
         }
 
         .head-box .nested-box-label {
@@ -291,6 +360,11 @@
         .body-box {
             border-color: var(--green);
             background: var(--green-dim);
+            transform: translateZ(30px);
+        }
+
+        .body-box:hover {
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.25);
         }
 
         .body-box .nested-box-label {
@@ -312,19 +386,38 @@
         }
 
         .component-card {
-            background: var(--surface);
-            border: 2px solid var(--border);
+            background: rgba(26, 29, 39, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: var(--radius);
             padding: 16px;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .component-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+            pointer-events: none;
+        }
+
+        .component-card:hover::after {
+            left: 100%;
+            transition: left 0.7s ease;
         }
 
         .component-card:hover {
             border-color: var(--blue);
-            background: var(--blue-dim);
-            transform: scale(1.02);
+            background: rgba(91, 156, 245, 0.15);
+            transform: scale(1.02) perspective(600px) rotateX(0deg) rotateY(0deg);
         }
 
         .component-icon {
@@ -697,6 +790,12 @@
     </style>
 </head>
 <body>
+    <div class="bg-canvas">
+        <div class="bg-orb"></div>
+        <div class="bg-orb"></div>
+        <div class="bg-orb"></div>
+    </div>
+
     <a href="index.html" class="back-link">← Back to Overview</a>
 
     <div class="header">
@@ -2035,6 +2134,44 @@
         function collapseAll() {
             document.querySelectorAll('.file-tree details').forEach(detail => {
                 detail.open = false;
+            });
+        }
+
+        // Scroll-triggered section reveals
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.section').forEach(el => revealObserver.observe(el));
+
+        // 3D tilt on component cards
+        document.querySelectorAll('.component-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                card.style.transform = `perspective(600px) rotateX(${y * -8}deg) rotateY(${x * 8}deg) scale(1.03)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+
+        // 3D tilt on HTML structure visualization
+        const htmlViz = document.querySelector('.html-structure-viz');
+        if (htmlViz) {
+            htmlViz.addEventListener('mousemove', e => {
+                const rect = htmlViz.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                htmlViz.style.transform = `rotateY(${x * 12}deg) rotateX(${y * -8}deg)`;
+            });
+            htmlViz.addEventListener('mouseleave', () => {
+                htmlViz.style.transform = '';
             });
         }
     </script>

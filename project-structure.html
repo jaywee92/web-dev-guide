@@ -714,6 +714,97 @@
             flex-shrink: 0;
         }
 
+        /* BACKGROUND ORBS */
+        .bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.07;
+            animation: orbFloat 20s ease-in-out infinite;
+        }
+
+        .bg-orb:nth-child(1) {
+            width: 500px;
+            height: 500px;
+            background: #f5c542;
+            top: -150px;
+            left: -100px;
+        }
+
+        .bg-orb:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            background: #a78bfa;
+            top: 50%;
+            right: -150px;
+            animation-delay: -7s;
+            animation-duration: 25s;
+        }
+
+        .bg-orb:nth-child(3) {
+            width: 350px;
+            height: 350px;
+            background: #5b9cf5;
+            bottom: -100px;
+            right: 20%;
+            animation-delay: -14s;
+            animation-duration: 22s;
+        }
+
+        /* ENSURE CONTENT ABOVE BACKGROUND */
+        .header {
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ENHANCED TREE ITEM HOVER EFFECTS */
+        .tree-item:hover {
+            box-shadow: 0 0 12px rgba(91, 156, 245, 0.1);
+        }
+
+        .tree-item.python:hover {
+            box-shadow: 0 0 12px rgba(74, 222, 128, 0.15);
+        }
+
+        .tree-item.template:hover {
+            box-shadow: 0 0 12px rgba(91, 156, 245, 0.15);
+        }
+
+        .tree-item.config:hover {
+            box-shadow: 0 0 12px rgba(245, 197, 66, 0.15);
+        }
+
+        .tree-item.static:hover {
+            box-shadow: 0 0 12px rgba(245, 158, 66, 0.15);
+        }
+
+        .tree-item.env:hover {
+            box-shadow: 0 0 12px rgba(248, 113, 113, 0.15);
+        }
+
+        /* GLASSMORPHISM FOR CONNECTION CARDS */
+        .conn-group,
+        .connection-card,
+        .group-card {
+            backdrop-filter: blur(12px);
+            background: rgba(26, 29, 39, 0.7);
+        }
+
         /* ANIMATIONS */
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -728,6 +819,13 @@
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(80px, -60px) scale(1.1); }
+            50% { transform: translate(-40px, 80px) scale(0.9); }
+            75% { transform: translate(60px, 40px) scale(1.05); }
         }
 
         /* CODE BLOCKS FOR SECTIONS */
@@ -1024,6 +1122,12 @@
     </style>
 </head>
 <body>
+    <div class="bg-canvas">
+        <div class="bg-orb"></div>
+        <div class="bg-orb"></div>
+        <div class="bg-orb"></div>
+    </div>
+
     <div class="header">
         <a href="index.html" class="back-link">&larr; Back to Overview</a>
         <h1>Flask Project Structure</h1>
@@ -2593,6 +2697,23 @@ DEBUG=True</pre>
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             renderFileTree(fileTreeData);
+        });
+
+        // ═══════════════════════════════════════════════
+        // 3D TILT EFFECT — add perspective to card elements
+        // ═══════════════════════════════════════════════
+        document.querySelectorAll('.conn-group, .connection-card, .group-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                card.style.transform = `perspective(600px) rotateX(${y * -6}deg) rotateY(${x * 6}deg) scale(1.02)`;
+                card.style.transition = 'transform 0.1s ease';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+                card.style.transition = 'transform 0.3s ease';
+            });
         });
     </script>
 </body>
