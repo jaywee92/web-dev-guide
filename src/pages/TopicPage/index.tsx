@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ArrowLeft, ExternalLink } from 'lucide-react'
 import { getTopicById } from '@/data/topics'
 import { LEVELS } from '@/data/levels'
 import PageWrapper from '@/components/layout/PageWrapper'
@@ -36,6 +37,25 @@ export default function TopicPage() {
         <p style={{ color: 'var(--text-muted)', fontSize: 16, marginBottom: 40 }}>
           {topic.description}
         </p>
+        {(topic.id.startsWith('html') || topic.id.startsWith('css')) && (
+          <Link
+            to={topic.id.startsWith('html') ? '/reference/html' : '/reference/css'}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 5,
+              fontSize: 12,
+              color: 'var(--text-faint)',
+              textDecoration: 'none',
+              fontFamily: 'var(--font-mono)',
+            }}
+            onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = 'var(--text-muted)')}
+            onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = 'var(--text-faint)')}
+          >
+            <ExternalLink size={11} />
+            {topic.id.startsWith('html') ? 'HTML Reference' : 'CSS Reference'} →
+          </Link>
+        )}
       </div>
 
       {/* Phase 1: Intro */}

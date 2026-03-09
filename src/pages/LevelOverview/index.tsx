@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { ArrowLeft } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ArrowLeft, ExternalLink } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { LEVELS } from '@/data/levels'
 import { TOPICS } from '@/data/topics'
@@ -35,6 +36,37 @@ export default function LevelOverview() {
           {level.title}
         </h1>
         <p style={{ color: 'var(--text-muted)', marginBottom: 48 }}>{level.subtitle}</p>
+
+        {level.id === 1 && (
+          <div style={{ display: 'flex', gap: 12, marginBottom: 40, flexWrap: 'wrap' }}>
+            {[
+              { label: 'HTML Reference', path: '/reference/html', color: '#4ade80' },
+              { label: 'CSS Reference', path: '/reference/css', color: '#5b9cf5' },
+            ].map(ref => (
+              <Link
+                key={ref.path}
+                to={ref.path}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  padding: '8px 16px',
+                  borderRadius: 8,
+                  background: `${ref.color}12`,
+                  border: `1px solid ${ref.color}33`,
+                  color: ref.color,
+                  fontSize: 12,
+                  fontFamily: 'var(--font-mono)',
+                  textDecoration: 'none',
+                  fontWeight: 600,
+                }}
+              >
+                <ExternalLink size={11} />
+                {ref.label}
+              </Link>
+            ))}
+          </div>
+        )}
 
         <StaggerChildren>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
