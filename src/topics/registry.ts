@@ -6,6 +6,8 @@ type AnimComp = ComponentType<{ step: number; compact?: boolean }>
 const lazyRegistry: Record<string, () => Promise<{ default: AnimComp }>> = {
   BoxModelViz: () => import('./css/BoxModelViz'),
   DomTreeBuilder: () => import('./html/DomTreeBuilder'),
+  SemanticViz: () => import('./html/SemanticViz'),
+  FormsViz: () => import('./html/FormsViz'),
   FlexboxViz: () => import('./css/FlexboxViz'),
   GridViz: () => import('./css/GridViz'),
   AnimatedFlow: () => import('./shared/AnimatedFlow'),
