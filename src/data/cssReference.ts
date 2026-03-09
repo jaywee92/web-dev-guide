@@ -1,0 +1,286 @@
+import type { ReferenceCategory } from '@/types'
+
+export const CSS_REFERENCE: ReferenceCategory[] = [
+  {
+    id: 'typography',
+    title: 'Typography',
+    color: '#4ade80',
+    entries: [
+      {
+        name: 'font-size',
+        description: 'Sets the size of the font.',
+        example: 'p {\n  font-size: 16px;\n  /* also: 1rem, 1.2em, clamp(14px,2vw,18px) */\n}',
+        link: 'https://cssreference.io/property/font-size/',
+      },
+      {
+        name: 'font-weight',
+        description: 'Sets the boldness of the font.',
+        example: 'h1 { font-weight: 700; }\np  { font-weight: 400; } /* normal */\n.light { font-weight: 300; }',
+        link: 'https://cssreference.io/property/font-weight/',
+      },
+      {
+        name: 'font-family',
+        description: 'Sets the typeface. List fallbacks separated by commas.',
+        example: 'body {\n  font-family: "DM Sans", system-ui, sans-serif;\n}',
+        link: 'https://cssreference.io/property/font-family/',
+      },
+      {
+        name: 'line-height',
+        description: 'Sets the height of a line of text. Unitless values are recommended.',
+        example: 'p {\n  line-height: 1.6;\n  /* 1.6× the font-size */\n}',
+        link: 'https://cssreference.io/property/line-height/',
+      },
+      {
+        name: 'letter-spacing',
+        description: 'Sets space between characters.',
+        example: '.label {\n  letter-spacing: 0.08em;\n  text-transform: uppercase;\n}',
+        link: 'https://cssreference.io/property/letter-spacing/',
+      },
+      {
+        name: 'text-align',
+        description: 'Aligns inline content horizontally within a block.',
+        example: '.center { text-align: center; }\n.right  { text-align: right; }\n.left   { text-align: left; }',
+        link: 'https://cssreference.io/property/text-align/',
+      },
+      {
+        name: 'text-decoration',
+        description: 'Adds underline, overline, or line-through to text.',
+        example: 'a             { text-decoration: underline; }\n.no-underline { text-decoration: none; }',
+        link: 'https://cssreference.io/property/text-decoration/',
+      },
+      {
+        name: 'color',
+        description: 'Sets the foreground (text) color.',
+        example: 'p {\n  color: #e2e4ed;\n  /* hex, rgb(), hsl(), named color */\n}',
+        link: 'https://cssreference.io/property/color/',
+      },
+    ],
+  },
+  {
+    id: 'box-model',
+    title: 'Box Model',
+    color: '#5b9cf5',
+    entries: [
+      {
+        name: 'width / height',
+        description: "Sets the size of an element's content box.",
+        example: '.box {\n  width: 300px;\n  height: 200px;\n  /* also: %, vw, vh, auto */\n}',
+        link: 'https://cssreference.io/property/width/',
+      },
+      {
+        name: 'max-width',
+        description: 'Caps the maximum width — essential for readable text columns.',
+        example: '.container {\n  max-width: 1100px;\n  margin: 0 auto;\n}',
+        link: 'https://cssreference.io/property/max-width/',
+      },
+      {
+        name: 'padding',
+        description: 'Inner space between content and border. Shares the background.',
+        example: '.card {\n  padding: 24px;\n  /* shorthand: top right bottom left */\n}',
+        link: 'https://cssreference.io/property/padding/',
+      },
+      {
+        name: 'margin',
+        description: 'Outer space between element and its neighbors.',
+        example: '.section {\n  margin: 0 auto;     /* center horizontally */\n  margin-bottom: 48px;\n}',
+        link: 'https://cssreference.io/property/margin/',
+      },
+      {
+        name: 'border',
+        description: 'Shorthand for border-width, border-style, border-color.',
+        example: '.input {\n  border: 1px solid #2e3348;\n  border-radius: 8px;\n}',
+        link: 'https://cssreference.io/property/border/',
+      },
+      {
+        name: 'box-sizing',
+        description: 'Controls whether padding/border are included in width/height.',
+        example: '* {\n  box-sizing: border-box;\n  /* padding no longer adds to width */\n}',
+        link: 'https://cssreference.io/property/box-sizing/',
+      },
+      {
+        name: 'overflow',
+        description: "What happens when content exceeds the element's box.",
+        example: '.scroll {\n  overflow: auto;   /* scrollbar when needed */\n}\n.clip {\n  overflow: hidden; /* cut off */\n}',
+        link: 'https://cssreference.io/property/overflow/',
+      },
+    ],
+  },
+  {
+    id: 'flexbox',
+    title: 'Flexbox',
+    color: '#a78bfa',
+    entries: [
+      {
+        name: 'display: flex',
+        description: 'Turns an element into a flex container. Children become flex items.',
+        example: '.container {\n  display: flex;\n}',
+        link: 'https://cssreference.io/property/display/',
+      },
+      {
+        name: 'flex-direction',
+        description: 'Sets the main axis — row (horizontal) or column (vertical).',
+        example: '.row    { flex-direction: row; }\n.column { flex-direction: column; }',
+        link: 'https://cssreference.io/property/flex-direction/',
+      },
+      {
+        name: 'justify-content',
+        description: 'Aligns items along the main axis.',
+        example: '.spread  { justify-content: space-between; }\n.center  { justify-content: center; }\n.start   { justify-content: flex-start; }',
+        link: 'https://cssreference.io/property/justify-content/',
+      },
+      {
+        name: 'align-items',
+        description: 'Aligns items along the cross axis (perpendicular to main).',
+        example: '.centered {\n  display: flex;\n  align-items: center; /* vertical center */\n}',
+        link: 'https://cssreference.io/property/align-items/',
+      },
+      {
+        name: 'flex-wrap',
+        description: 'Allows flex items to wrap onto multiple lines.',
+        example: '.grid {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 16px;\n}',
+        link: 'https://cssreference.io/property/flex-wrap/',
+      },
+      {
+        name: 'gap',
+        description: 'Sets spacing between flex (or grid) items.',
+        example: '.container {\n  display: flex;\n  gap: 16px;\n  /* row-gap column-gap: 8px 16px */\n}',
+        link: 'https://cssreference.io/property/gap/',
+      },
+      {
+        name: 'flex',
+        description: 'Shorthand for flex-grow, flex-shrink, flex-basis.',
+        example: '.item       { flex: 1; }          /* grow to fill */\n.fixed-item { flex: 0 0 200px; }  /* fixed 200px */\n.no-shrink  { flex-shrink: 0; }',
+        link: 'https://cssreference.io/property/flex/',
+      },
+      {
+        name: 'align-self',
+        description: 'Overrides align-items for a single flex item.',
+        example: '.container { display: flex; align-items: center; }\n.top-item  { align-self: flex-start; }',
+        link: 'https://cssreference.io/property/align-self/',
+      },
+    ],
+  },
+  {
+    id: 'grid',
+    title: 'Grid',
+    color: '#22d3ee',
+    entries: [
+      {
+        name: 'display: grid',
+        description: 'Turns an element into a grid container.',
+        example: '.container {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 16px;\n}',
+        link: 'https://cssreference.io/property/display/',
+      },
+      {
+        name: 'grid-template-columns',
+        description: 'Defines the number and size of columns.',
+        example: '.three-col {\n  grid-template-columns: 1fr 1fr 1fr;\n}\n.auto-fill {\n  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));\n}',
+        link: 'https://cssreference.io/property/grid-template-columns/',
+      },
+      {
+        name: 'grid-template-rows',
+        description: 'Defines the number and size of rows.',
+        example: '.layout {\n  grid-template-rows: 60px 1fr 80px;\n  /* header, content, footer */\n}',
+        link: 'https://cssreference.io/property/grid-template-rows/',
+      },
+      {
+        name: 'grid-column',
+        description: 'Sets which columns a grid item spans.',
+        example: '.full-width {\n  grid-column: 1 / -1; /* span all columns */\n}\n.two-span {\n  grid-column: span 2;\n}',
+        link: 'https://cssreference.io/property/grid-column/',
+      },
+      {
+        name: 'grid-row',
+        description: 'Sets which rows a grid item spans.',
+        example: '.tall {\n  grid-row: 1 / 3; /* span rows 1 and 2 */\n}',
+        link: 'https://cssreference.io/property/grid-row/',
+      },
+      {
+        name: 'place-items',
+        description: 'Shorthand for align-items + justify-items — centers grid children.',
+        example: '.centered-grid {\n  display: grid;\n  place-items: center;\n}',
+        link: 'https://cssreference.io/property/place-items/',
+      },
+    ],
+  },
+  {
+    id: 'visual',
+    title: 'Visual',
+    color: '#f5c542',
+    entries: [
+      {
+        name: 'background',
+        description: 'Shorthand for all background properties — color, image, position, size.',
+        example: '.hero {\n  background: #0f1117;\n  /* or: linear-gradient(135deg, #4ade80, #5b9cf5) */\n}',
+        link: 'https://cssreference.io/property/background/',
+      },
+      {
+        name: 'border-radius',
+        description: "Rounds the corners of an element's border.",
+        example: '.pill   { border-radius: 999px; }\n.card   { border-radius: 12px; }\n.circle { border-radius: 50%; }',
+        link: 'https://cssreference.io/property/border-radius/',
+      },
+      {
+        name: 'box-shadow',
+        description: "Adds shadow effects around an element's frame.",
+        example: '.card {\n  box-shadow: 0 4px 24px rgba(0,0,0,0.3);\n  /* x y blur spread color */\n}',
+        link: 'https://cssreference.io/property/box-shadow/',
+      },
+      {
+        name: 'opacity',
+        description: 'Sets the transparency of an element (0 = invisible, 1 = full).',
+        example: '.disabled { opacity: 0.4; }\n.hover:hover { opacity: 0.8; }',
+        link: 'https://cssreference.io/property/opacity/',
+      },
+      {
+        name: 'transform',
+        description: 'Applies 2D/3D transformations — translate, rotate, scale, skew.',
+        example: '.hover:hover {\n  transform: translateY(-4px) scale(1.02);\n}',
+        link: 'https://cssreference.io/property/transform/',
+      },
+      {
+        name: 'transition',
+        description: 'Animates property changes over time.',
+        example: '.button {\n  transition: background 0.2s ease, transform 0.2s ease;\n}',
+        link: 'https://cssreference.io/property/transition/',
+      },
+      {
+        name: 'cursor',
+        description: 'Changes the mouse cursor appearance over an element.',
+        example: '.clickable { cursor: pointer; }\n.disabled  { cursor: not-allowed; }',
+        link: 'https://cssreference.io/property/cursor/',
+      },
+    ],
+  },
+  {
+    id: 'position',
+    title: 'Position',
+    color: '#ec4899',
+    entries: [
+      {
+        name: 'position',
+        description: 'Sets the positioning scheme for an element.',
+        example: '.fixed-nav { position: fixed; top: 0; }\n.relative  { position: relative; }\n.overlay   { position: absolute; inset: 0; }',
+        link: 'https://cssreference.io/property/position/',
+      },
+      {
+        name: 'top / right / bottom / left',
+        description: 'Offsets a positioned element from its containing block.',
+        example: '.tooltip {\n  position: absolute;\n  top: 100%;\n  left: 50%;\n  transform: translateX(-50%);\n}',
+        link: 'https://cssreference.io/property/top/',
+      },
+      {
+        name: 'z-index',
+        description: 'Controls the stacking order. Higher values appear on top.',
+        example: '.modal   { z-index: 100; }\n.overlay { z-index: 99; }\n.navbar  { z-index: 50; }',
+        link: 'https://cssreference.io/property/z-index/',
+      },
+      {
+        name: 'inset',
+        description: 'Shorthand for top + right + bottom + left. Sets all four at once.',
+        example: '.fullscreen {\n  position: fixed;\n  inset: 0; /* fills entire viewport */\n}',
+        link: 'https://cssreference.io/property/inset/',
+      },
+    ],
+  },
+]
