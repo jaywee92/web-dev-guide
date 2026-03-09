@@ -1,5 +1,3 @@
-import type { ComponentType } from 'react'
-
 export type Level = 1 | 2 | 3 | 4
 export type PlaygroundType = 'visual-controls' | 'monaco' | 'none'
 export type ThemeMode = 'dark' | 'light'
