@@ -41,3 +41,18 @@ export interface SearchResult {
   topic: Topic
   matchedIn: 'title' | 'description' | 'content'
 }
+
+export interface ReferenceEntry {
+  name: string
+  description: string
+  example: string
+  link: string
+  tags?: string[]
+}
+
+export interface ReferenceCategory {
+  id: string
+  title: string
+  color: string
+  entries: ReferenceEntry[]
+}
