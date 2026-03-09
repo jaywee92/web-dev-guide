@@ -1,3 +1,12 @@
+import PageWrapper from '@/components/layout/PageWrapper'
+import HeroSection from './HeroSection'
+import LevelGrid from './LevelGrid'
+
 export default function Home() {
-  return <div style={{ padding: 40, color: 'var(--text)' }}>Home — coming soon</div>
+  return (
+    <PageWrapper>
+      <HeroSection />
+      <LevelGrid />
+    </PageWrapper>
+  )
 }
