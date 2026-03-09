@@ -1,0 +1,1 @@
+import{j as t}from"./index-B6uibwAW.js";function n({step:e,compact:o}){return t.jsx("div",{style:{textAlign:"center",color:"var(--text-muted)",padding:"40px 0"},children:"DOM Tree animation coming soon…"})}export{n as default};

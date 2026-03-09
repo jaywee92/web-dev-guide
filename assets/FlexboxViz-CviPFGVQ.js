@@ -1,0 +1,1 @@
+import{j as t}from"./index-B6uibwAW.js";function i({step:e,compact:o}){return t.jsx("div",{style:{textAlign:"center",color:"var(--text-muted)",padding:"40px 0"},children:"Flexbox animation coming soon…"})}export{i as default};
