@@ -9,6 +9,7 @@ const lazyRegistry: Record<string, () => Promise<{ default: AnimComp }>> = {
   FlexboxViz: () => import('./css/FlexboxViz'),
   GridViz: () => import('./css/GridViz'),
   AnimatedFlow: () => import('./shared/AnimatedFlow'),
+  EventLoopViz: () => import('./javascript/EventLoopViz'),
 }
 
 // Synchronous cache
