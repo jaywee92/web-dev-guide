@@ -12,25 +12,17 @@ export const LEVELS: LevelConfig[] = [
   {
     id: 2,
     title: 'Modern Frontend',
-    subtitle: 'TypeScript · React · Tailwind',
+    subtitle: 'TypeScript · Web APIs · React',
     color: '#5b9cf5',
     dimColor: 'rgba(91,156,245,0.12)',
     topics: [],
   },
   {
     id: 3,
-    title: 'Backend & Databases',
-    subtitle: 'Flask · PostgreSQL',
+    title: 'Backend & Data',
+    subtitle: 'HTTP · PostgreSQL',
     color: '#a78bfa',
     dimColor: 'rgba(167,139,250,0.12)',
-    topics: [],
-  },
-  {
-    id: 4,
-    title: 'Tooling & Deployment',
-    subtitle: 'Git · GitHub Pages · Vercel',
-    color: '#f5c542',
-    dimColor: 'rgba(245,197,66,0.15)',
     topics: [],
   },
 ]
