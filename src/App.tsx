@@ -7,6 +7,7 @@ import LevelOverview from '@/pages/LevelOverview'
 import TopicPage from '@/pages/TopicPage'
 import SearchPage from '@/pages/SearchPage'
 import SearchPalette from '@/components/ui/SearchPalette'
+import ReferencePage from '@/pages/ReferencePage'
 
 export default function App() {
   return (
@@ -21,6 +22,8 @@ export default function App() {
               <Route path="/level/:levelId" element={<LevelOverview />} />
               <Route path="/topic/:topicId" element={<TopicPage />} />
               <Route path="/search" element={<SearchPage />} />
+              <Route path="/reference/html" element={<ReferencePage type="html" />} />
+              <Route path="/reference/css" element={<ReferencePage type="css" />} />
             </Routes>
           </AnimatePresence>
         </main>
