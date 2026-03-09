@@ -20,6 +20,9 @@ const lazyRegistry: Record<string, () => Promise<{ default: AnimComp }>> = {
   FetchViz: () => import('./webapis/FetchViz'),
   DomEventsViz: () => import('./webapis/DomEventsViz'),
   StorageViz: () => import('./webapis/StorageViz'),
+  ComponentsViz: () => import('./react/ComponentsViz'),
+  StateViz: () => import('./react/StateViz'),
+  UseEffectViz: () => import('./react/UseEffectViz'),
 }
 
 // Synchronous cache
