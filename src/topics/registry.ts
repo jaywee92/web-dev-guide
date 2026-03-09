@@ -1,11 +1,24 @@
 import type { ComponentType } from 'react'
 
-const loadedRegistry: Record<string, ComponentType<{ step: number; compact?: boolean }>> = {}
+type AnimComp = ComponentType<{ step: number; compact?: boolean }>
 
-export function getAnimationComponent(name: string) {
+// Lazy loaders
+const lazyRegistry: Record<string, () => Promise<{ default: AnimComp }>> = {
+  BoxModelViz: () => import('./css/BoxModelViz'),
+  DomTreeBuilder: () => import('./html/DomTreeBuilder'),
+  FlexboxViz: () => import('./css/FlexboxViz'),
+  AnimatedFlow: () => import('./shared/AnimatedFlow'),
+}
+
+// Synchronous cache
+const loadedRegistry: Record<string, AnimComp> = {}
+
+export function getAnimationComponent(name: string): AnimComp | null {
   return loadedRegistry[name] ?? null
 }
 
-export async function preloadAnimation(_name: string): Promise<void> {
-  // Full implementation added in Phase 8
+export async function preloadAnimation(name: string): Promise<void> {
+  if (loadedRegistry[name] || !lazyRegistry[name]) return
+  const mod = await lazyRegistry[name]()
+  loadedRegistry[name] = mod.default
 }
