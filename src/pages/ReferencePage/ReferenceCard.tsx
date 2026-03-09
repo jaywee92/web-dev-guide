@@ -50,6 +50,7 @@ export default function ReferenceCard({ entry, accentColor }: Props) {
           href={entry.link}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label={`Open ${entry.name} on ${entry.link.includes('htmlreference') ? 'htmlreference.io' : 'cssreference.io'}`}
           style={{
             color: 'var(--text-faint)',
             flexShrink: 0,
@@ -60,14 +61,13 @@ export default function ReferenceCard({ entry, accentColor }: Props) {
           }}
           onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = accentColor)}
           onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = 'var(--text-faint)')}
-          title={`Open on ${entry.link.includes('htmlreference') ? 'htmlreference.io' : 'cssreference.io'}`}
         >
           <ExternalLink size={13} />
         </a>
       </div>
 
       {/* Code example */}
-      <div style={{ padding: '0 0 0 0', borderTop: '1px solid var(--border)' }}>
+      <div style={{ borderTop: '1px solid var(--border)' }}>
         <CodeBlock code={entry.example} />
       </div>
     </div>

@@ -32,6 +32,10 @@ export default function ReferencePage({ type }: Props) {
   const meta = META[type]
   const [activeCategory, setActiveCategory] = useState(meta.data[0]?.id ?? '')
 
+  useEffect(() => {
+    setActiveCategory(meta.data[0]?.id ?? '')
+  }, [type])
+
   // Update active tab on scroll using IntersectionObserver
   useEffect(() => {
     const observers: IntersectionObserver[] = []
@@ -107,7 +111,7 @@ export default function ReferencePage({ type }: Props) {
           position: 'sticky',
           top: 56,
           zIndex: 40,
-          background: 'rgba(15,17,23,0.85)',
+          background: 'var(--surface-glass, rgba(15,17,23,0.85))',
           backdropFilter: 'blur(16px)',
           borderBottom: '1px solid var(--border)',
           marginBottom: 0,
