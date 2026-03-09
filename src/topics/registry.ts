@@ -11,6 +11,7 @@ const lazyRegistry: Record<string, () => Promise<{ default: AnimComp }>> = {
   AnimatedFlow: () => import('./shared/AnimatedFlow'),
   EventLoopViz: () => import('./javascript/EventLoopViz'),
   ClosureViz: () => import('./javascript/ClosureViz'),
+  TypeScriptViz: () => import('./typescript/TypeScriptViz'),
 }
 
 // Synchronous cache

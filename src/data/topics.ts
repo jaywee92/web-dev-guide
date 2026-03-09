@@ -353,6 +353,61 @@ export const TOPICS: Topic[] = [
       { id: 'playground', type: 'playground', steps: [] },
     ],
   },
+  {
+    id: 'ts-basics',
+    title: 'TypeScript Basics',
+    description: 'Static types that catch errors before your code runs',
+    level: 2,
+    color: '#5b9cf5',
+    estimatedMinutes: 12,
+    animationComponent: 'TypeScriptViz',
+    playgroundType: 'monaco',
+    sections: [
+      { id: 'intro', type: 'intro', steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation',
+        steps: [
+          {
+            animationStep: 0,
+            heading: 'JavaScript types are implicit',
+            text: 'In JavaScript, variables have types at runtime, but you never declare them. The type is inferred from the value.',
+            codeExample: 'let age = 25        // type: number\nlet name = "Alice"  // type: string\nlet active = true   // type: boolean',
+            language: 'javascript',
+          },
+          {
+            animationStep: 1,
+            heading: 'TypeScript makes types explicit',
+            text: 'TypeScript adds type annotations using a colon after the variable name. This tells the compiler exactly what type is expected.',
+            codeExample: 'let age: number = 25\nlet name: string = "Alice"\nlet active: boolean = true',
+            language: 'typescript',
+          },
+          {
+            animationStep: 2,
+            heading: 'Type errors caught at compile time',
+            text: 'If you try to assign the wrong type, TypeScript flags it immediately — before the code ever runs.',
+            codeExample: 'let age: number = 25\nage = "hello"\n//   ~~~~~~~~~\n// Error: Type \'string\' is not\n// assignable to type \'number\'',
+            language: 'typescript',
+          },
+          {
+            animationStep: 3,
+            heading: 'Interfaces define object shapes',
+            text: 'An interface describes what properties an object must have. TypeScript will error if a required property is missing or has the wrong type.',
+            codeExample: 'interface User {\n  name: string\n  age: number\n}\n\nconst user: User = {\n  name: "Alice",\n  age: 25,\n}',
+            language: 'typescript',
+          },
+          {
+            animationStep: 4,
+            heading: 'Generics — reusable typed functions',
+            text: 'Generics allow functions and classes to work with any type while still enforcing type safety. T is a placeholder that is filled in at call time.',
+            codeExample: 'function first<T>(arr: T[]): T {\n  return arr[0]\n}\n\nfirst([1, 2, 3])       // T = number\nfirst(["a", "b"])     // T = string',
+            language: 'typescript',
+          },
+        ],
+      },
+      { id: 'playground', type: 'playground', steps: [] },
+    ],
+  },
 ]
 
 export function getTopicById(id: string): Topic | undefined {
