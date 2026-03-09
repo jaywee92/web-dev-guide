@@ -7,6 +7,7 @@ const lazyRegistry: Record<string, () => Promise<{ default: AnimComp }>> = {
   BoxModelViz: () => import('./css/BoxModelViz'),
   DomTreeBuilder: () => import('./html/DomTreeBuilder'),
   FlexboxViz: () => import('./css/FlexboxViz'),
+  GridViz: () => import('./css/GridViz'),
   AnimatedFlow: () => import('./shared/AnimatedFlow'),
 }
 
