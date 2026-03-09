@@ -10,10 +10,16 @@ const lazyRegistry: Record<string, () => Promise<{ default: AnimComp }>> = {
   FormsViz: () => import('./html/FormsViz'),
   FlexboxViz: () => import('./css/FlexboxViz'),
   GridViz: () => import('./css/GridViz'),
+  SelectorsViz: () => import('./css/SelectorsViz'),
   AnimatedFlow: () => import('./shared/AnimatedFlow'),
   EventLoopViz: () => import('./javascript/EventLoopViz'),
   ClosureViz: () => import('./javascript/ClosureViz'),
+  VariablesViz: () => import('./javascript/VariablesViz'),
+  ArraysViz: () => import('./javascript/ArraysViz'),
   TypeScriptViz: () => import('./typescript/TypeScriptViz'),
+  FetchViz: () => import('./webapis/FetchViz'),
+  DomEventsViz: () => import('./webapis/DomEventsViz'),
+  StorageViz: () => import('./webapis/StorageViz'),
 }
 
 // Synchronous cache
