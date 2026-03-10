@@ -8,17 +8,17 @@ const GREEN = '#4ade80'
 const CYAN = '#22d3ee'
 
 const layers = [
-  { label: 'Margin',  color: PINK,   cssValue: 'margin: 32px',      dimColor: 'rgba(236,72,153,0.08)',  pad: 32, padC: 20 },
-  { label: 'Border',  color: YELLOW, cssValue: 'border: 3px solid',  dimColor: 'rgba(245,197,66,0.08)',  pad: 20, padC: 12 },
-  { label: 'Padding', color: GREEN,  cssValue: 'padding: 24px',      dimColor: 'rgba(74,222,128,0.08)',  pad: 16, padC: 10 },
   { label: 'Content', color: CYAN,   cssValue: 'width: 120px',       dimColor: 'rgba(34,211,238,0.10)',  pad: 12, padC: 8  },
+  { label: 'Padding', color: GREEN,  cssValue: 'padding: 24px',      dimColor: 'rgba(74,222,128,0.08)',  pad: 16, padC: 10 },
+  { label: 'Border',  color: YELLOW, cssValue: 'border: 3px solid',  dimColor: 'rgba(245,197,66,0.08)',  pad: 20, padC: 12 },
+  { label: 'Margin',  color: PINK,   cssValue: 'margin: 32px',       dimColor: 'rgba(236,72,153,0.08)',  pad: 32, padC: 20 },
 ]
 
 const stepLabels = [
-  'Margin — pushes other elements away',
-  'Border — frames the element',
-  'Padding — inner breathing room',
   'Content — your text, image, or child elements',
+  'Padding — inner breathing room',
+  'Border — frames the element',
+  'Margin — pushes other elements away',
 ]
 
 export default function BoxModelViz({ step, compact = false }: Props) {
@@ -33,7 +33,7 @@ export default function BoxModelViz({ step, compact = false }: Props) {
           const pad = compact ? layer.padC : layer.pad
 
           return (
-            <AnimatePresence>
+            <AnimatePresence key={layer.label}>
               {visible && (
                 <motion.div
                   key={layer.label}
@@ -46,7 +46,7 @@ export default function BoxModelViz({ step, compact = false }: Props) {
                   exit={{ scale: 0.85, opacity: 0 }}
                   transition={{ duration: 0.45, ease: [0.34, 1.56, 0.64, 1] as [number, number, number, number] }}
                   style={{
-                    border: `${i === 1 ? 3 : 2}px solid ${layer.color}`,
+                    border: `${i === 2 ? 3 : 2}px solid ${layer.color}`,
                     background: layer.dimColor,
                     borderRadius: 8,
                     padding: pad,
@@ -98,7 +98,7 @@ export default function BoxModelViz({ step, compact = false }: Props) {
                   </div>
 
                   {/* Content area */}
-                  {i === layers.length - 1 && (
+                  {i === 0 && (
                     <div style={{
                       padding: compact ? '8px 18px' : '14px 32px',
                       textAlign: 'center',
