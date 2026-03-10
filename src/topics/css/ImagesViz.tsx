@@ -69,8 +69,6 @@ const STEP_CONFIGS = [
   },
 ]
 
-const spring = { type: 'spring' as const, stiffness: 240, damping: 28 }
-
 export default function ImagesViz({ step, compact = false }: Props) {
   const s = Math.min(step, 4)
   const cfg = STEP_CONFIGS[s]
@@ -114,17 +112,13 @@ export default function ImagesViz({ step, compact = false }: Props) {
               margin: s === 3 ? '0 auto' : 0,
             }}
           >
-            <motion.div
-              animate={{
+            <div
+              style={{
+                background: IMG_BG,
+                display: 'block',
                 width: cfg.imgW ? (compact ? cfg.imgW * 0.7 : cfg.imgW) : '100%',
                 height: cfg.imgH ? (compact ? cfg.imgH * 0.7 : cfg.imgH) : '100%',
                 borderRadius: cfg.borderRadius,
-              }}
-              transition={spring}
-              style={{
-                background: IMG_BG,
-                objectFit: cfg.objectFit,
-                display: 'block',
                 minHeight: (cfg.containerH || scaledContainerH) ? undefined : (compact ? 60 : 90),
               }}
             />

@@ -40,7 +40,7 @@ export default function DisplayPositioningViz({ step, compact = false }: Props) 
         width: compact ? 200 : 280,
         minHeight: compact ? 80 : 120,
         position: 'relative',
-        display: s === 0 ? 'flex' : 'flex',
+        display: 'flex',
         flexDirection: s === 0 ? 'column' : s === 1 || s === 2 ? 'row' : 'row',
         flexWrap: 'wrap',
         gap,
