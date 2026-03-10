@@ -20,7 +20,7 @@ const cssRules = [
   '.container {\n  display: grid;\n}',
   '.container {\n  display: grid;\n  grid-template-columns: 1fr 3fr;\n}',
   '.container {\n  display: grid;\n  grid-template-columns: 1fr 3fr;\n  gap: 12px;\n}',
-  '.header {\n  grid-column: 1 / -1;\n}',
+  '.container {\n  display: grid;\n  grid-template-columns: 1fr 3fr;\n  gap: 12px;\n}\n.header {\n  grid-column: 1 / -1;\n}',
 ]
 
 export default function GridViz({ step, compact = false }: Props) {
@@ -30,7 +30,7 @@ export default function GridViz({ step, compact = false }: Props) {
   const hasSpan = s >= 4
 
   const containerWidth = compact ? 200 : 280
-  const gap = hasGap ? (compact ? 6 : 10) : 0
+  const gap = hasGap ? (compact ? 6 : 12) : 0
   const headerH = compact ? 24 : 32
   const midH = compact ? 50 : 68
   const footerH = compact ? 20 : 26
@@ -63,14 +63,13 @@ export default function GridViz({ step, compact = false }: Props) {
 
       {/* Grid container */}
       <motion.div
-        animate={{ gap, padding: compact ? 8 : 12 }}
+        animate={{ gap, padding: compact ? 8 : 12, display: s >= 1 ? 'grid' : 'block' }}
         transition={{ duration: 0.4 }}
         style={{
           width: containerWidth,
           background: 'var(--surface)',
           border: '2px solid var(--border)',
           borderRadius: 8,
-          display: 'grid',
           gridTemplateColumns: hasCols ? '1fr 3fr' : '1fr',
         }}
       >
