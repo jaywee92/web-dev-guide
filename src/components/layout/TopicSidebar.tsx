@@ -45,6 +45,7 @@ export default function TopicSidebar({ activeTopicId, activeCategoryId }: Props)
           <div key={cat.id} style={{ marginBottom: 2 }}>
             <button
               onClick={() => toggle(cat.id)}
+              aria-expanded={isOpen}
               style={{
                 width: '100%', display: 'flex', alignItems: 'center',
                 justifyContent: 'space-between',
@@ -70,6 +71,7 @@ export default function TopicSidebar({ activeTopicId, activeCategoryId }: Props)
                     <button
                       key={topic.id}
                       onClick={() => navigate(`/topic/${topic.id}`)}
+                      aria-current={isActive ? 'page' : undefined}
                       style={{
                         width: '100%', textAlign: 'left',
                         padding: '5px 16px 5px 24px',
