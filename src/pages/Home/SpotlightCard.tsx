@@ -1,4 +1,4 @@
-import { useRef, type ReactNode, type CSSProperties } from 'react'
+import { useRef, type ReactNode, type CSSProperties, type MouseEvent } from 'react'
 
 interface Props {
   children: ReactNode
@@ -10,7 +10,7 @@ interface Props {
 export default function SpotlightCard({ children, color = '#ffffff', style, onClick }: Props) {
   const ref = useRef<HTMLDivElement>(null)
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     const card = ref.current
     if (!card) return
     const rect = card.getBoundingClientRect()
