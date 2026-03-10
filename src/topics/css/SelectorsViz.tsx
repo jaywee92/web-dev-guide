@@ -11,17 +11,18 @@ interface SelectorStep {
   selector: string | null
   rule: string | null
   color: string
+  colorName: string | null
   targets: string[]
   specificity: string | null
   specLabel: string | null
 }
 
 const STEPS: SelectorStep[] = [
-  { selector: null,     rule: null,                     color: '#52525b', targets: [],               specificity: null,    specLabel: null },
-  { selector: '*',      rule: '* { color: yellow }',    color: YELLOW,    targets: ['h1','p','div'],  specificity: '0,0,0', specLabel: 'universal' },
-  { selector: 'h1',     rule: 'h1 { color: green }',    color: GREEN,     targets: ['h1'],            specificity: '0,0,1', specLabel: 'type' },
-  { selector: '.title', rule: '.title { color: blue }',  color: BLUE,      targets: ['h1'],            specificity: '0,1,0', specLabel: 'class' },
-  { selector: '#box',   rule: '#box { color: purple }',  color: PURPLE,    targets: ['div'],           specificity: '1,0,0', specLabel: 'ID' },
+  { selector: null,     rule: null,                     color: '#52525b', colorName: null,     targets: [],               specificity: null,    specLabel: null },
+  { selector: '*',      rule: '* { color: yellow }',    color: YELLOW,    colorName: 'yellow', targets: ['h1','p','div'],  specificity: '0,0,0', specLabel: 'universal' },
+  { selector: 'h1',     rule: 'h1 { color: green }',    color: GREEN,     colorName: 'green',  targets: ['h1'],            specificity: '0,0,1', specLabel: 'type' },
+  { selector: '.title', rule: '.title { color: blue }',  color: BLUE,      colorName: 'blue',   targets: ['h1'],            specificity: '0,1,0', specLabel: 'class' },
+  { selector: '#box',   rule: '#box { color: purple }',  color: PURPLE,    colorName: 'purple', targets: ['div'],           specificity: '1,0,0', specLabel: 'ID' },
 ]
 
 const stepLabels = [
@@ -76,7 +77,7 @@ export default function SelectorsViz({ step, compact = false }: Props) {
                 <span style={{ color: cfg.color, fontWeight: 700 }}>{cfg.selector}</span>
                 <span style={{ color: '#71717a' }}>{' {'}</span>
                 <div style={{ paddingLeft: 8, color: cfg.color, opacity: 0.85 }}>
-                  {'color: '}{s === 1 ? 'yellow' : s === 2 ? 'green' : s === 3 ? 'blue' : 'purple'}{';'}
+                  {'color: '}{cfg.colorName ?? 'color'}{';'}
                 </div>
                 <span style={{ color: '#71717a' }}>{'}'}</span>
               </motion.div>
@@ -120,7 +121,7 @@ export default function SelectorsViz({ step, compact = false }: Props) {
 
         {/* Arrow */}
         <motion.div
-          animate={{ color: s > 0 ? cfg.color : '#3f3f46' }}
+          animate={{ color: s > 0 ? cfg.color : '#71717a' }}
           transition={{ duration: 0.3 }}
           style={{ display: 'flex', alignItems: 'center', fontSize: compact ? 16 : 20 }}
         >
