@@ -1,23 +1,18 @@
-import { useState, useEffect } from 'react'
+import { useState, type ComponentType } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import type { Topic } from '@/types'
 import AnimationControls from '@/components/ui/AnimationControls'
 import { useAnimationStep } from '@/hooks/useAnimationStep'
-import { getAnimationComponent, preloadAnimation } from '@/topics/registry'
 
-interface Props { topic: Topic }
+interface Props {
+  topic: Topic
+  AnimComp: ComponentType<{ step: number; compact?: boolean }> | null
+}
 
-export default function IntroAnimation({ topic }: Props) {
+export default function IntroAnimation({ AnimComp }: Props) {
   const [skipped, setSkipped] = useState(false)
-  const [, forceUpdate] = useState(0)
   const ctrl = useAnimationStep({ totalSteps: 5, autoPlay: true, stepDuration: 1800 })
-
-  useEffect(() => {
-    preloadAnimation(topic.animationComponent).then(() => forceUpdate(n => n + 1))
-  }, [topic.animationComponent])
-
-  const AnimComp = getAnimationComponent(topic.animationComponent)
 
   if (skipped) return null
 

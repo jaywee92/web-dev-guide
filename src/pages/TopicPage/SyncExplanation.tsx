@@ -1,16 +1,17 @@
-import { useRef } from 'react'
+import { useRef, type ComponentType } from 'react'
 import { motion, useInView } from 'framer-motion'
 import type { Topic, ExplanationStep } from '@/types'
 import CodeBlock from '@/components/ui/CodeBlock'
-import { getAnimationComponent } from '@/topics/registry'
 import { useAnimationStep } from '@/hooks/useAnimationStep'
 
-interface Props { topic: Topic }
+interface Props {
+  topic: Topic
+  AnimComp: ComponentType<{ step: number; compact?: boolean }> | null
+}
 
-export default function SyncExplanation({ topic }: Props) {
+export default function SyncExplanation({ topic, AnimComp }: Props) {
   const explanationSection = topic.sections.find(s => s.type === 'explanation')
   const steps = explanationSection?.steps ?? []
-  const AnimComp = getAnimationComponent(topic.animationComponent)
   const ctrl = useAnimationStep({ totalSteps: Math.max(steps.length, 1), autoPlay: false })
 
   if (steps.length === 0) return null

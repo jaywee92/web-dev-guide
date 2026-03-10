@@ -1,3 +1,4 @@
+import { useState, useEffect, type ComponentType } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, ExternalLink } from 'lucide-react'
@@ -11,6 +12,7 @@ import PlaygroundSection from './PlaygroundSection'
 import CheatSheet from '@/components/ui/CheatSheet'
 import TopicSidebar from '@/components/layout/TopicSidebar'
 import { getCategoryForTopic } from '@/data/categories'
+import { preloadAnimation, getAnimationComponent } from '@/topics/registry'
 import type { CategoryId } from '@/types'
 
 export default function TopicPage() {
@@ -22,6 +24,16 @@ export default function TopicPage() {
   if (!topic || !level) {
     return <div style={{ padding: 40, color: 'var(--text-muted)' }}>Topic not found.</div>
   }
+
+  const [AnimComp, setAnimComp] = useState<ComponentType<{ step: number; compact?: boolean }> | null>(
+    () => getAnimationComponent(topic.animationComponent)
+  )
+
+  useEffect(() => {
+    preloadAnimation(topic.animationComponent).then(() => {
+      setAnimComp(() => getAnimationComponent(topic.animationComponent))
+    })
+  }, [topic.animationComponent])
 
   const category = getCategoryForTopic(topic.id)
 
@@ -71,10 +83,10 @@ export default function TopicPage() {
           )}
 
           {/* Phase 1: Intro */}
-          <IntroAnimation topic={topic} />
+          <IntroAnimation topic={topic} AnimComp={AnimComp} />
 
           {/* Phase 2: Explanation */}
-          <SyncExplanation topic={topic} />
+          <SyncExplanation topic={topic} AnimComp={AnimComp} />
 
           {topic.cheatSheet && (
             <div style={{ marginTop: 48 }}>
