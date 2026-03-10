@@ -8,6 +8,7 @@ import LevelBadge from '@/components/ui/LevelBadge'
 import IntroAnimation from './IntroAnimation'
 import SyncExplanation from './SyncExplanation'
 import PlaygroundSection from './PlaygroundSection'
+import CheatSheet from '@/components/ui/CheatSheet'
 import TopicSidebar from '@/components/layout/TopicSidebar'
 import { getCategoryForTopic } from '@/data/categories'
 import type { CategoryId } from '@/types'
@@ -74,6 +75,15 @@ export default function TopicPage() {
 
           {/* Phase 2: Explanation */}
           <SyncExplanation topic={topic} />
+
+          {topic.cheatSheet && (
+            <div style={{ marginTop: 48 }}>
+              <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20, color: 'var(--text)' }}>
+                Cheat Sheet
+              </h2>
+              <CheatSheet data={topic.cheatSheet} color={topic.color} />
+            </div>
+          )}
 
           {/* Phase 3: Playground */}
           <PlaygroundSection topic={topic} />
