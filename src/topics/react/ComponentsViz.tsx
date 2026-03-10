@@ -2,234 +2,237 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 interface Props { step: number; compact?: boolean }
 
+const PINK = '#f472b6'
 const BLUE = '#5b9cf5'
+const PURPLE = '#a78bfa'
+const GREEN = '#4ade80'
+
 const stepLabels = [
-  'HTML — static markup',
-  'JSX — HTML-like syntax in JavaScript',
-  'A component is just a function',
-  'Components compose into a tree',
-  'Props flow down — one direction',
+  'A React component is a reusable building block',
+  'Components can be composed — used inside each other',
+  'Navigation is a component too — add it to the top',
+  'Compose all components inside a root <App> component',
+  'Parent passes data to children via props',
 ]
 
-function CodeLine({ children, highlight }: { children: string; highlight?: boolean }) {
-  return (
-    <span style={{
-      display: 'block',
-      fontFamily: 'var(--font-mono)',
-      fontSize: 12,
-      color: highlight ? BLUE : '#e2e8f0',
-      fontWeight: highlight ? 700 : 400,
-      background: highlight ? 'rgba(91,156,245,0.12)' : 'transparent',
-      borderRadius: 3,
-      padding: '1px 4px',
-    }}>
-      {children}
-    </span>
-  )
+interface ComponentDef {
+  id: string
+  label: string
+  color: string
+  width: number
+  studs: number
 }
 
-function CodeBlock({ children }: { children: React.ReactNode }) {
+const COMPONENTS: ComponentDef[] = [
+  { id: 'button', label: '<Button />', color: PINK,   width: 80,  studs: 2 },
+  { id: 'card',   label: '<Card />',   color: PURPLE, width: 110, studs: 3 },
+  { id: 'nav',    label: '<Nav />',    color: BLUE,   width: 160, studs: 4 },
+]
+
+const VISIBLE: Record<number, string[]> = {
+  0: ['button'],
+  1: ['button', 'card'],
+  2: ['button', 'card', 'nav'],
+  3: ['button', 'card', 'nav'],
+  4: ['button', 'card', 'nav'],
+}
+
+function Studs({ count, color }: { count: number; color: string }) {
   return (
-    <div style={{
-      background: 'rgba(0,0,0,0.35)',
-      border: '1px solid rgba(91,156,245,0.25)',
-      borderRadius: 8,
-      padding: '10px 14px',
-      minWidth: 220,
-    }}>
-      {children}
+    <div style={{ display: 'flex', gap: 4, position: 'absolute', top: -5, left: 8 }}>
+      {Array.from({ length: count }).map((_, i) => (
+        <div key={i} style={{
+          width: 8, height: 8,
+          borderRadius: '50%',
+          background: color,
+          border: `1.5px solid ${color}cc`,
+          boxShadow: `0 1px 3px ${color}44`,
+        }} />
+      ))}
     </div>
   )
 }
 
-function TreeNode({ label, color, children }: { label: string; color: string; children?: React.ReactNode }) {
+function ComponentBlock({ def, compact }: { def: ComponentDef; compact: boolean }) {
+  const h = compact ? 28 : 36
+  const w = compact ? Math.round(def.width * 0.7) : def.width
+  const studs = Math.max(1, Math.round(def.studs * (compact ? 0.7 : 1)))
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+    <div style={{ position: 'relative', paddingTop: 8 }}>
+      <Studs count={studs} color={def.color} />
       <div style={{
-        padding: '4px 12px',
-        border: `2px solid ${color}`,
+        width: w,
+        height: h,
+        background: `${def.color}22`,
+        border: `2px solid ${def.color}`,
         borderRadius: 6,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: compact ? 8 : 10,
         fontFamily: 'var(--font-mono)',
-        fontSize: 12,
-        color,
-        background: `${color}18`,
         fontWeight: 700,
+        color: def.color,
+        boxShadow: `0 3px 0 ${def.color}55, 0 4px 8px ${def.color}22`,
+      }}>
+        {def.label}
+      </div>
+    </div>
+  )
+}
+
+function PropArrow({ from, to, label, compact }: { from: string; to: string; label: string; compact: boolean }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -8 }}
+      animate={{ opacity: 1, x: 0 }}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 4,
+        fontSize: compact ? 8 : 9,
+        fontFamily: 'var(--font-mono)',
+        color: GREEN,
+      }}
+    >
+      <span style={{ opacity: 0.6 }}>{from}</span>
+      <motion.span
+        animate={{ x: [0, 4, 0] }}
+        transition={{ repeat: Infinity, duration: 1.2, ease: 'easeInOut' }}
+      >
+        →
+      </motion.span>
+      <span style={{
+        background: `${GREEN}18`,
+        border: `1px solid ${GREEN}55`,
+        borderRadius: 4,
+        padding: '1px 5px',
+        color: GREEN,
       }}>
         {label}
+      </span>
+      <span style={{ opacity: 0.6 }}>{to}</span>
+    </motion.div>
+  )
+}
+
+function ComponentsInner({ visible, compact }: { visible: string[]; compact: boolean }) {
+  const allDefs = COMPONENTS.filter(c => visible.includes(c.id))
+  const nav = allDefs.find(c => c.id === 'nav')
+  const rest = allDefs.filter(c => c.id !== 'nav')
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: compact ? 6 : 8 }}>
+      <AnimatePresence>
+        {nav && (
+          <motion.div
+            key="nav"
+            initial={{ opacity: 0, y: -16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ type: 'spring', stiffness: 280, damping: 22 }}
+          >
+            <ComponentBlock def={nav} compact={compact} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div style={{ display: 'flex', flexDirection: 'row', gap: compact ? 6 : 10, alignItems: 'flex-end' }}>
+        <AnimatePresence>
+          {rest.map(def => (
+            <motion.div
+              key={def.id}
+              initial={{ opacity: 0, scale: 0.6, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.6 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            >
+              <ComponentBlock def={def} compact={compact} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
-      {children && (
-        <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', position: 'relative' }}>
-          <div style={{
-            position: 'absolute', top: -4, left: '50%', transform: 'translateX(-50%)',
-            width: 1, height: 8, background: `${color}66`,
-          }} />
-          {children}
-        </div>
-      )}
     </div>
   )
 }
 
 export default function ComponentsViz({ step, compact = false }: Props) {
+  const visible = VISIBLE[Math.min(step, 4)]
+  const showApp = step >= 3
+  const showProps = step >= 4
+  const labelColor = step <= 1 ? PINK : step === 2 ? BLUE : PURPLE
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-
-      {/* Step 0 — plain HTML */}
-      {step === 0 && (
-        <AnimatePresence mode="wait">
-          <motion.div
-            key="step0"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-          >
-            <CodeBlock>
-              <CodeLine>{'<button class="btn">Click me</button>'}</CodeLine>
-            </CodeBlock>
-          </motion.div>
-        </AnimatePresence>
-      )}
-
-      {/* Step 1 — JSX */}
-      {step === 1 && (
-        <AnimatePresence mode="wait">
-          <motion.div
-            key="step1"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-          >
-            <CodeBlock>
-              <CodeLine highlight>{'<Button>Click me</Button>'}</CodeLine>
-            </CodeBlock>
-            <div style={{
-              marginTop: 8,
-              textAlign: 'center',
-              fontFamily: 'var(--font-mono)',
-              fontSize: 11,
-              color: BLUE,
-            }}>
-              Capitalized tag = React component
-            </div>
-          </motion.div>
-        </AnimatePresence>
-      )}
-
-      {/* Step 2 — component function */}
-      {step === 2 && (
-        <AnimatePresence mode="wait">
-          <motion.div
-            key="step2"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-          >
-            <CodeBlock>
-              <CodeLine>{'function Button({ children }) {'}</CodeLine>
-              <CodeLine>{'  return ('}</CodeLine>
-              <CodeLine>{'    <button>'}</CodeLine>
-              <CodeLine highlight>{'      {children}'}</CodeLine>
-              <CodeLine>{'    </button>'}</CodeLine>
-              <CodeLine>{'  )'}</CodeLine>
-              <CodeLine>{'}'}</CodeLine>
-            </CodeBlock>
-          </motion.div>
-        </AnimatePresence>
-      )}
-
-      {/* Step 3 — composition tree */}
-      {step === 3 && (
-        <AnimatePresence mode="wait">
-          <motion.div
-            key="step3"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}
-          >
-            <TreeNode label="<Card>" color="#a78bfa">
-              <TreeNode label="<Button>" color={BLUE}>
-                <TreeNode label="<Icon>" color="#4ade80" />
-              </TreeNode>
-            </TreeNode>
-          </motion.div>
-        </AnimatePresence>
-      )}
-
-      {/* Step 4 — props flow */}
-      {step === 4 && (
-        <AnimatePresence mode="wait">
-          <motion.div
-            key="step4"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}
-          >
-            <div style={{
-              padding: '6px 16px',
-              border: `2px solid #a78bfa`,
-              borderRadius: 6,
-              fontFamily: 'var(--font-mono)',
-              fontSize: 12,
-              color: '#a78bfa',
-              background: 'rgba(167,139,250,0.1)',
-              fontWeight: 700,
-            }}>
-              Parent
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-              {['color="blue"', 'onClick={handler}'].map((prop, i) => (
-                <motion.div
-                  key={prop}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.15 }}
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: 11,
-                    color: '#f5c542',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 4,
-                  }}
-                >
-                  <span style={{ color: '#4ade80' }}>↓</span> {prop}
-                </motion.div>
-              ))}
-            </div>
-            <div style={{
-              padding: '6px 16px',
-              border: `2px solid ${BLUE}`,
-              borderRadius: 6,
-              fontFamily: 'var(--font-mono)',
-              fontSize: 12,
-              color: BLUE,
-              background: `rgba(91,156,245,0.1)`,
-              fontWeight: 700,
-            }}>
-              {'<Button>'}
-            </div>
-          </motion.div>
-        </AnimatePresence>
-      )}
-
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: compact ? 10 : 14 }}>
       {/* Step label */}
       <AnimatePresence mode="wait">
-        <motion.p
+        <motion.div
           key={step}
-          initial={{ opacity: 0, y: 8 }}
+          initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
+          exit={{ opacity: 0, y: 8 }}
           style={{
-            color: BLUE,
-            fontFamily: 'var(--font-mono)',
-            fontSize: compact ? 11 : 12,
-            textAlign: 'center',
+            background: `${labelColor}22`, border: `1px solid ${labelColor}55`,
+            borderRadius: 6, padding: compact ? '4px 10px' : '5px 14px',
+            fontSize: compact ? 10 : 11, fontFamily: 'var(--font-mono)',
+            fontWeight: 700, color: labelColor, letterSpacing: '0.3px', textAlign: 'center',
           }}
         >
-          {stepLabels[Math.min(step, stepLabels.length - 1)]}
-        </motion.p>
+          {stepLabels[Math.min(step, 4)]}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* App wrapper appears at step 3 */}
+      <AnimatePresence>
+        {showApp ? (
+          <motion.div
+            key="app-wrapper"
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 260, damping: 22 }}
+            style={{
+              border: `2px dashed ${PURPLE}66`,
+              borderRadius: 10,
+              padding: compact ? '12px 10px 8px' : '16px 14px 10px',
+              background: `${PURPLE}08`,
+              position: 'relative',
+            }}
+          >
+            <span style={{
+              position: 'absolute', top: -10, left: 12,
+              background: 'var(--surface)',
+              padding: '0 6px',
+              fontSize: compact ? 8 : 10,
+              fontFamily: 'var(--font-mono)',
+              fontWeight: 700,
+              color: PURPLE,
+            }}>
+              {'<App />'}
+            </span>
+            <ComponentsInner visible={visible} compact={compact} />
+          </motion.div>
+        ) : (
+          <motion.div key="no-app">
+            <ComponentsInner visible={visible} compact={compact} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Props arrows at step 4 */}
+      <AnimatePresence>
+        {showProps && (
+          <motion.div
+            key="props"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            style={{ display: 'flex', flexDirection: 'column', gap: compact ? 3 : 4 }}
+          >
+            <PropArrow from="App" to="Button" label="color={pink}" compact={compact} />
+            <PropArrow from="App" to="Nav" label='title="Home"' compact={compact} />
+          </motion.div>
+        )}
       </AnimatePresence>
     </div>
   )
