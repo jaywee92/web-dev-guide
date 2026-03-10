@@ -39,7 +39,7 @@ function CategoryRow({ category, index }: { category: Category; index: number })
         }}
       >
         {/* Icon */}
-        <div style={{
+        <div title={category.description} style={{
           width: 36, height: 36, borderRadius: 8, flexShrink: 0,
           background: `${category.color}18`,
           border: `1px solid ${category.color}33`,
@@ -49,12 +49,12 @@ function CategoryRow({ category, index }: { category: Category; index: number })
         </div>
 
         {/* Category title */}
-        <div style={{ width: 130, flexShrink: 0 }}>
+        <div style={{ width: 150, flexShrink: 0 }}>
           <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text)' }}>
             {category.title}
           </div>
-          <div style={{ fontSize: 11, color: 'var(--text-faint)', marginTop: 1 }}>
-            {topics.length} topic{topics.length !== 1 ? 's' : ''}
+          <div style={{ fontSize: 10, color: 'var(--text-faint)', marginTop: 1, lineHeight: 1.3 }}>
+            {category.description}
           </div>
         </div>
 
