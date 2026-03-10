@@ -33,22 +33,24 @@ export default function BoxModelViz({ step, compact = false }: Props) {
           const pad = compact ? layer.padC : layer.pad
 
           return (
-            <AnimatePresence key={layer.label}>
+            <AnimatePresence>
               {visible && (
                 <motion.div
+                  key={layer.label}
                   initial={{ scale: 0.85, opacity: 0 }}
                   animate={{
                     scale: 1,
                     opacity: 1,
                     boxShadow: active ? `0 0 22px ${layer.color}55` : 'none',
                   }}
+                  exit={{ scale: 0.85, opacity: 0 }}
                   transition={{ duration: 0.45, ease: [0.34, 1.56, 0.64, 1] as [number, number, number, number] }}
                   style={{
                     border: `${i === 1 ? 3 : 2}px solid ${layer.color}`,
                     background: layer.dimColor,
                     borderRadius: 8,
                     padding: pad,
-                    position: i === 0 ? 'relative' : 'static',
+                    position: 'relative',
                   }}
                 >
                   {/* Layer label + CSS value badge */}
@@ -128,6 +130,7 @@ export default function BoxModelViz({ step, compact = false }: Props) {
             fontFamily: 'var(--font-mono)',
             fontSize: compact ? 11 : 12,
             textAlign: 'center',
+            margin: 0,
           }}
         >
           {stepLabels[s]}
