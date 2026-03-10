@@ -27,6 +27,7 @@ export default function TopicPage() {
   return (
     <PageWrapper>
       <div style={{ display: 'flex', minHeight: 'calc(100vh - 60px)' }}>
+        {/* fallback 'html' is safe: getCategoryForTopic only returns undefined if topic.category is missing from categories.ts — prevented by TypeScript */}
         <TopicSidebar
           key={category?.id}
           activeTopicId={topic.id}
@@ -39,7 +40,7 @@ export default function TopicPage() {
             className="flex items-center gap-2 mb-6"
             style={{ color: 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer', fontSize: 13 }}
           >
-            <ArrowLeft size={16} /> {level.title}
+            <ArrowLeft size={16} /> {category?.title ?? level.title}
           </button>
           <LevelBadge level={level.id} color={level.color} title={level.title} size="sm" />
           <h1 style={{ fontSize: 'clamp(24px, 4vw, 42px)', fontWeight: 800, marginTop: 12, marginBottom: 8 }}>
