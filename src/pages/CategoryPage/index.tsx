@@ -11,12 +11,16 @@ import StaggerChildren, { staggerItem } from '@/components/animations/primitives
 export default function CategoryPage() {
   const location = useLocation()
   const navigate = useNavigate()
-  const categoryId = location.pathname.replace('/', '')
+  const categoryId = location.pathname.slice(1)
   const category = getCategoryById(categoryId)
   const topics = TOPICS.filter(t => t.category === categoryId)
 
   if (!category) {
-    return <div style={{ padding: 40, color: 'var(--text-muted)' }}>Category not found.</div>
+    return (
+      <PageWrapper>
+        <div style={{ padding: 40, color: 'var(--text-muted)' }}>Category not found.</div>
+      </PageWrapper>
+    )
   }
 
   const hasReference = categoryId === 'html' || categoryId === 'css'
@@ -69,14 +73,12 @@ export default function CategoryPage() {
           )}
         </motion.div>
 
-        <StaggerChildren>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
-            {topics.map(topic => (
-              <motion.div key={topic.id} variants={staggerItem}>
-                <TopicCard topic={topic} />
-              </motion.div>
-            ))}
-          </div>
+        <StaggerChildren style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 16 }}>
+          {topics.map(topic => (
+            <motion.div key={topic.id} variants={staggerItem}>
+              <TopicCard topic={topic} />
+            </motion.div>
+          ))}
         </StaggerChildren>
       </div>
     </PageWrapper>
