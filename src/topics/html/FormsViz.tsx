@@ -23,7 +23,7 @@ export default function FormsViz({ step, compact = false }: Props) {
   const gap = compact ? 6 : 8
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: compact ? 8 : 14 }}>
       {/* Form container */}
       <motion.div
         animate={{
@@ -220,7 +220,7 @@ export default function FormsViz({ step, compact = false }: Props) {
           transition={{ duration: 0.3 }}
           style={{
             fontFamily: 'var(--font-mono)',
-            fontSize: 12,
+            fontSize,
             textAlign: 'center',
             maxWidth: compact ? 200 : 260,
             color: s === 0 ? '#71717a' : s === 1 ? PURPLE : s === 2 ? YELLOW : s === 3 ? ORANGE : GREEN,
