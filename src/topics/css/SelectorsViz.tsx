@@ -2,173 +2,188 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 interface Props { step: number; compact?: boolean }
 
-const elements = [
-  { tag: 'h1', label: 'h1', color: '#4ade80' },
-  { tag: '.title', label: '.title', color: '#5b9cf5' },
-  { tag: '#main', label: '#main', color: '#a78bfa' },
+const GREEN  = '#4ade80'
+const BLUE   = '#5b9cf5'
+const PURPLE = '#a78bfa'
+const YELLOW = '#f5c542'
+
+interface SelectorStep {
+  selector: string | null
+  rule: string | null
+  color: string
+  targets: string[]
+  specificity: string | null
+  specLabel: string | null
+}
+
+const STEPS: SelectorStep[] = [
+  { selector: null,     rule: null,                     color: '#52525b', targets: [],               specificity: null,    specLabel: null },
+  { selector: '*',      rule: '* { color: yellow }',    color: YELLOW,    targets: ['h1','p','div'],  specificity: '0,0,0', specLabel: 'universal' },
+  { selector: 'h1',     rule: 'h1 { color: green }',    color: GREEN,     targets: ['h1'],            specificity: '0,0,1', specLabel: 'type' },
+  { selector: '.title', rule: '.title { color: blue }',  color: BLUE,      targets: ['h1'],            specificity: '0,1,0', specLabel: 'class' },
+  { selector: '#box',   rule: '#box { color: purple }',  color: PURPLE,    targets: ['div'],           specificity: '1,0,0', specLabel: 'ID' },
 ]
 
 const stepLabels = [
-  'CSS targets elements with selectors',
-  '* — targets everything',
+  'CSS selectors target HTML elements',
+  '* selects every element on the page',
   'Type selector — matches by tag name',
-  'Class selector — reusable',
-  'ID wins — specificity determines which rule applies',
+  'Class selector — reusable, matches many elements',
+  'ID selector — unique, highest specificity',
 ]
 
-const specificityScores = [
-  { type: '0,0,1', label: 'type', color: '#4ade80' },
-  { type: '0,1,0', label: 'class', color: '#5b9cf5' },
-  { type: '1,0,0', label: 'ID', color: '#a78bfa' },
+const htmlElements = [
+  { tag: 'h1',  attrs: 'class="title"' },
+  { tag: 'p',   attrs: 'class="lead"' },
+  { tag: 'div', attrs: 'id="box"' },
 ]
-
-function getBoxHighlight(step: number, idx: number): string {
-  if (step === 0) return '#3f3f46' // all grey
-  if (step === 1) return '#f5c542' // universal — all yellow
-  if (step === 2 && idx === 0) return elements[0].color // h1 green
-  if (step === 2) return '#3f3f46'
-  if (step === 3 && idx === 1) return elements[1].color // .title blue
-  if (step === 3) return '#3f3f46'
-  if (step >= 4) return elements[idx].color // all colored
-  return '#3f3f46'
-}
-
-function getBoxGlow(step: number, idx: number): string {
-  if (step === 1) return '0 0 16px rgba(245,197,66,0.5)'
-  if (step === 2 && idx === 0) return `0 0 16px ${elements[0].color}66`
-  if (step === 3 && idx === 1) return `0 0 16px ${elements[1].color}66`
-  if (step >= 4 && idx === 2) return `0 0 24px ${elements[2].color}99`
-  return 'none'
-}
 
 export default function SelectorsViz({ step, compact = false }: Props) {
-  const boxSize = compact ? 64 : 88
-  const fontSize = compact ? 11 : 13
+  const s = Math.min(step, 4)
+  const cfg = STEPS[s]
+  const mono = 'var(--font-mono)'
+  const fontSize = compact ? 9 : 11
+  const panelW = compact ? 96 : 130
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: compact ? 10 : 14 }}>
+      <div style={{ display: 'flex', gap: compact ? 8 : 12, alignItems: 'stretch' }}>
 
-      {/* Element boxes */}
-      <div style={{ display: 'flex', gap: compact ? 12 : 20, alignItems: 'flex-end' }}>
-        {elements.map((el, idx) => {
-          const bg = getBoxHighlight(step, idx)
-          const glow = getBoxGlow(step, idx)
-          return (
-            <motion.div
-              key={el.tag}
-              animate={{ backgroundColor: bg, boxShadow: glow }}
-              transition={{ duration: 0.4, ease: 'easeInOut' }}
-              style={{
-                width: boxSize,
-                height: boxSize,
-                borderRadius: 8,
-                border: `2px solid ${bg === '#3f3f46' ? '#52525b' : bg}`,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 4,
-              }}
-            >
-              <span style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: fontSize - 1,
-                fontWeight: 700,
-                color: bg === '#3f3f46' ? '#a1a1aa' : '#09090b',
-              }}>
-                {el.label}
-              </span>
-              <span style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: fontSize - 3,
-                color: bg === '#3f3f46' ? '#71717a' : '#09090b',
-                opacity: 0.8,
-              }}>
-                {el.tag === '.title' ? '<div>' : `<${el.tag === '#main' ? 'section' : el.tag}>`}
-              </span>
-            </motion.div>
-          )
-        })}
-      </div>
+        {/* Left: CSS rule panel */}
+        <div style={{
+          width: panelW,
+          background: 'rgba(0,0,0,0.3)',
+          border: '1px solid var(--border)',
+          borderRadius: 6,
+          padding: compact ? '6px 8px' : '8px 10px',
+          fontFamily: mono,
+          fontSize,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 5,
+        }}>
+          <span style={{ color: '#52525b', fontSize: compact ? 7 : 9 }}>style.css</span>
 
-      {/* Selector label shown at each step */}
-      <AnimatePresence mode="wait">
-        {step >= 1 && (
-          <motion.div
-            key={`selector-${step}`}
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: fontSize,
-              color: step === 1 ? '#f5c542' : step === 2 ? elements[0].color : step === 3 ? elements[1].color : elements[2].color,
-              background: 'rgba(0,0,0,0.3)',
-              padding: '4px 12px',
-              borderRadius: 4,
-            }}
-          >
-            {step === 1 && '* { color: yellow }'}
-            {step === 2 && 'h1 { color: green }'}
-            {step === 3 && '.title { color: blue }'}
-            {step >= 4 && '#main { color: purple }'}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Specificity pyramid — step 4 */}
-      <AnimatePresence>
-        {step >= 4 && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.4 }}
-            style={{ display: 'flex', gap: 8, alignItems: 'center' }}
-          >
-            {specificityScores.map((s, i) => (
-              <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <div style={{
-                  padding: '4px 10px',
-                  borderRadius: 4,
-                  background: `${s.color}22`,
-                  border: `1px solid ${s.color}`,
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: compact ? 9 : 11,
-                  color: s.color,
-                  textAlign: 'center',
-                }}>
-                  <div style={{ fontWeight: 700 }}>{s.type}</div>
-                  <div style={{ opacity: 0.8 }}>{s.label}</div>
+          <AnimatePresence mode="wait">
+            {cfg.rule ? (
+              <motion.div
+                key={cfg.rule}
+                initial={{ opacity: 0, x: -6 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 6 }}
+                transition={{ duration: 0.3 }}
+              >
+                <span style={{ color: cfg.color, fontWeight: 700 }}>{cfg.selector}</span>
+                <span style={{ color: '#71717a' }}>{' {'}</span>
+                <div style={{ paddingLeft: 8, color: cfg.color, opacity: 0.85 }}>
+                  {'color: '}{s === 1 ? 'yellow' : s === 2 ? 'green' : s === 3 ? 'blue' : 'purple'}{';'}
                 </div>
-                {i < specificityScores.length - 1 && (
-                  <span style={{ color: '#71717a', fontSize: 14 }}>{'<'}</span>
+                <span style={{ color: '#71717a' }}>{'}'}</span>
+              </motion.div>
+            ) : (
+              <motion.span
+                key="none"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.4 }}
+                exit={{ opacity: 0 }}
+                style={{ color: '#52525b', fontSize: compact ? 8 : 9 }}
+              >
+                {'/* no rule */'}
+              </motion.span>
+            )}
+          </AnimatePresence>
+
+          {/* Specificity badge */}
+          <AnimatePresence>
+            {cfg.specificity && (
+              <motion.div
+                key={cfg.specificity}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                style={{
+                  fontSize: compact ? 7 : 9,
+                  color: cfg.color,
+                  background: `${cfg.color}18`,
+                  border: `1px solid ${cfg.color}44`,
+                  borderRadius: 3,
+                  padding: '2px 5px',
+                  textAlign: 'center',
+                }}
+              >
+                ({cfg.specificity}) {cfg.specLabel}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Arrow */}
+        <motion.div
+          animate={{ color: s > 0 ? cfg.color : '#3f3f46' }}
+          transition={{ duration: 0.3 }}
+          style={{ display: 'flex', alignItems: 'center', fontSize: compact ? 16 : 20 }}
+        >
+          →
+        </motion.div>
+
+        {/* Right: HTML elements panel */}
+        <div style={{
+          width: panelW,
+          background: 'rgba(0,0,0,0.2)',
+          border: '1px solid var(--border)',
+          borderRadius: 6,
+          padding: compact ? '6px 8px' : '8px 10px',
+          fontFamily: mono,
+          fontSize,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: compact ? 4 : 6,
+        }}>
+          <span style={{ color: '#52525b', fontSize: compact ? 7 : 9 }}>index.html</span>
+
+          {htmlElements.map(el => {
+            const targeted = cfg.targets.includes(el.tag)
+            return (
+              <motion.div
+                key={el.tag}
+                animate={{
+                  color: targeted ? cfg.color : '#52525b',
+                  background: targeted ? `${cfg.color}14` : 'transparent',
+                  boxShadow: targeted ? `0 0 8px ${cfg.color}44` : 'none',
+                }}
+                transition={{ duration: 0.35 }}
+                style={{ borderRadius: 3, padding: '2px 4px', fontSize }}
+              >
+                <span style={{ opacity: 0.5 }}>&lt;</span>
+                <span style={{ fontWeight: 700 }}>{el.tag}</span>
+                {!compact && (
+                  <span style={{ opacity: 0.6 }}> {el.attrs}</span>
                 )}
-              </div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+                <span style={{ opacity: 0.5 }}>&gt;</span>
+              </motion.div>
+            )
+          })}
+        </div>
+      </div>
 
       {/* Step label */}
       <AnimatePresence mode="wait">
         <motion.p
-          key={step}
+          key={s}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.3 }}
           style={{
-            color: step === 0 ? '#a1a1aa'
-              : step === 1 ? '#f5c542'
-              : step === 2 ? elements[0].color
-              : step === 3 ? elements[1].color
-              : elements[2].color,
-            fontFamily: 'var(--font-mono)',
-            fontSize: 12,
+            fontFamily: mono,
+            fontSize: compact ? 11 : 12,
             textAlign: 'center',
+            color: s === 0 ? '#71717a' : cfg.color,
+            margin: 0,
           }}
         >
-          {stepLabels[Math.min(step, stepLabels.length - 1)]}
+          {stepLabels[s]}
         </motion.p>
       </AnimatePresence>
     </div>
