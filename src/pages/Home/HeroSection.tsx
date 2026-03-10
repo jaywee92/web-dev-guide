@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { ArrowDown } from 'lucide-react'
+import ShinyText from './ShinyText'
 
 export default function HeroSection() {
   return (
@@ -85,10 +86,12 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.25 }}
-          style={{ fontSize: 18, color: 'var(--text-muted)', maxWidth: 520, margin: '0 auto 48px' }}
+          style={{ fontSize: 18, maxWidth: 520, margin: '0 auto 48px' }}
         >
-          Complex concepts. Simple animations.
-          From HTML to PostgreSQL — watch it work, then build it yourself.
+          <ShinyText speed={4}>
+            Complex concepts. Simple animations.
+            From HTML to PostgreSQL — watch it work, then build it yourself.
+          </ShinyText>
         </motion.p>
 
         <motion.div

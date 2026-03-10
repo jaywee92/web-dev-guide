@@ -63,3 +63,8 @@ code, pre, .mono { font-family: var(--font-mono); }
   0%   { stroke-dasharray: 0 20; opacity: 1; }
   100% { stroke-dasharray: 20 20; opacity: 0; }
 }
+
+@keyframes shiny-sweep {
+  0%   { background-position: 100% 50%; }
+  100% { background-position: -100% 50%; }
+}
