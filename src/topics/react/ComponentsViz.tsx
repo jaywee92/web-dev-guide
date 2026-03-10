@@ -183,41 +183,46 @@ export default function ComponentsViz({ step, compact = false }: Props) {
         </motion.div>
       </AnimatePresence>
 
-      {/* App wrapper appears at step 3 */}
-      <AnimatePresence>
-        {showApp ? (
-          <motion.div
-            key="app-wrapper"
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-            style={{
-              border: `2px dashed ${PURPLE}66`,
-              borderRadius: 10,
-              padding: compact ? '12px 10px 8px' : '16px 14px 10px',
-              background: `${PURPLE}08`,
-              position: 'relative',
-            }}
-          >
-            <span style={{
-              position: 'absolute', top: -10, left: 12,
-              background: 'var(--surface)',
-              padding: '0 6px',
-              fontSize: compact ? 8 : 10,
-              fontFamily: 'var(--font-mono)',
-              fontWeight: 700,
-              color: PURPLE,
-            }}>
-              {'<App />'}
-            </span>
-            <ComponentsInner visible={visible} compact={compact} />
-          </motion.div>
-        ) : (
-          <motion.div key="no-app">
-            <ComponentsInner visible={visible} compact={compact} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* ComponentsInner always mounted — App wrapper fades in on top as an overlay */}
+      <div style={{ position: 'relative' }}>
+        {/* App wrapper overlay — animates in at step 3, never remounts ComponentsInner */}
+        <AnimatePresence>
+          {showApp && (
+            <motion.div
+              key="app-wrapper"
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.92 }}
+              transition={{ type: 'spring', stiffness: 260, damping: 22 }}
+              style={{
+                position: 'absolute',
+                inset: compact ? '-12px -10px -8px' : '-16px -14px -10px',
+                border: `2px dashed ${PURPLE}66`,
+                borderRadius: 10,
+                background: `${PURPLE}08`,
+                pointerEvents: 'none',
+                zIndex: 0,
+              }}
+            >
+              <span style={{
+                position: 'absolute', top: -10, left: 12,
+                background: 'var(--surface)',
+                padding: '0 6px',
+                fontSize: compact ? 8 : 10,
+                fontFamily: 'var(--font-mono)',
+                fontWeight: 700,
+                color: PURPLE,
+              }}>
+                {'<App />'}
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        {/* Inner blocks always stay mounted — no remount on wrapper toggle */}
+        <div style={{ position: 'relative', zIndex: 1, padding: showApp ? (compact ? '12px 10px 8px' : '16px 14px 10px') : 0, transition: 'padding 0.3s' }}>
+          <ComponentsInner visible={visible} compact={compact} />
+        </div>
+      </div>
 
       {/* Props arrows at step 4 */}
       <AnimatePresence>

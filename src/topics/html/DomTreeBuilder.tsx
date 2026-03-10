@@ -50,11 +50,12 @@ const LEVELS: string[][] = [
   ['span'],
 ]
 
-function NodeBox({ node, isSelected, isVisible, dimmed, compact }: {
+function NodeBox({ node, isSelected, isVisible, dimmed, isInserted, compact }: {
   node: Node
   isSelected: boolean
   isVisible: boolean
   dimmed: boolean
+  isInserted: boolean
   compact: boolean
 }) {
   const fs = compact ? 9 : 11
@@ -71,7 +72,7 @@ function NodeBox({ node, isSelected, isVisible, dimmed, compact }: {
             opacity: dimmed ? 0.3 : 1,
             scale: 1,
             y: 0,
-            boxShadow: isSelected
+            boxShadow: (isSelected || isInserted)
               ? `0 0 0 2px ${node.color}, 0 0 16px ${node.color}88`
               : `0 0 0 1px ${node.color}44`,
           }}
@@ -97,10 +98,11 @@ function NodeBox({ node, isSelected, isVisible, dimmed, compact }: {
   )
 }
 
-function TreeLevel({ nodeIds, visible, selected, compact }: {
+function TreeLevel({ nodeIds, visible, selected, step, compact }: {
   nodeIds: string[]
   visible: string[]
   selected: string | null
+  step: number
   compact: boolean
 }) {
   const gap = compact ? 8 : 12
@@ -111,7 +113,10 @@ function TreeLevel({ nodeIds, visible, selected, compact }: {
         const node = ALL_NODES.find(n => n.id === id)!
         const isVisible = visible.includes(id)
         const isSelected = selected === id
-        const dimmed = selected !== null && !isSelected && isVisible
+        // Dim only during step 3 (node selection), not step 4 (insertion)
+        const dimmed = step === 3 && selected !== null && !isSelected && isVisible
+        // At step 4, highlight the inserted <span> with a glow but no dimming elsewhere
+        const isInserted = step === 4 && id === 'span'
         return (
           <NodeBox
             key={id}
@@ -119,6 +124,7 @@ function TreeLevel({ nodeIds, visible, selected, compact }: {
             isSelected={isSelected}
             isVisible={isVisible}
             dimmed={dimmed}
+            isInserted={isInserted}
             compact={compact}
           />
         )
@@ -146,12 +152,17 @@ function BranchConnector({ show, childCount, compact }: { show: boolean; childCo
           <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: 1, background: 'var(--border)' }} />
         )}
         {/* Vertical drops to each child */}
-        {childCount > 1 && (
-          <>
-            <div style={{ width: 1, height: '50%', background: 'var(--border)', marginTop: 'auto' }} />
-            <div style={{ width: 1, height: '50%', background: 'var(--border)', marginTop: 'auto' }} />
-          </>
-        )}
+        {childCount > 1 && Array.from({ length: childCount }).map((_, i) => (
+          <div
+            key={i}
+            style={{
+              width: 1,
+              height: '50%',
+              background: 'var(--border)',
+              marginTop: 'auto',
+            }}
+          />
+        ))}
       </div>
     </motion.div>
   )
@@ -212,6 +223,7 @@ export default function DomTreeBuilder({ step, compact = false }: Props) {
                 nodeIds={levelIds}
                 visible={visible}
                 selected={selected}
+                step={step}
                 compact={compact}
               />
             </div>
