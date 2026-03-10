@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface Props { step: number; compact?: boolean }
@@ -22,7 +23,7 @@ interface Zone {
   height: number
   divLabel: string
   semanticLabel: string
-  content: React.ReactNode
+  content: ReactNode
 }
 
 export default function SemanticViz({ step, compact = false }: Props) {
@@ -55,8 +56,8 @@ export default function SemanticViz({ step, compact = false }: Props) {
       semanticLabel: '<nav>',
       content: (
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, paddingLeft: 8 }}>
-          {[28, 34, 24].map((w, i) => (
-            <div key={i} style={{ width: w, height: compact ? 4 : 5, borderRadius: 2, background: s >= 2 ? GREEN : '#52525b', opacity: 0.5 }} />
+          {[28, 34, 24].map((w) => (
+            <div key={w} style={{ width: w, height: compact ? 4 : 5, borderRadius: 2, background: s >= 2 ? GREEN : '#52525b', opacity: 0.5 }} />
           ))}
         </div>
       ),
@@ -71,8 +72,8 @@ export default function SemanticViz({ step, compact = false }: Props) {
       content: (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4, padding: compact ? '4px 8px 0' : '6px 10px 0' }}>
           <div style={{ width: '65%', height: compact ? 5 : 7, borderRadius: 2, background: s >= 3 ? PURPLE : '#52525b', opacity: 0.7 }} />
-          {[100, 85, 90].map((w, i) => (
-            <div key={i} style={{ width: `${w}%`, height: compact ? 3 : 4, borderRadius: 2, background: s >= 3 ? PURPLE : '#52525b', opacity: 0.3 }} />
+          {[100, 85, 90].map((w) => (
+            <div key={w} style={{ width: `${w}%`, height: compact ? 3 : 4, borderRadius: 2, background: s >= 3 ? PURPLE : '#52525b', opacity: 0.3 }} />
           ))}
         </div>
       ),
