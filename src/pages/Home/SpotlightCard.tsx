@@ -35,7 +35,6 @@ export default function SpotlightCard({ children, color = '#ffffff', style, onCl
       onClick={onClick}
       style={{
         position: 'relative',
-        overflow: 'hidden',
         cursor: onClick ? 'pointer' : 'default',
         '--x': '50%',
         '--y': '50%',

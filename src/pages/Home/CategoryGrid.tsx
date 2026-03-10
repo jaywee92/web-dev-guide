@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { FileCode2, Palette, Zap, Shield, Layers, Globe, ArrowLeftRight, Database } from 'lucide-react'
@@ -10,6 +11,39 @@ import ClickSpark from './ClickSpark'
 
 const ICONS: Record<string, ComponentType<{ size?: number; color?: string }>> = {
   FileCode2, Palette, Zap, Shield, Layers, Globe, ArrowLeftRight, Database,
+}
+
+function TopicChip({ topic, color, onNavigate }: {
+  topic: { id: string; title: string }
+  color: string
+  onNavigate: (id: string) => void
+}) {
+  const [hovered, setHovered] = useState(false)
+  return (
+    <ClickSpark color={color}>
+      <motion.span
+        onClick={e => { e.stopPropagation(); onNavigate(topic.id) }}
+        onHoverStart={() => setHovered(true)}
+        onHoverEnd={() => setHovered(false)}
+        whileTap={{ scale: 0.96 }}
+        animate={{ scale: hovered ? 1.04 : 1 }}
+        style={{
+          display: 'inline-block',
+          fontSize: 11,
+          padding: '3px 10px',
+          borderRadius: 20,
+          background: hovered ? `${color}18` : 'var(--surface-bright)',
+          border: `1px solid ${hovered ? `${color}44` : 'var(--border)'}`,
+          color: hovered ? color : 'var(--text-muted)',
+          fontFamily: 'var(--font-mono)',
+          cursor: 'pointer',
+          transition: 'background 0.15s, color 0.15s, border-color 0.15s',
+        }}
+      >
+        {topic.title}
+      </motion.span>
+    </ClickSpark>
+  )
 }
 
 function CategoryRow({ category, index }: { category: Category; index: number }) {
@@ -64,39 +98,12 @@ function CategoryRow({ category, index }: { category: Category; index: number })
         {/* Topic chips */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, flex: 1 }}>
           {topics.map(t => (
-            <ClickSpark key={t.id} color={category.color}>
-              <motion.span
-                onClick={e => { e.stopPropagation(); navigate(`/topic/${t.id}`) }}
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.96 }}
-                style={{
-                  display: 'inline-block',
-                  fontSize: 11,
-                  padding: '3px 10px',
-                  borderRadius: 20,
-                  background: 'var(--surface-bright)',
-                  border: '1px solid var(--border)',
-                  color: 'var(--text-muted)',
-                  fontFamily: 'var(--font-mono)',
-                  cursor: 'pointer',
-                  transition: 'background 0.15s, color 0.15s, border-color 0.15s',
-                }}
-                onMouseEnter={e => {
-                  const el = e.currentTarget as HTMLElement
-                  el.style.background = `${category.color}18`
-                  el.style.color = category.color
-                  el.style.borderColor = `${category.color}44`
-                }}
-                onMouseLeave={e => {
-                  const el = e.currentTarget as HTMLElement
-                  el.style.background = 'var(--surface-bright)'
-                  el.style.color = 'var(--text-muted)'
-                  el.style.borderColor = 'var(--border)'
-                }}
-              >
-                {t.title}
-              </motion.span>
-            </ClickSpark>
+            <TopicChip
+              key={t.id}
+              topic={t}
+              color={category.color}
+              onNavigate={id => navigate(`/topic/${id}`)}
+            />
           ))}
         </div>
       </SpotlightCard>
