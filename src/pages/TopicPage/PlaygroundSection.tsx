@@ -1,6 +1,9 @@
 import type { Topic } from '@/types'
 import VisualPlayground from '@/playgrounds/VisualPlayground'
 import MonacoPlayground from '@/playgrounds/MonacoPlayground'
+import { lazy, Suspense } from 'react'
+
+const GradientPlayground = lazy(() => import('@/playgrounds/GradientPlayground'))
 
 interface Props { topic: Topic }
 
@@ -19,10 +22,15 @@ export default function PlaygroundSection({ topic }: Props) {
       <p style={{ color: 'var(--text-muted)', fontSize: 14, marginBottom: 32 }}>
         Experiment directly — changes apply in real time.
       </p>
-      {topic.playgroundType === 'visual-controls'
-        ? <VisualPlayground topicId={topic.id} />
-        : <MonacoPlayground topicId={topic.id} />
-      }
+      {topic.playgroundType === 'gradient' ? (
+        <Suspense fallback={<div style={{ color: 'var(--text-muted)', fontSize: 14 }}>Loading...</div>}>
+          <GradientPlayground />
+        </Suspense>
+      ) : topic.playgroundType === 'visual-controls' ? (
+        <VisualPlayground topicId={topic.id} />
+      ) : (
+        <MonacoPlayground topicId={topic.id} />
+      )}
     </section>
   )
 }
