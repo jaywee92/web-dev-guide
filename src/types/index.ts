@@ -1,5 +1,5 @@
 export type Level = 1 | 2 | 3 | 4
-export type PlaygroundType = 'visual-controls' | 'monaco' | 'none'
+export type PlaygroundType = 'visual-controls' | 'monaco' | 'none' | 'gradient'
 export type ThemeMode = 'dark' | 'light'
 export type CategoryId = 'html' | 'css' | 'javascript' | 'typescript' | 'react' | 'webapis' | 'http' | 'postgresql'
 
