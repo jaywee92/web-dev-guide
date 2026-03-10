@@ -10,7 +10,7 @@ export default function ShinyText({ children, speed = 3 }: Props) {
     <span
       style={{
         display: 'inline-block',
-        backgroundImage: 'linear-gradient(120deg, var(--text-muted) 40%, rgba(255,255,255,0.85) 50%, var(--text-muted) 60%)',
+        backgroundImage: 'linear-gradient(120deg, var(--text-muted) 40%, var(--text) 50%, var(--text-muted) 60%)',
         backgroundSize: '200% 100%',
         WebkitBackgroundClip: 'text',
         WebkitTextFillColor: 'transparent',
