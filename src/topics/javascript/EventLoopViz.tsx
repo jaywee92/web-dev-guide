@@ -53,9 +53,9 @@ function StackColumn({ items, active, compact }: { items: string[]; active: bool
         }}
       >
         <AnimatePresence>
-          {items.map((item, i) => (
+          {items.map((item) => (
             <motion.div
-              key={item + i}
+              key={item}
               initial={{ opacity: 0, y: 16, scale: 0.88 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -12, scale: 0.88 }}
@@ -92,6 +92,7 @@ function WebApiZone({ item, active, compact }: { item: { label: string; timer: s
       </span>
       <motion.div
         animate={{ boxShadow: active ? `0 0 16px ${BLUE}66` : '0 0 0px transparent' }}
+        transition={{ duration: 0.4 }}
         style={{
           width: w,
           minHeight: compact ? 50 : 64,
@@ -150,6 +151,7 @@ function QueueColumn({ items, active, compact }: { items: string[]; active: bool
       </span>
       <motion.div
         animate={{ boxShadow: active ? `0 0 16px ${GREEN}66` : '0 0 0px transparent' }}
+        transition={{ duration: 0.4 }}
         style={{
           width: w,
           minHeight: compact ? 50 : 64,
@@ -166,9 +168,9 @@ function QueueColumn({ items, active, compact }: { items: string[]; active: bool
         }}
       >
         <AnimatePresence>
-          {items.map((item, i) => (
+          {items.map((item) => (
             <motion.div
-              key={item + i}
+              key={item}
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
