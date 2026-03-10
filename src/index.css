@@ -58,3 +58,8 @@ code, pre, .mono { font-family: var(--font-mono); }
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+@keyframes spark-fade {
+  0%   { stroke-dasharray: 0 20; opacity: 1; }
+  100% { stroke-dasharray: 20 20; opacity: 0; }
+}

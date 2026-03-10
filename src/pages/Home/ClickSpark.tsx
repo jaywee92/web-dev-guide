@@ -1,5 +1,7 @@
 import { useState, useCallback, type ReactNode, type MouseEvent } from 'react'
 
+let _nextId = 0
+
 interface Spark {
   id: number
   x: number
@@ -20,7 +22,8 @@ export default function ClickSpark({ children, color = '#ffffff' }: Props) {
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
-    const id = Date.now()
+    const id = _nextId
+    _nextId += 8
     const newSparks = Array.from({ length: 8 }, (_, i) => ({
       id: id + i,
       x,
@@ -59,12 +62,6 @@ export default function ClickSpark({ children, color = '#ffffff' }: Props) {
             />
           )
         })}
-        <style>{`
-          @keyframes spark-fade {
-            0%   { stroke-dasharray: 0 20; opacity: 1; }
-            100% { stroke-dasharray: 20 20; opacity: 0; }
-          }
-        `}</style>
       </svg>
     </span>
   )
