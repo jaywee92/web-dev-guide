@@ -21,19 +21,20 @@ export default function TopicPage() {
   const topic = topicId ? getTopicById(topicId) : undefined
   const level = topic ? LEVELS.find(l => l.id === topic.level) : undefined
 
-  if (!topic || !level) {
-    return <div style={{ padding: 40, color: 'var(--text-muted)' }}>Topic not found.</div>
-  }
-
   const [AnimComp, setAnimComp] = useState<ComponentType<{ step: number; compact?: boolean }> | null>(
-    () => getAnimationComponent(topic.animationComponent)
+    () => topic ? getAnimationComponent(topic.animationComponent) : null
   )
 
   useEffect(() => {
+    if (!topic) return
     preloadAnimation(topic.animationComponent).then(() => {
       setAnimComp(() => getAnimationComponent(topic.animationComponent))
     })
-  }, [topic.animationComponent])
+  }, [topic?.animationComponent])
+
+  if (!topic || !level) {
+    return <div style={{ padding: 40, color: 'var(--text-muted)' }}>Topic not found.</div>
+  }
 
   const category = getCategoryForTopic(topic.id)
 
@@ -83,7 +84,7 @@ export default function TopicPage() {
           )}
 
           {/* Phase 1: Intro */}
-          <IntroAnimation topic={topic} AnimComp={AnimComp} />
+          <IntroAnimation AnimComp={AnimComp} />
 
           {/* Phase 2: Explanation */}
           <SyncExplanation topic={topic} AnimComp={AnimComp} />

@@ -1,12 +1,10 @@
 import { useState, type ComponentType } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
-import type { Topic } from '@/types'
 import AnimationControls from '@/components/ui/AnimationControls'
 import { useAnimationStep } from '@/hooks/useAnimationStep'
 
 interface Props {
-  topic: Topic
   AnimComp: ComponentType<{ step: number; compact?: boolean }> | null
 }
 
