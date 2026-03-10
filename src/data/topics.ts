@@ -47,6 +47,27 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'querySelector', code: 'document.querySelector(".class")  // first match\ndocument.querySelector("#id")', note: 'CSS selector → first match' },
+        { label: 'querySelectorAll', code: 'document.querySelectorAll("p")  // NodeList\n// Convert: Array.from(els) or [...els]', note: 'All matches → NodeList' },
+        { label: 'createElement', code: 'const el = document.createElement("div")\nel.textContent = "Hello"', note: 'Create element' },
+        { label: 'appendChild', code: 'parent.appendChild(child)  // adds as last child\nparent.prepend(child)     // adds as first child', note: 'Insert into DOM' },
+        { label: 'textContent', code: 'el.textContent = "Hello"  // safe, no HTML parsing', note: 'Set text safely' },
+        { label: 'setAttribute', code: 'el.setAttribute("href", "/about")\nel.getAttribute("href")', note: 'Read/write attributes' },
+        { label: 'classList', code: 'el.classList.add("active")\nel.classList.remove("open")\nel.classList.toggle("visible")', note: 'Manage CSS classes' },
+      ],
+      patterns: [
+        { title: 'Query → modify → append', code: 'const btn = document.querySelector("#submit")\nbtn.textContent = "Send"\nbtn.classList.add("primary")\ndocument.body.appendChild(btn)', language: 'javascript' },
+        { title: 'Create a list from data', code: 'const ul = document.createElement("ul")\n["One","Two","Three"].forEach(text => {\n  const li = document.createElement("li")\n  li.textContent = text\n  ul.appendChild(li)\n})\ndocument.body.appendChild(ul)', language: 'javascript' },
+      ],
+      whenToUse: 'Use DOM APIs when dynamically changing the page without a framework. In React or Vue apps, prefer state + JSX to drive UI instead.',
+      commonMistakes: [
+        'Setting innerHTML with user input — XSS risk; use textContent for plain text instead',
+        'Calling querySelector before the DOM is loaded — wrap in DOMContentLoaded or put script at end of body',
+        'Forgetting querySelectorAll returns a NodeList not an Array — use Array.from() to access array methods like .map()',
+      ],
+    },
   },
   {
     id: 'html-semantic',
@@ -103,6 +124,26 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: '<header>', code: '<header>\n  <nav>...</nav>\n</header>', note: 'Site or section header' },
+        { label: '<nav>', code: '<nav>\n  <a href="/">Home</a>\n  <a href="/about">About</a>\n</nav>', note: 'Navigation links' },
+        { label: '<main>', code: '<main>\n  <article>...</article>\n</main>', note: 'Primary content — one per page' },
+        { label: '<article>', code: '<article>\n  <h2>Post title</h2>\n  <p>Content...</p>\n</article>', note: 'Self-contained content' },
+        { label: '<section>', code: '<section>\n  <h2>Chapter heading</h2>\n  <p>...</p>\n</section>', note: 'Thematic group — needs a heading' },
+        { label: '<aside>', code: '<aside>\n  <p>Related links</p>\n</aside>', note: 'Tangential content / sidebar' },
+        { label: '<footer>', code: '<footer>\n  <p>© 2026 MyApp</p>\n</footer>', note: 'Closing info' },
+      ],
+      patterns: [
+        { title: 'Standard page skeleton', code: '<body>\n  <header><nav>...</nav></header>\n  <main>\n    <article>\n      <h1>Title</h1>\n      <p>Content</p>\n    </article>\n    <aside>Related</aside>\n  </main>\n  <footer>© 2026</footer>\n</body>', language: 'html' },
+      ],
+      whenToUse: 'Always prefer semantic elements over generic div. They improve accessibility (screen readers), SEO ranking, and code readability at zero extra cost.',
+      commonMistakes: [
+        'Using div for everything — semantic elements carry meaning for browsers and assistive tech',
+        'Multiple main elements on one page — only one is allowed',
+        'Skipping heading levels (h1 → h3) — headings must be sequential for accessibility',
+      ],
+    },
   },
   {
     id: 'html-forms',
@@ -159,6 +200,26 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: '<form>', code: '<form action="/submit" method="POST">\n  ...\n</form>', note: 'Wraps all inputs' },
+        { label: '<input>', code: '<input type="text" name="username" required>\n<input type="email" name="email">\n<input type="password" name="pwd">\n<input type="checkbox" name="agree">', note: 'type: text/email/password/number/checkbox/radio' },
+        { label: 'label + for', code: '<label for="email">Email</label>\n<input id="email" type="email" name="email">', note: 'for= links to input id=' },
+        { label: '<select>', code: '<select name="role">\n  <option value="admin">Admin</option>\n  <option value="user" selected>User</option>\n</select>', note: 'Dropdown menu' },
+        { label: '<textarea>', code: '<textarea name="bio" rows="4" placeholder="About you..."></textarea>', note: 'Multi-line text' },
+        { label: '<button>', code: '<button type="submit">Send</button>\n<button type="button" onclick="...">Action</button>\n<button type="reset">Clear</button>', note: 'type: submit / button / reset' },
+      ],
+      patterns: [
+        { title: 'Read form data in JS', code: 'form.addEventListener("submit", (e) => {\n  e.preventDefault()\n  const data = new FormData(e.target)\n  console.log(data.get("email"))\n  // or: Object.fromEntries(data)\n})', language: 'javascript' },
+        { title: 'Controlled input with React', code: 'const [email, setEmail] = useState("")\n<input\n  type="email"\n  value={email}\n  onChange={e => setEmail(e.target.value)}\n/>', language: 'jsx' },
+      ],
+      whenToUse: 'Use native form elements for all user input — they have built-in accessibility, keyboard support, and validation for free. Use FormData to read values on submit.',
+      commonMistakes: [
+        'Missing label for every input — always pair label with for/id so screen readers work',
+        'Forgetting e.preventDefault() when handling submit in JS — causes page reload',
+        'Not setting name= on inputs — FormData and form submission will not capture the value',
+      ],
+    },
   },
   {
     id: 'css-box-model',
@@ -208,6 +269,26 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'box-sizing', code: '*, *::before, *::after {\n  box-sizing: border-box;\n}\n/* padding/border included in width — always set this! */', note: 'Reset (apply globally)' },
+        { label: 'padding', code: 'padding: 16px;               /* all sides */\npadding: 8px 16px;           /* top/bottom  left/right */\npadding: 8px 12px 16px 20px; /* top right bottom left */', note: 'Inner spacing' },
+        { label: 'margin', code: 'margin: 0 auto;   /* center block horizontally */\nmargin-top: 24px;\nmargin: 0;        /* remove all margin */', note: 'Outer spacing' },
+        { label: 'border', code: 'border: 2px solid #5b9cf5;\nborder-radius: 8px;\nborder-top: 1px dashed #ccc;', note: 'Border + rounding' },
+        { label: 'width / height', code: 'width: 100%;\nmax-width: 800px;\nmin-height: 200px;\nheight: auto;', note: 'Sizing' },
+        { label: 'overflow', code: 'overflow: hidden;   /* clip content */\noverflow: auto;     /* scrollbar when needed */\noverflow: scroll;   /* always show scrollbar */', note: 'Content overflow' },
+      ],
+      patterns: [
+        { title: 'Center a page container', code: '.container {\n  width: 100%;\n  max-width: 1100px;\n  margin: 0 auto;\n  padding: 0 24px;\n}', language: 'css' },
+        { title: 'Card with correct box model', code: '.card {\n  box-sizing: border-box;\n  width: 320px;\n  padding: 24px;\n  border: 1px solid #e2e8f0;\n  border-radius: 12px;\n}', language: 'css' },
+      ],
+      whenToUse: 'The box model is foundational — every layout issue traces back to it. Always set box-sizing: border-box globally as the first rule in your stylesheet.',
+      commonMistakes: [
+        'Forgetting box-sizing: border-box — causes widths to overflow when padding is added',
+        'Using margin to center vertically — margin: auto only works horizontally for block elements',
+        'Margin collapse: adjacent vertical margins merge (the larger wins) — not a bug, expected behavior',
+      ],
+    },
   },
   {
     id: 'css-flexbox',
@@ -257,6 +338,27 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Container', code: 'display: flex;\nflex-direction: row;       /* row | column */\njustify-content: center;   /* main axis */\nalign-items: center;       /* cross axis */\ngap: 16px;', note: 'Parent properties' },
+        { label: 'justify-content', code: 'justify-content: flex-start | flex-end | center\n  | space-between | space-around | space-evenly', note: 'Main axis alignment' },
+        { label: 'align-items', code: 'align-items: stretch | flex-start | flex-end\n  | center | baseline', note: 'Cross axis alignment' },
+        { label: 'flex (child)', code: 'flex: 1;            /* grow to fill space */\nflex: 0 0 200px;    /* fixed 200px, no grow/shrink */\nflex: 1 1 auto;     /* grow shrink basis */', note: 'Child sizing shorthand' },
+        { label: 'flex-wrap', code: 'flex-wrap: wrap;    /* wrap to next line */\nflex-wrap: nowrap;  /* default: single line */', note: 'Wrapping' },
+        { label: 'gap', code: 'gap: 16px;          /* row and column gap */\ngap: 8px 16px;      /* row-gap column-gap */', note: 'Space between items' },
+      ],
+      patterns: [
+        { title: 'Navbar: logo left, links right', code: '.nav {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 0 24px;\n}', language: 'css' },
+        { title: 'Full-viewport center', code: '.centered {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  min-height: 100vh;\n}', language: 'css' },
+        { title: 'Responsive card row that wraps', code: '.grid {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 16px;\n}\n.card {\n  flex: 1 1 280px;  /* min 280px, then grow */\n}', language: 'css' },
+      ],
+      whenToUse: 'Flexbox is for one-dimensional layouts — a row or a column. Use it for navbars, button groups, vertically centering content. Use CSS Grid for two-dimensional layouts.',
+      commonMistakes: [
+        'Applying flex properties to the wrong element — direction/justify/align go on the parent, flex/align-self go on children',
+        'Using flex: 1 and expecting a fixed size — flex: 1 grows the item to fill remaining space',
+        'Using margin instead of gap — gap avoids double spacing at edges that margin causes',
+      ],
+    },
   },
   {
     id: 'css-grid',
@@ -313,6 +415,26 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Container', code: 'display: grid;\ngrid-template-columns: 1fr 1fr 1fr;\ngap: 16px;', note: 'Basic 3-column grid' },
+        { label: 'fr unit', code: 'grid-template-columns: 1fr 2fr 1fr;\n/* 25% — 50% — 25% of available space */', note: 'Fractional unit' },
+        { label: 'repeat()', code: 'grid-template-columns: repeat(3, 1fr);\n/* responsive: */\ngrid-template-columns: repeat(auto-fill, minmax(250px, 1fr));', note: 'Repeat shorthand' },
+        { label: 'grid-column', code: 'grid-column: 1 / 3;    /* from line 1 to line 3 */\ngrid-column: 1 / -1;   /* span all columns */\ngrid-column: span 2;   /* span 2 cols from here */', note: 'Child column placement' },
+        { label: 'grid-row', code: 'grid-row: 1 / 3;         /* span rows 1–2 */\ngrid-row: span 2;', note: 'Child row placement' },
+        { label: 'grid-template-areas', code: '.layout {\n  grid-template-areas:\n    "header header"\n    "sidebar main"\n    "footer footer";\n}\n.header { grid-area: header; }', note: 'Named areas' },
+      ],
+      patterns: [
+        { title: 'Responsive auto-fill card grid', code: '.grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));\n  gap: 20px;\n}', language: 'css' },
+        { title: 'Page layout with sidebar', code: '.layout {\n  display: grid;\n  grid-template-columns: 240px 1fr;\n  grid-template-rows: auto 1fr auto;\n  grid-template-areas:\n    "header header"\n    "sidebar main"\n    "footer footer";\n  min-height: 100vh;\n}', language: 'css' },
+      ],
+      whenToUse: 'Use Grid for two-dimensional layouts (rows AND columns simultaneously). For a single row or column, Flexbox is simpler. Grid excels at page-level layouts and equal-height card grids.',
+      commonMistakes: [
+        'Confusing fr with % — fr distributes remaining space after fixed sizes; % is always absolute',
+        'Applying grid-column/row on the container — those properties go on the children',
+        'Confusing auto-fill vs auto-fit — auto-fit collapses empty tracks, auto-fill preserves them',
+      ],
+    },
   },
   {
     id: 'css-selectors',
@@ -369,6 +491,26 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Type', code: 'h1 { color: red; }', note: 'All h1 elements' },
+        { label: 'Class', code: '.card { padding: 16px; }', note: 'class="card"' },
+        { label: 'ID', code: '#main { width: 800px; }', note: 'id="main" — unique per page' },
+        { label: 'Attribute', code: 'input[type="email"] { border: 2px solid blue; }\na[href^="https"] { color: green; }', note: 'Attribute matching' },
+        { label: 'Descendant / Child', code: '.nav a { }         /* any a inside .nav */\n.nav > a { }       /* direct children only */', note: 'Nesting' },
+        { label: 'Pseudo-class', code: 'a:hover { text-decoration: underline; }\nli:nth-child(odd) { background: #f0f0f0; }\ninput:focus { outline: 2px solid blue; }', note: 'State or position' },
+        { label: 'Pseudo-element', code: 'p::first-line { font-weight: bold; }\n.card::before { content: "★"; }', note: 'Virtual sub-elements' },
+      ],
+      patterns: [
+        { title: 'Specificity order (low → high)', code: '/* 0,0,1 */ p\n/* 0,1,0 */ .class\n/* 1,0,0 */ #id\n/* inline  */ style="..."\n/* nuclear */ !important  ← avoid', language: 'css' },
+      ],
+      whenToUse: 'Prefer class selectors for styling. Use ID selectors only as JavaScript hooks, not for CSS. Avoid over-qualifying selectors (div.card can just be .card).',
+      commonMistakes: [
+        'Overusing !important — breaks the cascade and causes specificity wars',
+        'Using ID selectors for CSS — very high specificity makes them hard to override',
+        '.nav a matches ALL nested links; .nav > a only direct children — easy to confuse',
+      ],
+    },
   },
   {
     id: 'js-event-loop',
