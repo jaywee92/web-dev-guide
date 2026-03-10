@@ -17,8 +17,7 @@ function CategoryTile({ category, index }: { category: Category; index: number }
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, delay: index * 0.07 }}
       whileHover={{ y: -4 }}
       whileTap={{ scale: 0.98 }}
