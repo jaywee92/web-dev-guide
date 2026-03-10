@@ -3,7 +3,7 @@ import { AnimatePresence } from 'framer-motion'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Home from '@/pages/Home'
-import LevelOverview from '@/pages/LevelOverview'
+import CategoryPage from '@/pages/CategoryPage'
 import TopicPage from '@/pages/TopicPage'
 import SearchPage from '@/pages/SearchPage'
 import SearchPalette from '@/components/ui/SearchPalette'
@@ -19,7 +19,14 @@ export default function App() {
           <AnimatePresence mode="wait">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/level/:levelId" element={<LevelOverview />} />
+              <Route path="/html" element={<CategoryPage />} />
+              <Route path="/css" element={<CategoryPage />} />
+              <Route path="/javascript" element={<CategoryPage />} />
+              <Route path="/typescript" element={<CategoryPage />} />
+              <Route path="/react" element={<CategoryPage />} />
+              <Route path="/webapis" element={<CategoryPage />} />
+              <Route path="/http" element={<CategoryPage />} />
+              <Route path="/postgresql" element={<CategoryPage />} />
               <Route path="/topic/:topicId" element={<TopicPage />} />
               <Route path="/search" element={<SearchPage />} />
               <Route path="/reference/html" element={<ReferencePage type="html" />} />
