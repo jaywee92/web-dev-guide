@@ -12,7 +12,7 @@ const STEP_CONFIGS = [
     fontWeight: 400,
     textAlign: 'left' as const,
     textDecoration: 'none',
-    letterSpacing: 0,
+    letterSpacing: '0em',
     lineHeight: 1.2,
     color: 'var(--text-muted)',
     label: 'Browser default — serif, 16px',
@@ -24,7 +24,7 @@ const STEP_CONFIGS = [
     fontWeight: 700,
     textAlign: 'left' as const,
     textDecoration: 'none',
-    letterSpacing: 0,
+    letterSpacing: '0em',
     lineHeight: 1.3,
     color: BLUE,
     label: 'font-family: sans-serif · font-size: 20px · font-weight: 700',
@@ -36,7 +36,7 @@ const STEP_CONFIGS = [
     fontWeight: 700,
     textAlign: 'center' as const,
     textDecoration: 'underline',
-    letterSpacing: 0,
+    letterSpacing: '0em',
     lineHeight: 1.3,
     color: BLUE,
     label: 'text-align: center · text-decoration: underline',
@@ -91,8 +91,9 @@ export default function TypographyViz({ step, compact = false }: Props) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <motion.p
-              animate={{
+            <p
+              style={{
+                margin: 0,
                 fontFamily: cfg.fontFamily,
                 fontSize: cfg.fontSize,
                 fontWeight: cfg.fontWeight,
@@ -102,11 +103,9 @@ export default function TypographyViz({ step, compact = false }: Props) {
                 lineHeight: cfg.lineHeight,
                 color: cfg.color,
               }}
-              transition={{ duration: 0.4 }}
-              style={{ margin: 0 }}
             >
               The quick brown fox jumps over the lazy dog.
-            </motion.p>
+            </p>
           </motion.div>
         </AnimatePresence>
       </div>

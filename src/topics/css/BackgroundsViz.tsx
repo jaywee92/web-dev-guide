@@ -80,7 +80,7 @@ export default function BackgroundsViz({ step, compact = false }: Props) {
       <div style={{ display: 'flex', gap: 6 }}>
         {STEPS.map((stepCfg, i) => (
           <motion.div
-            key={i}
+            key={stepCfg.label}
             animate={{
               scale: i === s ? 1.4 : 1,
               background: i <= s ? stepCfg.color : 'var(--border)',
