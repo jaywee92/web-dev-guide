@@ -1,6 +1,35 @@
 export type Level = 1 | 2 | 3 | 4
 export type PlaygroundType = 'visual-controls' | 'monaco' | 'none'
 export type ThemeMode = 'dark' | 'light'
+export type CategoryId = 'html' | 'css' | 'javascript' | 'typescript' | 'react' | 'webapis' | 'http' | 'postgresql'
+
+export interface Category {
+  id: CategoryId
+  title: string
+  description: string
+  color: string
+  icon: string        // Lucide icon name
+  topicIds: string[]  // ordered
+}
+
+export interface CheatSheetSyntax {
+  label: string
+  code: string
+  note?: string
+}
+
+export interface CheatSheetPattern {
+  title: string
+  code: string
+  language?: string
+}
+
+export interface CheatSheet {
+  syntax?: CheatSheetSyntax[]
+  patterns?: CheatSheetPattern[]
+  whenToUse?: string
+  commonMistakes?: string[]
+}
 
 export interface LevelConfig {
   id: Level
@@ -16,11 +45,13 @@ export interface Topic {
   title: string
   description: string
   level: Level
+  category: CategoryId
   color: string
   estimatedMinutes: number
   animationComponent: string
   playgroundType: PlaygroundType
   sections: Section[]
+  cheatSheet?: CheatSheet
 }
 
 export interface Section {
