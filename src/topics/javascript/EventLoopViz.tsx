@@ -2,104 +2,69 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 interface Props { step: number; compact?: boolean }
 
+const PURPLE = '#a78bfa'
+const BLUE = '#5b9cf5'
+const GREEN = '#4ade80'
+const YELLOW = '#f5c542'
+
 const stepLabels = [
-  'JavaScript is single-threaded',
-  'Synchronous code runs first',
-  'Async callbacks go to Web APIs → Queue',
-  'Stack must be empty first',
-  'Event Loop: Queue → Stack when stack is empty',
+  'JavaScript runs on a single thread',
+  'Synchronous code executes on the Call Stack',
+  'setTimeout moves its callback to Web APIs — timer starts',
+  'When timer fires, callback enters the Task Queue',
+  "Event Loop moves callback to Call Stack when it's empty",
 ]
 
-const labelColors = ['#a78bfa', '#a78bfa', '#5b9cf5', '#a78bfa', '#4ade80']
-
-// Items visible on the call stack at each step
 const callStackItems: Record<number, string[]> = {
-  0: [],
-  1: ["console.log('start')"],
-  2: ["setTimeout(cb, 0)"],
-  3: ["console.log('end')"],
-  4: ['callback()'],
+  0: [], 1: ["console.log('start')", 'main()'], 2: ['main()'], 3: ["console.log('end')", 'main()'], 4: ['callback()', 'main()'],
 }
-
-// Items visible in web APIs box at each step
-const webApiItems: Record<number, string[]> = {
-  0: [],
-  1: [],
-  2: ['setTimeout(cb, 0)'],
-  3: [],
-  4: [],
+const webApiItems: Record<number, { label: string; timer: string } | null> = {
+  0: null, 1: null, 2: { label: 'setTimeout', timer: '100ms' }, 3: null, 4: null,
 }
-
-// Items visible in the task queue at each step
 const taskQueueItems: Record<number, string[]> = {
-  0: [],
-  1: [],
-  2: [],
-  3: ['callback'],
-  4: [],
+  0: [], 1: [], 2: [], 3: ['callback'], 4: [],
+}
+const activeZone: Record<number, 'stack' | 'webapi' | 'queue' | 'loop' | null> = {
+  0: null, 1: 'stack', 2: 'webapi', 3: 'queue', 4: 'loop',
 }
 
-// Whether the event loop arrow should pulse
-const eventLoopActive: Record<number, boolean> = {
-  0: false,
-  1: false,
-  2: false,
-  3: false,
-  4: true,
-}
-
-function Column({
-  label,
-  color,
-  items,
-  compact,
-}: {
-  label: string
-  color: string
-  items: string[]
-  compact: boolean
-}) {
-  const width = compact ? 110 : 140
-  const minHeight = compact ? 80 : 100
-
+function StackColumn({ items, active, compact }: { items: string[]; active: boolean; compact: boolean }) {
+  const w = compact ? 100 : 130
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-      <span style={{
-        fontSize: compact ? 10 : 11,
-        fontFamily: 'var(--font-mono)',
-        fontWeight: 700,
-        color,
-        textTransform: 'uppercase',
-        letterSpacing: '0.5px',
-      }}>
-        {label}
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+      <span style={{ fontSize: compact ? 9 : 10, fontFamily: 'var(--font-mono)', fontWeight: 700, color: PURPLE, textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+        Call Stack
       </span>
-      <div style={{
-        width,
-        minHeight,
-        border: `2px solid ${color}44`,
-        borderRadius: 8,
-        background: `${color}0d`,
-        display: 'flex',
-        flexDirection: 'column-reverse',
-        alignItems: 'stretch',
-        padding: 6,
-        gap: 4,
-        boxSizing: 'border-box',
-      }}>
+      <motion.div
+        animate={{ boxShadow: active ? `0 0 16px ${PURPLE}66` : '0 0 0px transparent' }}
+        transition={{ duration: 0.4 }}
+        style={{
+          width: w,
+          minHeight: compact ? 80 : 100,
+          border: `2px solid ${PURPLE}${active ? 'cc' : '44'}`,
+          borderRadius: 8,
+          background: `${PURPLE}${active ? '18' : '0d'}`,
+          display: 'flex',
+          flexDirection: 'column-reverse',
+          padding: 5,
+          gap: 3,
+          boxSizing: 'border-box',
+          transition: 'border-color 0.3s, background 0.3s',
+        }}
+      >
         <AnimatePresence>
           {items.map((item, i) => (
             <motion.div
               key={item + i}
-              initial={{ opacity: 0, y: 16, scale: 0.9 }}
+              initial={{ opacity: 0, y: 16, scale: 0.88 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -16, scale: 0.9 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+              exit={{ opacity: 0, y: -12, scale: 0.88 }}
+              transition={{ type: 'spring', stiffness: 320, damping: 24 }}
               style={{
-                background: color,
-                borderRadius: 5,
-                padding: compact ? '3px 6px' : '5px 8px',
-                fontSize: compact ? 9 : 10,
+                background: PURPLE,
+                borderRadius: 4,
+                padding: compact ? '2px 5px' : '4px 8px',
+                fontSize: compact ? 8 : 9,
                 fontFamily: 'var(--font-mono)',
                 fontWeight: 600,
                 color: '#0f0f1a',
@@ -113,139 +78,148 @@ function Column({
             </motion.div>
           ))}
         </AnimatePresence>
-      </div>
-    </div>
-  )
-}
-
-function EventLoopArrow({ active, compact }: { active: boolean; compact: boolean }) {
-  return (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: 4,
-      padding: compact ? '0 4px' : '0 8px',
-    }}>
-      <motion.div
-        animate={active ? { rotate: 360 } : { rotate: 0 }}
-        transition={active ? { repeat: Infinity, duration: 1.2, ease: 'linear' } : { duration: 0 }}
-        style={{
-          fontSize: compact ? 18 : 22,
-          color: active ? '#4ade80' : '#4b5563',
-          lineHeight: 1,
-        }}
-      >
-        ↻
       </motion.div>
-      <span style={{
-        fontSize: compact ? 8 : 9,
-        fontFamily: 'var(--font-mono)',
-        color: active ? '#4ade80' : '#4b5563',
-        textTransform: 'uppercase',
-        letterSpacing: '0.4px',
-      }}>
-        event loop
-      </span>
     </div>
   )
 }
 
-function WebApisBox({ items, compact }: { items: string[]; compact: boolean }) {
-  const color = '#5b9cf5'
-  const width = compact ? 110 : 140
-
+function WebApiZone({ item, active, compact }: { item: { label: string; timer: string } | null; active: boolean; compact: boolean }) {
+  const w = compact ? 90 : 110
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-      <span style={{
-        fontSize: compact ? 10 : 11,
-        fontFamily: 'var(--font-mono)',
-        fontWeight: 700,
-        color,
-        textTransform: 'uppercase',
-        letterSpacing: '0.5px',
-      }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+      <span style={{ fontSize: compact ? 9 : 10, fontFamily: 'var(--font-mono)', fontWeight: 700, color: BLUE, textTransform: 'uppercase', letterSpacing: '0.4px' }}>
         Web APIs
       </span>
-      <div style={{
-        width,
-        minHeight: compact ? 48 : 60,
-        border: `2px dashed ${color}44`,
-        borderRadius: 8,
-        background: `${color}0d`,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'stretch',
-        padding: 6,
-        gap: 4,
-        boxSizing: 'border-box',
-      }}>
+      <motion.div
+        animate={{ boxShadow: active ? `0 0 16px ${BLUE}66` : '0 0 0px transparent' }}
+        style={{
+          width: w,
+          minHeight: compact ? 50 : 64,
+          border: `2px dashed ${BLUE}${active ? 'cc' : '44'}`,
+          borderRadius: 8,
+          background: `${BLUE}${active ? '18' : '0d'}`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 6,
+          boxSizing: 'border-box',
+          transition: 'border-color 0.3s, background 0.3s',
+        }}
+      >
+        <AnimatePresence>
+          {item && (
+            <motion.div
+              key="webapi-item"
+              initial={{ opacity: 0, scale: 0.7 }}
+              animate={{ opacity: 1, scale: 1, boxShadow: [`0 0 0px ${BLUE}00`, `0 0 14px ${BLUE}aa`, `0 0 0px ${BLUE}00`] }}
+              exit={{ opacity: 0, scale: 0.7, y: 12 }}
+              transition={{ duration: 0.4, boxShadow: { repeat: Infinity, duration: 1.2 } }}
+              style={{
+                background: `${BLUE}22`,
+                border: `1.5px solid ${BLUE}`,
+                borderRadius: 6,
+                padding: compact ? '4px 6px' : '6px 10px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 2,
+              }}
+            >
+              <span style={{ fontSize: compact ? 8 : 9, fontFamily: 'var(--font-mono)', fontWeight: 700, color: BLUE }}>{item.label}</span>
+              <motion.span
+                animate={{ opacity: [1, 0.4, 1] }}
+                transition={{ repeat: Infinity, duration: 0.8 }}
+                style={{ fontSize: compact ? 7 : 8, fontFamily: 'var(--font-mono)', color: YELLOW }}
+              >
+                ⏱ {item.timer}
+              </motion.span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </div>
+  )
+}
+
+function QueueColumn({ items, active, compact }: { items: string[]; active: boolean; compact: boolean }) {
+  const w = compact ? 90 : 110
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+      <span style={{ fontSize: compact ? 9 : 10, fontFamily: 'var(--font-mono)', fontWeight: 700, color: GREEN, textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+        Task Queue
+      </span>
+      <motion.div
+        animate={{ boxShadow: active ? `0 0 16px ${GREEN}66` : '0 0 0px transparent' }}
+        style={{
+          width: w,
+          minHeight: compact ? 50 : 64,
+          border: `2px solid ${GREEN}${active ? 'cc' : '44'}`,
+          borderRadius: 8,
+          background: `${GREEN}${active ? '18' : '0d'}`,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          padding: 5,
+          gap: 3,
+          boxSizing: 'border-box',
+          transition: 'border-color 0.3s, background 0.3s',
+        }}
+      >
         <AnimatePresence>
           {items.map((item, i) => (
             <motion.div
               key={item + i}
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.85 }}
-              transition={{ type: 'spring', stiffness: 280, damping: 20 }}
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ type: 'spring', stiffness: 280, damping: 22 }}
               style={{
-                background: color,
-                borderRadius: 5,
-                padding: compact ? '3px 6px' : '4px 8px',
-                fontSize: compact ? 9 : 10,
+                background: GREEN,
+                borderRadius: 4,
+                padding: compact ? '3px 5px' : '4px 8px',
+                fontSize: compact ? 8 : 9,
                 fontFamily: 'var(--font-mono)',
                 fontWeight: 600,
                 color: '#0f0f1a',
-                textAlign: 'center',
+                whiteSpace: 'nowrap',
               }}
             >
               {item}
             </motion.div>
           ))}
         </AnimatePresence>
-      </div>
+      </motion.div>
     </div>
   )
 }
 
-// Arrow pointing upward from Web APIs to Task Queue
-function UpArrow({ visible, compact }: { visible: boolean; compact: boolean }) {
+function EventLoopIndicator({ active, compact }: { active: boolean; compact: boolean }) {
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          key="up-arrow"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          style={{
-            fontSize: compact ? 14 : 16,
-            color: '#5b9cf5',
-            textAlign: 'center',
-            lineHeight: 1,
-          }}
-        >
-          ↑
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, padding: compact ? '0 4px' : '0 8px' }}>
+      <motion.div
+        animate={active ? { rotate: 360, color: GREEN } : { rotate: 0, color: '#4b5563' }}
+        transition={active ? { repeat: Infinity, duration: 1.0, ease: 'linear' } : { duration: 0 }}
+        style={{ fontSize: compact ? 18 : 24, lineHeight: 1 }}
+      >
+        ↻
+      </motion.div>
+      <span style={{ fontSize: compact ? 7 : 8, fontFamily: 'var(--font-mono)', color: active ? GREEN : '#4b5563', textTransform: 'uppercase', letterSpacing: '0.3px' }}>
+        event loop
+      </span>
+    </div>
   )
 }
 
 export default function EventLoopViz({ step, compact = false }: Props) {
-  const stackItems = callStackItems[step] ?? []
-  const webItems = webApiItems[step] ?? []
-  const queueItems = taskQueueItems[step] ?? []
-  const loopActive = eventLoopActive[step] ?? false
-  const labelColor = labelColors[Math.min(step, labelColors.length - 1)]
-
-  // Show up-arrow from Web APIs → Task Queue on step 2
-  const showUpArrow = step === 2
+  const stackItems = callStackItems[Math.min(step, 4)] ?? []
+  const webItem = webApiItems[Math.min(step, 4)] ?? null
+  const queueItems = taskQueueItems[Math.min(step, 4)] ?? []
+  const zone = activeZone[Math.min(step, 4)]
+  const labelColor = zone === 'stack' ? PURPLE : zone === 'webapi' ? BLUE : zone === 'queue' || zone === 'loop' ? GREEN : '#6b7280'
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: compact ? 12 : 16 }}>
-      {/* Label badge */}
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: compact ? 10 : 14 }}>
+      {/* Label */}
       <AnimatePresence mode="wait">
         <motion.div
           key={step}
@@ -253,30 +227,23 @@ export default function EventLoopViz({ step, compact = false }: Props) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 8 }}
           style={{
-            background: `${labelColor}22`,
-            border: `1px solid ${labelColor}55`,
-            borderRadius: 6,
-            padding: compact ? '4px 10px' : '5px 14px',
-            fontSize: compact ? 10 : 11,
-            fontFamily: 'var(--font-mono)',
-            fontWeight: 700,
-            color: labelColor,
-            letterSpacing: '0.3px',
+            background: `${labelColor}22`, border: `1px solid ${labelColor}55`,
+            borderRadius: 6, padding: compact ? '4px 10px' : '5px 14px',
+            fontSize: compact ? 10 : 11, fontFamily: 'var(--font-mono)',
+            fontWeight: 700, color: labelColor, letterSpacing: '0.3px', textAlign: 'center',
           }}
         >
-          {stepLabels[Math.min(step, stepLabels.length - 1)]}
+          {stepLabels[Math.min(step, 4)]}
         </motion.div>
       </AnimatePresence>
 
-      {/* Main row: Call Stack | Event Loop | Task Queue */}
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', gap: compact ? 8 : 12 }}>
-        <Column label="Call Stack" color="#a78bfa" items={stackItems} compact={compact} />
-        <EventLoopArrow active={loopActive} compact={compact} />
-        {/* Right side: Task Queue above, Web APIs below */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-          <Column label="Task Queue" color="#5b9cf5" items={queueItems} compact={compact} />
-          <UpArrow visible={showUpArrow} compact={compact} />
-          <WebApisBox items={webItems} compact={compact} />
+      {/* Main diagram */}
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: compact ? 6 : 8 }}>
+        <StackColumn items={stackItems} active={zone === 'stack' || zone === 'loop'} compact={compact} />
+        <EventLoopIndicator active={zone === 'loop'} compact={compact} />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: compact ? 6 : 8, alignItems: 'center' }}>
+          <QueueColumn items={queueItems} active={zone === 'queue'} compact={compact} />
+          <WebApiZone item={webItem} active={zone === 'webapi'} compact={compact} />
         </div>
       </div>
     </div>
