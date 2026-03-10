@@ -645,7 +645,7 @@ export const TOPICS: Topic[] = [
       syntax: [
         { label: 'Basic closure', code: 'function outer() {\n  const secret = 42\n  return function inner() {\n    return secret  // remembers outer scope\n  }\n}\nconst getSecret = outer()\ngetSecret() // 42', note: 'Inner function retains reference to outer variable' },
         { label: 'Counter factory', code: 'function makeCounter() {\n  let count = 0\n  return () => ++count\n}\nconst counter = makeCounter()\ncounter() // 1\ncounter() // 2', note: 'Each call creates independent private state' },
-        { label: 'IIFE', code: '(function () {\n  const private = "hidden"\n  console.log(private)\n})()', note: 'Immediately Invoked Function Expression — runs once' },
+        { label: 'IIFE', code: '(function () {\n  const message = "hidden"\n  console.log(message)\n})()', note: 'Immediately Invoked Function Expression — runs once' },
       ],
       patterns: [
         { title: 'Factory function with private state', code: 'function createBank(initial: number) {\n  let balance = initial\n  return {\n    deposit: (n: number) => { balance += n },\n    withdraw: (n: number) => { balance -= n },\n    getBalance: () => balance,\n  }\n}\nconst account = createBank(100)\naccount.deposit(50)\naccount.getBalance() // 150', language: 'typescript' },
