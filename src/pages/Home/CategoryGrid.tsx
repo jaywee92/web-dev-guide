@@ -1,117 +1,115 @@
+import type { ComponentType } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { FileCode2, Palette, Zap, Shield, Layers, Globe, ArrowLeftRight, Database } from 'lucide-react'
 import { CATEGORIES } from '@/data/categories'
 import { TOPICS } from '@/data/topics'
 import type { Category } from '@/types'
+import SpotlightCard from './SpotlightCard'
+import ClickSpark from './ClickSpark'
 
-const ICONS: Record<string, React.ComponentType<{ size?: number; color?: string }>> = {
+const ICONS: Record<string, ComponentType<{ size?: number; color?: string }>> = {
   FileCode2, Palette, Zap, Shield, Layers, Globe, ArrowLeftRight, Database,
 }
 
-function CategoryTile({ category, index }: { category: Category; index: number }) {
+function CategoryRow({ category, index }: { category: Category; index: number }) {
   const navigate = useNavigate()
   const topics = TOPICS.filter(t => t.category === category.id)
   const Icon = ICONS[category.icon] ?? FileCode2
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, delay: index * 0.07 }}
-      whileHover={{ y: -4 }}
-      whileTap={{ scale: 0.98 }}
-      onClick={() => navigate(`/${category.id}`)}
-      style={{
-        background: 'var(--surface)',
-        border: '1px solid var(--border)',
-        borderRadius: 16,
-        padding: '24px',
-        cursor: 'pointer',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
+      transition={{ duration: 0.4, delay: index * 0.06 }}
     >
-      {/* Background glow on hover */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileHover={{ opacity: 1 }}
+      <SpotlightCard
+        color={category.color}
+        onClick={() => navigate(`/${category.id}`)}
         style={{
-          position: 'absolute', inset: 0, pointerEvents: 'none',
-          background: `radial-gradient(ellipse at 20% 20%, ${category.color}0e 0%, transparent 65%)`,
+          background: 'var(--surface)',
+          border: '1px solid var(--border)',
+          borderRadius: 12,
+          borderLeft: `3px solid ${category.color}`,
+          padding: '14px 20px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 16,
+          transition: 'border-color 0.2s ease, background 0.2s ease',
         }}
-      />
-
-      {/* Color bar */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        whileHover={{ scaleX: 1 }}
-        transition={{ duration: 0.25 }}
-        style={{
-          position: 'absolute', top: 0, left: 0, right: 0,
-          height: 3, background: category.color, transformOrigin: 'left',
-          borderRadius: '16px 16px 0 0',
-        }}
-      />
-
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        {/* Icon + title */}
-        <div className="flex items-center gap-3 mb-3">
-          <div style={{
-            width: 40, height: 40, borderRadius: 10,
-            background: `${category.color}18`,
-            border: `1px solid ${category.color}33`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <Icon size={20} color={category.color} />
-          </div>
-          <div>
-            <div style={{ fontSize: 16, fontWeight: 800, color: 'var(--text)' }}>{category.title}</div>
-            <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{category.description}</div>
-          </div>
-        </div>
-
-        {/* Topic count badge */}
+      >
+        {/* Icon */}
         <div style={{
-          display: 'inline-flex', alignItems: 'center',
-          padding: '3px 10px', borderRadius: 99,
-          background: `${category.color}14`, border: `1px solid ${category.color}30`,
-          fontSize: 11, color: category.color, fontFamily: 'var(--font-mono)',
-          fontWeight: 600, marginBottom: 12,
+          width: 36, height: 36, borderRadius: 8, flexShrink: 0,
+          background: `${category.color}18`,
+          border: `1px solid ${category.color}33`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
-          {topics.length} topic{topics.length !== 1 ? 's' : ''}
+          <Icon size={18} color={category.color} />
         </div>
 
-        {/* Topic name chips */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
-          {topics.slice(0, 3).map(t => (
-            <span key={t.id} style={{
-              fontSize: 10, color: 'var(--text-muted)',
-              background: 'var(--surface-bright)',
-              border: '1px solid var(--border)',
-              borderRadius: 6, padding: '2px 7px',
-              fontFamily: 'var(--font-mono)',
-            }}>
-              {t.title}
-            </span>
-          ))}
-          {topics.length > 3 && (
-            <span style={{ fontSize: 10, color: 'var(--text-faint)', padding: '2px 4px' }}>
-              +{topics.length - 3} more
-            </span>
-          )}
+        {/* Category title */}
+        <div style={{ width: 130, flexShrink: 0 }}>
+          <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text)' }}>
+            {category.title}
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--text-faint)', marginTop: 1 }}>
+            {topics.length} topic{topics.length !== 1 ? 's' : ''}
+          </div>
         </div>
-      </div>
+
+        {/* Divider */}
+        <div style={{ width: 1, height: 32, background: 'var(--border)', flexShrink: 0 }} />
+
+        {/* Topic chips */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, flex: 1 }}>
+          {topics.map(t => (
+            <ClickSpark key={t.id} color={category.color}>
+              <motion.span
+                onClick={e => { e.stopPropagation(); navigate(`/topic/${t.id}`) }}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                style={{
+                  display: 'inline-block',
+                  fontSize: 11,
+                  padding: '3px 10px',
+                  borderRadius: 20,
+                  background: 'var(--surface-bright)',
+                  border: '1px solid var(--border)',
+                  color: 'var(--text-muted)',
+                  fontFamily: 'var(--font-mono)',
+                  cursor: 'pointer',
+                  transition: 'background 0.15s, color 0.15s, border-color 0.15s',
+                }}
+                onMouseEnter={e => {
+                  const el = e.currentTarget as HTMLElement
+                  el.style.background = `${category.color}18`
+                  el.style.color = category.color
+                  el.style.borderColor = `${category.color}44`
+                }}
+                onMouseLeave={e => {
+                  const el = e.currentTarget as HTMLElement
+                  el.style.background = 'var(--surface-bright)'
+                  el.style.color = 'var(--text-muted)'
+                  el.style.borderColor = 'var(--border)'
+                }}
+              >
+                {t.title}
+              </motion.span>
+            </ClickSpark>
+          ))}
+        </div>
+      </SpotlightCard>
     </motion.div>
   )
 }
 
 export default function CategoryGrid() {
   return (
-    <section style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px 80px' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 16 }}>
+    <section style={{ maxWidth: 860, margin: '0 auto', padding: '0 24px 80px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {CATEGORIES.map((cat, i) => (
-          <CategoryTile key={cat.id} category={cat} index={i} />
+          <CategoryRow key={cat.id} category={cat} index={i} />
         ))}
       </div>
     </section>
