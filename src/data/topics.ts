@@ -1451,6 +1451,24 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'addEventListener', code: 'element.addEventListener("click", handler)\n// handler = (event) => { ... }', note: 'Attach a listener to an element' },
+        { label: 'removeEventListener', code: '// Must pass the SAME function reference:\nconst handler = (e) => console.log(e)\nel.addEventListener("click", handler)\nel.removeEventListener("click", handler)', note: 'Inline arrow functions cannot be removed' },
+        { label: 'Event object properties', code: 'e.target          // element that fired the event\ne.currentTarget   // element with the listener\ne.preventDefault()  // cancel browser default\ne.stopPropagation() // stop bubbling up', note: 'Available on every event object' },
+        { label: 'Common event names', code: '"click"       // mouse click\n"input"       // input value changes\n"submit"      // form submitted\n"keydown"     // key pressed\n"mouseover"   // mouse enters element\n"scroll"      // page scrolls', note: 'Full list at MDN Event reference' },
+      ],
+      patterns: [
+        { title: 'Event delegation', code: '// Instead of one listener per item, one on the parent:\ndocument.querySelector("#list").addEventListener("click", (e) => {\n  const item = e.target.closest("li")\n  if (!item) return\n  console.log("Clicked:", item.dataset.id)\n})', language: 'javascript' },
+        { title: 'Cleanup on unmount (React)', code: 'useEffect(() => {\n  const handler = (e: KeyboardEvent) => {\n    if (e.key === "Escape") closeModal()\n  }\n  window.addEventListener("keydown", handler)\n  return () => window.removeEventListener("keydown", handler)\n}, [])', language: 'typescript' },
+      ],
+      whenToUse: 'Use DOM events to respond to user interactions: clicks, form input, keyboard shortcuts, and scroll. In React, use synthetic events on JSX elements instead of addEventListener directly.',
+      commonMistakes: [
+        'Using an inline arrow function with removeEventListener — it creates a new function reference each time, so the listener is never actually removed',
+        'Forgetting preventDefault on form submit — without it the browser navigates to the form action URL and reloads the page',
+        'Not cleaning up event listeners on unmount — listeners on window or document persist after the component unmounts, causing memory leaks and duplicate handlers',
+      ],
+    },
   },
   {
     id: 'webapi-storage',
@@ -1507,6 +1525,25 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'setItem / getItem', code: 'localStorage.setItem("theme", "dark")\nconst theme = localStorage.getItem("theme") // "dark"', note: 'Values are always strings' },
+        { label: 'removeItem / clear', code: 'localStorage.removeItem("theme")\nlocalStorage.clear()  // removes ALL keys', note: 'clear() wipes everything in the origin' },
+        { label: 'JSON.stringify / parse', code: 'localStorage.setItem("user", JSON.stringify({ name: "Alice" }))\nconst user = JSON.parse(localStorage.getItem("user") ?? "null")', note: 'Objects must be serialized to string' },
+        { label: 'sessionStorage', code: 'sessionStorage.setItem("step", "2")\n// cleared when tab closes\n// same API as localStorage', note: 'Tab-scoped, not persistent' },
+        { label: 'Null check on getItem', code: 'const raw = localStorage.getItem("key")\nif (raw === null) {\n  // key not set\n} else {\n  const val = JSON.parse(raw)\n}', note: 'getItem returns null if key missing' },
+      ],
+      patterns: [
+        { title: 'Safe JSON read with fallback', code: 'function readStorage<T>(key: string, fallback: T): T {\n  try {\n    const raw = localStorage.getItem(key)\n    return raw !== null ? (JSON.parse(raw) as T) : fallback\n  } catch {\n    return fallback\n  }\n}', language: 'typescript' },
+        { title: 'Custom usePersist hook', code: 'function usePersist<T>(key: string, initial: T) {\n  const [value, setValue] = useState<T>(() => {\n    const raw = localStorage.getItem(key)\n    return raw !== null ? JSON.parse(raw) : initial\n  })\n  const set = (v: T) => {\n    setValue(v)\n    localStorage.setItem(key, JSON.stringify(v))\n  }\n  return [value, set] as const\n}', language: 'typescript' },
+      ],
+      whenToUse: 'Use localStorage for user preferences, cached data, or state that should survive page reloads. Use sessionStorage for temporary state within a single session. Never store sensitive data like passwords or tokens.',
+      commonMistakes: [
+        'Storing objects directly without JSON.stringify — localStorage only stores strings; objects become "[object Object]"',
+        'Not handling the null return from getItem — if the key was never set getItem returns null, which causes JSON.parse(null) errors',
+        'Storing auth tokens in localStorage — it is accessible via JavaScript and vulnerable to XSS; use HttpOnly cookies for sensitive tokens instead',
+      ],
+    },
   },
   {
     id: 'react-components',
@@ -1563,6 +1600,25 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Function component', code: 'function Greeting({ name }: { name: string }) {\n  return <h1>Hello, {name}!</h1>\n}', note: 'Component name must be capitalized' },
+        { label: 'Props with TS interface', code: 'interface ButtonProps {\n  label: string\n  onClick: () => void\n  disabled?: boolean\n}\n\nfunction Button({ label, onClick, disabled = false }: ButtonProps) {\n  return <button onClick={onClick} disabled={disabled}>{label}</button>\n}', note: 'Interface documents the prop contract' },
+        { label: 'JSX conditional (&&, ternary)', code: '{isLoading && <Spinner />}\n{error ? <Error msg={error} /> : <Content />}', note: '&& renders nothing when false; ternary for either/or' },
+        { label: '.map with key', code: '{items.map(item => (\n  <li key={item.id}>{item.name}</li>\n))}', note: 'key must be stable and unique among siblings' },
+        { label: 'children prop', code: 'function Card({ children }: { children: React.ReactNode }) {\n  return <div className="card">{children}</div>\n}\n\n// Usage:\n<Card><p>Content here</p></Card>', note: 'children is whatever is between the tags' },
+      ],
+      patterns: [
+        { title: 'Typed props component', code: 'interface AvatarProps {\n  src: string\n  alt: string\n  size?: number\n}\n\nfunction Avatar({ src, alt, size = 40 }: AvatarProps) {\n  return <img src={src} alt={alt} width={size} height={size} />\n}', language: 'tsx' },
+        { title: 'List rendering', code: 'interface User { id: number; name: string; email: string }\n\nfunction UserList({ users }: { users: User[] }) {\n  return (\n    <ul>\n      {users.map(u => (\n        <li key={u.id}>\n          {u.name} — {u.email}\n        </li>\n      ))}\n    </ul>\n  )\n}', language: 'tsx' },
+      ],
+      whenToUse: 'Use function components for all new React code. Define a TypeScript interface for props whenever a component accepts more than one or two props.',
+      commonMistakes: [
+        'Using index as key in lists — if items reorder or are removed, index keys cause React to misidentify elements and produce rendering bugs',
+        'Mutating props inside a component — props are read-only; if you need to change a value, copy it into local state with useState',
+        'Calling a component as a plain function — always render as JSX (<MyComp />) not as a function call (MyComp()), otherwise React cannot track its lifecycle',
+      ],
+    },
   },
   {
     id: 'react-state',
@@ -1619,6 +1675,24 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'useState declaration', code: 'const [count, setCount] = useState(0)\nconst [name, setName] = useState<string>("")\nconst [user, setUser] = useState<User | null>(null)', note: 'Initial value sets the type' },
+        { label: 'Functional updater', code: 'setCount(prev => prev + 1)\n// Safe even if multiple updates happen in one render', note: 'Use prev => when new state depends on old state' },
+        { label: 'Object state spread update', code: 'setUser(prev => ({ ...prev, name: "Bob" }))\n// Creates new object — React detects the change', note: 'Never mutate the state object directly' },
+        { label: 'Array state immutable push', code: 'setItems(prev => [...prev, newItem])    // add\nsetItems(prev => prev.filter(i => i.id !== id))  // remove\nsetItems(prev => prev.map(i => i.id === id ? {...i, done: true} : i))  // update', note: 'Always return a new array' },
+      ],
+      patterns: [
+        { title: 'Toggle boolean', code: 'const [open, setOpen] = useState(false)\n\n// Toggle:\nsetOpen(prev => !prev)\n\n// Explicit set:\nsetOpen(true)\nsetOpen(false)', language: 'tsx' },
+        { title: 'Immutable array add', code: 'const [todos, setTodos] = useState<Todo[]>([])\n\nfunction addTodo(text: string) {\n  setTodos(prev => [\n    ...prev,\n    { id: Date.now(), text, done: false },\n  ])\n}', language: 'tsx' },
+      ],
+      whenToUse: 'Use useState for any value that changes over time and should trigger a re-render: form inputs, toggle state, loaded data, counters.',
+      commonMistakes: [
+        'Mutating state directly — doing state.push(item) or state.name = "x" does not trigger a re-render; always call the setter with a new value',
+        'Not using the functional updater when new state depends on old state — setCount(count + 1) can miss updates in batched renders; use setCount(prev => prev + 1)',
+        'Storing derived values in state — if a value can be computed from existing state or props, compute it during render instead of keeping a separate useState',
+      ],
+    },
   },
   {
     id: 'react-useeffect',
@@ -1675,6 +1749,24 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Run once on mount ([])', code: 'useEffect(() => {\n  fetchData()\n}, [])', note: 'Empty array = mount only' },
+        { label: 'Run on dep change ([dep])', code: 'useEffect(() => {\n  fetchUser(userId)\n}, [userId])  // re-runs whenever userId changes', note: 'List all values the effect reads' },
+        { label: 'Cleanup return', code: 'useEffect(() => {\n  const id = setInterval(tick, 1000)\n  return () => clearInterval(id)  // cleanup on unmount\n}, [])', note: 'Returned function runs before next effect + on unmount' },
+        { label: 'Run every render (no array)', code: 'useEffect(() => {\n  document.title = `Count: ${count}`\n})\n// ⚠ runs after EVERY render — use sparingly', note: 'Omit second arg to run after every render' },
+      ],
+      patterns: [
+        { title: 'Fetch on mount', code: 'useEffect(() => {\n  let cancelled = false\n  async function load() {\n    const res = await fetch(`/api/users/${id}`)\n    const data = await res.json()\n    if (!cancelled) setUser(data)\n  }\n  load()\n  return () => { cancelled = true }\n}, [id])', language: 'typescript' },
+        { title: 'Subscribe + unsubscribe', code: 'useEffect(() => {\n  const sub = eventEmitter.on("update", handler)\n  return () => sub.off("update", handler)\n}, [])', language: 'typescript' },
+      ],
+      whenToUse: 'Use useEffect for side effects that must happen after render: data fetching, subscriptions, timers, and DOM manipulation. If the effect reads state or props, list them in the deps array.',
+      commonMistakes: [
+        'Missing dependencies in the deps array — if the effect uses a prop or state value, it must be in the array or the effect will run with a stale closure',
+        'Forgetting the cleanup return — effects that set up subscriptions, timers, or event listeners must return a cleanup function to prevent memory leaks',
+        'Putting an async function directly in useEffect — useEffect cannot return a Promise; wrap async code in an inner async function and call it',
+      ],
+    },
   },
   {
     id: 'ts-interfaces',
@@ -1882,6 +1974,26 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'BrowserRouter / Routes / Route setup', code: 'import { BrowserRouter, Routes, Route } from "react-router-dom"\n\n<BrowserRouter>\n  <Routes>\n    <Route path="/" element={<Home />} />\n    <Route path="/users" element={<Users />} />\n    <Route path="/users/:id" element={<UserDetail />} />\n    <Route path="*" element={<NotFound />} />\n  </Routes>\n</BrowserRouter>', note: '* catches unmatched routes (404 page)' },
+        { label: 'Link', code: 'import { Link } from "react-router-dom"\n\n<Link to="/about">About</Link>\n<Link to={`/users/${id}`}>Profile</Link>', note: 'Use Link instead of <a> to avoid full reload' },
+        { label: 'useNavigate', code: 'const navigate = useNavigate()\n\nnavigate("/dashboard")         // push\nnavigate(-1)                   // go back\nnavigate("/login", { replace: true }) // replace history', note: 'Programmatic navigation' },
+        { label: 'useParams', code: '// Route: /users/:id\nconst { id } = useParams<{ id: string }>()\n// at /users/42 → id = "42"', note: 'All params are strings' },
+        { label: 'useSearchParams', code: 'const [params, setParams] = useSearchParams()\nconst q = params.get("q") ?? ""\nsetParams({ q: "react" })  // updates URL ?q=react', note: 'Read/write query string params' },
+        { label: 'Outlet (nested routes)', code: '<Route path="/dashboard" element={<Dashboard />}>\n  <Route path="stats" element={<Stats />} />\n  <Route path="settings" element={<Settings />} />\n</Route>\n\n// In Dashboard.tsx:\n<Outlet />  {/* renders nested route here */}', note: 'Outlet is where child routes render' },
+      ],
+      patterns: [
+        { title: 'Protected route', code: 'function PrivateRoute({ children }: { children: React.ReactNode }) {\n  const { user } = useAuth()\n  if (!user) return <Navigate to="/login" replace />\n  return <>{children}</>\n}\n\n// Usage:\n<Route path="/dashboard" element={\n  <PrivateRoute><Dashboard /></PrivateRoute>\n} />', language: 'tsx' },
+        { title: 'Navigate programmatically', code: 'function LoginForm() {\n  const navigate = useNavigate()\n\n  async function handleSubmit(e: React.FormEvent) {\n    e.preventDefault()\n    await login(credentials)\n    navigate("/dashboard", { replace: true })\n  }\n\n  return <form onSubmit={handleSubmit}>...</form>\n}', language: 'tsx' },
+      ],
+      whenToUse: 'Use React Router when your app has multiple views that map to different URLs. Use Link for navigation in the UI and useNavigate for programmatic navigation after events like form submission.',
+      commonMistakes: [
+        'Using <a href> instead of <Link> — anchor tags cause a full page reload and lose React state; always use Link for internal navigation',
+        'Forgetting to add BrowserRouter at the app root — all Router hooks (useNavigate, useParams, etc.) throw errors if there is no Router context above them',
+        'Assuming useParams values are numbers — URL params are always strings; parse with parseInt or Number() before using as a numeric ID',
+      ],
+    },
   },
 ]
 
