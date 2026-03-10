@@ -127,26 +127,33 @@ function TreeLevel({ nodeIds, visible, selected, compact }: {
   )
 }
 
-function LevelConnector({ show, compact }: { show: boolean; compact: boolean }) {
+function BranchConnector({ show, childCount, compact }: { show: boolean; childCount: number; compact: boolean }) {
+  const h = compact ? 10 : 14
+  if (!show) return null
   return (
-    <AnimatePresence>
-      {show && (
-        <motion.div
-          key="connector"
-          initial={{ scaleY: 0, opacity: 0 }}
-          animate={{ scaleY: 1, opacity: 1 }}
-          exit={{ scaleY: 0, opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          style={{
-            width: 1,
-            height: compact ? 12 : 16,
-            background: 'var(--border)',
-            transformOrigin: 'top',
-            margin: '0 auto',
-          }}
-        />
-      )}
-    </AnimatePresence>
+    <motion.div
+      initial={{ opacity: 0, scaleY: 0 }}
+      animate={{ opacity: 1, scaleY: 1 }}
+      exit={{ opacity: 0, scaleY: 0 }}
+      transition={{ duration: 0.3 }}
+      style={{ transformOrigin: 'top', width: '100%', display: 'flex', justifyContent: 'center' }}
+    >
+      <div style={{ height: h, width: childCount === 1 ? 1 : '60%', position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+        {/* Vertical drop from parent */}
+        <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 1, height: '50%', background: 'var(--border)' }} />
+        {/* Horizontal bar across children (only if multiple children) */}
+        {childCount > 1 && (
+          <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: 1, background: 'var(--border)' }} />
+        )}
+        {/* Vertical drops to each child */}
+        {childCount > 1 && (
+          <>
+            <div style={{ width: 1, height: '50%', background: 'var(--border)', marginTop: 'auto' }} />
+            <div style={{ width: 1, height: '50%', background: 'var(--border)', marginTop: 'auto' }} />
+          </>
+        )}
+      </div>
+    </motion.div>
   )
 }
 
@@ -187,10 +194,20 @@ export default function DomTreeBuilder({ step, compact = false }: Props) {
           const anyVisible = levelIds.some(id => visible.includes(id))
           const prevLevelHasVisible = lvlIdx === 0 ? false : LEVELS[lvlIdx - 1].some(id => visible.includes(id))
           const showConnector = anyVisible && prevLevelHasVisible
+          const visibleCount = levelIds.filter(id => visible.includes(id)).length
 
           return (
-            <div key={lvlIdx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
-              <LevelConnector show={showConnector} compact={compact} />
+            <div key={lvlIdx} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0, width: '100%' }}>
+              <AnimatePresence>
+                {showConnector && (
+                  <BranchConnector
+                    key={`connector-${lvlIdx}`}
+                    show={showConnector}
+                    childCount={visibleCount}
+                    compact={compact}
+                  />
+                )}
+              </AnimatePresence>
               <TreeLevel
                 nodeIds={levelIds}
                 visible={visible}
