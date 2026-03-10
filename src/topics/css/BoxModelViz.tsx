@@ -2,64 +2,110 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 interface Props { step: number; compact?: boolean }
 
+const PINK = '#ec4899'
+const YELLOW = '#f5c542'
+const GREEN = '#4ade80'
+const CYAN = '#22d3ee'
+
 const layers = [
-  { label: 'Margin', color: '#ec4899', dimColor: 'rgba(236,72,153,0.08)', paddingFull: 32, paddingCompact: 20 },
-  { label: 'Border', color: '#f5c542', dimColor: 'rgba(245,197,66,0.08)', paddingFull: 28, paddingCompact: 16 },
-  { label: 'Padding', color: '#4ade80', dimColor: 'rgba(74,222,128,0.08)', paddingFull: 24, paddingCompact: 14 },
-  { label: 'Content', color: '#22d3ee', dimColor: 'rgba(34,211,238,0.1)', paddingFull: 20, paddingCompact: 12 },
+  { label: 'Margin',  color: PINK,   cssValue: 'margin: 32px',      dimColor: 'rgba(236,72,153,0.08)',  pad: 32, padC: 20 },
+  { label: 'Border',  color: YELLOW, cssValue: 'border: 3px solid',  dimColor: 'rgba(245,197,66,0.08)',  pad: 20, padC: 12 },
+  { label: 'Padding', color: GREEN,  cssValue: 'padding: 24px',      dimColor: 'rgba(74,222,128,0.08)',  pad: 16, padC: 10 },
+  { label: 'Content', color: CYAN,   cssValue: 'width: 120px',       dimColor: 'rgba(34,211,238,0.10)',  pad: 12, padC: 8  },
 ]
 
 const stepLabels = [
-  'Margin — pushes elements away',
+  'Margin — pushes other elements away',
   'Border — frames the element',
   'Padding — inner breathing room',
-  'Content — your actual content',
+  'Content — your text, image, or child elements',
 ]
 
 export default function BoxModelViz({ step, compact = false }: Props) {
+  const s = Math.min(step, 3)
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
       <div style={{ position: 'relative', display: 'inline-block' }}>
         {layers.map((layer, i) => {
-          const visible = step >= i
-          const active = step === i
-          const padding = compact ? layer.paddingCompact : layer.paddingFull
+          const visible = s >= i
+          const active = s === i
+          const pad = compact ? layer.padC : layer.pad
+
           return (
             <AnimatePresence key={layer.label}>
               {visible && (
                 <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
+                  initial={{ scale: 0.85, opacity: 0 }}
                   animate={{
-                    scale: 1, opacity: 1,
-                    boxShadow: active ? `0 0 24px ${layer.color}66` : 'none',
+                    scale: 1,
+                    opacity: 1,
+                    boxShadow: active ? `0 0 22px ${layer.color}55` : 'none',
                   }}
+                  transition={{ duration: 0.45, ease: [0.34, 1.56, 0.64, 1] as [number, number, number, number] }}
                   style={{
-                    border: `3px solid ${layer.color}`,
+                    border: `${i === 1 ? 3 : 2}px solid ${layer.color}`,
                     background: layer.dimColor,
                     borderRadius: 8,
-                    padding,
+                    padding: pad,
                     position: i === 0 ? 'relative' : 'static',
                   }}
-                  transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] as [number, number, number, number] }}
                 >
-                  <span style={{
-                    position: 'absolute', top: 8, left: 12,
-                    fontSize: 10, fontFamily: 'var(--font-mono)',
-                    fontWeight: 700, color: layer.color,
-                    textTransform: 'uppercase', letterSpacing: '0.5px',
+                  {/* Layer label + CSS value badge */}
+                  <div style={{
+                    position: 'absolute',
+                    top: 3,
+                    left: 6,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 5,
                   }}>
-                    {layer.label}
-                  </span>
+                    <span style={{
+                      fontSize: compact ? 8 : 9,
+                      fontFamily: 'var(--font-mono)',
+                      fontWeight: 700,
+                      color: layer.color,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px',
+                    }}>
+                      {layer.label}
+                    </span>
+
+                    {/* CSS value badge — appears when active */}
+                    <AnimatePresence>
+                      {active && (
+                        <motion.span
+                          initial={{ opacity: 0, x: -4 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          style={{
+                            fontSize: compact ? 7 : 8,
+                            fontFamily: 'var(--font-mono)',
+                            color: layer.color,
+                            background: `${layer.color}18`,
+                            border: `1px solid ${layer.color}44`,
+                            borderRadius: 3,
+                            padding: '1px 5px',
+                          }}
+                        >
+                          {layer.cssValue}
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Content area */}
                   {i === layers.length - 1 && (
                     <div style={{
-                      padding: compact ? '12px 24px' : '20px 40px',
+                      padding: compact ? '8px 18px' : '14px 32px',
                       textAlign: 'center',
                       fontFamily: 'var(--font-mono)',
                       fontSize: compact ? 11 : 13,
-                      color: '#22d3ee',
+                      color: CYAN,
                       fontWeight: 600,
                     }}>
-                      Content
+                      Hello World
                     </div>
                   )}
                 </motion.div>
@@ -72,17 +118,19 @@ export default function BoxModelViz({ step, compact = false }: Props) {
       {/* Step label */}
       <AnimatePresence mode="wait">
         <motion.p
-          key={step}
+          key={s}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.3 }}
           style={{
-            color: layers[Math.min(step, layers.length - 1)]?.color,
+            color: layers[s]?.color,
             fontFamily: 'var(--font-mono)',
-            fontSize: 12,
+            fontSize: compact ? 11 : 12,
+            textAlign: 'center',
           }}
         >
-          {stepLabels[Math.min(step, stepLabels.length - 1)]}
+          {stepLabels[s]}
         </motion.p>
       </AnimatePresence>
     </div>
