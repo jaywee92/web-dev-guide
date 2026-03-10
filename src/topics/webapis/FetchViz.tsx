@@ -127,7 +127,7 @@ export default function FetchViz({ step, compact = false }: Props) {
                 animate={{ opacity: [1, 0.4, 1] }}
                 transition={{ repeat: Infinity, duration: 0.7 }}
                 style={{
-                  position: 'absolute', right: 0,
+                  position: 'absolute', left: pathWidth - 12,
                   width: 12, height: 10,
                   background: YELLOW, borderRadius: 2,
                 }}
@@ -160,8 +160,8 @@ export default function FetchViz({ step, compact = false }: Props) {
           transition={{ duration: 0.4 }}
           style={{
             width: boxSize, height: boxSize,
-            background: step === 2 ? `${YELLOW}18` : `${GREEN}18`,
-            border: `2px solid ${step === 2 ? YELLOW : step >= 2 ? GREEN : `${GREEN}66`}`,
+            background: step === 2 ? `${YELLOW}18` : step >= 3 ? `${GREEN}18` : `${BLUE}18`,
+            border: `2px solid ${step === 2 ? YELLOW : step >= 3 ? GREEN : `${GREEN}66`}`,
             borderRadius: 10,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             flexShrink: 0,
@@ -169,7 +169,7 @@ export default function FetchViz({ step, compact = false }: Props) {
             position: 'relative',
           }}
         >
-          <Server size={iconSize} color={step === 2 ? YELLOW : GREEN} />
+          <Server size={iconSize} color={step === 2 ? YELLOW : step >= 3 ? GREEN : `${GREEN}88`} />
           {/* Thinking spinner */}
           <AnimatePresence>
             {step === 2 && (
@@ -237,7 +237,7 @@ export default function FetchViz({ step, compact = false }: Props) {
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.35 }}
+              transition={{ delay: JSON_LINES.length * 0.08 + 0.15 }}
               style={{
                 marginTop: compact ? 4 : 6,
                 display: 'inline-block',
