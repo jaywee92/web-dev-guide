@@ -4,14 +4,6 @@ interface Props { step: number; compact?: boolean }
 
 const CSS_BLUE = '#5b9cf5'
 
-const stepLabels = [
-  'Flexbox: display: flex makes children flex items',
-  'flex-direction controls the main axis',
-  'justify-content distributes space on main axis',
-  'align-items aligns items on the cross axis',
-  'flex-wrap allows items to wrap to new lines',
-]
-
 const ITEM_COLORS = ['#4ade80', '#5b9cf5', '#f472b6', '#f5c542', '#a78bfa']
 
 interface FlexConfig {
@@ -21,6 +13,7 @@ interface FlexConfig {
   flexWrap: 'nowrap' | 'wrap'
   itemCount: number
   cssRule: string
+  label: string
 }
 
 const CONFIGS: FlexConfig[] = [
@@ -31,6 +24,7 @@ const CONFIGS: FlexConfig[] = [
     flexWrap: 'nowrap',
     itemCount: 3,
     cssRule: 'display: flex',
+    label: 'Flexbox: display: flex makes children flex items',
   },
   {
     flexDirection: 'column',
@@ -39,6 +33,7 @@ const CONFIGS: FlexConfig[] = [
     flexWrap: 'nowrap',
     itemCount: 3,
     cssRule: 'flex-direction: column',
+    label: 'flex-direction controls the main axis',
   },
   {
     flexDirection: 'row',
@@ -47,6 +42,7 @@ const CONFIGS: FlexConfig[] = [
     flexWrap: 'nowrap',
     itemCount: 3,
     cssRule: 'justify-content: space-between',
+    label: 'justify-content distributes space on main axis',
   },
   {
     flexDirection: 'row',
@@ -55,6 +51,7 @@ const CONFIGS: FlexConfig[] = [
     flexWrap: 'nowrap',
     itemCount: 3,
     cssRule: 'align-items: center',
+    label: 'align-items aligns items on the cross axis',
   },
   {
     flexDirection: 'row',
@@ -63,6 +60,7 @@ const CONFIGS: FlexConfig[] = [
     flexWrap: 'wrap',
     itemCount: 5,
     cssRule: 'flex-wrap: wrap',
+    label: 'flex-wrap allows items to wrap to new lines',
   },
 ]
 
@@ -93,7 +91,7 @@ export default function FlexboxViz({ step, compact = false }: Props) {
             textAlign: 'center',
           }}
         >
-          {stepLabels[Math.min(step, 4)]}
+          {config.label}
         </motion.div>
       </AnimatePresence>
 
@@ -131,7 +129,10 @@ export default function FlexboxViz({ step, compact = false }: Props) {
           justifyContent: config.justifyContent,
           alignItems: config.alignItems,
           flexWrap: config.flexWrap,
-          padding: 8,
+          paddingTop: compact ? 18 : 22,
+          paddingLeft: 8,
+          paddingRight: 8,
+          paddingBottom: 8,
           gap: compact ? 4 : 6,
           boxSizing: 'border-box',
           position: 'relative',
