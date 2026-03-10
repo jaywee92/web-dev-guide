@@ -81,7 +81,7 @@ export default function TopicPage() {
               <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20, color: 'var(--text)' }}>
                 Cheat Sheet
               </h2>
-              <CheatSheet data={topic.cheatSheet} color={topic.color} />
+              <CheatSheet key={topic.id} data={topic.cheatSheet} color={topic.color} />
             </div>
           )}
 
