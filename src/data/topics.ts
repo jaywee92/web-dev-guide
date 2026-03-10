@@ -567,6 +567,24 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'setTimeout', code: 'setTimeout(() => {\n  console.log("runs later")\n}, 1000)', note: 'Macro-task — runs after current stack + microtasks' },
+        { label: 'Promise / .then', code: 'Promise.resolve("value")\n  .then(val => console.log(val))', note: 'Microtask — runs before next macro-task' },
+        { label: 'async / await', code: 'async function load() {\n  const data = await fetchSomething()\n  return data\n}', note: 'Sugar over Promises; pauses at each await' },
+        { label: 'Execution order', code: 'console.log("1 sync")\nsetTimeout(() => console.log("3 macro"), 0)\nPromise.resolve().then(() => console.log("2 micro"))\n// Logs: 1 sync → 2 micro → 3 macro', note: 'sync → microtask queue → macro-task queue' },
+      ],
+      patterns: [
+        { title: 'async/await with error handling', code: 'async function getData(url: string) {\n  try {\n    const res = await fetch(url)\n    if (!res.ok) throw new Error(`HTTP ${res.status}`)\n    return await res.json()\n  } catch (err) {\n    console.error("Failed:", err)\n    return null\n  }\n}', language: 'typescript' },
+        { title: 'Promise.all — parallel requests', code: 'const [users, posts] = await Promise.all([\n  fetch("/api/users").then(r => r.json()),\n  fetch("/api/posts").then(r => r.json()),\n])', language: 'typescript' },
+      ],
+      whenToUse: 'Understand the event loop whenever code behaves unexpectedly with async operations — it explains why setTimeout(fn, 0) still runs after .then() callbacks, and why blocking the main thread freezes the UI.',
+      commonMistakes: [
+        'Assuming setTimeout(fn, 0) runs immediately — it is still a macro-task and yields to pending microtasks first',
+        'Forgetting that await only pauses the current async function, not the entire program — other code continues running',
+        'Not handling rejected Promises — unhandled rejections cause runtime warnings and can crash Node.js processes',
+      ],
+    },
   },
   {
     id: 'js-closures',
@@ -623,6 +641,23 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Basic closure', code: 'function outer() {\n  const secret = 42\n  return function inner() {\n    return secret  // remembers outer scope\n  }\n}\nconst getSecret = outer()\ngetSecret() // 42', note: 'Inner function retains reference to outer variable' },
+        { label: 'Counter factory', code: 'function makeCounter() {\n  let count = 0\n  return () => ++count\n}\nconst counter = makeCounter()\ncounter() // 1\ncounter() // 2', note: 'Each call creates independent private state' },
+        { label: 'IIFE', code: '(function () {\n  const private = "hidden"\n  console.log(private)\n})()', note: 'Immediately Invoked Function Expression — runs once' },
+      ],
+      patterns: [
+        { title: 'Factory function with private state', code: 'function createBank(initial: number) {\n  let balance = initial\n  return {\n    deposit: (n: number) => { balance += n },\n    withdraw: (n: number) => { balance -= n },\n    getBalance: () => balance,\n  }\n}\nconst account = createBank(100)\naccount.deposit(50)\naccount.getBalance() // 150', language: 'typescript' },
+        { title: 'Module pattern with IIFE', code: 'const Counter = (function () {\n  let count = 0\n  return {\n    increment() { count++ },\n    decrement() { count-- },\n    value() { return count },\n  }\n})()', language: 'javascript' },
+      ],
+      whenToUse: 'Use closures to encapsulate private state, create factory functions that generate configured callbacks, and implement the module pattern. They are the foundation of many React hooks like useState.',
+      commonMistakes: [
+        'Closing over a loop variable — use let (block-scoped) or create a new scope with an IIFE; var captures the same reference for all iterations',
+        'Creating accidental memory leaks — closures keep their enclosing scope alive; avoid holding large objects in long-lived closures',
+        'Expecting separate calls to makeX() to share state — each invocation creates a fresh closure with its own independent variables',
+      ],
+    },
   },
   {
     id: 'js-variables',
@@ -679,6 +714,25 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'const / let / var', code: 'const PI = 3.14     // block-scoped, no reassign\nlet count = 0       // block-scoped, reassignable\nvar old = true      // function-scoped, avoid', note: 'Prefer const; use let when value changes; never var' },
+        { label: 'typeof', code: 'typeof "hello"   // "string"\ntypeof 42        // "number"\ntypeof true      // "boolean"\ntypeof null      // "object" ⚠️ quirk\ntypeof undefined // "undefined"', note: 'Returns type as a string; null quirk is historical' },
+        { label: 'Object destructuring', code: 'const { name, age } = user\nconst { name: alias } = user  // rename\nconst { role = "guest" } = user // default', note: 'Extracts named properties from an object' },
+        { label: 'Array destructuring', code: 'const [first, second] = arr\nconst [, , third] = arr  // skip elements\nconst [head, ...tail] = arr', note: 'Extracts by position' },
+        { label: 'Template literals', code: 'const msg = `Hello, ${name}! You are ${age} years old.`\nconst multiline = `\n  Line one\n  Line two\n`', note: 'Backticks allow interpolation and multiline strings' },
+      ],
+      patterns: [
+        { title: 'Swapping variables', code: 'let a = 1, b = 2\n[a, b] = [b, a]  // swap without temp variable\nconsole.log(a, b) // 2 1', language: 'javascript' },
+        { title: 'Default destructuring', code: 'function greet({ name = "stranger", role = "user" } = {}) {\n  return `Hello ${name}, you are a ${role}`\n}\ngreet({ name: "Alice" })  // role defaults to "user"', language: 'javascript' },
+      ],
+      whenToUse: 'Use const by default for every variable; switch to let only when you need to reassign. Use destructuring to pull values out of objects/arrays cleanly, and template literals for any string that embeds a variable.',
+      commonMistakes: [
+        'Using var inside a for loop — it leaks into the surrounding function scope; use let instead to get per-iteration block scope',
+        'Confusing typeof null === "object" with null actually being an object — it is a primitive; check with val === null explicitly',
+        'Assuming const prevents mutation of objects — const only prevents reassignment of the binding; object properties can still change freely',
+      ],
+    },
   },
   {
     id: 'js-arrays',
@@ -735,6 +789,28 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'map', code: 'const doubled = [1, 2, 3].map(x => x * 2)\n// [2, 4, 6]', note: 'Returns new array; original unchanged' },
+        { label: 'filter', code: 'const evens = [1, 2, 3, 4].filter(x => x % 2 === 0)\n// [2, 4]', note: 'Keeps elements where callback returns true' },
+        { label: 'reduce', code: 'const sum = [1, 2, 3].reduce((acc, x) => acc + x, 0)\n// 6', note: 'Accumulates into a single value; second arg is initial' },
+        { label: 'find / findIndex', code: 'const user = users.find(u => u.id === 42)\nconst idx = users.findIndex(u => u.id === 42)', note: 'Returns first match (or -1); does not return an array' },
+        { label: 'some / every', code: 'arr.some(x => x > 10)   // true if any match\narr.every(x => x > 0)  // true if all match', note: 'Return boolean; short-circuit on first result' },
+        { label: 'push / pop', code: 'arr.push(4)   // mutates — adds to end, returns new length\narr.pop()     // mutates — removes last, returns removed', note: 'Mutating methods — avoid in React state' },
+        { label: 'Spread — immutable add', code: 'const newArr = [...arr, newItem]       // add to end\nconst prepended = [newItem, ...arr]    // add to start', note: 'Creates a new array; preferred in React state updates' },
+        { label: 'flat / flatMap', code: '[[1, 2], [3]].flat()       // [1, 2, 3]\n[1, 2].flatMap(x => [x, x * 2])  // [1, 2, 2, 4]', note: 'flat collapses one level; flatMap maps then flattens' },
+      ],
+      patterns: [
+        { title: 'Chain map + filter', code: 'const result = users\n  .filter(u => u.active)\n  .map(u => u.name)\n  .sort()', language: 'javascript' },
+        { title: 'Immutable push (React-safe)', code: 'const addItem = (list: string[], item: string) =>\n  [...list, item]\n\n// In React:\nsetItems(prev => [...prev, newItem])', language: 'typescript' },
+      ],
+      whenToUse: 'Prefer map/filter/reduce for transformations — they are declarative and do not mutate the original. Use push/pop only when mutation is intentional and safe (not in React state). Reach for flat/flatMap when working with nested arrays.',
+      commonMistakes: [
+        'Using forEach when you need a return value — forEach always returns undefined; use map, filter, or reduce instead',
+        'Mutating state arrays directly with push — React will not detect the change; always create a new array with spread or concat',
+        'Forgetting the initial value in reduce — without it, reduce uses the first element as the accumulator and skips it, which can produce wrong results on empty arrays',
+      ],
+    },
   },
   {
     id: 'http-request-cycle',
@@ -781,6 +857,23 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Request structure', code: 'GET /api/users HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer <token>\nAccept: application/json', note: 'Method + path + headers' },
+        { label: 'Request with body', code: 'POST /api/users HTTP/1.1\nContent-Type: application/json\n\n{ "name": "Alice", "email": "alice@example.com" }', note: 'Body sent in POST/PUT/PATCH' },
+        { label: 'Response structure', code: 'HTTP/1.1 200 OK\nContent-Type: application/json\n\n{ "id": 1, "name": "Alice" }', note: 'Status + headers + body' },
+        { label: 'Common request headers', code: 'Content-Type: application/json\nAuthorization: Bearer <jwt>\nAccept: application/json\nOrigin: https://myapp.com', note: 'Headers describe the request' },
+      ],
+      patterns: [
+        { title: 'Full request/response cycle', code: '// 1. DNS resolves hostname to IP\n// 2. TCP connection opened\n// 3. Client sends request:\nGET /api/data HTTP/1.1\nHost: api.example.com\n\n// 4. Server processes + queries DB\n// 5. Server responds:\nHTTP/1.1 200 OK\nContent-Type: application/json\n\n{ "data": [...] }', language: 'http' },
+      ],
+      whenToUse: 'Understanding the HTTP request cycle helps you debug network issues, read server logs, and design APIs. Every fetch() call in JavaScript follows this cycle.',
+      commonMistakes: [
+        'Forgetting that GET requests have no body — pass data via query string (?key=val) instead',
+        'Sending the wrong Content-Type header — if the server expects application/json but gets text/plain, the body will not parse correctly',
+        "Confusing authentication (401: who are you?) with authorization (403: you're not allowed) — they are different stages in the request lifecycle",
+      ],
+    },
   },
   {
     id: 'http-rest',
@@ -837,6 +930,24 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'GET — list / read', code: 'GET /users          → list all\nGET /users/:id      → get one', note: 'No body, safe & idempotent' },
+        { label: 'POST — create', code: 'POST /users         → create new\n// body: { "name": "Alice" }\n// response: 201 Created', note: 'Returns created resource' },
+        { label: 'PUT — replace', code: 'PUT /users/:id      → replace entire resource\n// body: full object', note: 'Idempotent full replacement' },
+        { label: 'PATCH — partial update', code: 'PATCH /users/:id    → update fields\n// body: { "email": "new@email.com" }', note: 'Only send changed fields' },
+        { label: 'DELETE — remove', code: 'DELETE /users/:id   → delete resource\n// response: 204 No Content', note: 'No response body on success' },
+      ],
+      patterns: [
+        { title: 'RESTful endpoint design', code: 'GET    /posts           // list posts\nGET    /posts/:id       // get post\nPOST   /posts           // create post\nPUT    /posts/:id       // replace post\nPATCH  /posts/:id       // update post\nDELETE /posts/:id       // delete post\n\n// Nested resources:\nGET    /posts/:id/comments\nPOST   /posts/:id/comments', language: 'http' },
+      ],
+      whenToUse: 'Use REST conventions when building or consuming HTTP APIs. Consistent method + URL conventions make APIs intuitive and self-documenting.',
+      commonMistakes: [
+        'Using POST for everything instead of matching the HTTP method to the action (GET for reads, DELETE for deletes)',
+        'Putting actions in URLs like /deleteUser/42 — REST uses the HTTP method for the action and the URL for the resource',
+        'Returning 200 for created resources — use 201 Created for POST responses and 204 No Content for successful DELETEs',
+      ],
+    },
   },
   {
     id: 'http-status',
@@ -893,6 +1004,23 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: '2xx — Success', code: '200 OK            → request succeeded\n201 Created        → resource created (POST)\n204 No Content     → success, no body (DELETE)', note: 'Everything went well' },
+        { label: '3xx — Redirection', code: '301 Moved Permanently  → new URL forever\n302 Found              → temporary redirect\n304 Not Modified       → cached response ok', note: 'Client should go elsewhere' },
+        { label: '4xx — Client errors', code: '400 Bad Request    → invalid data\n401 Unauthorized   → not authenticated\n403 Forbidden      → authenticated, no permission\n404 Not Found      → resource missing\n422 Unprocessable  → validation failed', note: "Client's mistake" },
+        { label: '5xx — Server errors', code: '500 Internal Server Error → server crashed\n502 Bad Gateway          → upstream failed\n503 Service Unavailable  → overloaded/down', note: "Server's mistake" },
+      ],
+      patterns: [
+        { title: 'Error handling by status range', code: 'async function apiFetch(url: string) {\n  const res = await fetch(url)\n  if (res.ok) return res.json()           // 200-299\n  if (res.status === 401) redirect("/login")\n  if (res.status === 403) throw new Error("Forbidden")\n  if (res.status === 404) return null\n  if (res.status >= 500) throw new Error("Server error")\n}', language: 'typescript' },
+      ],
+      whenToUse: 'Read status codes to understand what happened in an API call. Return the correct status from your own APIs to communicate intent clearly.',
+      commonMistakes: [
+        'Returning 200 for error responses — always use the correct status code (400 for bad input, 404 for missing resources)',
+        'Treating 401 and 403 as the same — 401 means not logged in, 403 means logged in but not permitted',
+        'Ignoring 5xx errors in the client — these are server failures that users need to know about, not silently swallow',
+      ],
+    },
   },
   {
     id: 'postgres-queries',
@@ -949,6 +1077,24 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'SELECT with WHERE', code: 'SELECT name, email FROM users\nWHERE active = true\n  AND age > 18;', note: 'Filter rows with conditions' },
+        { label: 'ORDER BY + LIMIT', code: 'SELECT * FROM products\nORDER BY price DESC\nLIMIT 10 OFFSET 20;', note: 'Sort + paginate' },
+        { label: 'COUNT / AVG with GROUP BY', code: 'SELECT department, COUNT(*), AVG(salary)\nFROM employees\nGROUP BY department\nHAVING COUNT(*) > 5;', note: 'Aggregate per group' },
+        { label: 'Parameterized query', code: '-- Node.js with pg:\nconst res = await pool.query(\n  "SELECT * FROM users WHERE id = $1",\n  [userId]\n)', note: 'Always use $1 params — never string interpolation' },
+      ],
+      patterns: [
+        { title: 'Filter + sort + paginate', code: 'SELECT id, name, price\nFROM products\nWHERE category = $1\n  AND in_stock = true\nORDER BY price ASC\nLIMIT $2 OFFSET $3;', language: 'sql' },
+        { title: 'Aggregate with HAVING', code: 'SELECT user_id, COUNT(*) AS order_count\nFROM orders\nGROUP BY user_id\nHAVING COUNT(*) >= 3\nORDER BY order_count DESC;', language: 'sql' },
+      ],
+      whenToUse: 'Use SELECT queries whenever you need to read data from PostgreSQL. Add WHERE to filter, ORDER BY to sort, LIMIT/OFFSET to paginate, and GROUP BY for aggregates.',
+      commonMistakes: [
+        'Using SELECT * in production — always name the columns you need to avoid fetching unnecessary data and to make schema changes safer',
+        'Forgetting LIMIT on large tables — without it a query can return millions of rows and crash your app',
+        'Using HAVING without GROUP BY — HAVING filters groups and only makes sense after GROUP BY; use WHERE to filter individual rows instead',
+      ],
+    },
   },
   {
     id: 'postgres-joins',
@@ -1005,6 +1151,24 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'INNER JOIN', code: 'SELECT u.name, o.total\nFROM users u\nINNER JOIN orders o ON u.id = o.user_id;', note: 'Only rows with matches in both tables' },
+        { label: 'LEFT JOIN', code: 'SELECT u.name, o.total\nFROM users u\nLEFT JOIN orders o ON u.id = o.user_id;\n-- u.name appears even if no order (o.total = NULL)', note: 'All left rows, NULLs for missing right' },
+        { label: 'Table aliases', code: 'SELECT u.name, p.title\nFROM users u\nJOIN posts p ON u.id = p.user_id;', note: 'Alias with short name for readability' },
+        { label: 'Multiple JOIN chain', code: 'SELECT u.name, p.title, c.body\nFROM users u\nJOIN posts p ON u.id = p.user_id\nJOIN comments c ON p.id = c.post_id;', note: 'Chain joins for three+ tables' },
+      ],
+      patterns: [
+        { title: 'Users + orders with LEFT JOIN', code: 'SELECT u.id, u.name, COUNT(o.id) AS order_count\nFROM users u\nLEFT JOIN orders o ON u.id = o.user_id\nGROUP BY u.id, u.name\nORDER BY order_count DESC;', language: 'sql' },
+        { title: 'Three-table join', code: 'SELECT u.name, p.title, t.name AS tag\nFROM users u\nJOIN posts p ON u.id = p.user_id\nJOIN post_tags pt ON p.id = pt.post_id\nJOIN tags t ON pt.tag_id = t.id;', language: 'sql' },
+      ],
+      whenToUse: 'Use JOINs when data you need lives in multiple tables linked by foreign keys. Use INNER JOIN when both sides must exist; use LEFT JOIN when you want results even if the right side is missing.',
+      commonMistakes: [
+        'Using INNER JOIN when LEFT JOIN is needed — if users with no orders should still appear, INNER JOIN will silently exclude them',
+        'Forgetting the ON clause — without it you get a Cartesian product (every row × every row), which can produce millions of rows',
+        'Not aliasing tables in multi-join queries — ambiguous column names cause errors; always alias when joining more than two tables',
+      ],
+    },
   },
   {
     id: 'postgres-crud',
@@ -1061,6 +1225,26 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'CREATE TABLE', code: "CREATE TABLE users (\n  id         SERIAL PRIMARY KEY,\n  name       TEXT NOT NULL,\n  email      TEXT UNIQUE NOT NULL,\n  age        INTEGER,\n  created_at TIMESTAMPTZ DEFAULT NOW()\n);", note: 'SERIAL = auto-increment integer' },
+        { label: 'INSERT with RETURNING', code: "INSERT INTO users (name, email)\nVALUES ('Alice', 'alice@example.com')\nRETURNING id, name;", note: 'RETURNING gets the inserted row back' },
+        { label: 'UPDATE with WHERE', code: "UPDATE users\nSET email = 'new@example.com', age = 30\nWHERE id = $1\nRETURNING *;", note: 'Always WHERE — or every row updates' },
+        { label: 'DELETE with WHERE', code: 'DELETE FROM users\nWHERE id = $1\nRETURNING id;', note: 'Always WHERE — or every row deletes' },
+        { label: 'Common PG types', code: 'SERIAL          -- auto-increment integer (PK)\nTEXT            -- unlimited string\nINTEGER         -- whole number\nDECIMAL(10,2)   -- fixed precision (money)\nBOOLEAN         -- true / false\nTIMESTAMPTZ     -- timestamp with timezone\nUUID            -- universally unique ID', note: 'Common PostgreSQL column types' },
+        { label: 'ON CONFLICT (upsert)', code: "INSERT INTO users (email, name)\nVALUES ('alice@example.com', 'Alice')\nON CONFLICT (email)\nDO UPDATE SET name = EXCLUDED.name;", note: 'Insert or update if duplicate key' },
+      ],
+      patterns: [
+        { title: 'Full CRUD for a users table', code: "-- Create\nINSERT INTO users (name, email) VALUES ($1, $2) RETURNING *;\n-- Read\nSELECT * FROM users WHERE id = $1;\n-- Update\nUPDATE users SET name = $1 WHERE id = $2 RETURNING *;\n-- Delete\nDELETE FROM users WHERE id = $1 RETURNING id;", language: 'sql' },
+        { title: 'Upsert pattern', code: "INSERT INTO settings (user_id, theme)\nVALUES ($1, $2)\nON CONFLICT (user_id)\nDO UPDATE SET theme = EXCLUDED.theme\nRETURNING *;", language: 'sql' },
+      ],
+      whenToUse: 'Use these patterns for every table you create and every CRUD operation in your app. Always use RETURNING to get back the affected row and avoid a second query.',
+      commonMistakes: [
+        'Running UPDATE or DELETE without a WHERE clause — this modifies or removes every row in the table; always double-check your WHERE condition',
+        'Not using parameterized queries ($1, $2) — string interpolation in SQL is the most common cause of SQL injection vulnerabilities',
+        'Forgetting TIMESTAMPTZ vs TIMESTAMP — TIMESTAMP stores no timezone; TIMESTAMPTZ stores UTC and converts on read; always use TIMESTAMPTZ for created_at/updated_at',
+      ],
+    },
   },
   {
     id: 'ts-basics',
@@ -1117,6 +1301,26 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Primitive annotations', code: 'let age: number = 25\nlet name: string = "Alice"\nlet active: boolean = true\nlet anything: any = "unsafe"\nlet safe: unknown = getData()', note: 'any disables checks; unknown forces you to narrow first' },
+        { label: 'Array type', code: 'const scores: number[] = [95, 87, 72]\nconst names: Array<string> = ["Alice"]', note: 'Both syntaxes are equivalent; T[] is more common' },
+        { label: 'Union type', code: 'let id: string | number\nid = 42      // OK\nid = "abc"   // OK\nid = true    // Error', note: 'Variable can hold any of the listed types' },
+        { label: 'Type alias', code: 'type UserId = string | number\ntype Status = "active" | "inactive" | "pending"', note: 'Give a name to reusable types or literal unions' },
+        { label: 'Function signature', code: 'function add(a: number, b: number): number {\n  return a + b\n}\nconst greet = (name: string): string => `Hi ${name}`', note: 'Annotate parameters and the return type separately' },
+        { label: 'void', code: 'function log(msg: string): void {\n  console.log(msg)\n  // returns nothing\n}', note: 'Use void for functions that do not return a value' },
+      ],
+      patterns: [
+        { title: 'Typed function', code: 'type ApiResponse = {\n  data: unknown\n  status: number\n  ok: boolean\n}\n\nasync function fetchData(url: string): Promise<ApiResponse> {\n  const res = await fetch(url)\n  return { data: await res.json(), status: res.status, ok: res.ok }\n}', language: 'typescript' },
+        { title: 'Union type narrowing', code: 'function format(value: string | number): string {\n  if (typeof value === "number") {\n    return value.toFixed(2)  // TS knows it is number here\n  }\n  return value.toUpperCase() // TS knows it is string here\n}', language: 'typescript' },
+      ],
+      whenToUse: 'Add TypeScript to any project that will grow beyond a few files, is worked on by a team, or needs to be maintained long-term. Start with strict: true in tsconfig to catch the most errors. Use unknown over any whenever a value comes from an external source.',
+      commonMistakes: [
+        'Overusing any — it silences all TypeScript errors but defeats the purpose; prefer unknown, a union type, or a proper interface',
+        'Annotating variables that TypeScript can already infer — let name: string = "Alice" is redundant; just write let name = "Alice"',
+        'Confusing type and interface — both can describe object shapes; interfaces are extensible with extends and are preferred for public APIs',
+      ],
+    },
   },
   {
     id: 'webapi-fetch',
@@ -1173,6 +1377,24 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'GET fetch', code: 'const res = await fetch("/api/users")\nconst data = await res.json()', note: 'Default method is GET' },
+        { label: 'POST with body + headers', code: 'const res = await fetch("/api/users", {\n  method: "POST",\n  headers: { "Content-Type": "application/json" },\n  body: JSON.stringify({ name: "Alice" }),\n})', note: 'Always set Content-Type for JSON bodies' },
+        { label: 'res.ok check', code: 'const res = await fetch(url)\nif (!res.ok) throw new Error(`HTTP ${res.status}`)\nconst data = await res.json()', note: 'res.ok is true for 200-299' },
+        { label: 'Response body methods', code: 'await res.json()    // parse JSON body\nawait res.text()    // raw string\nawait res.blob()    // binary (images, files)', note: 'Body can only be consumed once' },
+      ],
+      patterns: [
+        { title: 'async/await GET with error handling', code: 'async function getUser(id: number) {\n  const res = await fetch(`/api/users/${id}`)\n  if (!res.ok) {\n    if (res.status === 404) return null\n    throw new Error(`Request failed: ${res.status}`)\n  }\n  return res.json()\n}', language: 'typescript' },
+        { title: 'POST JSON', code: 'async function createUser(data: { name: string; email: string }) {\n  const res = await fetch("/api/users", {\n    method: "POST",\n    headers: { "Content-Type": "application/json" },\n    body: JSON.stringify(data),\n  })\n  if (!res.ok) throw new Error("Create failed")\n  return res.json()\n}', language: 'typescript' },
+      ],
+      whenToUse: 'Use fetch() to communicate with backend APIs from the browser. Prefer async/await over .then() chains for readability.',
+      commonMistakes: [
+        'Not checking res.ok — fetch() only rejects on network failure, not on 4xx/5xx responses; always check res.ok or res.status',
+        'Forgetting to await res.json() — the body parse is also async; calling .json() without await returns a Promise, not the data',
+        'Not setting Content-Type: application/json when posting JSON — the server may not parse the body correctly without this header',
+      ],
+    },
   },
   {
     id: 'webapi-events',
@@ -1509,6 +1731,26 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Interface declaration', code: 'interface User {\n  id: number\n  name: string\n  email: string\n}', note: 'Defines the required shape; any extra property is an error' },
+        { label: 'Optional property (?)', code: 'interface Config {\n  host: string\n  port?: number  // may be absent\n}', note: 'Missing optional props are fine; present ones are type-checked' },
+        { label: 'readonly', code: 'interface Point {\n  readonly x: number\n  readonly y: number\n}', note: 'Cannot assign after object creation' },
+        { label: 'extends', code: 'interface Animal {\n  name: string\n}\ninterface Dog extends Animal {\n  breed: string\n}\n// Dog requires: name + breed', note: 'Child inherits all parent properties' },
+        { label: 'implements', code: 'interface Serializable {\n  serialize(): string\n}\nclass Model implements Serializable {\n  serialize() { return JSON.stringify(this) }\n}', note: 'Class must provide every interface member' },
+        { label: 'Index signature', code: 'interface StringMap {\n  [key: string]: string\n}\nconst headers: StringMap = { "Content-Type": "application/json" }', note: 'Allows any string key with a typed value' },
+      ],
+      patterns: [
+        { title: 'Extending a base interface', code: 'interface Entity {\n  id: string\n  createdAt: Date\n}\n\ninterface User extends Entity {\n  name: string\n  email: string\n}\n\ninterface Post extends Entity {\n  title: string\n  body: string\n}', language: 'typescript' },
+        { title: 'Class implementing interface', code: 'interface Logger {\n  log(message: string): void\n  error(message: string): void\n}\n\nclass ConsoleLogger implements Logger {\n  log(message: string) { console.log(message) }\n  error(message: string) { console.error(message) }\n}', language: 'typescript' },
+      ],
+      whenToUse: 'Use interfaces to define contracts for objects and classes, especially for public API shapes and function parameters. Prefer interfaces over type aliases for object shapes because they support extends and produce clearer error messages.',
+      commonMistakes: [
+        'Adding extra properties to an object literal assigned to an interface — TypeScript performs excess property checks on literals; extract to a variable first if you need extra fields',
+        'Confusing readonly with Object.freeze() — readonly is compile-time only; the object is still mutable at runtime unless you also freeze it',
+        'Forgetting that implements does not inherit implementation — a class implementing an interface must still provide its own method bodies',
+      ],
+    },
   },
   {
     id: 'ts-generics',
@@ -1565,6 +1807,25 @@ export const TOPICS: Topic[] = [
       },
       { id: 'playground', type: 'playground', steps: [] },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Generic function <T>', code: 'function identity<T>(value: T): T {\n  return value\n}', note: 'T is a placeholder replaced at call time' },
+        { label: 'Inference at call site', code: 'identity(42)       // T inferred as number\nidentity("hello")  // T inferred as string\nidentity<boolean>(true) // explicit — usually unnecessary', note: 'TypeScript infers T; explicit annotation is rarely needed' },
+        { label: 'Generic interface', code: 'interface ApiResponse<T> {\n  data: T\n  status: number\n  ok: boolean\n}\n\nconst res: ApiResponse<User[]> = await fetchUsers()', note: 'Parameterize the shape; caller specifies T' },
+        { label: 'Constraint with extends', code: 'function getLength<T extends { length: number }>(val: T): number {\n  return val.length\n}\ngetLength("hello")  // 5\ngetLength([1, 2])   // 2', note: 'Restricts T to types that have a length property' },
+        { label: 'Utility types', code: 'Partial<User>          // all props optional\nRequired<Config>       // all props required\nPick<User, "id"|"name"> // subset of props\nOmit<User, "password"> // exclude specific props', note: 'Built-in mapped types; no import needed' },
+      ],
+      patterns: [
+        { title: 'Identity function', code: 'function first<T>(arr: T[]): T | undefined {\n  return arr[0]\n}\n\nconst n = first([1, 2, 3])   // type: number | undefined\nconst s = first(["a", "b"])  // type: string | undefined', language: 'typescript' },
+        { title: 'Constrained generic', code: 'function merge<T extends object, U extends object>(a: T, b: U): T & U {\n  return { ...a, ...b }\n}\n\nconst merged = merge({ name: "Alice" }, { age: 25 })\n// type: { name: string } & { age: number }', language: 'typescript' },
+      ],
+      whenToUse: 'Use generics when you find yourself writing the same function or interface multiple times for different types. They are the primary tool for reusable, type-safe utilities — array helpers, API wrappers, data containers, and custom hooks.',
+      commonMistakes: [
+        'Using any instead of a generic — any throws away type information; a generic preserves and propagates it through the call site',
+        'Over-constraining with extends — only add constraints when you need to access a specific property; unnecessary constraints reduce reusability',
+        'Confusing Partial<T> with optional properties — Partial makes all properties optional at once; use it for update/patch payloads, not as a replacement for designing interfaces correctly',
+      ],
+    },
   },
   {
     id: 'react-router',
