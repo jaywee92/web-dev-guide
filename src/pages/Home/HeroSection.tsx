@@ -88,7 +88,7 @@ export default function HeroSection() {
           style={{ fontSize: 18, color: 'var(--text-muted)', maxWidth: 520, margin: '0 auto 48px' }}
         >
           Complex concepts. Simple animations.
-          From HTML fundamentals to full-stack deployment — watch it work, then build it yourself.
+          From HTML to PostgreSQL — watch it work, then build it yourself.
         </motion.p>
 
         <motion.div

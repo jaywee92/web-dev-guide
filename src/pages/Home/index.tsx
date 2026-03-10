@@ -1,12 +1,12 @@
 import PageWrapper from '@/components/layout/PageWrapper'
 import HeroSection from './HeroSection'
-import LevelGrid from './LevelGrid'
+import CategoryGrid from './CategoryGrid'
 
 export default function Home() {
   return (
     <PageWrapper>
       <HeroSection />
-      <LevelGrid />
+      <CategoryGrid />
     </PageWrapper>
   )
 }
