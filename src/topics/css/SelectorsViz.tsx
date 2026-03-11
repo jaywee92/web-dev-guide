@@ -1,3 +1,4 @@
+// src/topics/css/SelectorsViz.tsx
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface Props { step: number; compact?: boolean }
@@ -6,23 +7,28 @@ const GREEN  = '#4ade80'
 const BLUE   = '#5b9cf5'
 const PURPLE = '#a78bfa'
 const YELLOW = '#f5c542'
+const ORANGE = '#f97316'
+const TEAL   = '#14b8a6'
 
 interface SelectorStep {
   selector: string | null
   rule: string | null
   color: string
-  colorName: string | null
+  property: string | null
+  value: string | null
   targets: string[]
   specificity: string | null
   specLabel: string | null
 }
 
 const STEPS: SelectorStep[] = [
-  { selector: null,     rule: null,                     color: '#52525b', colorName: null,     targets: [],               specificity: null,    specLabel: null },
-  { selector: '*',      rule: '* { color: yellow }',    color: YELLOW,    colorName: 'yellow', targets: ['h1','p','div'],  specificity: '0,0,0', specLabel: 'universal' },
-  { selector: 'h1',     rule: 'h1 { color: green }',    color: GREEN,     colorName: 'green',  targets: ['h1'],            specificity: '0,0,1', specLabel: 'type' },
-  { selector: '.title', rule: '.title { color: blue }',  color: BLUE,      colorName: 'blue',   targets: ['h1'],            specificity: '0,1,0', specLabel: 'class' },
-  { selector: '#box',   rule: '#box { color: purple }',  color: PURPLE,    colorName: 'purple', targets: ['div'],           specificity: '1,0,0', specLabel: 'ID' },
+  { selector: null,            rule: null,                                  color: '#52525b', property: null,              value: null,        targets: [],                    specificity: null,    specLabel: null             },
+  { selector: '*',             rule: '* { color: yellow }',                 color: YELLOW,   property: 'color',            value: 'yellow',    targets: ['h1','p','div','a'],  specificity: '0,0,0', specLabel: 'universal'      },
+  { selector: 'h1',            rule: 'h1 { color: green }',                 color: GREEN,    property: 'color',            value: 'green',     targets: ['h1'],                specificity: '0,0,1', specLabel: 'type'           },
+  { selector: '.title',        rule: '.title { color: blue }',              color: BLUE,     property: 'color',            value: 'blue',      targets: ['h1'],                specificity: '0,1,0', specLabel: 'class'          },
+  { selector: '#box',          rule: '#box { color: purple }',              color: PURPLE,   property: 'color',            value: 'purple',    targets: ['div'],               specificity: '1,0,0', specLabel: 'ID'             },
+  { selector: 'a:hover',       rule: 'a:hover { text-decoration: ... }',    color: ORANGE,   property: 'text-decoration',  value: 'underline', targets: ['a'],                 specificity: '0,1,1', specLabel: 'pseudo-class'   },
+  { selector: 'p::first-line', rule: 'p::first-line { font-weight: ... }',  color: TEAL,     property: 'font-weight',      value: 'bold',      targets: ['p'],                 specificity: '0,0,2', specLabel: 'pseudo-element' },
 ]
 
 const stepLabels = [
@@ -31,16 +37,19 @@ const stepLabels = [
   'Type selector — matches by tag name',
   'Class selector — reusable, matches many elements',
   'ID selector — unique, highest specificity',
+  'Pseudo-class — targets elements based on state or position',
+  'Pseudo-element — styles a virtual sub-part of an element',
 ]
 
 const htmlElements = [
   { tag: 'h1',  attrs: 'class="title"' },
   { tag: 'p',   attrs: 'class="lead"' },
   { tag: 'div', attrs: 'id="box"' },
+  { tag: 'a',   attrs: 'href="#"' },
 ]
 
 export default function SelectorsViz({ step, compact = false }: Props) {
-  const s = Math.min(step, 4)
+  const s = Math.min(step, 6)
   const cfg = STEPS[s]
   const mono = 'var(--font-mono)'
   const fontSize = compact ? 9 : 11
@@ -77,7 +86,7 @@ export default function SelectorsViz({ step, compact = false }: Props) {
                 <span style={{ color: cfg.color, fontWeight: 700 }}>{cfg.selector}</span>
                 <span style={{ color: '#71717a' }}>{' {'}</span>
                 <div style={{ paddingLeft: 8, color: cfg.color, opacity: 0.85 }}>
-                  {'color: '}{cfg.colorName ?? 'color'}{';'}
+                  {cfg.property ?? 'color'}{': '}{cfg.value ?? '...'}{';'}
                 </div>
                 <span style={{ color: '#71717a' }}>{'}'}</span>
               </motion.div>
@@ -98,7 +107,7 @@ export default function SelectorsViz({ step, compact = false }: Props) {
           <AnimatePresence>
             {cfg.specificity && (
               <motion.div
-                key={cfg.specificity}
+                key={cfg.specificity + cfg.specLabel}
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
