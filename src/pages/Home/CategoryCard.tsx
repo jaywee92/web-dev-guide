@@ -11,25 +11,19 @@ interface Props {
 
 export default function CategoryCard({ category, onHoverStart, onHoverEnd, onClick }: Props) {
   const ref = useRef<HTMLDivElement>(null)
-  const topicCount = TOPICS.filter(t => t.category === category.id).length
   const c = category.color
   const emoji = category.cardEmoji ?? '📖'
   const label = category.cardLabel ?? category.title
 
   // Build topic keywords for subtitle (last word of first 3 topic titles)
   const topics = TOPICS.filter(t => t.category === category.id)
+  const topicCount = topics.length
   const keywords = topics.slice(0, 3).map(t => t.title.split(' ').slice(-1)[0]).join(' · ')
   const subtitle = `${keywords} · ${topicCount} Topics`
-
-  function handleMouseEnter() {
-    if (ref.current) onHoverStart(ref.current.getBoundingClientRect())
-  }
 
   return (
     <div
       ref={ref}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={onHoverEnd}
       onClick={onClick}
       style={{
         background: 'var(--surface)',
@@ -41,13 +35,15 @@ export default function CategoryCard({ category, onHoverStart, onHoverEnd, onCli
         transition: 'border-color 0.2s, background 0.2s, box-shadow 0.2s',
         position: 'relative',
       }}
-      onMouseOver={e => {
+      onMouseEnter={e => {
+        if (ref.current) onHoverStart(ref.current.getBoundingClientRect())
         const el = e.currentTarget as HTMLDivElement
         el.style.borderColor = `${c}70`
         el.style.background = 'var(--surface-bright)'
         el.style.boxShadow = `0 0 16px ${c}25`
       }}
-      onMouseOut={e => {
+      onMouseLeave={e => {
+        onHoverEnd()
         const el = e.currentTarget as HTMLDivElement
         el.style.borderColor = 'var(--border)'
         el.style.background = 'var(--surface)'

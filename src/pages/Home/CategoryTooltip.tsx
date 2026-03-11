@@ -82,11 +82,15 @@ export default function CategoryTooltip({ category, anchorRect, onMouseEnter, on
               const el = e.currentTarget as HTMLDivElement
               el.style.background = '#1e293b'
               el.style.color = 'var(--text)'
+              const arrow = el.querySelector('.tip-arrow') as HTMLElement | null
+              if (arrow) arrow.style.opacity = '1'
             }}
             onMouseLeave={e => {
               const el = e.currentTarget as HTMLDivElement
               el.style.background = 'transparent'
               el.style.color = 'var(--text-muted)'
+              const arrow = el.querySelector('.tip-arrow') as HTMLElement | null
+              if (arrow) arrow.style.opacity = '0'
             }}
           >
             {/* Color dot */}
@@ -107,7 +111,7 @@ export default function CategoryTooltip({ category, anchorRect, onMouseEnter, on
 
             <span style={{ flex: 1 }}>{topic.title}</span>
 
-            <span style={{
+            <span className="tip-arrow" style={{
               opacity: 0,
               fontSize: 10,
               color: c,
