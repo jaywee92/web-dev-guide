@@ -37,6 +37,8 @@ export default function TopicPage() {
   }
 
   const category = getCategoryForTopic(topic.id)
+  const hasCheatSheet = !!topic.cheatSheet
+  const hasPlayground = topic.playgroundType !== 'none'
 
   return (
     <PageWrapper>
@@ -46,60 +48,80 @@ export default function TopicPage() {
           key={category?.id}
           activeTopicId={topic.id}
           activeCategoryId={(category?.id ?? 'html') as CategoryId}
+          hasCheatSheet={hasCheatSheet}
+          hasPlayground={hasPlayground}
+          topicTitle={topic.title}
         />
         <div style={{ flex: 1, minWidth: 0, padding: '40px 40px 80px', maxWidth: 860 }}>
-          {/* Header */}
-          <button
-            onClick={() => navigate(`/${category?.id ?? ''}`)}
-            className="flex items-center gap-2 mb-6"
-            style={{ color: 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer', fontSize: 13 }}
-          >
-            <ArrowLeft size={16} /> {category?.title ?? level.title}
-          </button>
-          <LevelBadge level={level.id} color={level.color} title={level.title} size="sm" />
-          <h1 style={{ fontSize: 'clamp(24px, 4vw, 42px)', fontWeight: 800, marginTop: 12, marginBottom: 8 }}>
-            {topic.title}
-          </h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: 16, marginBottom: 40 }}>
-            {topic.description}
-          </p>
-          {(topic.id.startsWith('html') || topic.id.startsWith('css')) && (
-            <Link
-              to={topic.id.startsWith('html') ? '/reference/html' : '/reference/css'}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 5,
-                fontSize: 12,
-                color: 'var(--text-faint)',
-                textDecoration: 'none',
-                fontFamily: 'var(--font-mono)',
-              }}
-              onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = 'var(--text-muted)')}
-              onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = 'var(--text-faint)')}
+
+          {/* Navigation header */}
+          <div id="intro">
+            <button
+              onClick={() => navigate(`/${category?.id ?? ''}`)}
+              className="flex items-center gap-2 mb-3"
+              style={{ color: 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer', fontSize: 13 }}
             >
-              <ExternalLink size={11} />
-              {topic.id.startsWith('html') ? 'HTML Reference' : 'CSS Reference'} →
-            </Link>
-          )}
+              <ArrowLeft size={16} /> {category?.title ?? level.title}
+            </button>
+
+            {/* Breadcrumb */}
+            <div style={{
+              fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-faint)',
+              marginBottom: 14,
+            }}>
+              Docs{category ? ` / ${category.title}` : ''} / <span style={{ color: 'var(--text-muted)' }}>{topic.title}</span>
+            </div>
+
+            <LevelBadge level={level.id} color={level.color} title={level.title} size="sm" />
+            <h1 style={{ fontSize: 'clamp(24px, 4vw, 42px)', fontWeight: 800, marginTop: 12, marginBottom: 8 }}>
+              {topic.title}
+            </h1>
+            <p style={{ color: 'var(--text-muted)', fontSize: 16, marginBottom: 24 }}>
+              {topic.description}
+            </p>
+            {(topic.id.startsWith('html') || topic.id.startsWith('css')) && (
+              <Link
+                to={topic.id.startsWith('html') ? '/reference/html' : '/reference/css'}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 5,
+                  fontSize: 12, color: 'var(--text-faint)', textDecoration: 'none',
+                  fontFamily: 'var(--font-mono)',
+                }}
+                onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = 'var(--text-muted)')}
+                onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = 'var(--text-faint)')}
+              >
+                <ExternalLink size={11} />
+                {topic.id.startsWith('html') ? 'HTML Reference' : 'CSS Reference'} →
+              </Link>
+            )}
+          </div>
 
           {/* Phase 1: Intro */}
-          <IntroAnimation AnimComp={AnimComp} />
+          <div id="viz" style={{ marginTop: 32 }}>
+            <IntroAnimation AnimComp={AnimComp} />
+          </div>
 
           {/* Phase 2: Explanation */}
-          <SyncExplanation topic={topic} AnimComp={AnimComp} />
+          <div id="explanation">
+            <SyncExplanation topic={topic} AnimComp={AnimComp} />
+          </div>
 
-          {topic.cheatSheet && (
-            <div style={{ marginTop: 48 }}>
+          {/* Cheat Sheet */}
+          {hasCheatSheet && (
+            <div id="cheatsheet" style={{ marginTop: 48 }}>
               <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20, color: 'var(--text)' }}>
                 Cheat Sheet
               </h2>
-              <CheatSheet key={topic.id} data={topic.cheatSheet} color={topic.color} />
+              <CheatSheet key={topic.id} data={topic.cheatSheet!} color={topic.color} />
             </div>
           )}
 
           {/* Phase 3: Playground */}
-          <PlaygroundSection topic={topic} />
+          {hasPlayground && (
+            <div id="playground">
+              <PlaygroundSection topic={topic} />
+            </div>
+          )}
         </div>
       </div>
     </PageWrapper>
