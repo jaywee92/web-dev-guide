@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from 'react'
 import Editor from '@monaco-editor/react'
+import type { editor as MonacoEditor } from 'monaco-editor'
 import { useAppStore } from '@/store/useAppStore'
 
 interface Props {
@@ -37,7 +38,7 @@ export default function CSSLivePlayground({ defaultCSS, previewHTML, topicId }: 
   const { theme } = useAppStore()
   const [css, setCss] = useState(defaultCSS)
   const [showHTML, setShowHTML] = useState(false)
-  const editorRef = useRef<{ setValue: (v: string) => void } | null>(null)
+  const editorRef = useRef<MonacoEditor.IStandaloneCodeEditor | null>(null)
 
   const handleReset = useCallback(() => {
     setCss(defaultCSS)
@@ -136,8 +137,8 @@ export default function CSSLivePlayground({ defaultCSS, previewHTML, topicId }: 
               language="css"
               value={css}
               onChange={v => setCss(v ?? '')}
-              onMount={editor => { editorRef.current = editor as { setValue: (v: string) => void } }}
-              theme="vs-dark"
+              onMount={editor => { editorRef.current = editor }}
+              theme={theme === 'dark' ? 'vs-dark' : 'light'}
               options={{
                 fontSize: 13,
                 fontFamily: 'JetBrains Mono, monospace',
@@ -154,7 +155,7 @@ export default function CSSLivePlayground({ defaultCSS, previewHTML, topicId }: 
         <iframe
           title="CSS preview"
           srcDoc={buildSrcDoc(previewHTML, css)}
-          sandbox="allow-scripts"
+          sandbox=""
           style={{ width: '100%', height: 380, border: 'none', background: '#0f172a' }}
         />
       </div>
