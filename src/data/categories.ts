@@ -79,7 +79,7 @@ export const CATEGORIES: Category[] = [
     id: 'typescript',
     title: 'TypeScript',
     description: 'JavaScript with types',
-    color: '#a78bfa',
+    color: '#818cf8',
     icon: 'Shield',
     topicIds: ['ts-basics', 'ts-interfaces', 'ts-generics'],
     cardLabel: 'Grundlagen',
