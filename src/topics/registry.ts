@@ -11,6 +11,7 @@ const lazyRegistry: Record<string, () => Promise<{ default: AnimComp }>> = {
   FlexboxViz: () => import('./css/FlexboxViz'),
   GridViz: () => import('./css/GridViz'),
   SelectorsViz: () => import('./css/SelectorsViz'),
+  CSSBasicsViz: () => import('./css/CSSBasicsViz'),
   ColorsUnitsViz: () => import('./css/ColorsUnitsViz'),
   TypographyViz: () => import('./css/TypographyViz'),
   BackgroundsViz: () => import('./css/BackgroundsViz'),

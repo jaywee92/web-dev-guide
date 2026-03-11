@@ -16,6 +16,7 @@ export const CATEGORIES: Category[] = [
     color: '#5b9cf5',
     icon: 'Palette',
     topicIds: [
+      'css-basics',
       'css-box-model',
       'css-flexbox',
       'css-grid',
