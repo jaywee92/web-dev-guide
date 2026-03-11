@@ -14,6 +14,8 @@ export const CATEGORIES: Category[] = [
     color: '#4ade80',
     icon: 'FileCode2',
     topicIds: ['html-dom', 'html-semantic', 'html-forms'],
+    cardLabel: 'Struktur & Semantik',
+    cardEmoji: '🏗',
   },
   {
     id: 'css-grundlagen',
@@ -30,6 +32,8 @@ export const CATEGORIES: Category[] = [
       'css-backgrounds-gradients',
       'css-images',
     ],
+    cardLabel: 'Grundlagen',
+    cardEmoji: '📖',
   },
   {
     id: 'css-layout',
@@ -43,6 +47,8 @@ export const CATEGORIES: Category[] = [
       'css-grid',
       'css-responsive',
     ],
+    cardLabel: 'Layout',
+    cardEmoji: '🧩',
   },
   {
     id: 'css-modern',
@@ -56,6 +62,8 @@ export const CATEGORIES: Category[] = [
       'css-transitions',
       'css-animations',
     ],
+    cardLabel: 'Modern',
+    cardEmoji: '✨',
   },
   {
     id: 'javascript',
@@ -64,6 +72,8 @@ export const CATEGORIES: Category[] = [
     color: '#fbbf24',
     icon: 'Zap',
     topicIds: ['js-variables', 'js-arrays', 'js-event-loop', 'js-closures'],
+    cardLabel: 'Grundlagen',
+    cardEmoji: '📖',
   },
   {
     id: 'typescript',
@@ -72,6 +82,8 @@ export const CATEGORIES: Category[] = [
     color: '#a78bfa',
     icon: 'Shield',
     topicIds: ['ts-basics', 'ts-interfaces', 'ts-generics'],
+    cardLabel: 'Grundlagen',
+    cardEmoji: '📖',
   },
   {
     id: 'react',
@@ -80,6 +92,8 @@ export const CATEGORIES: Category[] = [
     color: '#f472b6',
     icon: 'Layers',
     topicIds: ['react-components', 'react-state', 'react-useeffect', 'react-router'],
+    cardLabel: 'Grundlagen',
+    cardEmoji: '📖',
   },
   {
     id: 'webapis',
@@ -88,6 +102,8 @@ export const CATEGORIES: Category[] = [
     color: '#34d399',
     icon: 'Globe',
     topicIds: ['webapi-fetch', 'webapi-events', 'webapi-storage'],
+    cardLabel: 'Browser APIs',
+    cardEmoji: '🌐',
   },
   {
     id: 'http',
@@ -96,6 +112,8 @@ export const CATEGORIES: Category[] = [
     color: '#fb923c',
     icon: 'ArrowLeftRight',
     topicIds: ['http-request-cycle', 'http-rest', 'http-status'],
+    cardLabel: 'Grundlagen',
+    cardEmoji: '📖',
   },
   {
     id: 'postgresql',
@@ -104,6 +122,8 @@ export const CATEGORIES: Category[] = [
     color: '#60a5fa',
     icon: 'Database',
     topicIds: ['postgres-queries', 'postgres-joins', 'postgres-crud'],
+    cardLabel: 'SQL Grundlagen',
+    cardEmoji: '📖',
   },
 ]
 
@@ -124,6 +144,30 @@ export const CATEGORY_GROUPS: CategoryGroup[] = [
     categoryIds: ['react', 'webapis', 'http', 'postgresql'],
   },
 ]
+
+export interface TechSectionMeta {
+  title: string
+  subtitle: string
+  color: string
+}
+
+export const TECH_SECTION_META: Record<string, TechSectionMeta> = {
+  html:        { title: 'HTML',       subtitle: 'Hypertext Markup Language',   color: '#4ade80' },
+  css:         { title: 'CSS',        subtitle: 'Cascading Style Sheets',      color: '#5b9cf5' },
+  javascript:  { title: 'JavaScript', subtitle: 'Programmiersprache des Webs', color: '#fbbf24' },
+  typescript:  { title: 'TypeScript', subtitle: 'Typisiertes JavaScript',      color: '#818cf8' },
+  react:       { title: 'React',      subtitle: 'UI Component Framework',      color: '#f472b6' },
+  webapis:     { title: 'Web APIs',   subtitle: 'Browser-Schnittstellen',      color: '#34d399' },
+  http:        { title: 'HTTP',       subtitle: 'Hypertext Transfer Protocol', color: '#fb923c' },
+  postgresql:  { title: 'PostgreSQL', subtitle: 'Relationale Datenbank',       color: '#60a5fa' },
+}
+
+/** Returns the tech grouping key for a category.
+ *  All css-* categories belong to the 'css' tech section.
+ *  All others map 1:1 to their categoryId. */
+export function getTechKey(categoryId: CategoryId): string {
+  return categoryId.startsWith('css-') ? 'css' : categoryId
+}
 
 export function getCategoryById(id: string): Category | undefined {
   return CATEGORIES.find(c => c.id === id)

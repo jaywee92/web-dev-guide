@@ -11,6 +11,8 @@ export interface Category {
   color: string
   icon: string        // Lucide icon name
   topicIds: string[]  // ordered
+  cardLabel?: string   // short label shown on the homepage card, e.g. "Grundlagen" (falls back to title)
+  cardEmoji?: string   // emoji shown next to cardLabel, e.g. "📖" (falls back to '📖')
 }
 
 export interface CheatSheetSyntax {
