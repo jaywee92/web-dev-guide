@@ -393,7 +393,7 @@ Remove `SpotlightCard` and `motion.div`. Replace with a pure CSS `.tsec` div wit
 
 ```tsx
 // src/pages/Home/CategoryGrid.tsx
-import { type ComponentType, useState, useRef } from 'react'
+import { type ComponentType, type CSSProperties, type RefObject, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   FileCode2, Palette, Zap, Shield, Layers, Globe,
@@ -401,7 +401,6 @@ import {
 } from 'lucide-react'
 import { CATEGORIES, CATEGORY_GROUPS, getTechKey, TECH_SECTION_META } from '@/data/categories'
 import type { Category, CategoryId } from '@/types'
-import CategoryCard from './CategoryCard'
 import CategoryTooltip from './CategoryTooltip'
 import type { GalaxyHandle } from './GalaxyBackground'
 import type { TrailHandle } from './CursorTrail'
@@ -430,8 +429,8 @@ function deriveTechSections(categoryIds: CategoryId[]): Array<{ techKey: string;
 interface TooltipState { category: Category; rect: DOMRect }
 
 interface CategoryGridProps {
-  galaxyRef: React.RefObject<GalaxyHandle>
-  trailRef: React.RefObject<TrailHandle>
+  galaxyRef: RefObject<GalaxyHandle>
+  trailRef: RefObject<TrailHandle>
 }
 
 function GroupLabel({ label }: { label: string }) {
@@ -447,8 +446,8 @@ interface TechSectionProps {
   techKey: string
   categories: Category[]
   globalIndex: number
-  galaxyRef: React.RefObject<GalaxyHandle>
-  trailRef: React.RefObject<TrailHandle>
+  galaxyRef: RefObject<GalaxyHandle>
+  trailRef: RefObject<TrailHandle>
   onCardHover: (cat: Category, rect: DOMRect) => void
   onCardLeave: () => void
 }
@@ -501,7 +500,7 @@ function TechSection({
       style={{
         '--tc': color,
         animationDelay: `${globalIndex * 80}ms`,
-      } as React.CSSProperties}
+      } as CSSProperties}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeaveCard}
       onMouseMove={handleMouseMove}
@@ -526,8 +525,10 @@ function TechSection({
           <div
             key={cat.id}
             className="subcat"
-            style={{ '--sc': cat.color } as React.CSSProperties}
+            style={{ '--sc': cat.color } as CSSProperties}
             onClick={() => navigate(`/${cat.id}`)}
+            onMouseEnter={e => onCardHover(cat, e.currentTarget.getBoundingClientRect())}
+            onMouseLeave={onCardLeave}
           >
             <div className="subcat-top">
               <span className="subcat-emoji">{cat.cardEmoji}</span>
