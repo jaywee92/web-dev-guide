@@ -653,6 +653,7 @@ export const TOPICS: Topic[] = [
         { label: 'text-transform', code: 'text-transform: uppercase;\ntext-transform: capitalize;', note: 'Case transformation' },
         { label: 'line-height', code: 'line-height: 1.5;  /* unitless — best practice */\nline-height: 24px;', note: 'Line spacing' },
         { label: 'letter-spacing', code: 'letter-spacing: 0.05em;  /* loose */\nletter-spacing: -0.02em; /* tight headings */', note: 'Character spacing' },
+        { label: 'text-shadow', code: 'text-shadow: 2px 2px 4px rgba(0,0,0,0.4);\ntext-shadow: 0 0 8px #3b82f6; /* glow effect */', note: 'Offset-x offset-y blur color' },
       ],
       patterns: [
         { title: 'Import and use a Google Font', code: '@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");\n\nbody {\n  font-family: "Inter", sans-serif;\n  font-size: 16px;\n  line-height: 1.6;\n}', language: 'css' },
@@ -768,8 +769,8 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 1,
             heading: 'display: inline',
-            text: 'Inline elements sit side by side in the text flow. They only take up as much width as their content. You can\'t set width or height on inline elements.',
-            codeExample: 'span { display: inline; } /* default */\na, strong, em { display: inline; }',
+            text: 'Inline elements sit side by side in the text flow. They only take up as much width as their content. You can\'t set width or height on inline elements. Use display: none to remove an element from the flow entirely — it becomes invisible and takes no space.',
+            codeExample: 'span { display: inline; } /* default */\na, strong, em { display: inline; }\n\n.hidden { display: none; } /* removed from flow + invisible */',
             language: 'css',
           },
           {
