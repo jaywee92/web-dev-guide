@@ -4,6 +4,9 @@ import MonacoPlayground from '@/playgrounds/MonacoPlayground'
 import { lazy, Suspense } from 'react'
 
 const GradientPlayground = lazy(() => import('@/playgrounds/GradientPlayground'))
+const CSSLivePlayground  = lazy(() => import('@/playgrounds/CSSLivePlayground'))
+
+const LOADING = <div style={{ color: 'var(--text-muted)', fontSize: 14 }}>Loading...</div>
 
 interface Props { topic: Topic }
 
@@ -23,8 +26,14 @@ export default function PlaygroundSection({ topic }: Props) {
         Experiment directly — changes apply in real time.
       </p>
       {topic.playgroundType === 'gradient' ? (
-        <Suspense fallback={<div style={{ color: 'var(--text-muted)', fontSize: 14 }}>Loading...</div>}>
-          <GradientPlayground />
+        <Suspense fallback={LOADING}><GradientPlayground /></Suspense>
+      ) : topic.playgroundType === 'css-live' ? (
+        <Suspense fallback={LOADING}>
+          <CSSLivePlayground
+            topicId={topic.id}
+            defaultCSS={topic.defaultCSS ?? '/* Write your CSS here */'}
+            previewHTML={topic.previewHTML ?? '<div class="box">Hello</div>'}
+          />
         </Suspense>
       ) : topic.playgroundType === 'visual-controls' ? (
         <VisualPlayground topicId={topic.id} />
