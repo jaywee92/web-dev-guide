@@ -230,7 +230,9 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 8,
     animationComponent: 'CSSBasicsViz',
-    playgroundType: 'none',
+    playgroundType: 'css-live',
+    defaultCSS: '.text {\n  color: #3b82f6;\n  font-size: 1.5rem;\n  font-weight: bold;\n}',
+    previewHTML: '<p class="text">Hello, CSS!</p>',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
       {
@@ -303,7 +305,9 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 10,
     animationComponent: 'BoxModelViz',
-    playgroundType: 'visual-controls',
+    playgroundType: 'css-live',
+    defaultCSS: '.card {\n  padding: 24px;\n  margin: 16px auto;\n  max-width: 300px;\n  border: 3px solid #3b82f6;\n  border-radius: 12px;\n  background: #1e293b;\n  color: #e2e8f0;\n}',
+    previewHTML: '<div class="card"><strong>Card Title</strong><p style="margin:8px 0 0;color:#94a3b8;font-size:13px">Card content goes here.</p></div>',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
       {
@@ -372,7 +376,9 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 15,
     animationComponent: 'FlexboxViz',
-    playgroundType: 'visual-controls',
+    playgroundType: 'css-live',
+    defaultCSS: 'nav {\n  display: flex;\n  gap: 24px;\n  justify-content: center;\n  padding: 16px;\n  background: #1e293b;\n  border-radius: 8px;\n}\nnav a {\n  color: #e2e8f0;\n  text-decoration: none;\n  font-size: 14px;\n}',
+    previewHTML: '<nav><a href="#">Home</a><a href="#">About</a><a href="#">Contact</a></nav>',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
       {
@@ -442,7 +448,9 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 12,
     animationComponent: 'GridViz',
-    playgroundType: 'visual-controls',
+    playgroundType: 'css-live',
+    defaultCSS: '.grid {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 12px;\n}\n.grid div {\n  padding: 20px;\n  background: #1e293b;\n  border-radius: 8px;\n  color: #94a3b8;\n  font-size: 13px;\n  text-align: center;\n}',
+    previewHTML: '<div class="grid"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div></div>',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
       {
@@ -518,7 +526,9 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 10,
     animationComponent: 'SelectorsViz',
-    playgroundType: 'none',
+    playgroundType: 'css-live',
+    defaultCSS: 'p { color: #94a3b8; }\n.highlight { color: #f97316; font-weight: bold; }\na { color: #3b82f6; }\na:hover { color: #60a5fa; text-decoration: underline; }',
+    previewHTML: '<p>Normal paragraph</p><p class="highlight">Selected paragraph</p><a href="#">Hover over this link</a>',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
       {
@@ -608,7 +618,9 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 10,
     animationComponent: 'ColorsUnitsViz',
-    playgroundType: 'visual-controls',
+    playgroundType: 'css-live',
+    defaultCSS: '.box {\n  width: 10rem;\n  height: 10rem;\n  background: hsl(220, 80%, 60%);\n  border-radius: 50%;\n  margin: 0 auto;\n}',
+    previewHTML: '<div class="box"></div>',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
       {
@@ -685,7 +697,9 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 10,
     animationComponent: 'TypographyViz',
-    playgroundType: 'visual-controls',
+    playgroundType: 'css-live',
+    defaultCSS: 'h1 {\n  font-family: Georgia, serif;\n  font-size: 2rem;\n  font-weight: 700;\n  color: #f1f5f9;\n  letter-spacing: -0.02em;\n}\np {\n  font-size: 1rem;\n  line-height: 1.7;\n  color: #94a3b8;\n  max-width: 480px;\n}',
+    previewHTML: '<article><h1>Article Title</h1><p>Body text goes here. Good typography makes reading comfortable and establishes visual hierarchy.</p></article>',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
       {
@@ -763,7 +777,9 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 15,
     animationComponent: 'BackgroundsViz',
-    playgroundType: 'gradient',
+    playgroundType: 'css-live',
+    defaultCSS: '.hero {\n  background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);\n  padding: 60px 40px;\n  border-radius: 12px;\n  color: white;\n  text-align: center;\n}\n.hero h2 { margin: 0; font-size: 1.8rem; }\n.hero p  { margin: 8px 0 0; opacity: 0.8; }',
+    previewHTML: '<div class="hero"><h2>Hero Section</h2><p>Gradient backgrounds set the mood.</p></div>',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
       {
@@ -839,7 +855,9 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 12,
     animationComponent: 'DisplayPositioningViz',
-    playgroundType: 'visual-controls',
+    playgroundType: 'css-live',
+    defaultCSS: '.container {\n  display: flex;\n  gap: 16px;\n  padding: 16px;\n}\n.box {\n  position: relative;\n  padding: 20px 24px;\n  background: #1e293b;\n  border-radius: 8px;\n  color: #94a3b8;\n}\n.badge {\n  position: absolute;\n  top: -8px;\n  right: -8px;\n  background: #3b82f6;\n  color: white;\n  font-size: 11px;\n  padding: 2px 6px;\n  border-radius: 99px;\n}',
+    previewHTML: '<div class="container"><div class="box">Block A</div><div class="box">Block B<span class="badge">new</span></div></div>',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
       {
@@ -915,7 +933,9 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 15,
     animationComponent: 'ResponsiveViz',
-    playgroundType: 'visual-controls',
+    playgroundType: 'css-live',
+    defaultCSS: '.grid {\n  display: grid;\n  grid-template-columns: 1fr;\n  gap: 16px;\n}\n@media (min-width: 600px) {\n  .grid { grid-template-columns: 1fr 1fr; }\n}\n@media (min-width: 900px) {\n  .grid { grid-template-columns: repeat(3, 1fr); }\n}\n.card {\n  padding: 20px;\n  background: #1e293b;\n  border-radius: 8px;\n  color: #94a3b8;\n}',
+    previewHTML: '<div class="grid"><div class="card">Card 1</div><div class="card">Card 2</div><div class="card">Card 3</div></div>',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
       {
@@ -989,7 +1009,9 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 8,
     animationComponent: 'ImagesViz',
-    playgroundType: 'visual-controls',
+    playgroundType: 'css-live',
+    defaultCSS: '.avatar {\n  width: 120px;\n  height: 120px;\n  border-radius: 50%;\n  object-fit: cover;\n  border: 3px solid #3b82f6;\n  display: block;\n  margin: 0 auto;\n}',
+    previewHTML: '<img class="avatar" src="https://picsum.photos/200/200" alt="avatar">',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
       {
