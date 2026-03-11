@@ -98,7 +98,7 @@ interface CategoryGridProps {
 
 ## CursorTrail Component
 
-**Approach:** Canvas element rendered in `Home/index.tsx` as a sibling to `GalaxyBackground`, positioned `absolute; inset: 0; pointer-events: none; z-index: 3` (above galaxy at z-index 1, below CategoryGrid content at z-index 2, well below film grain at z-index 99). Implemented with `forwardRef` + `useImperativeHandle` exposing `TrailHandle`.
+**Approach:** Canvas element rendered in `Home/index.tsx` as a sibling to `GalaxyBackground`, positioned `absolute; inset: 0; pointer-events: none; z-index: 2` (above galaxy at z-index 1, below content at z-index 10, well below film grain at z-index 99). Implemented with `forwardRef` + `useImperativeHandle` exposing `TrailHandle`.
 
 **Trail:**
 - 18 trail points stored in a circular buffer
@@ -194,11 +194,11 @@ The single `onMouseMove` handler sets `--mx`, `--my`, and `transform` on `e.curr
 | Layer | z-index | Element |
 |---|---|---|
 | Galaxy canvas | 1 | `GalaxyBackground` canvas |
-| Content | 2 | `CategoryGrid`, `HeroSection` |
-| Cursor trail | 3 | `CursorTrail` canvas (`pointer-events: none`) |
+| Cursor trail | 2 | `CursorTrail` canvas (`pointer-events: none`) |
+| Content | 10 | `CategoryGrid`, `HeroSection` (`position: relative`) |
 | Film grain | 99 | SVG noise overlay div |
 
-`CursorTrail` at z-index 3 sits above the galaxy (z-index 1) and paints over the raw canvas background, but below the content cards (z-index 2 creates a stacking context via `position: relative`). The trail is `pointer-events: none` throughout.
+`CursorTrail` at z-index 2 sits above the galaxy (z-index 1) but below all content (z-index 10). The trail canvas is `pointer-events: none` so it never blocks interaction. The content's `position: relative; z-index: 10` creates a stacking context that renders on top of the trail canvas entirely.
 
 ---
 
