@@ -8,21 +8,18 @@ const BLUE   = '#3b82f6'
 const GREEN  = '#22c55e'
 const PURPLE = '#a855f7'
 
-type Method = 'none' | 'inline' | 'internal' | 'external' | 'cascade'
-
 interface StepCfg {
-  method: Method
   color: string
   badge: string
   label: string
 }
 
 const STEPS: StepCfg[] = [
-  { method: 'none',     color: '#71717a', badge: 'No CSS',   label: 'Without CSS — browsers apply their own default styles' },
-  { method: 'inline',   color: ORANGE,    badge: 'Inline',   label: 'Inline style= — directly on the element, highest specificity' },
-  { method: 'internal', color: BLUE,      badge: 'Internal', label: 'Internal <style> — in the <head>, scoped to one HTML file' },
-  { method: 'external', color: GREEN,     badge: 'External', label: 'External <link> — one .css file for the whole site (best practice)' },
-  { method: 'cascade',  color: PURPLE,    badge: 'Cascade',  label: 'Cascade — specificity decides which rule wins' },
+  { color: '#71717a', badge: 'No CSS',   label: 'Without CSS — browsers apply their own default styles' },
+  { color: ORANGE,    badge: 'Inline',   label: 'Inline style= — directly on the element, highest specificity' },
+  { color: BLUE,      badge: 'Internal', label: 'Internal <style> — in the <head>, scoped to one HTML file' },
+  { color: GREEN,     badge: 'External', label: 'External <link> — one .css file for the whole site (best practice)' },
+  { color: PURPLE,    badge: 'Cascade',  label: 'Cascade — specificity decides which rule wins' },
 ]
 
 const CASCADE_RULES = [
@@ -32,7 +29,7 @@ const CASCADE_RULES = [
 ]
 
 export default function CSSBasicsViz({ step, compact = false }: Props) {
-  const s = Math.min(step, 4)
+  const s = Math.max(0, Math.min(step, 4))
   const cfg = STEPS[s]
   const mono = 'var(--font-mono)'
   const fs = compact ? 8 : 10
@@ -104,8 +101,8 @@ export default function CSSBasicsViz({ step, compact = false }: Props) {
             {s === 4 && (
               <motion.div key="cascade" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}
                 style={{ display: 'flex', flexDirection: 'column', gap: compact ? 3 : 5 }}>
-                {CASCADE_RULES.map((rule, i) => (
-                  <div key={i} style={{
+                {CASCADE_RULES.map((rule) => (
+                  <div key={rule.sel + rule.prop} style={{
                     fontFamily: mono,
                     fontSize: compact ? 7 : 9,
                     padding: '2px 6px',
