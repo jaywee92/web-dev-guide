@@ -16,17 +16,25 @@ export const CATEGORIES: Category[] = [
     color: '#5b9cf5',
     icon: 'Palette',
     topicIds: [
+      // GRUNDLAGEN
       'css-basics',
-      'css-box-model',
-      'css-flexbox',
-      'css-grid',
       'css-selectors',
       'css-colors-units',
+      'css-box-model',
+      // STYLING
       'css-typography',
       'css-backgrounds-gradients',
-      'css-display-positioning',
-      'css-responsive',
       'css-images',
+      // LAYOUT
+      'css-display-positioning',
+      'css-flexbox',
+      'css-grid',
+      'css-responsive',
+      // MODERNE CSS / EFFEKTE
+      'css-custom-properties',
+      'css-transforms',
+      'css-transitions',
+      'css-animations',
     ],
   },
   {

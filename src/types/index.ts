@@ -1,5 +1,5 @@
 export type Level = 1 | 2 | 3 | 4
-export type PlaygroundType = 'visual-controls' | 'monaco' | 'none' | 'gradient'
+export type PlaygroundType = 'visual-controls' | 'monaco' | 'none' | 'gradient' | 'css-live'
 export type ThemeMode = 'dark' | 'light'
 export type CategoryId = 'html' | 'css' | 'javascript' | 'typescript' | 'react' | 'webapis' | 'http' | 'postgresql'
 
@@ -50,6 +50,8 @@ export interface Topic {
   estimatedMinutes: number
   animationComponent: string
   playgroundType: PlaygroundType
+  defaultCSS?: string      // pre-filled CSS for css-live playground
+  previewHTML?: string     // fixed HTML template for css-live preview
   sections: Section[]
   cheatSheet?: CheatSheet
 }
