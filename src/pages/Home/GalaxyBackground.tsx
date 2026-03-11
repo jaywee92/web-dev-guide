@@ -74,7 +74,7 @@ const GalaxyBackground = forwardRef<GalaxyHandle>(function GalaxyBackground(_pro
       if (!p) return
       canvas!.width = p.offsetWidth * dpr
       canvas!.height = p.offsetHeight * dpr
-      ctx!.scale(dpr, dpr)
+      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0)
       state.stars = initStars(p.offsetWidth, p.offsetHeight)
       state.canvasRect = canvas!.getBoundingClientRect()  // cache — updated on resize only
     }
