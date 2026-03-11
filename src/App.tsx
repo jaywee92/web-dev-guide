@@ -20,7 +20,9 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/html" element={<CategoryPage />} />
-              <Route path="/css" element={<CategoryPage />} />
+              <Route path="/css-grundlagen" element={<CategoryPage />} />
+              <Route path="/css-layout" element={<CategoryPage />} />
+              <Route path="/css-modern" element={<CategoryPage />} />
               <Route path="/javascript" element={<CategoryPage />} />
               <Route path="/typescript" element={<CategoryPage />} />
               <Route path="/react" element={<CategoryPage />} />

@@ -2,7 +2,7 @@ import type { ComponentType } from 'react'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { FileCode2, Palette, Zap, Shield, Layers, Globe, ArrowLeftRight, Database } from 'lucide-react'
+import { FileCode2, Palette, Zap, Shield, Layers, Globe, ArrowLeftRight, Database, LayoutGrid, Sparkles } from 'lucide-react'
 import { CATEGORIES } from '@/data/categories'
 import { TOPICS } from '@/data/topics'
 import type { Category } from '@/types'
@@ -10,7 +10,7 @@ import SpotlightCard from './SpotlightCard'
 import ClickSpark from './ClickSpark'
 
 const ICONS: Record<string, ComponentType<{ size?: number; color?: string }>> = {
-  FileCode2, Palette, Zap, Shield, Layers, Globe, ArrowLeftRight, Database,
+  FileCode2, Palette, Zap, Shield, Layers, Globe, ArrowLeftRight, Database, LayoutGrid, Sparkles,
 }
 
 function TopicChip({ topic, color, onNavigate }: {

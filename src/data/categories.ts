@@ -1,4 +1,10 @@
-import type { Category } from '@/types'
+import type { Category, CategoryId } from '@/types'
+
+export interface CategoryGroup {
+  key: string
+  label: string
+  categoryIds: CategoryId[]
+}
 
 export const CATEGORIES: Category[] = [
   {
@@ -10,27 +16,41 @@ export const CATEGORIES: Category[] = [
     topicIds: ['html-dom', 'html-semantic', 'html-forms'],
   },
   {
-    id: 'css',
-    title: 'CSS',
-    description: 'Style and layout',
+    id: 'css-grundlagen',
+    title: 'CSS Grundlagen',
+    description: 'Basics · Selektoren · Box Model · Styling',
     color: '#5b9cf5',
     icon: 'Palette',
     topicIds: [
-      // GRUNDLAGEN
       'css-basics',
       'css-selectors',
       'css-colors-units',
       'css-box-model',
-      // STYLING
       'css-typography',
       'css-backgrounds-gradients',
       'css-images',
-      // LAYOUT
+    ],
+  },
+  {
+    id: 'css-layout',
+    title: 'CSS Layout',
+    description: 'Flex · Grid · Responsive',
+    color: '#38bdf8',
+    icon: 'LayoutGrid',
+    topicIds: [
       'css-display-positioning',
       'css-flexbox',
       'css-grid',
       'css-responsive',
-      // MODERNE CSS / EFFEKTE
+    ],
+  },
+  {
+    id: 'css-modern',
+    title: 'CSS Modern',
+    description: 'Variables · Transforms · Animations',
+    color: '#a78bfa',
+    icon: 'Sparkles',
+    topicIds: [
       'css-custom-properties',
       'css-transforms',
       'css-transitions',
@@ -84,6 +104,24 @@ export const CATEGORIES: Category[] = [
     color: '#60a5fa',
     icon: 'Database',
     topicIds: ['postgres-queries', 'postgres-joins', 'postgres-crud'],
+  },
+]
+
+export const CATEGORY_GROUPS: CategoryGroup[] = [
+  {
+    key: 'markup-style',
+    label: 'MARKUP & STIL',
+    categoryIds: ['html', 'css-grundlagen', 'css-layout', 'css-modern'],
+  },
+  {
+    key: 'programmierung',
+    label: 'PROGRAMMIERUNG',
+    categoryIds: ['javascript', 'typescript'],
+  },
+  {
+    key: 'frameworks-web',
+    label: 'FRAMEWORKS & WEB',
+    categoryIds: ['react', 'webapis', 'http', 'postgresql'],
   },
 ]
 
