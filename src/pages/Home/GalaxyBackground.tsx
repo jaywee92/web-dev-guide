@@ -30,17 +30,14 @@ function hexToRgb(hex: string): [number, number, number] {
   return [(v >> 16) & 255, (v >> 8) & 255, v & 255]
 }
 
-// Returns 0..1 soft-box fade given star canvas coords and canvas-local rect
-function inZone(sx: number, sy: number, rect: { left: number; top: number; width: number; height: number }): number {
-  const cx = rect.left + rect.width / 2
+// Returns 0..1 fade — full horizontal band at the card's vertical level
+function inZone(_sx: number, sy: number, rect: { left: number; top: number; width: number; height: number }): number {
   const cy = rect.top + rect.height / 2
-  const hw = rect.width / 2
   const hh = rect.height / 2
-  const M = 38
-  const dx = Math.max(0, Math.abs(sx - cx) - hw)
+  const M = 48
   const dy = Math.max(0, Math.abs(sy - cy) - hh)
-  if (dx > M || dy > M) return 0
-  return (1 - dx / M) * (1 - dy / M)
+  if (dy > M) return 0
+  return 1 - dy / M
 }
 
 const GalaxyBackground = forwardRef<GalaxyHandle>(function GalaxyBackground(_props, ref) {
