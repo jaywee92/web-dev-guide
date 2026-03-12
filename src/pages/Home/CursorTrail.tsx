@@ -1,8 +1,19 @@
 // src/pages/Home/CursorTrail.tsx
-import { useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
+import { useEffect, useRef, useState, forwardRef, useImperativeHandle, type ComponentType } from 'react'
+import {
+  FileCode2, Palette, Zap, Shield, Layers, Globe, ArrowLeftRight, Database,
+  LayoutGrid, Sparkles, Layout, MousePointer2, type LucideProps,
+} from 'lucide-react'
+
+type IconComp = ComponentType<LucideProps>
+const ICONS: Record<string, IconComp> = {
+  FileCode2, Palette, Zap, Shield, Layers, Globe, ArrowLeftRight, Database,
+  LayoutGrid, Sparkles, Layout, MousePointer2,
+}
 
 export interface TrailHandle {
   setColor(hex: string | null): void
+  setIcon(name: string | null): void
   pushPoint(x: number, y: number): void
 }
 
@@ -20,6 +31,7 @@ const CursorTrail = forwardRef<TrailHandle>(function CursorTrail(_props, ref) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const dotRef = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
+  const [icon, setIconState] = useState<string | null>(null)
   const stateRef = useRef<{
     points: TrailPoint[]
     currentRgb: [number, number, number]
@@ -37,6 +49,9 @@ const CursorTrail = forwardRef<TrailHandle>(function CursorTrail(_props, ref) {
   useImperativeHandle(ref, () => ({
     setColor(hex) {
       stateRef.current.targetRgb = hex ? hexToRgb(hex) : [...DEFAULT_COLOR] as [number, number, number]
+    },
+    setIcon(name) {
+      setIconState(name)
     },
     pushPoint(x, y) {
       const pts = stateRef.current.points
@@ -93,12 +108,14 @@ const CursorTrail = forwardRef<TrailHandle>(function CursorTrail(_props, ref) {
       const b = Math.round(cur[2])
       const col = `rgb(${r},${g},${b})`
 
-      dot!.style.transform = `translate(${state.tx - 4}px, ${state.ty - 4}px)`
-      dot!.style.background = col
-      dot!.style.boxShadow = `0 0 8px 2px rgba(${r},${g},${b},0.55)`
+      const hasIcon = dot!.dataset.hasIcon === '1'
+      const half = hasIcon ? 20 : 4
+      dot!.style.transform = `translate(${state.tx - half}px, ${state.ty - half}px)`
+      dot!.style.background = hasIcon ? `rgba(${r},${g},${b},0.12)` : col
+      dot!.style.boxShadow = hasIcon ? `0 0 18px 4px rgba(${r},${g},${b},0.35)` : `0 0 8px 2px rgba(${r},${g},${b},0.55)`
 
       ring!.style.transform = `translate(${state.cx - 14}px, ${state.cy - 14}px)`
-      ring!.style.borderColor = `rgba(${r},${g},${b},0.4)`
+      ring!.style.borderColor = `rgba(${r},${g},${b},${hasIcon ? 0.7 : 0.4})`
 
       const pts = state.points
       for (let i = 0; i < pts.length; i++) {
@@ -139,20 +156,28 @@ const CursorTrail = forwardRef<TrailHandle>(function CursorTrail(_props, ref) {
           zIndex: 20,
         }}
       />
-      {/* Custom cursor dot — fixed to viewport */}
+      {/* Custom cursor dot — collapses to tiny dot or expands to icon badge */}
       <div
         ref={dotRef}
+        data-has-icon={icon ? '1' : '0'}
         style={{
           position: 'fixed',
           top: 0, left: 0,
-          width: 8, height: 8,
+          width: icon ? 40 : 8,
+          height: icon ? 40 : 8,
           borderRadius: '50%',
           pointerEvents: 'none',
           zIndex: 99999,
           willChange: 'transform',
-          transition: 'background 0.15s, box-shadow 0.15s',
+          transition: 'width 0.18s ease, height 0.18s ease, background 0.15s, box-shadow 0.15s',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backdropFilter: icon ? 'blur(4px)' : 'none',
         }}
-      />
+      >
+        {icon && (() => { const I = ICONS[icon] ?? FileCode2; return <I size={16} color="currentColor" style={{ opacity: 0.9 }} /> })()}
+      </div>
       {/* Lagging ring */}
       <div
         ref={ringRef}

@@ -82,11 +82,13 @@ function TechSection({
     const rect = e.currentTarget.getBoundingClientRect()
     galaxyRef.current?.setHover(color, rect)
     trailRef.current?.setColor(color)
+    trailRef.current?.setIcon(primaryCategory.icon)
   }
 
   function handleMouseLeave() {
     galaxyRef.current?.setHover(null, null)
     trailRef.current?.setColor(null)
+    trailRef.current?.setIcon(null)
   }
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
