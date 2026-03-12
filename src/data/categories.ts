@@ -59,7 +59,7 @@ export const CATEGORIES: Category[] = [
   {
     id: 'css-layout',
     title: 'CSS Layout',
-    description: 'Flex · Grid · Responsive',
+    description: 'Flex · Grid · Overflow · Responsive',
     color: '#38bdf8',
     icon: 'LayoutGrid',
     topicIds: [
@@ -67,6 +67,7 @@ export const CATEGORIES: Category[] = [
       'css-flexbox',
       'css-grid',
       'css-responsive',
+      'css-overflow',
     ],
     cardLabel: 'Layout',
     cardEmoji: '🧩',
@@ -218,6 +219,7 @@ export const TOPIC_LABELS: Record<string, string> = {
   'css-backgrounds-gradients':   'Backgrounds',
   'css-shadows':                 'Shadows',
   'css-images':                  'Images',
+  'css-overflow':                'Overflow',
   'css-display-positioning':     'Display & Position',
   'css-flexbox':                 'Flexbox',
   'css-grid':                    'Grid',
