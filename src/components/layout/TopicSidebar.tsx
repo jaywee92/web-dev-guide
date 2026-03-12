@@ -40,9 +40,9 @@ export default function TopicSidebar({
   }
 
   const anchorLinks: Array<{ id: string; label: string }> = [
-    { id: 'intro', label: `Was ist ${topicTitle}?` },
-    { id: 'viz', label: 'Visualisierung' },
-    { id: 'explanation', label: 'Erklärung' },
+    { id: 'intro', label: `What is ${topicTitle}?` },
+    { id: 'viz', label: 'Visualization' },
+    { id: 'explanation', label: 'Explanation' },
     ...(hasCheatSheet ? [{ id: 'cheatsheet', label: 'Cheat Sheet' }] : []),
     ...(hasPlayground ? [{ id: 'playground', label: 'Playground' }] : []),
   ]
@@ -134,7 +134,7 @@ export default function TopicSidebar({
           letterSpacing: '0.1em', color: 'var(--text-faint)',
           padding: '0 16px', marginBottom: 6,
         }}>
-          AUF DIESER SEITE
+          ON THIS PAGE
         </div>
         {anchorLinks.map(link => (
           <button
