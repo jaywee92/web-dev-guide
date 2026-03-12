@@ -49,6 +49,10 @@ const lazyRegistry: Record<string, () => Promise<{ default: AnimComp }>> = {
   ComponentsViz: () => import('./react/ComponentsViz'),
   StateViz: () => import('./react/StateViz'),
   UseEffectViz: () => import('./react/UseEffectViz'),
+  ShadowsViz: () => import('./css/ShadowsViz'),
+  OverflowViz: () => import('./css/OverflowViz'),
+  ThemingViz: () => import('./css/ThemingViz'),
+  AccessibilityViz: () => import('./html/AccessibilityViz'),
 }
 
 // Synchronous cache
