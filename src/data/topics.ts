@@ -3,6 +3,7 @@ import type { Topic } from '@/types'
 export const TOPICS: Topic[] = [
   {
     id: 'html-basics',
+    nextTopicId: 'html-text',
     title: 'Elements & Attributes',
     description: 'Anatomy of HTML elements — tags, content, closing tags, and how attributes configure them',
     level: 1,
@@ -79,6 +80,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'html-text',
+    nextTopicId: 'html-links-images',
     title: 'Text & Headings',
     description: 'Structure text with heading levels, paragraphs, and semantic inline formatting',
     level: 1,
@@ -154,6 +156,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'html-links-images',
+    nextTopicId: 'html-lists',
     title: 'Links & Images',
     description: 'Navigate with anchor links and embed images with meaningful alt text',
     level: 1,
@@ -229,6 +232,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'html-lists',
+    nextTopicId: 'html-dom',
     title: 'Lists & Structure',
     description: 'Organize content with ordered and unordered lists, and understand block vs inline layout',
     level: 1,
@@ -304,6 +308,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'html-dom',
+    nextTopicId: 'html-semantic',
     title: 'The DOM Tree',
     description: 'How browsers parse HTML into a living tree of nodes',
     level: 1,
@@ -372,6 +377,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'html-semantic',
+    nextTopicId: 'html-forms',
     title: 'Semantic HTML',
     description: 'Meaningful elements that describe structure, not just appearance',
     level: 1,
@@ -448,6 +454,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'html-forms',
+    nextTopicId: 'html-accessibility',
     title: 'Forms & Inputs',
     description: 'Collect user input with forms, labels, and interactive controls',
     level: 1,
@@ -543,6 +550,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'html-accessibility',
+    nextTopicId: 'html-media',
     title: 'Accessibility (a11y)',
     description: 'ARIA roles, keyboard navigation, focus management — build for all users from the start',
     level: 1,
@@ -694,6 +702,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'css-basics',
+    nextTopicId: 'css-box-model',
     title: 'How CSS Works',
     description: 'Three ways to apply CSS and how the cascade resolves conflicts',
     level: 1,
@@ -769,6 +778,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'css-box-model',
+    nextTopicId: 'css-selectors',
     title: 'CSS Box Model',
     description: 'Every element is a box — content, padding, border, margin',
     level: 1,
@@ -840,6 +850,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'css-flexbox',
+    nextTopicId: 'css-grid',
     title: 'Flexbox',
     description: 'One-dimensional layout — align items in rows or columns effortlessly',
     level: 1,
@@ -912,6 +923,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'css-grid',
+    nextTopicId: 'css-display-positioning',
     title: 'CSS Grid',
     description: 'Two-dimensional layout — control rows and columns simultaneously',
     level: 1,
@@ -983,6 +995,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'css-selectors',
+    nextTopicId: 'css-colors-units',
     title: 'Selectors & Specificity',
     description: 'Target elements precisely and understand which styles win',
     level: 1,
@@ -1075,6 +1088,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'css-colors-units',
+    nextTopicId: 'css-typography',
     title: 'Colors & Units',
     description: 'Color formats (hex, rgb, hsl) and CSS units (px, em, rem, %)',
     level: 1,
@@ -1154,6 +1168,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'css-typography',
+    nextTopicId: 'css-backgrounds-gradients',
     title: 'Text & Typography',
     description: 'Font families, sizes, weights, and text styling',
     level: 1,
@@ -1234,6 +1249,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'css-backgrounds-gradients',
+    nextTopicId: 'css-shadows',
     title: 'Backgrounds & Gradients',
     description: 'Background colors, images, and CSS gradient functions',
     level: 1,
@@ -1312,6 +1328,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'css-shadows',
+    nextTopicId: 'css-flexbox',
     title: 'Shadows',
     description: 'box-shadow and text-shadow — depth, glow effects, and layered shadows for visual hierarchy',
     level: 1,
@@ -1389,6 +1406,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'css-overflow',
+    nextTopicId: 'css-responsive',
     title: 'Overflow & Scrolling',
     description: 'Control what happens when content is larger than its container — hide, scroll, or clip with precision',
     level: 1,
@@ -1458,6 +1476,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'css-display-positioning',
+    nextTopicId: 'css-overflow',
     title: 'Display & Positioning',
     description: 'How elements flow, stack, and position relative to each other',
     level: 1,
@@ -1536,6 +1555,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'css-responsive',
+    nextTopicId: 'css-images',
     title: 'Responsive Design',
     description: 'Media queries, mobile-first CSS, and fluid layouts',
     level: 2,
@@ -1612,6 +1632,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'css-images',
+    nextTopicId: 'css-custom-properties',
     title: 'Images',
     description: 'Responsive images, object-fit, and visual styling',
     level: 1,
@@ -1689,6 +1710,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'css-custom-properties',
+    nextTopicId: 'css-variables-theming',
     title: 'CSS Custom Properties',
     description: 'Variables in CSS — declare once, reuse everywhere, override in child scopes',
     level: 2,
@@ -1731,6 +1753,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'css-variables-theming',
+    nextTopicId: 'css-transforms',
     title: 'Theming & Dark Mode',
     description: 'Light/dark themes with CSS custom properties — one stylesheet, two color schemes',
     level: 2,
@@ -1800,6 +1823,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'css-transforms',
+    nextTopicId: 'css-transitions',
     title: 'CSS Transforms',
     description: 'Move, rotate, scale, and skew elements without affecting document flow',
     level: 2,
@@ -1843,6 +1867,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'css-transitions',
+    nextTopicId: 'css-animations',
     title: 'CSS Transitions',
     description: 'Smoothly animate property changes between states',
     level: 2,
