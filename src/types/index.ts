@@ -2,7 +2,7 @@ export type Level = 1 | 2 | 3 | 4
 export type PlaygroundType = 'visual-controls' | 'monaco' | 'none' | 'gradient' | 'css-live'
 export type ThemeMode = 'dark' | 'light'
 export type CategoryId = 'html-core' | 'html-structure' | 'html-interactive'
-  | 'css-grundlagen' | 'css-layout' | 'css-modern'
+  | 'css-basics' | 'css-layout' | 'css-modern'
   | 'javascript' | 'typescript' | 'react' | 'webapis' | 'http' | 'postgresql'
 
 export interface Category {

@@ -38,7 +38,7 @@ export const CATEGORIES: Category[] = [
     cardEmoji: '🎮',
   },
   {
-    id: 'css-grundlagen',
+    id: 'css-basics',
     title: 'CSS Basics',
     description: 'Basics · Selectors · Box Model · Styling',
     color: '#5b9cf5',
@@ -151,7 +151,7 @@ export const CATEGORY_GROUPS: CategoryGroup[] = [
   {
     key: 'markup-style',
     label: 'MARKUP & STYLE',
-    categoryIds: ['html-core', 'html-structure', 'html-interactive', 'css-grundlagen', 'css-layout', 'css-modern'],
+    categoryIds: ['html-core', 'html-structure', 'html-interactive', 'css-basics', 'css-layout', 'css-modern'],
   },
   {
     key: 'programmierung',

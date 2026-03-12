@@ -23,7 +23,7 @@ export default function CategoryPage() {
     )
   }
 
-  const hasReference = categoryId === 'html' || categoryId.startsWith('css-')
+  const hasReference = categoryId.startsWith('html-') || categoryId.startsWith('css-')
 
   return (
     <PageWrapper>
@@ -62,7 +62,7 @@ export default function CategoryPage() {
           {hasReference && (
             <div style={{ display: 'flex', gap: 10, marginBottom: 36 }}>
               <Link
-                to={categoryId === 'html' ? '/reference/html' : '/reference/css'}
+                to={categoryId.startsWith('html-') ? '/reference/html' : '/reference/css'}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 6,
                   padding: '7px 14px', borderRadius: 8,
@@ -71,7 +71,7 @@ export default function CategoryPage() {
                   textDecoration: 'none', fontWeight: 600,
                 }}
               >
-                <ExternalLink size={11} /> {categoryId === 'html' ? 'HTML' : 'CSS'} Reference
+                <ExternalLink size={11} /> {categoryId.startsWith('html-') ? 'HTML' : 'CSS'} Reference
               </Link>
             </div>
           )}

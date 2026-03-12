@@ -19,8 +19,10 @@ export default function App() {
           <AnimatePresence mode="wait">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/html" element={<CategoryPage />} />
-              <Route path="/css-grundlagen" element={<CategoryPage />} />
+              <Route path="/html-core" element={<CategoryPage />} />
+              <Route path="/html-structure" element={<CategoryPage />} />
+              <Route path="/html-interactive" element={<CategoryPage />} />
+              <Route path="/css-basics" element={<CategoryPage />} />
               <Route path="/css-layout" element={<CategoryPage />} />
               <Route path="/css-modern" element={<CategoryPage />} />
               <Route path="/javascript" element={<CategoryPage />} />
