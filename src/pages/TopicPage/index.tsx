@@ -39,6 +39,15 @@ export default function TopicPage() {
 
   const category = getCategoryForTopic(topic.id)
   const hasCheatSheet = !!topic.cheatSheet
+  const cheatSheetLang = (() => {
+    const cat = topic.category
+    if (cat.startsWith('css')) return 'css'
+    if (cat.startsWith('html')) return 'html'
+    if (cat === 'javascript') return 'javascript'
+    if (cat === 'typescript' || cat === 'react') return 'typescript'
+    if (cat === 'postgresql') return 'sql'
+    return 'javascript'
+  })()
   const hasPlayground = topic.playgroundType !== 'none'
   const nextTopic = topic.nextTopicId ? getTopicById(topic.nextTopicId) : undefined
 
@@ -147,7 +156,7 @@ export default function TopicPage() {
                 ...(hasCheatSheet ? [{
                   id: 'cheatsheet',
                   label: 'Cheat Sheet',
-                  content: <CheatSheet key={topic.id} data={topic.cheatSheet!} color={topic.color} />,
+                  content: <CheatSheet key={topic.id} data={topic.cheatSheet!} color={topic.color} language={cheatSheetLang} />,
                 }] : []),
                 ...(hasPlayground ? [{
                   id: 'playground',

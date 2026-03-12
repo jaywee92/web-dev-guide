@@ -6,13 +6,14 @@ import CodeBlock from './CodeBlock'
 interface Props {
   data: CheatSheetType
   color: string
+  language?: string
 }
 
 type Tab = 'syntax' | 'patterns' | 'gotchas'
 
 
 
-export default function CheatSheet({ data, color }: Props) {
+export default function CheatSheet({ data, color, language = 'html' }: Props) {
   const hasSyntax = (data.syntax?.length ?? 0) > 0
   const hasPatterns = (data.patterns?.length ?? 0) > 0
   const hasGotchas = (data.commonMistakes?.length ?? 0) > 0 || !!data.whenToUse
@@ -84,7 +85,7 @@ export default function CheatSheet({ data, color }: Props) {
                         </div>
                       )}
                     </div>
-                    <CodeBlock code={item.code} />
+                    <CodeBlock code={item.code} language={language} />
                   </div>
                 ))}
               </div>
