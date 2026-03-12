@@ -41,8 +41,7 @@ export default function TopicSidebar({
 
   const anchorLinks: Array<{ id: string; label: string }> = [
     { id: 'intro', label: `What is ${topicTitle}?` },
-    { id: 'viz', label: 'Visualization' },
-    { id: 'explanation', label: 'Explanation' },
+    { id: 'explanation', label: 'How it works' },
     ...(hasCheatSheet ? [{ id: 'cheatsheet', label: 'Cheat Sheet' }] : []),
     ...(hasPlayground ? [{ id: 'playground', label: 'Playground' }] : []),
   ]

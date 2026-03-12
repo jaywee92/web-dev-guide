@@ -5,7 +5,6 @@ import { getTopicById } from '@/data/topics'
 import { LEVELS } from '@/data/levels'
 import PageWrapper from '@/components/layout/PageWrapper'
 import LevelBadge from '@/components/ui/LevelBadge'
-import IntroAnimation from './IntroAnimation'
 import SyncExplanation from './SyncExplanation'
 import PlaygroundSection from './PlaygroundSection'
 import CheatSheet from '@/components/ui/CheatSheet'
@@ -97,13 +96,8 @@ export default function TopicPage() {
             )}
           </div>
 
-          {/* Phase 1: Intro */}
-          <div id="viz" style={{ marginTop: 32 }}>
-            <IntroAnimation AnimComp={AnimComp} />
-          </div>
-
           {/* Phase 2: Explanation */}
-          <div id="explanation">
+          <div id="explanation" style={{ marginTop: 32 }}>
             <SyncExplanation topic={topic} AnimComp={AnimComp} />
           </div>
 
