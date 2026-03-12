@@ -80,6 +80,7 @@ export const CATEGORIES: Category[] = [
     icon: 'Sparkles',
     topicIds: [
       'css-custom-properties',
+      'css-variables-theming',
       'css-transforms',
       'css-transitions',
       'css-animations',
@@ -226,6 +227,7 @@ export const TOPIC_LABELS: Record<string, string> = {
   'css-grid':                    'Grid',
   'css-responsive':              'Responsive',
   'css-custom-properties':       'Custom Properties',
+  'css-variables-theming':       'Theming',
   'css-transforms':              'Transforms',
   'css-transitions':             'Transitions',
   'css-animations':              'Animations',
