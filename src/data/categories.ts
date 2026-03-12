@@ -13,8 +13,8 @@ export const CATEGORIES: Category[] = [
     description: 'Structure of the web',
     color: '#4ade80',
     icon: 'FileCode2',
-    topicIds: ['html-dom', 'html-semantic', 'html-forms'],
-    cardLabel: 'Structure & Semantics',
+    topicIds: ['html-basics', 'html-text', 'html-links-images', 'html-lists', 'html-semantic', 'html-dom', 'html-media', 'html-forms'],
+    cardLabel: 'Foundation to Forms',
     cardEmoji: '🏗',
   },
   {
@@ -179,6 +179,11 @@ export function getCategoryForTopic(topicId: string): Category | undefined {
 
 /** English display labels for topic IDs (used on homepage subcategory cards) */
 export const TOPIC_LABELS: Record<string, string> = {
+  'html-basics':        'Elements & Attributes',
+  'html-text':          'Text & Headings',
+  'html-links-images':  'Links & Images',
+  'html-lists':         'Lists & Structure',
+  'html-media':         'Media & Embeds',
   'html-dom':                    'DOM',
   'html-semantic':               'Semantics',
   'html-forms':                  'Forms',
