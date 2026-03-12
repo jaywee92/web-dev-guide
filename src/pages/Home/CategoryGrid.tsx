@@ -1,5 +1,5 @@
 // src/pages/Home/CategoryGrid.tsx
-import { type ComponentType, type CSSProperties, type RefObject, useState, useRef } from 'react'
+import { type ComponentType, type CSSProperties, type RefObject, useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   FileCode2, Palette, Zap, Shield, Layers, Globe,
@@ -172,6 +172,12 @@ export default function CategoryGrid({ galaxyRef, trailRef }: CategoryGridProps)
   function cancelHide() {
     if (hideTimer.current) clearTimeout(hideTimer.current)
   }
+
+  useEffect(() => {
+    return () => {
+      if (hideTimer.current) clearTimeout(hideTimer.current)
+    }
+  }, [])
 
   let globalIdx = 0
 
