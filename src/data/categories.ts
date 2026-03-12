@@ -8,14 +8,34 @@ export interface CategoryGroup {
 
 export const CATEGORIES: Category[] = [
   {
-    id: 'html',
-    title: 'HTML',
-    description: 'Structure of the web',
+    id: 'html-core',
+    title: 'HTML Basics',
+    description: 'Elements · Attributes · Text · Links · Lists',
     color: '#4ade80',
     icon: 'FileCode2',
-    topicIds: ['html-basics', 'html-text', 'html-links-images', 'html-lists', 'html-semantic', 'html-dom', 'html-media', 'html-forms'],
-    cardLabel: 'Foundation to Forms',
+    topicIds: ['html-basics', 'html-text', 'html-links-images', 'html-lists'],
+    cardLabel: 'Basics',
+    cardEmoji: '📖',
+  },
+  {
+    id: 'html-structure',
+    title: 'HTML Structure',
+    description: 'Semantic Elements · DOM Tree',
+    color: '#34d399',
+    icon: 'Layout',
+    topicIds: ['html-semantic', 'html-dom'],
+    cardLabel: 'Structure',
     cardEmoji: '🏗',
+  },
+  {
+    id: 'html-interactive',
+    title: 'Forms & Media',
+    description: 'Forms · Inputs · Video · Audio · Embeds',
+    color: '#6ee7b7',
+    icon: 'MousePointer2',
+    topicIds: ['html-forms', 'html-media'],
+    cardLabel: 'Interactive',
+    cardEmoji: '🎮',
   },
   {
     id: 'css-grundlagen',
@@ -131,7 +151,7 @@ export const CATEGORY_GROUPS: CategoryGroup[] = [
   {
     key: 'markup-style',
     label: 'MARKUP & STYLE',
-    categoryIds: ['html', 'css-grundlagen', 'css-layout', 'css-modern'],
+    categoryIds: ['html-core', 'html-structure', 'html-interactive', 'css-grundlagen', 'css-layout', 'css-modern'],
   },
   {
     key: 'programmierung',
@@ -166,7 +186,9 @@ export const TECH_SECTION_META: Record<string, TechSectionMeta> = {
  *  All css-* categories belong to the 'css' tech section.
  *  All others map 1:1 to their categoryId. */
 export function getTechKey(categoryId: CategoryId): string {
-  return categoryId.startsWith('css-') ? 'css' : categoryId
+  if (categoryId.startsWith('html-')) return 'html'
+  if (categoryId.startsWith('css-')) return 'css'
+  return categoryId
 }
 
 export function getCategoryById(id: string): Category | undefined {
