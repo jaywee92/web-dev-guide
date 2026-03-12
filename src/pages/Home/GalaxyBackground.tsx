@@ -58,6 +58,10 @@ const GalaxyBackground = forwardRef<GalaxyHandle>(function GalaxyBackground(_pro
     setHover(color, rect) {
       stateRef.current.hoverColor = color
       stateRef.current.hoverRect = rect
+      // Refresh canvas offset at hover time so scroll position is always correct
+      if (canvasRef.current) {
+        stateRef.current.canvasRect = canvasRef.current.getBoundingClientRect()
+      }
     },
   }))
 
