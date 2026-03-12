@@ -80,7 +80,7 @@ export default function SyncExplanation({ topic, AnimComp }: Props) {
                     width: ctrl.step === i ? 20 : 8,
                     height: 8,
                     borderRadius: 4,
-                    background: ctrl.step === i ? 'var(--blue)' : 'var(--border)',
+                    background: ctrl.step === i ? topic.color : 'var(--border)',
                     border: 'none',
                     cursor: 'pointer',
                     padding: 0,
@@ -97,8 +97,8 @@ export default function SyncExplanation({ topic, AnimComp }: Props) {
                 display: 'flex', alignItems: 'center', gap: 4,
                 padding: '6px 12px', borderRadius: 8,
                 cursor: ctrl.step === steps.length - 1 ? 'not-allowed' : 'pointer',
-                background: ctrl.step === steps.length - 1 ? 'var(--surface)' : 'var(--blue)',
-                border: `1px solid ${ctrl.step === steps.length - 1 ? 'var(--border)' : 'var(--blue)'}`,
+                background: ctrl.step === steps.length - 1 ? 'var(--surface)' : topic.color,
+                border: `1px solid ${ctrl.step === steps.length - 1 ? 'var(--border)' : topic.color}`,
                 color: ctrl.step === steps.length - 1 ? 'var(--text-faint)' : '#fff',
                 fontSize: 13, fontWeight: 600, transition: 'all 0.2s',
               }}
@@ -117,6 +117,7 @@ export default function SyncExplanation({ topic, AnimComp }: Props) {
               index={i}
               active={ctrl.step === i}
               onActivate={() => ctrl.goTo(i)}
+              color={topic.color}
             />
           ))}
         </div>
@@ -125,11 +126,12 @@ export default function SyncExplanation({ topic, AnimComp }: Props) {
   )
 }
 
-function StepBlock({ step, index, active, onActivate }: {
+function StepBlock({ step, index, active, onActivate, color }: {
   step: ExplanationStep
   index: number
   active: boolean
   onActivate: () => void
+  color: string
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { margin: '-40% 0px -40% 0px' })
@@ -146,13 +148,13 @@ function StepBlock({ step, index, active, onActivate }: {
     >
       <div style={{
         display: 'flex', alignItems: 'flex-start', gap: 16,
-        borderLeft: `3px solid ${active ? 'var(--blue)' : 'transparent'}`,
+        borderLeft: `3px solid ${active ? color : 'transparent'}`,
         paddingLeft: 12, transition: 'border-color 0.3s', borderRadius: 4,
       }}>
         <span style={{
           width: 28, height: 28, borderRadius: '50%',
-          background: active ? 'var(--blue)' : 'var(--surface-bright)',
-          border: `2px solid ${active ? 'var(--blue)' : 'var(--border)'}`,
+          background: active ? color : 'var(--surface-bright)',
+          border: `2px solid ${active ? color : 'var(--border)'}`,
           color: active ? '#fff' : 'var(--text-muted)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 11, fontWeight: 700, flexShrink: 0, transition: 'all 0.3s',
