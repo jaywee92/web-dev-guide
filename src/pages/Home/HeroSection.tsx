@@ -5,35 +5,6 @@ import ShinyText from './ShinyText'
 export default function HeroSection() {
   return (
     <section className="relative flex flex-col items-center justify-center text-center px-6 pt-24 pb-16 overflow-hidden">
-      {/* Animated background orbs */}
-      {[
-        { color: '#4ade80', size: 500, top: '-150px', left: '-100px', delay: 0 },
-        { color: '#5b9cf5', size: 400, top: '40%', right: '-150px', delay: -7 },
-        { color: '#a78bfa', size: 350, bottom: '-100px', left: '30%', delay: -14 },
-      ].map((orb, i) => (
-        <motion.div
-          key={i}
-          style={{
-            position: 'absolute',
-            width: orb.size, height: orb.size,
-            borderRadius: '50%',
-            background: orb.color,
-            filter: 'blur(120px)',
-            opacity: 0.07,
-            top: (orb as { top?: string }).top,
-            left: (orb as { left?: string }).left,
-            right: (orb as { right?: string }).right,
-            bottom: (orb as { bottom?: string }).bottom,
-            pointerEvents: 'none',
-          }}
-          animate={{
-            x: [0, 60, -40, 60, 0],
-            y: [0, -50, 70, 30, 0],
-            scale: [1, 1.1, 0.95, 1.05, 1],
-          }}
-          transition={{ duration: 20 + i * 4, repeat: Infinity, delay: orb.delay, ease: 'easeInOut' }}
-        />
-      ))}
 
       <div style={{ position: 'relative', zIndex: 1 }}>
         <motion.div

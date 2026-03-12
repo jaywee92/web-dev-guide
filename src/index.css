@@ -233,6 +233,7 @@ code, pre, .mono { font-family: var(--font-mono); }
 }
 .subcat-emoji {
   font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", emoji, sans-serif;
+  font-variant-emoji: emoji;
   font-size: 15px;
   line-height: 1;
 }
