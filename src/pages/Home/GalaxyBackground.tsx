@@ -131,13 +131,14 @@ const GalaxyBackground = forwardRef<GalaxyHandle>(function GalaxyBackground(_pro
         const b = Math.round(baseRgb[2] + (accentRgb[2] - baseRgb[2]) * blend)
 
         ctx!.save()
+        const drawR = blend > 0.05 ? star.r * (1 + blend * 2) : star.r
         if (blend > 0.05) {
-          ctx!.shadowBlur = blend * 6
-          ctx!.shadowColor = `rgba(${r},${g},${b},${a})`
+          ctx!.shadowBlur = blend * 18
+          ctx!.shadowColor = `rgba(${r},${g},${b},${Math.min(1, a + blend * 0.6)})`
         }
         ctx!.beginPath()
-        ctx!.arc(star.x, star.y, star.r, 0, Math.PI * 2)
-        ctx!.fillStyle = `rgba(${r},${g},${b},${a})`
+        ctx!.arc(star.x, star.y, drawR, 0, Math.PI * 2)
+        ctx!.fillStyle = `rgba(${r},${g},${b},${Math.min(1, a + blend * 0.4)})`
         ctx!.fill()
         ctx!.restore()
       }
