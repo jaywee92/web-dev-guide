@@ -182,7 +182,7 @@ export default function CategoryGrid({ galaxyRef, trailRef }: CategoryGridProps)
   let globalIdx = 0
 
   return (
-    <section style={{ maxWidth: 680, margin: '0 auto', padding: '0 24px 80px', width: '100%' }}>
+    <section style={{ maxWidth: 740, margin: '0 auto', padding: '0 24px 80px', width: '100%' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
         {CATEGORY_GROUPS.map(group => {
           const techSections = deriveTechSections(group.categoryIds)

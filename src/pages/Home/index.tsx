@@ -26,7 +26,7 @@ export default function Home() {
         {/* Galaxy background — z-index 1 */}
         <GalaxyBackground ref={galaxyRef} />
 
-        {/* Cursor trail — z-index 2, pointer-events: none */}
+        {/* Cursor trail — z-index 20, pointer-events: none (above content, never blocks interaction) */}
         <CursorTrail ref={trailRef} />
 
         {/* Film grain overlay — z-index 99 */}

@@ -156,8 +156,8 @@ code, pre, .mono { font-family: var(--font-mono); }
   z-index: 2;
   display: flex;
   align-items: center;
-  gap: 11px;
-  padding: 13px 17px 11px;
+  gap: 12px;
+  padding: 16px 20px 14px;
   background: linear-gradient(135deg,
     color-mix(in srgb, var(--tc) 14%, #080d1a),
     #080d1a);
@@ -165,9 +165,9 @@ code, pre, .mono { font-family: var(--font-mono); }
   border-left: 3px solid var(--tc);
 }
 .tsec-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 9px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
   flex-shrink: 0;
   background: color-mix(in srgb, var(--tc) 12%, rgba(0,0,0,0.3));
   border: 1px solid color-mix(in srgb, var(--tc) 30%, transparent);
@@ -178,7 +178,7 @@ code, pre, .mono { font-family: var(--font-mono); }
 }
 .tsec-head-text { flex: 1; }
 .tsec-name {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 800;
   color: var(--tc);
   letter-spacing: -.02em;
@@ -200,9 +200,9 @@ code, pre, .mono { font-family: var(--font-mono); }
   position: relative;
   z-index: 2;
   display: flex;
-  gap: 7px;
+  gap: 8px;
   flex-wrap: wrap;
-  padding: 9px 13px 12px;
+  padding: 11px 16px 14px;
   background: rgba(0, 0, 0, 0.08);
 }
 
@@ -212,7 +212,7 @@ code, pre, .mono { font-family: var(--font-mono); }
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 8px;
-  min-width: 120px;
+  min-width: 140px;
   flex: 1;
   cursor: pointer;
   background: rgba(14, 22, 45, 0.82);
@@ -227,14 +227,15 @@ code, pre, .mono { font-family: var(--font-mono); }
 .subcat-top {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 7px 10px 6px;
+  gap: 7px;
+  padding: 9px 12px 8px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 .subcat-emoji {
-  font-family: "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji", sans-serif;
-  font-size: 12px;
+  font-family: "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji", emoji, sans-serif;
+  font-size: 14px;
   line-height: 1;
+  font-variant-emoji: emoji;
 }
 .subcat-label { font-size: 11px; font-weight: 700; color: #b8d4f0; }
 .subcat-cnt {
