@@ -7,6 +7,7 @@ import type { Topic } from '@/types'
 
 interface Props { topic: Topic }
 
+
 export default function TopicCard({ topic }: Props) {
   const navigate = useNavigate()
   const [hovered, setHovered] = useState(false)

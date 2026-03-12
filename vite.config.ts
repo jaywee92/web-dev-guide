@@ -19,5 +19,6 @@ export default defineConfig({
       },
     },
   },
+  server: { allowedHosts: ['jaywee92.de', 'www.jaywee92.de'] },
   resolve: { alias: { '@': path.resolve(__dirname, './src') } }
 })
