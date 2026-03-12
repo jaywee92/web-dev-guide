@@ -11,6 +11,7 @@ import CheatSheet from '@/components/ui/CheatSheet'
 import NextTopicCard from '@/components/ui/NextTopicCard'
 import TopicSidebar from '@/components/layout/TopicSidebar'
 import KeyTakeaways from './KeyTakeaways'
+import ContentTabs from './ContentTabs'
 import { getCategoryForTopic } from '@/data/categories'
 import { preloadAnimation, getAnimationComponent } from '@/topics/registry'
 import type { CategoryId } from '@/types'
@@ -138,21 +139,23 @@ export default function TopicPage() {
           {/* Key Takeaways */}
           <KeyTakeaways topic={topic} />
 
-          {/* Cheat Sheet */}
-          {hasCheatSheet && (
-            <div id="cheatsheet" style={{ marginTop: 48 }}>
-              <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20, color: 'var(--text)' }}>
-                Cheat Sheet
-              </h2>
-              <CheatSheet key={topic.id} data={topic.cheatSheet!} color={topic.color} />
-            </div>
-          )}
-
-          {/* Phase 3: Playground */}
-          {hasPlayground && (
-            <div id="playground">
-              <PlaygroundSection topic={topic} />
-            </div>
+          {/* CheatSheet + Playground as tabs */}
+          {(hasCheatSheet || hasPlayground) && (
+            <ContentTabs
+              color={topic.color}
+              tabs={[
+                ...(hasCheatSheet ? [{
+                  id: 'cheatsheet',
+                  label: 'Cheat Sheet',
+                  content: <CheatSheet key={topic.id} data={topic.cheatSheet!} color={topic.color} />,
+                }] : []),
+                ...(hasPlayground ? [{
+                  id: 'playground',
+                  label: 'Playground',
+                  content: <PlaygroundSection topic={topic} />,
+                }] : []),
+              ]}
+            />
           )}
         </div>
       </div>
