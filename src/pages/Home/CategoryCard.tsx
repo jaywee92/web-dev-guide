@@ -52,7 +52,7 @@ export default function CategoryCard({ category, onHoverStart, onHoverEnd, onCli
     >
       {/* Emoji + label row */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 4 }}>
-        <span style={{ fontSize: 13, lineHeight: 1 }}>{emoji}</span>
+        <span style={{ fontSize: 13, lineHeight: 1, fontFamily: '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif' }}>{emoji}</span>
         <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)' }}>
           {label}
         </span>
