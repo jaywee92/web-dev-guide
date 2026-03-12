@@ -1,6 +1,5 @@
 import { useState, useEffect, type ComponentType } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { Link } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import { ArrowLeft, ExternalLink } from 'lucide-react'
 import { getTopicById } from '@/data/topics'
 import { LEVELS } from '@/data/levels'

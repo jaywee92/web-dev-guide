@@ -56,7 +56,7 @@ export interface Topic {
   playgroundType: PlaygroundType
   defaultCSS?: string      // pre-filled CSS for css-live playground
   previewHTML?: string     // fixed HTML template for css-live preview
-  nextTopicId?: string          // ← ADD THIS
+  nextTopicId?: string
   sections: Section[]
   cheatSheet?: CheatSheet
 }
