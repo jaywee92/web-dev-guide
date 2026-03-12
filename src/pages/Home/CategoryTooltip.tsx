@@ -33,7 +33,7 @@ interface Props {
 
 type AnimComp = ComponentType<{ step: number; compact?: boolean }>
 
-const PREVIEW_W = 264
+const PREVIEW_W = 360
 
 function TopicAnimPreview({ topic, tooltipEl }: { topic: Topic; tooltipEl: HTMLDivElement | null }) {
   const [Comp, setComp] = useState<AnimComp | null>(() => getAnimationComponent(topic.animationComponent))
@@ -69,7 +69,7 @@ function TopicAnimPreview({ topic, tooltipEl }: { topic: Topic; tooltipEl: HTMLD
       top: pos.top,
       left: pos.left,
       width: PREVIEW_W,
-      height: 220,
+      height: 320,
       background: '#0c1525',
       border: `1px solid ${topic.color}40`,
       borderRadius: 12,
@@ -93,8 +93,8 @@ function TopicAnimPreview({ topic, tooltipEl }: { topic: Topic; tooltipEl: HTMLD
       }}>
         {topic.title}
       </div>
-      <div style={{ width: '100%', height: 196, overflow: 'hidden' }}>
-        <div style={{ transform: 'scale(0.72)', transformOrigin: 'top left', width: `${PREVIEW_W / 0.72}px` }}>
+      <div style={{ width: '100%', height: 296, overflow: 'hidden' }}>
+        <div style={{ transform: 'scale(0.85)', transformOrigin: 'top left', width: `${PREVIEW_W / 0.85}px` }}>
           <Comp step={step} compact={true} />
         </div>
       </div>
