@@ -1,13 +1,15 @@
-import { createHighlighter, type Highlighter } from 'shiki'
+import type { Highlighter } from 'shiki'
 
 let highlighterPromise: Promise<Highlighter> | null = null
 
 export function getHighlighter(): Promise<Highlighter> {
   if (!highlighterPromise) {
-    highlighterPromise = createHighlighter({
-      themes: ['one-dark-pro'],
-      langs: ['css', 'html', 'javascript', 'typescript', 'python', 'sql', 'bash'],
-    })
+    highlighterPromise = import('shiki').then(({ createHighlighter }) =>
+      createHighlighter({
+        themes: ['one-dark-pro'],
+        langs: ['css', 'html', 'javascript', 'typescript', 'python', 'sql', 'bash'],
+      })
+    )
   }
   return highlighterPromise
 }

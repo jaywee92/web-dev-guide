@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, ExternalLink } from 'lucide-react'
+import ArrowLeft from 'lucide-react/dist/esm/icons/arrow-left'
+import ExternalLink from 'lucide-react/dist/esm/icons/external-link'
 import { motion } from 'framer-motion'
 import { LEVELS } from '@/data/levels'
 import { TOPICS } from '@/data/topics'

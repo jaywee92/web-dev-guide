@@ -1,6 +1,7 @@
 import { useRef, type ComponentType } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import ChevronLeft from 'lucide-react/dist/esm/icons/chevron-left'
+import ChevronRight from 'lucide-react/dist/esm/icons/chevron-right'
 import type { Topic, ExplanationStep } from '@/types'
 import CodeBlock from '@/components/ui/CodeBlock'
 import { useAnimationStep } from '@/hooks/useAnimationStep'

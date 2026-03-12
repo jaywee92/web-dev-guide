@@ -1,10 +1,16 @@
 // src/pages/Home/CategoryGrid.tsx
 import { type ComponentType, type CSSProperties, type RefObject, useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  FileCode2, Palette, Zap, Shield, Layers, Globe,
-  ArrowLeftRight, Database, LayoutGrid, Sparkles,
-} from 'lucide-react'
+import FileCode2 from 'lucide-react/dist/esm/icons/file-code-2'
+import Palette from 'lucide-react/dist/esm/icons/palette'
+import Zap from 'lucide-react/dist/esm/icons/zap'
+import Shield from 'lucide-react/dist/esm/icons/shield'
+import Layers from 'lucide-react/dist/esm/icons/layers'
+import Globe from 'lucide-react/dist/esm/icons/globe'
+import ArrowLeftRight from 'lucide-react/dist/esm/icons/arrow-left-right'
+import Database from 'lucide-react/dist/esm/icons/database'
+import LayoutGrid from 'lucide-react/dist/esm/icons/layout-grid'
+import Sparkles from 'lucide-react/dist/esm/icons/sparkles'
 import { CATEGORIES, CATEGORY_GROUPS, getTechKey, TECH_SECTION_META, TOPIC_LABELS } from '@/data/categories'
 import type { Category, CategoryId } from '@/types'
 import CategoryTooltip from './CategoryTooltip'

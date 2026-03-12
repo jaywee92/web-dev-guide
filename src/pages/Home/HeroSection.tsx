@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowDown } from 'lucide-react'
+import ArrowDown from 'lucide-react/dist/esm/icons/arrow-down'
 import ShinyText from './ShinyText'
 
 export default function HeroSection() {

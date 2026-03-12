@@ -11,8 +11,9 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          if (id.includes('monaco-editor')) return 'monaco'
-          if (id.includes('framer-motion')) return 'framer'
+          if (id.includes('monaco-editor') || id.includes('@monaco-editor')) return 'monaco'
+          if (id.includes('framer-motion') || id.includes('@motionone')) return 'framer'
+          if (id.includes('shiki') || id.includes('@shikijs')) return 'shiki'
           if (id.includes('node_modules')) return 'vendor'
         },
       },

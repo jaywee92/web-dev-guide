@@ -1,6 +1,6 @@
 import { usePlayground } from '@/hooks/usePlayground'
 import { motion } from 'framer-motion'
-import { Share2 } from 'lucide-react'
+import Share2 from 'lucide-react/dist/esm/icons/share-2'
 
 interface BoxModelState {
   padding: number

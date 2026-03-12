@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Copy, Check } from 'lucide-react'
+import Copy from 'lucide-react/dist/esm/icons/copy'
+import Check from 'lucide-react/dist/esm/icons/check'
 import type { CheatSheet as CheatSheetType } from '@/types'
 
 interface Props {

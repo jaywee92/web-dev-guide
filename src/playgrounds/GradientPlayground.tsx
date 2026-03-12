@@ -1,5 +1,8 @@
 import { useState, useCallback } from 'react'
-import { Copy, Plus, Trash2, Check } from 'lucide-react'
+import Copy from 'lucide-react/dist/esm/icons/copy'
+import Plus from 'lucide-react/dist/esm/icons/plus'
+import Trash2 from 'lucide-react/dist/esm/icons/trash-2'
+import Check from 'lucide-react/dist/esm/icons/check'
 
 type GradientType = 'linear' | 'radial' | 'conic'
 
