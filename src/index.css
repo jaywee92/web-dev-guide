@@ -206,6 +206,9 @@ code, pre, .mono { font-family: var(--font-mono); }
   background: rgba(0, 0, 0, 0.08);
 }
 
+/* Hide system cursor everywhere inside the custom-cursor home page */
+.custom-cursor, .custom-cursor * { cursor: none !important; }
+
 /* Subcategory card */
 .subcat {
   position: relative;
