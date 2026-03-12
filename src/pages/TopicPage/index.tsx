@@ -10,6 +10,7 @@ import IntroAnimation from './IntroAnimation'
 import SyncExplanation from './SyncExplanation'
 import PlaygroundSection from './PlaygroundSection'
 import CheatSheet from '@/components/ui/CheatSheet'
+import NextTopicCard from '@/components/ui/NextTopicCard'
 import TopicSidebar from '@/components/layout/TopicSidebar'
 import { getCategoryForTopic } from '@/data/categories'
 import { preloadAnimation, getAnimationComponent } from '@/topics/registry'
@@ -39,6 +40,7 @@ export default function TopicPage() {
   const category = getCategoryForTopic(topic.id)
   const hasCheatSheet = !!topic.cheatSheet
   const hasPlayground = topic.playgroundType !== 'none'
+  const nextTopic = topic.nextTopicId ? getTopicById(topic.nextTopicId) : undefined
 
   return (
     <PageWrapper>
@@ -124,6 +126,11 @@ export default function TopicPage() {
           )}
         </div>
       </div>
+      {nextTopic && (
+        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px 80px' }}>
+          <NextTopicCard topic={nextTopic} />
+        </div>
+      )}
     </PageWrapper>
   )
 }
