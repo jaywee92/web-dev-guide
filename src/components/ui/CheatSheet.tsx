@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Copy, Check } from 'lucide-react'
 import type { CheatSheet as CheatSheetType } from '@/types'
+import CodeBlock from './CodeBlock'
 
 interface Props {
   data: CheatSheetType
@@ -10,51 +10,7 @@ interface Props {
 
 type Tab = 'syntax' | 'patterns' | 'gotchas'
 
-function CopyButton({ code }: { code: string }) {
-  const [copied, setCopied] = useState(false)
-  const copy = async () => {
-    await navigator.clipboard.writeText(code)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1800)
-  }
-  return (
-    <button
-      onClick={copy}
-      aria-label={copied ? 'Copied!' : 'Copy code'}
-      style={{
-        background: 'none', border: 'none', cursor: 'pointer',
-        color: copied ? '#4ade80' : 'var(--text-faint)',
-        padding: '2px 4px', borderRadius: 4, transition: 'color 0.15s',
-      }}
-    >
-      {copied ? <Check size={13} /> : <Copy size={13} />}
-    </button>
-  )
-}
 
-function CodeSnippet({ code, language = 'code' }: { code: string; language?: string }) {
-  return (
-    <div style={{
-      position: 'relative',
-      background: '#0d1117',
-      borderRadius: 8,
-      padding: '12px 40px 12px 16px',
-      fontFamily: 'var(--font-mono)',
-      fontSize: 12,
-      lineHeight: 1.7,
-      color: '#e2e8f0',
-      overflowX: 'auto',
-    }}>
-      <div style={{ position: 'absolute', top: 8, right: 8 }}>
-        <CopyButton code={code} />
-      </div>
-      <pre style={{ margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{code}</pre>
-      <div style={{ fontSize: 10, color: '#475569', marginTop: 4, fontFamily: 'sans-serif' }}>
-        {language}
-      </div>
-    </div>
-  )
-}
 
 export default function CheatSheet({ data, color }: Props) {
   const hasSyntax = (data.syntax?.length ?? 0) > 0
@@ -128,7 +84,7 @@ export default function CheatSheet({ data, color }: Props) {
                         </div>
                       )}
                     </div>
-                    <CodeSnippet code={item.code} />
+                    <CodeBlock code={item.code} />
                   </div>
                 ))}
               </div>
@@ -139,7 +95,7 @@ export default function CheatSheet({ data, color }: Props) {
                 {data.patterns.map((p, i) => (
                   <div key={i}>
                     <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)', marginBottom: 8 }}>{p.title}</div>
-                    <CodeSnippet code={p.code} language={p.language} />
+                    <CodeBlock code={p.code} language={p.language} />
                   </div>
                 ))}
               </div>
