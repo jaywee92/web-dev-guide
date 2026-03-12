@@ -157,7 +157,7 @@ code, pre, .mono { font-family: var(--font-mono); }
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 16px 20px 14px;
+  padding: 20px 24px 18px;
   background: linear-gradient(135deg,
     color-mix(in srgb, var(--tc) 14%, #080d1a),
     #080d1a);
@@ -165,9 +165,9 @@ code, pre, .mono { font-family: var(--font-mono); }
   border-left: 3px solid var(--tc);
 }
 .tsec-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
   flex-shrink: 0;
   background: color-mix(in srgb, var(--tc) 12%, rgba(0,0,0,0.3));
   border: 1px solid color-mix(in srgb, var(--tc) 30%, transparent);
@@ -178,7 +178,7 @@ code, pre, .mono { font-family: var(--font-mono); }
 }
 .tsec-head-text { flex: 1; }
 .tsec-name {
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 800;
   color: var(--tc);
   letter-spacing: -.02em;
@@ -202,7 +202,7 @@ code, pre, .mono { font-family: var(--font-mono); }
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  padding: 11px 16px 14px;
+  padding: 14px 18px 16px;
   background: rgba(0, 0, 0, 0.08);
 }
 
@@ -212,7 +212,7 @@ code, pre, .mono { font-family: var(--font-mono); }
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 8px;
-  min-width: 140px;
+  min-width: 160px;
   flex: 1;
   cursor: pointer;
   background: rgba(14, 22, 45, 0.82);
@@ -228,7 +228,7 @@ code, pre, .mono { font-family: var(--font-mono); }
   display: flex;
   align-items: center;
   gap: 7px;
-  padding: 9px 12px 8px;
+  padding: 10px 14px 9px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 .subcat-emoji {
@@ -247,8 +247,8 @@ code, pre, .mono { font-family: var(--font-mono); }
   color: color-mix(in srgb, var(--sc, var(--tc)) 80%, #94a3b8);
 }
 .subcat-topics {
-  padding: 5px 10px 8px;
-  font-size: 9.5px;
+  padding: 6px 14px 10px;
+  font-size: 10.5px;
   color: #7a9fc4;
   line-height: 1.7;
 }
