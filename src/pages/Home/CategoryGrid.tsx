@@ -1,8 +1,15 @@
 // src/pages/Home/CategoryGrid.tsx
 import { type ComponentType, type CSSProperties, type RefObject, useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { FileCode2, Palette, Zap, Shield, Layers, Globe, ArrowLeftRight, Database, LayoutGrid, Sparkles } from 'lucide-react'
-import { CATEGORIES, CATEGORY_GROUPS, getTechKey, TECH_SECTION_META, TOPIC_LABELS } from '@/data/categories'
+import {
+  FileCode2, Palette, Zap, Shield, Layers, Globe, ArrowLeftRight, Database, LayoutGrid, Sparkles, Layout, MousePointer2,
+  Tag, Type, Link2, List, Film, GitBranch, Landmark, ClipboardList, Eye,
+  Paintbrush, Target, Droplets, Square, Image, SunDim, ImageIcon, ScrollText,
+  StretchHorizontal, Smartphone, Variable, SunMoon, RotateCcw, Play,
+  Braces, Lock, FileCode, Shuffle, Component, RefreshCw, Cpu, Route,
+  HardDrive, Server, Activity, Search, Merge,
+} from 'lucide-react'
+import { CATEGORIES, CATEGORY_GROUPS, getTechKey, TECH_SECTION_META, TOPIC_LABELS, TOPIC_ICONS } from '@/data/categories'
 import type { Category, CategoryId } from '@/types'
 import CategoryTooltip from './CategoryTooltip'
 import type { GalaxyHandle } from './GalaxyBackground'
@@ -10,7 +17,12 @@ import type { TrailHandle } from './CursorTrail'
 
 const ICONS: Record<string, ComponentType<{ size?: number; color?: string }>> = {
   FileCode2, Palette, Zap, Shield, Layers, Globe,
-  ArrowLeftRight, Database, LayoutGrid, Sparkles,
+  ArrowLeftRight, Database, LayoutGrid, Sparkles, Layout, MousePointer2,
+  Tag, Type, Link2, List, Film, GitBranch, Landmark, ClipboardList, Eye,
+  Paintbrush, Target, Droplets, Square, Image, SunDim, ImageIcon, ScrollText,
+  StretchHorizontal, Smartphone, Variable, SunMoon, RotateCcw, Play,
+  Braces, Lock, FileCode, Shuffle, Component, RefreshCw, Cpu, Route,
+  HardDrive, Server, Activity, Search, Merge,
 }
 
 function deriveTechSections(categoryIds: CategoryId[]): Array<{ techKey: string; categories: Category[] }> {
@@ -134,17 +146,21 @@ function TechSection({
             onMouseLeave={onCardLeave}
           >
             <div className="subcat-top">
-              <span className="subcat-emoji">{cat.cardEmoji}</span>
+              {(() => { const I = ICONS[cat.icon] ?? FileCode2; return <I size={13} color={cat.color} /> })()}
               <span className="subcat-label">{cat.cardLabel}</span>
               <span className="subcat-cnt">{cat.topicIds.length}</span>
             </div>
             <div className="subcat-topics">
-              {cat.topicIds.slice(0, 3).map((tid, i, arr) => (
-                <span key={tid}>
-                  {TOPIC_LABELS[tid] ?? tid.replace(/^[a-z]+-/, '').replace(/-/g, ' ')}
-                  {i < arr.length - 1 ? ' · ' : ''}
-                </span>
-              ))}
+              {cat.topicIds.slice(0, 3).map((tid, i, arr) => {
+                const TI = ICONS[TOPIC_ICONS[tid]] ?? null
+                return (
+                  <span key={tid} style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>
+                    {TI && <span style={{ opacity: 0.6, lineHeight: 0, flexShrink: 0 }}><TI size={9} color="currentColor" /></span>}
+                    {TOPIC_LABELS[tid] ?? tid.replace(/^[a-z]+-/, '').replace(/-/g, ' ')}
+                    {i < arr.length - 1 ? <span style={{ opacity: 0.4, margin: '0 3px' }}>·</span> : ''}
+                  </span>
+                )
+              })}
             </div>
           </div>
         ))}

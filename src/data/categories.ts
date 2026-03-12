@@ -25,7 +25,7 @@ export const CATEGORIES: Category[] = [
     icon: 'Layout',
     topicIds: ['html-semantic', 'html-dom', 'html-accessibility'],
     cardLabel: 'Structure',
-    cardEmoji: '🏗',
+    cardEmoji: '🏗️',
   },
   {
     id: 'html-interactive',
@@ -86,7 +86,7 @@ export const CATEGORIES: Category[] = [
       'css-animations',
     ],
     cardLabel: 'Modern',
-    cardEmoji: '✨',
+    cardEmoji: '✨️',
   },
   {
     id: 'javascript',
@@ -200,6 +200,57 @@ export function getCategoryById(id: string): Category | undefined {
 
 export function getCategoryForTopic(topicId: string): Category | undefined {
   return CATEGORIES.find(c => c.topicIds.includes(topicId))
+}
+
+/** Lucide icon names for topic IDs (used on homepage subcategory topic rows) */
+export const TOPIC_ICONS: Record<string, string> = {
+  'html-basics':               'Tag',
+  'html-text':                 'Type',
+  'html-links-images':         'Link2',
+  'html-lists':                'List',
+  'html-media':                'Film',
+  'html-dom':                  'GitBranch',
+  'html-semantic':             'Landmark',
+  'html-forms':                'ClipboardList',
+  'html-accessibility':        'Eye',
+  'css-basics':                'Paintbrush',
+  'css-selectors':             'Target',
+  'css-colors-units':          'Droplets',
+  'css-box-model':             'Square',
+  'css-typography':            'Type',
+  'css-backgrounds-gradients': 'Image',
+  'css-shadows':               'SunDim',
+  'css-images':                'ImageIcon',
+  'css-overflow':              'ScrollText',
+  'css-display-positioning':   'Layers',
+  'css-flexbox':               'StretchHorizontal',
+  'css-grid':                  'LayoutGrid',
+  'css-responsive':            'Smartphone',
+  'css-custom-properties':     'Variable',
+  'css-variables-theming':     'SunMoon',
+  'css-transforms':            'RotateCcw',
+  'css-transitions':           'Zap',
+  'css-animations':            'Play',
+  'js-variables':              'Braces',
+  'js-arrays':                 'List',
+  'js-event-loop':             'RefreshCw',
+  'js-closures':               'Lock',
+  'ts-basics':                 'Tag',
+  'ts-interfaces':             'FileCode',
+  'ts-generics':               'Shuffle',
+  'react-components':          'Component',
+  'react-state':               'RefreshCw',
+  'react-useeffect':           'Cpu',
+  'react-router':              'Route',
+  'webapi-fetch':              'Globe',
+  'webapi-events':             'Zap',
+  'webapi-storage':            'HardDrive',
+  'http-request-cycle':        'ArrowLeftRight',
+  'http-rest':                 'Server',
+  'http-status':               'Activity',
+  'postgres-queries':          'Search',
+  'postgres-joins':            'Merge',
+  'postgres-crud':             'Database',
 }
 
 /** English display labels for topic IDs (used on homepage subcategory cards) */
