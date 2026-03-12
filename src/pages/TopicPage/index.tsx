@@ -1,6 +1,6 @@
 import { useState, useEffect, type ComponentType } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { ArrowLeft, ExternalLink } from 'lucide-react'
+import { ArrowLeft, ExternalLink, Clock } from 'lucide-react'
 import { getTopicById } from '@/data/topics'
 import { LEVELS } from '@/data/levels'
 import PageWrapper from '@/components/layout/PageWrapper'
@@ -72,6 +72,39 @@ export default function TopicPage() {
               Docs{category ? ` / ${category.title}` : ''} / <span style={{ color: 'var(--text-muted)' }}>{topic.title}</span>
             </div>
 
+            {category && (() => {
+              const pos = category.topicIds.indexOf(topic.id) + 1
+              const total = category.topicIds.length
+              const pct = (pos / total) * 100
+              return (
+                <div style={{ marginBottom: 16 }}>
+                  <div style={{
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                    marginBottom: 6,
+                  }}>
+                    <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-faint)' }}>
+                      Topic {pos} of {total} in {category.title}
+                    </span>
+                    <span style={{ fontSize: 11, color: 'var(--text-faint)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <Clock size={11} /> {topic.estimatedMinutes} min
+                    </span>
+                  </div>
+                  <div style={{
+                    height: 3, borderRadius: 2,
+                    background: 'var(--surface-bright)',
+                    overflow: 'hidden',
+                  }}>
+                    <div style={{
+                      height: '100%',
+                      width: `${pct}%`,
+                      borderRadius: 2,
+                      background: `linear-gradient(to right, ${topic.color}99, ${topic.color})`,
+                      transition: 'width 0.6s ease',
+                    }} />
+                  </div>
+                </div>
+              )
+            })()}
             <LevelBadge level={level.id} color={level.color} title={level.title} size="sm" />
             <h1 style={{ fontSize: 'clamp(24px, 4vw, 42px)', fontWeight: 800, marginTop: 12, marginBottom: 8 }}>
               {topic.title}
