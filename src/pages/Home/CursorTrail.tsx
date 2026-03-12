@@ -18,14 +18,20 @@ interface TrailPoint { x: number; y: number }
 
 const CursorTrail = forwardRef<TrailHandle>(function CursorTrail(_props, ref) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const dotRef = useRef<HTMLDivElement>(null)
+  const ringRef = useRef<HTMLDivElement>(null)
   const stateRef = useRef<{
     points: TrailPoint[]
     currentRgb: [number, number, number]
     targetRgb: [number, number, number]
+    cx: number; cy: number
+    tx: number; ty: number
   }>({
     points: [],
     currentRgb: [...DEFAULT_COLOR] as [number, number, number],
     targetRgb: [...DEFAULT_COLOR] as [number, number, number],
+    cx: -100, cy: -100,
+    tx: -100, ty: -100,
   })
 
   useImperativeHandle(ref, () => ({
@@ -41,11 +47,19 @@ const CursorTrail = forwardRef<TrailHandle>(function CursorTrail(_props, ref) {
 
   useEffect(() => {
     const canvas = canvasRef.current
-    if (!canvas) return
+    const dot = dotRef.current
+    const ring = ringRef.current
+    if (!canvas || !dot || !ring) return
     const ctx = canvas.getContext('2d')
     if (!ctx) return
     const dpr = window.devicePixelRatio || 1
     const state = stateRef.current
+
+    function onMouseMove(e: MouseEvent) {
+      state.tx = e.clientX
+      state.ty = e.clientY
+    }
+    document.addEventListener('mousemove', onMouseMove)
 
     function resize() {
       const p = canvas!.parentElement
@@ -70,14 +84,26 @@ const CursorTrail = forwardRef<TrailHandle>(function CursorTrail(_props, ref) {
       cur[1] += (tgt[1] - cur[1]) * 0.08
       cur[2] += (tgt[2] - cur[2]) * 0.08
 
+      // Lerp cursor dot position (snappy) and ring (laggy)
+      state.cx += (state.tx - state.cx) * 0.45
+      state.cy += (state.ty - state.cy) * 0.45
+
+      const r = Math.round(cur[0])
+      const g = Math.round(cur[1])
+      const b = Math.round(cur[2])
+      const col = `rgb(${r},${g},${b})`
+
+      dot!.style.transform = `translate(${state.tx - 4}px, ${state.ty - 4}px)`
+      dot!.style.background = col
+      dot!.style.boxShadow = `0 0 8px 2px rgba(${r},${g},${b},0.55)`
+
+      ring!.style.transform = `translate(${state.cx - 14}px, ${state.cy - 14}px)`
+      ring!.style.borderColor = `rgba(${r},${g},${b},0.4)`
+
       const pts = state.points
       for (let i = 0; i < pts.length; i++) {
         const alpha = (i / pts.length) * 0.7
-        const r = Math.round(cur[0])
-        const g = Math.round(cur[1])
-        const b = Math.round(cur[2])
 
-        // Glow dot — coordinates are logical CSS pixels (ctx.setTransform handles DPR)
         ctx!.save()
         ctx!.shadowBlur = 8
         ctx!.shadowColor = `rgba(${r},${g},${b},${alpha})`
@@ -86,15 +112,6 @@ const CursorTrail = forwardRef<TrailHandle>(function CursorTrail(_props, ref) {
         ctx!.fillStyle = `rgba(${r},${g},${b},${alpha * 0.8})`
         ctx!.fill()
         ctx!.restore()
-
-        // Ring on newest point
-        if (i === pts.length - 1) {
-          ctx!.beginPath()
-          ctx!.arc(pts[i].x, pts[i].y, 8, 0, Math.PI * 2)
-          ctx!.strokeStyle = `rgba(${r},${g},${b},0.3)`
-          ctx!.lineWidth = 1.5
-          ctx!.stroke()
-        }
       }
 
       rafId = requestAnimationFrame(frame)
@@ -104,21 +121,54 @@ const CursorTrail = forwardRef<TrailHandle>(function CursorTrail(_props, ref) {
     return () => {
       cancelAnimationFrame(rafId)
       window.removeEventListener('resize', resize)
+      document.removeEventListener('mousemove', onMouseMove)
     }
   }, [])
 
   return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: 'absolute',
-        inset: 0,
-        width: '100%',
-        height: '100%',
-        pointerEvents: 'none',
-        zIndex: 20,
-      }}
-    />
+    <>
+      {/* Trail canvas — relative to container */}
+      <canvas
+        ref={canvasRef}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'none',
+          zIndex: 20,
+        }}
+      />
+      {/* Custom cursor dot — fixed to viewport */}
+      <div
+        ref={dotRef}
+        style={{
+          position: 'fixed',
+          top: 0, left: 0,
+          width: 8, height: 8,
+          borderRadius: '50%',
+          pointerEvents: 'none',
+          zIndex: 99999,
+          willChange: 'transform',
+          transition: 'background 0.15s, box-shadow 0.15s',
+        }}
+      />
+      {/* Lagging ring */}
+      <div
+        ref={ringRef}
+        style={{
+          position: 'fixed',
+          top: 0, left: 0,
+          width: 28, height: 28,
+          borderRadius: '50%',
+          border: '1.5px solid',
+          pointerEvents: 'none',
+          zIndex: 99998,
+          willChange: 'transform',
+          transition: 'border-color 0.15s',
+        }}
+      />
+    </>
   )
 })
 

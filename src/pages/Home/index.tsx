@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <PageWrapper>
       <div
-        style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh' }}
+        style={{ position: 'relative', overflow: 'hidden', minHeight: '100vh', cursor: 'none' }}
         onMouseMove={handleMouseMove}
       >
         {/* Galaxy background — z-index 1 */}
