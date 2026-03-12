@@ -144,7 +144,11 @@ function StepBlock({ step, index, active, onActivate }: {
       style={{ cursor: 'pointer' }}
       onClick={onActivate}
     >
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
+      <div style={{
+        display: 'flex', alignItems: 'flex-start', gap: 16,
+        borderLeft: `3px solid ${active ? 'var(--blue)' : 'transparent'}`,
+        paddingLeft: 12, transition: 'border-color 0.3s', borderRadius: 4,
+      }}>
         <span style={{
           width: 28, height: 28, borderRadius: '50%',
           background: active ? 'var(--blue)' : 'var(--surface-bright)',

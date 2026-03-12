@@ -32,8 +32,9 @@ export default function AnimatedFlow({ step, compact = false }: Props) {
             <div key={node.label} style={{ display: 'flex', alignItems: 'center' }}>
               <motion.div
                 animate={{
-                  boxShadow: active ? `0 0 24px ${node.color}66` : 'none',
+                  boxShadow: active ? `0 0 28px ${node.color}88` : 'none',
                   borderColor: active ? node.color : 'var(--border)',
+                  scale: active ? 1.08 : 1,
                 }}
                 style={{
                   width: nodeSize, height: nodeSize, borderRadius: 16,
@@ -42,7 +43,7 @@ export default function AnimatedFlow({ step, compact = false }: Props) {
                   display: 'flex', flexDirection: 'column',
                   alignItems: 'center', justifyContent: 'center', gap: 4,
                 }}
-                transition={{ duration: 0.4 }}
+                transition={{ type: 'spring', stiffness: 380, damping: 22 }}
               >
                 <Icon size={compact ? 20 : 28} color={active ? node.color : 'var(--text-muted)'} />
                 {!compact && (
@@ -55,7 +56,11 @@ export default function AnimatedFlow({ step, compact = false }: Props) {
               {/* Arrow + packet between nodes */}
               {i < nodes.length - 1 && (
                 <div style={{ position: 'relative', width: compact ? 40 : 64, height: 2, margin: '0 4px' }}>
-                  <div style={{ height: 2, background: 'var(--border)', width: '100%' }} />
+                  <motion.div
+                  animate={{ background: step >= i * 2 + 1 ? `${nodes[i].color}99` : 'var(--border)' }}
+                  transition={{ duration: 0.4 }}
+                  style={{ height: 2, width: '100%' }}
+                />
                   {/* Forward packet */}
                   {step >= i * 2 + 1 && !isReturn && (
                     <motion.div
