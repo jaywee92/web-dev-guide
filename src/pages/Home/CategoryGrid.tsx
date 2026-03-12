@@ -5,7 +5,7 @@ import {
   FileCode2, Palette, Zap, Shield, Layers, Globe,
   ArrowLeftRight, Database, LayoutGrid, Sparkles,
 } from 'lucide-react'
-import { CATEGORIES, CATEGORY_GROUPS, getTechKey, TECH_SECTION_META } from '@/data/categories'
+import { CATEGORIES, CATEGORY_GROUPS, getTechKey, TECH_SECTION_META, TOPIC_LABELS } from '@/data/categories'
 import type { Category, CategoryId } from '@/types'
 import CategoryTooltip from './CategoryTooltip'
 import type { GalaxyHandle } from './GalaxyBackground'
@@ -144,7 +144,7 @@ function TechSection({
             <div className="subcat-topics">
               {cat.topicIds.slice(0, 3).map((tid, i, arr) => (
                 <span key={tid}>
-                  {tid.replace(/^[a-z]+-/, '').replace(/-/g, ' ')}
+                  {TOPIC_LABELS[tid] ?? tid.replace(/^[a-z]+-/, '').replace(/-/g, ' ')}
                   {i < arr.length - 1 ? ' · ' : ''}
                 </span>
               ))}

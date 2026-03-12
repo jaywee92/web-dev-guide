@@ -52,7 +52,7 @@ export default function HeroSection() {
             marginBottom: 24,
           }}
         >
-          Learning by Animation
+          Lernen durch Animation
         </motion.div>
 
         <motion.h1
@@ -89,7 +89,7 @@ export default function HeroSection() {
           style={{ fontSize: 18, maxWidth: 520, margin: '0 auto 48px' }}
         >
           <ShinyText speed={4}>
-            {'Complex concepts. Simple animations. From HTML to PostgreSQL — watch it work, then build it yourself.'}
+            {'Komplexe Konzepte. Einfache Animationen. Von HTML bis PostgreSQL — sieh wie es funktioniert, dann bau es selbst.'}
           </ShinyText>
         </motion.p>
 

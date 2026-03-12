@@ -10,7 +10,7 @@ export const CATEGORIES: Category[] = [
   {
     id: 'html',
     title: 'HTML',
-    description: 'Structure of the web',
+    description: 'Struktur des Webs',
     color: '#4ade80',
     icon: 'FileCode2',
     topicIds: ['html-dom', 'html-semantic', 'html-forms'],
@@ -68,7 +68,7 @@ export const CATEGORIES: Category[] = [
   {
     id: 'javascript',
     title: 'JavaScript',
-    description: 'Language of the browser',
+    description: 'Sprache des Browsers',
     color: '#fbbf24',
     icon: 'Zap',
     topicIds: ['js-variables', 'js-arrays', 'js-event-loop', 'js-closures'],
@@ -78,7 +78,7 @@ export const CATEGORIES: Category[] = [
   {
     id: 'typescript',
     title: 'TypeScript',
-    description: 'JavaScript with types',
+    description: 'JavaScript mit Typen',
     color: '#818cf8',
     icon: 'Shield',
     topicIds: ['ts-basics', 'ts-interfaces', 'ts-generics'],
@@ -88,7 +88,7 @@ export const CATEGORIES: Category[] = [
   {
     id: 'react',
     title: 'React',
-    description: 'Component-based UI',
+    description: 'Komponentenbasiertes UI',
     color: '#f472b6',
     icon: 'Layers',
     topicIds: ['react-components', 'react-state', 'react-useeffect', 'react-router'],
@@ -98,7 +98,7 @@ export const CATEGORIES: Category[] = [
   {
     id: 'webapis',
     title: 'Web APIs',
-    description: 'Browser built-ins',
+    description: 'Browser-Schnittstellen',
     color: '#34d399',
     icon: 'Globe',
     topicIds: ['webapi-fetch', 'webapi-events', 'webapi-storage'],
@@ -108,7 +108,7 @@ export const CATEGORIES: Category[] = [
   {
     id: 'http',
     title: 'HTTP',
-    description: 'How the web communicates',
+    description: 'Kommunikation im Web',
     color: '#fb923c',
     icon: 'ArrowLeftRight',
     topicIds: ['http-request-cycle', 'http-rest', 'http-status'],
@@ -118,7 +118,7 @@ export const CATEGORIES: Category[] = [
   {
     id: 'postgresql',
     title: 'PostgreSQL',
-    description: 'Relational databases',
+    description: 'Relationale Datenbanken',
     color: '#60a5fa',
     icon: 'Database',
     topicIds: ['postgres-queries', 'postgres-joins', 'postgres-crud'],
@@ -175,4 +175,46 @@ export function getCategoryById(id: string): Category | undefined {
 
 export function getCategoryForTopic(topicId: string): Category | undefined {
   return CATEGORIES.find(c => c.topicIds.includes(topicId))
+}
+
+/** German display labels for topic IDs (used on homepage subcategory cards) */
+export const TOPIC_LABELS: Record<string, string> = {
+  'html-dom':                    'DOM',
+  'html-semantic':               'Semantik',
+  'html-forms':                  'Formulare',
+  'css-basics':                  'Grundlagen',
+  'css-selectors':               'Selektoren',
+  'css-colors-units':            'Farben & Einheiten',
+  'css-box-model':               'Box Model',
+  'css-typography':              'Typografie',
+  'css-backgrounds-gradients':   'Hintergründe',
+  'css-images':                  'Bilder',
+  'css-display-positioning':     'Display & Position',
+  'css-flexbox':                 'Flexbox',
+  'css-grid':                    'Grid',
+  'css-responsive':              'Responsive',
+  'css-custom-properties':       'Custom Properties',
+  'css-transforms':              'Transforms',
+  'css-transitions':             'Transitions',
+  'css-animations':              'Animationen',
+  'js-variables':                'Variablen',
+  'js-arrays':                   'Arrays',
+  'js-event-loop':               'Event Loop',
+  'js-closures':                 'Closures',
+  'ts-basics':                   'Grundlagen',
+  'ts-interfaces':               'Interfaces',
+  'ts-generics':                 'Generics',
+  'react-components':            'Komponenten',
+  'react-state':                 'State',
+  'react-useeffect':             'useEffect',
+  'react-router':                'Router',
+  'webapi-fetch':                'Fetch API',
+  'webapi-events':               'Events',
+  'webapi-storage':              'Storage',
+  'http-request-cycle':          'Request Cycle',
+  'http-rest':                   'REST',
+  'http-status':                 'Status Codes',
+  'postgres-queries':            'Queries',
+  'postgres-joins':              'Joins',
+  'postgres-crud':               'CRUD',
 }
