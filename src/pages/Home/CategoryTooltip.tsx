@@ -2,9 +2,27 @@
 import { useEffect, useRef, useState, type ComponentType } from 'react'
 import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
+import {
+  FileCode2, Tag, Type, Link2, List, Film, GitBranch, Landmark, ClipboardList, Eye,
+  Paintbrush, Target, Droplets, Square, Image, SunDim, ImageIcon, ScrollText, Layers,
+  StretchHorizontal, LayoutGrid, Smartphone, Variable, SunMoon, RotateCcw, Zap, Play,
+  Braces, Lock, FileCode, Shuffle, Component, RefreshCw, Cpu, Route,
+  Globe, HardDrive, ArrowLeftRight, Server, Activity, Search, Merge, Database,
+  type LucideProps,
+} from 'lucide-react'
 import { TOPICS } from '@/data/topics'
+import { TOPIC_ICONS } from '@/data/categories'
 import type { Category, Topic } from '@/types'
 import { preloadAnimation, getAnimationComponent } from '@/topics/registry'
+
+type IconComp = ComponentType<LucideProps>
+const ICON_MAP: Record<string, IconComp> = {
+  FileCode2, Tag, Type, Link2, List, Film, GitBranch, Landmark, ClipboardList, Eye,
+  Paintbrush, Target, Droplets, Square, Image, SunDim, ImageIcon, ScrollText, Layers,
+  StretchHorizontal, LayoutGrid, Smartphone, Variable, SunMoon, RotateCcw, Zap, Play,
+  Braces, Lock, FileCode, Shuffle, Component, RefreshCw, Cpu, Route,
+  Globe, HardDrive, ArrowLeftRight, Server, Activity, Search, Merge, Database,
+}
 
 interface Props {
   category: Category
@@ -170,7 +188,7 @@ export default function CategoryTooltip({ category, anchorRect, onMouseEnter, on
                 background: `${c}18`, border: `1px solid ${c}30`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
-                <div style={{ width: 6, height: 6, borderRadius: '50%', background: c }} />
+                {(() => { const I = ICON_MAP[TOPIC_ICONS[topic.id]] ?? FileCode2; return <I size={12} color={c} /> })()}
               </div>
               <span style={{ flex: 1 }}>{topic.title}</span>
               <span className="tip-arrow" style={{ opacity: 0, fontSize: 10, color: c, transition: 'opacity 0.1s' }}>→</span>
