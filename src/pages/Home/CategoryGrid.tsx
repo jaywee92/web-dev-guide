@@ -35,8 +35,8 @@ function deriveTechSections(categoryIds: CategoryId[]): Array<{ techKey: string;
 interface TooltipState { category: Category; rect: DOMRect }
 
 interface CategoryGridProps {
-  galaxyRef: RefObject<GalaxyHandle>
-  trailRef: RefObject<TrailHandle>
+  galaxyRef: RefObject<GalaxyHandle | null>
+  trailRef: RefObject<TrailHandle | null>
 }
 
 function GroupLabel({ label }: { label: string }) {
@@ -52,8 +52,8 @@ interface TechSectionProps {
   techKey: string
   categories: Category[]
   globalIndex: number
-  galaxyRef: RefObject<GalaxyHandle>
-  trailRef: RefObject<TrailHandle>
+  galaxyRef: RefObject<GalaxyHandle | null>
+  trailRef: RefObject<TrailHandle | null>
   onCardHover: (cat: Category, rect: DOMRect) => void
   onCardLeave: () => void
 }
