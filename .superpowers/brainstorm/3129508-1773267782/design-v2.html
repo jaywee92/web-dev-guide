@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galaxy + Light Rays v2</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #07070d;
+    color: #e2e8f0;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    min-height: 100vh;
+    padding: 28px 24px 64px;
+  }
+  h1 { font-size: 19px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .sub { font-size: 12px; color: #475569; margin-bottom: 24px; }
+
+  .demo-frame {
+    position: relative;
+    width: 100%;
+    height: 540px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid #1a1f2e;
+    cursor: default;
+  }
+  #gc { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  /* content overlay */
+  .content {
+    position: relative; z-index: 3;
+    padding: 28px 36px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .hero { font-size: 26px; font-weight: 800; color: #f8fafc; letter-spacing: -0.03em; margin-bottom: 2px; }
+  .hero-sub { font-size: 12px; color: #475569; margin-bottom: 18px; }
+
+  .group-label {
+    font-size: 9px; font-weight: 800; letter-spacing: .12em;
+    color: #334155; padding: 8px 0 4px; text-transform: uppercase;
+  }
+
+  .tech-section {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.25s, background 0.25s;
+    width: 580px;
+  }
+  .tech-section:hover {
+    background: rgba(255,255,255,0.04);
+  }
+  .sec-header {
+    display: flex; align-items: center; gap: 9px;
+    padding: 9px 13px 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .sec-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .sec-title { font-size: 12px; font-weight: 800; letter-spacing: .02em; }
+  .sec-sub { font-size: 10px; color: #3d4f6b; margin-left: 4px; }
+  .sec-cards { display: flex; gap: 6px; padding: 8px 13px 10px; flex-wrap: wrap; }
+  .sec-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 7px; padding: 5px 10px;
+    font-size: 10px; color: #7c8fa8; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .sec-card:hover { background: rgba(255,255,255,0.07); color: #cbd5e1; }
+
+  /* annotation */
+  .ann {
+    margin-top: 20px;
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
+  }
+  .ann-box {
+    background: #0c0e17;
+    border: 1px solid #1a1f2e;
+    border-radius: 9px;
+    padding: 12px 14px;
+  }
+  .ann-box h4 { font-size: 11px; font-weight: 700; color: #94a3b8; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .ann-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .ann-box p { font-size: 11px; color: #475569; line-height: 1.6; }
+
+  .confirm-bar { margin-top: 24px; display: flex; justify-content: flex-end; gap: 10px; }
+  .btn { font-size: 12px; font-weight: 600; padding: 7px 18px; border-radius: 8px; border: 1.5px solid #1a1f2e; background: transparent; color: #64748b; cursor: pointer; transition: all 0.15s; }
+  .btn:hover { border-color: #334155; color: #cbd5e1; }
+  .btn.ok { background: linear-gradient(135deg, #4f46e5, #7c3aed); border-color: transparent; color: #fff; }
+  .btn.ok:hover { opacity: 0.88; }
+</style>
+</head>
+<body>
+
+<h1>Galaxy + Light Rays — v2</h1>
+<p class="sub">Animierter Galaxy · Smoother Rays auf Kategoriehöhe · Hover zum Ausprobieren</p>
+
+<div class="demo-frame" id="demo-frame">
+  <canvas id="gc"></canvas>
+  <div class="content">
+    <div>
+      <div class="hero">Web Dev Guide</div>
+      <div class="hero-sub">Dein Leitfaden für moderne Webentwicklung</div>
+    </div>
+
+    <div class="group-label">MARKUP & STIL</div>
+
+    <div class="tech-section" id="s-html"
+      onmouseenter="hover(this,'#4ade80')" onmouseleave="leave()">
+      <div class="sec-header">
+        <div class="sec-dot" style="background:#4ade80"></div>
+        <span class="sec-title" style="color:#4ade80">HTML</span>
+        <span class="sec-sub">Hypertext Markup Language</span>
+      </div>
+      <div class="sec-cards">
+        <div class="sec-card">🏗 Struktur & Semantik</div>
+      </div>
+    </div>
+
+    <div class="tech-section" id="s-css"
+      onmouseenter="hover(this,'#5b9cf5')" onmouseleave="leave()">
+      <div class="sec-header">
+        <div class="sec-dot" style="background:#5b9cf5"></div>
+        <span class="sec-title" style="color:#5b9cf5">CSS</span>
+        <span class="sec-sub">Cascading Style Sheets</span>
+      </div>
+      <div class="sec-cards">
+        <div class="sec-card">📖 Grundlagen</div>
+        <div class="sec-card">🧩 Layout</div>
+        <div class="sec-card">✨ Modern</div>
+      </div>
+    </div>
+
+    <div class="group-label">PROGRAMMIERUNG</div>
+
+    <div class="tech-section" id="s-js"
+      onmouseenter="hover(this,'#fbbf24')" onmouseleave="leave()">
+      <div class="sec-header">
+        <div class="sec-dot" style="background:#fbbf24"></div>
+        <span class="sec-title" style="color:#fbbf24">JavaScript</span>
+        <span class="sec-sub">Programmiersprache des Webs</span>
+      </div>
+      <div class="sec-cards">
+        <div class="sec-card">📖 Grundlagen</div>
+      </div>
+    </div>
+
+    <div class="tech-section" id="s-ts"
+      onmouseenter="hover(this,'#818cf8')" onmouseleave="leave()">
+      <div class="sec-header">
+        <div class="sec-dot" style="background:#818cf8"></div>
+        <span class="sec-title" style="color:#818cf8">TypeScript</span>
+        <span class="sec-sub">Typisiertes JavaScript</span>
+      </div>
+      <div class="sec-cards">
+        <div class="sec-card">📖 Grundlagen</div>
+      </div>
+    </div>
+
+    <div class="group-label">FRAMEWORKS & WEB</div>
+
+    <div class="tech-section" id="s-react"
+      onmouseenter="hover(this,'#f472b6')" onmouseleave="leave()">
+      <div class="sec-header">
+        <div class="sec-dot" style="background:#f472b6"></div>
+        <span class="sec-title" style="color:#f472b6">React</span>
+        <span class="sec-sub">UI Component Framework</span>
+      </div>
+      <div class="sec-cards">
+        <div class="sec-card">📖 Grundlagen</div>
+      </div>
+    </div>
+
+    <div class="tech-section" id="s-pg"
+      onmouseenter="hover(this,'#60a5fa')" onmouseleave="leave()">
+      <div class="sec-header">
+        <div class="sec-dot" style="background:#60a5fa"></div>
+        <span class="sec-title" style="color:#60a5fa">PostgreSQL</span>
+        <span class="sec-sub">Relationale Datenbank</span>
+      </div>
+      <div class="sec-cards">
+        <div class="sec-card">📖 SQL Grundlagen</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ann">
+  <div class="ann-box">
+    <h4><div class="ann-dot" style="background:#60a5fa"></div>Animierter Galaxy</h4>
+    <p>~350 Sterne driften langsam nach oben (parallax-artig, ∞-Loop). Sanftes Twinkle-Pulsieren. Immer aktiv als subtiler Hintergrund.</p>
+  </div>
+  <div class="ann-box">
+    <h4><div class="ann-dot" style="background:#f472b6"></div>Rays auf Kategoriehöhe</h4>
+    <p>Strahlursprung Y = vertikale Mitte der gehoverter TechSection. Wechselt beim Hover auf andere Kategorie smooth zur neuen Y-Position.</p>
+  </div>
+  <div class="ann-box">
+    <h4><div class="ann-dot" style="background:#4ade80"></div>Sterne im Strahlkegel</h4>
+    <p>Sterne die im Ray-Kegel liegen nehmen die Kategoriefarbe an und leuchten heller. Intensität nimmt mit Entfernung vom Ursprung ab.</p>
+  </div>
+</div>
+
+<div class="confirm-bar">
+  <button class="btn" onclick="history.back()">← Zurück</button>
+  <button class="btn ok" onclick="approve()">Design passt — weiter ✓</button>
+</div>
+
+<script>
+const canvas = document.getElementById('gc');
+const ctx = canvas.getContext('2d');
+const frame = document.getElementById('demo-frame');
+
+// ── STARS ────────────────────────────────────────────────────────────────────
+const N = 350;
+const stars = [];
+
+function initStars(W, H) {
+  stars.length = 0;
+  for (let i = 0; i < N; i++) {
+    stars.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vy: -(Math.random() * 0.12 + 0.04), // gentle upward drift
+      r: Math.random() * 1.3 + 0.25,
+      baseA: Math.random() * 0.45 + 0.1,
+      phase: Math.random() * Math.PI * 2,
+      twinkleSpeed: Math.random() * 0.5 + 0.2,
+    });
+  }
+}
+
+function resize() {
+  const r = frame.getBoundingClientRect();
+  canvas.width  = r.width  * devicePixelRatio;
+  canvas.height = r.height * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  W = r.width; H = r.height;
+  initStars(W, H);
+}
+
+let W = 0, H = 0;
+resize();
+new ResizeObserver(resize).observe(frame);
+
+// ── HOVER STATE ───────────────────────────────────────────────────────────────
+let targetColor  = null;   // hex string
+let targetSide   = 'left'; // 'left' | 'right'
+let targetOriginY = 0.5;   // fraction 0-1 relative to canvas H
+let currentOriginY = 0.5;
+
+// animated values
+let rayOpacity   = 0;
+let targetOpacity = 0;
+let [cr, cg, cb] = [255, 255, 255]; // current ray color (lerps)
+let [tr2, tg2, tb2] = [255, 255, 255]; // target rgb
+
+function onHover(el, color) {
+  targetColor = color;
+  targetOpacity = 1;
+
+  // cursor side: check mouseenter position relative to CANVAS center
+  // side is determined at hover time via mousemove or just default to left for demo
+  targetSide = Math.random() < 0.5 ? 'left' : 'right'; // will be replaced by real cursor logic
+
+  // Y origin: center of the hovered section relative to canvas
+  const secRect = el.getBoundingClientRect();
+  const canvasRect = canvas.getBoundingClientRect();
+  targetOriginY = (secRect.top + secRect.height / 2 - canvasRect.top) / canvasRect.height;
+
+  const v = parseInt(color.replace('#',''), 16);
+  [tr2, tg2, tb2] = [(v>>16&255), (v>>8&255), (v&255)];
+}
+
+function onLeave() { targetOpacity = 0; }
+
+// expose to HTML
+window.hover = function(el, color) {
+  const e2 = window.lastMouseEvent;
+  const canvasRect = frame.getBoundingClientRect();
+  if (e2) {
+    targetSide = (e2.clientX - canvasRect.left) < canvasRect.width / 2 ? 'left' : 'right';
+  }
+  onHover(el, color);
+};
+window.leave = onLeave;
+
+// track mouse to know side at hover time
+document.addEventListener('mousemove', e => { window.lastMouseEvent = e; });
+
+// ── UTILS ─────────────────────────────────────────────────────────────────────
+function lerp(a, b, t) { return a + (b - a) * t; }
+function inRayZone(px, py, side, originY, halfSpread) {
+  const ox = side === 'left' ? 0 : W;
+  const oy = originY * H;
+  const dx = px - ox, dy = py - oy;
+  const dist = Math.sqrt(dx*dx + dy*dy);
+  if (dist < 4) return 1;
+  const ang = Math.atan2(dy, dx);
+  const base = side === 'left' ? 0 : Math.PI;
+  let diff = ang - base;
+  while (diff >  Math.PI) diff -= Math.PI * 2;
+  while (diff < -Math.PI) diff += Math.PI * 2;
+  if (Math.abs(diff) > halfSpread) return 0;
+  const angFall = 1 - Math.abs(diff) / halfSpread;
+  const distFall = Math.max(0, 1 - dist / (Math.max(W,H) * 1.1));
+  return angFall * distFall;
+}
+
+// ── DRAW LOOP ─────────────────────────────────────────────────────────────────
+let time = 0;
+function draw() {
+  time += 0.016;
+  const ease = 0.055;
+
+  // lerp opacity
+  rayOpacity += (targetOpacity - rayOpacity) * ease;
+
+  // lerp origin Y
+  currentOriginY += (targetOriginY - currentOriginY) * (ease * 1.5);
+
+  // lerp color
+  cr = lerp(cr, tr2, 0.06);
+  cg = lerp(cg, tg2, 0.06);
+  cb = lerp(cb, tb2, 0.06);
+
+  ctx.clearRect(0, 0, W, H);
+
+  // background
+  ctx.fillStyle = '#07070d';
+  ctx.fillRect(0, 0, W, H);
+
+  const rInt = cr|0, gInt = cg|0, bInt = cb|0;
+  const hasRays = rayOpacity > 0.01;
+
+  // ── STARS ──
+  for (const s of stars) {
+    // drift upward, wrap
+    s.y += s.vy;
+    if (s.y < -2) s.y = H + 2;
+
+    const twinkle = Math.sin(time * s.twinkleSpeed + s.phase) * 0.25 + 0.75;
+    const baseA = s.baseA * twinkle;
+
+    let illum = 0;
+    if (hasRays) {
+      illum = inRayZone(s.x, s.y, targetSide, currentOriginY, 0.55) * rayOpacity;
+    }
+
+    if (illum > 0.04) {
+      // illuminated — blend towards category color
+      const sR = Math.round(lerp(185, rInt, Math.min(1, illum * 1.4)));
+      const sG = Math.round(lerp(200, gInt, Math.min(1, illum * 1.4)));
+      const sB = Math.round(lerp(225, bInt, Math.min(1, illum * 1.4)));
+      const sA = Math.min(1, baseA + illum * 0.6);
+      const sr2 = s.r * (1 + illum * 0.8);
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, sr2, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${sR},${sG},${sB},${sA})`;
+      ctx.fill();
+      if (illum > 0.25 && sr2 > 0.8) {
+        const g2 = ctx.createRadialGradient(s.x, s.y, sr2, s.x, s.y, sr2 * 5);
+        g2.addColorStop(0, `rgba(${rInt},${gInt},${bInt},${illum * 0.28})`);
+        g2.addColorStop(1, `rgba(${rInt},${gInt},${bInt},0)`);
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, sr2 * 5, 0, Math.PI * 2);
+        ctx.fillStyle = g2;
+        ctx.fill();
+      }
+    } else {
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(175,195,230,${baseA})`;
+      ctx.fill();
+    }
+  }
+
+  // ── LIGHT RAYS ──
+  if (hasRays) {
+    const ox = targetSide === 'left' ? 0 : W;
+    const oy = currentOriginY * H;
+    const base = targetSide === 'left' ? 0 : Math.PI;
+    const NUM = 8;
+    const SPREAD = 0.55;
+
+    for (let i = 0; i < NUM; i++) {
+      const t = (i / (NUM - 1)) - 0.5;
+      const wobble = Math.sin(time * 0.35 + i * 1.4) * 0.012;
+      const ang = base + (t + wobble) * SPREAD * 2;
+      const len = Math.max(W, H) * 1.4;
+
+      // intensity falloff from center ray
+      const centrality = 1 - Math.abs(t) * 1.8;
+      if (centrality <= 0) continue;
+      const rayA = rayOpacity * centrality * 0.28; // deliberately light
+      const bW = W * 0.018 * centrality + 0.5;
+
+      ctx.save();
+      ctx.translate(ox, oy);
+      // rotate ray direction
+      const localAng = ang - base + (targetSide === 'right' ? Math.PI : 0);
+      ctx.rotate(localAng);
+      const flip = targetSide === 'right' ? -1 : 1;
+
+      const grad = ctx.createLinearGradient(0, 0, flip * len, 0);
+      grad.addColorStop(0,   `rgba(${rInt},${gInt},${bInt},${rayA * 2.2})`);
+      grad.addColorStop(0.25,`rgba(${rInt},${gInt},${bInt},${rayA * 1.0})`);
+      grad.addColorStop(0.6, `rgba(${rInt},${gInt},${bInt},${rayA * 0.35})`);
+      grad.addColorStop(1,   `rgba(${rInt},${gInt},${bInt},0)`);
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.moveTo(0, -bW / 2);
+      ctx.lineTo(flip * len, -bW * 0.04);
+      ctx.lineTo(flip * len,  bW * 0.04);
+      ctx.lineTo(0,  bW / 2);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // very soft ambient glow at origin
+    const ag = ctx.createRadialGradient(ox, oy, 0, ox, oy, W * 0.28);
+    ag.addColorStop(0, `rgba(${rInt},${gInt},${bInt},${rayOpacity * 0.09})`);
+    ag.addColorStop(1, `rgba(${rInt},${gInt},${bInt},0)`);
+    ctx.fillStyle = ag;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  requestAnimationFrame(draw);
+}
+draw();
+
+function approve() {
+  if (window.recordEvent) window.recordEvent('click', 'approved', 'v2 approved');
+  alert('Super — Design bestätigt. Bitte im Terminal bestätigen.');
+}
+</script>
+</body>
+</html>

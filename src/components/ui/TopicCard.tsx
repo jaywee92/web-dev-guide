@@ -1,6 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import Clock from 'lucide-react/dist/esm/icons/clock'
-import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right'
+import { Clock, ArrowRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useState, useEffect, useCallback, type ComponentType } from 'react'
 import { preloadAnimation, getAnimationComponent } from '@/topics/registry'

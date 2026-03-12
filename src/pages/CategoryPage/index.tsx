@@ -1,7 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import ArrowLeft from 'lucide-react/dist/esm/icons/arrow-left'
-import ExternalLink from 'lucide-react/dist/esm/icons/external-link'
+import { ArrowLeft, ExternalLink } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { getCategoryById } from '@/data/categories'
 import { TOPICS } from '@/data/topics'

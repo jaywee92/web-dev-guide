@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import ExternalLink from 'lucide-react/dist/esm/icons/external-link'
+import { ExternalLink } from 'lucide-react'
 import { HTML_REFERENCE } from '@/data/htmlReference'
 import { CSS_REFERENCE } from '@/data/cssReference'
 import PageWrapper from '@/components/layout/PageWrapper'

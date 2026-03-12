@@ -1,7 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import Monitor from 'lucide-react/dist/esm/icons/monitor'
-import Server from 'lucide-react/dist/esm/icons/server'
-import Database from 'lucide-react/dist/esm/icons/database'
+import { Monitor, Server, Database } from 'lucide-react'
 
 interface Props { step: number; compact?: boolean }
 

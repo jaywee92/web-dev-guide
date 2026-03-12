@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galaxy + Light Rays — Design Overview</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0a0a0e;
+    color: #e2e8f0;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    min-height: 100vh;
+    padding: 32px 24px 80px;
+  }
+
+  h1 { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .sub { font-size: 13px; color: #475569; margin-bottom: 28px; }
+
+  .section { margin-bottom: 32px; }
+  .section-title {
+    font-size: 11px; font-weight: 700; letter-spacing: .1em;
+    color: #475569; text-transform: uppercase; margin-bottom: 12px;
+    padding-bottom: 6px; border-bottom: 1px solid #1e2533;
+  }
+
+  /* ── LIVE DEMO ─────────────────────────────────────────────────────────── */
+  .demo-frame {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid #1e2533;
+    cursor: crosshair;
+  }
+  #galaxy-canvas {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+  }
+  .demo-content {
+    position: relative; z-index: 2;
+    padding: 24px 28px;
+    display: flex; flex-direction: column; gap: 10px;
+    height: 100%;
+    justify-content: center;
+  }
+  .hero-text {
+    font-size: 28px; font-weight: 800; color: #fff;
+    letter-spacing: -0.03em; margin-bottom: 4px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+  }
+  .hero-sub { font-size: 13px; color: #64748b; margin-bottom: 20px; }
+
+  .mini-section {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+    width: fit-content;
+    min-width: 480px;
+  }
+  .mini-section:hover { border-color: rgba(255,255,255,0.15); }
+  .mini-header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 12px 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .mini-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .mini-label { font-size: 12px; font-weight: 800; letter-spacing: .03em; }
+  .mini-cards { display: flex; gap: 7px; padding: 9px 12px; }
+  .mini-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 7px; padding: 5px 10px;
+    font-size: 10px; color: #94a3b8; cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .mini-card:hover { background: rgba(255,255,255,0.08); }
+
+  /* hover instruction */
+  .hover-hint {
+    position: absolute; bottom: 16px; right: 18px;
+    font-size: 11px; color: #334155;
+    background: rgba(0,0,0,0.5);
+    padding: 4px 10px; border-radius: 6px;
+    pointer-events: none;
+  }
+
+  /* ── ARCHITECTURE ───────────────────────────────────────────────────────── */
+  .arch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .arch-box {
+    background: #0d1017;
+    border: 1px solid #1e2533;
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .arch-box h3 {
+    font-size: 12px; font-weight: 700; color: #cbd5e1;
+    margin-bottom: 8px; display: flex; align-items: center; gap: 7px;
+  }
+  .arch-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .arch-box ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .arch-box li { font-size: 11px; color: #64748b; padding-left: 14px; position: relative; }
+  .arch-box li::before { content: '→'; position: absolute; left: 0; color: #334155; }
+
+  /* ── RENDER LAYERS ──────────────────────────────────────────────────────── */
+  .layers { display: flex; flex-direction: column; gap: 6px; }
+  .layer {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #1e2533;
+    background: #0d1017;
+  }
+  .layer-num {
+    width: 24px; height: 24px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; flex-shrink: 0;
+    background: #1e2533; color: #94a3b8;
+  }
+  .layer-name { font-size: 12px; font-weight: 700; color: #f1f5f9; min-width: 180px; }
+  .layer-desc { font-size: 11px; color: #64748b; }
+
+  /* ── INTERACTION FLOW ───────────────────────────────────────────────────── */
+  .flow { display: flex; gap: 0; align-items: stretch; }
+  .flow-step {
+    flex: 1;
+    background: #0d1017;
+    border: 1px solid #1e2533;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 11px; color: #64748b;
+  }
+  .flow-step h4 { font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 5px; }
+  .flow-arrow {
+    display: flex; align-items: center;
+    padding: 0 8px; color: #334155; font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  /* confirm btn */
+  .confirm-bar { margin-top: 32px; display: flex; justify-content: flex-end; gap: 10px; }
+  .btn {
+    font-size: 13px; font-weight: 600; padding: 8px 20px;
+    border-radius: 8px; border: 1.5px solid #1e2533;
+    background: transparent; color: #94a3b8; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn:hover { border-color: #475569; color: #e2e8f0; }
+  .btn.primary {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-color: transparent; color: #fff;
+  }
+  .btn.primary:hover { opacity: 0.9; }
+</style>
+</head>
+<body>
+
+<h1>Galaxy + Light Rays — Design</h1>
+<p class="sub">Live-Demo — hover über die Kategorien um den Effekt zu sehen</p>
+
+<!-- ── LIVE INTERACTIVE DEMO ─────────────────────────────────────────────── -->
+<div class="section">
+  <div class="section-title">Live Preview</div>
+  <div class="demo-frame" id="demo-frame">
+    <canvas id="galaxy-canvas"></canvas>
+    <div class="demo-content">
+      <div>
+        <div class="hero-text">Web Dev Guide</div>
+        <div class="hero-sub">Dein interaktiver Leitfaden für moderne Webentwicklung</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="mini-section"
+          onmouseenter="onHover(event,'#4ade80')" onmouseleave="onLeave()">
+          <div class="mini-header">
+            <div class="mini-dot" style="background:#4ade80;border-top:2px solid #4ade80"></div>
+            <span class="mini-label" style="color:#4ade80">HTML</span>
+            <span style="font-size:10px;color:#475569;margin-left:8px">Hypertext Markup Language</span>
+          </div>
+          <div class="mini-cards">
+            <div class="mini-card">🏗 Struktur & Semantik</div>
+          </div>
+        </div>
+
+        <div class="mini-section"
+          onmouseenter="onHover(event,'#5b9cf5')" onmouseleave="onLeave()">
+          <div class="mini-header">
+            <div class="mini-dot" style="background:#5b9cf5"></div>
+            <span class="mini-label" style="color:#5b9cf5">CSS</span>
+            <span style="font-size:10px;color:#475569;margin-left:8px">Cascading Style Sheets</span>
+          </div>
+          <div class="mini-cards">
+            <div class="mini-card">📖 Grundlagen</div>
+            <div class="mini-card">🧩 Layout</div>
+            <div class="mini-card">✨ Modern</div>
+          </div>
+        </div>
+
+        <div class="mini-section"
+          onmouseenter="onHover(event,'#fbbf24')" onmouseleave="onLeave()">
+          <div class="mini-header">
+            <div class="mini-dot" style="background:#fbbf24"></div>
+            <span class="mini-label" style="color:#fbbf24">JavaScript</span>
+            <span style="font-size:10px;color:#475569;margin-left:8px">Programmiersprache des Webs</span>
+          </div>
+          <div class="mini-cards">
+            <div class="mini-card">📖 Grundlagen</div>
+          </div>
+        </div>
+
+        <div class="mini-section"
+          onmouseenter="onHover(event,'#f472b6')" onmouseleave="onLeave()">
+          <div class="mini-header">
+            <div class="mini-dot" style="background:#f472b6"></div>
+            <span class="mini-label" style="color:#f472b6">React</span>
+            <span style="font-size:10px;color:#475569;margin-left:8px">UI Component Framework</span>
+          </div>
+          <div class="mini-cards">
+            <div class="mini-card">📖 Grundlagen</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hover-hint">← Hover über eine Kategorie</div>
+  </div>
+</div>
+
+<!-- ── RENDER LAYERS ──────────────────────────────────────────────────────── -->
+<div class="section">
+  <div class="section-title">Render-Schichten (eine Komponente: GalaxyWithRays)</div>
+  <div class="layers">
+    <div class="layer">
+      <div class="layer-num" style="background:#0f1629;color:#3b82f6">1</div>
+      <div class="layer-name">Galaxy Stars (Basis)</div>
+      <div class="layer-desc">~400 zufällige Sternpunkte, sanftes Twinkle, immer sichtbar. Farbe: dim white/blue-grey.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-num" style="background:#1a0f20;color:#a855f7">2</div>
+      <div class="layer-name">Illuminated Stars (interaktiv)</div>
+      <div class="layer-desc">Dieselben Sterne, neu gezeichnet in Kategoriefarbe wenn sie im Strahlenbereich liegen. Overlay-Modus.</div>
+    </div>
+    <div class="layer">
+      <div class="layer-num" style="background:#1a150a;color:#f59e0b">3</div>
+      <div class="layer-name">Light Ray Beams</div>
+      <div class="layer-desc">5–9 Strahlenfächer von links/rechts. Farbe = Kategoriefarbe. Seite = Cursor-X. Opacity fade on hover.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ARCHITECTURE ───────────────────────────────────────────────────────── -->
+<div class="section">
+  <div class="section-title">Architektur</div>
+  <div class="arch-grid">
+    <div class="arch-box">
+      <h3><div class="arch-dot" style="background:#6366f1"></div>GalaxyWithRays.tsx (neu)</h3>
+      <ul>
+        <li>Ersetzt AuroraBackground in Home/index.tsx</li>
+        <li>Nimmt ref-Handle: <code style="font-size:10px;color:#818cf8">setHover(color|null, side)</code></li>
+        <li>Einzel-Canvas, CPU-Stars als Float32Array (einmalig generiert)</li>
+        <li>RAF-Loop: stars → illuminated stars → rays</li>
+        <li>Smooth opacity interpolation (easeOut)</li>
+      </ul>
+    </div>
+    <div class="arch-box">
+      <h3><div class="arch-dot" style="background:#f472b6"></div>CategoryGrid.tsx (Änderung)</h3>
+      <ul>
+        <li>Erhält <code style="font-size:10px;color:#818cf8">galaxyRef</code> prop von Home</li>
+        <li>onCardHover: ruft <code style="font-size:10px;color:#818cf8">galaxyRef.setHover(color, side)</code></li>
+        <li>Side = cursor X relativ zu viewport center</li>
+        <li>Keine State-Changes = kein Re-render</li>
+        <li>onCardLeave: <code style="font-size:10px;color:#818cf8">galaxyRef.setHover(null, null)</code></li>
+      </ul>
+    </div>
+    <div class="arch-box">
+      <h3><div class="arch-dot" style="background:#34d399"></div>Home/index.tsx (Änderung)</h3>
+      <ul>
+        <li>Erstellt <code style="font-size:10px;color:#818cf8">galaxyRef = useRef()</code></li>
+        <li>Übergibt ref an GalaxyWithRays</li>
+        <li>Übergibt ref an CategoryGrid</li>
+        <li>AuroraBackground entfernt</li>
+      </ul>
+    </div>
+    <div class="arch-box">
+      <h3><div class="arch-dot" style="background:#fbbf24"></div>Canvas Rendering</h3>
+      <ul>
+        <li>Pure 2D Canvas API (kein WebGL nötig für Sterne + Rays)</li>
+        <li>Stars: Array von {x,y,r,baseAlpha,phase} — einmalig init</li>
+        <li>Ray-Bereich-Check: Winkel + Abstand zur Ray-Achse</li>
+        <li>Illuminated stars: gleiche Position, Farbe = lerp(white→categoryColor)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ── INTERACTION FLOW ───────────────────────────────────────────────────── -->
+<div class="section">
+  <div class="section-title">Interaktionsfluss</div>
+  <div class="flow">
+    <div class="flow-step">
+      <h4>User hovert</h4>
+      Cursor über TechSection (z.B. CSS, Farbe #5b9cf5)
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <h4>Side ermitteln</h4>
+      cursor.x &lt; viewport.w/2 → 'left', sonst 'right'
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <h4>galaxyRef.setHover</h4>
+      color=#5b9cf5, side='left'
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <h4>Canvas RAF</h4>
+      Rays opacity → 1, Sterne im Strahlkegel → blau eingefärbt
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <h4>Leave</h4>
+      Rays + Stern-Farbe fade back to normal (0.08 easing)
+    </div>
+  </div>
+</div>
+
+<div class="confirm-bar">
+  <button class="btn" onclick="history.back()">Zurück</button>
+  <button class="btn primary" onclick="approve()">Design bestätigen ✓</button>
+</div>
+
+<script>
+// ────────────────────────────────────────────────────────────────────────────
+// LIVE CANVAS DEMO
+// ────────────────────────────────────────────────────────────────────────────
+const canvas = document.getElementById('galaxy-canvas');
+const ctx = canvas.getContext('2d');
+const frame = document.getElementById('demo-frame');
+
+// Stars
+const NUM_STARS = 380;
+const stars = [];
+function initStars(w, h) {
+  stars.length = 0;
+  for (let i = 0; i < NUM_STARS; i++) {
+    stars.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.4 + 0.3,
+      baseAlpha: Math.random() * 0.5 + 0.15,
+      phase: Math.random() * Math.PI * 2,
+      speed: Math.random() * 0.4 + 0.2,
+    });
+  }
+}
+
+function resize() {
+  const r = frame.getBoundingClientRect();
+  canvas.width = r.width * devicePixelRatio;
+  canvas.height = r.height * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  initStars(r.width, r.height);
+}
+resize();
+window.addEventListener('resize', resize);
+
+// Hover state
+let hoverColor = null;
+let hoverSide = 'left';
+let rayOpacity = 0;
+let targetOpacity = 0;
+let time = 0;
+
+function onHover(e, color) {
+  hoverColor = color;
+  targetOpacity = 1;
+  const r = frame.getBoundingClientRect();
+  hoverSide = (e.clientX - r.left) < r.width / 2 ? 'left' : 'right';
+}
+function onLeave() { targetOpacity = 0; }
+
+function hexToRgb(hex) {
+  const v = parseInt(hex.replace('#',''), 16);
+  return [(v>>16&255), (v>>8&255), (v&255)];
+}
+
+// Check if a point is inside the ray fan
+function inRayZone(px, py, side, canvasW, canvasH, spread) {
+  const ox = side === 'left' ? 0 : canvasW;
+  const oy = canvasH * 0.5;
+  const dx = px - ox;
+  const dy = py - oy;
+  const dist = Math.sqrt(dx*dx + dy*dy);
+  if (dist < 5) return 1;
+  const angle = Math.atan2(dy, dx);
+  const expectedAngle = side === 'left' ? 0 : Math.PI;
+  let diff = angle - expectedAngle;
+  while (diff > Math.PI) diff -= Math.PI * 2;
+  while (diff < -Math.PI) diff += Math.PI * 2;
+  const halfSpread = spread;
+  if (Math.abs(diff) > halfSpread) return 0;
+  // falloff towards edges
+  const falloff = 1 - Math.abs(diff) / halfSpread;
+  // distance falloff
+  const maxDist = Math.max(canvasW, canvasH) * 0.9;
+  const distFalloff = Math.max(0, 1 - dist / maxDist);
+  return falloff * distFalloff;
+}
+
+function draw() {
+  const W = canvas.width / devicePixelRatio;
+  const H = canvas.height / devicePixelRatio;
+  time += 0.016;
+  rayOpacity += (targetOpacity - rayOpacity) * 0.07;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Background
+  ctx.fillStyle = '#080810';
+  ctx.fillRect(0, 0, W, H);
+
+  const rgb = hoverColor ? hexToRgb(hoverColor) : null;
+
+  // Stars
+  for (const s of stars) {
+    const twinkle = Math.sin(time * s.speed + s.phase) * 0.3 + 0.7;
+    const baseA = s.baseAlpha * twinkle;
+
+    // Check if in ray zone
+    let illum = 0;
+    if (rayOpacity > 0.01 && rgb) {
+      illum = inRayZone(s.x, s.y, hoverSide, W, H, 0.6) * rayOpacity;
+    }
+
+    if (illum > 0.05) {
+      // Illuminated star: blend towards category color
+      const [r,g,b] = rgb;
+      const brightness = Math.min(1, baseA + illum * 0.7);
+      const starR = Math.round(200 + (r - 200) * illum);
+      const starG = Math.round(200 + (g - 200) * illum);
+      const starB = Math.round(200 + (b - 200) * illum);
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r * (1 + illum * 0.6), 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${starR},${starG},${starB},${brightness})`;
+      ctx.fill();
+      // glow ring for illuminated stars
+      if (illum > 0.3) {
+        const glowGrad = ctx.createRadialGradient(s.x, s.y, s.r, s.x, s.y, s.r * 4);
+        glowGrad.addColorStop(0, `rgba(${r},${g},${b},${illum * 0.4})`);
+        glowGrad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r * 4, 0, Math.PI * 2);
+        ctx.fillStyle = glowGrad;
+        ctx.fill();
+      }
+    } else {
+      // Normal star
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(180,200,230,${baseA})`;
+      ctx.fill();
+    }
+  }
+
+  // Light rays
+  if (rayOpacity > 0.01 && rgb) {
+    const [r,g,b] = rgb;
+    const ox = hoverSide === 'left' ? 0 : W;
+    const oy = H * 0.5;
+    const numRays = 8;
+    const spread = 0.6;
+    const baseAngle = hoverSide === 'left' ? 0 : Math.PI;
+
+    for (let i = 0; i < numRays; i++) {
+      const t = (i / (numRays - 1)) - 0.5;
+      const wobble = Math.sin(time * 0.5 + i * 1.1) * 0.015;
+      const angle = baseAngle + (t + wobble) * spread * 2;
+      const len = Math.max(W, H) * 1.3;
+      const ex = ox + Math.cos(angle) * len;
+      const ey = oy + Math.sin(angle) * len;
+
+      const rayAlpha = rayOpacity * (0.4 - Math.abs(t) * 0.55);
+      if (rayAlpha <= 0) continue;
+      const beamW = W * 0.022 * (1 - Math.abs(t) * 0.65) + 1;
+
+      // Draw tapered beam
+      ctx.save();
+      ctx.translate(ox, oy);
+      const rotAngle = angle - baseAngle;
+      ctx.rotate(rotAngle + (hoverSide === 'right' ? Math.PI : 0));
+      const flip = hoverSide === 'right' ? -1 : 1;
+
+      const beamGrad = ctx.createLinearGradient(0, 0, flip * len, 0);
+      beamGrad.addColorStop(0, `rgba(${r},${g},${b},${rayAlpha * 2})`);
+      beamGrad.addColorStop(0.35, `rgba(${r},${g},${b},${rayAlpha})`);
+      beamGrad.addColorStop(0.7, `rgba(${r},${g},${b},${rayAlpha * 0.3})`);
+      beamGrad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+
+      ctx.beginPath();
+      ctx.moveTo(0, -beamW / 2);
+      ctx.lineTo(flip * len, -beamW * 0.05);
+      ctx.lineTo(flip * len, beamW * 0.05);
+      ctx.lineTo(0, beamW / 2);
+      ctx.closePath();
+      ctx.fillStyle = beamGrad;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Ambient glow at origin
+    const gGrad = ctx.createRadialGradient(ox, oy, 0, ox, oy, W * 0.35);
+    gGrad.addColorStop(0, `rgba(${r},${g},${b},${rayOpacity * 0.18})`);
+    gGrad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+    ctx.fillStyle = gGrad;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  requestAnimationFrame(draw);
+}
+draw();
+
+function approve() {
+  if (window.recordEvent) window.recordEvent('click', 'approved', 'Design bestätigt');
+  alert('Design bestätigt — Antwort bitte im Terminal bestätigen.');
+}
+</script>
+</body>
+</html>

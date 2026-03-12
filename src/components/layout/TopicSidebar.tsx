@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import ChevronRight from 'lucide-react/dist/esm/icons/chevron-right'
-import ChevronDown from 'lucide-react/dist/esm/icons/chevron-down'
+import { ChevronRight, ChevronDown } from 'lucide-react'
 import { CATEGORIES } from '@/data/categories'
 import { TOPICS } from '@/data/topics'
 import type { CategoryId } from '@/types'

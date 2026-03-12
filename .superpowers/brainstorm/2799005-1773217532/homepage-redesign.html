@@ -1,0 +1,365 @@
+<h2>Homepage — Knowledge Base Redesign</h2>
+<p class="subtitle">CSS aufgeteilt in 3 Kategorien · Referenz-Charakter · klare Struktur</p>
+
+<!-- Tab Nav -->
+<div style="display:flex;gap:4px;margin:12px 0 0;border-bottom:1px solid #1e293b;padding-bottom:0">
+  <button onclick="showTab('home')" id="tab-home" style="padding:7px 14px;background:#3b82f6;color:white;border:none;border-radius:6px 6px 0 0;font-size:11px;cursor:pointer;font-weight:600">Startseite</button>
+  <button onclick="showTab('category')" id="tab-category" style="padding:7px 14px;background:#1e293b;color:#64748b;border:none;border-radius:6px 6px 0 0;font-size:11px;cursor:pointer">Kategorie-Seite (CSS Layout)</button>
+  <button onclick="showTab('topic')" id="tab-topic" style="padding:7px 14px;background:#1e293b;color:#64748b;border:none;border-radius:6px 6px 0 0;font-size:11px;cursor:pointer">Topic-Seite (Lexikon-Eintrag)</button>
+</div>
+
+<!-- TAB: Startseite -->
+<div id="view-home" style="margin-top:0">
+  <!-- App header mock -->
+  <div style="background:#0a0f1a;border:1px solid #1e293b;border-radius:0 0 0 0;padding:10px 20px;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:22px;height:22px;border-radius:5px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:white">&lt;/&gt;</div>
+      <span style="font-size:13px;font-weight:700;color:#f1f5f9">WebDev <span style="color:#3b82f6">Docs</span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;background:#1e293b;border:1px solid #334155;border-radius:8px;padding:5px 12px;width:220px">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span style="font-size:11px;color:#475569">Suche topics, konzepte…</span>
+      <span style="margin-left:auto;font-size:9px;color:#334155;font-family:monospace">⌘K</span>
+    </div>
+    <div style="display:flex;gap:12px">
+      <span style="font-size:11px;color:#475569">Reference</span>
+      <span style="font-size:11px;color:#64748b">⊙ Dark</span>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div style="background:#0a0f1a;border:1px solid #1e293b;border-top:none;padding:28px 24px 20px;text-align:center;border-bottom:1px solid #1e293b">
+    <div style="font-size:10px;font-family:monospace;color:#475569;letter-spacing:0.1em;margin-bottom:8px">WEB DEVELOPMENT KNOWLEDGE BASE</div>
+    <h1 style="font-size:22px;font-weight:800;color:#f1f5f9;margin:0 0 6px">Animiertes Nachschlagewerk</h1>
+    <p style="font-size:12px;color:#64748b;margin:0">Interaktive Visualisierungen · Live Playgrounds · Cheat Sheets</p>
+  </div>
+
+  <!-- Category list -->
+  <div style="background:#0a0f1a;border:1px solid #1e293b;border-top:none;padding:16px 24px 20px">
+
+    <!-- Group: Markup & Stil -->
+    <div style="font-size:9px;font-family:monospace;color:#475569;letter-spacing:0.12em;margin-bottom:8px;margin-top:4px">MARKUP & STIL</div>
+    <!-- HTML -->
+    <div style="background:#0f172a;border:1px solid #1e293b;border-left:3px solid #4ade80;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:12px;margin-bottom:6px;cursor:pointer" onmouseover="this.style.borderColor='#4ade8044'" onmouseout="this.style.borderColor='#1e293b'">
+      <div style="width:28px;height:28px;border-radius:6px;background:#4ade8018;border:1px solid #4ade8033;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span style="font-size:13px;color:#4ade80">&lt;/&gt;</span>
+      </div>
+      <div style="width:130px;flex-shrink:0">
+        <div style="font-size:12px;font-weight:700;color:#f1f5f9">HTML</div>
+        <div style="font-size:9px;color:#475569">Struktur des Webs</div>
+      </div>
+      <div style="width:1px;height:24px;background:#1e293b;flex-shrink:0"></div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;flex:1">
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">DOM</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Semantik</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Forms</span>
+      </div>
+      <span style="font-size:9px;color:#334155;margin-left:auto">3 topics →</span>
+    </div>
+    <!-- CSS Grundlagen -->
+    <div style="background:#0f172a;border:1px solid #1e293b;border-left:3px solid #5b9cf5;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:12px;margin-bottom:6px;cursor:pointer">
+      <div style="width:28px;height:28px;border-radius:6px;background:#5b9cf518;border:1px solid #5b9cf533;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span style="font-size:11px;color:#5b9cf5">✦</span>
+      </div>
+      <div style="width:130px;flex-shrink:0">
+        <div style="font-size:12px;font-weight:700;color:#f1f5f9">CSS Grundlagen</div>
+        <div style="font-size:9px;color:#475569">Basics · Selektoren · Box</div>
+      </div>
+      <div style="width:1px;height:24px;background:#1e293b;flex-shrink:0"></div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;flex:1">
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Basics</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Selectors</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Colors</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Box Model</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Typography</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Backgrounds</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Images</span>
+      </div>
+      <span style="font-size:9px;color:#334155;margin-left:auto">7 topics →</span>
+    </div>
+    <!-- CSS Layout -->
+    <div style="background:#0f172a;border:1px solid #1e293b;border-left:3px solid #38bdf8;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:12px;margin-bottom:6px;cursor:pointer">
+      <div style="width:28px;height:28px;border-radius:6px;background:#38bdf818;border:1px solid #38bdf833;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span style="font-size:11px;color:#38bdf8">⊞</span>
+      </div>
+      <div style="width:130px;flex-shrink:0">
+        <div style="font-size:12px;font-weight:700;color:#f1f5f9">CSS Layout</div>
+        <div style="font-size:9px;color:#475569">Flex · Grid · Responsive</div>
+      </div>
+      <div style="width:1px;height:24px;background:#1e293b;flex-shrink:0"></div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;flex:1">
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Display</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Flexbox</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Grid</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Responsive</span>
+      </div>
+      <span style="font-size:9px;color:#334155;margin-left:auto">4 topics →</span>
+    </div>
+    <!-- CSS Modern -->
+    <div style="background:#0f172a;border:1px solid #1e293b;border-left:3px solid #a78bfa;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:12px;margin-bottom:16px;cursor:pointer">
+      <div style="width:28px;height:28px;border-radius:6px;background:#a78bfa18;border:1px solid #a78bfa33;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span style="font-size:11px;color:#a78bfa">✦</span>
+      </div>
+      <div style="width:130px;flex-shrink:0">
+        <div style="font-size:12px;font-weight:700;color:#f1f5f9">CSS Modern</div>
+        <div style="font-size:9px;color:#475569">Variables · Transforms · Anim</div>
+      </div>
+      <div style="width:1px;height:24px;background:#1e293b;flex-shrink:0"></div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;flex:1">
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Custom Props</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Transforms</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Transitions</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Animations</span>
+      </div>
+      <span style="font-size:9px;color:#334155;margin-left:auto">4 topics →</span>
+    </div>
+
+    <!-- Group: Programmierung -->
+    <div style="font-size:9px;font-family:monospace;color:#475569;letter-spacing:0.12em;margin-bottom:8px">PROGRAMMIERUNG</div>
+    <!-- JS -->
+    <div style="background:#0f172a;border:1px solid #1e293b;border-left:3px solid #fbbf24;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:12px;margin-bottom:6px;cursor:pointer">
+      <div style="width:28px;height:28px;border-radius:6px;background:#fbbf2418;border:1px solid #fbbf2433;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span style="font-size:11px;color:#fbbf24">JS</span>
+      </div>
+      <div style="width:130px;flex-shrink:0">
+        <div style="font-size:12px;font-weight:700;color:#f1f5f9">JavaScript</div>
+        <div style="font-size:9px;color:#475569">Sprache des Browsers</div>
+      </div>
+      <div style="width:1px;height:24px;background:#1e293b;flex-shrink:0"></div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;flex:1">
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Variables</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Arrays</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Event Loop</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Closures</span>
+      </div>
+      <span style="font-size:9px;color:#334155;margin-left:auto">4 topics →</span>
+    </div>
+    <!-- TS -->
+    <div style="background:#0f172a;border:1px solid #1e293b;border-left:3px solid #a78bfa;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:12px;margin-bottom:16px;cursor:pointer">
+      <div style="width:28px;height:28px;border-radius:6px;background:#a78bfa18;border:1px solid #a78bfa33;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <span style="font-size:10px;color:#a78bfa">TS</span>
+      </div>
+      <div style="width:130px;flex-shrink:0">
+        <div style="font-size:12px;font-weight:700;color:#f1f5f9">TypeScript</div>
+        <div style="font-size:9px;color:#475569">JavaScript mit Typen</div>
+      </div>
+      <div style="width:1px;height:24px;background:#1e293b;flex-shrink:0"></div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;flex:1">
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Basics</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Interfaces</span>
+        <span style="font-size:9px;padding:2px 7px;border-radius:12px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Generics</span>
+      </div>
+      <span style="font-size:9px;color:#334155;margin-left:auto">3 topics →</span>
+    </div>
+
+    <!-- Group: Frameworks & Web -->
+    <div style="font-size:9px;font-family:monospace;color:#475569;letter-spacing:0.12em;margin-bottom:8px">FRAMEWORKS & WEB</div>
+    <!-- React etc compact -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+      <div style="background:#0f172a;border:1px solid #1e293b;border-left:3px solid #f472b6;border-radius:8px;padding:8px 12px;cursor:pointer">
+        <div style="font-size:11px;font-weight:700;color:#f1f5f9">React</div>
+        <div style="font-size:9px;color:#475569;margin-top:1px">4 topics</div>
+      </div>
+      <div style="background:#0f172a;border:1px solid #1e293b;border-left:3px solid #34d399;border-radius:8px;padding:8px 12px;cursor:pointer">
+        <div style="font-size:11px;font-weight:700;color:#f1f5f9">Web APIs</div>
+        <div style="font-size:9px;color:#475569;margin-top:1px">3 topics</div>
+      </div>
+      <div style="background:#0f172a;border:1px solid #1e293b;border-left:3px solid #fb923c;border-radius:8px;padding:8px 12px;cursor:pointer">
+        <div style="font-size:11px;font-weight:700;color:#f1f5f9">HTTP</div>
+        <div style="font-size:9px;color:#475569;margin-top:1px">3 topics</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TAB: Kategorie -->
+<div id="view-category" style="display:none;margin-top:0">
+  <div style="background:#0a0f1a;border:1px solid #1e293b;padding:16px 24px">
+    <!-- Breadcrumb -->
+    <div style="font-size:10px;color:#475569;font-family:monospace;margin-bottom:12px">
+      <span>Docs</span> <span style="color:#334155"> / </span> <span style="color:#38bdf8">CSS Layout</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+      <div style="width:32px;height:32px;border-radius:7px;background:#38bdf818;border:1px solid #38bdf833;display:flex;align-items:center;justify-content:center;font-size:14px;color:#38bdf8">⊞</div>
+      <h2 style="margin:0;font-size:18px;font-weight:800;color:#f1f5f9">CSS Layout</h2>
+      <span style="font-size:9px;padding:2px 8px;border-radius:4px;background:#38bdf814;border:1px solid #38bdf830;color:#38bdf8;font-family:monospace">4 Topics</span>
+    </div>
+    <p style="font-size:11px;color:#64748b;margin:0 0 16px">Display-Modelle, Flexbox, CSS Grid und Responsive Design — wie Elemente angeordnet werden.</p>
+
+    <!-- Topic cards as reference entries -->
+    <div style="display:flex;flex-direction:column;gap:8px">
+
+      <div style="background:#0f172a;border:1px solid #1e293b;border-radius:10px;padding:12px 16px;display:flex;gap:16px;cursor:pointer" onmouseover="this.style.borderColor='#38bdf840'" onmouseout="this.style.borderColor='#1e293b'">
+        <div style="flex-shrink:0;padding-top:2px">
+          <div style="width:32px;height:32px;border-radius:6px;background:#38bdf810;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#38bdf8;font-family:monospace">01</div>
+        </div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span style="font-size:13px;font-weight:700;color:#f1f5f9">Display & Positioning</span>
+            <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:#1e293b;color:#475569;font-family:monospace">Level 1</span>
+          </div>
+          <p style="font-size:11px;color:#64748b;margin:0 0 8px">Block, inline, flex, grid — die Grundlagen des CSS Box-Modells und wie Elemente im Flow positioniert werden.</p>
+          <div style="display:flex;gap:4px">
+            <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Viz</span>
+            <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Playground</span>
+            <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Cheat Sheet</span>
+          </div>
+        </div>
+        <div style="align-self:center;color:#334155;font-size:14px">→</div>
+      </div>
+
+      <div style="background:#0f172a;border:1px solid #1e293b;border-radius:10px;padding:12px 16px;display:flex;gap:16px;cursor:pointer" onmouseover="this.style.borderColor='#38bdf840'" onmouseout="this.style.borderColor='#1e293b'">
+        <div style="flex-shrink:0;padding-top:2px">
+          <div style="width:32px;height:32px;border-radius:6px;background:#38bdf810;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#38bdf8;font-family:monospace">02</div>
+        </div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span style="font-size:13px;font-weight:700;color:#f1f5f9">Flexbox</span>
+            <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:#1e293b;color:#475569;font-family:monospace">Level 2</span>
+          </div>
+          <p style="font-size:11px;color:#64748b;margin:0 0 8px">Eindimensionales Layout-System für Reihen und Spalten — justify-content, align-items, flex-wrap.</p>
+          <div style="display:flex;gap:4px">
+            <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Viz</span>
+            <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Playground</span>
+            <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Cheat Sheet</span>
+          </div>
+        </div>
+        <div style="align-self:center;color:#334155;font-size:14px">→</div>
+      </div>
+
+      <div style="background:#0f172a;border:1px solid #1e293b;border-radius:10px;padding:12px 16px;display:flex;gap:16px;cursor:pointer" onmouseover="this.style.borderColor='#38bdf840'" onmouseout="this.style.borderColor='#1e293b'">
+        <div style="flex-shrink:0;padding-top:2px">
+          <div style="width:32px;height:32px;border-radius:6px;background:#38bdf810;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#38bdf8;font-family:monospace">03</div>
+        </div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span style="font-size:13px;font-weight:700;color:#f1f5f9">CSS Grid</span>
+            <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:#1e293b;color:#475569;font-family:monospace">Level 2</span>
+          </div>
+          <p style="font-size:11px;color:#64748b;margin:0 0 8px">Zweidimensionales Layout — grid-template-columns, grid-template-rows, areas und auto-placement.</p>
+          <div style="display:flex;gap:4px">
+            <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Viz</span>
+            <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Playground</span>
+            <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Cheat Sheet</span>
+          </div>
+        </div>
+        <div style="align-self:center;color:#334155;font-size:14px">→</div>
+      </div>
+
+      <div style="background:#0f172a;border:1px solid #1e293b;border-radius:10px;padding:12px 16px;display:flex;gap:16px;cursor:pointer" onmouseover="this.style.borderColor='#38bdf840'" onmouseout="this.style.borderColor='#1e293b'">
+        <div style="flex-shrink:0;padding-top:2px">
+          <div style="width:32px;height:32px;border-radius:6px;background:#38bdf810;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#38bdf8;font-family:monospace">04</div>
+        </div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span style="font-size:13px;font-weight:700;color:#f1f5f9">Responsive Design</span>
+            <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:#1e293b;color:#475569;font-family:monospace">Level 2</span>
+          </div>
+          <p style="font-size:11px;color:#64748b;margin:0 0 8px">Media Queries, Breakpoints, fluid typography — Layouts die auf allen Bildschirmgrößen funktionieren.</p>
+          <div style="display:flex;gap:4px">
+            <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Viz</span>
+            <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:#0a0f1a;border:1px solid #1e293b;color:#475569;font-family:monospace">Playground</span>
+          </div>
+        </div>
+        <div style="align-self:center;color:#334155;font-size:14px">→</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- TAB: Topic / Lexikon-Eintrag -->
+<div id="view-topic" style="display:none;margin-top:0">
+  <div style="background:#0a0f1a;border:1px solid #1e293b;display:flex">
+
+    <!-- Sidebar -->
+    <div style="width:180px;flex-shrink:0;border-right:1px solid #1e293b;padding:14px 0">
+      <div style="font-size:9px;font-family:monospace;color:#475569;letter-spacing:0.1em;padding:0 14px;margin-bottom:8px">CSS LAYOUT</div>
+      <div style="padding:6px 14px;font-size:11px;color:#475569;cursor:pointer">Display & Positioning</div>
+      <div style="padding:6px 14px;font-size:11px;background:#38bdf810;color:#38bdf8;border-left:2px solid #38bdf8;cursor:pointer">Flexbox</div>
+      <div style="padding:6px 14px;font-size:11px;color:#475569;cursor:pointer">CSS Grid</div>
+      <div style="padding:6px 14px;font-size:11px;color:#475569;cursor:pointer">Responsive</div>
+      <div style="width:100%;height:1px;background:#1e293b;margin:8px 0"></div>
+      <div style="font-size:9px;font-family:monospace;color:#334155;letter-spacing:0.1em;padding:0 14px;margin-bottom:6px">AUF DIESER SEITE</div>
+      <div style="padding:4px 14px;font-size:10px;color:#475569">• Was ist Flexbox?</div>
+      <div style="padding:4px 14px;font-size:10px;color:#38bdf8">• Visualisierung</div>
+      <div style="padding:4px 14px;font-size:10px;color:#475569">• Erklärung</div>
+      <div style="padding:4px 14px;font-size:10px;color:#475569">• Cheat Sheet</div>
+      <div style="padding:4px 14px;font-size:10px;color:#475569">• Playground</div>
+    </div>
+
+    <!-- Content -->
+    <div style="flex:1;padding:20px 24px;min-width:0">
+      <div style="font-size:10px;font-family:monospace;color:#475569;margin-bottom:8px">
+        Docs / CSS Layout / <span style="color:#38bdf8">Flexbox</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <h2 style="margin:0;font-size:18px;font-weight:800;color:#f1f5f9">Flexbox</h2>
+        <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:#1e293b;color:#64748b;font-family:monospace">CSS Layout</span>
+        <span style="font-size:9px;padding:1px 6px;border-radius:3px;background:#fbbf2410;color:#fbbf24;font-family:monospace;border:1px solid #fbbf2420">Level 2</span>
+      </div>
+      <p style="font-size:12px;color:#64748b;margin:0 0 16px;line-height:1.6">Eindimensionales Layout-System für flexible Elemente in Reihe oder Spalte. justify-content, align-items, gap, flex-wrap.</p>
+
+      <!-- Viz preview -->
+      <div style="background:#0f172a;border:1px solid #1e293b;border-radius:10px;overflow:hidden;margin-bottom:12px">
+        <div style="padding:8px 14px;border-bottom:1px solid #1e293b;display:flex;align-items:center;justify-content:space-between">
+          <span style="font-size:10px;font-weight:700;color:#94a3b8">Visualisierung</span>
+          <div style="display:flex;gap:4px">
+            <div style="width:6px;height:6px;border-radius:50%;background:#475569;cursor:pointer"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:#475569;cursor:pointer"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:#38bdf8;cursor:pointer"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:#475569;cursor:pointer"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:#475569;cursor:pointer"></div>
+          </div>
+        </div>
+        <div style="padding:20px;display:flex;gap:8px;justify-content:center">
+          <div style="width:44px;height:44px;border-radius:6px;background:#38bdf820;border:1px solid #38bdf840;display:flex;align-items:center;justify-content:center;font-size:11px;color:#38bdf8;font-weight:700">A</div>
+          <div style="width:44px;height:44px;border-radius:6px;background:#38bdf820;border:1px solid #38bdf840;display:flex;align-items:center;justify-content:center;font-size:11px;color:#38bdf8;font-weight:700">B</div>
+          <div style="width:44px;height:44px;border-radius:6px;background:#38bdf820;border:1px solid #38bdf840;display:flex;align-items:center;justify-content:center;font-size:11px;color:#38bdf8;font-weight:700">C</div>
+        </div>
+        <div style="padding:6px 14px 10px;display:flex;align-items:center;gap:6px">
+          <span style="font-size:9px;font-family:monospace;color:#475569">display: flex</span>
+          <span style="font-size:9px;font-family:monospace;color:#38bdf8">justify-content: center</span>
+        </div>
+      </div>
+
+      <!-- Explanation + Code -->
+      <div style="background:#0f172a;border:1px solid #1e293b;border-radius:10px;padding:12px 14px;margin-bottom:12px">
+        <div style="font-size:10px;font-weight:700;color:#94a3b8;margin-bottom:8px">Erklärung</div>
+        <p style="font-size:11px;color:#64748b;margin:0 0 10px;line-height:1.7">Mit <code style="font-size:10px;background:#1e293b;padding:1px 4px;border-radius:3px;color:#38bdf8">display: flex</code> wird ein Container zum Flex-Container. Alle direkten Kinder werden zu Flex-Items. <code style="font-size:10px;background:#1e293b;padding:1px 4px;border-radius:3px;color:#38bdf8">justify-content</code> steuert die Hauptachse.</p>
+        <div style="background:#282c34;border-radius:6px;padding:8px 12px;font-family:monospace;font-size:10px;line-height:1.8">
+          <div><span style="color:#61afef">.container</span> <span style="color:#abb2bf">{</span></div>
+          <div style="padding-left:12px"><span style="color:#98c379">display</span><span style="color:#abb2bf">:</span> <span style="color:#d19a66">flex</span><span style="color:#abb2bf">;</span></div>
+          <div style="padding-left:12px"><span style="color:#98c379">justify-content</span><span style="color:#abb2bf">:</span> <span style="color:#d19a66">center</span><span style="color:#abb2bf">;</span></div>
+          <div style="padding-left:12px"><span style="color:#98c379">gap</span><span style="color:#abb2bf">:</span> <span style="color:#d19a66">16px</span><span style="color:#abb2bf">;</span></div>
+          <div><span style="color:#abb2bf">}</span></div>
+        </div>
+      </div>
+
+      <!-- Playground + Cheat Sheet badges -->
+      <div style="display:flex;gap:8px">
+        <div style="flex:1;background:#0f172a;border:1px solid #38bdf830;border-radius:8px;padding:10px 12px;cursor:pointer">
+          <div style="font-size:10px;font-weight:700;color:#38bdf8;margin-bottom:2px">▶ Live Playground</div>
+          <div style="font-size:9px;color:#475569">CSS direkt im Browser ausprobieren</div>
+        </div>
+        <div style="flex:1;background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:10px 12px;cursor:pointer">
+          <div style="font-size:10px;font-weight:700;color:#94a3b8;margin-bottom:2px">☰ Cheat Sheet</div>
+          <div style="font-size:9px;color:#475569">Alle Properties auf einen Blick</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(tab) {
+  ['home','category','topic'].forEach(t => {
+    document.getElementById('view-'+t).style.display = t===tab ? 'block' : 'none';
+    const btn = document.getElementById('tab-'+t);
+    btn.style.background = t===tab ? '#3b82f6' : '#1e293b';
+    btn.style.color = t===tab ? 'white' : '#64748b';
+    btn.style.fontWeight = t===tab ? '600' : 'normal';
+  });
+}
+</script>

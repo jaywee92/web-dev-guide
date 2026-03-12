@@ -1,8 +1,4 @@
-import Play from 'lucide-react/dist/esm/icons/play'
-import Pause from 'lucide-react/dist/esm/icons/pause'
-import RotateCcw from 'lucide-react/dist/esm/icons/rotate-ccw'
-import ChevronLeft from 'lucide-react/dist/esm/icons/chevron-left'
-import ChevronRight from 'lucide-react/dist/esm/icons/chevron-right'
+import { Play, Pause, RotateCcw, ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface Props {
   isPlaying: boolean

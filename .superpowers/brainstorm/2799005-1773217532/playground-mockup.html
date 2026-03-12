@@ -1,0 +1,96 @@
+<h2>Playground — Vollständiges Mockup</h2>
+<p class="subtitle">So würde das Playground für "CSS Box Model" aussehen. Wie soll die Live-Preview-Seite aussehen?</p>
+
+<div class="options">
+
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Festes HTML-Template pro Topic</h3>
+      <p style="font-size:12px;color:#94a3b8;margin-bottom:10px">Jedes Topic hat ein vorbereitetes HTML-Gerüst (z.B. eine Card). Der User schreibt nur CSS — das HTML ist versteckt aber anpassbar.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-family:monospace;font-size:11px">
+        <div style="background:#282c34;border-radius:6px;overflow:hidden;border:1px solid #3e4451">
+          <div style="background:#21252b;padding:4px 10px;color:#abb2bf;font-size:10px;display:flex;justify-content:space-between">
+            <span>style.css</span>
+            <span style="color:#61afef">Box Model</span>
+          </div>
+          <div style="padding:10px;line-height:1.7">
+            <div><span style="color:#e06c75">/* Ändere die Werte! */</span></div>
+            <div><span style="color:#61afef">.card</span> <span style="color:#abb2bf">{</span></div>
+            <div style="padding-left:12px"><span style="color:#98c379">padding</span><span style="color:#abb2bf">:</span> <span style="color:#d19a66">24px</span><span style="color:#abb2bf">;</span></div>
+            <div style="padding-left:12px"><span style="color:#98c379">margin</span><span style="color:#abb2bf">:</span> <span style="color:#d19a66">16px auto</span><span style="color:#abb2bf">;</span></div>
+            <div style="padding-left:12px"><span style="color:#98c379">border</span><span style="color:#abb2bf">:</span> <span style="color:#d19a66">3px solid</span> <span style="color:#e5c07b">#3b82f6</span><span style="color:#abb2bf">;</span></div>
+            <div style="padding-left:12px"><span style="color:#98c379">border-radius</span><span style="color:#abb2bf">:</span> <span style="color:#d19a66">12px</span><span style="color:#abb2bf">;</span></div>
+            <div style="padding-left:12px"><span style="color:#98c379">background</span><span style="color:#abb2bf">:</span> <span style="color:#e5c07b">#1e293b</span><span style="color:#abb2bf">;</span></div>
+            <div><span style="color:#abb2bf">}</span></div>
+          </div>
+          <div style="background:#21252b;padding:4px 10px;color:#64748b;font-size:9px;display:flex;gap:8px">
+            <span style="color:#98c379">● CSS</span>
+            <span>HTML anzeigen</span>
+            <span style="margin-left:auto">Reset</span>
+          </div>
+        </div>
+        <div style="background:#0f172a;border-radius:6px;border:1px solid #1e293b;display:flex;flex-direction:column">
+          <div style="background:#0d1117;padding:4px 10px;color:#64748b;font-size:10px;display:flex;gap:4px;align-items:center">
+            <div style="width:6px;height:6px;border-radius:50%;background:#ef4444"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:#f59e0b"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:#22c55e"></div>
+            <span style="margin-left:4px">Preview</span>
+          </div>
+          <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:12px">
+            <div style="padding:24px;border:3px solid #3b82f6;border-radius:12px;background:#1e293b;color:#cbd5e1;font-size:12px;font-family:sans-serif">
+              <strong style="color:white">Card Title</strong>
+              <p style="margin:6px 0 0;font-size:11px;color:#94a3b8">Card content goes here.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:#94a3b8">✅ Fokus auf CSS · 🎯 Topic-spezifisch · 🔒 HTML versteckt aber sichtbar</div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>CSS + HTML beide editierbar</h3>
+      <p style="font-size:12px;color:#94a3b8;margin-bottom:10px">Beide Tabs voll editierbar. Pre-filled mit passendem Beispiel, aber der User kann alles ändern — auch das HTML-Gerüst.</p>
+      <div style="background:#282c34;border-radius:6px;overflow:hidden;border:1px solid #3e4451;font-family:monospace;font-size:11px">
+        <div style="background:#21252b;padding:0 10px;display:flex;gap:2px">
+          <div style="padding:5px 12px;background:#282c34;color:#61afef;border-top:2px solid #61afef;font-size:10px">CSS</div>
+          <div style="padding:5px 12px;color:#64748b;font-size:10px">HTML</div>
+          <div style="padding:5px 12px;color:#64748b;font-size:10px">Preview</div>
+          <div style="margin-left:auto;padding:5px 0;color:#64748b;font-size:9px">Reset · Share</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr">
+          <div style="padding:10px;border-right:1px solid #3e4451;line-height:1.7">
+            <div><span style="color:#61afef">.card</span> <span style="color:#abb2bf">{</span></div>
+            <div style="padding-left:12px"><span style="color:#98c379">padding</span><span style="color:#abb2bf">:</span> <span style="color:#d19a66">24px</span><span style="color:#abb2bf">;</span></div>
+            <div style="padding-left:12px"><span style="color:#98c379">border</span><span style="color:#abb2bf">:</span> <span style="color:#d19a66">3px solid</span> <span style="color:#e5c07b">#3b82f6</span><span style="color:#abb2bf">;</span></div>
+            <div><span style="color:#abb2bf">}</span></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:center;padding:8px">
+            <div style="padding:16px;border:3px solid #3b82f6;border-radius:8px;background:#1e293b;color:#cbd5e1;font-size:11px">
+              Card Preview
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:#94a3b8">🔓 Volle Freiheit · 📚 Mehr Lernpotenzial · ⚠️ Kann überwältigend wirken</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section" style="margin-top:12px;padding:10px 14px;background:rgba(59,130,246,0.08);border-radius:8px;border:1px solid rgba(59,130,246,0.2)">
+  <strong style="color:#60a5fa;font-size:12px">Jedes Topic bekommt ein eigenes Beispiel:</strong>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:6px;font-size:11px;color:#94a3b8">
+    <span>📦 Box Model → Card mit padding/border</span>
+    <span>🔲 Flexbox → Nav-Bar mit flex items</span>
+    <span>🖼 Grid → Photo-Grid 3×2</span>
+    <span>🎨 Colors → Color-Palette Swatches</span>
+    <span>✍️ Typography → Blog-Post Ausschnitt</span>
+    <span>🌄 Backgrounds → Hero-Section</span>
+    <span>📱 Responsive → Card-Grid mit Breakpoints</span>
+    <span>🖼 Images → Avatar + Card-Image</span>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 import { useState, type ComponentType } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import X from 'lucide-react/dist/esm/icons/x'
+import { X } from 'lucide-react'
 import AnimationControls from '@/components/ui/AnimationControls'
 import { useAnimationStep } from '@/hooks/useAnimationStep'
 

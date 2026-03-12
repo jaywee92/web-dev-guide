@@ -1,0 +1,79 @@
+<h2>Syntax Highlighting — Welches Theme?</h2>
+<p class="subtitle">Die Code-Beispiele in den Erklärungsschritten bekommen Farben. Aktuell: nur weißer Monospace-Text.</p>
+
+<div class="options">
+
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>One Dark Pro — Kontrast-reich, lebendig</h3>
+      <p style="font-size:12px;color:#94a3b8;margin-bottom:8px">Selektoren blau · Properties grün · Werte orange/rosa · Kommentare grau</p>
+      <div style="background:#282c34;border-radius:8px;padding:14px 16px;font-family:monospace;font-size:12px;line-height:1.7;border:1px solid #3e4451">
+        <div><span style="color:#e06c75">/* Box Model */</span></div>
+        <div><span style="color:#61afef">.card</span> <span style="color:#abb2bf">{</span></div>
+        <div style="padding-left:16px"><span style="color:#98c379">padding</span><span style="color:#abb2bf">:</span> <span style="color:#d19a66">24px</span><span style="color:#abb2bf">;</span></div>
+        <div style="padding-left:16px"><span style="color:#98c379">margin</span><span style="color:#abb2bf">:</span> <span style="color:#d19a66">0 auto</span><span style="color:#abb2bf">;</span></div>
+        <div style="padding-left:16px"><span style="color:#98c379">border</span><span style="color:#abb2bf">:</span> <span style="color:#d19a66">2px solid</span> <span style="color:#e5c07b">#3b82f6</span><span style="color:#abb2bf">;</span></div>
+        <div style="padding-left:16px"><span style="color:#98c379">border-radius</span><span style="color:#abb2bf">:</span> <span style="color:#d19a66">12px</span><span style="color:#abb2bf">;</span></div>
+        <div style="padding-left:16px"><span style="color:#98c379">background</span><span style="color:#abb2bf">:</span> <span style="color:#e5c07b">linear-gradient</span><span style="color:#abb2bf">(</span><span style="color:#d19a66">135deg</span><span style="color:#abb2bf">,</span> <span style="color:#e5c07b">#1e293b</span><span style="color:#abb2bf">,</span> <span style="color:#e5c07b">#0f172a</span><span style="color:#abb2bf">);</span></div>
+        <div><span style="color:#abb2bf">}</span></div>
+        <div style="margin-top:6px"><span style="color:#e06c75">/* Hover-State */</span></div>
+        <div><span style="color:#61afef">.card</span><span style="color:#c678dd">:hover</span> <span style="color:#abb2bf">{</span></div>
+        <div style="padding-left:16px"><span style="color:#98c379">transform</span><span style="color:#abb2bf">:</span> <span style="color:#e5c07b">translateY</span><span style="color:#abb2bf">(</span><span style="color:#d19a66">-4px</span><span style="color:#abb2bf">);</span></div>
+        <div><span style="color:#abb2bf">}</span></div>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:#94a3b8">🎨 6 Farben · Sehr lesbar · Populärste VSCode-Erweiterung</div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>GitHub Dark — Clean, dezent</h3>
+      <p style="font-size:12px;color:#94a3b8;margin-bottom:8px">Selektoren lila · Properties hellblau · Werte hellgrün · Kommentare grau</p>
+      <div style="background:#0d1117;border-radius:8px;padding:14px 16px;font-family:monospace;font-size:12px;line-height:1.7;border:1px solid #30363d">
+        <div><span style="color:#8b949e">/* Box Model */</span></div>
+        <div><span style="color:#d2a8ff">.card</span> <span style="color:#c9d1d9">{</span></div>
+        <div style="padding-left:16px"><span style="color:#79c0ff">padding</span><span style="color:#c9d1d9">:</span> <span style="color:#a5d6ff">24px</span><span style="color:#c9d1d9">;</span></div>
+        <div style="padding-left:16px"><span style="color:#79c0ff">margin</span><span style="color:#c9d1d9">:</span> <span style="color:#a5d6ff">0 auto</span><span style="color:#c9d1d9">;</span></div>
+        <div style="padding-left:16px"><span style="color:#79c0ff">border</span><span style="color:#c9d1d9">:</span> <span style="color:#a5d6ff">2px solid</span> <span style="color:#a5d6ff">#3b82f6</span><span style="color:#c9d1d9">;</span></div>
+        <div style="padding-left:16px"><span style="color:#79c0ff">border-radius</span><span style="color:#c9d1d9">:</span> <span style="color:#a5d6ff">12px</span><span style="color:#c9d1d9">;</span></div>
+        <div style="padding-left:16px"><span style="color:#79c0ff">background</span><span style="color:#c9d1d9">:</span> <span style="color:#7ee787">linear-gradient</span><span style="color:#c9d1d9">(</span><span style="color:#a5d6ff">135deg</span><span style="color:#c9d1d9">,</span> <span style="color:#a5d6ff">#1e293b</span><span style="color:#c9d1d9">,</span> <span style="color:#a5d6ff">#0f172a</span><span style="color:#c9d1d9">);</span></div>
+        <div><span style="color:#c9d1d9">}</span></div>
+        <div style="margin-top:6px"><span style="color:#8b949e">/* Hover-State */</span></div>
+        <div><span style="color:#d2a8ff">.card</span><span style="color:#ff7b72">:hover</span> <span style="color:#c9d1d9">{</span></div>
+        <div style="padding-left:16px"><span style="color:#79c0ff">transform</span><span style="color:#c9d1d9">:</span> <span style="color:#7ee787">translateY</span><span style="color:#c9d1d9">(</span><span style="color:#a5d6ff">-4px</span><span style="color:#c9d1d9">);</span></div>
+        <div><span style="color:#c9d1d9">}</span></div>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:#94a3b8">🐙 Bekannt von GitHub · Dezent · Passt zu dunklen UIs</div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Vitesse Dark — Modern, warm</h3>
+      <p style="font-size:12px;color:#94a3b8;margin-bottom:8px">Selektoren goldig · Properties warmblau · Werte grünlich · Von Anthony Fu (Vite-Team)</p>
+      <div style="background:#121212;border-radius:8px;padding:14px 16px;font-family:monospace;font-size:12px;line-height:1.7;border:1px solid #2a2a2a">
+        <div><span style="color:#758575">/* Box Model */</span></div>
+        <div><span style="color:#c9b69f">.card</span> <span style="color:#d4d4d4">{</span></div>
+        <div style="padding-left:16px"><span style="color:#80a8c4">padding</span><span style="color:#d4d4d4">:</span> <span style="color:#b8bb26">24px</span><span style="color:#d4d4d4">;</span></div>
+        <div style="padding-left:16px"><span style="color:#80a8c4">margin</span><span style="color:#d4d4d4">:</span> <span style="color:#b8bb26">0 auto</span><span style="color:#d4d4d4">;</span></div>
+        <div style="padding-left:16px"><span style="color:#80a8c4">border</span><span style="color:#d4d4d4">:</span> <span style="color:#b8bb26">2px solid</span> <span style="color:#ce9178">#3b82f6</span><span style="color:#d4d4d4">;</span></div>
+        <div style="padding-left:16px"><span style="color:#80a8c4">border-radius</span><span style="color:#d4d4d4">:</span> <span style="color:#b8bb26">12px</span><span style="color:#d4d4d4">;</span></div>
+        <div style="padding-left:16px"><span style="color:#80a8c4">background</span><span style="color:#d4d4d4">:</span> <span style="color:#c9b69f">linear-gradient</span><span style="color:#d4d4d4">(</span><span style="color:#b8bb26">135deg</span><span style="color:#d4d4d4">,</span> <span style="color:#ce9178">#1e293b</span><span style="color:#d4d4d4">,</span> <span style="color:#ce9178">#0f172a</span><span style="color:#d4d4d4">);</span></div>
+        <div><span style="color:#d4d4d4">}</span></div>
+        <div style="margin-top:6px"><span style="color:#758575">/* Hover-State */</span></div>
+        <div><span style="color:#c9b69f">.card</span><span style="color:#e86f6f">:hover</span> <span style="color:#d4d4d4">{</span></div>
+        <div style="padding-left:16px"><span style="color:#80a8c4">transform</span><span style="color:#d4d4d4">:</span> <span style="color:#c9b69f">translateY</span><span style="color:#d4d4d4">(</span><span style="color:#b8bb26">-4px</span><span style="color:#d4d4d4">);</span></div>
+        <div><span style="color:#d4d4d4">}</span></div>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:#94a3b8">✨ Warm & modern · Weniger Kontrast · Vom Vite/Vue-Team</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section" style="margin-top:16px;font-size:12px;color:#64748b">
+  <strong>Technisch:</strong> Wird mit <strong>Shiki</strong> umgesetzt — leichtgewichtig, kein Monaco nötig für statische Blöcke. Shiki läuft build-time oder client-side und unterstützt alle VSCode-Themes.
+</div>

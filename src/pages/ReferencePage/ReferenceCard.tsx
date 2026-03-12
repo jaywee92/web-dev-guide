@@ -1,4 +1,4 @@
-import ExternalLink from 'lucide-react/dist/esm/icons/external-link'
+import { ExternalLink } from 'lucide-react'
 import type { ReferenceEntry } from '@/types'
 import CodeBlock from '@/components/ui/CodeBlock'
 

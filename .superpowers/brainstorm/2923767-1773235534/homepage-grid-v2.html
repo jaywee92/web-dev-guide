@@ -1,0 +1,259 @@
+<h2>Homepage — Kategorie-Grid mit Hover-Preview</h2>
+<p class="subtitle">Hauptkategorien als Boxen · CSS-Unterkategorien gruppiert · Topics als Hover-Preview</p>
+
+<div style="margin-top:12px;background:#0a0f1a;border:1px solid #1e293b;border-radius:10px;overflow:hidden">
+
+  <!-- App nav mock -->
+  <div style="padding:10px 20px;border-bottom:1px solid #1e293b;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:20px;height:20px;border-radius:5px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:white">&lt;/&gt;</div>
+      <span style="font-size:12px;font-weight:700;color:#f1f5f9">WebDev <span style="color:#3b82f6">Docs</span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:5px;background:#1e293b;border:1px solid #334155;border-radius:6px;padding:4px 10px;width:180px">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span style="font-size:10px;color:#475569">Suche…</span>
+      <span style="margin-left:auto;font-size:9px;color:#334155;font-family:monospace">⌘K</span>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div style="padding:24px 24px 16px;text-align:center;border-bottom:1px solid #0f172a">
+    <div style="font-size:9px;font-family:monospace;color:#334155;letter-spacing:0.12em;margin-bottom:6px">ANIMIERTES NACHSCHLAGEWERK</div>
+    <h1 style="font-size:20px;font-weight:800;color:#f1f5f9;margin:0 0 4px">Web Development Docs</h1>
+    <p style="font-size:11px;color:#475569;margin:0">Interaktive Visualisierungen · Live Playgrounds · Cheat Sheets</p>
+  </div>
+
+  <!-- Main grid -->
+  <div style="padding:20px 24px 24px">
+
+    <!-- Row 1: HTML + CSS (grouped) -->
+    <div style="display:grid;grid-template-columns:1fr 3fr;gap:12px;margin-bottom:12px">
+
+      <!-- HTML box -->
+      <div class="cat-box" style="background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:16px;cursor:pointer;position:relative;overflow:hidden;border-left:3px solid #4ade80;transition:border-color 0.2s"
+        onmouseenter="showPreview(this,'html')" onmouseleave="hidePreview(this)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <div style="width:32px;height:32px;border-radius:8px;background:#4ade8018;border:1px solid #4ade8033;display:flex;align-items:center;justify-content:center;font-size:14px;color:#4ade80">&lt;/&gt;</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#f1f5f9">HTML</div>
+            <div style="font-size:9px;color:#475569">3 Topics</div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:#475569;line-height:1.5">Struktur · Semantik · Forms</div>
+        <!-- Hover preview -->
+        <div class="preview" style="display:none;position:absolute;inset:0;background:#0f172a;border-radius:11px;padding:12px;border:1px solid #4ade8040">
+          <div style="font-size:9px;font-weight:700;color:#4ade80;font-family:monospace;margin-bottom:8px">HTML — Topics</div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="font-size:10px;color:#94a3b8;padding:4px 8px;background:#1e293b;border-radius:4px">DOM & Struktur</div>
+            <div style="font-size:10px;color:#94a3b8;padding:4px 8px;background:#1e293b;border-radius:4px">Semantisches HTML</div>
+            <div style="font-size:10px;color:#94a3b8;padding:4px 8px;background:#1e293b;border-radius:4px">Formulare</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CSS group box (contains 3 sub-boxes) -->
+      <div style="background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:14px">
+        <div style="font-size:9px;font-family:monospace;font-weight:700;color:#475569;letter-spacing:0.1em;margin-bottom:10px">CSS</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+
+          <!-- CSS Grundlagen -->
+          <div class="cat-box" style="background:#0a0f1a;border:1px solid #1e293b;border-radius:8px;padding:12px;cursor:pointer;position:relative;overflow:hidden;border-left:2px solid #5b9cf5;transition:border-color 0.2s"
+            onmouseenter="showPreview(this,'css-grundlagen')" onmouseleave="hidePreview(this)">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+              <div style="width:24px;height:24px;border-radius:5px;background:#5b9cf518;border:1px solid #5b9cf530;display:flex;align-items:center;justify-content:center;font-size:10px;color:#5b9cf5">✦</div>
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#f1f5f9">Grundlagen</div>
+                <div style="font-size:8px;color:#475569">7 Topics</div>
+              </div>
+            </div>
+            <div style="font-size:9px;color:#475569">Basics · Box · Typo</div>
+            <div class="preview" style="display:none;position:absolute;inset:0;background:#0a0f1a;border-radius:7px;padding:10px;border:1px solid #5b9cf540">
+              <div style="font-size:8px;font-weight:700;color:#5b9cf5;font-family:monospace;margin-bottom:6px">CSS Grundlagen</div>
+              <div style="display:flex;flex-direction:column;gap:3px">
+                <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Basics</div>
+                <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Selektoren</div>
+                <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Farben & Einheiten</div>
+                <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Box Model</div>
+                <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px;color:#475569">+ 3 weitere →</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CSS Layout -->
+          <div class="cat-box" style="background:#0a0f1a;border:1px solid #1e293b;border-radius:8px;padding:12px;cursor:pointer;position:relative;overflow:hidden;border-left:2px solid #38bdf8"
+            onmouseenter="showPreview(this,'css-layout')" onmouseleave="hidePreview(this)">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+              <div style="width:24px;height:24px;border-radius:5px;background:#38bdf818;border:1px solid #38bdf830;display:flex;align-items:center;justify-content:center;font-size:10px;color:#38bdf8">⊞</div>
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#f1f5f9">Layout</div>
+                <div style="font-size:8px;color:#475569">4 Topics</div>
+              </div>
+            </div>
+            <div style="font-size:9px;color:#475569">Flex · Grid · Responsive</div>
+            <div class="preview" style="display:none;position:absolute;inset:0;background:#0a0f1a;border-radius:7px;padding:10px;border:1px solid #38bdf840">
+              <div style="font-size:8px;font-weight:700;color:#38bdf8;font-family:monospace;margin-bottom:6px">CSS Layout</div>
+              <div style="display:flex;flex-direction:column;gap:3px">
+                <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Display & Positioning</div>
+                <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Flexbox</div>
+                <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">CSS Grid</div>
+                <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Responsive Design</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CSS Modern -->
+          <div class="cat-box" style="background:#0a0f1a;border:1px solid #1e293b;border-radius:8px;padding:12px;cursor:pointer;position:relative;overflow:hidden;border-left:2px solid #a78bfa"
+            onmouseenter="showPreview(this,'css-modern')" onmouseleave="hidePreview(this)">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+              <div style="width:24px;height:24px;border-radius:5px;background:#a78bfa18;border:1px solid #a78bfa30;display:flex;align-items:center;justify-content:center;font-size:10px;color:#a78bfa">✦</div>
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#f1f5f9">Modern</div>
+                <div style="font-size:8px;color:#475569">4 Topics</div>
+              </div>
+            </div>
+            <div style="font-size:9px;color:#475569">Variables · Animations</div>
+            <div class="preview" style="display:none;position:absolute;inset:0;background:#0a0f1a;border-radius:7px;padding:10px;border:1px solid #a78bfa40">
+              <div style="font-size:8px;font-weight:700;color:#a78bfa;font-family:monospace;margin-bottom:6px">CSS Modern</div>
+              <div style="display:flex;flex-direction:column;gap:3px">
+                <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Custom Properties</div>
+                <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Transforms</div>
+                <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Transitions</div>
+                <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Animations</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: JS + TS -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+
+      <!-- JavaScript -->
+      <div class="cat-box" style="background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:16px;cursor:pointer;position:relative;overflow:hidden;border-left:3px solid #fbbf24"
+        onmouseenter="showPreview(this,'js')" onmouseleave="hidePreview(this)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <div style="width:32px;height:32px;border-radius:8px;background:#fbbf2418;border:1px solid #fbbf2433;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fbbf24">JS</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#f1f5f9">JavaScript</div>
+            <div style="font-size:9px;color:#475569">4 Topics</div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:#475569;line-height:1.5">Sprache des Browsers · Closures · Event Loop</div>
+        <div class="preview" style="display:none;position:absolute;inset:0;background:#0f172a;border-radius:11px;padding:12px;border:1px solid #fbbf2440">
+          <div style="font-size:9px;font-weight:700;color:#fbbf24;font-family:monospace;margin-bottom:8px">JavaScript — Topics</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+            <div style="font-size:10px;color:#94a3b8;padding:4px 8px;background:#1e293b;border-radius:4px">Variablen & Typen</div>
+            <div style="font-size:10px;color:#94a3b8;padding:4px 8px;background:#1e293b;border-radius:4px">Arrays & Methoden</div>
+            <div style="font-size:10px;color:#94a3b8;padding:4px 8px;background:#1e293b;border-radius:4px">Event Loop</div>
+            <div style="font-size:10px;color:#94a3b8;padding:4px 8px;background:#1e293b;border-radius:4px">Closures</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TypeScript -->
+      <div class="cat-box" style="background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:16px;cursor:pointer;position:relative;overflow:hidden;border-left:3px solid #818cf8"
+        onmouseenter="showPreview(this,'ts')" onmouseleave="hidePreview(this)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <div style="width:32px;height:32px;border-radius:8px;background:#818cf818;border:1px solid #818cf833;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#818cf8">TS</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#f1f5f9">TypeScript</div>
+            <div style="font-size:9px;color:#475569">3 Topics</div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:#475569;line-height:1.5">JavaScript mit Typen · Interfaces · Generics</div>
+        <div class="preview" style="display:none;position:absolute;inset:0;background:#0f172a;border-radius:11px;padding:12px;border:1px solid #818cf840">
+          <div style="font-size:9px;font-weight:700;color:#818cf8;font-family:monospace;margin-bottom:8px">TypeScript — Topics</div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="font-size:10px;color:#94a3b8;padding:4px 8px;background:#1e293b;border-radius:4px">Basics & Typen</div>
+            <div style="font-size:10px;color:#94a3b8;padding:4px 8px;background:#1e293b;border-radius:4px">Interfaces & Types</div>
+            <div style="font-size:10px;color:#94a3b8;padding:4px 8px;background:#1e293b;border-radius:4px">Generics</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: React + Web APIs + HTTP + PostgreSQL -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+
+      <!-- React -->
+      <div class="cat-box" style="background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:14px;cursor:pointer;position:relative;overflow:hidden;border-left:3px solid #f472b6"
+        onmouseenter="showPreview(this,'react')" onmouseleave="hidePreview(this)">
+        <div style="width:28px;height:28px;border-radius:6px;background:#f472b618;border:1px solid #f472b633;display:flex;align-items:center;justify-content:center;font-size:10px;color:#f472b6;margin-bottom:8px">⚛</div>
+        <div style="font-size:12px;font-weight:700;color:#f1f5f9">React</div>
+        <div style="font-size:9px;color:#475569;margin-top:2px">4 Topics</div>
+        <div class="preview" style="display:none;position:absolute;inset:0;background:#0f172a;border-radius:11px;padding:10px;border:1px solid #f472b640">
+          <div style="font-size:8px;font-weight:700;color:#f472b6;font-family:monospace;margin-bottom:6px">React</div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Components</div>
+            <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">State & Props</div>
+            <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">useEffect</div>
+            <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Router</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Web APIs -->
+      <div class="cat-box" style="background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:14px;cursor:pointer;position:relative;overflow:hidden;border-left:3px solid #34d399"
+        onmouseenter="showPreview(this,'webapi')" onmouseleave="hidePreview(this)">
+        <div style="width:28px;height:28px;border-radius:6px;background:#34d39918;border:1px solid #34d39933;display:flex;align-items:center;justify-content:center;font-size:10px;color:#34d399;margin-bottom:8px">🌐</div>
+        <div style="font-size:12px;font-weight:700;color:#f1f5f9">Web APIs</div>
+        <div style="font-size:9px;color:#475569;margin-top:2px">3 Topics</div>
+        <div class="preview" style="display:none;position:absolute;inset:0;background:#0f172a;border-radius:11px;padding:10px;border:1px solid #34d39940">
+          <div style="font-size:8px;font-weight:700;color:#34d399;font-family:monospace;margin-bottom:6px">Web APIs</div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Fetch & Promises</div>
+            <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Events</div>
+            <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">LocalStorage</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HTTP -->
+      <div class="cat-box" style="background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:14px;cursor:pointer;position:relative;overflow:hidden;border-left:3px solid #fb923c"
+        onmouseenter="showPreview(this,'http')" onmouseleave="hidePreview(this)">
+        <div style="width:28px;height:28px;border-radius:6px;background:#fb923c18;border:1px solid #fb923c33;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fb923c;margin-bottom:8px">⇄</div>
+        <div style="font-size:12px;font-weight:700;color:#f1f5f9">HTTP</div>
+        <div style="font-size:9px;color:#475569;margin-top:2px">3 Topics</div>
+        <div class="preview" style="display:none;position:absolute;inset:0;background:#0f172a;border-radius:11px;padding:10px;border:1px solid #fb923c40">
+          <div style="font-size:8px;font-weight:700;color:#fb923c;font-family:monospace;margin-bottom:6px">HTTP</div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Request Cycle</div>
+            <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">REST API</div>
+            <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Status Codes</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PostgreSQL -->
+      <div class="cat-box" style="background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:14px;cursor:pointer;position:relative;overflow:hidden;border-left:3px solid #60a5fa"
+        onmouseenter="showPreview(this,'postgres')" onmouseleave="hidePreview(this)">
+        <div style="width:28px;height:28px;border-radius:6px;background:#60a5fa18;border:1px solid #60a5fa33;display:flex;align-items:center;justify-content:center;font-size:10px;color:#60a5fa;margin-bottom:8px">🗄</div>
+        <div style="font-size:12px;font-weight:700;color:#f1f5f9">PostgreSQL</div>
+        <div style="font-size:9px;color:#475569;margin-top:2px">3 Topics</div>
+        <div class="preview" style="display:none;position:absolute;inset:0;background:#0f172a;border-radius:11px;padding:10px;border:1px solid #60a5fa40">
+          <div style="font-size:8px;font-weight:700;color:#60a5fa;font-family:monospace;margin-bottom:6px">PostgreSQL</div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Queries</div>
+            <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">Joins</div>
+            <div style="font-size:9px;color:#94a3b8;padding:3px 6px;background:#1e293b;border-radius:3px">CRUD</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function showPreview(el, key) {
+  el.style.borderColor = el.style.borderLeftColor || '';
+  const p = el.querySelector('.preview');
+  if (p) { p.style.display = 'block'; }
+}
+function hidePreview(el) {
+  const p = el.querySelector('.preview');
+  if (p) { p.style.display = 'none'; }
+}
+</script>

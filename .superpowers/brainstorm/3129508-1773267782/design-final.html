@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Design Final</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+#demo,#demo *{cursor:none!important}
+body{background:#04040b;color:#e2e8f0;font-family:'DM Sans',system-ui,sans-serif;padding:24px 20px 64px}
+h1{font-size:17px;font-weight:800;color:#fff;margin-bottom:3px}
+.sub{font-size:11px;color:#1a2235;margin-bottom:18px}
+
+.demo{position:relative;border-radius:14px;overflow:hidden;border:1px solid #0a1020}
+canvas.bg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#cursor-cv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:100}
+#noise-ov{position:absolute;inset:0;pointer-events:none;z-index:99;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  background-size:200px 200px;mix-blend-mode:overlay;opacity:.055}
+
+/* ── CENTERED LAYOUT ── */
+.demo-inner{
+  position:relative;z-index:2;
+  padding:32px 28px 40px;
+  display:flex;flex-direction:column;align-items:center; /* CENTER */
+}
+
+/* hero centered */
+.hero{text-align:center;margin-bottom:28px}
+.hero-title{font-size:26px;font-weight:800;letter-spacing:-.03em;color:#eef2ff}
+.hero-sub{font-size:11px;color:#1a2a3f;margin-top:3px}
+
+/* centered content column */
+.content{width:100%;max-width:680px}
+
+.glabel{font-size:8.5px;font-weight:800;letter-spacing:.13em;color:#0f1827;text-transform:uppercase;
+  padding:10px 0 5px;display:flex;align-items:center;gap:10px}
+.glabel-line{flex:1;height:1px;background:linear-gradient(to right,#111e33 0%,transparent 100%)}
+
+/* ── TSEC ── */
+.tsec{
+  position:relative;overflow:hidden;border-radius:12px;
+  background:rgba(7,9,19,0.42);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,0.07);
+  margin-bottom:8px;--mx:50%;--my:50%;
+  transition:border-color .35s,background .35s;
+  transform-style:preserve-3d;
+  will-change:transform;
+}
+.tsec:hover{background:rgba(10,13,25,0.52);border-color:color-mix(in srgb,var(--tc) 28%,rgba(255,255,255,0.08))}
+.tsec::after{content:'';position:absolute;inset:0;border-radius:12px;pointer-events:none;z-index:0;
+  background:radial-gradient(circle 200px at var(--mx) var(--my),color-mix(in srgb,var(--tc) 6%,transparent) 0%,transparent 65%);
+  opacity:0;transition:opacity .3s}
+.tsec:hover::after{opacity:1}
+.tsec::before{content:'';position:absolute;inset:-1px;border-radius:13px;pointer-events:none;z-index:1;
+  background:radial-gradient(circle 130px at var(--mx) var(--my),color-mix(in srgb,var(--tc) 32%,transparent) 0%,transparent 62%);
+  opacity:0;transition:opacity .35s}
+.tsec:hover::before{opacity:1}
+.tsec-bar{position:absolute;top:0;left:0;width:2.5px;height:100%;z-index:3;
+  background:linear-gradient(to bottom,var(--tc),color-mix(in srgb,var(--tc) 20%,transparent));
+  opacity:.5;transition:opacity .3s}
+.tsec:hover .tsec-bar{opacity:1}
+
+/* stagger entry */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.tsec{animation:fadeUp .42s both}
+
+.tsec-header{
+  position:relative;z-index:2;display:flex;align-items:center;gap:13px;
+  padding:13px 17px 12px;
+  background:linear-gradient(105deg,color-mix(in srgb,var(--tc) 7%,transparent) 0%,transparent 55%);
+  border-bottom:1px solid color-mix(in srgb,var(--tc) 11%,rgba(255,255,255,0.04))}
+.tsec-iconbox{
+  width:42px;height:42px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:19px;
+  background:color-mix(in srgb,var(--tc) 10%,rgba(0,0,0,0.35));
+  border:1px solid color-mix(in srgb,var(--tc) 22%,transparent);
+  box-shadow:0 0 14px color-mix(in srgb,var(--tc) 18%,transparent),inset 0 1px 0 color-mix(in srgb,var(--tc) 20%,transparent);
+  transition:box-shadow .3s}
+.tsec:hover .tsec-iconbox{box-shadow:0 0 24px color-mix(in srgb,var(--tc) 40%,transparent),inset 0 1px 0 color-mix(in srgb,var(--tc) 30%,transparent)}
+.tsec-meta{flex:1}
+.tsec-name{font-size:18px;font-weight:900;letter-spacing:-.025em;color:var(--tc);text-shadow:0 0 22px color-mix(in srgb,var(--tc) 40%,transparent)}
+.tsec-desc{font-size:9.5px;margin-top:2px;color:color-mix(in srgb,var(--tc) 26%,#1a2235)}
+.tsec-badge{font-size:8.5px;font-weight:800;padding:2px 8px;border-radius:20px;align-self:flex-start;
+  background:color-mix(in srgb,var(--tc) 9%,rgba(0,0,0,0.3));
+  border:1px solid color-mix(in srgb,var(--tc) 18%,transparent);
+  color:color-mix(in srgb,var(--tc) 55%,#94a3b8);white-space:nowrap}
+
+.tsec-body{position:relative;z-index:2;display:flex;gap:7px;flex-wrap:wrap;padding:9px 13px 12px;background:rgba(0,0,0,0.08)}
+
+.subcat{
+  position:relative;overflow:hidden;
+  border:1px solid rgba(255,255,255,0.22);
+  border-radius:8px;min-width:136px;cursor:pointer;
+  background:rgba(14,22,45,0.82);
+  transition:border-color .22s,background .22s,box-shadow .22s,transform .18s}
+.subcat:hover{
+  background:rgba(18,28,58,0.92);
+  border-color:color-mix(in srgb,var(--sc,var(--tc)) 65%,rgba(255,255,255,0.2));
+  box-shadow:0 0 18px color-mix(in srgb,var(--sc,var(--tc)) 28%,transparent);
+  transform:translateY(-1px)}
+
+.subcat-top{display:flex;align-items:center;gap:6px;padding:7px 10px 6px;border-bottom:1px solid rgba(255,255,255,0.12)}
+.subcat-emoji{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;font-size:12px;line-height:1}
+.subcat-label{font-size:11px;font-weight:700;color:#b8d4f0}
+.subcat-cnt{margin-left:auto;font-size:8px;font-weight:800;padding:1px 6px;border-radius:10px;
+  background:color-mix(in srgb,var(--sc,var(--tc)) 18%,rgba(0,0,0,0.2));
+  color:color-mix(in srgb,var(--sc,var(--tc)) 80%,#94a3b8)}
+.subcat-topics{padding:5px 10px 8px;font-size:9.5px;color:#7a9fc4;line-height:1.7}
+
+/* confirm */
+.confirm{margin-top:14px;display:flex;justify-content:flex-end;gap:8px}
+.btn{font-size:12px;font-weight:600;padding:7px 18px;border-radius:8px;border:1.5px solid #0a1020;background:transparent;color:#1a2235;cursor:pointer;transition:all .15s}
+.btn:hover{border-color:#172033;color:#94a3b8}
+.btn.ok{background:linear-gradient(135deg,#1e1b4b,#4c1d95);border-color:transparent;color:#c4b5fd}
+</style>
+</head>
+<body>
+
+<h1>Design Final</h1>
+<p class="sub">Zentriert · Cursor Trail · 3D Tilt · Galaxy + Star Illumination · Glassmorphism</p>
+
+<div class="demo" id="demo">
+  <canvas class="bg" id="gc"></canvas>
+  <canvas id="cursor-cv"></canvas>
+  <div id="noise-ov"></div>
+
+  <div class="demo-inner">
+
+    <div class="hero">
+      <div class="hero-title">Web Dev Guide</div>
+      <div class="hero-sub">Dein Leitfaden für moderne Webentwicklung</div>
+    </div>
+
+    <div class="content">
+
+      <div class="glabel">MARKUP & STIL<div class="glabel-line"></div></div>
+
+      <div class="tsec" style="--tc:#4ade80;animation-delay:.04s" data-color="#4ade80">
+        <div class="tsec-bar"></div>
+        <div class="tsec-header">
+          <div class="tsec-iconbox">🏗</div>
+          <div class="tsec-meta"><div class="tsec-name">HTML</div><div class="tsec-desc">Hypertext Markup Language</div></div>
+          <div class="tsec-badge">1 Kat · 3 Topics</div>
+        </div>
+        <div class="tsec-body">
+          <div class="subcat" style="--sc:#4ade80"><div class="subcat-top"><span class="subcat-emoji">🏗</span><span class="subcat-label">Struktur & Semantik</span><span class="subcat-cnt">3</span></div><div class="subcat-topics">DOM · Semantische Elemente · Forms</div></div>
+        </div>
+      </div>
+
+      <div class="tsec" style="--tc:#5b9cf5;animation-delay:.09s" data-color="#5b9cf5">
+        <div class="tsec-bar"></div>
+        <div class="tsec-header">
+          <div class="tsec-iconbox">🎨</div>
+          <div class="tsec-meta"><div class="tsec-name">CSS</div><div class="tsec-desc">Cascading Style Sheets</div></div>
+          <div class="tsec-badge">3 Kat · 15 Topics</div>
+        </div>
+        <div class="tsec-body">
+          <div class="subcat" style="--sc:#5b9cf5;animation-delay:0s"><div class="subcat-top"><span class="subcat-emoji">📖</span><span class="subcat-label">Grundlagen</span><span class="subcat-cnt">7</span></div><div class="subcat-topics">Selektoren · Box Model · Farben</div></div>
+          <div class="subcat" style="--sc:#38bdf8;animation-delay:.4s"><div class="subcat-top"><span class="subcat-emoji">🧩</span><span class="subcat-label">Layout</span><span class="subcat-cnt">4</span></div><div class="subcat-topics">Flexbox · Grid · Responsive</div></div>
+          <div class="subcat" style="--sc:#a78bfa;animation-delay:.8s"><div class="subcat-top"><span class="subcat-emoji">✨</span><span class="subcat-label">Modern</span><span class="subcat-cnt">4</span></div><div class="subcat-topics">Variables · Transforms · Animations</div></div>
+        </div>
+      </div>
+
+      <div class="glabel" style="margin-top:6px">PROGRAMMIERUNG<div class="glabel-line"></div></div>
+
+      <div class="tsec" style="--tc:#fbbf24;animation-delay:.14s" data-color="#fbbf24">
+        <div class="tsec-bar"></div>
+        <div class="tsec-header">
+          <div class="tsec-iconbox">⚡</div>
+          <div class="tsec-meta"><div class="tsec-name">JavaScript</div><div class="tsec-desc">Programmiersprache des Webs</div></div>
+          <div class="tsec-badge">1 Kat · 4 Topics</div>
+        </div>
+        <div class="tsec-body">
+          <div class="subcat" style="--sc:#fbbf24"><div class="subcat-top"><span class="subcat-emoji">📖</span><span class="subcat-label">Grundlagen</span><span class="subcat-cnt">4</span></div><div class="subcat-topics">Variables · Arrays · Event Loop · Closures</div></div>
+        </div>
+      </div>
+
+      <div class="tsec" style="--tc:#818cf8;animation-delay:.19s" data-color="#818cf8">
+        <div class="tsec-bar"></div>
+        <div class="tsec-header">
+          <div class="tsec-iconbox">🛡</div>
+          <div class="tsec-meta"><div class="tsec-name">TypeScript</div><div class="tsec-desc">Typisiertes JavaScript</div></div>
+          <div class="tsec-badge">1 Kat · 3 Topics</div>
+        </div>
+        <div class="tsec-body">
+          <div class="subcat" style="--sc:#818cf8"><div class="subcat-top"><span class="subcat-emoji">📖</span><span class="subcat-label">Grundlagen</span><span class="subcat-cnt">3</span></div><div class="subcat-topics">Interfaces · Types · Generics</div></div>
+        </div>
+      </div>
+
+      <div class="glabel" style="margin-top:6px">FRAMEWORKS & WEB<div class="glabel-line"></div></div>
+
+      <div class="tsec" style="--tc:#f472b6;animation-delay:.24s" data-color="#f472b6">
+        <div class="tsec-bar"></div>
+        <div class="tsec-header">
+          <div class="tsec-iconbox">⚛️</div>
+          <div class="tsec-meta"><div class="tsec-name">React</div><div class="tsec-desc">UI Component Framework</div></div>
+          <div class="tsec-badge">1 Kat · 4 Topics</div>
+        </div>
+        <div class="tsec-body">
+          <div class="subcat" style="--sc:#f472b6"><div class="subcat-top"><span class="subcat-emoji">📖</span><span class="subcat-label">Grundlagen</span><span class="subcat-cnt">4</span></div><div class="subcat-topics">Components · State · Hooks · Router</div></div>
+        </div>
+      </div>
+
+      <div class="tsec" style="--tc:#34d399;animation-delay:.29s" data-color="#34d399">
+        <div class="tsec-bar"></div>
+        <div class="tsec-header">
+          <div class="tsec-iconbox">🌐</div>
+          <div class="tsec-meta"><div class="tsec-name">Web APIs</div><div class="tsec-desc">Browser-Schnittstellen</div></div>
+          <div class="tsec-badge">1 Kat · 3 Topics</div>
+        </div>
+        <div class="tsec-body">
+          <div class="subcat" style="--sc:#34d399"><div class="subcat-top"><span class="subcat-emoji">🌐</span><span class="subcat-label">Browser APIs</span><span class="subcat-cnt">3</span></div><div class="subcat-topics">Fetch · Events · Storage</div></div>
+        </div>
+      </div>
+
+      <div class="tsec" style="--tc:#fb923c;animation-delay:.33s" data-color="#fb923c">
+        <div class="tsec-bar"></div>
+        <div class="tsec-header">
+          <div class="tsec-iconbox">↔️</div>
+          <div class="tsec-meta"><div class="tsec-name">HTTP</div><div class="tsec-desc">Hypertext Transfer Protocol</div></div>
+          <div class="tsec-badge">1 Kat · 3 Topics</div>
+        </div>
+        <div class="tsec-body">
+          <div class="subcat" style="--sc:#fb923c"><div class="subcat-top"><span class="subcat-emoji">📖</span><span class="subcat-label">Grundlagen</span><span class="subcat-cnt">3</span></div><div class="subcat-topics">Request Cycle · REST · Status Codes</div></div>
+        </div>
+      </div>
+
+      <div class="tsec" style="--tc:#60a5fa;animation-delay:.37s" data-color="#60a5fa">
+        <div class="tsec-bar"></div>
+        <div class="tsec-header">
+          <div class="tsec-iconbox">🗄️</div>
+          <div class="tsec-meta"><div class="tsec-name">PostgreSQL</div><div class="tsec-desc">Relationale Datenbank</div></div>
+          <div class="tsec-badge">1 Kat · 3 Topics</div>
+        </div>
+        <div class="tsec-body">
+          <div class="subcat" style="--sc:#60a5fa"><div class="subcat-top"><span class="subcat-emoji">📖</span><span class="subcat-label">SQL Grundlagen</span><span class="subcat-cnt">3</span></div><div class="subcat-topics">Queries · Joins · CRUD</div></div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /demo-inner -->
+</div>
+
+<div class="confirm">
+  <button class="btn" onclick="history.back()">← Zurück</button>
+  <button class="btn ok" onclick="approve()">Final bestätigen — weiter zur Implementierung ✓</button>
+</div>
+
+<script>
+const gcv=document.getElementById('gc'),gctx=gcv.getContext('2d');
+const ccv=document.getElementById('cursor-cv'),cctx=ccv.getContext('2d');
+const demo=document.getElementById('demo');
+let W=0,H=0,stars=[];
+
+function init(){
+  const r=demo.getBoundingClientRect();W=r.width;H=r.height;
+  [gcv,ccv].forEach(cv=>{cv.width=W*devicePixelRatio;cv.height=H*devicePixelRatio;});
+  gctx.scale(devicePixelRatio,devicePixelRatio);cctx.scale(devicePixelRatio,devicePixelRatio);
+  stars=[];
+  for(let i=0;i<440;i++) stars.push({x:Math.random()*W,y:Math.random()*H,vy:-(Math.random()*.085+.024),r:Math.random()*1.35+.2,baseA:Math.random()*.4+.08,phase:Math.random()*Math.PI*2,ts:Math.random()*.45+.15});
+}
+init();new ResizeObserver(init).observe(demo);
+
+let hRect=null,opacity=0,targetOp=0,cr=255,cg=255,cb=255,tr2=255,tg2=255,tb2=255;
+const TRAIL=18;const trail=Array.from({length:TRAIL},()=>({x:0,y:0,a:false}));
+let cx=0,cy=0,inDemo=false,curR=255,curG=255,curB=255;
+
+function hexRgb(h){const v=parseInt(h.replace('#',''),16);return[(v>>16&255),(v>>8&255),(v&255)]}
+function lerp(a,b,t){return a+(b-a)*t}
+function inZone(sx,sy,rect){
+  if(!rect)return 0;
+  const dr=demo.getBoundingClientRect();
+  const x1=rect.left-dr.left,y1=rect.top-dr.top,x2=rect.right-dr.left,y2=rect.bottom-dr.top;
+  const hw=(x2-x1)/2,hh=(y2-y1)/2,m=38;
+  const dx=Math.max(0,Math.abs(sx-(x1+x2)/2)-hw),dy=Math.max(0,Math.abs(sy-(y1+y2)/2)-hh);
+  if(dx>m||dy>m)return 0;return(1-dx/m)*(1-dy/m);
+}
+
+let t=0;
+(function draw(){
+  t+=.016;
+  opacity+=(targetOp-opacity)*.055;
+  cr=lerp(cr,tr2,.065);cg=lerp(cg,tg2,.065);cb=lerp(cb,tb2,.065);
+  const rI=cr|0,gI=cg|0,bI=cb|0;
+
+  gctx.clearRect(0,0,W,H);gctx.fillStyle='#04040b';gctx.fillRect(0,0,W,H);
+  for(const s of stars){
+    s.y+=s.vy;if(s.y<-3){s.y=H+3;s.x=Math.random()*W;}
+    const tw=Math.sin(t*s.ts+s.phase)*.2+.8,bA=s.baseA*tw;
+    const infl=hRect?inZone(s.x,s.y,hRect)*opacity:0;
+    if(infl>.025){
+      const f=Math.min(1,infl*1.2),sr=s.r*(1+infl*.82);
+      gctx.beginPath();gctx.arc(s.x,s.y,sr,0,Math.PI*2);
+      gctx.fillStyle=`rgba(${Math.round(lerp(166,rI,f))},${Math.round(lerp(190,gI,f))},${Math.round(lerp(230,bI,f))},${Math.min(1,bA+infl*.62)})`;gctx.fill();
+      if(infl>.2&&s.r>.52){
+        const g2=gctx.createRadialGradient(s.x,s.y,sr,s.x,s.y,sr*5.5);
+        g2.addColorStop(0,`rgba(${rI},${gI},${bI},${infl*.22})`);g2.addColorStop(1,`rgba(${rI},${gI},${bI},0)`);
+        gctx.beginPath();gctx.arc(s.x,s.y,sr*5.5,0,Math.PI*2);gctx.fillStyle=g2;gctx.fill();
+      }
+    } else {gctx.beginPath();gctx.arc(s.x,s.y,s.r,0,Math.PI*2);gctx.fillStyle=`rgba(155,180,228,${bA})`;gctx.fill();}
+  }
+
+  // cursor trail
+  cctx.clearRect(0,0,W,H);
+  if(inDemo){
+    for(let i=TRAIL-1;i>0;i--){trail[i].x=trail[i-1].x;trail[i].y=trail[i-1].y;trail[i].a=trail[i-1].a;}
+    trail[0].x=cx;trail[0].y=cy;trail[0].a=true;
+    curR=lerp(curR,tr2,.1);curG=lerp(curG,tg2,.1);curB=lerp(curB,tb2,.1);
+    const cR=curR|0,cG=curG|0,cB=curB|0;
+    for(let i=TRAIL-1;i>=0;i--){
+      if(!trail[i].a)continue;
+      const frac=1-(i/(TRAIL-1)),a=frac*.52,r2=(1.8+frac*3.8)*(1-i/TRAIL*.42);
+      const g=cctx.createRadialGradient(trail[i].x,trail[i].y,0,trail[i].x,trail[i].y,r2*3.8);
+      g.addColorStop(0,`rgba(${cR},${cG},${cB},${a*.36})`);g.addColorStop(1,`rgba(${cR},${cG},${cB},0)`);
+      cctx.beginPath();cctx.arc(trail[i].x,trail[i].y,r2*3.8,0,Math.PI*2);cctx.fillStyle=g;cctx.fill();
+      cctx.beginPath();cctx.arc(trail[i].x,trail[i].y,r2,0,Math.PI*2);cctx.fillStyle=`rgba(${cR},${cG},${cB},${a})`;cctx.fill();
+    }
+    // main dot
+    const mg=cctx.createRadialGradient(cx,cy,0,cx,cy,13);
+    mg.addColorStop(0,`rgba(${cR},${cG},${cB},0.5)`);mg.addColorStop(.4,`rgba(${cR},${cG},${cB},0.12)`);mg.addColorStop(1,`rgba(${cR},${cG},${cB},0)`);
+    cctx.beginPath();cctx.arc(cx,cy,13,0,Math.PI*2);cctx.fillStyle=mg;cctx.fill();
+    cctx.beginPath();cctx.arc(cx,cy,2.2,0,Math.PI*2);cctx.fillStyle='rgba(255,255,255,0.92)';cctx.fill();
+    cctx.beginPath();cctx.arc(cx,cy,6.5,0,Math.PI*2);cctx.strokeStyle=`rgba(${cR},${cG},${cB},0.38)`;cctx.lineWidth=.7;cctx.stroke();
+  }
+  requestAnimationFrame(draw);
+})();
+
+demo.addEventListener('mousemove',e=>{const r=demo.getBoundingClientRect();cx=e.clientX-r.left;cy=e.clientY-r.top;inDemo=true;});
+demo.addEventListener('mouseleave',()=>{inDemo=false;targetOp=0;hRect=null;tr2=255;tg2=255;tb2=255;});
+
+document.querySelectorAll('.tsec').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    const[r,g,b]=hexRgb(el.dataset.color||'#fff');
+    hRect=el.getBoundingClientRect();targetOp=1;tr2=r;tg2=g;tb2=b;
+  });
+  el.addEventListener('mouseleave',()=>{
+    targetOp=0;hRect=null;tr2=255;tg2=255;tb2=255;
+    el.style.transform='';
+  });
+  el.addEventListener('mousemove',e=>{
+    const r=el.getBoundingClientRect();
+    el.style.setProperty('--mx',((e.clientX-r.left)/r.width*100).toFixed(1)+'%');
+    el.style.setProperty('--my',((e.clientY-r.top)/r.height*100).toFixed(1)+'%');
+    // 3D tilt
+    const rx=(((e.clientY-r.top)/r.height)-.5)*-6;
+    const ry=(((e.clientX-r.left)/r.width)-.5)*6;
+    el.style.transform=`perspective(700px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+  });
+});
+
+function approve(){
+  if(window.recordEvent)window.recordEvent('click','approved','final approved');
+  alert('Final bestätigt — weiter zur Implementierung!');
+}
+</script>
+</body>
+</html>

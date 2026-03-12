@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Design v4 — Original Structure + Galaxy + Bento Effects</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#05050c;color:#e2e8f0;font-family:'DM Sans',system-ui,sans-serif;padding:24px 20px 64px;min-height:100vh}
+h1{font-size:18px;font-weight:800;color:#fff;margin-bottom:4px}
+.sub{font-size:11px;color:#2d3a52;margin-bottom:20px}
+
+.demo{position:relative;border-radius:14px;overflow:hidden;border:1px solid #111827;min-height:580px}
+canvas.bg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.demo-inner{position:relative;z-index:2;padding:24px 28px}
+
+/* hero */
+.hero-title{font-size:24px;font-weight:800;letter-spacing:-.03em;color:#f0f4ff;margin-bottom:2px}
+.hero-sub{font-size:11px;color:#232f45;margin-bottom:18px}
+
+/* group label */
+.glabel{font-size:9px;font-weight:800;letter-spacing:.12em;color:#1e2a3d;text-transform:uppercase;padding:10px 0 5px}
+
+/* ── TECH SECTION CARD ── */
+.tsec{
+  position:relative;overflow:hidden;border-radius:12px;
+  border:1px solid rgba(255,255,255,0.09);
+  margin-bottom:8px;
+  transition:border-color .3s;
+  /* spotlight vars */
+  --mx:50%;--my:50%;
+}
+/* top accent bar */
+.tsec-bar{height:2px;width:100%;background:var(--tc,#fff);opacity:.55;transition:opacity .3s}
+.tsec:hover .tsec-bar{opacity:1}
+
+/* spotlight radial overlay */
+.tsec-spotlight{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(circle 200px at var(--mx) var(--my), rgba(255,255,255,0.035) 0%, transparent 70%);
+  opacity:0;transition:opacity .25s;
+}
+.tsec:hover .tsec-spotlight{opacity:1}
+
+/* border glow: the glow follows cursor on the border */
+.tsec::before{
+  content:'';position:absolute;inset:-1px;border-radius:13px;
+  background:radial-gradient(circle 120px at var(--mx) var(--my), var(--gc,transparent) 0%, transparent 65%);
+  opacity:0;transition:opacity .3s;pointer-events:none;z-index:1;
+}
+.tsec:hover::before{opacity:1}
+
+/* ── SECTION HEADER: icon + title + subtitle ── */
+.tsec-header{
+  position:relative;z-index:2;
+  display:flex;align-items:center;gap:10px;
+  padding:11px 14px 10px;
+  background:rgba(0,0,0,0.18);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.tsec-icon{
+  width:32px;height:32px;border-radius:8px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:color-mix(in srgb, var(--tc) 14%, transparent);
+  border:1px solid color-mix(in srgb, var(--tc) 22%, transparent);
+  font-size:14px;
+}
+.tsec-meta{flex:1}
+.tsec-title{font-size:14px;font-weight:800;letter-spacing:-.01em;color:var(--tc)}
+.tsec-desc{font-size:9px;color:#2a3a55;margin-top:1px;letter-spacing:.02em}
+
+/* ── SECTION BODY: subcategory cards ── */
+.tsec-body{
+  position:relative;z-index:2;
+  display:flex;gap:6px;flex-wrap:wrap;
+  padding:9px 12px 11px;
+  background:rgba(0,0,0,0.08);
+}
+
+/* ── SUBCATEGORY CARD ── */
+.subcat{
+  position:relative;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:8px;padding:0;overflow:hidden;
+  cursor:pointer;min-width:130px;
+  transition:border-color .2s, background .2s, box-shadow .2s;
+}
+.subcat:hover{
+  background:rgba(255,255,255,0.06);
+  border-color:color-mix(in srgb, var(--tc) 40%, transparent);
+  box-shadow:0 0 12px color-mix(in srgb, var(--tc) 15%, transparent);
+}
+
+/* subcat inner sections: emoji+label / topics preview */
+.subcat-header{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 10px 5px;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+.subcat-emoji{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;font-size:12px;line-height:1}
+.subcat-label{font-size:10px;font-weight:700;color:#8aa0c0}
+.subcat-topics{
+  padding:4px 10px 6px;
+  font-size:9px;color:#1e2c42;line-height:1.6;
+}
+.subcat-count{
+  display:inline-block;font-size:8px;font-weight:700;
+  padding:1px 5px;border-radius:4px;margin-left:4px;
+  background:color-mix(in srgb, var(--tc) 12%, transparent);
+  color:color-mix(in srgb, var(--tc) 70%, transparent);
+}
+
+/* ann */
+.ann{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px}
+.ann-box{background:#080c14;border:1px solid #111827;border-radius:9px;padding:11px 13px}
+.ann-box h4{font-size:10px;font-weight:800;color:#5a7099;margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.ann-box p{font-size:10px;color:#1e2c42;line-height:1.6}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0}
+
+.confirm{margin-top:16px;display:flex;justify-content:flex-end;gap:8px}
+.btn{font-size:12px;font-weight:600;padding:7px 18px;border-radius:8px;border:1.5px solid #111827;background:transparent;color:#2d3a52;cursor:pointer;transition:all .15s}
+.btn:hover{border-color:#1e2c42;color:#94a3b8}
+.btn.ok{background:linear-gradient(135deg,#312e81,#5b21b6);border-color:transparent;color:#fff}
+.btn.ok:hover{opacity:.88}
+</style>
+</head>
+<body>
+
+<h1>Design v4 — Originalstruktur + Galaxy + Magic Effects</h1>
+<p class="sub">Ursprüngliche TechSection-Spaltenstruktur · Klar getrennte Bereiche · Galaxy + Stern-Illumination + Bento-Effekte</p>
+
+<div class="demo" id="demo">
+  <canvas class="bg" id="gc"></canvas>
+  <div class="demo-inner">
+    <div class="hero-title">Web Dev Guide</div>
+    <div class="hero-sub">Dein Leitfaden für moderne Webentwicklung</div>
+
+    <!-- ── GRUPPE 1 ── -->
+    <div class="glabel">MARKUP & STIL</div>
+
+    <!-- HTML -->
+    <div class="tsec" style="--tc:#4ade80;--gc:rgba(74,222,128,0.18)" data-color="#4ade80">
+      <div class="tsec-bar"></div>
+      <div class="tsec-spotlight"></div>
+      <div class="tsec-header">
+        <div class="tsec-icon">🏗</div>
+        <div class="tsec-meta">
+          <div class="tsec-title">HTML</div>
+          <div class="tsec-desc">Hypertext Markup Language</div>
+        </div>
+      </div>
+      <div class="tsec-body">
+        <div class="subcat" style="--tc:#4ade80">
+          <div class="subcat-header">
+            <span class="subcat-emoji">🏗</span>
+            <span class="subcat-label">Struktur & Semantik</span>
+            <span class="subcat-count">3</span>
+          </div>
+          <div class="subcat-topics">DOM · Semantik · Forms</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CSS -->
+    <div class="tsec" style="--tc:#5b9cf5;--gc:rgba(91,156,245,0.18)" data-color="#5b9cf5">
+      <div class="tsec-bar"></div>
+      <div class="tsec-spotlight"></div>
+      <div class="tsec-header">
+        <div class="tsec-icon">🎨</div>
+        <div class="tsec-meta">
+          <div class="tsec-title">CSS</div>
+          <div class="tsec-desc">Cascading Style Sheets</div>
+        </div>
+      </div>
+      <div class="tsec-body">
+        <div class="subcat" style="--tc:#5b9cf5">
+          <div class="subcat-header"><span class="subcat-emoji">📖</span><span class="subcat-label">Grundlagen</span><span class="subcat-count">7</span></div>
+          <div class="subcat-topics">Selektoren · Box Model · Farben</div>
+        </div>
+        <div class="subcat" style="--tc:#38bdf8">
+          <div class="subcat-header"><span class="subcat-emoji">🧩</span><span class="subcat-label">Layout</span><span class="subcat-count">4</span></div>
+          <div class="subcat-topics">Flexbox · Grid · Responsive</div>
+        </div>
+        <div class="subcat" style="--tc:#a78bfa">
+          <div class="subcat-header"><span class="subcat-emoji">✨</span><span class="subcat-label">Modern</span><span class="subcat-count">4</span></div>
+          <div class="subcat-topics">Variables · Transforms · Animations</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── GRUPPE 2 ── -->
+    <div class="glabel">PROGRAMMIERUNG</div>
+
+    <!-- JavaScript -->
+    <div class="tsec" style="--tc:#fbbf24;--gc:rgba(251,191,36,0.18)" data-color="#fbbf24">
+      <div class="tsec-bar"></div>
+      <div class="tsec-spotlight"></div>
+      <div class="tsec-header">
+        <div class="tsec-icon">⚡</div>
+        <div class="tsec-meta">
+          <div class="tsec-title">JavaScript</div>
+          <div class="tsec-desc">Programmiersprache des Webs</div>
+        </div>
+      </div>
+      <div class="tsec-body">
+        <div class="subcat" style="--tc:#fbbf24">
+          <div class="subcat-header"><span class="subcat-emoji">📖</span><span class="subcat-label">Grundlagen</span><span class="subcat-count">4</span></div>
+          <div class="subcat-topics">Variables · Arrays · Closures</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TypeScript -->
+    <div class="tsec" style="--tc:#818cf8;--gc:rgba(129,140,248,0.18)" data-color="#818cf8">
+      <div class="tsec-bar"></div>
+      <div class="tsec-spotlight"></div>
+      <div class="tsec-header">
+        <div class="tsec-icon">🛡</div>
+        <div class="tsec-meta">
+          <div class="tsec-title">TypeScript</div>
+          <div class="tsec-desc">Typisiertes JavaScript</div>
+        </div>
+      </div>
+      <div class="tsec-body">
+        <div class="subcat" style="--tc:#818cf8">
+          <div class="subcat-header"><span class="subcat-emoji">📖</span><span class="subcat-label">Grundlagen</span><span class="subcat-count">3</span></div>
+          <div class="subcat-topics">Interfaces · Types · Generics</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── GRUPPE 3 ── -->
+    <div class="glabel">FRAMEWORKS & WEB</div>
+
+    <!-- React -->
+    <div class="tsec" style="--tc:#f472b6;--gc:rgba(244,114,182,0.18)" data-color="#f472b6">
+      <div class="tsec-bar"></div>
+      <div class="tsec-spotlight"></div>
+      <div class="tsec-header">
+        <div class="tsec-icon">⚛️</div>
+        <div class="tsec-meta">
+          <div class="tsec-title">React</div>
+          <div class="tsec-desc">UI Component Framework</div>
+        </div>
+      </div>
+      <div class="tsec-body">
+        <div class="subcat" style="--tc:#f472b6">
+          <div class="subcat-header"><span class="subcat-emoji">📖</span><span class="subcat-label">Grundlagen</span><span class="subcat-count">4</span></div>
+          <div class="subcat-topics">Components · State · Hooks</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PostgreSQL -->
+    <div class="tsec" style="--tc:#60a5fa;--gc:rgba(96,165,250,0.18)" data-color="#60a5fa">
+      <div class="tsec-bar"></div>
+      <div class="tsec-spotlight"></div>
+      <div class="tsec-header">
+        <div class="tsec-icon">🗄️</div>
+        <div class="tsec-meta">
+          <div class="tsec-title">PostgreSQL</div>
+          <div class="tsec-desc">Relationale Datenbank</div>
+        </div>
+      </div>
+      <div class="tsec-body">
+        <div class="subcat" style="--tc:#60a5fa">
+          <div class="subcat-header"><span class="subcat-emoji">📖</span><span class="subcat-label">SQL Grundlagen</span><span class="subcat-count">3</span></div>
+          <div class="subcat-topics">Queries · Joins · CRUD</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ann">
+  <div class="ann-box">
+    <h4><span class="dot" style="background:#60a5fa"></span>Originalstruktur</h4>
+    <p>TechSection-Spalten wie gehabt. Jede Kategorie = eine Karte mit Header / Body-Trennung. Subcategory-Cards mit eigenem Emoji + Label + Topics-Preview + Count.</p>
+  </div>
+  <div class="ann-box">
+    <h4><span class="dot" style="background:#f472b6"></span>Magic Bento Effekte</h4>
+    <p>Spotlight-Cursor verfolgt die Maus innerhalb jeder Karte. Border-Glow radialer Verlauf am Kartenrand. Top-Farbstreifen wird beim Hover intensiver.</p>
+  </div>
+  <div class="ann-box">
+    <h4><span class="dot" style="background:#4ade80"></span>Galaxy + Stars</h4>
+    <p>Animierter Sternenhintergrund läuft immer. Beim Hover über eine TechSection verfärben sich die Sterne im Kartenbereich zur Kategoriefarbe.</p>
+  </div>
+</div>
+
+<div class="confirm">
+  <button class="btn" onclick="back()">← Anpassen</button>
+  <button class="btn ok" onclick="approve()">Passt — Design bestätigen ✓</button>
+</div>
+
+<script>
+// ── GALAXY CANVAS ─────────────────────────────────────────────────────────────
+const cv = document.getElementById('gc');
+const ctx = cv.getContext('2d');
+const demo = document.getElementById('demo');
+let W=0, H=0;
+const stars=[];
+
+function init(){
+  const r=demo.getBoundingClientRect();
+  W=r.width; H=r.height;
+  cv.width=W*devicePixelRatio; cv.height=H*devicePixelRatio;
+  ctx.scale(devicePixelRatio,devicePixelRatio);
+  stars.length=0;
+  for(let i=0;i<360;i++) stars.push({
+    x:Math.random()*W, y:Math.random()*H,
+    vy:-(Math.random()*.09+.03),
+    r:Math.random()*1.3+.2,
+    baseA:Math.random()*.42+.1,
+    phase:Math.random()*Math.PI*2,
+    ts:Math.random()*.45+.15
+  });
+}
+init();
+new ResizeObserver(init).observe(demo);
+
+// hover state
+let hRect=null, hColor=null;
+let opacity=0, targetOp=0;
+let cr=255,cg=255,cb=255,tr=255,tg=255,tb=255;
+
+function hexRgb(h){const v=parseInt(h.replace('#',''),16);return[(v>>16&255),(v>>8&255),(v&255)]}
+function lerp(a,b,t){return a+(b-a)*t}
+
+function inZone(sx,sy,rect){
+  if(!rect) return 0;
+  const dr=demo.getBoundingClientRect();
+  const x1=rect.left-dr.left, y1=rect.top-dr.top;
+  const x2=rect.right-dr.left, y2=rect.bottom-dr.top;
+  const cx=(x1+x2)/2, cy=(y1+y2)/2;
+  const hw=(x2-x1)/2, hh=(y2-y1)/2;
+  const m=32;
+  const dx=Math.max(0,Math.abs(sx-cx)-hw);
+  const dy=Math.max(0,Math.abs(sy-cy)-hh);
+  if(dx>m||dy>m) return 0;
+  return(1-dx/m)*(1-dy/m);
+}
+
+let t=0;
+(function draw(){
+  t+=.016;
+  opacity+=(targetOp-opacity)*.055;
+  cr=lerp(cr,tr,.07); cg=lerp(cg,tg,.07); cb=lerp(cb,tb,.07);
+  const rI=cr|0,gI=cg|0,bI=cb|0;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#05050c'; ctx.fillRect(0,0,W,H);
+
+  for(const s of stars){
+    s.y+=s.vy;
+    if(s.y<-3){s.y=H+3;s.x=Math.random()*W;}
+    const tw=Math.sin(t*s.ts+s.phase)*.2+.8;
+    const bA=s.baseA*tw;
+    const infl=hRect?inZone(s.x,s.y,hRect)*opacity:0;
+    if(infl>.03){
+      const t2=Math.min(1,infl*1.1);
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r*(1+infl*.7),0,Math.PI*2);
+      ctx.fillStyle=`rgba(${Math.round(lerp(175,rI,t2))},${Math.round(lerp(195,gI,t2))},${Math.round(lerp(228,bI,t2))},${Math.min(1,bA+infl*.55)})`;
+      ctx.fill();
+      if(infl>.28&&s.r>.6){
+        const g2=ctx.createRadialGradient(s.x,s.y,s.r,s.x,s.y,s.r*4.5);
+        g2.addColorStop(0,`rgba(${rI},${gI},${bI},${infl*.2})`);
+        g2.addColorStop(1,`rgba(${rI},${gI},${bI},0)`);
+        ctx.beginPath();ctx.arc(s.x,s.y,s.r*4.5,0,Math.PI*2);
+        ctx.fillStyle=g2;ctx.fill();
+      }
+    } else {
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(165,188,228,${bA})`;ctx.fill();
+    }
+  }
+  requestAnimationFrame(draw);
+})();
+
+// ── TSEC HOVER + MOUSE TRACKING ──────────────────────────────────────────────
+document.querySelectorAll('.tsec').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    const c=el.dataset.color||'#fff';
+    const [r,g,b]=hexRgb(c);
+    hColor=c; hRect=el.getBoundingClientRect(); targetOp=1;
+    tr=r;tg=g;tb=b;
+  });
+  el.addEventListener('mouseleave',()=>{ targetOp=0; hRect=null; });
+  el.addEventListener('mousemove',e=>{
+    const r=el.getBoundingClientRect();
+    el.style.setProperty('--mx',((e.clientX-r.left)/r.width*100).toFixed(1)+'%');
+    el.style.setProperty('--my',((e.clientY-r.top)/r.height*100).toFixed(1)+'%');
+  });
+});
+
+function back(){ history.back(); }
+function approve(){
+  if(window.recordEvent) window.recordEvent('click','approved','v4 approved');
+  alert('Design bestätigt — bitte im Terminal bestätigen.');
+}
+</script>
+</body>
+</html>

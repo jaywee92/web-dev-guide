@@ -1,10 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import Search from 'lucide-react/dist/esm/icons/search'
-import Sun from 'lucide-react/dist/esm/icons/sun'
-import Moon from 'lucide-react/dist/esm/icons/moon'
-import Code2 from 'lucide-react/dist/esm/icons/code-2'
-import BookOpen from 'lucide-react/dist/esm/icons/book-open'
-import ChevronDown from 'lucide-react/dist/esm/icons/chevron-down'
+import { Search, Sun, Moon, Code2, BookOpen, ChevronDown } from 'lucide-react'
 import { useAppStore } from '@/store/useAppStore'
 import { useEffect, useState, useRef } from 'react'
 

@@ -1,0 +1,262 @@
+<h2>Homepage — Spalten-Layout</h2>
+<p class="subtitle">Jede Technologie hat ihre eigene Spalte · Unterkategorien als Karten · erweiterbar</p>
+
+<div style="margin-top:12px;background:#0a0f1a;border:1px solid #1e293b;border-radius:10px;overflow:hidden">
+
+  <!-- Nav -->
+  <div style="padding:10px 20px;border-bottom:1px solid #1e293b;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="width:20px;height:20px;border-radius:5px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:white">&lt;/&gt;</div>
+      <span style="font-size:12px;font-weight:700;color:#f1f5f9">WebDev <span style="color:#3b82f6">Docs</span></span>
+    </div>
+    <div style="display:flex;align-items:center;gap:5px;background:#1e293b;border:1px solid #334155;border-radius:6px;padding:4px 10px;width:180px">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span style="font-size:10px;color:#475569">Suche… <span style="color:#334155;font-family:monospace">⌘K</span></span>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div style="padding:20px 24px 16px;text-align:center;border-bottom:1px solid #0f172a">
+    <div style="font-size:9px;font-family:monospace;color:#334155;letter-spacing:0.12em;margin-bottom:5px">ANIMIERTES NACHSCHLAGEWERK</div>
+    <h1 style="font-size:19px;font-weight:800;color:#f1f5f9;margin:0 0 3px">Web Development Docs</h1>
+    <p style="font-size:10px;color:#475569;margin:0">Interaktive Visualisierungen · Live Playgrounds · Cheat Sheets</p>
+  </div>
+
+  <!-- Column grid -->
+  <div style="padding:16px 20px 20px;overflow-x:auto">
+    <div style="display:grid;grid-template-columns:repeat(8,160px);gap:10px;min-width:max-content">
+
+      <!-- ── HTML ── -->
+      <div>
+        <div style="display:flex;align-items:center;gap:7px;padding:0 2px;margin-bottom:10px">
+          <div style="width:6px;height:6px;border-radius:50%;background:#4ade80;flex-shrink:0"></div>
+          <span style="font-size:11px;font-weight:800;color:#4ade80;font-family:monospace">HTML</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div class="card" data-color="#4ade80" onmouseenter="hov(this)" onmouseleave="unhov(this)" style="background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:11px;cursor:pointer;position:relative;overflow:hidden;transition:border-color 0.15s">
+            <div style="font-size:11px;font-weight:700;color:#f1f5f9;margin-bottom:2px">DOM & Struktur</div>
+            <div style="font-size:9px;color:#475569">3 Topics</div>
+            <div class="hp" style="display:none;position:absolute;inset:0;background:#0f172a;border-radius:7px;padding:9px;border:1px solid #4ade8050">
+              <div style="font-size:8px;font-weight:700;color:#4ade80;font-family:monospace;margin-bottom:6px">HTML Topics</div>
+              <div style="display:flex;flex-direction:column;gap:3px">
+                <div style="font-size:9px;color:#94a3b8;padding:3px 7px;background:#1e293b;border-radius:3px">DOM & Struktur</div>
+                <div style="font-size:9px;color:#94a3b8;padding:3px 7px;background:#1e293b;border-radius:3px">Semantisches HTML</div>
+                <div style="font-size:9px;color:#94a3b8;padding:3px 7px;background:#1e293b;border-radius:3px">Formulare</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CSS ── -->
+      <div>
+        <div style="display:flex;align-items:center;gap:7px;padding:0 2px;margin-bottom:10px">
+          <div style="width:6px;height:6px;border-radius:50%;background:#5b9cf5;flex-shrink:0"></div>
+          <span style="font-size:11px;font-weight:800;color:#5b9cf5;font-family:monospace">CSS</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+
+          <div class="card" data-color="#5b9cf5" onmouseenter="hov(this)" onmouseleave="unhov(this)" style="background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:11px;cursor:pointer;position:relative;overflow:hidden;transition:border-color 0.15s">
+            <div style="font-size:11px;font-weight:700;color:#f1f5f9;margin-bottom:2px">Grundlagen</div>
+            <div style="font-size:9px;color:#475569">7 Topics</div>
+            <div class="hp" style="display:none;position:absolute;inset:0;background:#0f172a;border-radius:7px;padding:9px;border:1px solid #5b9cf550">
+              <div style="font-size:8px;font-weight:700;color:#5b9cf5;font-family:monospace;margin-bottom:5px">CSS Grundlagen</div>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Basics</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Selektoren</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Farben & Einheiten</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Box Model</div>
+                <div style="font-size:9px;color:#475569;padding:2px 7px;border-radius:3px">+ 3 weitere →</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" data-color="#38bdf8" onmouseenter="hov(this)" onmouseleave="unhov(this)" style="background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:11px;cursor:pointer;position:relative;overflow:hidden;transition:border-color 0.15s">
+            <div style="font-size:11px;font-weight:700;color:#f1f5f9;margin-bottom:2px">Layout</div>
+            <div style="font-size:9px;color:#475569">4 Topics</div>
+            <div class="hp" style="display:none;position:absolute;inset:0;background:#0f172a;border-radius:7px;padding:9px;border:1px solid #38bdf850">
+              <div style="font-size:8px;font-weight:700;color:#38bdf8;font-family:monospace;margin-bottom:5px">CSS Layout</div>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Display & Positioning</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Flexbox</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">CSS Grid</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Responsive</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" data-color="#a78bfa" onmouseenter="hov(this)" onmouseleave="unhov(this)" style="background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:11px;cursor:pointer;position:relative;overflow:hidden;transition:border-color 0.15s">
+            <div style="font-size:11px;font-weight:700;color:#f1f5f9;margin-bottom:2px">Modern</div>
+            <div style="font-size:9px;color:#475569">4 Topics</div>
+            <div class="hp" style="display:none;position:absolute;inset:0;background:#0f172a;border-radius:7px;padding:9px;border:1px solid #a78bfa50">
+              <div style="font-size:8px;font-weight:700;color:#a78bfa;font-family:monospace;margin-bottom:5px">CSS Modern</div>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Custom Properties</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Transforms</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Transitions</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Animations</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── JavaScript ── -->
+      <div>
+        <div style="display:flex;align-items:center;gap:7px;padding:0 2px;margin-bottom:10px">
+          <div style="width:6px;height:6px;border-radius:50%;background:#fbbf24;flex-shrink:0"></div>
+          <span style="font-size:11px;font-weight:800;color:#fbbf24;font-family:monospace">JavaScript</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div class="card" data-color="#fbbf24" onmouseenter="hov(this)" onmouseleave="unhov(this)" style="background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:11px;cursor:pointer;position:relative;overflow:hidden;transition:border-color 0.15s">
+            <div style="font-size:11px;font-weight:700;color:#f1f5f9;margin-bottom:2px">Grundlagen</div>
+            <div style="font-size:9px;color:#475569">4 Topics</div>
+            <div class="hp" style="display:none;position:absolute;inset:0;background:#0f172a;border-radius:7px;padding:9px;border:1px solid #fbbf2450">
+              <div style="font-size:8px;font-weight:700;color:#fbbf24;font-family:monospace;margin-bottom:5px">JavaScript</div>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Variablen & Typen</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Arrays & Methoden</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Event Loop</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Closures</div>
+              </div>
+            </div>
+          </div>
+          <!-- Placeholder for future subcategory -->
+          <div style="border:1px dashed #1e293b;border-radius:8px;padding:11px;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;opacity:0.4" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='0.4'">
+            <span style="font-size:14px;color:#334155">+</span>
+            <span style="font-size:9px;color:#334155">Async / Promises</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TypeScript ── -->
+      <div>
+        <div style="display:flex;align-items:center;gap:7px;padding:0 2px;margin-bottom:10px">
+          <div style="width:6px;height:6px;border-radius:50%;background:#818cf8;flex-shrink:0"></div>
+          <span style="font-size:11px;font-weight:800;color:#818cf8;font-family:monospace">TypeScript</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div class="card" data-color="#818cf8" onmouseenter="hov(this)" onmouseleave="unhov(this)" style="background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:11px;cursor:pointer;position:relative;overflow:hidden;transition:border-color 0.15s">
+            <div style="font-size:11px;font-weight:700;color:#f1f5f9;margin-bottom:2px">Grundlagen</div>
+            <div style="font-size:9px;color:#475569">3 Topics</div>
+            <div class="hp" style="display:none;position:absolute;inset:0;background:#0f172a;border-radius:7px;padding:9px;border:1px solid #818cf850">
+              <div style="font-size:8px;font-weight:700;color:#818cf8;font-family:monospace;margin-bottom:5px">TypeScript</div>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Basics & Typen</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Interfaces & Types</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Generics</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── React ── -->
+      <div>
+        <div style="display:flex;align-items:center;gap:7px;padding:0 2px;margin-bottom:10px">
+          <div style="width:6px;height:6px;border-radius:50%;background:#f472b6;flex-shrink:0"></div>
+          <span style="font-size:11px;font-weight:800;color:#f472b6;font-family:monospace">React</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div class="card" data-color="#f472b6" onmouseenter="hov(this)" onmouseleave="unhov(this)" style="background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:11px;cursor:pointer;position:relative;overflow:hidden;transition:border-color 0.15s">
+            <div style="font-size:11px;font-weight:700;color:#f1f5f9;margin-bottom:2px">Grundlagen</div>
+            <div style="font-size:9px;color:#475569">4 Topics</div>
+            <div class="hp" style="display:none;position:absolute;inset:0;background:#0f172a;border-radius:7px;padding:9px;border:1px solid #f472b650">
+              <div style="font-size:8px;font-weight:700;color:#f472b6;font-family:monospace;margin-bottom:5px">React</div>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Components</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">State & Props</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">useEffect</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Router</div>
+              </div>
+            </div>
+          </div>
+          <div style="border:1px dashed #1e293b;border-radius:8px;padding:11px;display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;opacity:0.4" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='0.4'">
+            <span style="font-size:14px;color:#334155">+</span>
+            <span style="font-size:9px;color:#334155">Hooks & Patterns</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Web APIs ── -->
+      <div>
+        <div style="display:flex;align-items:center;gap:7px;padding:0 2px;margin-bottom:10px">
+          <div style="width:6px;height:6px;border-radius:50%;background:#34d399;flex-shrink:0"></div>
+          <span style="font-size:11px;font-weight:800;color:#34d399;font-family:monospace">Web APIs</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div class="card" data-color="#34d399" onmouseenter="hov(this)" onmouseleave="unhov(this)" style="background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:11px;cursor:pointer;position:relative;overflow:hidden;transition:border-color 0.15s">
+            <div style="font-size:11px;font-weight:700;color:#f1f5f9;margin-bottom:2px">Browser APIs</div>
+            <div style="font-size:9px;color:#475569">3 Topics</div>
+            <div class="hp" style="display:none;position:absolute;inset:0;background:#0f172a;border-radius:7px;padding:9px;border:1px solid #34d39950">
+              <div style="font-size:8px;font-weight:700;color:#34d399;font-family:monospace;margin-bottom:5px">Web APIs</div>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Fetch & Promises</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Events</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">LocalStorage</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── HTTP ── -->
+      <div>
+        <div style="display:flex;align-items:center;gap:7px;padding:0 2px;margin-bottom:10px">
+          <div style="width:6px;height:6px;border-radius:50%;background:#fb923c;flex-shrink:0"></div>
+          <span style="font-size:11px;font-weight:800;color:#fb923c;font-family:monospace">HTTP</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div class="card" data-color="#fb923c" onmouseenter="hov(this)" onmouseleave="unhov(this)" style="background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:11px;cursor:pointer;position:relative;overflow:hidden;transition:border-color 0.15s">
+            <div style="font-size:11px;font-weight:700;color:#f1f5f9;margin-bottom:2px">Grundlagen</div>
+            <div style="font-size:9px;color:#475569">3 Topics</div>
+            <div class="hp" style="display:none;position:absolute;inset:0;background:#0f172a;border-radius:7px;padding:9px;border:1px solid #fb923c50">
+              <div style="font-size:8px;font-weight:700;color:#fb923c;font-family:monospace;margin-bottom:5px">HTTP</div>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Request Cycle</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">REST API</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Status Codes</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PostgreSQL ── -->
+      <div>
+        <div style="display:flex;align-items:center;gap:7px;padding:0 2px;margin-bottom:10px">
+          <div style="width:6px;height:6px;border-radius:50%;background:#60a5fa;flex-shrink:0"></div>
+          <span style="font-size:11px;font-weight:800;color:#60a5fa;font-family:monospace">PostgreSQL</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div class="card" data-color="#60a5fa" onmouseenter="hov(this)" onmouseleave="unhov(this)" style="background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:11px;cursor:pointer;position:relative;overflow:hidden;transition:border-color 0.15s">
+            <div style="font-size:11px;font-weight:700;color:#f1f5f9;margin-bottom:2px">SQL Grundlagen</div>
+            <div style="font-size:9px;color:#475569">3 Topics</div>
+            <div class="hp" style="display:none;position:absolute;inset:0;background:#0f172a;border-radius:7px;padding:9px;border:1px solid #60a5fa50">
+              <div style="font-size:8px;font-weight:700;color:#60a5fa;font-family:monospace;margin-bottom:5px">PostgreSQL</div>
+              <div style="display:flex;flex-direction:column;gap:2px">
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Queries</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">Joins</div>
+                <div style="font-size:9px;color:#94a3b8;padding:2px 7px;background:#1e293b;border-radius:3px">CRUD</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function hov(el) {
+  const color = el.dataset.color
+  el.style.borderColor = color + '60'
+  el.querySelector('.hp').style.display = 'block'
+}
+function unhov(el) {
+  el.style.borderColor = '#1e293b'
+  el.querySelector('.hp').style.display = 'none'
+}
+</script>

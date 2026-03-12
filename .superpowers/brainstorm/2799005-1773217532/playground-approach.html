@@ -1,0 +1,77 @@
+<h2>Interactive Playground — Which approach?</h2>
+<p class="subtitle">For every CSS topic, the bottom "Playground" section gets pre-filled editable examples. How should it work?</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Live Code Editor + Preview</h3>
+      <p>Split layout: editable Monaco/CodeMirror code on the left (pre-filled per topic), live HTML preview on the right that updates as you type. Like a mini CodePen embedded in the topic page.</p>
+      <div style="margin-top:10px;display:flex;gap:8px;font-size:11px;font-family:monospace">
+        <div style="flex:1;background:#0f172a;border-radius:6px;padding:10px;color:#94a3b8">
+          <div style="color:#64748b;margin-bottom:6px">style.css</div>
+          <div><span style="color:#7dd3fc">.box</span> <span style="color:#cbd5e1">{</span></div>
+          <div style="padding-left:12px"><span style="color:#86efac">background</span><span style="color:#cbd5e1">:</span> <span style="color:#fca5a5">#3b82f6</span><span style="color:#cbd5e1">;</span></div>
+          <div style="padding-left:12px"><span style="color:#86efac">padding</span><span style="color:#cbd5e1">:</span> <span style="color:#fca5a5">24px</span><span style="color:#cbd5e1">;</span></div>
+          <div><span style="color:#cbd5e1">}</span></div>
+        </div>
+        <div style="flex:1;background:#1e293b;border-radius:6px;padding:10px;display:flex;align-items:center;justify-content:center">
+          <div style="background:#3b82f6;padding:16px 24px;border-radius:4px;color:white;font-size:12px">Hello World</div>
+        </div>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:#94a3b8">✅ Most interactive &nbsp; ⚡ Instant feedback &nbsp; 📦 Needs iframe sandbox</div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Tabbed Editor (CSS + HTML + Preview)</h3>
+      <p>Three tabs: CSS code, HTML code, and Preview. Each topic pre-fills both CSS and HTML. User edits either tab, preview updates live. Mobile-friendly, less overwhelming than split.</p>
+      <div style="margin-top:10px;font-size:11px;font-family:monospace">
+        <div style="display:flex;gap:4px;margin-bottom:0">
+          <div style="background:#3b82f6;color:white;padding:4px 10px;border-radius:4px 4px 0 0;font-size:10px">CSS</div>
+          <div style="background:#1e293b;color:#64748b;padding:4px 10px;border-radius:4px 4px 0 0;font-size:10px">HTML</div>
+          <div style="background:#1e293b;color:#64748b;padding:4px 10px;border-radius:4px 4px 0 0;font-size:10px">Preview</div>
+        </div>
+        <div style="background:#0f172a;border-radius:0 6px 6px 6px;padding:10px;color:#94a3b8">
+          <div><span style="color:#7dd3fc">.box</span> <span style="color:#cbd5e1">{</span></div>
+          <div style="padding-left:12px"><span style="color:#86efac">background</span><span style="color:#cbd5e1">:</span> <span style="color:#fca5a5">#3b82f6</span><span style="color:#cbd5e1">;</span></div>
+          <div><span style="color:#cbd5e1">}</span></div>
+        </div>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:#94a3b8">📱 Mobile-friendly &nbsp; 🗂 Clean layout &nbsp; ↔ Switch between files easily</div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Enhanced Visual Controls + Code Mirror</h3>
+      <p>Keep the existing slider-based visual controls but add a live CSS code output panel below. Sliders generate readable CSS code you can then copy or edit. Bridge between sliders and raw code.</p>
+      <div style="margin-top:10px;font-size:11px;font-family:monospace">
+        <div style="display:flex;gap:8px">
+          <div style="flex:1;background:#1e293b;border-radius:6px;padding:10px">
+            <div style="color:#64748b;font-size:10px;margin-bottom:6px">Controls</div>
+            <div style="color:#cbd5e1;margin-bottom:4px">padding <span style="float:right;color:#7dd3fc">24px</span></div>
+            <div style="background:#334155;height:4px;border-radius:2px;margin-bottom:8px"><div style="background:#3b82f6;width:60%;height:100%;border-radius:2px"></div></div>
+            <div style="color:#cbd5e1;margin-bottom:4px">border-radius <span style="float:right;color:#7dd3fc">8px</span></div>
+            <div style="background:#334155;height:4px;border-radius:2px"><div style="background:#3b82f6;width:30%;height:100%;border-radius:2px"></div></div>
+          </div>
+          <div style="flex:1;background:#0f172a;border-radius:6px;padding:10px">
+            <div style="color:#64748b;font-size:10px;margin-bottom:6px">Generated CSS</div>
+            <div><span style="color:#7dd3fc">.box</span> <span style="color:#cbd5e1">{</span></div>
+            <div style="padding-left:8px"><span style="color:#86efac">padding</span><span style="color:#cbd5e1">:</span> <span style="color:#fca5a5">24px</span><span style="color:#cbd5e1">;</span></div>
+            <div style="padding-left:8px"><span style="color:#86efac">border-radius</span><span style="color:#cbd5e1">:</span> <span style="color:#fca5a5">8px</span><span style="color:#cbd5e1">;</span></div>
+            <div><span style="color:#cbd5e1">}</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:#94a3b8">🔧 Least new code &nbsp; 🎓 Visual → code bridge &nbsp; ⚠️ No free-form editing</div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:16px;font-size:12px;color:#64748b">
+  <strong>Context:</strong> Every CSS topic (box model, flexbox, typography, etc.) gets a pre-filled example relevant to that topic. The example shows a real-world use case you can tweak.
+</div>

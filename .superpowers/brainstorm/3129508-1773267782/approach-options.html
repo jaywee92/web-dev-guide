@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Light Rays — Design Approaches</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0d0d0f;
+    color: #e2e8f0;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    min-height: 100vh;
+    padding: 32px 24px 64px;
+  }
+  h1 { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .sub { font-size: 13px; color: #64748b; margin-bottom: 32px; }
+  .approaches { display: flex; flex-direction: column; gap: 28px; }
+  .approach {
+    border: 1.5px solid #1e2533;
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .approach:hover { border-color: #334155; }
+  .approach.selected { border-color: #6366f1 !important; }
+
+  .approach-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 18px 12px;
+    background: #111318;
+    border-bottom: 1px solid #1e2533;
+  }
+  .badge {
+    font-size: 11px; font-weight: 700; letter-spacing: .06em;
+    padding: 3px 8px; border-radius: 5px;
+    background: #1e2533; color: #94a3b8;
+  }
+  .approach.selected .badge { background: #312e81; color: #a5b4fc; }
+  .approach-title { font-size: 15px; font-weight: 700; color: #f1f5f9; }
+  .approach-desc { font-size: 12px; color: #64748b; margin-left: auto; max-width: 280px; text-align: right; line-height: 1.4; }
+
+  .preview-area {
+    position: relative;
+    height: 240px;
+    overflow: hidden;
+    background: #0a0a0c;
+  }
+
+  /* ─────────────────────────────── APPROACH A ─────────────────────────────── */
+  .preview-a { background: #080810; }
+  .preview-a .rays-left, .preview-a .rays-right {
+    position: absolute; top: 0; width: 55%; height: 100%;
+    pointer-events: none; transition: opacity 0.5s;
+  }
+  .preview-a .rays-left {
+    left: 0;
+    background: conic-gradient(from 0deg at -5% 50%, transparent 0deg, var(--rc, #5b9cf5) 8deg, transparent 18deg, transparent 360deg);
+    opacity: 0;
+  }
+  .preview-a .rays-right {
+    right: 0; left: auto;
+    background: conic-gradient(from 180deg at 105% 50%, transparent 0deg, var(--rc, #f472b6) 8deg, transparent 18deg, transparent 360deg);
+    opacity: 0;
+  }
+  /* simulate individual rays */
+  .preview-a .ray-beam {
+    position: absolute;
+    top: 0; height: 100%;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent 0%, var(--rc, #5b9cf5) 40%, transparent 100%);
+    transform-origin: 0% 50%;
+    opacity: 0;
+    transition: opacity 0.4s;
+    filter: blur(3px);
+  }
+  .preview-a:hover .rays-left { opacity: 0.6; }
+  .grid-preview {
+    position: relative; z-index: 2;
+    padding: 18px 20px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .mini-section {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .mini-header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 10px 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .mini-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .mini-label { font-size: 11px; font-weight: 700; letter-spacing: .03em; }
+  .mini-cards { display: flex; gap: 6px; padding: 8px 10px; }
+  .mini-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    padding: 5px 9px;
+    font-size: 10px;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  /* ─────────────────────────────── APPROACH B ─────────────────────────────── */
+  .preview-b { background: #080810; }
+  .section-glow-a {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 70% 80% at 0% 50%, #5b9cf520 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .section-glow-b {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 70% 80% at 100% 50%, #f472b620 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .preview-b:hover .section-glow-a { opacity: 1; }
+
+  /* ─────────────────────────────── APPROACH C ─────────────────────────────── */
+  .preview-c { background: #080810; }
+  .global-rays {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.5s, background 0.3s;
+  }
+  .global-rays.active { opacity: 1; }
+  .global-rays-inner {
+    position: absolute; inset: 0;
+    background: conic-gradient(from -90deg at 50% -10%, transparent 0deg, var(--gc, #fbbf24) 15deg, transparent 40deg, transparent 360deg);
+    opacity: 0.35;
+    filter: blur(1px);
+  }
+
+  /* ─────────────────────────────── INTERACTIVE HOVER DEMOS ─── */
+  /* approach A: hover each mini-section → left ray with that color */
+  .approach-a-preview .mini-section[data-color]:hover {
+    border-color: attr(data-color);
+  }
+
+  /* ─────────────── SIDE PANEL ─────────────── */
+  .side-info { padding: 14px 18px 16px; background: #0d1017; display: flex; gap: 20px; }
+  .info-block { flex: 1; }
+  .info-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; color: #475569; text-transform: uppercase; margin-bottom: 5px; }
+  .info-val { font-size: 12px; color: #cbd5e1; line-height: 1.5; }
+  .pro { color: #4ade80; font-size: 11px; }
+  .con { color: #f87171; font-size: 11px; }
+
+  /* ─────────────── SELECT INDICATOR ─────────────── */
+  .select-row { display: flex; justify-content: flex-end; padding: 12px 18px 0; gap: 8px; flex-wrap: wrap; }
+  .btn {
+    font-size: 12px; font-weight: 600; padding: 6px 16px;
+    border-radius: 7px; border: 1.5px solid #1e2533;
+    background: transparent; color: #94a3b8; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn:hover { border-color: #475569; color: #e2e8f0; }
+  .btn.primary { background: #6366f1; border-color: #6366f1; color: #fff; }
+  .btn.primary:hover { background: #818cf8; border-color: #818cf8; }
+
+  /* ─── INTERACTIVE LIGHT RAY SIMULATION FOR APPROACH A ─── */
+  .rays-sim {
+    position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+  }
+  .ray {
+    position: absolute; top: 0; height: 100%;
+    width: 1.5px;
+    transform-origin: center top;
+    opacity: 0;
+    filter: blur(2px);
+    transition: opacity 0.5s;
+  }
+
+  /* LIVE INTERACTIVE DEMO for approach A */
+  #demo-a {
+    position: relative; overflow: hidden;
+  }
+  #demo-a .ray-canvas {
+    position: absolute; inset: 0; pointer-events: none;
+  }
+
+  /* Category colors */
+  :root {
+    --html: #4ade80;
+    --css: #5b9cf5;
+    --js: #fbbf24;
+    --ts: #818cf8;
+    --react: #f472b6;
+    --webapis: #34d399;
+    --http: #fb923c;
+    --pg: #60a5fa;
+  }
+
+  /* selected state */
+  .approach { user-select: none; }
+  .check-mark {
+    width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid #334155;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .approach.selected .check-mark {
+    background: #6366f1; border-color: #6366f1;
+  }
+  .check-mark::after {
+    content: '✓'; font-size: 11px; color: transparent;
+  }
+  .approach.selected .check-mark::after { color: #fff; }
+
+  /* recommended badge */
+  .rec { font-size: 10px; font-weight: 700; letter-spacing: .05em;
+    padding: 2px 7px; border-radius: 4px; background: #14532d; color: #4ade80; margin-left: 6px; }
+</style>
+</head>
+<body>
+<h1>Light Rays — Design-Ansätze</h1>
+<p class="sub">Hover über die Previews zum Ausprobieren · Klick zum Auswählen</p>
+
+<div class="approaches" id="approaches">
+
+  <!-- ══ APPROACH A ══ -->
+  <div class="approach" id="opt-a" onclick="select('a')" data-choice="a">
+    <div class="approach-header">
+      <div class="check-mark"></div>
+      <span class="badge">A</span>
+      <span class="approach-title">Dual Fixed Side-Rays <span class="rec">Empfohlen</span></span>
+      <span class="approach-desc">Zwei feste Rays-Canvas (links + rechts), bei Hover aktiviert mit Kategoriefarbe</span>
+    </div>
+    <div class="preview-area" id="demo-a">
+      <canvas id="ray-canvas-a" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0;transition:opacity 0.4s;"></canvas>
+      <div class="grid-preview">
+        <div class="mini-section" data-color="#4ade80" onmouseenter="rayHover(event,'#4ade80')" onmouseleave="rayLeave()">
+          <div class="mini-header">
+            <div class="mini-dot" style="background:#4ade80"></div>
+            <span class="mini-label" style="color:#4ade80">HTML</span>
+          </div>
+          <div class="mini-cards">
+            <div class="mini-card">🏗 Struktur & Semantik</div>
+          </div>
+        </div>
+        <div class="mini-section" data-color="#5b9cf5" onmouseenter="rayHover(event,'#5b9cf5')" onmouseleave="rayLeave()">
+          <div class="mini-header">
+            <div class="mini-dot" style="background:#5b9cf5"></div>
+            <span class="mini-label" style="color:#5b9cf5">CSS</span>
+          </div>
+          <div class="mini-cards">
+            <div class="mini-card">📖 Grundlagen</div>
+            <div class="mini-card">🧩 Layout</div>
+            <div class="mini-card">✨ Modern</div>
+          </div>
+        </div>
+        <div class="mini-section" data-color="#fbbf24" onmouseenter="rayHover(event,'#fbbf24')" onmouseleave="rayLeave()">
+          <div class="mini-header">
+            <div class="mini-dot" style="background:#fbbf24"></div>
+            <span class="mini-label" style="color:#fbbf24">JavaScript</span>
+          </div>
+          <div class="mini-cards">
+            <div class="mini-card">📖 Grundlagen</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="side-info">
+      <div class="info-block">
+        <div class="info-label">Verhalten</div>
+        <div class="info-val">Beim Hover über eine Kategorie erscheinen Lichtstrahlen von links oder rechts (je nach Cursorposition) in der Kategoriefarbe. Sanfte Opacity-Transition.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-label">Pros / Cons</div>
+        <div class="info-val">
+          <div class="pro">✓ Sehr visuell beeindruckend</div>
+          <div class="pro">✓ Reagiert auf Cursor-Position</div>
+          <div class="pro">✓ Farblich passend zur Kategorie</div>
+          <div class="con">✗ Benötigt OGL-Paket (~30 KB)</div>
+          <div class="con">✗ WebGL-Canvas pro Seite</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ APPROACH B ══ -->
+  <div class="approach" id="opt-b" onclick="select('b')" data-choice="b">
+    <div class="approach-header">
+      <div class="check-mark"></div>
+      <span class="badge">B</span>
+      <span class="approach-title">Per-Section CSS Side Glow</span>
+      <span class="approach-desc">Jede TechSection bekommt eigenen CSS-Lichtstrahl-Effekt seitlich beim Hover</span>
+    </div>
+    <div class="preview-area preview-b" id="demo-b">
+      <div id="glow-b" style="position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 0.4s;"></div>
+      <div class="grid-preview">
+        <div class="mini-section" data-color="#4ade80"
+          onmouseenter="cssGlowHover(event,'#4ade80')" onmouseleave="cssGlowLeave()">
+          <div class="mini-header">
+            <div class="mini-dot" style="background:#4ade80"></div>
+            <span class="mini-label" style="color:#4ade80">HTML</span>
+          </div>
+          <div class="mini-cards">
+            <div class="mini-card">🏗 Struktur & Semantik</div>
+          </div>
+        </div>
+        <div class="mini-section" data-color="#5b9cf5"
+          onmouseenter="cssGlowHover(event,'#5b9cf5')" onmouseleave="cssGlowLeave()">
+          <div class="mini-header">
+            <div class="mini-dot" style="background:#5b9cf5"></div>
+            <span class="mini-label" style="color:#5b9cf5">CSS</span>
+          </div>
+          <div class="mini-cards">
+            <div class="mini-card">📖 Grundlagen</div>
+            <div class="mini-card">🧩 Layout</div>
+            <div class="mini-card">✨ Modern</div>
+          </div>
+        </div>
+        <div class="mini-section" data-color="#fbbf24"
+          onmouseenter="cssGlowHover(event,'#fbbf24')" onmouseleave="cssGlowLeave()">
+          <div class="mini-header">
+            <div class="mini-dot" style="background:#fbbf24"></div>
+            <span class="mini-label" style="color:#fbbf24">JavaScript</span>
+          </div>
+          <div class="mini-cards">
+            <div class="mini-card">📖 Grundlagen</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="side-info">
+      <div class="info-block">
+        <div class="info-label">Verhalten</div>
+        <div class="info-val">Beim Hover erscheint ein breiter CSS-Strahlenkegel aus dem linken oder rechten Rand des jeweiligen Abschnitts. Kein WebGL, reines CSS.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-label">Pros / Cons</div>
+        <div class="info-val">
+          <div class="pro">✓ Kein neues npm-Paket</div>
+          <div class="pro">✓ Smooth CSS-Transitions</div>
+          <div class="pro">✓ Einfach zu customizen</div>
+          <div class="con">✗ Weniger dramatisch als WebGL-Rays</div>
+          <div class="con">✗ Keine echten "Strahlen"-Struktur</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ APPROACH C ══ -->
+  <div class="approach" id="opt-c" onclick="select('c')" data-choice="c">
+    <div class="approach-header">
+      <div class="check-mark"></div>
+      <span class="badge">C</span>
+      <span class="approach-title">Custom WebGL2 Side Rays (no OGL)</span>
+      <span class="approach-desc">Eigene WebGL2-Implementierung wie AuroraBackground, aber als gerichtete Strahlen</span>
+    </div>
+    <div class="preview-area preview-c" id="demo-c">
+      <canvas id="ray-canvas-c" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0;transition:opacity 0.5s;"></canvas>
+      <div class="grid-preview">
+        <div class="mini-section" data-color="#818cf8"
+          onmouseenter="customRayHover(event,'#818cf8')" onmouseleave="customRayLeave()">
+          <div class="mini-header">
+            <div class="mini-dot" style="background:#818cf8"></div>
+            <span class="mini-label" style="color:#818cf8">TypeScript</span>
+          </div>
+          <div class="mini-cards"><div class="mini-card">📖 Grundlagen</div></div>
+        </div>
+        <div class="mini-section" data-color="#f472b6"
+          onmouseenter="customRayHover(event,'#f472b6')" onmouseleave="customRayLeave()">
+          <div class="mini-header">
+            <div class="mini-dot" style="background:#f472b6"></div>
+            <span class="mini-label" style="color:#f472b6">React</span>
+          </div>
+          <div class="mini-cards"><div class="mini-card">📖 Grundlagen</div></div>
+        </div>
+        <div class="mini-section" data-color="#60a5fa"
+          onmouseenter="customRayHover(event,'#60a5fa')" onmouseleave="customRayLeave()">
+          <div class="mini-header">
+            <div class="mini-dot" style="background:#60a5fa"></div>
+            <span class="mini-label" style="color:#60a5fa">PostgreSQL</span>
+          </div>
+          <div class="mini-cards"><div class="mini-card">📖 SQL Grundlagen</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="side-info">
+      <div class="info-block">
+        <div class="info-label">Verhalten</div>
+        <div class="info-val">Eigener WebGL2-Shader (wie AuroraBackground) der gerichtete Strahlen von links/rechts rendert. Keine externe Abhängigkeit, maximale Kontrolle.</div>
+      </div>
+      <div class="info-block">
+        <div class="info-label">Pros / Cons</div>
+        <div class="info-val">
+          <div class="pro">✓ Kein neues npm-Paket (wie Aurora)</div>
+          <div class="pro">✓ Volle Kontrolle über Shader</div>
+          <div class="pro">✓ Passt zum bestehenden Pattern</div>
+          <div class="con">✗ Mehr Entwicklungsaufwand</div>
+          <div class="con">✗ Shader muss selbst geschrieben werden</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="select-row">
+  <button class="btn" onclick="resetAll()">Reset</button>
+  <button class="btn primary" id="confirm-btn" style="display:none" onclick="confirm()">Diese Option wählen →</button>
+</div>
+
+<script>
+// ─── SELECTION ───────────────────────────────────────────────────────────────
+let selected = null;
+function select(id) {
+  document.querySelectorAll('.approach').forEach(el => el.classList.remove('selected'));
+  selected = id;
+  document.getElementById('opt-' + id).classList.add('selected');
+  document.getElementById('confirm-btn').style.display = 'inline-block';
+  if (window.recordEvent) window.recordEvent('click', id, 'Option ' + id.toUpperCase());
+}
+function resetAll() {
+  document.querySelectorAll('.approach').forEach(el => el.classList.remove('selected'));
+  selected = null;
+  document.getElementById('confirm-btn').style.display = 'none';
+}
+function confirm() {
+  if (selected) alert('Option ' + selected.toUpperCase() + ' gewählt — Antwort im Terminal bestätigen.');
+}
+
+// ─── APPROACH A: Canvas-based rays ──────────────────────────────────────────
+const canvasA = document.getElementById('ray-canvas-a');
+const ctxA = canvasA.getContext('2d');
+let rafA = null, currentColorA = null, opacityA = 0, targetOpacityA = 0;
+let rayOriginSide = 'left'; // 'left' | 'right'
+
+function resizeA() {
+  const r = canvasA.parentElement.getBoundingClientRect();
+  canvasA.width = r.width * devicePixelRatio;
+  canvasA.height = r.height * devicePixelRatio;
+}
+resizeA();
+window.addEventListener('resize', resizeA);
+
+function hexToRgbA(hex) {
+  const v = parseInt(hex.replace('#',''), 16);
+  return [(v>>16&255)/255, (v>>8&255)/255, (v&255)/255];
+}
+
+function drawRaysA(color, side, alpha) {
+  const w = canvasA.width, h = canvasA.height;
+  ctxA.clearRect(0, 0, w, h);
+  if (alpha <= 0.01) return;
+
+  const [r, g, b] = hexToRgbA(color);
+  const ox = side === 'left' ? 0 : w;
+  const oy = h * 0.5;
+
+  const numRays = 7;
+  const spreadAngle = 0.55; // radians half-spread
+
+  for (let i = 0; i < numRays; i++) {
+    const t = (i / (numRays - 1)) - 0.5;
+    const angle = t * spreadAngle * 2;
+    const baseAngle = side === 'left' ? 0 : Math.PI;
+    const a = baseAngle + angle;
+    const len = w * 1.5;
+    const ex = ox + Math.cos(a) * len;
+    const ey = oy + Math.sin(a) * len;
+
+    const grad = ctxA.createLinearGradient(ox, oy, ex, ey);
+    const rayAlpha = alpha * (0.35 - Math.abs(t) * 0.4) * (1 - Math.abs(t) * 0.5);
+    grad.addColorStop(0, `rgba(${r*255|0},${g*255|0},${b*255|0},${rayAlpha})`);
+    grad.addColorStop(0.6, `rgba(${r*255|0},${g*255|0},${b*255|0},${rayAlpha * 0.3})`);
+    grad.addColorStop(1, `rgba(${r*255|0},${g*255|0},${b*255|0},0)`);
+
+    // Ray "beam" width fading towards edge
+    const beamW = (w * 0.04) * (1 - Math.abs(t) * 0.6);
+    ctxA.save();
+    ctxA.translate(ox, oy);
+    ctxA.rotate(a - (side === 'left' ? 0 : Math.PI));
+    const beamGrad = ctxA.createLinearGradient(0, 0, len, 0);
+    beamGrad.addColorStop(0, `rgba(${r*255|0},${g*255|0},${b*255|0},${rayAlpha * 1.5})`);
+    beamGrad.addColorStop(0.5, `rgba(${r*255|0},${g*255|0},${b*255|0},${rayAlpha * 0.4})`);
+    beamGrad.addColorStop(1, `rgba(${r*255|0},${g*255|0},${b*255|0},0)`);
+    ctxA.fillStyle = beamGrad;
+    ctxA.beginPath();
+    ctxA.moveTo(0, -beamW/2);
+    ctxA.lineTo(len, -beamW * 0.1);
+    ctxA.lineTo(len, beamW * 0.1);
+    ctxA.lineTo(0, beamW/2);
+    ctxA.closePath();
+    ctxA.fill();
+    ctxA.restore();
+  }
+
+  // ambient glow at origin
+  const glowGrad = ctxA.createRadialGradient(ox, oy, 0, ox, oy, w * 0.4);
+  glowGrad.addColorStop(0, `rgba(${r*255|0},${g*255|0},${b*255|0},${alpha * 0.15})`);
+  glowGrad.addColorStop(1, `rgba(${r*255|0},${g*255|0},${b*255|0},0)`);
+  ctxA.fillStyle = glowGrad;
+  ctxA.fillRect(0, 0, w, h);
+}
+
+let animA_active = false;
+function animateA() {
+  opacityA += (targetOpacityA - opacityA) * 0.08;
+  if (currentColorA) drawRaysA(currentColorA, rayOriginSide, opacityA);
+  rafA = requestAnimationFrame(animateA);
+}
+animateA();
+
+function rayHover(e, color) {
+  currentColorA = color;
+  targetOpacityA = 1;
+  const rect = document.getElementById('demo-a').getBoundingClientRect();
+  rayOriginSide = (e.clientX - rect.left) < rect.width / 2 ? 'left' : 'right';
+}
+function rayLeave() { targetOpacityA = 0; }
+
+// ─── APPROACH B: CSS glow ─────────────────────────────────────────────────
+const glowB = document.getElementById('glow-b');
+function cssGlowHover(e, color) {
+  const rect = document.getElementById('demo-b').getBoundingClientRect();
+  const side = (e.clientX - rect.left) < rect.width / 2 ? '0%' : '100%';
+  // create conic ray effect
+  const r = hexR(color), g2 = hexG(color), b2 = hexB(color);
+  glowB.style.background = `
+    conic-gradient(from ${side === '0%' ? '-15deg' : '165deg'} at ${side} 50%,
+      transparent 0deg,
+      rgba(${r},${g2},${b2},0.25) 12deg,
+      rgba(${r},${g2},${b2},0.15) 20deg,
+      transparent 35deg,
+      transparent 360deg),
+    radial-gradient(ellipse 55% 70% at ${side} 50%,
+      rgba(${r},${g2},${b2},0.12) 0%,
+      transparent 70%)
+  `;
+  glowB.style.opacity = '1';
+}
+function cssGlowLeave() { glowB.style.opacity = '0'; }
+
+function hexR(h) { return parseInt(h.replace('#','').substring(0,2),16); }
+function hexG(h) { return parseInt(h.replace('#','').substring(2,4),16); }
+function hexB(h) { return parseInt(h.replace('#','').substring(4,6),16); }
+
+// ─── APPROACH C: Custom canvas rays (simplified preview) ──────────────────
+const canvasC = document.getElementById('ray-canvas-c');
+const ctxC = canvasC.getContext('2d');
+let rafC = null, currentColorC = null, opacityC = 0, targetOpacityC = 0, sideC = 'right';
+
+function resizeC() {
+  const r = canvasC.parentElement.getBoundingClientRect();
+  canvasC.width = r.width * devicePixelRatio;
+  canvasC.height = r.height * devicePixelRatio;
+}
+resizeC();
+window.addEventListener('resize', resizeC);
+
+let timeC = 0;
+function drawRaysC(color, side, alpha) {
+  const w = canvasC.width, h = canvasC.height;
+  ctxC.clearRect(0, 0, w, h);
+  if (alpha <= 0.01) return;
+  timeC += 0.02;
+
+  const [r, g, b] = hexToRgbA(color);
+  const ox = side === 'right' ? w : 0;
+  const oy = h * 0.45;
+  const numRays = 9;
+  const spreadAngle = 0.7;
+
+  for (let i = 0; i < numRays; i++) {
+    const t = (i / (numRays - 1)) - 0.5;
+    // slight animated wobble
+    const wobble = Math.sin(timeC * 0.8 + i * 1.3) * 0.03;
+    const angle = (t + wobble) * spreadAngle * 2;
+    const baseAngle = side === 'right' ? Math.PI : 0;
+    const a = baseAngle + angle;
+    const len = w * 1.2;
+    const rayAlpha = alpha * (0.45 - Math.abs(t) * 0.6);
+    if (rayAlpha <= 0) continue;
+    const beamW = w * 0.025 * (1 - Math.abs(t) * 0.7);
+
+    ctxC.save();
+    ctxC.translate(ox, oy);
+    ctxC.rotate(a - baseAngle);
+    if (side === 'right') ctxC.scale(-1, 1);
+    const bg = ctxC.createLinearGradient(0, 0, len, 0);
+    bg.addColorStop(0, `rgba(${r*255|0},${g*255|0},${b*255|0},${rayAlpha * 1.8})`);
+    bg.addColorStop(0.4, `rgba(${r*255|0},${g*255|0},${b*255|0},${rayAlpha})`);
+    bg.addColorStop(1, `rgba(${r*255|0},${g*255|0},${b*255|0},0)`);
+    ctxC.fillStyle = bg;
+    ctxC.beginPath();
+    ctxC.moveTo(0, -beamW/2);
+    ctxC.lineTo(len, -beamW * 0.05);
+    ctxC.lineTo(len, beamW * 0.05);
+    ctxC.lineTo(0, beamW/2);
+    ctxC.closePath();
+    ctxC.fill();
+    ctxC.restore();
+  }
+}
+
+function animateC() {
+  opacityC += (targetOpacityC - opacityC) * 0.07;
+  if (currentColorC) drawRaysC(currentColorC, sideC, opacityC);
+  requestAnimationFrame(animateC);
+}
+animateC();
+
+function customRayHover(e, color) {
+  currentColorC = color;
+  targetOpacityC = 1;
+  const rect = document.getElementById('demo-c').getBoundingClientRect();
+  sideC = (e.clientX - rect.left) < rect.width / 2 ? 'left' : 'right';
+}
+function customRayLeave() { targetOpacityC = 0; }
+</script>
+</body>
+</html>

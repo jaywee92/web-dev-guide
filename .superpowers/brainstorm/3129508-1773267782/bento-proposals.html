@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bento Proposals</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#05050c;
+  --surface:rgba(255,255,255,0.028);
+  --border:rgba(255,255,255,0.07);
+  --text:#e2e8f0;
+  --faint:#3a4a62;
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;padding:28px 20px 80px;min-height:100vh}
+h1{font-size:18px;font-weight:800;color:#fff;margin-bottom:4px}
+.sub{font-size:11px;color:#3a4a62;margin-bottom:26px}
+
+/* ── PROPOSAL TABS ── */
+.tabs{display:flex;gap:6px;margin-bottom:20px}
+.tab{padding:7px 16px;border-radius:8px;border:1.5px solid #1a2035;background:transparent;color:#3a4a62;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
+.tab:hover{border-color:#2d3f5a;color:#94a3b8}
+.tab.active{background:#1a2035;border-color:#2d3f5a;color:#e2e8f0}
+
+.panel{display:none}.panel.active{display:block}
+
+/* ── SHARED DEMO WRAPPER ── */
+.demo{position:relative;border-radius:14px;overflow:hidden;border:1px solid #1a2035;min-height:500px}
+canvas.bg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.demo-inner{position:relative;z-index:2;padding:22px 26px}
+.hero-row{margin-bottom:18px}
+.hero-title{font-size:22px;font-weight:800;letter-spacing:-.03em;color:#f0f4ff}
+.hero-desc{font-size:11px;color:#2d3f5a;margin-top:2px}
+
+/* ── BENTO GRID COMMON ── */
+.bento{display:grid;gap:8px}
+.bcard{
+  position:relative;overflow:hidden;border-radius:11px;
+  background:var(--surface);border:1px solid var(--border);
+  padding:14px 16px;cursor:pointer;
+  transition:border-color .3s,background .3s,transform .25s;
+  user-select:none;
+}
+.bcard::after{/* border glow */
+  content:'';position:absolute;inset:0;border-radius:11px;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%), var(--gc,transparent) 0%, transparent 60%);
+  opacity:0;transition:opacity .3s;pointer-events:none;z-index:1;
+}
+.bcard:hover::after{opacity:1}
+.bcard:hover{background:rgba(255,255,255,0.05)}
+
+/* spotlight overlay */
+.bcard .spotlight{
+  position:absolute;inset:0;border-radius:11px;
+  background:radial-gradient(circle 180px at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.04) 0%, transparent 70%);
+  pointer-events:none;z-index:0;opacity:0;transition:opacity .25s;
+}
+.bcard:hover .spotlight{opacity:1}
+
+/* top color border */
+.bcard .top-bar{
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--tc,transparent);
+  opacity:0;transition:opacity .3s;
+}
+.bcard:hover .top-bar{opacity:1}
+
+.bcard-content{position:relative;z-index:2}
+.bcard-icon-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.bcard-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.bcard-title{font-size:14px;font-weight:800;letter-spacing:-.01em}
+.bcard-sub{font-size:9px;color:#2d3f5a;margin-top:1px}
+.subcards{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.subcard{
+  font-size:9px;color:#4a5e78;padding:3px 8px;
+  border-radius:5px;border:1px solid rgba(255,255,255,0.06);
+  background:rgba(255,255,255,0.025);transition:all .15s;
+}
+.bcard:hover .subcard{color:#7a90ac}
+.bcard-label{font-size:10px;font-weight:700;color:#2d3f5a;margin-top:6px;display:flex;align-items:center;gap:5px}
+.bcard-count{font-size:9px;color:#1e2c42;font-variant-numeric:tabular-nums}
+
+/* group label */
+.glabel{font-size:9px;font-weight:800;letter-spacing:.1em;color:#1e2c42;padding:10px 0 5px;text-transform:uppercase}
+
+/* ── PROPOSAL A: Full bento, no group labels ── */
+#pa .bento{
+  grid-template-columns: 1fr 1.8fr 1fr;
+  grid-template-rows: auto auto auto;
+}
+#pa .b-html  {grid-column:1;grid-row:1}
+#pa .b-css   {grid-column:2;grid-row:1/3}
+#pa .b-js    {grid-column:3;grid-row:1}
+#pa .b-ts    {grid-column:1;grid-row:2}
+#pa .b-react {grid-column:3;grid-row:2}
+#pa .b-web   {grid-column:1;grid-row:3}
+#pa .b-http  {grid-column:2;grid-row:3}
+#pa .b-pg    {grid-column:3;grid-row:3}
+
+/* ── PROPOSAL B: Group-sectioned bento ── */
+#pb .bento-group{margin-bottom:6px}
+#pb .bento-row{display:grid;gap:8px}
+#pb .bento-row.markup{grid-template-columns:1fr 1.9fr}
+#pb .bento-row.prog{grid-template-columns:1fr 1fr}
+#pb .bento-row.fw{grid-template-columns:1fr 1fr 1fr 1fr}
+
+/* ── PROPOSAL C: hero feature cards ── */
+#pc .bento{
+  grid-template-columns: 1.4fr 1fr 1fr;
+}
+#pc .b-html {grid-column:1;grid-row:1;min-height:130px}
+#pc .b-css  {grid-column:2/4;grid-row:1;min-height:130px}
+#pc .b-js   {grid-column:1;grid-row:2;min-height:110px}
+#pc .b-ts   {grid-column:2;grid-row:2;min-height:110px}
+#pc .b-react{grid-column:3;grid-row:2/4;min-height:180px}
+#pc .b-web  {grid-column:1;grid-row:3;min-height:80px}
+#pc .b-http {grid-column:2;grid-row:3;min-height:80px}
+#pc .b-pg   {grid-column:1/3;grid-row:4;min-height:80px}
+#pc .b-react-extra{grid-column:3;grid-row:4;min-height:80px}
+
+/* big card extras */
+.bcard.featured .bcard-title{font-size:18px}
+.bcard.featured .bcard-sub{font-size:10px;color:#3a4a62}
+.bcard.featured .glint{
+  position:absolute;top:-30px;right:-30px;
+  width:100px;height:100px;border-radius:50%;
+  background:radial-gradient(circle, var(--gc2,transparent) 0%, transparent 70%);
+  opacity:0.4;pointer-events:none;
+}
+
+/* annotation strip */
+.ann{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.ann-item{
+  flex:1;min-width:160px;background:#080c14;
+  border:1px solid #111a2a;border-radius:9px;
+  padding:10px 13px;
+}
+.ann-item h4{font-size:10px;font-weight:800;color:#7a90ac;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.ann-item p{font-size:10px;color:#2d3f5a;line-height:1.6}
+.tag{display:inline-block;padding:1px 6px;border-radius:4px;font-size:9px;font-weight:700}
+.tag.green{background:#0c2016;color:#4ade80}
+.tag.blue{background:#0c1628;color:#60a5fa}
+.tag.purple{background:#160c28;color:#a78bfa}
+
+/* confirm */
+.confirm{margin-top:18px;display:flex;justify-content:flex-end;gap:8px}
+.btn{font-size:12px;font-weight:600;padding:7px 16px;border-radius:8px;border:1.5px solid #1a2035;background:transparent;color:#3a4a62;cursor:pointer;transition:all .15s}
+.btn:hover{border-color:#2d3f5a;color:#94a3b8}
+.btn.ok{background:linear-gradient(135deg,#3730a3,#6d28d9);border-color:transparent;color:#fff}
+.btn.ok:hover{opacity:.88}
+</style>
+</head>
+<body>
+
+<h1>Galaxy + Magic Bento — 3 Vorschläge</h1>
+<p class="sub">Cyberpunk · Futuristisch · Smooth · Hover zum Erleben</p>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('a')">A — Freies Bento-Grid</button>
+  <button class="tab" onclick="showTab('b')">B — Gruppiertes Bento</button>
+  <button class="tab" onclick="showTab('c')">C — Feature-Karten</button>
+</div>
+
+<!-- ════════════════ PROPOSAL A ════════════════ -->
+<div class="panel active" id="panel-a">
+<div class="demo" id="demo-a">
+  <canvas class="bg" id="bg-a"></canvas>
+  <div class="demo-inner">
+    <div class="hero-row">
+      <div class="hero-title">Web Dev Guide</div>
+      <div class="hero-desc">Dein Leitfaden für moderne Webentwicklung · Cyberpunk Edition</div>
+    </div>
+    <div class="bento" id="pa">
+      <div class="bcard b-html" style="--tc:#4ade80;--gc:rgba(74,222,128,0.12);--gc2:#4ade80" data-color="#4ade80" data-demo="a">
+        <div class="spotlight"></div><div class="top-bar"></div>
+        <div class="bcard-content">
+          <div class="bcard-icon-row"><div class="bcard-dot" style="background:#4ade80"></div><span class="bcard-title" style="color:#4ade80">HTML</span></div>
+          <div class="bcard-sub">Hypertext Markup Language</div>
+          <div class="subcards"><span class="subcard">🏗 Struktur & Semantik</span></div>
+          <div class="bcard-label"><span>3 Topics</span></div>
+        </div>
+      </div>
+      <div class="bcard b-css featured" style="--tc:#5b9cf5;--gc:rgba(91,156,245,0.1);--gc2:#5b9cf5" data-color="#5b9cf5" data-demo="a">
+        <div class="spotlight"></div><div class="top-bar"></div>
+        <div class="glint"></div>
+        <div class="bcard-content">
+          <div class="bcard-icon-row"><div class="bcard-dot" style="background:#5b9cf5"></div><span class="bcard-title" style="color:#5b9cf5">CSS</span></div>
+          <div class="bcard-sub">Cascading Style Sheets · 3 Unterkategorien</div>
+          <div class="subcards">
+            <span class="subcard">📖 Grundlagen</span>
+            <span class="subcard">🧩 Layout</span>
+            <span class="subcard">✨ Modern</span>
+          </div>
+          <div class="bcard-label"><span style="color:#5b9cf5aa;font-size:10px">Selektoren · Box Model · Flexbox · Grid · Variablen</span></div>
+        </div>
+      </div>
+      <div class="bcard b-js" style="--tc:#fbbf24;--gc:rgba(251,191,36,0.1);--gc2:#fbbf24" data-color="#fbbf24" data-demo="a">
+        <div class="spotlight"></div><div class="top-bar"></div>
+        <div class="bcard-content">
+          <div class="bcard-icon-row"><div class="bcard-dot" style="background:#fbbf24"></div><span class="bcard-title" style="color:#fbbf24">JavaScript</span></div>
+          <div class="bcard-sub">Sprache des Webs</div>
+          <div class="subcards"><span class="subcard">📖 Grundlagen</span></div>
+        </div>
+      </div>
+      <div class="bcard b-ts" style="--tc:#818cf8;--gc:rgba(129,140,248,0.1);--gc2:#818cf8" data-color="#818cf8" data-demo="a">
+        <div class="spotlight"></div><div class="top-bar"></div>
+        <div class="bcard-content">
+          <div class="bcard-icon-row"><div class="bcard-dot" style="background:#818cf8"></div><span class="bcard-title" style="color:#818cf8">TypeScript</span></div>
+          <div class="bcard-sub">Typisiertes JS</div>
+          <div class="subcards"><span class="subcard">📖 Grundlagen</span></div>
+        </div>
+      </div>
+      <div class="bcard b-react" style="--tc:#f472b6;--gc:rgba(244,114,182,0.1);--gc2:#f472b6" data-color="#f472b6" data-demo="a">
+        <div class="spotlight"></div><div class="top-bar"></div>
+        <div class="bcard-content">
+          <div class="bcard-icon-row"><div class="bcard-dot" style="background:#f472b6"></div><span class="bcard-title" style="color:#f472b6">React</span></div>
+          <div class="bcard-sub">UI Framework</div>
+          <div class="subcards"><span class="subcard">📖 Grundlagen</span></div>
+        </div>
+      </div>
+      <div class="bcard b-web" style="--tc:#34d399;--gc:rgba(52,211,153,0.1);--gc2:#34d399" data-color="#34d399" data-demo="a">
+        <div class="spotlight"></div><div class="top-bar"></div>
+        <div class="bcard-content">
+          <div class="bcard-icon-row"><div class="bcard-dot" style="background:#34d399"></div><span class="bcard-title" style="color:#34d399">Web APIs</span></div>
+          <div class="bcard-sub">Browser-Schnittstellen</div>
+        </div>
+      </div>
+      <div class="bcard b-http" style="--tc:#fb923c;--gc:rgba(251,146,60,0.1);--gc2:#fb923c" data-color="#fb923c" data-demo="a">
+        <div class="spotlight"></div><div class="top-bar"></div>
+        <div class="bcard-content">
+          <div class="bcard-icon-row"><div class="bcard-dot" style="background:#fb923c"></div><span class="bcard-title" style="color:#fb923c">HTTP</span></div>
+          <div class="bcard-sub">Hypertext Transfer Protocol</div>
+        </div>
+      </div>
+      <div class="bcard b-pg" style="--tc:#60a5fa;--gc:rgba(96,165,250,0.1);--gc2:#60a5fa" data-color="#60a5fa" data-demo="a">
+        <div class="spotlight"></div><div class="top-bar"></div>
+        <div class="bcard-content">
+          <div class="bcard-icon-row"><div class="bcard-dot" style="background:#60a5fa"></div><span class="bcard-title" style="color:#60a5fa">PostgreSQL</span></div>
+          <div class="bcard-sub">Relationale Datenbank</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ann">
+  <div class="ann-item"><h4><span class="tag green">Galaxy</span> Hintergrund</h4><p>Animierte Sterne driften sanft. Stars im Kartenbereich verfärben sich beim Hover.</p></div>
+  <div class="ann-item"><h4><span class="tag blue">Bento</span> Freies Grid</h4><p>Maximale visuelle Freiheit. CSS 2x breiter, asymmetrische Zellengrößen. Dashboard-Feeling.</p></div>
+  <div class="ann-item"><h4><span class="tag purple">Magic</span> Effekte</h4><p>Spotlight-Cursor · Border-Glow · Top-Farbstreifen · Subcategory-Chips · 3D Tilt (impl.)</p></div>
+</div>
+</div>
+
+<!-- ════════════════ PROPOSAL B ════════════════ -->
+<div class="panel" id="panel-b">
+<div class="demo" id="demo-b">
+  <canvas class="bg" id="bg-b"></canvas>
+  <div class="demo-inner">
+    <div class="hero-row">
+      <div class="hero-title">Web Dev Guide</div>
+      <div class="hero-desc">Strukturiert · Navigierbar · Futuristisch</div>
+    </div>
+
+    <div class="glabel">MARKUP & STIL</div>
+    <div class="bento-group" id="pb">
+      <div class="bento-row markup">
+        <div class="bcard" style="--tc:#4ade80;--gc:rgba(74,222,128,0.12)" data-color="#4ade80" data-demo="b">
+          <div class="spotlight"></div><div class="top-bar"></div>
+          <div class="bcard-content">
+            <div class="bcard-icon-row"><div class="bcard-dot" style="background:#4ade80"></div><span class="bcard-title" style="color:#4ade80">HTML</span></div>
+            <div class="bcard-sub">Hypertext Markup Language</div>
+            <div class="subcards"><span class="subcard">🏗 Struktur & Semantik</span></div>
+          </div>
+        </div>
+        <div class="bcard featured" style="--tc:#5b9cf5;--gc:rgba(91,156,245,0.08)" data-color="#5b9cf5" data-demo="b">
+          <div class="spotlight"></div><div class="top-bar"></div>
+          <div class="bcard-content">
+            <div class="bcard-icon-row"><div class="bcard-dot" style="background:#5b9cf5"></div><span class="bcard-title" style="color:#5b9cf5">CSS</span></div>
+            <div class="bcard-sub">Cascading Style Sheets</div>
+            <div class="subcards">
+              <span class="subcard">📖 Grundlagen</span><span class="subcard">🧩 Layout</span><span class="subcard">✨ Modern</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glabel" style="padding-top:14px">PROGRAMMIERUNG</div>
+      <div class="bento-row prog">
+        <div class="bcard" style="--tc:#fbbf24;--gc:rgba(251,191,36,0.1)" data-color="#fbbf24" data-demo="b">
+          <div class="spotlight"></div><div class="top-bar"></div>
+          <div class="bcard-content">
+            <div class="bcard-icon-row"><div class="bcard-dot" style="background:#fbbf24"></div><span class="bcard-title" style="color:#fbbf24">JavaScript</span></div>
+            <div class="bcard-sub">Programmiersprache des Webs</div>
+            <div class="subcards"><span class="subcard">📖 Grundlagen</span></div>
+          </div>
+        </div>
+        <div class="bcard" style="--tc:#818cf8;--gc:rgba(129,140,248,0.1)" data-color="#818cf8" data-demo="b">
+          <div class="spotlight"></div><div class="top-bar"></div>
+          <div class="bcard-content">
+            <div class="bcard-icon-row"><div class="bcard-dot" style="background:#818cf8"></div><span class="bcard-title" style="color:#818cf8">TypeScript</span></div>
+            <div class="bcard-sub">Typisiertes JavaScript</div>
+            <div class="subcards"><span class="subcard">📖 Grundlagen</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glabel" style="padding-top:14px">FRAMEWORKS & WEB</div>
+      <div class="bento-row fw">
+        <div class="bcard" style="--tc:#f472b6;--gc:rgba(244,114,182,0.1)" data-color="#f472b6" data-demo="b">
+          <div class="spotlight"></div><div class="top-bar"></div>
+          <div class="bcard-content">
+            <div class="bcard-icon-row"><div class="bcard-dot" style="background:#f472b6"></div><span class="bcard-title" style="color:#f472b6">React</span></div>
+            <div class="bcard-sub">UI Framework</div>
+          </div>
+        </div>
+        <div class="bcard" style="--tc:#34d399;--gc:rgba(52,211,153,0.1)" data-color="#34d399" data-demo="b">
+          <div class="spotlight"></div><div class="top-bar"></div>
+          <div class="bcard-content">
+            <div class="bcard-icon-row"><div class="bcard-dot" style="background:#34d399"></div><span class="bcard-title" style="color:#34d399">Web APIs</span></div>
+          </div>
+        </div>
+        <div class="bcard" style="--tc:#fb923c;--gc:rgba(251,146,60,0.1)" data-color="#fb923c" data-demo="b">
+          <div class="spotlight"></div><div class="top-bar"></div>
+          <div class="bcard-content">
+            <div class="bcard-icon-row"><div class="bcard-dot" style="background:#fb923c"></div><span class="bcard-title" style="color:#fb923c">HTTP</span></div>
+          </div>
+        </div>
+        <div class="bcard" style="--tc:#60a5fa;--gc:rgba(96,165,250,0.1)" data-color="#60a5fa" data-demo="b">
+          <div class="spotlight"></div><div class="top-bar"></div>
+          <div class="bcard-content">
+            <div class="bcard-icon-row"><div class="bcard-dot" style="background:#60a5fa"></div><span class="bcard-title" style="color:#60a5fa">PostgreSQL</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ann">
+  <div class="ann-item"><h4><span class="tag green">Struktur</span> Gruppen</h4><p>Behält Gruppenbezeichnungen (MARKUP, PROGRAMMIERUNG…). Bento-Stil pro Gruppe. Beste Lesbarkeit.</p></div>
+  <div class="ann-item"><h4><span class="tag blue">Layout</span> Pro Gruppe</h4><p>Markup-Gruppe: asymmetrisch. Programmierung: 2-er Grid. Frameworks: 4-er Reihe. Logische Hierarchie.</p></div>
+  <div class="ann-item"><h4><span class="tag purple">UX</span> Navigation</h4><p>Einfachste Navigation. Galaxy-Hintergrund + Stern-Illumination pro Kategorie. Empfohlen für UX.</p></div>
+</div>
+</div>
+
+<!-- ════════════════ PROPOSAL C ════════════════ -->
+<div class="panel" id="panel-c">
+<div class="demo" id="demo-c">
+  <canvas class="bg" id="bg-c"></canvas>
+  <div class="demo-inner">
+    <div class="hero-row">
+      <div class="hero-title">Web Dev Guide</div>
+      <div class="hero-desc">Feature-Karten · Dramatisch · Futuristisch</div>
+    </div>
+    <div class="bento" id="pc">
+      <div class="bcard b-html featured" style="--tc:#4ade80;--gc:rgba(74,222,128,0.12)" data-color="#4ade80" data-demo="c">
+        <div class="spotlight"></div><div class="top-bar"></div>
+        <div class="bcard-content">
+          <div class="bcard-icon-row"><div class="bcard-dot" style="background:#4ade80"></div><span class="bcard-title" style="color:#4ade80">HTML</span></div>
+          <div class="bcard-sub">Hypertext Markup Language</div>
+          <div class="subcards"><span class="subcard">🏗 Struktur & Semantik</span></div>
+        </div>
+      </div>
+      <div class="bcard b-css featured" style="--tc:#5b9cf5;--gc:rgba(91,156,245,0.08)" data-color="#5b9cf5" data-demo="c">
+        <div class="spotlight"></div><div class="top-bar"></div>
+        <div class="bcard-content">
+          <div class="bcard-icon-row"><div class="bcard-dot" style="background:#5b9cf5"></div><span class="bcard-title" style="color:#5b9cf5">CSS</span></div>
+          <div class="bcard-sub">Cascading Style Sheets</div>
+          <div class="subcards"><span class="subcard">📖 Grundlagen</span><span class="subcard">🧩 Layout</span><span class="subcard">✨ Modern</span></div>
+        </div>
+      </div>
+      <div class="bcard b-js" style="--tc:#fbbf24;--gc:rgba(251,191,36,0.1)" data-color="#fbbf24" data-demo="c">
+        <div class="spotlight"></div><div class="top-bar"></div>
+        <div class="bcard-content">
+          <div class="bcard-icon-row"><div class="bcard-dot" style="background:#fbbf24"></div><span class="bcard-title" style="color:#fbbf24">JavaScript</span></div>
+          <div class="bcard-sub">Sprache des Webs</div>
+        </div>
+      </div>
+      <div class="bcard b-ts" style="--tc:#818cf8;--gc:rgba(129,140,248,0.1)" data-color="#818cf8" data-demo="c">
+        <div class="spotlight"></div><div class="top-bar"></div>
+        <div class="bcard-content">
+          <div class="bcard-icon-row"><div class="bcard-dot" style="background:#818cf8"></div><span class="bcard-title" style="color:#818cf8">TypeScript</span></div>
+        </div>
+      </div>
+      <div class="bcard b-react featured" style="--tc:#f472b6;--gc:rgba(244,114,182,0.1)" data-color="#f472b6" data-demo="c">
+        <div class="spotlight"></div><div class="top-bar"></div>
+        <div class="bcard-content">
+          <div class="bcard-icon-row"><div class="bcard-dot" style="background:#f472b6"></div><span class="bcard-title" style="color:#f472b6">React</span></div>
+          <div class="bcard-sub">UI Component Framework</div>
+          <div class="subcards"><span class="subcard">📖 Grundlagen</span></div>
+          <div style="margin-top:12px;font-size:9px;color:#2d3f5a;line-height:1.8">
+            Components · State · Hooks<br>Router · useEffect
+          </div>
+        </div>
+      </div>
+      <div class="bcard b-web" style="--tc:#34d399;--gc:rgba(52,211,153,0.1)" data-color="#34d399" data-demo="c">
+        <div class="spotlight"></div><div class="top-bar"></div>
+        <div class="bcard-content">
+          <div class="bcard-icon-row"><div class="bcard-dot" style="background:#34d399"></div><span class="bcard-title" style="color:#34d399">Web APIs</span></div>
+        </div>
+      </div>
+      <div class="bcard b-http" style="--tc:#fb923c;--gc:rgba(251,146,60,0.1)" data-color="#fb923c" data-demo="c">
+        <div class="spotlight"></div><div class="top-bar"></div>
+        <div class="bcard-content">
+          <div class="bcard-icon-row"><div class="bcard-dot" style="background:#fb923c"></div><span class="bcard-title" style="color:#fb923c">HTTP</span></div>
+        </div>
+      </div>
+      <div class="bcard b-pg" style="--tc:#60a5fa;--gc:rgba(96,165,250,0.1)" data-color="#60a5fa" data-demo="c">
+        <div class="spotlight"></div><div class="top-bar"></div>
+        <div class="bcard-content">
+          <div class="bcard-icon-row"><div class="bcard-dot" style="background:#60a5fa"></div><span class="bcard-title" style="color:#60a5fa">PostgreSQL</span></div>
+          <div class="bcard-sub">Relationale Datenbank · SQL</div>
+        </div>
+      </div>
+      <div class="bcard b-react-extra" style="--tc:#f472b6;--gc:rgba(244,114,182,0.06);opacity:0.5;pointer-events:none" data-color="#f472b6" data-demo="c">
+        <div class="bcard-content" style="display:flex;align-items:center;justify-content:center;height:100%;color:#1e2c42;font-size:10px">→ mehr demnächst</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ann">
+  <div class="ann-item"><h4><span class="tag purple">Feature</span> Karten</h4><p>Wichtige Kategorien (CSS, React) erhalten große Zellen. Dramatischstes visuelles Ergebnis.</p></div>
+  <div class="ann-item"><h4><span class="tag blue">Asymmetrie</span> Cyberpunk</h4><p>Unregelmäßige Zellengrößen erzeugen Spannung. Futuristisches Dashboard-Look.</p></div>
+  <div class="ann-item"><h4><span class="tag green">Stern</span> Illumination</h4><p>Bei großen Karten sehr eindrucksvoll — großflächige Stern-Verfärbung beim Hover.</p></div>
+</div>
+</div>
+
+<div class="confirm">
+  <button class="btn" id="sel-a" onclick="pick('A')">A wählen</button>
+  <button class="btn" id="sel-b" onclick="pick('B')">B wählen</button>
+  <button class="btn" id="sel-c" onclick="pick('C')">C wählen</button>
+  <button class="btn ok" id="confirm-btn" style="display:none" onclick="confirmPick()">Bestätigen →</button>
+</div>
+
+<script>
+// ── TABS ──────────────────────────────────────────────────────────────────────
+function showTab(id) {
+  document.querySelectorAll('.tab').forEach((t,i)=> t.classList.toggle('active', ['a','b','c'][i]===id));
+  document.querySelectorAll('.panel').forEach(p=> p.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+}
+
+// ── GALAXY CANVAS ─────────────────────────────────────────────────────────────
+const canvases = {};
+const contexts = {};
+const starData = {};
+const hoverState = {};
+
+['a','b','c'].forEach(id => {
+  const cv = document.getElementById('bg-'+id);
+  const demo = document.getElementById('demo-'+id);
+  canvases[id] = cv;
+  contexts[id] = cv.getContext('2d');
+  hoverState[id] = { color: null, rect: null, opacity: 0, target: 0, cr:255,cg:255,cb:255,tr:255,tg:255,tb:255 };
+
+  function resize() {
+    const r = demo.getBoundingClientRect();
+    cv.width  = r.width  * devicePixelRatio;
+    cv.height = r.height * devicePixelRatio;
+    contexts[id].scale(devicePixelRatio, devicePixelRatio);
+    initGalaxy(id, r.width, r.height);
+  }
+  resize();
+  new ResizeObserver(resize).observe(demo);
+});
+
+function initGalaxy(id, W, H) {
+  const arr = [];
+  for (let i=0;i<320;i++) {
+    arr.push({ x:Math.random()*W, y:Math.random()*H,
+      vy:-(Math.random()*.09+.03), r:Math.random()*1.25+.2,
+      baseA:Math.random()*.4+.1, phase:Math.random()*Math.PI*2,
+      ts:Math.random()*.45+.15 });
+  }
+  starData[id] = arr;
+}
+
+function hexRgb(hex){ const v=parseInt(hex.replace('#',''),16); return[(v>>16&255),(v>>8&255),(v&255)]; }
+function lerp(a,b,t){return a+(b-a)*t}
+
+function inZone(sx,sy,rect,demoEl){
+  if(!rect||!demoEl) return 0;
+  const dr=demoEl.getBoundingClientRect();
+  const x1=rect.left-dr.left, y1=rect.top-dr.top;
+  const x2=rect.right-dr.left, y2=rect.bottom-dr.top;
+  const cx=(x1+x2)/2, cy=(y1+y2)/2;
+  const hw=(x2-x1)/2, hh=(y2-y1)/2;
+  const margin=30;
+  const dx=Math.max(0,Math.abs(sx-cx)-hw);
+  const dy=Math.max(0,Math.abs(sy-cy)-hh);
+  if(dx>margin||dy>margin) return 0;
+  return (1-dx/margin)*(1-dy/margin);
+}
+
+let time=0;
+function drawAll(){
+  time+=0.016;
+  ['a','b','c'].forEach(id=>{
+    const cv=canvases[id], ctx=contexts[id];
+    const stars=starData[id];
+    if(!stars||!cv) return;
+    const W=cv.width/devicePixelRatio, H=cv.height/devicePixelRatio;
+    const hs=hoverState[id];
+    hs.opacity+=((hs.target||0)-hs.opacity)*.055;
+    hs.cr=lerp(hs.cr,hs.tr,.07);
+    hs.cg=lerp(hs.cg,hs.tg,.07);
+    hs.cb=lerp(hs.cb,hs.tb,.07);
+    const rI=hs.cr|0, gI=hs.cg|0, bI=hs.cb|0;
+
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#05050c';
+    ctx.fillRect(0,0,W,H);
+
+    const demoEl=document.getElementById('demo-'+id);
+    for(const s of stars){
+      s.y+=s.vy;
+      if(s.y<-3){s.y=H+3;s.x=Math.random()*W;}
+      const tw=Math.sin(time*s.ts+s.phase)*.2+.8;
+      const bA=s.baseA*tw;
+      const infl=hs.rect ? inZone(s.x,s.y,hs.rect,demoEl)*hs.opacity : 0;
+      if(infl>.03){
+        const t2=Math.min(1,infl*1.1);
+        ctx.beginPath();
+        ctx.arc(s.x,s.y,s.r*(1+infl*.7),0,Math.PI*2);
+        ctx.fillStyle=`rgba(${Math.round(lerp(175,rI,t2))},${Math.round(lerp(195,gI,t2))},${Math.round(lerp(228,bI,t2))},${Math.min(1,bA+infl*.55)})`;
+        ctx.fill();
+        if(infl>.28&&s.r>.6){
+          const g2=ctx.createRadialGradient(s.x,s.y,s.r,s.x,s.y,s.r*4.5);
+          g2.addColorStop(0,`rgba(${rI},${gI},${bI},${infl*.2})`);
+          g2.addColorStop(1,`rgba(${rI},${gI},${bI},0)`);
+          ctx.beginPath();ctx.arc(s.x,s.y,s.r*4.5,0,Math.PI*2);
+          ctx.fillStyle=g2;ctx.fill();
+        }
+      } else {
+        ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+        ctx.fillStyle=`rgba(168,188,225,${bA})`;ctx.fill();
+      }
+    }
+  });
+  requestAnimationFrame(drawAll);
+}
+drawAll();
+
+// ── BENTO MOUSE TRACKING ─────────────────────────────────────────────────────
+document.querySelectorAll('.bcard').forEach(card=>{
+  const id=card.dataset.demo;
+  card.addEventListener('mouseenter', e=>{
+    const color=card.dataset.color||'#ffffff';
+    const [r,g,b]=hexRgb(color);
+    hoverState[id].target=1;
+    hoverState[id].rect=card.getBoundingClientRect();
+    hoverState[id].tr=r; hoverState[id].tg=g; hoverState[id].tb=b;
+  });
+  card.addEventListener('mouseleave',()=>{
+    hoverState[id].target=0;
+    hoverState[id].rect=null;
+  });
+  card.addEventListener('mousemove', e=>{
+    const r=card.getBoundingClientRect();
+    const mx=((e.clientX-r.left)/r.width*100).toFixed(1)+'%';
+    const my=((e.clientY-r.top)/r.height*100).toFixed(1)+'%';
+    card.style.setProperty('--mx',mx);
+    card.style.setProperty('--my',my);
+  });
+});
+
+// ── SELECTION ────────────────────────────────────────────────────────────────
+let picked=null;
+function pick(letter){
+  picked=letter;
+  ['a','b','c'].forEach(x=>{
+    document.getElementById('sel-'+x.toLowerCase()).classList.toggle('ok', x.toLowerCase()===letter.toLowerCase());
+  });
+  document.getElementById('confirm-btn').style.display='inline-block';
+  if(window.recordEvent) window.recordEvent('click',letter.toLowerCase(),'Proposal '+letter);
+  showTab(letter.toLowerCase());
+}
+function confirmPick(){
+  alert('Proposal '+picked+' bestätigt — im Terminal bestätigen.');
+}
+</script>
+</body>
+</html>

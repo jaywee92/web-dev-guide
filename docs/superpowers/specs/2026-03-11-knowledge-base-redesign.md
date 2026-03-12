@@ -143,7 +143,7 @@ These are plain `id` attributes on wrapper `<div>` elements — they do **not** 
 | `src/types/index.ts` | MODIFY — update `CategoryId` union |
 | `src/data/categories.ts` | MODIFY — split css → 3, add `CATEGORY_GROUPS` |
 | `src/data/topics.ts` | MODIFY — update `category` on 15 CSS topics |
-| `src/pages/Home/CategoryGrid.tsx` | MODIFY — render group headers, compact last-group layout |
+| `src/pages/Home/CategoryGrid.tsx` | MODIFY — render group headers, compact small-category layout |
 | `src/pages/CategoryPage/index.tsx` | MODIFY — breadcrumb + numbered reference cards |
 | `src/pages/TopicPage/index.tsx` | MODIFY — breadcrumb + section IDs |
 | `src/components/layout/TopicSidebar.tsx` | MODIFY — add on-page anchor nav section |

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galaxy + Star Illumination v3</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #07070d;
+    color: #e2e8f0;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    min-height: 100vh;
+    padding: 28px 24px 64px;
+  }
+  h1 { font-size: 19px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .sub { font-size: 12px; color: #475569; margin-bottom: 22px; }
+
+  .demo-frame {
+    position: relative; width: 100%; height: 560px;
+    border-radius: 14px; overflow: hidden;
+    border: 1px solid #1a1f2e;
+  }
+  #gc { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  .content {
+    position: relative; z-index: 3;
+    padding: 26px 34px;
+    display: flex; flex-direction: column;
+  }
+  .hero { font-size: 25px; font-weight: 800; color: #f8fafc; letter-spacing: -0.03em; margin-bottom: 2px; }
+  .hero-sub { font-size: 12px; color: #394660; margin-bottom: 16px; }
+
+  .group-label {
+    font-size: 9px; font-weight: 800; letter-spacing: .12em;
+    color: #2d3a50; padding: 8px 0 4px; text-transform: uppercase;
+  }
+
+  .sections { display: flex; flex-direction: column; gap: 7px; }
+
+  .tech-section {
+    background: rgba(255,255,255,0.022);
+    border: 1px solid rgba(255,255,255,0.055);
+    border-radius: 10px; overflow: hidden;
+    transition: border-color 0.3s, background 0.3s;
+    width: 560px;
+  }
+  .sec-header {
+    display: flex; align-items: center; gap: 9px;
+    padding: 8px 13px 7px;
+    border-bottom: 1px solid rgba(255,255,255,0.045);
+  }
+  .sec-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .sec-title { font-size: 12px; font-weight: 800; letter-spacing: .02em; }
+  .sec-sub { font-size: 10px; color: #2d3a50; margin-left: 4px; }
+  .sec-cards { display: flex; gap: 6px; padding: 7px 13px 9px; flex-wrap: wrap; }
+  .sec-card {
+    background: rgba(255,255,255,0.028);
+    border: 1px solid rgba(255,255,255,0.065);
+    border-radius: 7px; padding: 4px 10px;
+    font-size: 10px; color: #4a5a72; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .sec-card:hover { color: #94a3b8; background: rgba(255,255,255,0.06); }
+
+  /* annotation below */
+  .ann { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .ann-box {
+    background: #0a0c15; border: 1px solid #151c2a;
+    border-radius: 9px; padding: 12px 14px;
+  }
+  .ann-box h4 { font-size: 11px; font-weight: 700; color: #8899b8; margin-bottom: 5px; }
+  .ann-box p { font-size: 11px; color: #3d4f6b; line-height: 1.6; }
+
+  .confirm-bar { margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px; }
+  .btn { font-size: 12px; font-weight: 600; padding: 7px 18px; border-radius: 8px; border: 1.5px solid #1a1f2e; background: transparent; color: #4a5a72; cursor: pointer; transition: all 0.15s; }
+  .btn:hover { border-color: #2d3a50; color: #cbd5e1; }
+  .btn.ok { background: linear-gradient(135deg, #4338ca, #6d28d9); border-color: transparent; color: #fff; }
+  .btn.ok:hover { opacity: 0.88; }
+</style>
+</head>
+<body>
+
+<h1>Galaxy + Star Illumination</h1>
+<p class="sub">Animierter Sternenhintergrund · Sterne in Kategoriezone verfärben sich beim Hover</p>
+
+<div class="demo-frame" id="frame">
+  <canvas id="gc"></canvas>
+  <div class="content">
+    <div>
+      <div class="hero">Web Dev Guide</div>
+      <div class="hero-sub">Dein Leitfaden für moderne Webentwicklung</div>
+    </div>
+    <div class="group-label">MARKUP & STIL</div>
+    <div class="sections">
+      <div class="tech-section" id="s0" onmouseenter="hover('s0','#4ade80')" onmouseleave="leave()">
+        <div class="sec-header">
+          <div class="sec-dot" style="background:#4ade80"></div>
+          <span class="sec-title" style="color:#4ade80">HTML</span>
+          <span class="sec-sub">Hypertext Markup Language</span>
+        </div>
+        <div class="sec-cards">
+          <div class="sec-card">🏗 Struktur & Semantik</div>
+        </div>
+      </div>
+      <div class="tech-section" id="s1" onmouseenter="hover('s1','#5b9cf5')" onmouseleave="leave()">
+        <div class="sec-header">
+          <div class="sec-dot" style="background:#5b9cf5"></div>
+          <span class="sec-title" style="color:#5b9cf5">CSS</span>
+          <span class="sec-sub">Cascading Style Sheets</span>
+        </div>
+        <div class="sec-cards">
+          <div class="sec-card">📖 Grundlagen</div>
+          <div class="sec-card">🧩 Layout</div>
+          <div class="sec-card">✨ Modern</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group-label">PROGRAMMIERUNG</div>
+    <div class="sections">
+      <div class="tech-section" id="s2" onmouseenter="hover('s2','#fbbf24')" onmouseleave="leave()">
+        <div class="sec-header">
+          <div class="sec-dot" style="background:#fbbf24"></div>
+          <span class="sec-title" style="color:#fbbf24">JavaScript</span>
+          <span class="sec-sub">Programmiersprache des Webs</span>
+        </div>
+        <div class="sec-cards">
+          <div class="sec-card">📖 Grundlagen</div>
+        </div>
+      </div>
+      <div class="tech-section" id="s3" onmouseenter="hover('s3','#818cf8')" onmouseleave="leave()">
+        <div class="sec-header">
+          <div class="sec-dot" style="background:#818cf8"></div>
+          <span class="sec-title" style="color:#818cf8">TypeScript</span>
+          <span class="sec-sub">Typisiertes JavaScript</span>
+        </div>
+        <div class="sec-cards">
+          <div class="sec-card">📖 Grundlagen</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group-label">FRAMEWORKS & WEB</div>
+    <div class="sections">
+      <div class="tech-section" id="s4" onmouseenter="hover('s4','#f472b6')" onmouseleave="leave()">
+        <div class="sec-header">
+          <div class="sec-dot" style="background:#f472b6"></div>
+          <span class="sec-title" style="color:#f472b6">React</span>
+          <span class="sec-sub">UI Component Framework</span>
+        </div>
+        <div class="sec-cards">
+          <div class="sec-card">📖 Grundlagen</div>
+        </div>
+      </div>
+      <div class="tech-section" id="s5" onmouseenter="hover('s5','#60a5fa')" onmouseleave="leave()">
+        <div class="sec-header">
+          <div class="sec-dot" style="background:#60a5fa"></div>
+          <span class="sec-title" style="color:#60a5fa">PostgreSQL</span>
+          <span class="sec-sub">Relationale Datenbank</span>
+        </div>
+        <div class="sec-cards">
+          <div class="sec-card">📖 SQL Grundlagen</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ann">
+  <div class="ann-box">
+    <h4>Animierter Sternenhimmel</h4>
+    <p>~380 Sterne driften sanft nach oben, wrappen am Rand. Individuelles Twinkle-Pulsieren pro Stern. Dezente blau-weißliche Grundfarbe.</p>
+  </div>
+  <div class="ann-box">
+    <h4>Stern-Illumination beim Hover</h4>
+    <p>Sterne die sich im Bereich der gehovertten TechSection befinden nehmen deren Farbe an. Smooth fade in/out, sanftes Aufleuchten ohne Rays.</p>
+  </div>
+</div>
+
+<div class="confirm-bar">
+  <button class="btn" onclick="history.back()">← Zurück</button>
+  <button class="btn ok" onclick="ok()">Passt — Design bestätigen ✓</button>
+</div>
+
+<script>
+const canvas = document.getElementById('gc');
+const ctx = canvas.getContext('2d');
+const frame = document.getElementById('frame');
+
+let W = 0, H = 0;
+const N = 380;
+const stars = [];
+
+function initStars() {
+  stars.length = 0;
+  for (let i = 0; i < N; i++) {
+    stars.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vy: -(Math.random() * 0.1 + 0.03),
+      r: Math.random() * 1.35 + 0.2,
+      baseA: Math.random() * 0.42 + 0.1,
+      phase: Math.random() * Math.PI * 2,
+      twinkleSpeed: Math.random() * 0.5 + 0.15,
+    });
+  }
+}
+
+function resize() {
+  const r = frame.getBoundingClientRect();
+  W = r.width; H = r.height;
+  canvas.width  = W * devicePixelRatio;
+  canvas.height = H * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  initStars();
+}
+resize();
+new ResizeObserver(resize).observe(frame);
+
+// ── zone: bounding rect of hovered section mapped to canvas coords ──────────
+// We store the section ID → rect every frame so we always have current values.
+let hoveredId   = null;
+let targetColor = null;
+let illumOpacity = 0;   // 0→1 animated
+let targetIllum  = 0;
+
+// rgb lerp targets
+let cr = 255, cg = 255, cb = 255;
+let tr = 255, tg = 255, tb = 255;
+
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+function hexRgb(hex) {
+  const v = parseInt(hex.replace('#',''), 16);
+  return [(v>>16&255), (v>>8&255), (v&255)];
+}
+
+window.hover = function(id, color) {
+  hoveredId    = id;
+  targetColor  = color;
+  targetIllum  = 1;
+  const [r,g,b] = hexRgb(color);
+  tr = r; tg = g; tb = b;
+};
+window.leave = function() {
+  targetIllum = 0;
+  hoveredId   = null;
+};
+
+// Get section rect in canvas-local coordinates (accounting for devicePixelRatio scaling)
+function getSectionZone(id) {
+  const el = document.getElementById(id);
+  if (!el) return null;
+  const sr = el.getBoundingClientRect();
+  const fr = frame.getBoundingClientRect();
+  return {
+    x1: sr.left - fr.left,
+    y1: sr.top  - fr.top,
+    x2: sr.right  - fr.left,
+    y2: sr.bottom - fr.top,
+  };
+}
+
+// How much is a star "in" the zone? 1 = fully inside, fades off outside
+function starInZone(sx, sy, zone) {
+  if (!zone) return 0;
+  const { x1, y1, x2, y2 } = zone;
+  const cx = (x1 + x2) / 2;
+  const cy = (y1 + y2) / 2;
+  const hw = (x2 - x1) / 2;  // half-width
+  const hh = (y2 - y1) / 2;  // half-height
+
+  // Soft box: inside = 1, fades out over ~40px margin
+  const margin = 36;
+  const dx = Math.max(0, Math.abs(sx - cx) - hw);
+  const dy = Math.max(0, Math.abs(sy - cy) - hh);
+  if (dx > margin || dy > margin) return 0;
+  const fx = 1 - dx / margin;
+  const fy = 1 - dy / margin;
+  return fx * fy;
+}
+
+let time = 0;
+function draw() {
+  time += 0.016;
+
+  // ease values
+  illumOpacity += (targetIllum  - illumOpacity) * 0.055;
+  cr = lerp(cr, tr, 0.07);
+  cg = lerp(cg, tg, 0.07);
+  cb = lerp(cb, tb, 0.07);
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#07070d';
+  ctx.fillRect(0, 0, W, H);
+
+  const zone = (hoveredId && illumOpacity > 0.01) ? getSectionZone(hoveredId) : null;
+  const rI = cr|0, gI = cg|0, bI = cb|0;
+
+  for (const s of stars) {
+    // drift
+    s.y += s.vy;
+    if (s.y < -3) { s.y = H + 3; s.x = Math.random() * W; }
+
+    const twinkle = Math.sin(time * s.twinkleSpeed + s.phase) * 0.22 + 0.78;
+    const baseA   = s.baseA * twinkle;
+
+    // zone influence
+    const infl = zone ? starInZone(s.x, s.y, zone) * illumOpacity : 0;
+
+    if (infl > 0.03) {
+      // blend star color from neutral blue-white → category color
+      const t2 = Math.min(1, infl * 1.1);
+      const sR = Math.round(lerp(175, rI, t2));
+      const sG = Math.round(lerp(195, gI, t2));
+      const sB = Math.round(lerp(230, bI, t2));
+      const sA = Math.min(1, baseA + infl * 0.55);
+      const sr = s.r * (1 + infl * 0.65);
+
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, sr, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${sR},${sG},${sB},${sA})`;
+      ctx.fill();
+
+      // soft glow halo on brighter stars
+      if (infl > 0.3 && s.r > 0.7) {
+        const halo = ctx.createRadialGradient(s.x, s.y, sr, s.x, s.y, sr * 4.5);
+        halo.addColorStop(0, `rgba(${rI},${gI},${bI},${infl * 0.22})`);
+        halo.addColorStop(1, `rgba(${rI},${gI},${bI},0)`);
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, sr * 4.5, 0, Math.PI * 2);
+        ctx.fillStyle = halo;
+        ctx.fill();
+      }
+    } else {
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(170,192,228,${baseA})`;
+      ctx.fill();
+    }
+  }
+
+  requestAnimationFrame(draw);
+}
+draw();
+
+window.ok = function() {
+  if (window.recordEvent) window.recordEvent('click', 'approved', 'v3 approved');
+  alert('Design bestätigt — bitte im Terminal bestätigen.');
+};
+</script>
+</body>
+</html>
