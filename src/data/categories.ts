@@ -160,7 +160,7 @@ export const CATEGORIES: Category[] = [
   },
   {
     id: 'git-collab',
-    title: 'Collaboration',
+    title: 'Teamwork',
     description: 'Merge Conflicts · Undo · Stash',
     color: '#5eead4',
     icon: 'Users',
