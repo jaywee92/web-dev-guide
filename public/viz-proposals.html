@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viz Animation — Technik-Vorschläge</title>
+<style>
+  :root {
+    --bg:#070913;--surface:#0f1322;--sb:#1a2035;
+    --border:rgba(255,255,255,.08);--text:#e8ecf3;
+    --muted:#6b7485;--faint:#3a4055;--accent:#2dd4bf;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100vh}
+  nav{position:sticky;top:0;z-index:100;background:rgba(7,9,19,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;height:52px;gap:0}
+  .brand{font-size:13px;font-weight:700;color:var(--accent);margin-right:28px;font-family:monospace}
+  .tabs{display:flex;gap:2px;flex-wrap:wrap}
+  .tab{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;border:none;background:transparent;transition:color .2s,background .2s}
+  .tab:hover{color:var(--text);background:rgba(255,255,255,.05)}
+  .tab.active{color:var(--text);background:rgba(255,255,255,.09)}
+  .page{max-width:920px;margin:0 auto;padding:40px 24px 100px}
+  .panel{display:none}.panel.active{display:block}
+  .vheader{margin-bottom:28px}
+  .vbadge{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:4px;background:rgba(45,212,191,.12);color:var(--accent);border:1px solid rgba(45,212,191,.25);margin-bottom:10px;font-family:monospace}
+  .vtitle{font-size:26px;font-weight:800;margin-bottom:8px}
+  .vdesc{font-size:14px;color:var(--muted);line-height:1.65;max-width:640px}
+  .vtags{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .vtag{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:6px;background:rgba(255,255,255,.04);border:1px solid var(--border);font-size:11px;color:var(--muted);font-family:monospace}
+  .vtag .dot{width:6px;height:6px;border-radius:50%}
+  .demo-frame{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:24px}
+  .demo-topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border);font-size:11px;font-family:monospace;color:var(--muted)}
+  .demo-dots{display:flex;gap:6px}
+  .demo-dot{width:10px;height:10px;border-radius:50%}
+  .demo-body{min-height:360px;display:flex;align-items:center;justify-content:center;padding:32px;overflow:hidden;position:relative}
+  .demo-ctrl{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-top:1px solid var(--border)}
+  .sdots{display:flex;gap:6px;align-items:center}
+  .sdot{height:7px;border-radius:4px;cursor:pointer;border:none;padding:0;transition:all .25s;background:var(--sb)}
+  .sdot.on{background:var(--accent)}
+  .nav-btns{display:flex;gap:8px}
+  .nbtn{padding:6px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--sb);color:var(--text);transition:background .15s}
+  .nbtn:hover{background:rgba(255,255,255,.08)}
+  .nbtn.p{background:rgba(45,212,191,.15);border-color:rgba(45,212,191,.4);color:var(--accent)}
+  .nbtn.p:hover{background:rgba(45,212,191,.25)}
+  .vote-bar{margin-top:32px;padding:18px 22px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .vote-bar span{font-size:13px;color:var(--muted)}
+  .vbtn{padding:7px 18px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid rgba(45,212,191,.3);background:rgba(45,212,191,.1);color:var(--accent);transition:background .15s}
+  .vbtn:hover{background:rgba(45,212,191,.22)}
+
+  /* A */
+  .a-row{display:flex;align-items:center;gap:10px;width:100%;max-width:340px;transition:all .4s}
+  .a-circle{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:11px;font-weight:700;flex-shrink:0;transition:all .4s}
+  .a-info{flex:1}
+  .a-cmd{font-family:monospace;font-size:12px;font-weight:700;transition:color .4s}
+  .a-lbl{font-family:monospace;font-size:10px;color:#6b7485}
+
+  /* C: Terminal */
+  .term-wrap{width:100%;border-radius:0;border:none}
+  .term-bar{background:#1c1c1e;padding:10px 16px;display:flex;align-items:center;gap:8px}
+  .term-td{width:12px;height:12px;border-radius:50%}
+  .term-title{font-size:12px;color:#6b7280;margin:0 auto;font-family:monospace}
+  .term-body{background:#0d1117;padding:20px;min-height:220px;font-family:"SF Mono","Fira Code",Consolas,monospace;font-size:13px;line-height:1.8}
+  .tline{display:flex;align-items:baseline;gap:8px;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+  .tline.show{opacity:1;transform:none}
+  .tprompt{color:#4ade80;flex-shrink:0}
+  .tcmd{color:#e8ecf3}
+  .tout{color:#6b7485;padding-left:20px}
+  .tout.ok{color:#4ade80}
+  .tout.info{color:#5b9cf5}
+  .tout.warn{color:#fbbf24}
+  .tcursor{display:inline-block;width:8px;height:14px;background:#4ade80;animation:blink .8s infinite;vertical-align:middle}
+  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+
+  /* D: 3D */
+  .d-scene{perspective:800px;width:100%;max-width:460px;display:flex;flex-direction:column;gap:10px}
+  .d-card{border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:14px;border:1px solid var(--border);background:var(--sb);transition:transform .5s cubic-bezier(.34,1.56,.64,1),box-shadow .4s,border-color .4s,background .4s;transform-origin:left center}
+  .d-card.active{transform:rotateY(-4deg) translateZ(24px) scale(1.02);box-shadow:0 8px 40px rgba(0,0,0,.4);border-color:rgba(45,212,191,.35);background:rgba(45,212,191,.06)}
+  .d-card.past{transform:rotateY(3deg) translateZ(-16px) scale(.97);opacity:.5}
+  .d-icon{font-size:28px;flex-shrink:0}
+  .d-num{margin-left:auto;font-family:monospace;font-size:11px;font-weight:800;padding:3px 8px;border-radius:5px;flex-shrink:0}
+
+  /* F: Neon */
+  .f-grid{width:100%;max-width:440px;display:grid;grid-template-columns:1fr 32px 1fr 32px 1fr 32px 1fr;align-items:center}
+  .f-node{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 8px;border-radius:14px;border:2px solid var(--faint);background:var(--sb);transition:all .45s;position:relative}
+  .f-node .ficon{font-size:28px}
+  .f-node .fname{font-family:monospace;font-size:11px;font-weight:700;color:var(--muted);text-align:center;transition:color .4s}
+  .f-node.active{border-color:var(--accent);box-shadow:0 0 20px var(--accent),0 0 40px rgba(45,212,191,.15),inset 0 0 20px rgba(45,212,191,.05);background:rgba(45,212,191,.06)}
+  .f-node.active .fname{color:var(--accent)}
+  .f-node.done{border-color:rgba(45,212,191,.4);background:rgba(45,212,191,.04)}
+  .f-node.done .fname{color:rgba(45,212,191,.7)}
+  .f-arrow{display:flex;align-items:center;justify-content:center}
+  .f-line{width:100%;height:2px;background:var(--faint);position:relative;border-radius:2px;overflow:visible;transition:background .4s}
+  .f-line.active{background:var(--accent);box-shadow:0 0 8px var(--accent)}
+  .f-line::after{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:7px solid var(--faint);transition:border-left-color .4s}
+  .f-line.active::after{border-left-color:var(--accent)}
+  .f-fill{position:absolute;left:0;top:0;height:100%;background:var(--accent);border-radius:2px;transition:width .6s ease;width:0}
+  .f-fill.full{width:100%}
+  .f-cmd{margin-top:20px;padding:12px 18px;border-radius:10px;text-align:center;background:rgba(255,255,255,.03);border:1px solid var(--border);font-family:monospace;font-size:12px;color:var(--muted);transition:all .4s}
+  .f-cmd.lit{border-color:rgba(45,212,191,.25);color:var(--text)}
+  @keyframes pulse{0%{transform:scale(1);opacity:.5}70%{transform:scale(1.5);opacity:0}100%{transform:scale(1.5);opacity:0}}
+  .pulse-ring{position:absolute;inset:-6px;border-radius:18px;border:2px solid var(--accent);opacity:0;pointer-events:none}
+  .f-node.active .pulse-ring{animation:pulse 1.8s ease-out infinite}
+  .fcmd-highlight{color:var(--accent)}
+</style>
+</head>
+<body>
+<nav>
+  <div class="brand">web-dev-guide</div>
+  <div class="tabs">
+    <button class="tab active" onclick="show('a',this)">A · Aktuell</button>
+    <button class="tab" onclick="show('b',this)">B · SVG Diagram</button>
+    <button class="tab" onclick="show('c',this)">C · Terminal Sim</button>
+    <button class="tab" onclick="show('d',this)">D · 3D Cards</button>
+    <button class="tab" onclick="show('e',this)">E · Canvas Flow</button>
+    <button class="tab" onclick="show('f',this)">F · Neon Grid</button>
+  </div>
+</nav>
+<div class="page">
+
+<!-- A -->
+<div class="panel active" id="panel-a">
+  <div class="vheader">
+    <div class="vbadge">Variant A · Aktuell</div>
+    <div class="vtitle">Aktueller Stil — Emoji Boxes</div>
+    <div class="vdesc">Framer Motion AnimatePresence. Jeder Step zeigt neue Boxen mit Emoji + Label. Fade/Y-slide Übergänge. Funktioniert, wirkt aber flach und generisch.</div>
+    <div class="vtags"><div class="vtag"><div class="dot" style="background:#f59e0b"></div>Framer Motion / React</div><div class="vtag"><div class="dot" style="background:#f59e0b"></div>Referenz</div></div>
+  </div>
+  <div class="demo-frame">
+    <div class="demo-topbar"><div class="demo-dots"><div class="demo-dot" style="background:#ff5f57"></div><div class="demo-dot" style="background:#febc2e"></div><div class="demo-dot" style="background:#28c840"></div></div><span style="font-family:monospace">Git Workflow · Step <span id="a-n">1</span>/5</span><span style="opacity:.4;font-family:monospace">topic-viz</span></div>
+    <div class="demo-body"><div id="a-scene" style="display:flex;flex-direction:column;gap:14px;width:100%;max-width:340px"></div></div>
+    <div class="demo-ctrl"><div class="sdots" id="a-dots"></div><div class="nav-btns"><button class="nbtn" onclick="aStep(-1)">← Zurück</button><button class="nbtn p" onclick="aStep(1)">Weiter →</button></div></div>
+  </div>
+  <div class="vote-bar"><span>Gefällt dir diese Variante?</span><button class="vbtn">✓ Diese wählen</button></div>
+</div>
+
+<!-- B -->
+<div class="panel" id="panel-b">
+  <div class="vheader">
+    <div class="vbadge">Variant B · Empfehlung</div>
+    <div class="vtitle">SVG Flow Diagram — animierte Pakete</div>
+    <div class="vdesc">Sauberes Vektor-Diagramm mit animierten SVG-Knoten. Pakete wandern entlang der Pfade wenn ein neuer Step aktiv wird. Professionell wie ein Tech-Architektur-Diagramm — kein Extra-Package nötig.</div>
+    <div class="vtags"><div class="vtag"><div class="dot" style="background:#4ade80"></div>SVG + CSS</div><div class="vtag"><div class="dot" style="background:#4ade80"></div>Kein extra Package</div><div class="vtag"><div class="dot" style="background:#4ade80"></div>Sehr skalierbar</div></div>
+  </div>
+  <div class="demo-frame">
+    <div class="demo-topbar"><div class="demo-dots"><div class="demo-dot" style="background:#ff5f57"></div><div class="demo-dot" style="background:#febc2e"></div><div class="demo-dot" style="background:#28c840"></div></div><span style="font-family:monospace">Git Workflow · Step <span id="b-n">1</span>/5</span><span style="opacity:.4;font-family:monospace">svg-diagram</span></div>
+    <div class="demo-body" style="padding:20px 16px;flex-direction:column;gap:0">
+      <svg id="b-svg" viewBox="0 0 520 190" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px">
+        <line id="be0" x1="104" y1="95" x2="160" y2="95" stroke="#3a4055" stroke-width="2"/>
+        <line id="be1" x1="234" y1="95" x2="290" y2="95" stroke="#3a4055" stroke-width="2"/>
+        <line id="be2" x1="364" y1="95" x2="420" y2="95" stroke="#3a4055" stroke-width="2"/>
+        <polygon id="bah0" points="160,90 169,95 160,100" fill="#3a4055"/>
+        <polygon id="bah1" points="290,90 299,95 290,100" fill="#3a4055"/>
+        <polygon id="bah2" points="420,90 429,95 420,100" fill="#3a4055"/>
+        <circle id="bpkt" cx="-20" cy="95" r="5" fill="#2dd4bf" opacity="0"/>
+        <g id="bn0"><rect x="2" y="57" width="102" height="76" rx="12" fill="#1a2035" stroke="#3a4055" stroke-width="2"/><text x="53" y="85" text-anchor="middle" font-size="22">📁</text><text id="bt0a" x="53" y="103" text-anchor="middle" font-size="9" fill="#6b7485" font-family="monospace" font-weight="700">WORKING</text><text id="bt0b" x="53" y="115" text-anchor="middle" font-size="9" fill="#6b7485" font-family="monospace" font-weight="700">DIR</text><text x="53" y="127" text-anchor="middle" font-size="8" fill="#3a4055" font-family="monospace">untracked</text></g>
+        <g id="bn1"><rect x="166" y="57" width="102" height="76" rx="12" fill="#1a2035" stroke="#3a4055" stroke-width="2"/><text x="217" y="85" text-anchor="middle" font-size="22">📦</text><text id="bt1a" x="217" y="103" text-anchor="middle" font-size="9" fill="#6b7485" font-family="monospace" font-weight="700">STAGING</text><text id="bt1b" x="217" y="115" text-anchor="middle" font-size="9" fill="#6b7485" font-family="monospace" font-weight="700">AREA</text><text x="217" y="127" text-anchor="middle" font-size="8" fill="#3a4055" font-family="monospace">git add</text></g>
+        <g id="bn2"><rect x="296" y="57" width="102" height="76" rx="12" fill="#1a2035" stroke="#3a4055" stroke-width="2"/><text x="347" y="85" text-anchor="middle" font-size="22">🗄️</text><text id="bt2a" x="347" y="103" text-anchor="middle" font-size="9" fill="#6b7485" font-family="monospace" font-weight="700">LOCAL</text><text id="bt2b" x="347" y="115" text-anchor="middle" font-size="9" fill="#6b7485" font-family="monospace" font-weight="700">REPO</text><text x="347" y="127" text-anchor="middle" font-size="8" fill="#3a4055" font-family="monospace">git commit</text></g>
+        <g id="bn3"><rect x="426" y="57" width="92" height="76" rx="12" fill="#1a2035" stroke="#3a4055" stroke-width="2"/><text x="472" y="85" text-anchor="middle" font-size="22">☁️</text><text id="bt3a" x="472" y="103" text-anchor="middle" font-size="9" fill="#6b7485" font-family="monospace" font-weight="700">REMOTE</text><text id="bt3b" x="472" y="115" text-anchor="middle" font-size="9" fill="#6b7485" font-family="monospace" font-weight="700">(GitHub)</text><text x="472" y="127" text-anchor="middle" font-size="8" fill="#3a4055" font-family="monospace">git push</text></g>
+        <text id="bel0" x="132" y="85" text-anchor="middle" font-size="9" fill="#3a4055" font-family="monospace">git add .</text>
+        <text id="bel1" x="262" y="85" text-anchor="middle" font-size="9" fill="#3a4055" font-family="monospace">git commit</text>
+        <text id="bel2" x="392" y="85" text-anchor="middle" font-size="9" fill="#3a4055" font-family="monospace">git push</text>
+      </svg>
+      <div id="b-info" style="margin-top:16px;padding:12px 18px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid var(--border);font-family:monospace;font-size:12px;color:var(--muted);text-align:center;width:100%;max-width:520px"></div>
+    </div>
+    <div class="demo-ctrl"><div class="sdots" id="b-dots"></div><div class="nav-btns"><button class="nbtn" onclick="bStep(-1)">← Zurück</button><button class="nbtn p" onclick="bStep(1)">Weiter →</button></div></div>
+  </div>
+  <div class="vote-bar"><span>Gefällt dir diese Variante?</span><button class="vbtn">✓ Diese wählen</button></div>
+</div>
+
+<!-- C -->
+<div class="panel" id="panel-c">
+  <div class="vheader">
+    <div class="vbadge">Variant C</div>
+    <div class="vtitle">Terminal Simulation — Typewriter Effect</div>
+    <div class="vdesc">Jeder Step simuliert ein echtes Terminal: Befehle tippen sich selbst ein, Output erscheint Zeile für Zeile. Für Developer sehr vertraut — fühlt sich an als wäre man selbst dabei.</div>
+    <div class="vtags"><div class="vtag"><div class="dot" style="background:#818cf8"></div>CSS Animations</div><div class="vtag"><div class="dot" style="background:#818cf8"></div>Vanilla JS</div><div class="vtag"><div class="dot" style="background:#818cf8"></div>Sehr authentisch</div></div>
+  </div>
+  <div class="demo-frame">
+    <div class="demo-topbar"><div class="demo-dots"><div class="demo-dot" style="background:#ff5f57"></div><div class="demo-dot" style="background:#febc2e"></div><div class="demo-dot" style="background:#28c840"></div></div><span style="font-family:monospace">Git Workflow · Step <span id="c-n">1</span>/5</span><span style="opacity:.4;font-family:monospace">terminal-sim</span></div>
+    <div class="demo-body" style="align-items:flex-start;padding:0">
+      <div style="width:100%">
+        <div class="term-bar"><div class="term-td" style="background:#ff5f57"></div><div class="term-td" style="background:#febc2e"></div><div class="term-td" style="background:#28c840"></div><div class="term-title">bash — ~/my-project</div></div>
+        <div class="term-body" id="c-term" style="min-height:220px"></div>
+      </div>
+    </div>
+    <div class="demo-ctrl"><div class="sdots" id="c-dots"></div><div class="nav-btns"><button class="nbtn" onclick="cStep(-1)">← Zurück</button><button class="nbtn p" onclick="cStep(1)">Weiter →</button></div></div>
+  </div>
+  <div class="vote-bar"><span>Gefällt dir diese Variante?</span><button class="vbtn">✓ Diese wählen</button></div>
+</div>
+
+<!-- D -->
+<div class="panel" id="panel-d">
+  <div class="vheader">
+    <div class="vbadge">Variant D</div>
+    <div class="vtitle">3D Card Stack — CSS Perspective</div>
+    <div class="vdesc">Steps als gestapelte 3D-Karten mit CSS perspective + rotateY. Die aktive Karte springt nach vorne, vergangene kippen nach hinten. Gibt Tiefe und Fortschrittsgefühl — kein Extra-Package.</div>
+    <div class="vtags"><div class="vtag"><div class="dot" style="background:#f472b6"></div>CSS 3D Transforms</div><div class="vtag"><div class="dot" style="background:#f472b6"></div>Hoher Wow-Faktor</div></div>
+  </div>
+  <div class="demo-frame">
+    <div class="demo-topbar"><div class="demo-dots"><div class="demo-dot" style="background:#ff5f57"></div><div class="demo-dot" style="background:#febc2e"></div><div class="demo-dot" style="background:#28c840"></div></div><span style="font-family:monospace">Git Workflow · Step <span id="d-n">1</span>/5</span><span style="opacity:.4;font-family:monospace">3d-cards</span></div>
+    <div class="demo-body" style="padding:24px"><div class="d-scene" id="d-scene"></div></div>
+    <div class="demo-ctrl"><div class="sdots" id="d-dots"></div><div class="nav-btns"><button class="nbtn" onclick="dStep(-1)">← Zurück</button><button class="nbtn p" onclick="dStep(1)">Weiter →</button></div></div>
+  </div>
+  <div class="vote-bar"><span>Gefällt dir diese Variante?</span><button class="vbtn">✓ Diese wählen</button></div>
+</div>
+
+<!-- E -->
+<div class="panel" id="panel-e">
+  <div class="vheader">
+    <div class="vbadge">Variant E</div>
+    <div class="vtitle">Canvas Particle Flow — animierte Datenpakete</div>
+    <div class="vdesc">HTML Canvas mit Partikeln die entlang der Verbindungspfade fließen. Zeigt wie Daten/Commits von Station zu Station "reisen". Sehr lebendig — besonders für Netzwerk, HTTP, Git Topics.</div>
+    <div class="vtags"><div class="vtag"><div class="dot" style="background:#34d399"></div>HTML Canvas API</div><div class="vtag"><div class="dot" style="background:#34d399"></div>requestAnimationFrame</div><div class="vtag"><div class="dot" style="background:#34d399"></div>Kein extra Package</div></div>
+  </div>
+  <div class="demo-frame">
+    <div class="demo-topbar"><div class="demo-dots"><div class="demo-dot" style="background:#ff5f57"></div><div class="demo-dot" style="background:#febc2e"></div><div class="demo-dot" style="background:#28c840"></div></div><span style="font-family:monospace">Git Workflow · Step <span id="e-n">1</span>/5</span><span style="opacity:.4;font-family:monospace">canvas-flow</span></div>
+    <div class="demo-body" style="padding:16px;background:#080c18"><canvas id="e-canvas" width="500" height="300" style="width:100%;max-width:500px"></canvas></div>
+    <div class="demo-ctrl"><div class="sdots" id="e-dots"></div><div class="nav-btns"><button class="nbtn" onclick="eStep(-1)">← Zurück</button><button class="nbtn p" onclick="eStep(1)">Weiter →</button></div></div>
+  </div>
+  <div class="vote-bar"><span>Gefällt dir diese Variante?</span><button class="vbtn">✓ Diese wählen</button></div>
+</div>
+
+<!-- F -->
+<div class="panel" id="panel-f">
+  <div class="vheader">
+    <div class="vbadge">Variant F</div>
+    <div class="vtitle">Neon Grid — CSS Glow + Pulse Ring</div>
+    <div class="vdesc">Nodes mit CSS box-shadow Neon-Glow. Aktive Node leuchtet auf mit animiertem Pulse-Ring. Verbindungslinien leuchten wenn aktiv. Futuristisch und passt perfekt zum Dark-Theme der App.</div>
+    <div class="vtags"><div class="vtag"><div class="dot" style="background:#a78bfa"></div>CSS box-shadow Glow</div><div class="vtag"><div class="dot" style="background:#a78bfa"></div>CSS @keyframes</div><div class="vtag"><div class="dot" style="background:#a78bfa"></div>Passt perfekt zum App-Design</div></div>
+  </div>
+  <div class="demo-frame">
+    <div class="demo-topbar"><div class="demo-dots"><div class="demo-dot" style="background:#ff5f57"></div><div class="demo-dot" style="background:#febc2e"></div><div class="demo-dot" style="background:#28c840"></div></div><span style="font-family:monospace">Git Workflow · Step <span id="f-n">1</span>/5</span><span style="opacity:.4;font-family:monospace">neon-grid</span></div>
+    <div class="demo-body" style="flex-direction:column;gap:20px;padding:28px 20px;width:100%">
+      <div class="f-grid">
+        <div class="f-node" id="fn0"><div class="pulse-ring"></div><div class="ficon">📁</div><div class="fname">Working<br>Dir</div></div>
+        <div class="f-arrow"><div class="f-line" id="fl0"><div class="f-fill" id="ff0"></div></div></div>
+        <div class="f-node" id="fn1"><div class="pulse-ring"></div><div class="ficon">📦</div><div class="fname">Staging<br>Area</div></div>
+        <div class="f-arrow"><div class="f-line" id="fl1"><div class="f-fill" id="ff1"></div></div></div>
+        <div class="f-node" id="fn2"><div class="pulse-ring"></div><div class="ficon">🗄️</div><div class="fname">Local<br>Repo</div></div>
+        <div class="f-arrow"><div class="f-line" id="fl2"><div class="f-fill" id="ff2"></div></div></div>
+        <div class="f-node" id="fn3"><div class="pulse-ring"></div><div class="ficon">☁️</div><div class="fname">Remote</div></div>
+      </div>
+      <div class="f-cmd" id="f-cmd"></div>
+    </div>
+    <div class="demo-ctrl"><div class="sdots" id="f-dots"></div><div class="nav-btns"><button class="nbtn" onclick="fStep(-1)">← Zurück</button><button class="nbtn p" onclick="fStep(1)">Weiter →</button></div></div>
+  </div>
+  <div class="vote-bar"><span>Gefällt dir diese Variante?</span><button class="vbtn">✓ Diese wählen</button></div>
+</div>
+
+</div>
+<script>
+const STEPS=[
+  {icon:'📁',label:'Working Dir',   cmd:'git status',           color:'#f43f5e',desc:'Deine lokalen Dateien — noch untracked / modified',
+   term:[{p:true,t:'git status'},{p:false,t:'On branch main',c:'info'},{p:false,t:'Changes not staged for commit:',c:'warn'},{p:false,t:'  modified:   src/app.js',c:''},{p:false,t:'  modified:   src/style.css',c:''}]},
+  {icon:'🌿',label:'Branch',        cmd:'git checkout -b feat', color:'#4ade80',desc:'Isoliere deine Arbeit in einem Feature-Branch',
+   term:[{p:true,t:'git checkout -b feature/nav'},{p:false,t:"Switched to a new branch 'feature/nav'",c:'ok'},{p:true,t:'git branch'},{p:false,t:'* feature/nav',c:'ok'},{p:false,t:'  main',c:''}]},
+  {icon:'📋',label:'Stage',         cmd:'git add .',            color:'#fbbf24',desc:'Wähle was in den nächsten Commit kommt',
+   term:[{p:true,t:'git add src/app.js src/style.css'},{p:true,t:'git status'},{p:false,t:'Changes to be committed:',c:'ok'},{p:false,t:'  modified:   src/app.js',c:'ok'},{p:false,t:'  modified:   src/style.css',c:'ok'}]},
+  {icon:'🗄️',label:'Commit',        cmd:'git commit -m "..."',  color:'#5b9cf5',desc:'Erstelle einen unveränderlichen Snapshot',
+   term:[{p:true,t:'git commit -m "feat: responsive nav"'},{p:false,t:'[feature/nav abc123f] feat: responsive nav',c:'ok'},{p:false,t:' 2 files changed, 14 insertions(+)',c:''},{p:true,t:'git log --oneline -2'},{p:false,t:'abc123f feat: responsive nav',c:'ok'},{p:false,t:'def456a initial commit',c:''}]},
+  {icon:'☁️',label:'Push Remote',   cmd:'git push origin feat', color:'#a78bfa',desc:'Teile deine Commits mit dem Team auf GitHub',
+   term:[{p:true,t:'git push -u origin feature/nav'},{p:false,t:'Enumerating objects: 5, done.',c:''},{p:false,t:'Counting objects: 100% (5/5)',c:''},{p:false,t:'Writing objects: 100% (3/3)',c:''},{p:false,t:'✓  feature/nav → origin/feature/nav',c:'ok'}]},
+]
+const N=STEPS.length
+const teal='#2dd4bf'
+
+function show(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'))
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'))
+  document.getElementById('panel-'+id).classList.add('active')
+  btn.classList.add('active')
+}
+function mkDots(id,cur){
+  const el=document.getElementById(id)
+  while(el.firstChild) el.removeChild(el.firstChild)
+  for(let i=0;i<N;i++){
+    const d=document.createElement('button')
+    d.className='sdot'+(i===cur?' on':'')
+    d.style.width=i===cur?'22px':'7px'
+    el.appendChild(d)
+  }
+}
+function el(tag,props,txt){
+  const e=document.createElement(tag)
+  if(props) Object.assign(e.style,props)
+  if(txt) e.textContent=txt
+  return e
+}
+
+/* A */
+let aS=0
+function aRender(){
+  const sc=document.getElementById('a-scene')
+  while(sc.firstChild) sc.removeChild(sc.firstChild)
+  const hdr=el('div',{fontFamily:'monospace',fontSize:'11px',color:'#6b7485',marginBottom:'8px',textAlign:'center'},'the daily git loop')
+  sc.appendChild(hdr)
+  STEPS.forEach((s,i)=>{
+    const row=el('div',{display:'flex',alignItems:'center',gap:'10px',width:'100%',maxWidth:'340px',opacity:i===aS?'1':i<aS?'.55':'.3',transition:'all .4s',transform:`translateX(${i===aS?0:i<aS?-4:4}px)`})
+    const circ=el('div',{width:'28px',height:'28px',borderRadius:'50%',background:s.color+'20',border:`2px solid ${i<=aS?s.color:'#3a4055'}`,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'monospace',fontSize:'11px',fontWeight:'700',color:i<=aS?s.color:'#3a4055',flexShrink:'0',transition:'all .4s'},String(i+1))
+    const info=el('div',{flex:'1'})
+    const cmd=el('div',{fontFamily:'monospace',fontSize:'12px',fontWeight:'700',color:i<=aS?s.color:'#3a4055',transition:'color .4s'},s.cmd)
+    const lbl=el('div',{fontFamily:'monospace',fontSize:'10px',color:'#6b7485'},s.label)
+    info.appendChild(cmd); info.appendChild(lbl); row.appendChild(circ); row.appendChild(info)
+    if(i===aS){const ic=el('div',{fontSize:'16px'},s.icon); row.appendChild(ic)}
+    sc.appendChild(row)
+  })
+  document.getElementById('a-n').textContent=aS+1
+  mkDots('a-dots',aS)
+}
+function aStep(d){aS=Math.max(0,Math.min(N-1,aS+d));aRender()}
+aRender()
+
+/* B */
+let bS=0
+const bInfo=[
+  'Step 1 — Working Directory: Deine lokalen Dateien, noch untracked',
+  'Step 2 — git add: Dateien in die Staging Area verschieben',
+  'Step 3 — git commit: Snapshot im Local Repository erstellen',
+  'Step 4 — git push: Commits zum Remote (GitHub) übertragen',
+  'Step 5 — Alle Teammates können jetzt git pull machen',
+]
+function bRender(){
+  const colors=['#f43f5e','#fbbf24','#5b9cf5','#a78bfa']
+  for(let i=0;i<4;i++){
+    const g=document.getElementById('bn'+i)
+    const rect=g.querySelector('rect')
+    const isActive=bS===i, isDone=bS>i
+    const c=STEPS[i].color
+    rect.setAttribute('stroke',isActive?c:isDone?teal+'60':'#3a4055')
+    rect.setAttribute('fill',isActive?c+'18':isDone?'rgba(45,212,191,.04)':'#1a2035')
+    const ta=document.getElementById('bt'+i+'a'), tb=document.getElementById('bt'+i+'b')
+    if(ta){ta.setAttribute('fill',isActive?c:isDone?teal+'80':'#6b7485')}
+    if(tb){tb.setAttribute('fill',isActive?c:isDone?teal+'80':'#6b7485')}
+  }
+  for(let i=0;i<3;i++){
+    const active=bS>i
+    document.getElementById('be'+i).setAttribute('stroke',active?teal:'#3a4055')
+    document.getElementById('bah'+i).setAttribute('fill',active?teal:'#3a4055')
+    document.getElementById('bel'+i).setAttribute('fill',active?teal:'#3a4055')
+  }
+  if(bS>0&&bS<=4){
+    const srcX=[53,217,347,472][Math.min(bS-1,3)]
+    const dstX=[217,347,472,472][Math.min(bS-1,3)]
+    const pkt=document.getElementById('bpkt')
+    pkt.setAttribute('cx',srcX); pkt.setAttribute('opacity','0.9'); pkt.style.transition='none'
+    setTimeout(()=>{pkt.style.transition='cx 0.55s ease'; pkt.setAttribute('cx',dstX); setTimeout(()=>pkt.setAttribute('opacity','0'),600)},30)
+  }
+  document.getElementById('b-info').textContent=bInfo[Math.min(bS,4)]
+  document.getElementById('b-n').textContent=bS+1
+  mkDots('b-dots',bS)
+}
+function bStep(d){bS=Math.max(0,Math.min(N-1,bS+d));bRender()}
+bRender()
+
+/* C */
+let cS=0, cTimers=[]
+function cRender(){
+  const term=document.getElementById('c-term')
+  while(term.firstChild) term.removeChild(term.firstChild)
+  cTimers.forEach(clearTimeout); cTimers=[]
+  STEPS[cS].term.forEach((line,i)=>{
+    const div=document.createElement('div'); div.className='tline'
+    if(line.p){
+      const pr=el('span',null,'~/project $ '); pr.className='tprompt'
+      const cm=el('span',null,line.t); cm.className='tcmd'
+      div.appendChild(pr); div.appendChild(cm)
+    } else {
+      const out=el('span',null,line.t); out.className='tout '+(line.c||'')
+      div.appendChild(out)
+    }
+    term.appendChild(div)
+    cTimers.push(setTimeout(()=>div.classList.add('show'),i*200+80))
+  })
+  const cur=document.createElement('div'); cur.className='tline'
+  const pr2=el('span',null,'~/project $ '); pr2.className='tprompt'
+  const cursor=el('span'); cursor.className='tcursor'
+  cur.appendChild(pr2); cur.appendChild(cursor); term.appendChild(cur)
+  cTimers.push(setTimeout(()=>cur.classList.add('show'),STEPS[cS].term.length*200+150))
+  document.getElementById('c-n').textContent=cS+1
+  mkDots('c-dots',cS)
+}
+function cStep(d){cS=Math.max(0,Math.min(N-1,cS+d));cRender()}
+cRender()
+
+/* D */
+let dS=0
+function dRender(){
+  const sc=document.getElementById('d-scene')
+  while(sc.firstChild) sc.removeChild(sc.firstChild)
+  STEPS.forEach((s,i)=>{
+    const card=el('div'); card.className='d-card'+(i===dS?' active':i<dS?' past':'')
+    const icon=el('div',{fontSize:'28px',flexShrink:'0'},s.icon); icon.className='d-icon'
+    const info=el('div',{flex:'1'})
+    const name=el('div',{fontSize:'14px',fontWeight:'700',marginBottom:'3px',color:i===dS?s.color:'var(--text)'},s.label)
+    const cmd=el('div',{fontFamily:'monospace',fontSize:'11px',color:'var(--muted)'},s.cmd)
+    info.appendChild(name); info.appendChild(cmd)
+    if(i===dS){const desc=el('div',{fontSize:'11px',color:'var(--muted)',marginTop:'6px'},s.desc); info.appendChild(desc)}
+    const num=el('div',{marginLeft:'auto',fontFamily:'monospace',fontSize:'11px',fontWeight:'800',padding:'3px 8px',borderRadius:'5px',flexShrink:'0'},String(i+1).padStart(2,'0'))
+    num.className='d-num'
+    if(i===dS){num.style.background=s.color; num.style.color='#000'; num.style.border='none'}
+    else{num.style.background='transparent'; num.style.border='1px solid '+s.color+'40'; num.style.color=s.color}
+    card.appendChild(icon); card.appendChild(info); card.appendChild(num)
+    sc.appendChild(card)
+  })
+  document.getElementById('d-n').textContent=dS+1
+  mkDots('d-dots',dS)
+}
+function dStep(d){dS=Math.max(0,Math.min(N-1,dS+d));dRender()}
+dRender()
+
+/* E: Canvas */
+let eS=0
+const canvas=document.getElementById('e-canvas')
+const ctx=canvas.getContext('2d')
+const ENODES=[
+  {x:60, y:120,label:'Working\nDir', icon:'📁',color:'#f43f5e'},
+  {x:185,y:120,label:'Staging\nArea',icon:'📦',color:'#fbbf24'},
+  {x:315,y:120,label:'Local\nRepo', icon:'🗄️', color:'#5b9cf5'},
+  {x:440,y:120,label:'Remote',      icon:'☁️', color:'#a78bfa'},
+]
+const ECMDS=['git add .','git commit','git push']
+const ER=32
+let eParts=[]
+
+class Pt{
+  constructor(a,b,c){this.a=a;this.b=b;this.t=0;this.c=c;this.r=3+Math.random()*4}
+  tick(){this.t+=0.02;return this.t<1}
+  draw(){
+    const x=this.a.x+(this.b.x-this.a.x)*this.t
+    const y=this.a.y+(this.b.y-this.a.y)*this.t
+    ctx.save();ctx.globalAlpha=Math.sin(this.t*Math.PI)*0.9
+    ctx.shadowBlur=14;ctx.shadowColor=this.c;ctx.fillStyle=this.c
+    ctx.beginPath();ctx.arc(x,y,this.r,0,Math.PI*2);ctx.fill();ctx.restore()
+  }
+}
+
+function spawnParts(fi){
+  if(fi<0||fi>=3) return
+  const a=ENODES[fi],b=ENODES[fi+1]
+  for(let i=0;i<7;i++) setTimeout(()=>eParts.push(new Pt(a,b,b.color)),i*100)
+}
+
+function drawE(){
+  ctx.clearRect(0,0,500,300)
+  ctx.fillStyle='#080c18';ctx.fillRect(0,0,500,300)
+  ENODES.forEach((n,i)=>{
+    if(i<3){
+      const nb=ENODES[i+1],active=eS>i
+      ctx.save()
+      ctx.strokeStyle=active?teal+'70':'#2a3045';ctx.lineWidth=2
+      if(active){ctx.shadowBlur=10;ctx.shadowColor=teal+'50'}
+      ctx.beginPath();ctx.moveTo(n.x+ER,n.y);ctx.lineTo(nb.x-ER,n.y);ctx.stroke()
+      const ax=nb.x-ER-8,ay=n.y
+      ctx.fillStyle=active?teal+'90':'#2a3045'
+      ctx.beginPath();ctx.moveTo(ax,ay-5);ctx.lineTo(ax+9,ay);ctx.lineTo(ax,ay+5);ctx.fill()
+      ctx.fillStyle=active?teal:'#3a4055';ctx.font='bold 10px monospace';ctx.textAlign='center'
+      ctx.fillText(ECMDS[i],(n.x+ER+nb.x-ER)/2,n.y-16)
+      ctx.restore()
+    }
+  })
+  eParts=eParts.filter(p=>{p.draw();return p.tick()})
+  ENODES.forEach((n,i)=>{
+    const isActive=i===eS,isDone=i<eS
+    const c=isActive?n.color:isDone?teal:'#2a3045'
+    if(isActive){ctx.save();ctx.shadowBlur=32;ctx.shadowColor=n.color;ctx.strokeStyle=n.color;ctx.lineWidth=2.5;ctx.beginPath();ctx.arc(n.x,n.y,ER+4,0,Math.PI*2);ctx.stroke();ctx.restore()}
+    ctx.save()
+    ctx.fillStyle=isActive?n.color+'22':isDone?teal+'0a':'#0f1322'
+    ctx.strokeStyle=c;ctx.lineWidth=isActive?2.5:1.5
+    ctx.beginPath();ctx.arc(n.x,n.y,ER,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore()
+    ctx.font=ER*0.75+'px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(n.icon,n.x,n.y)
+    ctx.save();ctx.fillStyle=isActive?n.color:isDone?teal+'90':'#6b7485'
+    ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.textBaseline='top'
+    n.label.split('\n').forEach((l,li)=>ctx.fillText(l,n.x,n.y+ER+6+li*13));ctx.restore()
+  })
+  const s=STEPS[eS]
+  ctx.save()
+  ctx.fillStyle=s.color+'18';ctx.strokeStyle=s.color+'40';ctx.lineWidth=1
+  if(ctx.roundRect){ctx.beginPath();ctx.roundRect(16,235,468,48,10);ctx.fill();ctx.stroke()}
+  ctx.fillStyle=s.color;ctx.font='bold 11px monospace';ctx.textAlign='left'
+  ctx.fillText('STEP '+String(eS+1).padStart(2,'0')+' — '+s.label,28,251)
+  ctx.fillStyle='#6b7485';ctx.font='11px system-ui';ctx.fillText(s.desc,28,266)
+  ctx.restore()
+  requestAnimationFrame(drawE)
+}
+function eStep(d){
+  const prev=eS;eS=Math.max(0,Math.min(N-1,eS+d))
+  if(eS>prev) spawnParts(eS-1)
+  document.getElementById('e-n').textContent=eS+1
+  mkDots('e-dots',eS)
+}
+drawE();mkDots('e-dots',0)
+
+/* F */
+let fS=0
+const fCmds=[
+  'git status  →  Working Directory: Änderungen noch untracked',
+  'git checkout -b feature  →  Neuen Branch erstellen',
+  'git add .  →  Alle Änderungen in die Staging Area',
+  'git commit -m "feat: ..."  →  Snapshot im Local Repo',
+  'git push origin feature  →  Commits zum Remote pushen',
+]
+function fRender(){
+  for(let i=0;i<4;i++){
+    const n=document.getElementById('fn'+i)
+    n.classList.remove('active','done')
+    if(i===fS) n.classList.add('active')
+    else if(i<fS) n.classList.add('done')
+  }
+  for(let i=0;i<3;i++){
+    const l=document.getElementById('fl'+i),f=document.getElementById('ff'+i)
+    l.classList.toggle('active',i<fS); f.classList.toggle('full',i<fS)
+  }
+  const cmd=document.getElementById('f-cmd')
+  cmd.textContent=fCmds[fS]
+  cmd.classList.toggle('lit',true)
+  document.getElementById('f-n').textContent=fS+1
+  mkDots('f-dots',fS)
+}
+function fStep(d){fS=Math.max(0,Math.min(N-1,fS+d));fRender()}
+fRender()
+</script>
+</body>
+</html>
