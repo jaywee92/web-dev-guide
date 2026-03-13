@@ -146,7 +146,7 @@ function TechSection({
             onMouseLeave={onCardLeave}
           >
             <div className="subcat-top">
-              {(() => { const I = ICONS[cat.icon] ?? FileCode2; return <I size={13} color={cat.color} /> })()}
+              {(() => { const I = ICONS[cat.icon] ?? FileCode2; return <I size={16} color={cat.color} /> })()}
               <span className="subcat-label">{cat.cardLabel}</span>
               <span className="subcat-cnt">{cat.topicIds.length}</span>
             </div>
@@ -155,7 +155,7 @@ function TechSection({
                 const TI = ICONS[TOPIC_ICONS[tid]] ?? null
                 return (
                   <span key={tid} style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>
-                    {TI && <span style={{ opacity: 0.6, lineHeight: 0, flexShrink: 0 }}><TI size={9} color="currentColor" /></span>}
+                    {TI && <span style={{ opacity: 0.6, lineHeight: 0, flexShrink: 0 }}><TI size={11} color="currentColor" /></span>}
                     {TOPIC_LABELS[tid] ?? tid.replace(/^[a-z]+-/, '').replace(/-/g, ' ')}
                     {i < arr.length - 1 ? <span style={{ opacity: 0.4, margin: '0 3px' }}>·</span> : ''}
                   </span>
@@ -195,7 +195,7 @@ export default function CategoryGrid({ galaxyRef, trailRef }: CategoryGridProps)
   let globalIdx = 0
 
   return (
-    <section style={{ maxWidth: 900, margin: '0 auto', padding: '0 24px 80px', width: '100%' }}>
+    <section style={{ maxWidth: 1080, margin: '0 auto', padding: '0 32px 80px', width: '100%' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
         {CATEGORY_GROUPS.map(group => {
           const techSections = deriveTechSections(group.categoryIds)
