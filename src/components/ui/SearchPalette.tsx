@@ -4,8 +4,6 @@ import { Search, X, Clock, ArrowRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useAppStore } from '@/store/useAppStore'
 import { useSearch } from '@/hooks/useSearch'
-import LevelBadge from './LevelBadge'
-import { LEVELS } from '@/data/levels'
 
 export default function SearchPalette() {
   const { searchOpen, setSearchOpen } = useAppStore()
@@ -75,28 +73,24 @@ export default function SearchPalette() {
             {/* Results */}
             {results.length > 0 ? (
               <div style={{ padding: 8 }}>
-                {results.map(topic => {
-                  const level = LEVELS.find(l => l.id === topic.level)!
-                  return (
-                    <button
-                      key={topic.id}
-                      onClick={() => go(topic.id)}
-                      className="w-full text-left flex items-center gap-3 px-3 py-3 rounded-lg"
-                      style={{ background: 'none', border: 'none', cursor: 'pointer', borderRadius: 8, width: '100%' }}
-                      onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface-bright)')}
-                      onMouseLeave={e => (e.currentTarget.style.background = 'none')}
-                    >
-                      <div style={{ flex: 1, textAlign: 'left' }}>
-                        <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', marginBottom: 2 }}>
-                          {topic.title}
-                        </div>
-                        <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{topic.description}</div>
+                {results.map(topic => (
+                  <button
+                    key={topic.id}
+                    onClick={() => go(topic.id)}
+                    className="w-full text-left flex items-center gap-3 px-3 py-3 rounded-lg"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', borderRadius: 8, width: '100%' }}
+                    onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface-bright)')}
+                    onMouseLeave={e => (e.currentTarget.style.background = 'none')}
+                  >
+                    <div style={{ flex: 1, textAlign: 'left' }}>
+                      <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', marginBottom: 2 }}>
+                        {topic.title}
                       </div>
-                      <LevelBadge level={level.id} color={level.color} title={level.title} size="sm" />
-                      <ArrowRight size={14} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
-                    </button>
-                  )
-                })}
+                      <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{topic.description}</div>
+                    </div>
+                    <ArrowRight size={14} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
+                  </button>
+                ))}
               </div>
             ) : query ? (
               <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-muted)', fontSize: 14 }}>

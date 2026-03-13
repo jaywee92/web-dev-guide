@@ -4,7 +4,6 @@ import { ArrowLeft, ExternalLink } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { getCategoryById } from '@/data/categories'
 import { TOPICS } from '@/data/topics'
-import { LEVELS } from '@/data/levels'
 import PageWrapper from '@/components/layout/PageWrapper'
 import StaggerChildren, { staggerItem } from '@/components/animations/primitives/StaggerChildren'
 
@@ -80,7 +79,6 @@ export default function CategoryPage() {
         {/* Numbered reference cards */}
         <StaggerChildren style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {topics.map((topic, i) => {
-            const level = LEVELS.find(l => l.id === topic.level)
             const hasPlayground = topic.playgroundType !== 'none'
             const hasCheatSheet = !!topic.cheatSheet
 
@@ -118,15 +116,6 @@ export default function CategoryPage() {
                     <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--text)' }}>
                       {topic.title}
                     </span>
-                    {level && (
-                      <span style={{
-                        fontSize: 9, padding: '1px 6px', borderRadius: 3,
-                        background: 'var(--surface-bright)', border: '1px solid var(--border)',
-                        color: 'var(--text-faint)', fontFamily: 'var(--font-mono)',
-                      }}>
-                        Level {level.id}
-                      </span>
-                    )}
                   </div>
                   <p style={{ fontSize: 12, color: 'var(--text-muted)', margin: '0 0 8px', lineHeight: 1.5 }}>
                     {topic.description}

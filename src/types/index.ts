@@ -1,4 +1,3 @@
-export type Level = 1 | 2 | 3 | 4
 export type PlaygroundType = 'visual-controls' | 'monaco' | 'none' | 'gradient' | 'css-live'
 export type ThemeMode = 'dark' | 'light'
 export type CategoryId = 'html-core' | 'html-structure' | 'html-interactive'
@@ -36,20 +35,10 @@ export interface CheatSheet {
   commonMistakes?: string[]
 }
 
-export interface LevelConfig {
-  id: Level
-  title: string
-  subtitle: string
-  color: string
-  dimColor: string
-  topics: Topic[]
-}
-
 export interface Topic {
   id: string
   title: string
   description: string
-  level: Level
   category: CategoryId
   color: string
   estimatedMinutes: number

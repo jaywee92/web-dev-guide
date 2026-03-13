@@ -2,9 +2,7 @@ import { useState, useEffect, type ComponentType } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { ArrowLeft, ExternalLink, Clock } from 'lucide-react'
 import { getTopicById } from '@/data/topics'
-import { LEVELS } from '@/data/levels'
 import PageWrapper from '@/components/layout/PageWrapper'
-import LevelBadge from '@/components/ui/LevelBadge'
 import SyncExplanation from './SyncExplanation'
 import PlaygroundSection from './PlaygroundSection'
 import CheatSheet from '@/components/ui/CheatSheet'
@@ -21,8 +19,6 @@ export default function TopicPage() {
   const { topicId } = useParams()
   const navigate = useNavigate()
   const topic = topicId ? getTopicById(topicId) : undefined
-  const level = topic ? LEVELS.find(l => l.id === topic.level) : undefined
-
   const [AnimComp, setAnimComp] = useState<ComponentType<{ step: number; compact?: boolean }> | null>(
     () => topic ? getAnimationComponent(topic.animationComponent) : null
   )
@@ -34,7 +30,7 @@ export default function TopicPage() {
     })
   }, [topic?.animationComponent])
 
-  if (!topic || !level) {
+  if (!topic) {
     return <div style={{ padding: 40, color: 'var(--text-muted)' }}>Topic not found.</div>
   }
 
@@ -73,7 +69,7 @@ export default function TopicPage() {
               className="flex items-center gap-2 mb-3"
               style={{ color: 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer', fontSize: 13 }}
             >
-              <ArrowLeft size={16} /> {category?.title ?? level.title}
+              <ArrowLeft size={16} /> {category?.title ?? 'Topics'}
             </button>
 
             {/* Breadcrumb */}
@@ -117,7 +113,6 @@ export default function TopicPage() {
                 </div>
               )
             })()}
-            <LevelBadge level={level.id} color={level.color} title={level.title} size="sm" />
             <h1 style={{ fontSize: 'clamp(24px, 4vw, 42px)', fontWeight: 800, marginTop: 12, marginBottom: 8 }}>
               {topic.title}
             </h1>
