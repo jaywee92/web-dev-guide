@@ -73,14 +73,14 @@ export default function TopicSidebar({
 
   return (
     <aside style={{
-      width: 220,
+      width: 248,
       flexShrink: 0,
       position: 'sticky',
       top: 52,
       height: 'calc(100vh - 52px)',
       overflowY: 'auto',
       borderRight: '1px solid var(--border)',
-      padding: '20px 0',
+      padding: '24px 0',
       scrollbarWidth: 'none',
       display: 'flex',
       flexDirection: 'column',
@@ -100,24 +100,26 @@ export default function TopicSidebar({
                 style={{
                   width: '100%', display: 'flex', alignItems: 'center',
                   justifyContent: 'space-between',
-                  padding: '6px 14px 6px 12px',
+                  padding: '8px 16px 8px 14px',
                   background: 'none', border: 'none', cursor: 'pointer',
                   borderLeft: isActiveTech ? `2px solid ${techColor}` : '2px solid transparent',
+                  marginTop: 4,
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <div style={{
-                    width: 6, height: 6, borderRadius: '50%',
+                    width: 7, height: 7, borderRadius: '50%',
                     background: isActiveTech ? techColor : 'var(--text-faint)',
                     flexShrink: 0,
-                    transition: 'background 0.2s',
+                    boxShadow: isActiveTech ? `0 0 6px ${techColor}80` : 'none',
+                    transition: 'background 0.2s, box-shadow 0.2s',
                   }} />
                   <span style={{
                     fontFamily: 'var(--font-mono)',
-                    fontSize: 10,
+                    fontSize: 11,
                     fontWeight: 800,
                     letterSpacing: '0.1em',
-                    color: isActiveTech ? techColor : 'var(--text-faint)',
+                    color: isActiveTech ? techColor : 'var(--text-muted)',
                     textTransform: 'uppercase',
                     transition: 'color 0.2s',
                   }}>
@@ -125,8 +127,8 @@ export default function TopicSidebar({
                   </span>
                 </div>
                 {isTechOpen
-                  ? <ChevronDown size={11} style={{ color: 'var(--text-faint)', flexShrink: 0 }} />
-                  : <ChevronRight size={11} style={{ color: 'var(--text-faint)', flexShrink: 0 }} />
+                  ? <ChevronDown size={13} style={{ color: 'var(--text-faint)', flexShrink: 0 }} />
+                  : <ChevronRight size={13} style={{ color: 'var(--text-faint)', flexShrink: 0 }} />
                 }
               </button>
 
@@ -146,15 +148,14 @@ export default function TopicSidebar({
                           style={{
                             width: '100%', display: 'flex', alignItems: 'center',
                             justifyContent: 'space-between',
-                            padding: '5px 14px 5px 22px',
+                            padding: '7px 16px 7px 26px',
                             background: isActivecat ? `${cat.color}10` : 'none',
                             border: 'none', cursor: 'pointer',
                             borderLeft: isActivecat ? `2px solid ${cat.color}` : '2px solid transparent',
                             color: isActivecat ? cat.color : 'var(--text-muted)',
-                            fontSize: 12,
+                            fontSize: 13,
                             fontWeight: isActivecat ? 700 : 500,
                             fontFamily: 'var(--font-mono)',
-                            letterSpacing: '0.01em',
                             transition: 'color 0.15s, background 0.15s',
                           }}
                           onMouseEnter={e => {
@@ -166,8 +167,8 @@ export default function TopicSidebar({
                         >
                           <span>{cat.title}</span>
                           {isCatOpen
-                            ? <ChevronDown size={11} style={{ flexShrink: 0, opacity: 0.5 }} />
-                            : <ChevronRight size={11} style={{ flexShrink: 0, opacity: 0.5 }} />
+                            ? <ChevronDown size={13} style={{ flexShrink: 0, opacity: 0.5 }} />
+                            : <ChevronRight size={13} style={{ flexShrink: 0, opacity: 0.5 }} />
                           }
                         </button>
 
@@ -183,11 +184,11 @@ export default function TopicSidebar({
                                   aria-current={isActive ? 'page' : undefined}
                                   style={{
                                     width: '100%', textAlign: 'left',
-                                    padding: '4px 14px 4px 32px',
+                                    padding: '6px 16px 6px 36px',
                                     background: isActive ? `${cat.color}14` : 'none',
                                     border: 'none', cursor: 'pointer',
                                     color: isActive ? cat.color : 'var(--text-muted)',
-                                    fontSize: 12,
+                                    fontSize: 13,
                                     fontWeight: isActive ? 600 : 400,
                                     borderLeft: isActive
                                       ? `2px solid ${cat.color}`
@@ -224,9 +225,9 @@ export default function TopicSidebar({
         marginTop: 8,
       }}>
         <div style={{
-          fontSize: 9, fontFamily: 'var(--font-mono)', fontWeight: 700,
+          fontSize: 10, fontFamily: 'var(--font-mono)', fontWeight: 700,
           letterSpacing: '0.1em', color: 'var(--text-faint)',
-          padding: '0 16px', marginBottom: 6,
+          padding: '0 16px', marginBottom: 8,
         }}>
           ON THIS PAGE
         </div>
@@ -236,9 +237,9 @@ export default function TopicSidebar({
             onClick={() => scrollToSection(link.id)}
             style={{
               width: '100%', textAlign: 'left',
-              padding: '4px 16px 4px 20px',
+              padding: '6px 16px 6px 20px',
               background: 'none', border: 'none', cursor: 'pointer',
-              color: 'var(--text-faint)', fontSize: 11,
+              color: 'var(--text-faint)', fontSize: 12,
               transition: 'color 0.15s',
             }}
             onMouseEnter={e => (e.currentTarget.style.color = 'var(--text-muted)')}
