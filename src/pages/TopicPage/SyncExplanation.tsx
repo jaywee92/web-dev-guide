@@ -1,6 +1,6 @@
-import { useRef, useState, type ComponentType } from 'react'
+import { useRef, useState, useEffect, type ComponentType } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { ChevronLeft, ChevronRight, MousePointerClick } from 'lucide-react'
+import { MousePointerClick } from 'lucide-react'
 import type { Topic, ExplanationStep } from '@/types'
 import CodeBlock from '@/components/ui/CodeBlock'
 import { useAnimationStep } from '@/hooks/useAnimationStep'
@@ -49,63 +49,25 @@ export default function SyncExplanation({ topic, AnimComp }: Props) {
             }
           </div>
 
-          {/* Step navigation */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginTop: 12,
-            gap: 8,
-          }}>
-            <button
-              onClick={ctrl.prev}
-              disabled={ctrl.step === 0}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 4,
-                padding: '6px 12px', borderRadius: 8, cursor: ctrl.step === 0 ? 'not-allowed' : 'pointer',
-                background: 'var(--surface)', border: '1px solid var(--border)',
-                color: ctrl.step === 0 ? 'var(--text-faint)' : 'var(--text-muted)',
-                fontSize: 13, fontWeight: 600, transition: 'all 0.2s',
-              }}
-            >
-              <ChevronLeft size={14} /> Prev
-            </button>
-
-            {/* Step dots */}
-            <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-              {steps.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => ctrl.goTo(i)}
-                  style={{
-                    width: ctrl.step === i ? 20 : 8,
-                    height: 8,
-                    borderRadius: 4,
-                    background: ctrl.step === i ? topic.color : 'var(--border)',
-                    border: 'none',
-                    cursor: 'pointer',
-                    padding: 0,
-                    transition: 'all 0.25s',
-                  }}
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={ctrl.next}
-              disabled={ctrl.step === steps.length - 1}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 4,
-                padding: '6px 12px', borderRadius: 8,
-                cursor: ctrl.step === steps.length - 1 ? 'not-allowed' : 'pointer',
-                background: ctrl.step === steps.length - 1 ? 'var(--surface)' : topic.color,
-                border: `1px solid ${ctrl.step === steps.length - 1 ? 'var(--border)' : topic.color}`,
-                color: ctrl.step === steps.length - 1 ? 'var(--text-faint)' : '#fff',
-                fontSize: 13, fontWeight: 600, transition: 'all 0.2s',
-              }}
-            >
-              Next <ChevronRight size={14} />
-            </button>
+          {/* Step dots */}
+          <div style={{ display: 'flex', gap: 6, alignItems: 'center', justifyContent: 'center', marginTop: 14 }}>
+            {steps.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => ctrl.goTo(i)}
+                title={`Step ${i + 1}`}
+                style={{
+                  width: ctrl.step === i ? 24 : 8,
+                  height: 8,
+                  borderRadius: 4,
+                  background: ctrl.step === i ? topic.color : 'var(--border)',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: 0,
+                  transition: 'all 0.25s',
+                }}
+              />
+            ))}
           </div>
         </div>
 
@@ -140,7 +102,9 @@ function StepBlock({ step, index, active, onActivate, color }: {
   const inView = useInView(ref, { margin: '-40% 0px -40% 0px' })
   const [hovered, setHovered] = useState(false)
 
-  if (inView && !active) onActivate()
+  useEffect(() => {
+    if (inView && !active) onActivate()
+  }, [inView]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <motion.div
