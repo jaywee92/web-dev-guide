@@ -1,148 +1,179 @@
-// src/topics/css/ImagesViz.tsx
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface Props { step: number; compact?: boolean }
 
-const BLUE = '#3b82f6'
-const GREEN = '#22c55e'
-const PURPLE = '#a855f7'
-const ORANGE = '#f97316'
+const PINK   = '#ec4899'
+const CYAN   = '#22d3ee'
+const GREEN  = '#4ade80'
+const YELLOW = '#f5c542'
+const RED    = '#f87171'
 
-// Simulated image using a gradient placeholder
-const IMG_BG = 'linear-gradient(135deg, #6366f1 0%, #ec4899 50%, #f59e0b 100%)'
-
-const STEP_CONFIGS = [
-  {
-    containerW: '100%',
-    containerH: undefined as number | undefined,
-    imgW: 280,
-    imgH: 140,
-    objectFit: 'fill' as const,
-    borderRadius: 0,
-    overflow: 'visible',
-    label: 'No CSS — image overflows its container',
-    color: 'var(--text-muted)',
-  },
-  {
-    containerW: '100%',
-    containerH: undefined,
-    imgW: undefined as number | undefined,
-    imgH: undefined as number | undefined,
-    objectFit: 'fill' as const,
-    borderRadius: 0,
-    overflow: 'hidden',
-    label: 'max-width: 100% · height: auto — scales to fit',
-    color: BLUE,
-  },
-  {
-    containerW: '100%',
-    containerH: 100,
-    imgW: undefined,
-    imgH: undefined,
-    objectFit: 'cover' as const,
-    borderRadius: 0,
-    overflow: 'hidden',
-    label: 'object-fit: cover — fills container, crops to fit',
-    color: GREEN,
-  },
-  {
-    containerW: 120,
-    containerH: 120,
-    imgW: undefined,
-    imgH: undefined,
-    objectFit: 'cover' as const,
-    borderRadius: '50%',
-    overflow: 'hidden',
-    label: 'border-radius: 50% — circle avatar crop',
-    color: PURPLE,
-  },
-  {
-    containerW: '100%',
-    containerH: undefined,
-    imgW: undefined,
-    imgH: undefined,
-    objectFit: 'cover' as const,
-    borderRadius: 10,
-    overflow: 'hidden',
-    label: 'aspect-ratio: 16 / 9 — locks proportions',
-    color: ORANGE,
-  },
+const stepLabels = [
+  'No object-fit — image stretches to fill, aspect ratio lost',
+  'object-fit: contain — whole image visible, letterboxed',
+  'object-fit: cover — fills container, image may crop',
+  'fill vs cover — distorted vs cropped',
+  'aspect-ratio — container maintains its shape at any width',
 ]
+
+function Container({ label, color, w, h, children, compact }: {
+  label: string; color: string; w: number; h: number;
+  children: React.ReactNode; compact: boolean
+}) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+      <div style={{ fontSize: compact ? 7 : 8, fontFamily: 'var(--font-mono)', color, fontWeight: 700 }}>{label}</div>
+      <motion.div
+        animate={{ borderColor: color + 'cc' }}
+        style={{
+          width: w, height: h, border: `2px solid`,
+          borderRadius: 8, overflow: 'hidden',
+          background: 'rgba(0,0,0,0.3)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          position: 'relative',
+        }}
+      >
+        {children}
+      </motion.div>
+    </div>
+  )
+}
 
 export default function ImagesViz({ step, compact = false }: Props) {
   const s = Math.min(step, 4)
-  const cfg = STEP_CONFIGS[s]
-
-  const outerW = compact ? 200 : 260
-  const scaledContainerW = cfg.containerW === '100%' ? '100%' : (typeof cfg.containerW === 'number' ? (compact ? cfg.containerW * 0.7 : cfg.containerW) : cfg.containerW)
-  const scaledContainerH = cfg.containerH ? (compact ? cfg.containerH * 0.7 : cfg.containerH) : undefined
+  const cw = compact ? 120 : 160
+  const ch = compact ? 70  : 90
+  const iw = compact ? 60  : 80
+  const ih = compact ? 90  : 120
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: compact ? 12 : 20 }}>
-      {/* Container frame */}
-      <div style={{
-        width: outerW,
-        background: 'var(--surface)',
-        border: '1px solid var(--border)',
-        borderRadius: 10,
-        padding: compact ? 10 : 16,
-        overflow: 'hidden',
-      }}>
-        <div style={{
-          fontSize: compact ? 8 : 9,
-          fontFamily: 'var(--font-mono)',
-          color: 'var(--text-muted)',
-          marginBottom: compact ? 6 : 10,
-        }}>
-          .container
-        </div>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={s}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            style={{
-              width: scaledContainerW,
-              height: s === 4 ? undefined : scaledContainerH,
-              aspectRatio: s === 4 ? '16 / 9' : undefined,
-              overflow: cfg.overflow as 'hidden' | 'visible',
-              borderRadius: cfg.borderRadius,
-              margin: s === 3 ? '0 auto' : 0,
-            }}
-          >
-            <div
-              style={{
-                background: IMG_BG,
-                display: 'block',
-                width: cfg.imgW ? (compact ? cfg.imgW * 0.7 : cfg.imgW) : '100%',
-                height: cfg.imgH ? (compact ? cfg.imgH * 0.7 : cfg.imgH) : '100%',
-                borderRadius: cfg.borderRadius,
-                minHeight: (cfg.containerH || scaledContainerH) ? undefined : (compact ? 60 : 90),
-              }}
-            />
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: compact ? 12 : 18 }}>
+      <AnimatePresence mode="wait">
+
+        {/* Step 0: stretched */}
+        {s === 0 && (
+          <motion.div key="stretch" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <Container label="no object-fit — stretched ⚠" color={RED} w={cw} h={ch} compact={compact}>
+              <motion.div
+                animate={{ scaleX: cw / iw, scaleY: ch / ih }}
+                transition={{ duration: 0.5 }}
+                style={{
+                  width: iw, height: ih,
+                  background: `linear-gradient(160deg, ${PINK}, ${CYAN})`,
+                  borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  transformOrigin: 'center',
+                }}
+              >
+                <span style={{ fontSize: compact ? 14 : 18 }}>🌄</span>
+              </motion.div>
+            </Container>
           </motion.div>
-        </AnimatePresence>
-      </div>
+        )}
+
+        {/* Step 1: contain */}
+        {s === 1 && (
+          <motion.div key="contain" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <Container label="object-fit: contain" color={YELLOW} w={cw} h={ch} compact={compact}>
+              {/* Letterbox bars */}
+              <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: compact ? 18 : 24, background: 'rgba(0,0,0,0.5)' }} />
+              <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: compact ? 18 : 24, background: 'rgba(0,0,0,0.5)' }} />
+              <div style={{
+                width: compact ? 50 : 68, height: compact ? 70 : 90,
+                background: `linear-gradient(160deg, ${PINK}, ${CYAN})`,
+                borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <span style={{ fontSize: compact ? 14 : 18 }}>🌄</span>
+              </div>
+            </Container>
+          </motion.div>
+        )}
+
+        {/* Step 2: cover */}
+        {s === 2 && (
+          <motion.div key="cover" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <Container label="object-fit: cover" color={GREEN} w={cw} h={ch} compact={compact}>
+              <div style={{
+                width: cw + 4, height: cw * 1.3,
+                background: `linear-gradient(160deg, ${PINK}, ${CYAN})`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <span style={{ fontSize: compact ? 18 : 24 }}>🌄</span>
+              </div>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: `${GREEN}cc` }}
+              />
+              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 2, background: `${GREEN}cc` }} />
+            </Container>
+          </motion.div>
+        )}
+
+        {/* Step 3: fill vs cover */}
+        {s === 3 && (
+          <motion.div key="compare" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            style={{ display: 'flex', gap: compact ? 10 : 16 }}>
+            <Container label="fill — distorted" color={RED} w={compact ? 100 : 130} h={ch} compact={compact}>
+              <div style={{
+                width: compact ? 100 : 130, height: ch,
+                background: `linear-gradient(160deg, ${PINK}, ${CYAN})`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <span style={{ fontSize: compact ? 16 : 22 }}>🌄</span>
+              </div>
+            </Container>
+            <Container label="cover — crisp" color={GREEN} w={compact ? 100 : 130} h={ch} compact={compact}>
+              <div style={{
+                width: compact ? 100 : 130, height: compact ? 100 : 140,
+                background: `linear-gradient(160deg, ${PINK}, ${CYAN})`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <span style={{ fontSize: compact ? 16 : 22 }}>🌄</span>
+              </div>
+            </Container>
+          </motion.div>
+        )}
+
+        {/* Step 4: aspect-ratio */}
+        {s === 4 && (
+          <motion.div key="ratio" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            style={{ display: 'flex', flexDirection: 'column', gap: compact ? 6 : 10, alignItems: 'center' }}>
+            {[compact ? 200 : 260, compact ? 140 : 180, compact ? 100 : 130].map((width, i) => (
+              <motion.div
+                key={width}
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1 }}
+                style={{
+                  width, aspectRatio: '16/9',
+                  background: `linear-gradient(135deg, ${CYAN}44, ${PINK}44)`,
+                  border: `1.5px solid ${CYAN}55`, borderRadius: 6,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}
+              >
+                <span style={{ fontSize: compact ? 7 : 8, fontFamily: 'var(--font-mono)', color: CYAN }}>16:9</span>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Step label */}
       <AnimatePresence mode="wait">
         <motion.p
           key={s}
-          initial={{ opacity: 0, y: 6 }}
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -6 }}
-          transition={{ duration: 0.25 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.3 }}
           style={{
-            margin: 0,
-            fontFamily: 'var(--font-mono)',
-            fontSize: compact ? 10 : 11,
-            color: cfg.color,
-            textAlign: 'center',
+            color: [RED, YELLOW, GREEN, GREEN, CYAN][s],
+            fontFamily: 'var(--font-mono)', fontSize: compact ? 10 : 11,
+            textAlign: 'center', margin: 0, maxWidth: 340,
           }}
         >
-          {cfg.label}
+          {stepLabels[s]}
         </motion.p>
       </AnimatePresence>
     </div>
