@@ -3436,6 +3436,198 @@ export const TOPICS: Topic[] = [
       ],
     },
   },
+  // ─── Git ──────────────────────────────────────────────────────────────────
+  {
+    id: 'git-intro',
+    nextTopicId: 'git-workflow',
+    title: 'What is Git?',
+    description: 'Distributed version control — why it exists, how it works, and the 4 key areas every developer uses daily',
+    level: 1,
+    category: 'git',
+    color: '#f97316',
+    estimatedMinutes: 7,
+    animationComponent: 'GitIntroViz',
+    playgroundType: 'none',
+    sections: [
+      { id: 'intro', type: 'intro', steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation',
+        steps: [
+          {
+            animationStep: 0,
+            heading: 'The problem: who has the latest version?',
+            text: 'When multiple developers work on the same project, files get emailed, overwritten, or lost. Version control solves this by giving every change a history — so you always know what changed, when, and why.',
+          },
+          {
+            animationStep: 1,
+            heading: 'Working Directory',
+            text: 'Your local files on disk. This is where you write and edit code. Git watches this folder but does not automatically save anything — you decide what gets tracked.',
+          },
+          {
+            animationStep: 2,
+            heading: 'Staging Area',
+            text: 'A holding area for changes you want to include in the next snapshot. Use git add to move files here. You can stage some files and leave others out — giving you precise control over what you commit.',
+            codeExample: 'git add index.html\ngit add style.css\n# or add everything:\ngit add .',
+            language: 'bash',
+          },
+          {
+            animationStep: 3,
+            heading: 'Local Repository',
+            text: 'The .git folder on your machine stores the full project history. Every commit is a permanent snapshot. You can always travel back to any previous state — nothing is ever truly lost.',
+            codeExample: 'git commit -m "add navigation menu"\n# creates a permanent snapshot in history',
+            language: 'bash',
+          },
+          {
+            animationStep: 4,
+            heading: 'All 4 areas together',
+            text: 'The full Git flow: Working Directory → Staging Area → Local Repo → Remote Repo. Changes move forward through these areas and can flow back (checkout, pull) when needed.',
+          },
+        ],
+      },
+    ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Initialize a new repo', code: 'git init', note: 'creates .git folder in current directory' },
+        { label: 'Clone an existing repo', code: 'git clone <url>', note: 'downloads full history' },
+        { label: 'Check current status', code: 'git status', note: 'shows modified, staged, and untracked files' },
+        { label: 'Stage files', code: 'git add <file>\ngit add .', note: 'add specific file or everything' },
+        { label: 'Commit staged changes', code: 'git commit -m "your message"', note: 'saves a permanent snapshot' },
+        { label: 'View commit history', code: 'git log\ngit log --oneline', note: '--oneline gives compact view' },
+      ],
+      whenToUse: 'Use git init for new projects, git clone to work on existing ones. Always git status before committing to see what\'s changed.',
+      commonMistakes: [
+        'Committing without a message — always write a short, meaningful message describing what changed and why',
+        'Running git add . blindly — check git status first so you don\'t accidentally stage build files or secrets',
+        'Thinking git saves automatically — nothing is saved until you explicitly git add and git commit',
+      ],
+    },
+  },
+  {
+    id: 'git-workflow',
+    nextTopicId: 'git-github',
+    title: 'Git Workflow',
+    description: 'The daily development loop — branching, staging, committing, and pushing changes',
+    level: 1,
+    category: 'git',
+    color: '#f97316',
+    estimatedMinutes: 8,
+    animationComponent: 'GitWorkflowViz',
+    playgroundType: 'none',
+    sections: [
+      { id: 'intro', type: 'intro', steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation',
+        steps: [
+          {
+            animationStep: 0,
+            heading: 'The daily Git loop',
+            text: 'Every day in a development team follows the same pattern: get the latest code, create a branch, make changes, stage them, commit, then push to share with the team.',
+          },
+          {
+            animationStep: 1,
+            heading: 'Start: init or clone',
+            text: 'For a brand new project use git init. To work on an existing project, git clone downloads the full history. You only do this once per project.',
+            codeExample: '# New project\ngit init\n\n# Existing project\ngit clone https://github.com/user/repo.git',
+            language: 'bash',
+          },
+          {
+            animationStep: 2,
+            heading: 'Create a branch',
+            text: 'Always work in a branch — never directly on main. A branch is an isolated copy of the codebase. Your changes stay contained until you decide to merge them back.',
+            codeExample: '# Create and switch to new branch\ngit checkout -b feature/navigation\n\n# List all branches\ngit branch',
+            language: 'bash',
+          },
+          {
+            animationStep: 3,
+            heading: 'Stage and commit',
+            text: 'Make changes, stage the relevant files, then commit with a descriptive message. Commit often — small commits are easier to review, understand, and revert if something goes wrong.',
+            codeExample: 'git add src/nav.js\ngit commit -m "add responsive navigation menu"',
+            language: 'bash',
+          },
+          {
+            animationStep: 4,
+            heading: 'Push to remote',
+            text: 'Push your branch to the remote repository so teammates can see it. The -u flag sets the upstream so future pushes just need git push.',
+            codeExample: '# First push from a new branch\ngit push -u origin feature/navigation\n\n# Subsequent pushes\ngit push',
+            language: 'bash',
+          },
+        ],
+      },
+    ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Create + switch to branch', code: 'git checkout -b <branch-name>', note: 'shorthand for git branch + git checkout' },
+        { label: 'Switch branch', code: 'git checkout <branch-name>', note: 'or: git switch <branch-name>' },
+        { label: 'Stage all changes', code: 'git add .', note: 'stages all modified and new files' },
+        { label: 'Commit', code: 'git commit -m "message"', note: 'snapshot staged changes' },
+        { label: 'Push branch to remote', code: 'git push -u origin <branch>', note: '-u sets upstream for future pushes' },
+        { label: 'Pull latest from remote', code: 'git pull', note: 'fetch + merge remote changes into current branch' },
+        { label: 'Merge branch into current', code: 'git merge <branch-name>', note: 'integrates another branch\'s history' },
+      ],
+      commonMistakes: [
+        'Working directly on main — always create a feature branch so your changes don\'t disrupt the stable codebase',
+        'Forgetting to pull before starting new work — stale code causes merge conflicts; always git pull first',
+        'Giant commits — commit small logical units of work; it\'s easier to review and safer to revert',
+      ],
+    },
+  },
+  {
+    id: 'git-github',
+    title: 'GitHub',
+    description: 'GitHub is not Git — it\'s a platform that hosts repos online and adds collaboration features like Pull Requests',
+    level: 1,
+    category: 'git',
+    color: '#f97316',
+    estimatedMinutes: 6,
+    animationComponent: 'GitHubViz',
+    playgroundType: 'none',
+    sections: [
+      { id: 'intro', type: 'intro', steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation',
+        steps: [
+          {
+            animationStep: 0,
+            heading: 'Git ≠ GitHub',
+            text: 'Git is a command-line tool that runs on your machine. GitHub is a website that hosts Git repositories online. You can use Git without GitHub, but GitHub needs Git. Think of Git as the engine and GitHub as the garage.',
+          },
+          {
+            animationStep: 1,
+            heading: 'Remote repository',
+            text: 'GitHub stores a copy of your repository in the cloud. Every team member clones it once, then uses git pull to get the latest changes and git push to share their work. The remote is the single source of truth.',
+          },
+          {
+            animationStep: 2,
+            heading: 'Pull Requests',
+            text: 'A Pull Request (PR) is a GitHub feature that lets you propose merging a branch into main. Before merging, teammates can review the code, leave comments, request changes, and approve. This keeps the main branch clean and reviewed.',
+          },
+          {
+            animationStep: 3,
+            heading: 'Forking & open source',
+            text: 'Fork creates your own copy of someone else\'s repository. You can make changes freely, then open a PR back to the original. This is how millions of developers contribute to open source projects without needing direct access.',
+          },
+        ],
+      },
+    ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Add remote', code: 'git remote add origin https://github.com/user/repo.git', note: '"origin" is the conventional name for the main remote' },
+        { label: 'Push branch + set upstream', code: 'git push -u origin main', note: '-u links local branch to remote' },
+        { label: 'Pull remote changes', code: 'git pull origin main', note: 'fetch + merge into current branch' },
+        { label: 'List remotes', code: 'git remote -v', note: 'shows fetch and push URLs' },
+        { label: 'Create PR', code: '# on GitHub.com or via CLI:\ngh pr create --title "add nav" --body "adds responsive nav"', note: 'gh CLI tool for GitHub' },
+      ],
+      whenToUse: 'Use GitHub (or GitLab/Bitbucket) whenever collaborating with others or backing up your work. Always use Pull Requests for code that others depend on — never push directly to main on shared projects.',
+      commonMistakes: [
+        'Pushing directly to main on a shared repo — always use PRs so changes can be reviewed before they affect everyone',
+        'Confusing git pull with git fetch — git pull merges immediately; git fetch just downloads without merging',
+        'Forgetting to add a remote — a local git repo has no connection to GitHub until you git remote add origin <url>',
+      ],
+    },
+  },
 ]
 
 export function getTopicById(id: string): Topic | undefined {

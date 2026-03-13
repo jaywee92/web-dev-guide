@@ -148,6 +148,16 @@ export const CATEGORIES: Category[] = [
     cardLabel: 'SQL Basics',
     cardEmoji: '📖',
   },
+  {
+    id: 'git',
+    title: 'Git & GitHub',
+    description: 'Version Control · Branching · Collaboration',
+    color: '#f97316',
+    icon: 'GitBranch',
+    topicIds: ['git-intro', 'git-workflow', 'git-github'],
+    cardLabel: 'Basics',
+    cardEmoji: '🌿',
+  },
 ]
 
 export const CATEGORY_GROUPS: CategoryGroup[] = [
@@ -166,6 +176,11 @@ export const CATEGORY_GROUPS: CategoryGroup[] = [
     label: 'FRAMEWORKS & WEB',
     categoryIds: ['react', 'webapis', 'http', 'postgresql'],
   },
+  {
+    key: 'tools',
+    label: 'TOOLS',
+    categoryIds: ['git'],
+  },
 ]
 
 export interface TechSectionMeta {
@@ -183,6 +198,7 @@ export const TECH_SECTION_META: Record<string, TechSectionMeta> = {
   webapis:     { title: 'Web APIs',   subtitle: 'Browser Interfaces',         color: '#34d399' },
   http:        { title: 'HTTP',       subtitle: 'Hypertext Transfer Protocol',color: '#fb923c' },
   postgresql:  { title: 'PostgreSQL', subtitle: 'Relational Database',        color: '#60a5fa' },
+  git:         { title: 'Git',        subtitle: 'Version Control System',     color: '#f97316' },
 }
 
 /** Returns the tech grouping key for a category.
@@ -251,6 +267,9 @@ export const TOPIC_ICONS: Record<string, string> = {
   'postgres-queries':          'Search',
   'postgres-joins':            'Merge',
   'postgres-crud':             'Database',
+  'git-intro':                 'GitCommit',
+  'git-workflow':              'GitBranch',
+  'git-github':                'Github',
 }
 
 /** English display labels for topic IDs (used on homepage subcategory cards) */
@@ -302,4 +321,7 @@ export const TOPIC_LABELS: Record<string, string> = {
   'postgres-queries':            'Queries',
   'postgres-joins':              'Joins',
   'postgres-crud':               'CRUD',
+  'git-intro':                   'What is Git?',
+  'git-workflow':                'Git Workflow',
+  'git-github':                  'GitHub',
 }
