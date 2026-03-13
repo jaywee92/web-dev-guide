@@ -1,7 +1,7 @@
 # Topic Banner — Design Spec
 
 **Date:** 2026-03-14
-**Status:** Approved
+**Status:** Draft
 
 ## Overview
 
@@ -14,24 +14,24 @@ Each topic page gets a concept-diagram SVG banner inserted between the title are
 **Style:** Option A — title area on top (existing), diagram as a full-width strip below.
 
 **Banner dimensions:**
-- Width: 100% of content column (max ~780px, matching existing `maxWidth: 860` minus padding)
+- Width: 100% of content column (max ~780px, matching existing `maxWidth: 860` minus 40px side padding)
 - Height: 220px (fixed, consistent across all topics)
 - Border radius: 12px
-- Border: `1px solid {topic.color}20`
-- Box shadow: `0 0 40px {topic.color}08`
+- Border: `1px solid ${topic.color}20`
+- Box shadow: `0 0 40px ${topic.color}08`
 
 **Banner background:**
-- Dark: `#07101a` (very dark, slightly blue-tinted — matches app dark theme)
-- Dot-grid texture: `rgba(topic.color, 0.10)` circles at 26px intervals
-- Radial glow: `rgba(topic.color, 0.06)` centered
+- Dark base: `#07101a`
+- Dot-grid texture: rendered inside each banner SVG (not by the wrapper) — `rgba(topic.color, 0.10)` circles at 26px intervals using `<pattern>`
+- Radial glow: `rgba(topic.color, 0.06)` centered, also inside the SVG
 
 **Diagram SVG:**
-- `viewBox="0 0 780 220"`, `width="100%"`
+- `viewBox="0 0 780 220"`, `width="100%"`, `style="display:block"`
 - Shows the topic concept directly (not abstract/decorative)
-- Topic color used as primary accent
+- Topic color used as primary stroke/fill accent
 - All text in `font-family: monospace`, minimum 10px
 - All elements must be fully visible within the viewBox — no cropping
-- Annotation lines (width/height rulers) optional but recommended for structural diagrams
+- Annotation lines (width/height rulers) are optional, used for structural/layout diagrams
 
 **Animation (mount only, no loop):**
 ```tsx
@@ -40,106 +40,201 @@ Each topic page gets a concept-diagram SVG banner inserted between the title are
   animate={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
 >
+  {BannerComp ? <BannerComp /> : null}
+</motion.div>
 ```
 
 ---
 
 ## Page Placement
 
-In `TopicPage/index.tsx`, the banner is inserted between `#intro` and `#explanation`:
+The banner is inserted in `TopicPage/index.tsx` between `#intro` and `#explanation`. The `#explanation` div's existing `marginTop: 32` is removed (set to 0) — the banner's own `marginBottom` provides the spacing instead.
+
+Actual DOM structure (simplified):
 
 ```
-#intro
-  ← back button
-  breadcrumb
-  progress bar
-  H1 title
-  description
-  [reference link]
+<PageWrapper>
+  <div style={{ display: 'flex' }}>                 ← flex row
+    <TopicSidebar />
+    <div style={{ flex:1, padding:'40px 40px 80px', maxWidth:860 }}>
+      <div id="intro">                               ← back btn, breadcrumb, progress, H1, desc
+        ...existing content unchanged...
+      </div>
 
-★ <TopicBanner>   ← NEW, inserted here
+      ★ <TopicBanner topic={topic} BannerComp={BannerComp} />   ← NEW
 
-#explanation
-  SyncExplanation (sticky anim + step cards)
-
-KeyTakeaways
-ContentTabs
-NextTopicCard
+      <div id="explanation" style={{ marginTop: 0 }}> ← was 32, now 0
+        <SyncExplanation ... />
+      </div>
+      <KeyTakeaways ... />
+      <ContentTabs ... />
+    </div>
+  </div>
+  <NextTopicCard />                                  ← outside the maxWidth div (unchanged)
+</PageWrapper>
 ```
 
 ---
 
-## Architecture
+## Type Changes
 
-### New component: `src/pages/TopicPage/TopicBanner.tsx`
+### `src/types/index.ts` — add `bannerComponent` to `Topic`
 
-```tsx
-interface Props {
-  topic: Topic
-  BannerComp: ComponentType | null
+```ts
+export interface Topic {
+  // ...existing fields...
+  animationComponent: string
+  bannerComponent?: string   // ← ADD THIS (optional; omit for fallback gradient)
+  // ...
 }
 ```
 
-- Renders the motion wrapper + `BannerComp` SVG
-- If `BannerComp` is null: renders a simple 220px gradient fallback strip using `topic.color`
-- No click interaction, no state
+---
 
-### Banner components: `src/topics/banners/{category}/{TopicId}Banner.tsx`
+## New Files
 
-- One file per topic, e.g. `src/topics/banners/css/BoxModelBanner.tsx`
-- Export: `export default function BoxModelBanner() { return <svg ...> }`
-- No props, no state — pure SVG wrapped in a React fragment
-- SVG `viewBox="0 0 780 220"`, `width="100%"`, `display: block`
+### `src/pages/TopicPage/TopicBanner.tsx`
 
-### Registry extension: `src/topics/registry.ts`
+```tsx
+import { motion } from 'framer-motion'
+import type { ComponentType } from 'react'
+import type { Topic } from '@/types'
 
-Extend the existing registry (which already handles `animationComponent` lazy loading) to also handle `bannerComponent`:
+interface Props {
+  topic: Topic
+  BannerComp: ComponentType<Record<string, never>> | null
+}
 
-```ts
-// New field alongside animationComponent
-bannerComponent?: string
+export default function TopicBanner({ topic, BannerComp }: Props) {
+  const wrapperStyle = {
+    borderRadius: 12,
+    overflow: 'hidden',
+    margin: '8px 0 36px',
+    border: `1px solid ${topic.color}20`,
+    boxShadow: `0 0 40px ${topic.color}08`,
+  }
 
-// New functions mirroring existing animation API:
-export function preloadBanner(name?: string): Promise<void>
-export function getBannerComponent(name?: string): ComponentType | null
+  if (!BannerComp) {
+    return (
+      <div style={{
+        ...wrapperStyle,
+        height: 220,
+        background: `linear-gradient(135deg, ${topic.color}14, ${topic.color}04)`,
+      }} />
+    )
+  }
+
+  return (
+    <motion.div
+      style={wrapperStyle}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
+    >
+      <BannerComp />
+    </motion.div>
+  )
+}
 ```
 
-### Topics data: `src/data/topics.ts`
+Note: `wrapperStyle` (including `margin` and `boxShadow`) is applied by `TopicBanner` in both the fallback and the animated paths — spacing is always consistent.
 
-Add `bannerComponent` field to each topic:
+### `src/topics/banners/{category}/{TopicId}Banner.tsx` (one per topic)
 
-```ts
-bannerComponent: 'BoxModelBanner',
+Example — `src/topics/banners/css/BoxModelBanner.tsx`:
+
+```tsx
+export default function BoxModelBanner() {
+  return (
+    <svg width="100%" viewBox="0 0 780 220" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', background: '#07101a' }}>
+      {/* dot grid, diagram, annotations */}
+    </svg>
+  )
+}
 ```
 
-Topics without a banner component omit the field (fallback gradient strip shown).
+- No props, no state — `ComponentType<Record<string, never>>`
+- SVG is self-contained (background, dot grid, glow all inside the SVG)
+- Named after the component: `BoxModelBanner`, `EventLoopBanner`, etc.
 
-### TopicPage/index.tsx changes
+---
 
-1. Import `preloadBanner`, `getBannerComponent`, `TopicBanner`
-2. Add state: `const [BannerComp, setBannerComp] = useState(...)`
-3. Add effect: preload banner on topic change (same pattern as AnimComp)
-4. Insert `<TopicBanner topic={topic} BannerComp={BannerComp} />` between `#intro` and `#explanation`
+## Registry Extension: `src/topics/registry.ts`
+
+Add a separate lazy registry and cache for banners, mirroring the existing animation pattern exactly:
+
+```ts
+type BannerComp = ComponentType<Record<string, never>>
+
+const bannerLazyRegistry: Record<string, () => Promise<{ default: BannerComp }>> = {
+  BoxModelBanner:            () => import('./banners/css/BoxModelBanner'),
+  FlexboxBanner:             () => import('./banners/css/FlexboxBanner'),
+  // ... one entry per banner file (see Scope table below)
+}
+
+const loadedBannerRegistry: Record<string, BannerComp> = {}
+
+export function getBannerComponent(name: string): BannerComp | null {
+  return loadedBannerRegistry[name] ?? null
+}
+
+export async function preloadBanner(name: string): Promise<void> {
+  if (loadedBannerRegistry[name] || !bannerLazyRegistry[name]) return
+  const mod = await bannerLazyRegistry[name]()
+  loadedBannerRegistry[name] = mod.default
+}
+```
+
+The `bannerLazyRegistry` is populated with one entry per banner file as they are created. Entries not yet in the registry are handled gracefully — `getBannerComponent` returns `null`, fallback gradient is shown.
+
+---
+
+## TopicPage/index.tsx Changes
+
+```tsx
+// Add imports
+import TopicBanner from './TopicBanner'
+import { preloadBanner, getBannerComponent } from '@/topics/registry'
+
+// Add state (mirror AnimComp pattern exactly)
+const [BannerComp, setBannerComp] = useState<ComponentType<Record<string, never>> | null>(
+  () => topic ? getBannerComponent(topic.bannerComponent ?? '') : null
+)
+
+// Add effect (mirror AnimComp pattern exactly)
+useEffect(() => {
+  if (!topic?.bannerComponent) return
+  preloadBanner(topic.bannerComponent).then(() => {
+    setBannerComp(() => getBannerComponent(topic.bannerComponent!))
+  })
+}, [topic?.bannerComponent])
+
+// Insert between #intro and #explanation:
+<TopicBanner topic={topic} BannerComp={BannerComp} />
+
+// Change #explanation marginTop from 32 to 0:
+<div id="explanation" style={{ marginTop: 0 }}>
+```
 
 ---
 
 ## Scope
 
-All ~54 topics that currently have an `animationComponent` get a banner. Topics are grouped by category:
+There are **56 entries** in the current `lazyRegistry` in `registry.ts`. Each topic has exactly one `animationComponent`, so there is one banner per topic. `AnimatedFlow` is a shared component used by multiple topics — those topics share a single `AnimatedFlowBanner` that shows a generic flow diagram.
 
-| Category | Topics | Count |
+| Category | Banner component names | Count |
 |---|---|---|
-| HTML | elements, forms, headings, lists, links-images, semantic, accessibility, media-embeds | 8 |
-| CSS | box-model, flexbox, grid, typography, colors-units, display-positioning, selectors, css-basics, transforms, transitions, animations, backgrounds, responsive, overflow, shadows, theming, custom-properties, images | 18 |
-| JavaScript | variables, closures, arrays, event-loop | 4 |
-| React | components, state, use-effect, router | 4 |
-| TypeScript | typescript-intro, interfaces, generics | 3 |
-| Web APIs | dom-events, fetch, storage | 3 |
-| HTTP | rest, status-codes | 2 |
-| PostgreSQL | crud, queries, joins | 3 |
-| Git | git-intro, git-workflow, github, gitignore, git-conflict, git-undo, git-collab-setup | 7 |
-
-**Total: ~56 banners**
+| HTML | DomTreeBanner, SemanticBanner, FormsBanner, ElementsBanner, TextHeadingsBanner, LinksImagesBanner, ListsBanner, MediaEmbedsBanner, AccessibilityBanner | 9 |
+| CSS | BoxModelBanner, FlexboxBanner, FlexboxUseCasesBanner, GridBanner, GridAreasBanner, SelectorsBanner, CSSBasicsBanner, ColorsUnitsBanner, TypographyBanner, BackgroundsBanner, DisplayPositioningBanner, ResponsiveBanner, ImagesBanner, CustomPropertiesBanner, TransformsBanner, TransitionsBanner, AnimationsBanner, ShadowsBanner, OverflowBanner, ThemingBanner | 20 |
+| JavaScript | EventLoopBanner, ClosureBanner, VariablesBanner, ArraysBanner | 4 |
+| TypeScript | TypeScriptBanner, InterfacesBanner, GenericsBanner | 3 |
+| React | RouterBanner, ComponentsBanner, StateBanner, UseEffectBanner | 4 |
+| Web APIs | FetchBanner, DomEventsBanner, StorageBanner | 3 |
+| HTTP | RestBanner, StatusCodesBanner | 2 |
+| PostgreSQL | QueriesBanner, JoinsBanner, CrudBanner | 3 |
+| Git | GitIntroBanner, GitWorkflowBanner, GitIgnoreBanner, GitHubBanner, GitCollabSetupBanner, GitConflictBanner, GitUndoBanner | 7 |
+| Shared | AnimatedFlowBanner | 1 |
+| **Total** | | **56** |
 
 ---
 
@@ -148,42 +243,36 @@ All ~54 topics that currently have an `animationComponent` get a banner. Topics 
 Each SVG must:
 - Show the core concept of the topic at a glance
 - Use the topic's `color` as the primary stroke/fill accent
-- Be fully readable at 780×220px
-- Use `monospace` font for all labels
-- Include a dot-grid background for texture
+- Be fully readable at 780×220px (no cropping)
+- Use `monospace` for all text labels, minimum 10px
+- Include dot-grid background + radial glow inside the SVG itself
 
 Diagram types by topic category:
-- **Box Model / layout topics** → nested rectangles with dimension annotations
-- **Flow/sequence topics (Event Loop, Fetch, REST)** → left-to-right block flow with arrows
-- **Tree/hierarchy topics (DOM, HTML structure)** → vertical tree diagram
-- **Branch/graph topics (Git)** → horizontal timeline with branch arcs
-- **Comparison topics (Flexbox, Grid)** → side-by-side layout examples
-- **State/toggle topics (Theming, Transitions)** → before/after split
 
----
-
-## Fallback
-
-If a topic has no `bannerComponent`, `TopicBanner` renders:
-
-```tsx
-<div style={{
-  height: 220,
-  borderRadius: 12,
-  background: `linear-gradient(135deg, ${topic.color}14, ${topic.color}04)`,
-  border: `1px solid ${topic.color}20`,
-  margin: '8px 0 36px',
-}} />
-```
+| Category type | Diagram style |
+|---|---|
+| Box/layout (Box Model, Grid, Flexbox, Display) | Nested rectangles or grid cells with labels |
+| Flow/sequence (Event Loop, Fetch, REST, Transitions) | Left-to-right blocks with arrows |
+| Tree/hierarchy (DOM, Semantic, HTML Elements) | Vertical indented tree |
+| Branch/graph (Git) | Horizontal timeline with branch arcs |
+| Comparison (Flexbox vs block, before/after) | Side-by-side split |
+| State/toggle (Theming, Animations, CSS Basics) | Before → after with transition arrow |
+| Scope/nesting (Closures, Variables) | Nested scope rectangles with labels |
+| Table/query (PostgreSQL) | Mini table rows with highlighted cells |
+| Component tree (React) | Component hierarchy boxes |
+| Type diagram (TypeScript) | Interface / type annotation blocks |
+| Config/ignore (GitIgnore, Storage) | File/key-value structure |
 
 ---
 
 ## Implementation Order
 
-1. Create `TopicBanner.tsx` component with fallback
-2. Extend `registry.ts` with banner lazy-loading
-3. Wire `TopicPage/index.tsx` (insert banner, add state/effect)
-4. Verify TypeScript clean with fallback only (no banners yet)
-5. Create all ~56 banner SVGs in parallel agents (batched by category)
-6. Add `bannerComponent` fields to `topics.ts`
-7. Final TypeScript check + push
+1. Add `bannerComponent?: string` to `Topic` interface in `src/types/index.ts`
+2. Create `TopicBanner.tsx` with fallback (no banner files needed yet)
+3. Add `getBannerComponent` + `preloadBanner` + empty `bannerLazyRegistry` to `registry.ts`
+4. Wire `TopicPage/index.tsx` — state, effect, insert `<TopicBanner>`, set `#explanation` marginTop to 0
+5. Run `npx tsc --noEmit` — must pass with zero errors (fallback renders for all topics)
+6. Create all 56 banner SVGs in parallel agents (batched by category, ~8 agents)
+7. Add `bannerComponent` fields to all topics in `src/data/topics.ts`
+8. Add entries to `bannerLazyRegistry` in `registry.ts` as banners are created
+9. Final TypeScript check + push
