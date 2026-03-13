@@ -8,6 +8,7 @@ import {
   StretchHorizontal, LayoutGrid, Smartphone, Variable, SunMoon, RotateCcw, Zap, Play,
   Braces, Lock, FileCode, Shuffle, Component, RefreshCw, Cpu, Route,
   Globe, HardDrive, ArrowLeftRight, Server, Activity, Search, Merge, Database,
+  Github, GitCommit,
   type LucideProps,
 } from 'lucide-react'
 import { TOPICS } from '@/data/topics'
@@ -22,6 +23,7 @@ const ICON_MAP: Record<string, IconComp> = {
   StretchHorizontal, LayoutGrid, Smartphone, Variable, SunMoon, RotateCcw, Zap, Play,
   Braces, Lock, FileCode, Shuffle, Component, RefreshCw, Cpu, Route,
   Globe, HardDrive, ArrowLeftRight, Server, Activity, Search, Merge, Database,
+  Github, GitCommit,
 }
 
 interface Props {
@@ -54,11 +56,14 @@ function TopicAnimPreview({ topic, tooltipEl }: { topic: Topic; tooltipEl: HTMLD
     if (!tooltipEl) return
     const r = tooltipEl.getBoundingClientRect()
     const vw = window.innerWidth
+    const vh = window.innerHeight
+    const PREVIEW_H = 320
     const isRightSide = r.left + r.width / 2 > vw / 2
     const left = isRightSide
       ? Math.max(8, r.left - PREVIEW_W - 10)
       : Math.min(vw - PREVIEW_W - 8, r.right + 10)
-    setPos({ top: r.top, left })
+    const top = Math.min(r.top, vh - PREVIEW_H - 8)
+    setPos({ top: Math.max(8, top), left })
   }, [tooltipEl, topic.id])
 
   if (!Comp || !pos) return null
@@ -113,9 +118,13 @@ export default function CategoryTooltip({ category, anchorRect, onMouseEnter, on
     const el = ref.current
     if (!el) return
     const W = window.innerWidth
+    const H = window.innerHeight
     const left = Math.min(anchorRect.left, W - el.offsetWidth - 12)
     el.style.left = `${Math.max(8, left)}px`
-    el.style.top  = `${anchorRect.bottom + 6}px`
+    // prefer below; flip above if it would overflow viewport
+    const topBelow = anchorRect.bottom + 6
+    const topAbove = anchorRect.top - el.offsetHeight - 6
+    el.style.top = `${topBelow + el.offsetHeight > H - 8 ? Math.max(8, topAbove) : topBelow}px`
     el.style.visibility = 'visible'
   })
 
