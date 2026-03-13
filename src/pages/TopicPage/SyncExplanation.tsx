@@ -1,6 +1,5 @@
-import { useRef, useState, useEffect, type ComponentType } from 'react'
+import { useRef, useEffect, type ComponentType } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { MousePointerClick } from 'lucide-react'
 import type { Topic, ExplanationStep } from '@/types'
 import CodeBlock from '@/components/ui/CodeBlock'
 import { useAnimationStep } from '@/hooks/useAnimationStep'
@@ -100,63 +99,80 @@ function StepBlock({ step, index, active, onActivate, color }: {
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { margin: '-40% 0px -40% 0px' })
-  const [hovered, setHovered] = useState(false)
 
   useEffect(() => {
     if (inView && !active) onActivate()
   }, [inView]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const stepLabel = `STEP ${String(index + 1).padStart(2, '0')}`
+
   return (
     <motion.div
       ref={ref}
-      animate={{ opacity: active ? 1 : 0.45, x: active ? 0 : 6 }}
+      animate={{ opacity: active ? 1 : 0.38, y: active ? 0 : 6 }}
       transition={{ duration: 0.3 }}
-      style={{ cursor: active ? 'default' : 'pointer' }}
       onClick={!active ? onActivate : undefined}
-      onMouseEnter={() => !active && setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      style={{
+        borderRadius: 16, overflow: 'hidden',
+        border: `1px solid ${active ? color + '40' : 'var(--border)'}`,
+        cursor: active ? 'default' : 'pointer',
+        boxShadow: active ? `0 0 28px ${color}12` : 'none',
+        transition: 'border-color 0.3s, box-shadow 0.3s, opacity 0.3s',
+      }}
     >
+      {/* Visual header — gradient background + icon */}
       <div style={{
-        display: 'flex', alignItems: 'flex-start', gap: 16,
-        borderLeft: `3px solid ${active ? color : hovered ? color + '55' : 'transparent'}`,
-        paddingLeft: 12,
-        paddingTop: 10, paddingBottom: 10, paddingRight: 10,
-        borderRadius: 8,
-        background: active ? 'transparent' : hovered ? color + '08' : 'transparent',
-        transition: 'border-color 0.2s, background 0.2s',
+        height: 110,
+        background: `linear-gradient(135deg, ${color}28, ${color}0a)`,
+        borderBottom: `1px solid ${active ? color + '30' : 'var(--border)'}`,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        position: 'relative', overflow: 'hidden',
+        transition: 'border-color 0.3s',
       }}>
-        <span style={{
-          width: 28, height: 28, borderRadius: '50%',
-          background: active ? color : hovered ? color + '22' : 'var(--surface-bright)',
-          border: `2px solid ${active ? color : hovered ? color + '55' : 'var(--border)'}`,
-          color: active ? '#fff' : hovered ? color : 'var(--text-muted)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 11, fontWeight: 700, flexShrink: 0, transition: 'all 0.2s',
+        {/* Floating accent circles */}
+        <div style={{
+          position: 'absolute', width: 80, height: 80, borderRadius: '50%',
+          background: color + '12', top: -20, left: -20,
+        }} />
+        <div style={{
+          position: 'absolute', width: 50, height: 50, borderRadius: '50%',
+          background: color + '0d', bottom: -10, right: 24,
+        }} />
+        {/* Icon or step number */}
+        {step.icon
+          ? <span style={{ fontSize: 44, lineHeight: 1, position: 'relative', zIndex: 1, filter: active ? 'none' : 'grayscale(0.4)' }}>{step.icon}</span>
+          : (
+            <span style={{
+              position: 'relative', zIndex: 1,
+              fontSize: 36, fontWeight: 900, fontFamily: 'var(--font-mono)',
+              color: active ? color : color + '70',
+              letterSpacing: '-0.02em',
+              transition: 'color 0.3s',
+            }}>
+              {String(index + 1).padStart(2, '0')}
+            </span>
+          )
+        }
+      </div>
+
+      {/* Card body */}
+      <div style={{ padding: '16px 20px', background: 'var(--surface)' }}>
+        <div style={{
+          fontSize: 10, fontWeight: 800, letterSpacing: '0.1em',
+          fontFamily: 'var(--font-mono)', color,
+          marginBottom: 6, opacity: active ? 1 : 0.7,
         }}>
-          {index + 1}
-        </span>
-        <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-            <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--text)', margin: 0 }}>
-              {step.heading}
-            </h3>
-            {!active && hovered && (
-              <span style={{
-                display: 'inline-flex', alignItems: 'center', gap: 4,
-                fontSize: 10, fontFamily: 'var(--font-mono)',
-                color, opacity: 0.8,
-              }}>
-                <MousePointerClick size={10} /> activate
-              </span>
-            )}
-          </div>
-          <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.7, marginBottom: step.codeExample ? 12 : 0 }}>
-            {step.text}
-          </p>
-          {step.codeExample && (
-            <CodeBlock code={step.codeExample} language={step.language} />
-          )}
+          {stepLabel}
         </div>
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--text)', margin: '0 0 10px', lineHeight: 1.3 }}>
+          {step.heading}
+        </h3>
+        <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.75, margin: 0, marginBottom: step.codeExample ? 12 : 0 }}>
+          {step.text}
+        </p>
+        {step.codeExample && (
+          <CodeBlock code={step.codeExample} language={step.language} />
+        )}
       </div>
     </motion.div>
   )

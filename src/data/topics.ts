@@ -19,6 +19,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🏷️',
             heading: 'HTML is made of elements',
             text: 'Every visible thing on a webpage is an HTML element — a heading, a paragraph, a link, an image. Elements tell the browser what the content means, not just how it looks.',
             codeExample: '<p>Hello, world!</p>',
@@ -26,6 +27,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '⚙️',
             heading: 'Opening tag',
             text: 'The opening tag names the element. <p> means paragraph. <h1> means main heading. <a> means anchor (link). The name determines how the browser renders the content.',
             codeExample: '<p>Hello, world!</p>\n ↑ opening tag',
@@ -33,6 +35,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '📐',
             heading: 'Content',
             text: 'Content lives between the tags. It can be text, other elements, or a mix of both. Nesting elements inside each other builds the tree structure of the page.',
             codeExample: '<p>Hello, <strong>world</strong>!</p>',
@@ -40,6 +43,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '🌳',
             heading: 'Closing tag',
             text: 'The closing tag has a slash before the name. It ends the element. Some elements — like <img>, <br>, <hr>, <input> — are void elements with no content and no closing tag.',
             codeExample: '<p>Hello, world!</p>\n               ↑ closing tag',
@@ -47,6 +51,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '⚙️',
             heading: 'Attributes',
             text: 'Attributes go inside the opening tag and provide extra information. They come in name="value" pairs. Common ones: href (link URL), src (image source), alt (alt text), id (unique name), class (styling group).',
             codeExample: '<a href="/about" class="nav-link" target="_blank">About</a>',
@@ -95,6 +100,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '📑',
             heading: 'Heading hierarchy',
             text: 'HTML has six heading levels: <h1> through <h6>. <h1> is the most important — used once per page for the main title. Subsequent headings create a document outline that browsers, search engines, and screen readers all use.',
             codeExample: '<h1>Main Title</h1>\n<h2>Section</h2>\n<h3>Subsection</h3>',
@@ -102,6 +108,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '📝',
             heading: 'Paragraphs',
             text: 'The <p> tag defines a paragraph. Browsers automatically add space above and below each paragraph. Never use <br> tags just to add vertical spacing — use CSS margins instead.',
             codeExample: '<p>First paragraph of text here.</p>\n<p>Second paragraph starts here.</p>',
@@ -109,6 +116,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '✏️',
             heading: 'Semantic vs presentational',
             text: '<strong> and <em> carry meaning: importance and emphasis. Screen readers announce them differently. <b> and <i> are purely visual with no semantic weight. Prefer <strong>/<em> when the meaning matters.',
             codeExample: '<strong>Important</strong> vs <b>Bold</b>\n<em>Emphasis</em> vs <i>Italic</i>',
@@ -116,6 +124,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '🔤',
             heading: 'Inline text elements',
             text: 'HTML has many inline elements for rich text. <mark> highlights. <del> shows deleted text. <ins> shows inserted text. <small> reduces size. <sub> and <sup> create subscript and superscript.',
             codeExample: 'Price: <del>€99</del> <ins>€49</ins>\nH<sub>2</sub>O  ·  E = mc<sup>2</sup>\n<mark>highlighted</mark>  ·  <small>fine print</small>',
@@ -123,6 +132,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '📝',
             heading: 'Block quotes and code',
             text: '<blockquote> wraps content quoted from another source. <code> displays inline code in monospace. <pre> preserves whitespace and line breaks — combined with <code> for multi-line snippets.',
             codeExample: '<blockquote cite="https://example.com">\n  <p>The best way to learn is by doing.</p>\n</blockquote>\n\n<pre><code>const x = 1\nconst y = 2</code></pre>',
@@ -170,6 +180,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🔗',
             heading: 'The anchor element',
             text: 'The <a> (anchor) tag creates a link. The href attribute holds the destination — a URL, a path, or even an email address. Without href, it\'s not a link.',
             codeExample: '<a href="https://developer.mozilla.org">MDN Docs</a>\n<a href="/about">About page</a>\n<a href="mailto:hi@example.com">Email us</a>',
@@ -177,6 +188,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '📂',
             heading: 'Absolute vs relative URLs',
             text: 'Absolute URLs start with https:// — they work from anywhere. Relative URLs describe a path from the current page. Use relative links for internal navigation so the site works in any environment.',
             codeExample: '<!-- Absolute: works from anywhere -->\n<a href="https://example.com/page">...</a>\n\n<!-- Relative: path from current page -->\n<a href="/about">About</a>\n<a href="../images/logo.png">Logo</a>',
@@ -184,6 +196,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🖼️',
             heading: 'target and download',
             text: 'target="_blank" opens the link in a new tab. Always add rel="noopener" with it for security. The download attribute tells the browser to download the file instead of navigating to it.',
             codeExample: '<a href="https://example.com" target="_blank" rel="noopener">\n  Opens in new tab\n</a>\n\n<a href="/report.pdf" download>Download PDF</a>',
@@ -191,6 +204,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '🖼️',
             heading: 'The <img> element',
             text: '<img> is a void element — no closing tag. src points to the image file. alt provides text for screen readers and when the image fails to load. width and height prevent layout shift.',
             codeExample: '<img\n  src="photo.jpg"\n  alt="A sunset over mountain peaks"\n  width="800"\n  height="600"\n>',
@@ -198,6 +212,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '♿',
             heading: 'Why alt text matters',
             text: 'Alt text is read aloud by screen readers for blind users. It also appears when the image fails to load. Describe what is in the image, not just its file name. For decorative images, use an empty alt="" so screen readers skip it.',
             codeExample: '<!-- Good: describes content -->\n<img src="team.jpg" alt="The four-person dev team at a whiteboard">\n\n<!-- Decorative: skip it -->\n<img src="divider.svg" alt="">',
@@ -324,6 +339,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🌐',
             heading: 'HTML is just text',
             text: 'When your browser receives an HTML file, it sees plain text — tags, attributes, content. The DOM is what the browser builds from that text.',
             codeExample: '<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Hello</h1>\n  </body>\n</html>',
@@ -331,16 +347,19 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🎯',
             heading: 'Parsing starts at the top',
             text: 'The browser reads your HTML top to bottom, creating a node for each element. The <html> tag becomes the root.',
           },
           {
             animationStep: 2,
+            icon: '✏️',
             heading: 'Children branch outward',
             text: 'Nested elements become child nodes. The tree grows as each tag is parsed.',
           },
           {
             animationStep: 3,
+            icon: '⚡',
             heading: 'Text is a node too',
             text: 'Every piece of text content between tags is its own text node in the tree.',
           },
@@ -388,6 +407,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🧠',
             heading: 'The div soup problem',
             text: 'Using only <div> elements tells browsers and screen readers nothing about your page\'s structure. Every box looks the same.',
             codeExample: '<div class="header">Logo</div>\n<div class="nav">Links</div>\n<div class="main">Content</div>\n<div class="footer">© 2026</div>',
@@ -395,6 +415,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🏗️',
             heading: '<header>',
             text: 'The <header> element contains introductory content — logo, site name, top navigation. There can be one per page or one per section.',
             codeExample: '<header>\n  <h1>My Site</h1>\n  <p>Tagline here</p>\n</header>',
@@ -402,6 +423,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '📄',
             heading: '<nav>',
             text: 'The <nav> element marks a block of navigation links. Screen readers and search engines use it to understand site structure.',
             codeExample: '<nav>\n  <a href="/">Home</a>\n  <a href="/about">About</a>\n  <a href="/blog">Blog</a>\n</nav>',
@@ -409,6 +431,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '💬',
             heading: '<main> and <article>',
             text: '<main> contains the primary unique content of the page. <article> is for self-contained content like a blog post or news story.',
             codeExample: '<main>\n  <article>\n    <h2>Post Title</h2>\n    <p>Content here…</p>\n  </article>\n</main>',
@@ -416,6 +439,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🧠',
             heading: 'The full picture',
             text: 'With semantic HTML, browsers, search engines, and assistive technologies all understand your page structure — no CSS classes required for meaning.',
             codeExample: '<header>…</header>\n<nav>…</nav>\n<main>\n  <article>…</article>\n  <aside>…</aside>\n</main>\n<footer>…</footer>',
@@ -464,6 +488,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '📋',
             heading: 'The <form> element',
             text: 'A <form> wraps all input controls and submits data to a server. The action attribute sets the URL; method sets GET or POST.',
             codeExample: '<form action="/submit" method="post">\n  <!-- inputs go here -->\n</form>',
@@ -471,6 +496,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🖊️',
             heading: '<label> and <input>',
             text: 'Every input should have a label. Connecting them with for/id makes the label clickable and improves accessibility.',
             codeExample: '<label for="email">Email</label>\n<input type="text" id="email" name="email" placeholder="you@example.com">',
@@ -478,6 +504,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🏷️',
             heading: '<select> and <option>',
             text: '<select> creates a dropdown. Each <option> is a choice. The value attribute is what gets submitted.',
             codeExample: '<label for="role">Role</label>\n<select id="role" name="role">\n  <option value="dev">Developer</option>\n  <option value="design">Designer</option>\n</select>',
@@ -485,6 +512,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '✅',
             heading: 'Checkbox and radio',
             text: 'Checkboxes allow multiple selections. Radio buttons in the same group allow only one selection.',
             codeExample: '<!-- Checkbox -->\n<input type="checkbox" id="agree" name="agree">\n<label for="agree">I agree</label>\n\n<!-- Radio -->\n<input type="radio" name="plan" value="free"> Free\n<input type="radio" name="plan" value="pro"> Pro',
@@ -492,6 +520,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '📋',
             heading: '<button type="submit">',
             text: 'The submit button sends the form. type="submit" is the default. type="button" prevents submission — useful for JavaScript actions.',
             codeExample: '<button type="submit">Create Account</button>\n<button type="button" onclick="validate()">Check</button>',
@@ -499,6 +528,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 5,
+            icon: '✅',
             heading: 'HTML5 built-in validation',
             text: 'Add required, minlength, maxlength, pattern, min, max directly in HTML — the browser validates before submit, no JavaScript needed. required alone blocks empty submission.',
             codeExample: `<input\n  type="email"\n  required\n  placeholder="you@example.com"\n>\n<input\n  type="password"\n  required\n  minlength="8"\n  pattern="(?=.*\\d)(?=.*[a-z]).{8,}"\n>`,
@@ -506,6 +536,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 6,
+            icon: '✅',
             heading: 'Constraint validation API',
             text: 'For custom error messages or real-time feedback, use the Constraint Validation API. setCustomValidity() overrides the browser message. checkValidity() returns true/false without submitting.',
             codeExample: `const input = document.querySelector('#email')\n\n// Custom message\ninput.setCustomValidity('Must be a company email')\n\n// Real-time check\ninput.addEventListener('input', () => {\n  if (input.validity.valid) {\n    input.setCustomValidity('')\n  }\n})`,
@@ -559,6 +590,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '♿',
             heading: 'Who needs accessibility?',
             text: "About 15% of people have a disability. Screen reader users navigate by headings and landmarks. Keyboard users can't use a mouse. Color-blind users need contrast. Semantic HTML gives you most of this for free — ARIA fills the gaps.",
             codeExample: `<!-- Screen readers announce this correctly -->\n<button type="button">Delete item</button>\n\n<!-- This has no semantics — avoid it -->\n<div onclick="deleteItem()">Delete item</div>`,
@@ -566,6 +598,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🏷️',
             heading: 'aria-label and aria-labelledby',
             text: "When visible text isn't enough, aria-label provides an accessible name. Icons-only buttons, close buttons, and form inputs all need descriptive labels.",
             codeExample: `<!-- Icon-only button needs aria-label -->\n<button aria-label="Close dialog">\n  <svg><!-- X icon --></svg>\n</button>\n\n<!-- Connect to visible label text -->\n<div id="section-heading">Search results</div>\n<ul aria-labelledby="section-heading">...</ul>`,
@@ -573,6 +606,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '⌨️',
             heading: 'Focus management',
             text: "Keyboard users Tab through interactive elements. Focus must be visible — never remove :focus styles without replacing them. Use :focus-visible to show rings only for keyboard navigation, not clicks.",
             codeExample: `/* Never do this */\n* { outline: none; }\n\n/* Instead: custom focus ring */\n.btn:focus-visible {\n  outline: none;\n  box-shadow: 0 0 0 3px #3b82f666;\n}`,
@@ -580,6 +614,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '🔍',
             heading: 'tabindex',
             text: 'tabindex="0" makes any element keyboard-focusable in natural DOM order. tabindex="-1" allows programmatic focus (el.focus()) but removes from tab sequence. Never use tabindex > 0 — it breaks natural order.',
             codeExample: `<!-- Keyboard focusable custom element -->\n<div\n  role="button"\n  tabindex="0"\n  aria-label="Like post"\n  onclick="like()"\n  onkeydown="e.key==='Enter' && like()"\n>❤️</div>`,
@@ -587,6 +622,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🔍',
             heading: 'ARIA roles and live regions',
             text: "role= overrides the element's implicit role. ARIA live regions announce dynamic content changes to screen readers. aria-live='polite' waits for silence, 'assertive' interrupts immediately.",
             codeExample: `<!-- Status message announced without focus -->\n<div\n  role="status"\n  aria-live="polite"\n  aria-atomic="true"\n>\n  3 results found\n</div>\n\n<!-- Alert: urgent message -->\n<div role="alert">\n  Form submission failed\n</div>`,
@@ -634,6 +670,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🖼️',
             heading: '<iframe> — page within a page',
             text: 'An <iframe> embeds another HTML document inside your page. YouTube embeds, Google Maps, and CodePen previews all use iframes. The embedded content runs in its own isolated browsing context.',
             codeExample: '<iframe\n  src="https://www.youtube.com/embed/dQw4w9WgXcQ"\n  width="560"\n  height="315"\n  title="Video title"\n  allowfullscreen\n></iframe>',
@@ -641,6 +678,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🎬',
             heading: '<video>',
             text: 'The <video> element embeds video natively. The controls attribute adds play/pause/volume UI. Include multiple <source> elements for browser compatibility — the browser picks the first format it supports.',
             codeExample: '<video controls width="640" height="360">\n  <source src="video.mp4" type="video/mp4">\n  <source src="video.webm" type="video/webm">\n  Your browser does not support video.\n</video>',
@@ -648,6 +686,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🔊',
             heading: '<audio>',
             text: '<audio> works the same as <video> but for sound. The controls attribute adds a player. Without controls, the audio is invisible and plays only with JavaScript.',
             codeExample: '<audio controls>\n  <source src="podcast.mp3" type="audio/mpeg">\n  <source src="podcast.ogg" type="audio/ogg">\n  Your browser does not support audio.\n</audio>',
@@ -655,6 +694,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '🪟',
             heading: '<picture> — responsive images',
             text: '<picture> serves different images based on screen size or format support. The browser picks the first matching <source>. The <img> fallback is always required — it\'s what actually renders the image.',
             codeExample: '<picture>\n  <source media="(min-width: 800px)" srcset="large.webp" type="image/webp">\n  <source media="(min-width: 400px)" srcset="medium.jpg">\n  <img src="small.jpg" alt="A mountain landscape">\n</picture>',
@@ -662,6 +702,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🖼️',
             heading: '<code> and <pre>',
             text: '<code> displays inline code in monospace font. Wrap it in <pre> to preserve whitespace and newlines for multi-line snippets. This is how documentation sites, READMEs, and tech blogs show code examples.',
             codeExample: '<p>Use the <code>console.log()</code> function.</p>\n\n<pre><code>function greet(name) {\n  return `Hello, ${name}!`\n}</code></pre>',
@@ -711,6 +752,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🎨',
             heading: 'Browser defaults',
             text: 'Without any CSS, browsers apply their own built-in styles — serif fonts, margins on headings, blue underlined links. Every stylesheet you write overrides these defaults.',
             codeExample: '/* No CSS needed to see browser defaults */\n/* h1 → bold + margin, p → margin, a → blue + underline */',
@@ -718,6 +760,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🎯',
             heading: 'Inline styles',
             text: 'Apply CSS directly on a single element using the style attribute. Inline styles have the highest specificity — they override external and internal stylesheets. Use only for truly one-off dynamic values (e.g. set by JavaScript).',
             codeExample: '<p style="color: blue; font-weight: bold;">\n  This paragraph is styled inline.\n</p>',
@@ -725,6 +768,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🌊',
             heading: 'Internal <style> tag',
             text: 'Write CSS inside a <style> element in the <head>. Useful for single-page prototypes or HTML email templates. Not ideal for multi-page sites — styles must be duplicated in every file.',
             codeExample: '<head>\n  <style>\n    p { color: blue; font-weight: bold; }\n  </style>\n</head>',
@@ -732,6 +776,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '⚖️',
             heading: 'External stylesheet',
             text: 'Link a .css file using <link> in the <head>. Best practice for real projects — one file applies to every page. Change one file, every page updates.',
             codeExample: '<head>\n  <link rel="stylesheet" href="style.css">\n</head>\n\n/* style.css */\np { color: blue; font-weight: bold; }',
@@ -739,6 +784,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🧬',
             heading: 'The Cascade',
             text: 'When multiple rules target the same element, the browser uses specificity to decide the winner. Higher specificity always wins. Equal specificity? The later rule in the source wins.',
             codeExample: '/* (0,0,1) type */\np { color: grey; }\n\n/* (0,1,0) class — WINS (higher spec) */\n.text { color: blue; }\n\n/* (0,0,1) same as first, later but loses */\np { color: red; }',
@@ -857,6 +903,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '📐',
             heading: 'The classic navbar',
             text: 'Flexbox solves the navbar in 2 lines: display: flex on the container, then justify-content: space-between pushes the logo left and links right. The browser handles everything in between.',
             codeExample: `.nav {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}`,
@@ -864,6 +911,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🗃️',
             heading: 'Responsive card rows',
             text: "Add flex-wrap: wrap so cards automatically drop to the next row when there's no space. gap replaces margin hacks. Each card gets flex: 1 1 250px — grow, shrink, minimum 250px wide.",
             codeExample: `.grid {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 16px;\n}\n.card { flex: 1 1 250px; }`,
@@ -871,6 +919,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '↔️',
             heading: 'Perfect centering',
             text: "The most searched CSS question: how do I center this? With flexbox it's two properties on the parent. justify-content centers on the main axis, align-items on the cross axis.",
             codeExample: `.container {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  height: 100vh;\n}`,
@@ -878,6 +927,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '🌯',
             heading: 'Core properties recap',
             text: 'These three flex properties cover 90% of real layouts. Start with these, add flex-direction: column for vertical stacks.',
             codeExample: `/* Container */\ndisplay: flex;\njustify-content: space-between; /* main axis */\nalign-items: center;            /* cross axis */\ngap: 16px;                      /* spacing */\n\n/* Child */\nflex: 1;         /* grow to fill */\nflex: 0 0 200px; /* fixed 200px */`,
@@ -929,6 +979,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🔲',
             heading: 'Name your areas',
             text: 'grid-template-areas lets you draw your layout as ASCII art. Each string is a row. Repeated names span multiple columns. A dot (.) is an empty cell.',
             codeExample: `.layout {\n  display: grid;\n  grid-template-columns: 200px 1fr;\n  grid-template-rows: auto 1fr auto;\n  grid-template-areas:\n    "header header"\n    "sidebar main"\n    "footer footer";\n}`,
@@ -936,6 +987,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '📊',
             heading: 'Assign children',
             text: "Each child gets a grid-area name matching the template. The browser places it exactly — no tracking column/row numbers.",
             codeExample: `header  { grid-area: header; }\n.sidebar { grid-area: sidebar; }\nmain    { grid-area: main; }\nfooter  { grid-area: footer; }`,
@@ -943,6 +995,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🎯',
             heading: 'Responsive with areas',
             text: 'Redefine the template in a media query. The browser re-flows all named areas instantly — no changing individual grid-column/row values.',
             codeExample: `@media (max-width: 768px) {\n  .layout {\n    grid-template-areas:\n      "header"\n      "main"\n      "sidebar"\n      "footer";\n    grid-template-columns: 1fr;\n  }\n}`,
@@ -950,6 +1003,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '📱',
             heading: 'fr unit and auto-fit',
             text: 'fr (fractional unit) fills remaining space proportionally. Combine with repeat(auto-fill, minmax()) for grids that automatically adapt their column count.',
             codeExample: `/* 3 equal columns */\ngrid-template-columns: 1fr 1fr 1fr;\n\n/* Auto-responsive cards */\ngrid-template-columns:\n  repeat(auto-fill, minmax(250px, 1fr));`,
@@ -1000,6 +1054,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🔖',
             heading: 'Selectors target HTML elements',
             text: 'CSS rules start with a selector that tells the browser which elements to style.',
             codeExample: 'h1 { color: blue; }   /* type selector */\n.card { padding: 16px; }  /* class selector */\n#hero { font-size: 48px; } /* ID selector */',
@@ -1007,6 +1062,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🆔',
             heading: 'Universal selector *',
             text: 'The * selector matches every element on the page. Often used for CSS resets.',
             codeExample: '* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}',
@@ -1014,6 +1070,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🎭',
             heading: 'Type selectors',
             text: 'Match elements by their tag name. Every <h1> on the page gets this style.',
             codeExample: 'h1 { font-size: 32px; }\np  { line-height: 1.6; }\na  { color: #5b9cf5; }',
@@ -1021,6 +1078,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '✨',
             heading: 'Class selectors',
             text: 'Classes start with a dot. They are reusable — many elements can share the same class.',
             codeExample: '.button {\n  padding: 8px 16px;\n  border-radius: 4px;\n}\n\n.button.primary { background: #5b9cf5; }',
@@ -1028,6 +1086,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🔀',
             heading: 'Specificity — which rule wins',
             text: 'When multiple rules target the same element, specificity determines the winner. ID > class > type. Higher specificity always wins regardless of order.',
             codeExample: '/* specificity: 0,0,1 */\nh1 { color: grey; }\n\n/* specificity: 0,1,0 — wins over h1 */\n.title { color: blue; }\n\n/* specificity: 1,0,0 — always wins */\n#hero { color: green; }',
@@ -1035,6 +1094,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 5,
+            icon: '🎭',
             heading: 'Pseudo-classes — state-based targeting',
             text: 'Pseudo-classes target elements based on their state or position. :hover fires when the mouse is over the element. :focus activates when a form field is focused. :nth-child(n) matches by position in a list.',
             codeExample: 'a:hover  { text-decoration: underline; }\ninput:focus { outline: 2px solid #3b82f6; }\nli:nth-child(odd)  { background: rgba(255,255,255,0.05); }\nli:first-child { font-weight: bold; }',
@@ -1042,6 +1102,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 6,
+            icon: '✨',
             heading: 'Pseudo-elements — virtual sub-parts',
             text: 'Pseudo-elements style a part of an element that doesn\'t exist in the HTML. ::before and ::after inject generated content. ::first-line and ::first-letter target text. Always use content: "" with ::before/::after.',
             codeExample: 'p::first-line { font-weight: bold; }\n\n.card::before {\n  content: "";\n  display: block;\n  width: 4px;\n  background: #3b82f6;\n}\n\na::after { content: " →"; }',
@@ -1092,6 +1153,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🎨',
             heading: 'Named colors',
             text: 'CSS has 140+ named colors like red, blue, tomato, and cornflowerblue. Simple but limited — you can\'t fine-tune them.',
             codeExample: 'color: tomato;\nbackground-color: cornflowerblue;',
@@ -1099,6 +1161,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '👻',
             heading: 'HEX codes',
             text: 'Six hex digits encode red, green, and blue channels (#RRGGBB). The most common format you\'ll see in designs. Shorthand: #RGB when each pair repeats.',
             codeExample: 'color: #ef4444;       /* red */\ncolor: #3b82f6;       /* blue */\ncolor: #fff;          /* white shorthand */',
@@ -1106,6 +1169,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '📏',
             heading: 'RGB & RGBA',
             text: 'rgb() takes three 0–255 values for red, green, blue. rgba() adds a fourth value (0–1) for transparency — great for overlays.',
             codeExample: 'color: rgb(239, 68, 68);\nbackground: rgba(0, 0, 0, 0.5); /* 50% black overlay */',
@@ -1113,6 +1177,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '🔢',
             heading: 'HSL & HSLA',
             text: 'hsl() uses Hue (0–360°), Saturation (%), and Lightness (%). Much more intuitive for creating color palettes — just shift the hue.',
             codeExample: 'color: hsl(0, 84%, 60%);     /* red */\ncolor: hsl(217, 91%, 60%);   /* blue — same sat/light */\ncolor: hsla(0, 84%, 60%, 0.5);',
@@ -1120,6 +1185,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🎛️',
             heading: 'CSS Units',
             text: 'px is absolute. em is relative to the parent\'s font-size. rem is relative to the root <html> font-size (usually 16px). % is relative to the parent\'s size. Use rem for font sizes, px for borders, % for widths.',
             codeExample: 'font-size: 16px;    /* absolute */\npadding: 1rem;      /* 16px if root = 16px */\nwidth: 50%;         /* half of parent */\nmargin: 0.5em;      /* half of parent font-size */',
@@ -1329,6 +1395,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🌑',
             heading: 'box-shadow anatomy',
             text: 'box-shadow takes: x-offset, y-offset, blur-radius, spread-radius, color. Only the first two are required. Positive x = right, positive y = down.',
             codeExample: `.card {\n  /* x  y  blur  spread  color */\n  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.4);\n}`,
@@ -1336,6 +1403,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🪞',
             heading: 'Simple drop shadow',
             text: 'A single shadow with slight y-offset and blur creates depth. Keep the shadow subtle — too strong looks dated. rgba gives transparency control.',
             codeExample: `.card {\n  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);\n}`,
@@ -1343,6 +1411,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🪞',
             heading: 'Layered shadows',
             text: 'Stack multiple shadows with commas for realism. A tight near-shadow + a diffuse far-shadow mimics how light actually behaves. This is the secret behind polished UI design systems.',
             codeExample: `.card {\n  box-shadow:\n    0 1px 2px  rgba(0,0,0,0.4),\n    0 8px 32px rgba(91,156,245,0.25);\n}`,
@@ -1350,6 +1419,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '✍️',
             heading: 'Inset shadow',
             text: 'Adding inset flips the shadow to the inside of the box. Used for pressed button states, inner depth on inputs, or sunken effects.',
             codeExample: `.input:focus {\n  box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);\n}\n\n.btn:active {\n  box-shadow: inset 0 3px 6px rgba(0,0,0,0.3);\n}`,
@@ -1357,6 +1427,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🎆',
             heading: 'Glow and text-shadow',
             text: 'Zero offset + large blur = glow. Works on box-shadow for halos, text-shadow for glowing text effects. text-shadow syntax is identical but has no spread.',
             codeExample: `/* Glow */\n.glow {\n  box-shadow:\n    0 0 24px #5b9cf588,\n    0 0 48px #5b9cf533;\n}\n\n/* Text shadow */\nh1 {\n  text-shadow: 0 0 20px #a78bfa;\n}`,
@@ -1406,6 +1477,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '💧',
             heading: 'The overflow problem',
             text: 'By default, overflow: visible means content spills out of its container. This breaks layouts — a text block or image can overlap sibling elements.',
             codeExample: `.box {\n  width: 200px;\n  height: 80px;\n  /* overflow: visible is the default */\n}`,
@@ -1413,6 +1485,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '✂️',
             heading: 'overflow: hidden',
             text: 'Clips content at the container boundary. Nothing is scrollable — the overflow just disappears. Use it to contain floated children, clip images, or create masked effects.',
             codeExample: `.box {\n  overflow: hidden;\n}\n\n/* Also clips child border-radius */\n.avatar-container {\n  border-radius: 50%;\n  overflow: hidden;\n}`,
@@ -1420,6 +1493,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '📜',
             heading: 'overflow: auto and scroll',
             text: 'auto adds a scrollbar only when content overflows. scroll always shows the scrollbar. Prefer auto — it avoids layout shift on content size changes. Control axes separately with overflow-x / overflow-y.',
             codeExample: `.sidebar {\n  height: 400px;\n  overflow-y: auto;\n  overflow-x: hidden;\n}\n\n.code-block {\n  overflow-x: auto; /* horizontal scroll for long lines */\n}`,
@@ -1427,6 +1501,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '↔️',
             heading: 'text-overflow: ellipsis',
             text: 'Truncates text with "..." at the container edge. Requires three properties working together: white-space: nowrap (prevent wrapping), overflow: hidden (hide overflow), text-overflow: ellipsis (show dots).',
             codeExample: `.truncate {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n\n  /* Optional: set a max-width */\n  max-width: 200px;\n}`,
@@ -1475,6 +1550,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '📦',
             heading: 'Block flow',
             text: 'Block elements stack vertically — each one starts on a new line and stretches to fill available width. div, p, h1–h6, and section are block elements by default.',
             codeExample: 'div { display: block; } /* default */\n/* Each div starts on its own line */',
@@ -1482,6 +1558,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🧱',
             heading: 'display: inline',
             text: 'Inline elements sit side by side in the text flow. They only take up as much width as their content. You can\'t set width or height on inline elements.',
             codeExample: 'span { display: inline; } /* default */\na, strong, em { display: inline; }',
@@ -1489,6 +1566,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '📌',
             heading: 'display: inline-block',
             text: 'The best of both worlds — sits inline like text, but accepts width, height, padding, and margin like a block.',
             codeExample: '.badge {\n  display: inline-block;\n  width: 80px;\n  padding: 4px 12px;\n}',
@@ -1496,6 +1574,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '🖇️',
             heading: 'position: relative',
             text: 'The element stays in the normal flow but can be nudged using top, right, bottom, left. The space it would have occupied is preserved. Commonly used as a positioning anchor for absolute children.',
             codeExample: '.nudged {\n  position: relative;\n  top: 10px;   /* moves down 10px */\n  left: 20px;  /* moves right 20px */\n}',
@@ -1503,6 +1582,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🗂️',
             heading: 'position: absolute',
             text: 'Removes the element from the normal flow — other elements ignore it. Positions relative to the nearest ancestor with position: relative (or the viewport if none). Essential for tooltips, dropdowns, and overlays.',
             codeExample: '.parent { position: relative; }\n\n.tooltip {\n  position: absolute;\n  top: 100%;\n  left: 0;\n  /* anchored to .parent corner */\n}',
@@ -1704,11 +1784,11 @@ export const TOPICS: Topic[] = [
         id: 'explanation',
         type: 'explanation',
         steps: [
-          { animationStep: 0, heading: 'The problem: hardcoded values', text: 'Without variables, you repeat the same color hex in dozens of rules. Change the brand color? Find and replace across every file.', codeExample: '.btn { background: #3b82f6; }\n.link { color: #3b82f6; }\n/* Change brand = edit many places */', language: 'css' },
-          { animationStep: 1, heading: 'Declare with --name', text: 'Custom properties start with --. Declare them on :root to make them globally available. They cascade just like any CSS property.', codeExample: ':root {\n  --color-primary: #3b82f6;\n  --radius: 8px;\n}', language: 'css' },
-          { animationStep: 2, heading: 'Use with var()', text: 'The var() function reads the custom property value. Change --color-primary in one place and every rule using var(--color-primary) updates automatically.', codeExample: '.btn  { background: var(--color-primary); }\n.link { color: var(--color-primary); }\n/* Change brand = edit :root only */', language: 'css' },
-          { animationStep: 3, heading: 'Override in child scope', text: 'Re-declare the variable inside a selector to override it for that subtree. Child elements see the new value; elements outside are unaffected.', codeExample: ':root { --color-primary: #3b82f6; }\n\n.dark-section {\n  --color-primary: #1d4ed8;\n}\n/* .btn inside .dark-section gets #1d4ed8 */\n/* .btn outside still gets #3b82f6 */', language: 'css' },
-          { animationStep: 4, heading: 'Design token system', text: 'A small set of custom properties (colors, spacing, radii) becomes your design system. Components reference tokens — change a token and the whole UI updates.', codeExample: ':root {\n  --color-primary:  #3b82f6;\n  --color-surface:  #1e293b;\n  --radius:         8px;\n  --spacing-md:     16px;\n}', language: 'css' },
+          { animationStep: 0, icon: '🎛️', heading: 'The problem: hardcoded values', text: 'Without variables, you repeat the same color hex in dozens of rules. Change the brand color? Find and replace across every file.', codeExample: '.btn { background: #3b82f6; }\n.link { color: #3b82f6; }\n/* Change brand = edit many places */', language: 'css' },
+          { animationStep: 1, icon: '🌊', heading: 'Declare with --name', text: 'Custom properties start with --. Declare them on :root to make them globally available. They cascade just like any CSS property.', codeExample: ':root {\n  --color-primary: #3b82f6;\n  --radius: 8px;\n}', language: 'css' },
+          { animationStep: 2, icon: '🌓', heading: 'Use with var()', text: 'The var() function reads the custom property value. Change --color-primary in one place and every rule using var(--color-primary) updates automatically.', codeExample: '.btn  { background: var(--color-primary); }\n.link { color: var(--color-primary); }\n/* Change brand = edit :root only */', language: 'css' },
+          { animationStep: 3, icon: '⚡', heading: 'Override in child scope', text: 'Re-declare the variable inside a selector to override it for that subtree. Child elements see the new value; elements outside are unaffected.', codeExample: ':root { --color-primary: #3b82f6; }\n\n.dark-section {\n  --color-primary: #1d4ed8;\n}\n/* .btn inside .dark-section gets #1d4ed8 */\n/* .btn outside still gets #3b82f6 */', language: 'css' },
+          { animationStep: 4, icon: '🎛️', heading: 'Design token system', text: 'A small set of custom properties (colors, spacing, radii) becomes your design system. Components reference tokens — change a token and the whole UI updates.', codeExample: ':root {\n  --color-primary:  #3b82f6;\n  --color-surface:  #1e293b;\n  --radius:         8px;\n  --spacing-md:     16px;\n}', language: 'css' },
         ],
       },
       { id: 'playground', type: 'playground', steps: [] },
@@ -1748,6 +1828,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🎛️',
             heading: 'The problem with hardcoded colors',
             text: 'When colors are scattered across 50 CSS files, changing your brand color means grep-and-replace across the entire codebase. One missed instance and your UI is inconsistent.',
             codeExample: `/* Hardcoded — a maintenance nightmare */\n.btn    { background: #3b82f6; }\n.link   { color: #3b82f6; }\n.border { border-color: #3b82f6; }`,
@@ -1755,6 +1836,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🌊',
             heading: 'Design tokens with :root',
             text: ':root variables are globally available. Define your entire design token system here — colors, spacing, radius, shadows. Components reference tokens, never raw values.',
             codeExample: `:root {\n  --color-primary:   #3b82f6;\n  --color-bg:        #ffffff;\n  --color-text:      #1e293b;\n  --color-surface:   #f1f5f9;\n  --radius:          8px;\n  --shadow:          0 4px 12px rgba(0,0,0,0.1);\n}\n\n.btn { background: var(--color-primary); }`,
@@ -1762,6 +1844,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🌓',
             heading: 'Dark mode with class override',
             text: 'Override the same variable names in a .dark class. Add/remove this class from <html> or <body> in JavaScript. No component code changes — they all read the same variable names.',
             codeExample: `.dark {\n  --color-primary:  #818cf8;\n  --color-bg:       #0f172a;\n  --color-text:     #e2e8f0;\n  --color-surface:  #1e293b;\n}\n\n// Toggle in JavaScript\ndocument.documentElement.classList.toggle('dark')`,
@@ -1769,6 +1852,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '⚡',
             heading: 'prefers-color-scheme',
             text: "Respect the user's OS preference automatically. Media query reads the system setting and activates the dark token overrides — no JavaScript needed for the initial state.",
             codeExample: `@media (prefers-color-scheme: dark) {\n  :root {\n    --color-primary:  #818cf8;\n    --color-bg:       #0f172a;\n    --color-text:     #e2e8f0;\n    --color-surface:  #1e293b;\n  }\n}`,
@@ -1815,11 +1899,11 @@ export const TOPICS: Topic[] = [
         id: 'explanation',
         type: 'explanation',
         steps: [
-          { animationStep: 0, heading: 'No transform', text: 'Without transform, the element sits in its normal document flow. Transforms apply visually — they do not push other elements around.', codeExample: '.box {\n  width: 100px;\n  height: 100px;\n  background: #3b82f6;\n}', language: 'css' },
-          { animationStep: 1, heading: 'translate()', text: 'translate(x, y) moves the element from its normal position. Unlike margin, it does not affect surrounding layout — other elements stay put.', codeExample: '.box {\n  transform: translate(40px, 20px);\n  /* Moves right 40px, down 20px */\n}', language: 'css' },
-          { animationStep: 2, heading: 'rotate()', text: 'rotate(angle) spins the element around its transform-origin (default: center). Positive values = clockwise.', codeExample: '.box {\n  transform: rotate(45deg);\n  /* Rotate 45° clockwise */\n}', language: 'css' },
-          { animationStep: 3, heading: 'scale()', text: 'scale(n) resizes the element visually. 1 = original size, 1.5 = 50% larger, 0.5 = half size.', codeExample: '.box {\n  transform: scale(1.5);\n  /* 150% of original size */\n}', language: 'css' },
-          { animationStep: 4, heading: 'Combining transforms', text: 'Multiple transform functions stack left-to-right. Order matters — rotate then translate is different from translate then rotate.', codeExample: '.box {\n  transform: translate(20px, -10px)\n             rotate(20deg)\n             scale(1.2);\n}', language: 'css' },
+          { animationStep: 0, icon: '🔄', heading: 'No transform', text: 'Without transform, the element sits in its normal document flow. Transforms apply visually — they do not push other elements around.', codeExample: '.box {\n  width: 100px;\n  height: 100px;\n  background: #3b82f6;\n}', language: 'css' },
+          { animationStep: 1, icon: '⚙️', heading: 'translate()', text: 'translate(x, y) moves the element from its normal position. Unlike margin, it does not affect surrounding layout — other elements stay put.', codeExample: '.box {\n  transform: translate(40px, 20px);\n  /* Moves right 40px, down 20px */\n}', language: 'css' },
+          { animationStep: 2, icon: '⏱️', heading: 'rotate()', text: 'rotate(angle) spins the element around its transform-origin (default: center). Positive values = clockwise.', codeExample: '.box {\n  transform: rotate(45deg);\n  /* Rotate 45° clockwise */\n}', language: 'css' },
+          { animationStep: 3, icon: '🚀', heading: 'scale()', text: 'scale(n) resizes the element visually. 1 = original size, 1.5 = 50% larger, 0.5 = half size.', codeExample: '.box {\n  transform: scale(1.5);\n  /* 150% of original size */\n}', language: 'css' },
+          { animationStep: 4, icon: '🎭', heading: 'Combining transforms', text: 'Multiple transform functions stack left-to-right. Order matters — rotate then translate is different from translate then rotate.', codeExample: '.box {\n  transform: translate(20px, -10px)\n             rotate(20deg)\n             scale(1.2);\n}', language: 'css' },
         ],
       },
       { id: 'playground', type: 'playground', steps: [] },
@@ -1858,12 +1942,12 @@ export const TOPICS: Topic[] = [
         id: 'explanation',
         type: 'explanation',
         steps: [
-          { animationStep: 0, heading: 'Without transition', text: 'Without transition, any property change snaps instantly. It works, but feels abrupt.', codeExample: '.btn:hover {\n  background: #1d4ed8; /* snaps instantly */\n}', language: 'css' },
-          { animationStep: 1, heading: 'Add transition: property duration', text: 'transition tells the browser to animate the named property over a given duration. The animation plays in both directions automatically.', codeExample: '.btn {\n  transition: background 0.3s;\n}\n.btn:hover {\n  background: #1d4ed8;\n}', language: 'css' },
-          { animationStep: 2, heading: 'transition: all', text: 'all animates every changing property. Convenient but can be slow — prefer listing specific properties for performance.', codeExample: '.btn {\n  transition: all 0.5s;\n}', language: 'css' },
-          { animationStep: 3, heading: 'Timing functions', text: 'The timing function controls the pace. ease-in-out starts slow, speeds up, then slows down — the most natural feel for UI.', codeExample: 'transition: all 0.4s ease-in-out;\n\n/* ease | linear | ease-in | ease-out | ease-in-out */', language: 'css' },
-          { animationStep: 4, heading: 'Multiple transitions', text: 'Comma-separate to give each property a different duration. Common: color transitions slower than transform.', codeExample: '.btn {\n  transition:\n    background 0.3s ease,\n    transform  0.2s ease;\n}', language: 'css' },
-          { animationStep: 5, heading: 'Animate the right properties', text: 'Not all CSS properties are equal. transform and opacity run on the GPU compositor thread — they never trigger layout recalculation. width, height, top, left force reflow on every frame, causing jank. Prefer translate() over left/top for movement.', codeExample: `/* Slow — triggers layout */\n.bad  { transition: width 0.3s, margin 0.3s; }\n\n/* Fast — GPU composited */\n.good { transition: transform 0.3s, opacity 0.3s; }\n\n/* Move with transform, not left */\n.box:hover { transform: translateX(20px); }`, language: 'css' },
+          { animationStep: 0, icon: '🔄', heading: 'Without transition', text: 'Without transition, any property change snaps instantly. It works, but feels abrupt.', codeExample: '.btn:hover {\n  background: #1d4ed8; /* snaps instantly */\n}', language: 'css' },
+          { animationStep: 1, icon: '⚙️', heading: 'Add transition: property duration', text: 'transition tells the browser to animate the named property over a given duration. The animation plays in both directions automatically.', codeExample: '.btn {\n  transition: background 0.3s;\n}\n.btn:hover {\n  background: #1d4ed8;\n}', language: 'css' },
+          { animationStep: 2, icon: '⏳', heading: 'transition: all', text: 'all animates every changing property. Convenient but can be slow — prefer listing specific properties for performance.', codeExample: '.btn {\n  transition: all 0.5s;\n}', language: 'css' },
+          { animationStep: 3, icon: '⏱️', heading: 'Timing functions', text: 'The timing function controls the pace. ease-in-out starts slow, speeds up, then slows down — the most natural feel for UI.', codeExample: 'transition: all 0.4s ease-in-out;\n\n/* ease | linear | ease-in | ease-out | ease-in-out */', language: 'css' },
+          { animationStep: 4, icon: '⏳', heading: 'Multiple transitions', text: 'Comma-separate to give each property a different duration. Common: color transitions slower than transform.', codeExample: '.btn {\n  transition:\n    background 0.3s ease,\n    transform  0.2s ease;\n}', language: 'css' },
+          { animationStep: 5, icon: '🚀', heading: 'Animate the right properties', text: 'Not all CSS properties are equal. transform and opacity run on the GPU compositor thread — they never trigger layout recalculation. width, height, top, left force reflow on every frame, causing jank. Prefer translate() over left/top for movement.', codeExample: `/* Slow — triggers layout */\n.bad  { transition: width 0.3s, margin 0.3s; }\n\n/* Fast — GPU composited */\n.good { transition: transform 0.3s, opacity 0.3s; }\n\n/* Move with transform, not left */\n.box:hover { transform: translateX(20px); }`, language: 'css' },
         ],
       },
       { id: 'playground', type: 'playground', steps: [] },
@@ -1900,12 +1984,12 @@ export const TOPICS: Topic[] = [
         id: 'explanation',
         type: 'explanation',
         steps: [
-          { animationStep: 0, heading: 'Animations vs transitions', text: 'Transitions react to state changes. Animations run on their own — no user interaction needed. They have defined keyframes, can loop, and can pause.', codeExample: '/* Transition: needs a trigger */\n.btn:hover { background: blue; }\n\n/* Animation: runs on its own */\n.spinner { animation: spin 1s linear infinite; }', language: 'css' },
-          { animationStep: 1, heading: '@keyframes', text: 'Define the animation with @keyframes + a name. Use from/to for two states, or percentages (0%, 50%, 100%) for multiple stops.', codeExample: '@keyframes bounce {\n  from { transform: translateY(0); }\n  to   { transform: translateY(-60px); }\n}\n\n/* Not applied yet — just defined */', language: 'css' },
-          { animationStep: 2, heading: 'Apply with animation shorthand', text: 'The animation shorthand takes name, duration, timing, and more. Without a duration the animation plays in 0 seconds and is invisible.', codeExample: '.ball {\n  animation: bounce 0.8s;\n  /* name  duration */\n}', language: 'css' },
-          { animationStep: 3, heading: 'Repeat with iteration-count', text: 'animation-iteration-count: infinite loops forever. Use alternate to play forward then backward — creates smooth bounce without jumps.', codeExample: '.ball {\n  animation: bounce 0.8s ease-in-out infinite alternate;\n}', language: 'css' },
-          { animationStep: 4, heading: 'animation-fill-mode', text: "fill-mode controls the element's state after the animation. forwards holds the final keyframe — the element stays where the animation ended.", codeExample: ".ball {\n  animation: bounce 0.8s ease-out forwards;\n  /* 'forwards' = stay at the final keyframe */\n}", language: 'css' },
-          { animationStep: 5, heading: 'animation-fill-mode', text: 'Without fill-mode, an element snaps back to its original state when the animation ends. forwards keeps the final keyframe applied. backwards applies the first keyframe immediately (before delay). both does both.', codeExample: `/* Without: element resets after animation */\nanimation: slideIn 0.5s ease;\n\n/* With: stays at final position */\nanimation: slideIn 0.5s ease forwards;\n\n/* With delay: starts from keyframe 0 immediately */\nanimation: slideIn 0.5s ease 1s both;`, language: 'css' },
+          { animationStep: 0, icon: '🎞️', heading: 'Animations vs transitions', text: 'Transitions react to state changes. Animations run on their own — no user interaction needed. They have defined keyframes, can loop, and can pause.', codeExample: '/* Transition: needs a trigger */\n.btn:hover { background: blue; }\n\n/* Animation: runs on its own */\n.spinner { animation: spin 1s linear infinite; }', language: 'css' },
+          { animationStep: 1, icon: '🎬', heading: '@keyframes', text: 'Define the animation with @keyframes + a name. Use from/to for two states, or percentages (0%, 50%, 100%) for multiple stops.', codeExample: '@keyframes bounce {\n  from { transform: translateY(0); }\n  to   { transform: translateY(-60px); }\n}\n\n/* Not applied yet — just defined */', language: 'css' },
+          { animationStep: 2, icon: '⚙️', heading: 'Apply with animation shorthand', text: 'The animation shorthand takes name, duration, timing, and more. Without a duration the animation plays in 0 seconds and is invisible.', codeExample: '.ball {\n  animation: bounce 0.8s;\n  /* name  duration */\n}', language: 'css' },
+          { animationStep: 3, icon: '⏱️', heading: 'Repeat with iteration-count', text: 'animation-iteration-count: infinite loops forever. Use alternate to play forward then backward — creates smooth bounce without jumps.', codeExample: '.ball {\n  animation: bounce 0.8s ease-in-out infinite alternate;\n}', language: 'css' },
+          { animationStep: 4, icon: '🎭', heading: 'animation-fill-mode', text: "fill-mode controls the element's state after the animation. forwards holds the final keyframe — the element stays where the animation ended.", codeExample: ".ball {\n  animation: bounce 0.8s ease-out forwards;\n  /* 'forwards' = stay at the final keyframe */\n}", language: 'css' },
+          { animationStep: 5, icon: '🎭', heading: 'animation-fill-mode', text: 'Without fill-mode, an element snaps back to its original state when the animation ends. forwards keeps the final keyframe applied. backwards applies the first keyframe immediately (before delay). both does both.', codeExample: `/* Without: element resets after animation */\nanimation: slideIn 0.5s ease;\n\n/* With: stays at final position */\nanimation: slideIn 0.5s ease forwards;\n\n/* With delay: starts from keyframe 0 immediately */\nanimation: slideIn 0.5s ease 1s both;`, language: 'css' },
         ],
       },
       { id: 'playground', type: 'playground', steps: [] },
@@ -1943,6 +2027,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🧵',
             heading: 'JavaScript is single-threaded',
             text: 'JavaScript runs on a single thread — one operation at a time. The Call Stack tracks what is currently executing.',
             codeExample: '// One thread, one call stack\nconsole.log("start")\n// All code runs here',
@@ -1950,6 +2035,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '📚',
             heading: 'Synchronous code runs immediately',
             text: 'Regular function calls push onto the Call Stack. When they return, they pop off.',
             codeExample: 'function greet() {\n  console.log("Hello")\n}\ngreet() // pushed → executed → popped',
@@ -1957,6 +2043,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🕐',
             heading: 'Async code goes to Web APIs',
             text: 'setTimeout, fetch, and event listeners are handled by Web APIs — outside the JS engine. The callback waits in the Task Queue.',
             codeExample: 'setTimeout(() => {\n  console.log("later")\n}, 0) // goes to Web APIs',
@@ -1964,6 +2051,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '⚡',
             heading: 'Stack must be empty first',
             text: 'Even with a 0ms timeout, the callback waits. The Call Stack must finish all synchronous work before the Event Loop picks up queued tasks.',
             codeExample: 'console.log("start")\nsetTimeout(() => console.log("async"), 0)\nconsole.log("end")\n// Logs: start → end → async',
@@ -1971,6 +2059,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🔄',
             heading: 'The Event Loop',
             text: 'The Event Loop continuously checks: is the Call Stack empty? If yes, it moves the next task from the Queue to the Stack.',
             codeExample: '// Event Loop pseudocode:\nwhile (true) {\n  if (callStack.isEmpty()) {\n    if (taskQueue.hasTask()) {\n      callStack.push(taskQueue.pop())\n    }\n  }\n}',
@@ -2088,6 +2177,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '📦',
             heading: 'var — the old way',
             text: 'var is function-scoped and hoisted, which causes unexpected bugs. Modern JavaScript avoids it.',
             codeExample: 'var x = 1\nif (true) {\n  var x = 2  // same variable!\n}\nconsole.log(x) // 2 — surprising!',
@@ -2095,6 +2185,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🔭',
             heading: 'let — block-scoped',
             text: 'let creates a variable that lives only in the block where it is declared. You can reassign it.',
             codeExample: 'let count = 0\ncount = count + 1  // OK\n\nif (true) {\n  let inner = 42  // only exists here\n}',
@@ -2102,6 +2193,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🏗️',
             heading: 'const — cannot be reassigned',
             text: 'const bindings cannot be reassigned after creation. For objects and arrays, the contents can still change.',
             codeExample: 'const PI = 3.14159\nPI = 3  // TypeError!\n\nconst user = { name: "Alice" }\nuser.name = "Bob"  // OK — object contents can change',
@@ -2109,6 +2201,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '☠️',
             heading: 'Primitive types',
             text: 'JavaScript has six primitive types. They are immutable values — not objects.',
             codeExample: 'let name = "Alice"      // string\nlet age = 25           // number\nlet active = true      // boolean\nlet nothing = null     // null\nlet missing            // undefined\nlet id = Symbol()      // symbol',
@@ -2116,6 +2209,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '📦',
             heading: 'typeof operator',
             text: 'The typeof operator returns a string describing the type. Watch out: typeof null returns "object" — a known JavaScript quirk.',
             codeExample: 'typeof "hello"     // "string"\ntypeof 42          // "number"\ntypeof true        // "boolean"\ntypeof undefined   // "undefined"\ntypeof null        // "object" ⚠️ quirk!',
@@ -2162,6 +2256,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '📋',
             heading: 'Arrays — ordered lists',
             text: 'An array holds ordered values accessible by numeric index starting at 0.',
             codeExample: 'const fruits = ["apple", "banana", "cherry"]\nfruits[0]  // "apple"\nfruits[2]  // "cherry"\nfruits.length  // 3',
@@ -2169,6 +2264,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🔄',
             heading: 'push and pop',
             text: 'push() adds to the end; pop() removes from the end. There is also unshift/shift for the beginning.',
             codeExample: 'const arr = [1, 2, 3]\narr.push(4)    // [1, 2, 3, 4]\narr.pop()      // [1, 2, 3]\narr.unshift(0) // [0, 1, 2, 3]',
@@ -2176,6 +2272,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🔄',
             heading: 'map — transform every element',
             text: 'map() returns a new array with each element transformed by a callback. The original array is not modified.',
             codeExample: 'const nums = [1, 2, 3]\nconst doubled = nums.map(x => x * 2)\n// doubled = [2, 4, 6]\n// nums unchanged = [1, 2, 3]',
@@ -2183,6 +2280,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '🧮',
             heading: 'filter — keep matching elements',
             text: 'filter() returns a new array containing only elements where the callback returns true.',
             codeExample: 'const nums = [1, 2, 3, 4, 5]\nconst evens = nums.filter(x => x % 2 === 0)\n// evens = [2, 4]',
@@ -2190,6 +2288,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🌪️',
             heading: 'Objects — key-value pairs',
             text: 'Objects store named properties. Access them with dot notation or bracket notation.',
             codeExample: 'const user = {\n  name: "Alice",\n  age: 25,\n  active: true,\n}\n\nuser.name       // "Alice"\nuser["age"]     // 25\nuser.role = "admin"  // add property',
@@ -2239,26 +2338,31 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🌐',
             heading: 'The client sends a request',
             text: 'Your browser (the client) sends an HTTP request to a server. It includes the method (GET, POST), the URL, and headers.',
           },
           {
             animationStep: 1,
+            icon: '📤',
             heading: 'DNS resolution',
             text: 'The domain name is resolved to an IP address by a DNS server. Like a phone book lookup.',
           },
           {
             animationStep: 2,
+            icon: '📥',
             heading: 'The server processes',
             text: 'The server receives the request, runs your application code (Flask, Node.js), may query a database.',
           },
           {
             animationStep: 3,
+            icon: '📥',
             heading: 'Database query',
             text: 'The app queries the database (PostgreSQL, SQLite) and waits for results.',
           },
           {
             animationStep: 4,
+            icon: '🔄',
             heading: 'Response sent back',
             text: 'The server sends an HTTP response: status code (200 OK, 404 Not Found), headers, and the body (HTML, JSON).',
           },
@@ -2301,6 +2405,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🏗️',
             heading: 'REST — resources as URLs',
             text: 'REST (Representational State Transfer) is a convention for designing APIs. Resources are represented as URLs, and HTTP methods express the action.',
             codeExample: 'GET    /users        → list all users\nGET    /users/42    → get user 42\nPOST   /users        → create a user\nPUT    /users/42    → replace user 42\nDELETE /users/42    → delete user 42',
@@ -2308,6 +2413,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🔗',
             heading: 'GET — retrieve data',
             text: 'GET requests data from the server. They should be safe (no side effects) and idempotent (same result every time). No request body.',
             codeExample: 'GET /api/products HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer <token>',
@@ -2315,6 +2421,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '📋',
             heading: 'POST — create a resource',
             text: 'POST sends data to create a new resource. The server returns the created resource with status 201 Created.',
             codeExample: 'POST /api/users HTTP/1.1\nContent-Type: application/json\n\n{\n  "name": "Alice",\n  "email": "alice@example.com"\n}',
@@ -2322,6 +2429,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '🫙',
             heading: 'PUT and PATCH',
             text: 'PUT replaces the entire resource. PATCH updates only the specified fields. Both target a specific resource by ID in the URL.',
             codeExample: '// PUT — replace entire user:\nPUT /api/users/42\n{ "name": "Alice", "email": "new@email.com" }\n\n// PATCH — update one field:\nPATCH /api/users/42\n{ "email": "new@email.com" }',
@@ -2329,6 +2437,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🫙',
             heading: 'DELETE — remove a resource',
             text: 'DELETE removes the specified resource. A successful delete typically returns 204 No Content.',
             codeExample: 'DELETE /api/users/42 HTTP/1.1\nAuthorization: Bearer <token>\n\n// Response:\nHTTP/1.1 204 No Content',
@@ -2374,6 +2483,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '✅',
             heading: 'Every response has a status code',
             text: 'HTTP status codes are 3-digit numbers grouped by category. The first digit indicates success, redirect, or error.',
             codeExample: '1xx — Informational\n2xx — Success\n3xx — Redirection\n4xx — Client errors\n5xx — Server errors',
@@ -2381,6 +2491,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '✅',
             heading: '2xx — Success',
             text: '200 OK is the standard success response. 201 Created is returned after a successful POST. 204 No Content means success with no body.',
             codeExample: 'HTTP/1.1 200 OK          → request succeeded\nHTTP/1.1 201 Created     → resource created\nHTTP/1.1 204 No Content  → success, no body',
@@ -2388,6 +2499,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🔀',
             heading: '3xx — Redirection',
             text: '301 Moved Permanently tells the client the resource has a new URL. 302 Found is a temporary redirect.',
             codeExample: 'HTTP/1.1 301 Moved Permanently\nLocation: https://newsite.com/page\n\nHTTP/1.1 302 Found\nLocation: /login',
@@ -2395,6 +2507,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '❌',
             heading: '4xx — Client errors',
             text: '4xx errors mean the client made a mistake. 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found.',
             codeExample: '400 Bad Request    → invalid data sent\n401 Unauthorized   → not logged in\n403 Forbidden      → logged in, no permission\n404 Not Found      → resource does not exist\n422 Unprocessable  → validation failed',
@@ -2402,6 +2515,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '💥',
             heading: '5xx — Server errors',
             text: "5xx errors mean something went wrong on the server side — not the client's fault.",
             codeExample: '500 Internal Server Error → server crashed\n502 Bad Gateway          → upstream issue\n503 Service Unavailable  → server overloaded\n504 Gateway Timeout      → upstream too slow',
@@ -2446,6 +2560,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🔍',
             heading: 'Tables store rows of data',
             text: 'A database table is like a spreadsheet — rows are records, columns are fields. Each table has a defined schema.',
             codeExample: 'users table:\n┌────┬──────────┬──────────────────────┐\n│ id │ name     │ email                │\n├────┼──────────┼──────────────────────┤\n│  1 │ Alice    │ alice@example.com    │\n│  2 │ Bob      │ bob@example.com      │\n└────┴──────────┴──────────────────────┘',
@@ -2453,6 +2568,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🔎',
             heading: 'SELECT',
             text: 'SELECT retrieves data. * means all columns. You can specify column names to return only what you need.',
             codeExample: '-- All columns, all rows:\nSELECT * FROM users;\n\n-- Specific columns:\nSELECT name, email FROM users;',
@@ -2460,6 +2576,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '📊',
             heading: 'WHERE — filter rows',
             text: 'WHERE adds conditions to filter which rows are returned. Use AND and OR for multiple conditions.',
             codeExample: 'SELECT * FROM users\nWHERE age > 25;\n\nSELECT * FROM users\nWHERE age > 25 AND active = true;',
@@ -2467,6 +2584,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '📊',
             heading: 'ORDER BY — sort results',
             text: 'ORDER BY sorts the result set. ASC is ascending (default), DESC is descending. Sort by multiple columns.',
             codeExample: 'SELECT * FROM users\nORDER BY name ASC;\n\nSELECT * FROM products\nORDER BY price DESC, name ASC;',
@@ -2474,6 +2592,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🧮',
             heading: 'LIMIT — control result count',
             text: 'LIMIT caps the number of rows returned. Combined with OFFSET, it implements pagination.',
             codeExample: '-- First 10 users:\nSELECT * FROM users LIMIT 10;\n\n-- Page 2 (rows 11-20):\nSELECT * FROM users\nLIMIT 10 OFFSET 10;',
@@ -2519,6 +2638,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🤝',
             heading: 'Data lives in separate tables',
             text: 'In a relational database, data is split across tables to avoid duplication. A users table and a posts table are linked by a foreign key.',
             codeExample: 'users:  id, name\nposts:  id, user_id, title\n               ↑\n        references users.id',
@@ -2526,6 +2646,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '⚡',
             heading: 'Foreign keys link tables',
             text: 'The foreign key is a column that references the primary key of another table. This is how relationships are defined.',
             codeExample: 'CREATE TABLE posts (\n  id      SERIAL PRIMARY KEY,\n  user_id INT REFERENCES users(id),\n  title   TEXT\n);',
@@ -2533,6 +2654,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '⚡',
             heading: 'INNER JOIN',
             text: 'INNER JOIN returns rows where there is a match in both tables. If a user has no posts, they do not appear in the result.',
             codeExample: 'SELECT users.name, posts.title\nFROM users\nINNER JOIN posts\n  ON users.id = posts.user_id;',
@@ -2540,6 +2662,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '↩️',
             heading: 'LEFT JOIN',
             text: 'LEFT JOIN returns all rows from the left table, with NULLs for missing matches. Use this when you want results even if no match exists.',
             codeExample: 'SELECT users.name, posts.title\nFROM users\nLEFT JOIN posts\n  ON users.id = posts.user_id;\n-- Users with no posts appear with NULL title',
@@ -2547,6 +2670,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🔗',
             heading: 'Aliases and multiple joins',
             text: 'Use aliases to shorten table names. You can chain multiple JOINs to combine three or more tables.',
             codeExample: 'SELECT u.name, p.title, c.body\nFROM users u\nJOIN posts p ON u.id = p.user_id\nJOIN comments c ON p.id = c.post_id\nWHERE u.active = true;',
@@ -2592,6 +2716,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🏗️',
             heading: 'CREATE TABLE',
             text: 'CREATE TABLE defines the structure (schema) of a table: column names, types, and constraints.',
             codeExample: 'CREATE TABLE users (\n  id    SERIAL PRIMARY KEY,\n  name  TEXT NOT NULL,\n  email TEXT UNIQUE NOT NULL,\n  age   INTEGER\n);',
@@ -2599,6 +2724,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '➕',
             heading: 'INSERT — add rows',
             text: 'INSERT INTO adds new rows. You can insert one row or multiple rows in a single statement.',
             codeExample: "INSERT INTO users (name, email, age)\nVALUES ('Alice', 'alice@example.com', 28);\n\n-- Multiple rows:\nINSERT INTO users (name, email)\nVALUES ('Bob', 'bob@example.com'),\n       ('Carol', 'carol@example.com');",
@@ -2606,6 +2732,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '✏️',
             heading: 'UPDATE — modify rows',
             text: 'UPDATE changes existing rows. Always use WHERE — without it, every row in the table is updated.',
             codeExample: "-- Update one user:\nUPDATE users\nSET email = 'new@example.com'\nWHERE id = 1;\n\n-- Update multiple fields:\nUPDATE users\nSET name = 'Alice B.', age = 29\nWHERE id = 1;",
@@ -2613,6 +2740,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '🗑️',
             heading: 'DELETE — remove rows',
             text: 'DELETE removes rows. Always use WHERE — without it, all rows are deleted.',
             codeExample: '-- Delete one row:\nDELETE FROM users WHERE id = 1;\n\n-- Delete by condition:\nDELETE FROM users\nWHERE active = false AND age < 18;',
@@ -2620,6 +2748,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🔐',
             heading: 'Constraints protect data',
             text: 'Constraints enforce rules at the database level. PRIMARY KEY, NOT NULL, UNIQUE, and FOREIGN KEY prevent invalid data from being stored.',
             codeExample: 'CREATE TABLE orders (\n  id         SERIAL PRIMARY KEY,  -- unique, auto-increment\n  user_id    INT REFERENCES users(id),  -- foreign key\n  total      DECIMAL NOT NULL,  -- required\n  status     TEXT DEFAULT \'pending\',  -- default value\n  created_at TIMESTAMPTZ DEFAULT NOW()\n);',
@@ -2667,6 +2796,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🏷️',
             heading: 'JavaScript types are implicit',
             text: 'In JavaScript, variables have types at runtime, but you never declare them. The type is inferred from the value.',
             codeExample: 'let age = 25        // type: number\nlet name = "Alice"  // type: string\nlet active = true   // type: boolean',
@@ -2674,6 +2804,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🔢',
             heading: 'TypeScript makes types explicit',
             text: 'TypeScript adds type annotations using a colon after the variable name. This tells the compiler exactly what type is expected.',
             codeExample: 'let age: number = 25\nlet name: string = "Alice"\nlet active: boolean = true',
@@ -2681,6 +2812,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '📦',
             heading: 'Type errors caught at compile time',
             text: 'If you try to assign the wrong type, TypeScript flags it immediately — before the code ever runs.',
             codeExample: 'let age: number = 25\nage = "hello"\n//   ~~~~~~~~~\n// Error: Type \'string\' is not\n// assignable to type \'number\'',
@@ -2688,6 +2820,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '🔀',
             heading: 'Interfaces define object shapes',
             text: 'An interface describes what properties an object must have. TypeScript will error if a required property is missing or has the wrong type.',
             codeExample: 'interface User {\n  name: string\n  age: number\n}\n\nconst user: User = {\n  name: "Alice",\n  age: 25,\n}',
@@ -2695,6 +2828,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🧠',
             heading: 'Generics — reusable typed functions',
             text: 'Generics allow functions and classes to work with any type while still enforcing type safety. T is a placeholder that is filled in at call time.',
             codeExample: 'function first<T>(arr: T[]): T {\n  return arr[0]\n}\n\nfirst([1, 2, 3])       // T = number\nfirst(["a", "b"])     // T = string',
@@ -2742,6 +2876,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '📡',
             heading: 'The Fetch API',
             text: 'fetch() is the modern browser API for making HTTP requests. It replaced XMLHttpRequest and returns a Promise.',
             codeExample: 'fetch("https://api.example.com/users")\n  .then(res => res.json())\n  .then(data => console.log(data))',
@@ -2749,6 +2884,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '📥',
             heading: 'fetch() returns a Promise',
             text: 'The request is sent immediately but the response arrives later. fetch() returns a Promise that resolves when the server responds.',
             codeExample: 'const promise = fetch("/api/data")\n// promise is pending...\n// later: resolved with Response object',
@@ -2756,6 +2892,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '📤',
             heading: 'The Response object',
             text: 'The resolved value is a Response. It contains status, headers, and the body — but the body must be explicitly parsed.',
             codeExample: 'fetch("/api/users")\n  .then(response => {\n    console.log(response.status) // 200\n    console.log(response.ok)     // true\n    return response.json()        // parse body\n  })',
@@ -2763,6 +2900,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '⚠️',
             heading: 'Parsing the response body',
             text: 'response.json() parses the body as JSON and returns another Promise. response.text() returns raw text.',
             codeExample: 'fetch("/api/users")\n  .then(res => res.json())    // parse JSON\n  .then(users => {\n    users.forEach(u => console.log(u.name))\n  })',
@@ -2770,6 +2908,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '⏳',
             heading: 'async/await syntax',
             text: 'async/await makes fetch code read like synchronous code. Always wrap in try/catch for error handling.',
             codeExample: 'async function loadUsers() {\n  try {\n    const res = await fetch("/api/users")\n    const users = await res.json()\n    return users\n  } catch (err) {\n    console.error("Request failed:", err)\n  }\n}',
@@ -2815,6 +2954,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '⚡',
             heading: 'Events are user actions',
             text: 'The browser fires events when users interact — clicking, typing, scrolling, hovering. JavaScript can listen and respond.',
             codeExample: '// Common DOM events:\n// click, dblclick, mouseover\n// keydown, keyup, input\n// submit, focus, blur, scroll',
@@ -2822,6 +2962,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '👂',
             heading: 'addEventListener',
             text: 'addEventListener attaches a callback function to an element. The callback runs every time the event fires.',
             codeExample: 'const btn = document.querySelector("#myBtn")\nbtn.addEventListener("click", function(event) {\n  console.log("Button clicked!")\n})',
@@ -2829,6 +2970,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '📦',
             heading: 'The Event object',
             text: 'The callback receives an Event object with information about what happened: the target element, mouse position, key pressed, and more.',
             codeExample: 'btn.addEventListener("click", (event) => {\n  console.log(event.type)    // "click"\n  console.log(event.target)  // the button element\n  console.log(event.clientX) // mouse X position\n})',
@@ -2836,6 +2978,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '🫧',
             heading: 'Event bubbling',
             text: 'Events bubble up the DOM tree by default. A click on an inner element also fires on all its ancestors — unless stopped.',
             codeExample: '// Clicking the button fires:\n// 1. button handler\n// 2. div handler  \n// 3. document handler\n// → bubbles up the tree',
@@ -2843,6 +2986,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🛑',
             heading: 'stopPropagation and preventDefault',
             text: 'stopPropagation() stops the event from bubbling. preventDefault() cancels the browser\'s default action (e.g. following a link, submitting a form).',
             codeExample: 'link.addEventListener("click", (e) => {\n  e.preventDefault()   // don\'t navigate\n  e.stopPropagation()  // don\'t bubble\n  handleClick()\n})',
@@ -2888,6 +3032,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '💾',
             heading: 'Browser storage',
             text: 'Browsers provide built-in key-value storage that works without any server. Useful for preferences, cached data, and offline state.',
             codeExample: '// Two storage APIs:\nlocalStorage    // persists forever\nsessionStorage  // cleared on tab close',
@@ -2895,6 +3040,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '⏱️',
             heading: 'setItem',
             text: 'setItem(key, value) stores a string value. Non-string values must be serialized with JSON.stringify.',
             codeExample: 'localStorage.setItem("username", "Alice")\nlocalStorage.setItem("theme", "dark")\nlocalStorage.setItem("prefs", JSON.stringify({ lang: "en" }))',
@@ -2902,6 +3048,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🍪',
             heading: 'getItem',
             text: 'getItem(key) retrieves the stored value. Returns null if the key does not exist. Parse JSON values with JSON.parse.',
             codeExample: 'const name = localStorage.getItem("username") // "Alice"\nconst prefs = JSON.parse(\n  localStorage.getItem("prefs") ?? "{}"\n)',
@@ -2909,6 +3056,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '🔄',
             heading: 'localStorage persists',
             text: 'Data in localStorage survives page refreshes, tab closes, and browser restarts. It stays until explicitly cleared.',
             codeExample: '// Persists across sessions:\nlocalStorage.setItem("visited", "true")\n// close browser, reopen...\nlocalStorage.getItem("visited")  // still "true"',
@@ -2916,6 +3064,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '📋',
             heading: 'sessionStorage — tab-scoped',
             text: 'sessionStorage has the same API as localStorage but is cleared when the tab or window is closed.',
             codeExample: 'sessionStorage.setItem("step", "3")\n// close tab → data gone\n\n// Remove a key:\nlocalStorage.removeItem("theme")\n// Clear everything:\nlocalStorage.clear()',
@@ -2962,6 +3111,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🧩',
             heading: 'HTML is static markup',
             text: 'Plain HTML defines the structure once. To reuse a button, you copy-paste the markup — which quickly becomes hard to maintain.',
             codeExample: '<button class="btn btn-primary">Save</button>\n<button class="btn btn-primary">Submit</button>\n<!-- duplicated everywhere -->',
@@ -2969,6 +3119,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '💻',
             heading: 'JSX — HTML in JavaScript',
             text: 'JSX lets you write HTML-like syntax inside JavaScript. It looks like HTML but it is transformed to JavaScript function calls by Babel.',
             codeExample: '// JSX\nconst element = <h1 className="title">Hello</h1>\n\n// What it compiles to:\nconst element = React.createElement("h1", { className: "title" }, "Hello")',
@@ -2976,6 +3127,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🧩',
             heading: 'A component is a function',
             text: 'A React component is a function that accepts props and returns JSX. The function name must start with a capital letter.',
             codeExample: 'function Button({ children, onClick }) {\n  return (\n    <button className="btn" onClick={onClick}>\n      {children}\n    </button>\n  )\n}',
@@ -2983,6 +3135,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '🌳',
             heading: 'Components compose',
             text: 'You build complex UIs by nesting components. Each component can contain other components — forming a tree.',
             codeExample: 'function App() {\n  return (\n    <Card>\n      <h2>Title</h2>\n      <Button onClick={save}>Save</Button>\n    </Card>\n  )\n}',
@@ -2990,6 +3143,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '📨',
             heading: 'Props — data flows down',
             text: 'Props are arguments passed to components. They flow only from parent to child — never the other way.',
             codeExample: '// Parent passes props:\n<Button color="blue" size="lg" onClick={handleClick}>\n  Submit\n</Button>\n\n// Child receives them:\nfunction Button({ color, size, onClick, children }) { ... }',
@@ -3036,6 +3190,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🧠',
             heading: 'State is dynamic data',
             text: 'State is data that can change over time and causes the component to re-render when it does. Props come from outside; state lives inside.',
             codeExample: '// Without state, UI is static:\nfunction Counter() {\n  let count = 0  // this never updates the UI\n  return <div>{count}</div>\n}',
@@ -3043,6 +3198,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🪝',
             heading: 'useState',
             text: 'useState is a Hook that returns the current value and a setter function. React tracks the value between renders.',
             codeExample: 'import { useState } from "react"\n\nfunction Counter() {\n  const [count, setCount] = useState(0)\n  //     value   setter   initial value\n}',
@@ -3050,6 +3206,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🔄',
             heading: 'Calling the setter re-renders',
             text: 'When you call setCount, React schedules a re-render. The component function runs again with the new state value.',
             codeExample: 'function Counter() {\n  const [count, setCount] = useState(0)\n  return (\n    <button onClick={() => setCount(count + 1)}>\n      Clicked {count} times\n    </button>\n  )\n}',
@@ -3057,6 +3214,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '🧮',
             heading: 'State is local to each instance',
             text: 'If you render two <Counter /> components, each has its own independent count. State is not shared unless you lift it up.',
             codeExample: 'function App() {\n  return (\n    <>\n      <Counter /> {/* count: 0 */}\n      <Counter /> {/* count: 0, independent */}\n    </>\n  )\n}',
@@ -3064,6 +3222,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '📏',
             heading: 'Rules of Hooks',
             text: 'Hooks must always be called at the top level of a component — never inside conditions, loops, or nested functions.',
             codeExample: '// ✅ Correct:\nfunction MyComp() {\n  const [a, setA] = useState(0)\n  const [b, setB] = useState("")\n}\n\n// ❌ Wrong:\nfunction MyComp() {\n  if (condition) {\n    const [a, setA] = useState(0)  // error!\n  }\n}',
@@ -3109,6 +3268,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '⚡',
             heading: 'Side effects happen after render',
             text: 'A side effect is any work that affects something outside the component: network requests, timers, DOM manipulation. useEffect runs these after the render.',
             codeExample: 'useEffect(() => {\n  // runs after every render by default\n  document.title = `Count: ${count}`\n})',
@@ -3116,6 +3276,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '📋',
             heading: 'Empty deps — run once',
             text: 'Passing an empty array [] as the second argument tells React to run the effect only once — when the component first mounts.',
             codeExample: 'useEffect(() => {\n  fetch("/api/users")\n    .then(r => r.json())\n    .then(setUsers)\n}, [])  // [] = run once on mount',
@@ -3123,6 +3284,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '📋',
             heading: 'Deps array — re-run on change',
             text: 'List the values the effect depends on. React re-runs the effect whenever any of those values change.',
             codeExample: 'useEffect(() => {\n  fetch(`/api/users/${userId}`)\n    .then(r => r.json())\n    .then(setUser)\n}, [userId])  // re-runs when userId changes',
@@ -3130,6 +3292,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '🧹',
             heading: 'Cleanup function',
             text: 'Return a function from useEffect to clean up before the next run or on unmount. Essential for timers, subscriptions, and event listeners.',
             codeExample: 'useEffect(() => {\n  const timer = setInterval(tick, 1000)\n  return () => {\n    clearInterval(timer)  // cleanup!\n  }\n}, [])',
@@ -3137,6 +3300,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🔄',
             heading: 'Common use cases',
             text: 'useEffect is for anything that needs to happen outside the render cycle: data fetching, subscriptions, DOM manipulation, analytics.',
             codeExample: '// Data fetching\nuseEffect(() => { fetch(url).then(...) }, [url])\n\n// Event listener\nuseEffect(() => {\n  window.addEventListener("resize", handler)\n  return () => window.removeEventListener("resize", handler)\n}, [])',
@@ -3182,6 +3346,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '📋',
             heading: 'Interfaces describe object shapes',
             text: 'An interface defines a contract: any object assigned that type must have exactly those properties with those types. It documents intent and lets TypeScript enforce it.',
             codeExample: 'interface Point {\n  x: number\n  y: number\n}\n\nconst p: Point = { x: 3, y: 7 }',
@@ -3189,6 +3354,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🔒',
             heading: 'Optional and readonly properties',
             text: 'Mark a property with ? to make it optional. Mark it with readonly to prevent mutation after creation.',
             codeExample: 'interface Config {\n  host: string\n  port?: number      // optional\n  readonly id: string // immutable\n}',
@@ -3196,6 +3362,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🧬',
             heading: 'Extending interfaces',
             text: 'Use extends to build on an existing interface. The child interface inherits all parent properties and adds its own.',
             codeExample: 'interface Animal {\n  name: string\n}\n\ninterface Dog extends Animal {\n  breed: string\n}\n// Dog has: name + breed',
@@ -3203,6 +3370,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '⚖️',
             heading: 'Implementing an interface',
             text: 'A class can implement an interface, promising to provide all the required properties and methods. TypeScript errors if anything is missing.',
             codeExample: 'interface Greetable {\n  greet(): string\n}\n\nclass Person implements Greetable {\n  greet(): string {\n    return "hello"\n  }\n}',
@@ -3210,6 +3378,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🗂️',
             heading: 'Index signatures for dynamic keys',
             text: 'When you don\'t know all property names up front, use an index signature to allow any string key with a specific value type.',
             codeExample: 'interface Dict {\n  [key: string]: number\n}\n\nconst scores: Dict = {\n  alice: 95,\n  bob: 82,\n}',
@@ -3257,6 +3426,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🧬',
             heading: 'The problem: rigid types',
             text: 'Without generics you need a separate function for each type — firstNumber, firstString, firstBoolean. This violates DRY.',
             codeExample: 'function firstNum(arr: number[]): number {\n  return arr[0]\n}\n// Need a SECOND function for strings...',
@@ -3264,6 +3434,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🔧',
             heading: 'Generic functions with <T>',
             text: 'A type parameter <T> is a placeholder that gets replaced with a real type at call time. One function works for all types.',
             codeExample: 'function first<T>(arr: T[]): T {\n  return arr[0]\n}',
@@ -3271,6 +3442,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '⛓️',
             heading: 'TypeScript infers T automatically',
             text: 'You rarely need to write the type argument explicitly — TypeScript infers it from what you pass in.',
             codeExample: 'first([1, 2, 3])    // T = number → 1\nfirst(["a", "b"])  // T = string → "a"\nfirst([true])      // T = boolean → true',
@@ -3278,6 +3450,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '📋',
             heading: 'Generic interfaces',
             text: 'Interfaces can also have type parameters. The type is specified when you use the interface.',
             codeExample: 'interface Box<T> {\n  value: T\n  label: string\n}\n\nconst n: Box<number> = { value: 42, label: "age" }',
@@ -3285,6 +3458,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '⛓️',
             heading: 'Constraints with extends',
             text: 'Use extends to restrict what types T can be. This lets you safely access properties that are guaranteed to exist.',
             codeExample: 'function getLength<T extends { length: number }>(val: T): number {\n  return val.length\n}\n\ngetLength("hello")   // 5\ngetLength([1,2,3])   // 3',
@@ -3331,6 +3505,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🗺️',
             heading: 'Client-side routing',
             text: 'Traditional websites load a new HTML page on every navigation. React Router intercepts the URL change and swaps components instead — no full page reload.',
             codeExample: '// URL changes but page never reloads\nmyapp.com/          → <Home />\nmyapp.com/about     → <About />\nmyapp.com/users/42  → <UserProfile />',
@@ -3338,6 +3513,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '📍',
             heading: 'BrowserRouter wraps your app',
             text: 'BrowserRouter provides routing context to your entire app. It uses the HTML5 History API to keep the URL in sync with the UI.',
             codeExample: 'import { BrowserRouter } from "react-router-dom"\n\n<BrowserRouter>\n  <App />\n</BrowserRouter>',
@@ -3345,6 +3521,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '📍',
             heading: 'Routes and Route',
             text: 'Routes picks the first matching Route and renders its element. Each Route maps a URL path to a component.',
             codeExample: 'import { Routes, Route } from "react-router-dom"\n\n<Routes>\n  <Route path="/" element={<Home />} />\n  <Route path="/about" element={<About />} />\n  <Route path="/users" element={<Users />} />\n</Routes>',
@@ -3352,6 +3529,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '➡️',
             heading: 'Link — navigate without reload',
             text: 'Use Link instead of <a href>. Link updates the URL and renders the matching component without a full page reload.',
             codeExample: 'import { Link } from "react-router-dom"\n\n// No page reload!\n<Link to="/about">About</Link>',
@@ -3359,6 +3537,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🔑',
             heading: 'useParams — dynamic segments',
             text: 'URL segments prefixed with : are dynamic. useParams returns an object with the matched values.',
             codeExample: '// Route: <Route path="/users/:id" element={<UserProfile />} />\n\nfunction UserProfile() {\n  const { id } = useParams()\n  // at /users/42 → id = "42"\n}',
@@ -3408,16 +3587,19 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🤔',
             heading: 'The problem: who has the latest version?',
             text: 'When multiple developers work on the same project, files get emailed, overwritten, or lost. Version control solves this by giving every change a history — so you always know what changed, when, and why.',
           },
           {
             animationStep: 1,
+            icon: '📚',
             heading: 'Working Directory',
             text: 'Your local files on disk. This is where you write and edit code. Git watches this folder but does not automatically save anything — you decide what gets tracked.',
           },
           {
             animationStep: 2,
+            icon: '🗂️',
             heading: 'Staging Area',
             text: 'A holding area for changes you want to include in the next snapshot. Use git add to move files here. You can stage some files and leave others out — giving you precise control over what you commit.',
             codeExample: 'git add index.html\ngit add style.css\n# or add everything:\ngit add .',
@@ -3425,6 +3607,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '📸',
             heading: 'Local Repository',
             text: 'The .git folder on your machine stores the full project history. Every commit is a permanent snapshot. You can always travel back to any previous state — nothing is ever truly lost.',
             codeExample: 'git commit -m "add navigation menu"\n# creates a permanent snapshot in history',
@@ -3432,6 +3615,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🌐',
             heading: 'All 4 areas together',
             text: 'The full Git flow: Working Directory → Staging Area → Local Repo → Remote Repo. Changes move forward through these areas and can flow back (checkout, pull) when needed.',
           },
@@ -3473,11 +3657,13 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🔄',
             heading: 'The daily Git loop',
             text: 'Every day in a development team follows the same pattern: get the latest code, create a branch, make changes, stage them, commit, then push to share with the team.',
           },
           {
             animationStep: 1,
+            icon: '📥',
             heading: 'Start: init or clone',
             text: 'For a brand new project use git init. To work on an existing project, git clone downloads the full history. You only do this once per project.',
             codeExample: '# New project\ngit init\n\n# Existing project\ngit clone https://github.com/user/repo.git',
@@ -3485,6 +3671,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🌿',
             heading: 'Create a branch',
             text: 'Always work in a branch — never directly on main. A branch is an isolated copy of the codebase. Your changes stay contained until you decide to merge them back.',
             codeExample: '# Create and switch to new branch\ngit checkout -b feature/navigation\n\n# List all branches\ngit branch',
@@ -3492,6 +3679,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '📦',
             heading: 'Stage and commit',
             text: 'Make changes, stage the relevant files, then commit with a descriptive message. Commit often — small commits are easier to review, understand, and revert if something goes wrong.',
             codeExample: 'git add src/nav.js\ngit commit -m "add responsive navigation menu"',
@@ -3499,6 +3687,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 4,
+            icon: '🚀',
             heading: 'Push to remote',
             text: 'Push your branch to the remote repository so teammates can see it. The -u flag sets the upstream so future pushes just need git push.',
             codeExample: '# First push from a new branch\ngit push -u origin feature/navigation\n\n# Subsequent pushes\ngit push',
@@ -3542,11 +3731,13 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🙈',
             heading: 'Without .gitignore — everything gets committed',
             text: 'Run git add . without a .gitignore and you\'ll accidentally commit node_modules (200MB+), your .env secrets, and build output. Once in git history, they\'re hard to remove completely.',
           },
           {
             animationStep: 1,
+            icon: '📄',
             heading: 'Create a .gitignore file',
             text: 'Add a file named .gitignore in the root of your project. List what to ignore — Git will never stage or commit those files. Commit the .gitignore itself so teammates get the same rules.',
             codeExample: '# at the project root\ntouch .gitignore',
@@ -3554,6 +3745,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🔤',
             heading: 'Pattern syntax',
             text: 'Each line is a pattern. Use / to match directories, * as a wildcard, ! to un-ignore something specific. Patterns are matched from the project root.',
             codeExample: 'node_modules/   # ignore this folder\n.env            # ignore this file\n*.log           # ignore all .log files\ndist/           # ignore build output\n!.env.example   # but keep this one',
@@ -3561,6 +3753,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '📋',
             heading: 'With .gitignore — only your code is tracked',
             text: 'After adding .gitignore, git add . only stages your actual source files. Secrets stay local, node_modules stays off GitHub, and your repo stays lean and clean.',
             codeExample: '# Check what Git currently ignores:\ngit check-ignore -v node_modules\n\n# See untracked (not ignored) files:\ngit status',
@@ -3604,21 +3797,25 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '☁️',
             heading: 'Git ≠ GitHub',
             text: 'Git is a command-line tool that runs on your machine. GitHub is a website that hosts Git repositories online. You can use Git without GitHub, but GitHub needs Git. Think of Git as the engine and GitHub as the garage.',
           },
           {
             animationStep: 1,
+            icon: '🌐',
             heading: 'Remote repository',
             text: 'GitHub stores a copy of your repository in the cloud. Every team member clones it once, then uses git pull to get the latest changes and git push to share their work. The remote is the single source of truth.',
           },
           {
             animationStep: 2,
+            icon: '🔄',
             heading: 'Pull Requests',
             text: 'A Pull Request (PR) is a GitHub feature that lets you propose merging a branch into main. Before merging, teammates can review the code, leave comments, request changes, and approve. This keeps the main branch clean and reviewed.',
           },
           {
             animationStep: 3,
+            icon: '🍴',
             heading: 'Forking & open source',
             text: 'Fork creates your own copy of someone else\'s repository. You can make changes freely, then open a PR back to the original. This is how millions of developers contribute to open source projects without needing direct access.',
           },
@@ -3660,6 +3857,7 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '🤝',
             heading: 'Create a repo and invite your team',
             text: 'Start on GitHub: create a new repository, then go to Settings → Collaborators → Add people. Teammates receive an email invite — they must accept before they can push. For organisations, use Teams to manage access at scale.',
             codeExample: '# After being added, teammates clone once:\ngit clone https://github.com/team/project.git\ncd project',
@@ -3667,6 +3865,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '👥',
             heading: 'Everyone clones the same remote',
             text: 'Every team member runs git clone once. This downloads the full history and sets origin as the remote name automatically. From then on they use git pull to sync and git push to share.',
             codeExample: 'git clone https://github.com/team/project.git\n\n# Check your remote:\ngit remote -v\n# origin  https://github.com/team/project.git (fetch)\n# origin  https://github.com/team/project.git (push)',
@@ -3674,11 +3873,13 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🛡️',
             heading: 'Protect main — require Pull Request reviews',
             text: 'Go to Settings → Branches → Add branch protection rule for main. Enable "Require a pull request before merging" and "Require approvals". This prevents anyone from pushing directly to main — all changes must go through a reviewed PR.',
           },
           {
             animationStep: 3,
+            icon: '🔄',
             heading: 'The daily team loop',
             text: 'Every feature or fix follows the same cycle: pull latest main, create a branch, commit your work, push the branch, open a PR, get a review, then merge. Small focused PRs are easier to review and less likely to conflict.',
             codeExample: 'git pull origin main          # sync first\ngit checkout -b feat/login    # new branch\n# ... code ...\ngit add . && git commit -m "add login form"\ngit push origin feat/login    # push branch\n# → open PR on GitHub',
@@ -3722,11 +3923,13 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '⚠️',
             heading: 'Conflicts happen when two branches edit the same line',
             text: 'When you merge a branch and both sides modified the same part of a file, Git can\'t decide automatically which version to keep. It pauses the merge and asks you to resolve it manually.',
           },
           {
             animationStep: 1,
+            icon: '🚩',
             heading: 'Git inserts conflict markers into the file',
             text: 'Git marks the conflict directly in the file with <<<<<<< (your branch), ======= (separator), and >>>>>>> (the incoming branch). Everything between the markers is the content in conflict.',
             codeExample: '<<<<<<< HEAD\n  color: blue;\n=======\n  color: red;\n>>>>>>> feature',
@@ -3734,6 +3937,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🔧',
             heading: 'Edit the file to resolve',
             text: 'Open the file in your editor. Decide what to keep — your version, their version, or a combination. Delete all three marker lines completely. Most editors (VS Code) show a visual conflict resolver with one-click options.',
             codeExample: '# VS Code shows buttons:\n# "Accept Current" | "Accept Incoming" | "Accept Both"\n\n# After choosing, the file should have NO markers:\n  color: blue;   # or red, or a new value',
@@ -3741,6 +3945,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '✅',
             heading: 'Mark resolved and finish the merge',
             text: 'After editing all conflicted files, stage them to tell Git they\'re resolved, then run git commit. Git creates the merge commit automatically with a default message.',
             codeExample: '# Mark as resolved by staging:\ngit add style.css\n\n# Finish the merge:\ngit commit\n# (Git writes the merge commit message for you)',
@@ -3781,11 +3986,13 @@ export const TOPICS: Topic[] = [
         steps: [
           {
             animationStep: 0,
+            icon: '↩️',
             heading: '3 tools for undoing in Git',
             text: 'Git gives you different undo tools depending on where in the workflow you are. git restore discards uncommitted edits, git reset moves the HEAD pointer back, and git revert is the safe option for shared branches.',
           },
           {
             animationStep: 1,
+            icon: '🔄',
             heading: 'git restore — discard working directory changes',
             text: 'Throws away all edits to a file and restores it to its last committed state. Use --staged to unstage without discarding changes. Warning: this cannot be undone.',
             codeExample: '# Discard changes in a file:\ngit restore app.js\n\n# Discard ALL changes:\ngit restore .\n\n# Unstage (keep the changes, just unstage):\ngit restore --staged .',
@@ -3793,6 +4000,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 2,
+            icon: '🗄️',
             heading: 'git stash — shelve work temporarily',
             text: 'Stash saves your uncommitted changes on a stack and gives you a clean working directory. Perfect when you need to switch branches mid-work without losing anything.',
             codeExample: '# Save current changes:\ngit stash\n\n# Get them back:\ngit stash pop\n\n# See all stashes:\ngit stash list',
@@ -3800,6 +4008,7 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 3,
+            icon: '🔙',
             heading: 'git revert — safe undo on shared branches',
             text: 'git revert creates a new commit that undoes a previous commit. It never rewrites history, so it\'s safe to use on main or any branch others are working on.',
             codeExample: '# Undo a specific commit by its hash:\ngit revert abc1234\n\n# Git creates a new commit:\n# "Revert \\"add broken navbar\\""\n\n# Unlike reset, history stays intact',

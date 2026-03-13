@@ -61,6 +61,7 @@ export interface ExplanationStep {
   animationStep: number
   heading: string
   text: string
+  icon?: string        // emoji shown in the story card visual header
   codeExample?: string
   language?: string
 }
