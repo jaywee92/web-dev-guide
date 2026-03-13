@@ -152,7 +152,7 @@ export const CATEGORIES: Category[] = [
     id: 'git',
     title: 'Git & GitHub',
     description: 'Version Control · Workflow · Remotes',
-    color: '#f97316',
+    color: '#2dd4bf',
     icon: 'GitBranch',
     topicIds: ['git-intro', 'git-workflow', 'git-gitignore', 'git-github'],
     cardLabel: 'Basics',
@@ -162,7 +162,7 @@ export const CATEGORIES: Category[] = [
     id: 'git-collab',
     title: 'Collaboration',
     description: 'Merge Conflicts · Undo · Stash',
-    color: '#fb7185',
+    color: '#5eead4',
     icon: 'Users',
     topicIds: ['git-merge-conflicts', 'git-undo-stash'],
     cardLabel: 'Teamwork',
@@ -208,8 +208,8 @@ export const TECH_SECTION_META: Record<string, TechSectionMeta> = {
   webapis:     { title: 'Web APIs',   subtitle: 'Browser Interfaces',         color: '#34d399' },
   http:        { title: 'HTTP',       subtitle: 'Hypertext Transfer Protocol',color: '#fb923c' },
   postgresql:  { title: 'PostgreSQL', subtitle: 'Relational Database',        color: '#60a5fa' },
-  git:         { title: 'Git',        subtitle: 'Version Control System',     color: '#f97316' },
-  'git-collab': { title: 'Git',       subtitle: 'Version Control System',     color: '#f97316' },
+  git:         { title: 'Git',        subtitle: 'Version Control System',     color: '#2dd4bf' },
+  'git-collab': { title: 'Git',       subtitle: 'Version Control System',     color: '#2dd4bf' },
 }
 
 /** Returns the tech grouping key for a category.
