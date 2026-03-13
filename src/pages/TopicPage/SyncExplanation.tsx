@@ -109,17 +109,60 @@ export default function SyncExplanation({ topic, AnimComp }: Props) {
         </div>
 
         {/* Right: Scrollable steps */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
-          {steps.map((step, i) => (
-            <StepBlock
-              key={step.heading}
-              step={step}
-              index={i}
-              active={ctrl.step === i}
-              onActivate={() => ctrl.goTo(i)}
-              color={topic.color}
-            />
-          ))}
+        <div>
+          {/* Step pill navigator */}
+          <div style={{
+            display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 28,
+            position: 'sticky', top: 80, zIndex: 10,
+            background: 'linear-gradient(to bottom, var(--bg) 80%, transparent)',
+            paddingBottom: 12,
+          }}>
+            {steps.map((step, i) => (
+              <button
+                key={i}
+                onClick={() => ctrl.goTo(i)}
+                title={step.heading}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 6,
+                  padding: '4px 10px 4px 4px',
+                  borderRadius: 999,
+                  border: `1px solid ${ctrl.step === i ? topic.color + '80' : 'var(--border)'}`,
+                  background: ctrl.step === i ? topic.color + '18' : 'var(--surface)',
+                  cursor: 'pointer', fontSize: 11, fontFamily: 'var(--font-mono)',
+                  color: ctrl.step === i ? topic.color : 'var(--text-muted)',
+                  transition: 'all 0.2s',
+                  whiteSpace: 'nowrap',
+                  maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis',
+                }}
+              >
+                <span style={{
+                  width: 18, height: 18, borderRadius: '50%', flexShrink: 0,
+                  background: ctrl.step === i ? topic.color : 'var(--surface-bright)',
+                  color: ctrl.step === i ? '#fff' : 'var(--text-muted)',
+                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 9, fontWeight: 700, transition: 'all 0.2s',
+                }}>
+                  {i + 1}
+                </span>
+                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {step.heading.length > 16 ? step.heading.slice(0, 14) + '…' : step.heading}
+                </span>
+              </button>
+            ))}
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+            {steps.map((step, i) => (
+              <StepBlock
+                key={step.heading}
+                step={step}
+                index={i}
+                active={ctrl.step === i}
+                onActivate={() => ctrl.goTo(i)}
+                color={topic.color}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

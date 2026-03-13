@@ -12,6 +12,7 @@ import NextTopicCard from '@/components/ui/NextTopicCard'
 import TopicSidebar from '@/components/layout/TopicSidebar'
 import KeyTakeaways from './KeyTakeaways'
 import ContentTabs from './ContentTabs'
+import SliderPlayground, { hasSliderConfig } from '@/playgrounds/SliderPlayground'
 import { getCategoryForTopic } from '@/data/categories'
 import { preloadAnimation, getAnimationComponent } from '@/topics/registry'
 import type { CategoryId } from '@/types'
@@ -148,8 +149,8 @@ export default function TopicPage() {
           {/* Key Takeaways */}
           <KeyTakeaways topic={topic} />
 
-          {/* CheatSheet + Playground as tabs */}
-          {(hasCheatSheet || hasPlayground) && (
+          {/* CheatSheet + Sliders + Playground as tabs */}
+          {(hasCheatSheet || hasSliderConfig(topic.id) || hasPlayground) && (
             <ContentTabs
               color={topic.color}
               tabs={[
@@ -157,6 +158,11 @@ export default function TopicPage() {
                   id: 'cheatsheet',
                   label: 'Cheat Sheet',
                   content: <CheatSheet key={topic.id} data={topic.cheatSheet!} color={topic.color} language={cheatSheetLang} />,
+                }] : []),
+                ...(hasSliderConfig(topic.id) ? [{
+                  id: 'sliders',
+                  label: '⚡ Live Controls',
+                  content: <SliderPlayground topicId={topic.id} color={topic.color} />,
                 }] : []),
                 ...(hasPlayground ? [{
                   id: 'playground',
