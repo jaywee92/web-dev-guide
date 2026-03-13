@@ -100,35 +100,38 @@ export default function TopicSidebar({
                 style={{
                   width: '100%', display: 'flex', alignItems: 'center',
                   justifyContent: 'space-between',
-                  padding: '8px 16px 8px 14px',
-                  background: 'none', border: 'none', cursor: 'pointer',
-                  borderLeft: isActiveTech ? `2px solid ${techColor}` : '2px solid transparent',
-                  marginTop: 4,
+                  padding: '10px 16px 10px 14px',
+                  background: isActiveTech ? `${techColor}08` : 'none',
+                  border: 'none', cursor: 'pointer',
+                  borderLeft: isActiveTech ? `3px solid ${techColor}` : '3px solid transparent',
+                  marginTop: 2,
+                  transition: 'background 0.2s',
                 }}
+                onMouseEnter={e => { if (!isActiveTech) e.currentTarget.style.background = 'var(--surface)' }}
+                onMouseLeave={e => { if (!isActiveTech) e.currentTarget.style.background = 'none' }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
                   <div style={{
-                    width: 7, height: 7, borderRadius: '50%',
+                    width: 8, height: 8, borderRadius: '50%',
                     background: isActiveTech ? techColor : 'var(--text-faint)',
                     flexShrink: 0,
-                    boxShadow: isActiveTech ? `0 0 6px ${techColor}80` : 'none',
+                    boxShadow: isActiveTech ? `0 0 8px ${techColor}90` : 'none',
                     transition: 'background 0.2s, box-shadow 0.2s',
                   }} />
                   <span style={{
                     fontFamily: 'var(--font-mono)',
-                    fontSize: 11,
-                    fontWeight: 800,
-                    letterSpacing: '0.1em',
-                    color: isActiveTech ? techColor : 'var(--text-muted)',
-                    textTransform: 'uppercase',
+                    fontSize: 13,
+                    fontWeight: 700,
+                    letterSpacing: '0.04em',
+                    color: isActiveTech ? techColor : 'var(--text)',
                     transition: 'color 0.2s',
                   }}>
                     {meta?.title ?? techKey}
                   </span>
                 </div>
                 {isTechOpen
-                  ? <ChevronDown size={13} style={{ color: 'var(--text-faint)', flexShrink: 0 }} />
-                  : <ChevronRight size={13} style={{ color: 'var(--text-faint)', flexShrink: 0 }} />
+                  ? <ChevronDown size={14} style={{ color: isActiveTech ? techColor : 'var(--text-faint)', flexShrink: 0 }} />
+                  : <ChevronRight size={14} style={{ color: isActiveTech ? techColor : 'var(--text-faint)', flexShrink: 0 }} />
                 }
               </button>
 
