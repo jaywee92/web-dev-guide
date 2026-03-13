@@ -22,7 +22,7 @@ export default function SyncExplanation({ topic, AnimComp }: Props) {
         How it works
       </h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '55fr 45fr', gap: 40, alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(360px, 55fr) minmax(0, 45fr)', gap: 40, alignItems: 'start' }}>
         {/* Left: Sticky animation */}
         <div style={{ position: 'sticky', top: 80 }}>
           {/* Animation panel — click to advance */}
@@ -32,8 +32,8 @@ export default function SyncExplanation({ topic, AnimComp }: Props) {
               background: 'var(--surface)',
               border: '1px solid var(--border)',
               borderRadius: 'var(--radius)',
-              padding: '28px 24px',
-              minHeight: 420,
+              padding: '24px',
+              height: 460,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
