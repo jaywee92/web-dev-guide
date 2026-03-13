@@ -164,7 +164,7 @@ export const CATEGORIES: Category[] = [
     description: 'Merge Conflicts · Undo · Stash',
     color: '#5eead4',
     icon: 'Users',
-    topicIds: ['git-merge-conflicts', 'git-undo-stash'],
+    topicIds: ['git-collab-setup', 'git-merge-conflicts', 'git-undo-stash'],
     cardLabel: 'Teamwork',
     cardEmoji: '🤝',
   },
@@ -283,6 +283,7 @@ export const TOPIC_ICONS: Record<string, string> = {
   'git-workflow':              'GitBranch',
   'git-gitignore':             'FileX',
   'git-github':                'Github',
+  'git-collab-setup':          'Users',
   'git-merge-conflicts':       'GitMerge',
   'git-undo-stash':            'RotateCcw',
 }
@@ -340,6 +341,7 @@ export const TOPIC_LABELS: Record<string, string> = {
   'git-workflow':                'Git Workflow',
   'git-gitignore':               '.gitignore',
   'git-github':                  'GitHub',
+  'git-collab-setup':            'Team Setup',
   'git-merge-conflicts':         'Merge Conflicts',
   'git-undo-stash':              'Undo & Stash',
 }

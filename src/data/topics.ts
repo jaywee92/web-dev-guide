@@ -3638,7 +3638,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'git-github',
-    nextTopicId: 'git-merge-conflicts',
+    nextTopicId: 'git-collab-setup',
     title: 'GitHub',
     description: 'GitHub is not Git — it\'s a platform that hosts repos online and adds collaboration features like Pull Requests',
     level: 1,
@@ -3693,6 +3693,69 @@ export const TOPICS: Topic[] = [
     },
   },
   // ─── Git Collaboration ────────────────────────────────────────────────────
+  {
+    id: 'git-collab-setup',
+    nextTopicId: 'git-merge-conflicts',
+    title: 'Team Collaboration Setup',
+    description: 'How to set up a shared GitHub repo, invite collaborators, protect main, and run the team PR workflow',
+    level: 2,
+    category: 'git-collab',
+    color: '#5eead4',
+    estimatedMinutes: 8,
+    animationComponent: 'GitCollabSetupViz',
+    playgroundType: 'none',
+    sections: [
+      { id: 'intro', type: 'intro', steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation',
+        steps: [
+          {
+            animationStep: 0,
+            heading: 'Create a repo and invite your team',
+            text: 'Start on GitHub: create a new repository, then go to Settings → Collaborators → Add people. Teammates receive an email invite — they must accept before they can push. For organisations, use Teams to manage access at scale.',
+            codeExample: '# After being added, teammates clone once:\ngit clone https://github.com/team/project.git\ncd project',
+            language: 'bash',
+          },
+          {
+            animationStep: 1,
+            heading: 'Everyone clones the same remote',
+            text: 'Every team member runs git clone once. This downloads the full history and sets origin as the remote name automatically. From then on they use git pull to sync and git push to share.',
+            codeExample: 'git clone https://github.com/team/project.git\n\n# Check your remote:\ngit remote -v\n# origin  https://github.com/team/project.git (fetch)\n# origin  https://github.com/team/project.git (push)',
+            language: 'bash',
+          },
+          {
+            animationStep: 2,
+            heading: 'Protect main — require Pull Request reviews',
+            text: 'Go to Settings → Branches → Add branch protection rule for main. Enable "Require a pull request before merging" and "Require approvals". This prevents anyone from pushing directly to main — all changes must go through a reviewed PR.',
+          },
+          {
+            animationStep: 3,
+            heading: 'The daily team loop',
+            text: 'Every feature or fix follows the same cycle: pull latest main, create a branch, commit your work, push the branch, open a PR, get a review, then merge. Small focused PRs are easier to review and less likely to conflict.',
+            codeExample: 'git pull origin main          # sync first\ngit checkout -b feat/login    # new branch\n# ... code ...\ngit add . && git commit -m "add login form"\ngit push origin feat/login    # push branch\n# → open PR on GitHub',
+            language: 'bash',
+          },
+        ],
+      },
+    ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Clone a shared repo', code: 'git clone <url>', note: 'done once per machine' },
+        { label: 'Sync with remote main', code: 'git pull origin main', note: 'do this before starting new work' },
+        { label: 'Push a feature branch', code: 'git push origin <branch>', note: 'never push directly to main' },
+        { label: 'Create PR via CLI', code: 'gh pr create --title "feat" --body "description"', note: 'requires gh CLI tool' },
+        { label: 'List open PRs', code: 'gh pr list', note: 'shows all open pull requests' },
+        { label: 'Check out a PR locally', code: 'gh pr checkout <number>', note: 'review a teammate\'s branch locally' },
+      ],
+      whenToUse: 'Use branch protection on every shared repo from day one. Every team member works in branches — never directly in main. Use PRs for all changes, even small ones, so changes are visible and reviewed.',
+      commonMistakes: [
+        'Pushing directly to main — without branch protection anyone can accidentally break the shared codebase',
+        'Long-lived branches — the longer a branch lives, the more conflicts it collects; merge small and often',
+        'Forgetting to pull before branching — always git pull origin main first, otherwise your branch starts from stale code',
+      ],
+    },
+  },
   {
     id: 'git-merge-conflicts',
     nextTopicId: 'git-undo-stash',

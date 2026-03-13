@@ -57,7 +57,8 @@ const lazyRegistry: Record<string, () => Promise<{ default: AnimComp }>> = {
   GitWorkflowViz:  () => import('./git/GitWorkflowViz'),
   GitIgnoreViz:    () => import('./git/GitIgnoreViz'),
   GitHubViz:       () => import('./git/GitHubViz'),
-  GitConflictViz:  () => import('./git/GitConflictViz'),
+  GitCollabSetupViz: () => import('./git/GitCollabSetupViz'),
+  GitConflictViz:    () => import('./git/GitConflictViz'),
   GitUndoViz:      () => import('./git/GitUndoViz'),
 }
 
