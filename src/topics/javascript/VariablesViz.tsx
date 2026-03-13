@@ -2,231 +2,171 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 interface Props { step: number; compact?: boolean }
 
-const primitiveTypes = [
-  { label: 'string', color: '#4ade80' },
-  { label: 'number', color: '#5b9cf5' },
-  { label: 'boolean', color: '#f5c542' },
-  { label: 'null', color: '#f87171' },
-  { label: 'undefined', color: '#a1a1aa' },
-  { label: 'symbol', color: '#a78bfa' },
-]
-
-const typeofRows = [
-  { expr: 'typeof "hi"', result: '"string"', color: '#4ade80', quirk: false },
-  { expr: 'typeof 42', result: '"number"', color: '#5b9cf5', quirk: false },
-  { expr: 'typeof null', result: '"object"', color: '#f87171', quirk: true },
-]
+const ORANGE = '#fb923c'
+const BLUE   = '#60a5fa'
+const PURPLE = '#a78bfa'
+const GREEN  = '#4ade80'
+const RED    = '#f87171'
+const GREY   = '#6b7280'
 
 const stepLabels = [
-  'var — function-scoped, avoid it',
-  'let — block-scoped, reassignable',
-  'const — cannot be reassigned',
-  'JavaScript has 6 primitive types',
-  'typeof operator',
+  'var — function-scoped, hoisted to top of function',
+  'let — block-scoped, lives only inside { }',
+  'const — block-scoped, cannot be reassigned',
+  'Values have types: string, number, boolean, null, undefined',
+  "Each scope has its own copy — changes don't leak out",
 ]
 
+const types = [
+  { type: 'string',    ex: '"hello"',   color: GREEN  },
+  { type: 'number',    ex: '42',        color: BLUE   },
+  { type: 'boolean',   ex: 'true',      color: PURPLE },
+  { type: 'null',      ex: 'null',      color: GREY   },
+  { type: 'undefined', ex: 'undefined', color: GREY   },
+]
+
+function ScopeBox({ color, label, children, compact }: {
+  color: string; label: string; children: React.ReactNode; compact: boolean
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+      style={{
+        border: `2px solid ${color}66`,
+        borderRadius: 10, padding: compact ? 10 : 16,
+        background: `${color}08`,
+        boxShadow: `0 0 18px ${color}18`,
+      }}
+    >
+      <div style={{
+        fontSize: compact ? 8 : 9, fontFamily: 'var(--font-mono)', fontWeight: 700,
+        color, marginBottom: 8, textTransform: 'uppercase' as const, letterSpacing: '0.5px',
+      }}>
+        {label}
+      </div>
+      {children}
+    </motion.div>
+  )
+}
+
+function VarLine({ keyword, name, value, color, compact }: {
+  keyword: string; name: string; value: string; color: string; compact: boolean
+}) {
+  const fs = compact ? 9 : 11
+  return (
+    <div style={{ fontFamily: 'var(--font-mono)', fontSize: fs }}>
+      <span style={{ color }}>{keyword}</span>{' '}
+      <span style={{ color: 'var(--text)' }}>{name}</span>{' '}
+      <span style={{ color: 'var(--text-muted)' }}>= </span>
+      <span style={{ color: GREEN }}>'{value}'</span>
+    </div>
+  )
+}
+
 export default function VariablesViz({ step, compact = false }: Props) {
-  const monoFont = 'var(--font-mono)'
-  const fontSize = compact ? 11 : 13
-  const labelColor = [
-    '#f5c542',
-    '#4ade80',
-    '#f87171',
-    '#e2e8f0',
-    '#5b9cf5',
-  ][step] ?? '#a1a1aa'
+  const s = Math.min(step, 4)
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-
-      {/* Step 0: var */}
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: compact ? 10 : 16 }}>
       <AnimatePresence mode="wait">
-        {step === 0 && (
-          <motion.div
-            key="step0"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}
-          >
-            <motion.div
-              animate={{ boxShadow: '0 0 20px rgba(245,197,66,0.4)' }}
-              style={{
-                background: 'rgba(245,197,66,0.1)',
-                border: '2px solid #f5c542',
-                borderRadius: 8,
-                padding: compact ? '10px 20px' : '14px 28px',
-                fontFamily: monoFont,
-                fontSize,
-                color: '#f5c542',
-              }}
-            >
-              var x = 1
-            </motion.div>
-            <div style={{ fontSize: compact ? 22 : 28 }}>⚠️</div>
-            <span style={{ fontFamily: monoFont, fontSize: fontSize - 2, color: '#f5c542', opacity: 0.8 }}>
-              function-scoped &amp; hoisted — causes surprises
-            </span>
+
+        {/* Step 0: var + hoisting */}
+        {s === 0 && (
+          <motion.div key="var" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            style={{ width: '100%', maxWidth: compact ? 260 : 320 }}>
+            <ScopeBox color={ORANGE} label="function scope" compact={compact}>
+              <motion.div
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                style={{
+                  fontFamily: 'var(--font-mono)', fontSize: compact ? 8 : 9,
+                  color: ORANGE + '66', marginBottom: 6,
+                  borderLeft: `2px dashed ${ORANGE}44`, paddingLeft: 6,
+                }}
+              >
+                {/* hoisted */} var name = undefined
+              </motion.div>
+              <div style={{ fontSize: compact ? 7 : 8, color: 'var(--text-muted)', marginBottom: 8, fontFamily: 'var(--font-mono)' }}>
+                // ... code above ...
+              </div>
+              <VarLine keyword="var" name="name" value="Alice" color={ORANGE} compact={compact} />
+            </ScopeBox>
           </motion.div>
         )}
 
-        {/* Step 1: let */}
-        {step === 1 && (
-          <motion.div
-            key="step1"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}
-          >
-            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-              <motion.div
-                style={{
-                  background: 'rgba(74,222,128,0.1)',
-                  border: '2px solid #4ade80',
-                  borderRadius: 8,
-                  padding: compact ? '10px 16px' : '14px 24px',
-                  fontFamily: monoFont,
-                  fontSize,
-                  color: '#4ade80',
-                }}
-              >
-                let count = 0
-              </motion.div>
-              <span style={{ color: '#71717a', fontFamily: monoFont, fontSize }}>→</span>
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.3, duration: 0.4, ease: [0.34, 1.56, 0.64, 1] as [number, number, number, number] }}
-                style={{
-                  background: 'rgba(74,222,128,0.2)',
-                  border: '2px solid #4ade80',
-                  borderRadius: 8,
-                  padding: compact ? '10px 16px' : '14px 24px',
-                  fontFamily: monoFont,
-                  fontSize,
-                  color: '#4ade80',
-                  fontWeight: 700,
-                }}
-              >
-                count = 1
-              </motion.div>
+        {/* Step 1: let + block scope */}
+        {s === 1 && (
+          <motion.div key="let" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            style={{ width: '100%', maxWidth: compact ? 260 : 320 }}>
+            <ScopeBox color={BLUE} label="block scope { }" compact={compact}>
+              <VarLine keyword="let" name="count" value="0" color={BLUE} compact={compact} />
+              <div style={{ marginTop: 8, fontSize: compact ? 8 : 10, color: BLUE + 'aa', fontFamily: 'var(--font-mono)' }}>
+                count = 1  <span style={{ color: GREEN }}>// ✓ ok</span>
+              </div>
+            </ScopeBox>
+            <div style={{ marginTop: 8, fontSize: compact ? 8 : 10, color: RED + 'aa', fontFamily: 'var(--font-mono)', textAlign: 'center' as const }}>
+              outside {'{ }'}: count → ReferenceError ❌
             </div>
           </motion.div>
         )}
 
         {/* Step 2: const */}
-        {step === 2 && (
-          <motion.div
-            key="step2"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}
-          >
-            <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-              <div style={{
-                background: 'rgba(91,156,245,0.1)',
-                border: '2px solid #5b9cf5',
-                borderRadius: 8,
-                padding: compact ? '10px 16px' : '14px 24px',
-                fontFamily: monoFont,
-                fontSize,
-                color: '#5b9cf5',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-              }}>
-                <span style={{ fontSize: compact ? 16 : 20 }}>🔒</span>
-                const PI = 3.14
-              </div>
-            </div>
-            <motion.div
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-              style={{
-                background: 'rgba(248,113,113,0.1)',
-                border: '2px solid #f87171',
-                borderRadius: 8,
-                padding: compact ? '8px 16px' : '12px 24px',
-                fontFamily: monoFont,
-                fontSize: fontSize - 1,
-                color: '#f87171',
-              }}
-            >
-              PI = 3 &nbsp;// ❌ TypeError!
-            </motion.div>
+        {s === 2 && (
+          <motion.div key="const" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            style={{ width: '100%', maxWidth: compact ? 260 : 320 }}>
+            <ScopeBox color={PURPLE} label="const — immutable binding 🔒" compact={compact}>
+              <VarLine keyword="const" name="PI" value="3.14" color={PURPLE} compact={compact} />
+              <motion.div
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                style={{
+                  marginTop: 8, fontFamily: 'var(--font-mono)', fontSize: compact ? 8 : 10,
+                  color: RED, background: `${RED}12`, border: `1px solid ${RED}44`,
+                  borderRadius: 5, padding: compact ? '4px 8px' : '5px 10px',
+                }}
+              >
+                PI = 3  ❌ TypeError: Assignment to constant
+              </motion.div>
+            </ScopeBox>
           </motion.div>
         )}
 
-        {/* Step 3: primitive types */}
-        {step === 3 && (
-          <motion.div
-            key="step3"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            style={{ display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center', maxWidth: 320 }}
-          >
-            {primitiveTypes.map((t, i) => (
+        {/* Step 3: Types */}
+        {s === 3 && (
+          <motion.div key="types" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            style={{ display: 'flex', flexWrap: 'wrap' as const, gap: compact ? 6 : 8, justifyContent: 'center', maxWidth: compact ? 260 : 340 }}>
+            {types.map((t, i) => (
               <motion.div
-                key={t.label}
-                initial={{ opacity: 0, scale: 0.7 }}
+                key={t.type}
+                initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.08, duration: 0.35, ease: [0.34, 1.56, 0.64, 1] as [number, number, number, number] }}
+                transition={{ delay: i * 0.1, type: 'spring', stiffness: 300, damping: 20 }}
                 style={{
-                  padding: compact ? '4px 10px' : '6px 14px',
-                  borderRadius: 20,
-                  background: `${t.color}22`,
-                  border: `1px solid ${t.color}`,
-                  fontFamily: monoFont,
-                  fontSize: compact ? 10 : 12,
-                  color: t.color,
-                  fontWeight: 600,
+                  background: `${t.color}18`, border: `1.5px solid ${t.color}55`,
+                  borderRadius: 8, padding: compact ? '6px 10px' : '8px 14px',
+                  textAlign: 'center' as const,
                 }}
               >
-                {t.label}
+                <div style={{ fontSize: compact ? 8 : 9, fontFamily: 'var(--font-mono)', color: t.color, fontWeight: 700, textTransform: 'uppercase' as const }}>{t.type}</div>
+                <div style={{ fontSize: compact ? 9 : 11, fontFamily: 'var(--font-mono)', color: 'var(--text)', marginTop: 2 }}>{t.ex}</div>
               </motion.div>
             ))}
           </motion.div>
         )}
 
-        {/* Step 4: typeof */}
-        {step === 4 && (
-          <motion.div
-            key="step4"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'stretch', minWidth: compact ? 200 : 260 }}
-          >
-            {typeofRows.map((row, i) => (
-              <motion.div
-                key={row.expr}
-                initial={{ opacity: 0, x: -12 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.12 }}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: 8,
-                  background: `${row.color}11`,
-                  border: `1px solid ${row.color}44`,
-                  borderRadius: 6,
-                  padding: compact ? '6px 12px' : '8px 16px',
-                }}
-              >
-                <span style={{ fontFamily: monoFont, fontSize: fontSize - 1, color: '#e2e8f0' }}>
-                  {row.expr}
-                </span>
-                <span style={{ color: '#71717a', fontSize: 12 }}>→</span>
-                <span style={{ fontFamily: monoFont, fontSize: fontSize - 1, color: row.color, fontWeight: 700 }}>
-                  {row.result}
-                  {row.quirk && <span style={{ fontSize: 14, marginLeft: 4 }}>⚠️</span>}
-                </span>
-              </motion.div>
+        {/* Step 4: Scope isolation */}
+        {s === 4 && (
+          <motion.div key="isolation" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            style={{ display: 'flex', gap: compact ? 8 : 14 }}>
+            {['counter A', 'counter B'].map((label, i) => (
+              <ScopeBox key={label} color={BLUE} label={label} compact={compact}>
+                <VarLine keyword="let" name="count" value={i === 0 ? '5' : '0'} color={BLUE} compact={compact} />
+              </ScopeBox>
             ))}
           </motion.div>
         )}
@@ -235,18 +175,18 @@ export default function VariablesViz({ step, compact = false }: Props) {
       {/* Step label */}
       <AnimatePresence mode="wait">
         <motion.p
-          key={step}
+          key={s}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.3 }}
           style={{
-            color: labelColor,
-            fontFamily: monoFont,
-            fontSize: 12,
-            textAlign: 'center',
+            color: [ORANGE, BLUE, PURPLE, GREEN, BLUE][s],
+            fontFamily: 'var(--font-mono)', fontSize: compact ? 10 : 11,
+            textAlign: 'center', margin: 0, maxWidth: 340,
           }}
         >
-          {stepLabels[Math.min(step, stepLabels.length - 1)]}
+          {stepLabels[s]}
         </motion.p>
       </AnimatePresence>
     </div>
