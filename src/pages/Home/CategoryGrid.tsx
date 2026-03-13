@@ -114,7 +114,7 @@ function TechSection({
       className="tsec"
       style={{
         '--tc': color,
-        animationDelay: `${globalIndex * 80}ms`,
+        '--idx': globalIndex,
       } as CSSProperties}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeaveCard}
@@ -123,7 +123,7 @@ function TechSection({
       {/* Header */}
       <div className="tsec-head">
         <div className="tsec-icon">
-          <Icon size={17} color={color} />
+          <Icon size={22} color={color} />
         </div>
         <div className="tsec-head-text">
           <div className="tsec-name">{meta?.title ?? primaryCategory.title}</div>
