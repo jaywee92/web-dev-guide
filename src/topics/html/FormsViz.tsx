@@ -2,213 +2,192 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 interface Props { step: number; compact?: boolean }
 
-const BLUE = '#5b9cf5'
+const BLUE   = '#60a5fa'
+const RED    = '#f87171'
+const GREEN  = '#4ade80'
 const PURPLE = '#a78bfa'
-const YELLOW = '#f5c542'
-const GREEN = '#4ade80'
-const ORANGE = '#fb923c'
 
 const stepLabels = [
-  'A <form> collects user input',
-  '<label> + <input> — linked pair',
-  '<select> — dropdown choice',
-  '<input type="checkbox"> vs <input type="radio">',
-  '<button type="submit"> — sends data to server',
+  'Empty state — placeholder guides the user',
+  'Focus state — input highlighted, label floats',
+  'Invalid — validation error shown inline',
+  'Valid — constraint satisfied, ready to submit',
+  'Submit lifecycle — loading → success',
 ]
+
+const inputValues: Record<number, string> = {
+  0: '',
+  1: 'alice@',
+  2: 'alice@',
+  3: 'alice@example.com',
+  4: 'alice@example.com',
+}
+
+const borderColors: Record<number, string> = {
+  0: 'rgba(255,255,255,0.15)',
+  1: BLUE,
+  2: RED,
+  3: GREEN,
+  4: GREEN,
+}
 
 export default function FormsViz({ step, compact = false }: Props) {
   const s = Math.min(step, 4)
-  const fontSize = compact ? 10 : 12
-  const fieldPad = compact ? '3px 7px' : '5px 10px'
-  const gap = compact ? 6 : 8
+  const fs = compact ? 10 : 13
+  const gap = compact ? 8 : 12
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: compact ? 8 : 14 }}>
-      {/* Form container */}
-      <motion.div
-        animate={{
-          borderColor: s === 4 ? GREEN : BLUE,
-          boxShadow: s === 4 ? `0 0 20px ${GREEN}44` : '0 0 0px transparent',
-        }}
-        transition={{ duration: 0.4 }}
-        style={{
-          border: '2px solid',
-          borderRadius: 8,
-          padding: compact ? 10 : 14,
-          width: compact ? 200 : 260,
-          display: 'flex',
-          flexDirection: 'column',
-          gap,
-          fontFamily: 'var(--font-mono)',
-          fontSize,
-          background: 'var(--surface)',
-          minHeight: compact ? 50 : 60,
-        }}
-      >
-        {/* <form> label */}
-        <span style={{ fontSize: compact ? 9 : 10, color: BLUE, fontWeight: 700, opacity: 0.7, letterSpacing: '0.5px' }}>
-          &lt;form&gt;
-        </span>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: compact ? 12 : 18 }}>
 
-        {/* Step 1: label + input with blinking cursor */}
-        <AnimatePresence>
-          {s >= 1 && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.35 }}
-              style={{ overflow: 'hidden' }}
-            >
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                <span style={{ color: PURPLE, fontSize: compact ? 9 : 11 }}>
-                  &lt;label for="email"&gt;Email&lt;/label&gt;
-                </span>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  border: `1.5px solid ${PURPLE}`,
-                  borderRadius: 4,
-                  padding: fieldPad,
-                  background: `${PURPLE}08`,
-                }}>
-                  <span style={{ color: '#c4b5fd', fontSize: compact ? 9 : 11, flex: 1 }}>
-                    user@example.com
-                  </span>
-                  {/* Blinking cursor */}
-                  <motion.span
-                    animate={{ opacity: [1, 0, 1] }}
-                    transition={{ duration: 1, repeat: Infinity }}
-                    style={{ color: PURPLE, fontSize: compact ? 11 : 13, lineHeight: 1 }}
-                  >
-                    |
-                  </motion.span>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Step 2: select dropdown */}
-        <AnimatePresence>
-          {s >= 2 && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.35 }}
-              style={{ overflow: 'hidden' }}
-            >
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                <span style={{ color: YELLOW, fontSize: compact ? 9 : 11 }}>
-                  &lt;label&gt;Role&lt;/label&gt;
-                </span>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  border: `1.5px solid ${YELLOW}`,
-                  borderRadius: 4,
-                  padding: fieldPad,
-                  background: `${YELLOW}08`,
-                  justifyContent: 'space-between',
-                }}>
-                  <span style={{ color: '#fde68a', fontSize: compact ? 9 : 11 }}>Developer</span>
-                  <span style={{ color: YELLOW, fontSize: compact ? 9 : 11 }}>▾</span>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Step 3: checkbox + radio */}
-        <AnimatePresence>
-          {s >= 3 && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.35 }}
-              style={{ overflow: 'hidden' }}
-            >
-              <div style={{ display: 'flex', flexDirection: 'column', gap: compact ? 4 : 5 }}>
-                {/* Checkbox — checked */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.1, type: 'spring', stiffness: 400, damping: 20 }}
-                    style={{
-                      width: compact ? 12 : 15,
-                      height: compact ? 12 : 15,
-                      border: `1.5px solid ${ORANGE}`,
-                      borderRadius: 3,
-                      background: `${ORANGE}22`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                    }}
-                  >
-                    <span style={{ color: ORANGE, fontSize: compact ? 7 : 9, lineHeight: 1 }}>✓</span>
-                  </motion.div>
-                  <span style={{ color: ORANGE, fontSize: compact ? 9 : 11 }}>Newsletter (checkbox)</span>
-                </div>
-                {/* Radio — selected */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: 0.2, type: 'spring', stiffness: 400, damping: 20 }}
-                    style={{
-                      width: compact ? 12 : 15,
-                      height: compact ? 12 : 15,
-                      border: `1.5px solid ${ORANGE}`,
-                      borderRadius: '50%',
-                      background: `${ORANGE}22`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                    }}
-                  >
-                    <div style={{ width: compact ? 5 : 7, height: compact ? 5 : 7, borderRadius: '50%', background: ORANGE }} />
-                  </motion.div>
-                  <span style={{ color: ORANGE, fontSize: compact ? 9 : 11 }}>Senior (radio)</span>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Step 4: submit button with glow pulse */}
-        <AnimatePresence>
-          {s >= 4 && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] as [number, number, number, number] }}
-            >
-              <motion.div
-                animate={{ boxShadow: [`0 0 0px ${GREEN}00`, `0 0 14px ${GREEN}88`, `0 0 0px ${GREEN}00`] }}
-                transition={{ duration: 1.6, repeat: Infinity }}
+      <div style={{
+        width: '100%', maxWidth: compact ? 240 : 300,
+        display: 'flex', flexDirection: 'column', gap,
+      }}>
+        {/* Email input */}
+        <div style={{ position: 'relative' }}>
+          {/* Floating label */}
+          <AnimatePresence>
+            {s >= 1 && (
+              <motion.label
+                key="label"
+                initial={{ y: 0, opacity: 0 }}
+                animate={{ y: compact ? -14 : -18, opacity: 1, fontSize: compact ? 8 : 10 }}
+                exit={{ y: 0, opacity: 0 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 24 }}
                 style={{
-                  background: GREEN,
-                  color: '#052e16',
-                  borderRadius: 4,
-                  padding: compact ? '5px 0' : '7px 0',
-                  fontWeight: 700,
-                  fontSize: compact ? 10 : 11,
-                  textAlign: 'center',
-                  cursor: 'default',
+                  position: 'absolute', left: compact ? 8 : 10, top: compact ? 9 : 12,
+                  fontFamily: 'var(--font-mono)',
+                  color: borderColors[s],
+                  pointerEvents: 'none',
+                  transformOrigin: 'left',
+                  zIndex: 1,
+                  background: 'var(--surface, #0f1322)',
+                  padding: '0 3px',
                 }}
               >
-                Submit →
+                email
+              </motion.label>
+            )}
+          </AnimatePresence>
+
+          {/* Input box */}
+          <motion.div
+            animate={{
+              borderColor: borderColors[s],
+              boxShadow: s === 1 ? `0 0 0 3px ${BLUE}33` : s === 2 ? `0 0 0 3px ${RED}22` : s >= 3 ? `0 0 0 2px ${GREEN}22` : 'none',
+            }}
+            transition={{ duration: 0.35 }}
+            style={{
+              border: '1.5px solid',
+              borderRadius: 8,
+              padding: compact ? '8px 10px' : '11px 14px',
+              background: 'rgba(255,255,255,0.04)',
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              minHeight: compact ? 34 : 44,
+            }}
+          >
+            <span style={{
+              fontFamily: 'var(--font-mono)', fontSize: fs,
+              color: s === 0 ? 'var(--text-muted)' : 'var(--text)',
+            }}>
+              {s === 0 ? 'you@example.com' : inputValues[s]}
+              {s >= 1 && s <= 2 && (
+                <motion.span
+                  animate={{ opacity: [1, 0, 1] }}
+                  transition={{ repeat: Infinity, duration: 0.9 }}
+                  style={{ borderLeft: `2px solid ${BLUE}`, marginLeft: 1 }}
+                >
+                  &nbsp;
+                </motion.span>
+              )}
+            </span>
+
+            {/* Validation icon */}
+            <AnimatePresence>
+              {s === 2 && (
+                <motion.span
+                  key="err-icon"
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  style={{ fontSize: compact ? 12 : 16 }}
+                >❌</motion.span>
+              )}
+              {s >= 3 && (
+                <motion.span
+                  key="ok-icon"
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                  style={{ fontSize: compact ? 12 : 16 }}
+                >✅</motion.span>
+              )}
+            </AnimatePresence>
+          </motion.div>
+
+          {/* Error message */}
+          <AnimatePresence>
+            {s === 2 && (
+              <motion.div
+                key="error"
+                initial={{ opacity: 0, y: -4, height: 0 }}
+                animate={{ opacity: 1, y: 0, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.25 }}
+                style={{
+                  overflow: 'hidden',
+                  fontSize: compact ? 8 : 10,
+                  fontFamily: 'var(--font-mono)',
+                  color: RED,
+                  paddingTop: 4,
+                  paddingLeft: 4,
+                }}
+              >
+                ⚠ Please enter a valid email address
               </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Submit button */}
+        <motion.div
+          animate={{
+            background: s === 4 ? GREEN : s >= 3 ? PURPLE : 'rgba(255,255,255,0.07)',
+            borderColor: s >= 3 ? (s === 4 ? GREEN : PURPLE) : 'rgba(255,255,255,0.12)',
+          }}
+          transition={{ duration: 0.4 }}
+          style={{
+            border: '1.5px solid',
+            borderRadius: 8,
+            padding: compact ? '8px 0' : '11px 0',
+            textAlign: 'center' as const,
+            cursor: 'default',
+          }}
+        >
+          <AnimatePresence mode="wait">
+            {s < 3 && (
+              <motion.span key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                style={{ fontFamily: 'var(--font-mono)', fontSize: fs, color: 'var(--text-muted)' }}>
+                Submit
+              </motion.span>
+            )}
+            {s === 3 && (
+              <motion.span key="ready" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                style={{ fontFamily: 'var(--font-mono)', fontSize: fs, color: '#fff', fontWeight: 700 }}>
+                Submit →
+              </motion.span>
+            )}
+            {s === 4 && (
+              <motion.span key="success" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                style={{ fontFamily: 'var(--font-mono)', fontSize: fs, color: '#fff', fontWeight: 700 }}>
+                ✓ Sent!
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </div>
 
       {/* Step label */}
       <AnimatePresence mode="wait">
@@ -219,11 +198,9 @@ export default function FormsViz({ step, compact = false }: Props) {
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.3 }}
           style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize,
-            textAlign: 'center',
-            maxWidth: compact ? 200 : 260,
-            color: s === 0 ? '#71717a' : s === 1 ? PURPLE : s === 2 ? YELLOW : s === 3 ? ORANGE : GREEN,
+            color: [BLUE, BLUE, RED, GREEN, GREEN][s],
+            fontFamily: 'var(--font-mono)', fontSize: compact ? 10 : 11,
+            textAlign: 'center', margin: 0, maxWidth: 320,
           }}
         >
           {stepLabels[s]}
