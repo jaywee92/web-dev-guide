@@ -31,6 +31,7 @@ export default function App() {
               <Route path="/webapis" element={<CategoryPage />} />
               <Route path="/http" element={<CategoryPage />} />
               <Route path="/postgresql" element={<CategoryPage />} />
+              <Route path="/git" element={<CategoryPage />} />
               <Route path="/topic/:topicId" element={<TopicPage />} />
               <Route path="/search" element={<SearchPage />} />
               <Route path="/reference/html" element={<ReferencePage type="html" />} />
