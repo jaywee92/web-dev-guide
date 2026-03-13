@@ -3,12 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Category Animation Variants</title>
+<title>Category Animation Variants — Idle State</title>
 <style>
   :root {
     --bg: #070913;
-    --surface: rgba(7,9,19,0.42);
-    --border: rgba(255,255,255,0.07);
     --text: #e8ecf3;
     --muted: #6b7485;
     --faint: #3a4055;
@@ -22,64 +20,57 @@
     overflow-x: hidden;
   }
 
-  /* ── NAV ── */
   nav {
     position: sticky; top: 0; z-index: 100;
     background: rgba(7,9,19,0.92);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255,255,255,0.07);
     display: flex; align-items: center; gap: 0;
-    padding: 0 24px;
-    height: 52px;
+    padding: 0 24px; height: 52px;
   }
-  nav .brand {
-    font-size: 13px; font-weight: 700;
-    color: #5b9cf5; margin-right: 24px;
-    letter-spacing: -.01em;
-  }
+  nav .brand { font-size: 13px; font-weight: 700; color: #5b9cf5; margin-right: 24px; letter-spacing: -.01em; }
   nav .tabs { display: flex; gap: 2px; }
   nav .tab {
-    padding: 6px 14px;
-    border-radius: 8px;
-    font-size: 12px; font-weight: 600;
-    color: var(--muted);
-    cursor: pointer;
-    border: none;
-    background: transparent;
+    padding: 6px 14px; border-radius: 8px;
+    font-size: 12px; font-weight: 600; color: var(--muted);
+    cursor: pointer; border: none; background: transparent;
     transition: color .2s, background .2s;
   }
   nav .tab:hover { color: var(--text); background: rgba(255,255,255,0.05); }
   nav .tab.active { color: var(--text); background: rgba(255,255,255,0.08); }
 
-  /* ── LAYOUT ── */
   .page { max-width: 820px; margin: 0 auto; padding: 40px 24px 80px; }
-  .variant-header {
-    margin-bottom: 28px;
-  }
-  .variant-label {
-    display: inline-flex; align-items: center; gap: 10px;
-    margin-bottom: 6px;
-  }
+
+  .variant-panel { display: none; }
+  .variant-panel.active { display: block; }
+
+  .variant-header { margin-bottom: 22px; }
+  .variant-label { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 6px; }
   .variant-badge {
-    font-size: 10px; font-weight: 800; letter-spacing: .08em;
-    text-transform: uppercase;
+    font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
     padding: 3px 10px; border-radius: 20px;
   }
   .variant-title { font-size: 22px; font-weight: 800; letter-spacing: -.02em; }
   .variant-desc { font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.6; }
 
-  .variant-panel { display: none; }
-  .variant-panel.active { display: block; }
+  .hint {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 16px; margin-bottom: 28px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    font-size: 12px; color: var(--muted);
+  }
+  .hint .dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; animation: blink 1.4s ease infinite; flex-shrink: 0; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-  /* ── BASE CARD (shared across all variants) ── */
+  /* ── BASE CARD ── */
   .tsec {
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
     border-radius: 12px;
-    border: 1px solid var(--border);
-    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.07);
+    background: rgba(7,9,19,0.42);
     backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
     --tc: #5b9cf5;
     --mx: 50%; --my: 50%;
     margin-bottom: 8px;
@@ -93,8 +84,7 @@
     position: relative; z-index: 2;
   }
   .tsec-icon {
-    width: 46px; height: 46px; border-radius: 12px;
-    flex-shrink: 0;
+    width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0;
     background: color-mix(in srgb, var(--tc) 12%, rgba(0,0,0,0.3));
     border: 1px solid color-mix(in srgb, var(--tc) 30%, transparent);
     display: flex; align-items: center; justify-content: center;
@@ -108,8 +98,7 @@
   }
   .tsec-sub { font-size: 10px; color: #3a4055; margin-top: 1px; }
   .tsec-badge {
-    font-size: 8px; font-weight: 800; padding: 2px 8px;
-    border-radius: 20px; margin-left: auto;
+    font-size: 8px; font-weight: 800; padding: 2px 8px; border-radius: 20px; margin-left: auto;
     background: color-mix(in srgb, var(--tc) 14%, rgba(0,0,0,0.4));
     border: 1px solid color-mix(in srgb, var(--tc) 35%, transparent);
     color: color-mix(in srgb, var(--tc) 90%, #94a3b8);
@@ -124,15 +113,7 @@
     position: relative; overflow: hidden;
     border: 1px solid rgba(255,255,255,0.14);
     border-radius: 8px; cursor: pointer;
-    background: rgba(14,22,45,0.82);
-    --sc: #5b9cf5;
-    transition: border-color .22s, background .22s, box-shadow .22s, transform .18s;
-  }
-  .subcat:hover {
-    background: rgba(18,28,58,0.92);
-    border-color: color-mix(in srgb, var(--sc) 65%, rgba(255,255,255,0.2));
-    box-shadow: 0 0 18px color-mix(in srgb, var(--sc) 28%, transparent);
-    transform: translateY(-1px);
+    background: rgba(14,22,45,0.82); --sc: #5b9cf5;
   }
   .subcat-top {
     display: flex; align-items: center; gap: 7px;
@@ -148,180 +129,179 @@
     border: 1px solid color-mix(in srgb, var(--sc) 25%, transparent);
     color: color-mix(in srgb, var(--sc) 80%, #94a3b8);
   }
-  .subcat-topics {
-    padding: 7px 14px 10px;
-    font-size: 10px; color: #5a7fa0; line-height: 1.5;
-  }
+  .subcat-topics { padding: 7px 14px 10px; font-size: 10px; color: #5a7fa0; line-height: 1.5; }
 
-  /* ── VARIANT A: Scale Pop ── */
-  .va .tsec {
-    transition: border-color .3s, background .3s, transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .35s;
-  }
-  .va .tsec:hover {
-    transform: scale(1.025) translateY(-3px);
-    border-color: color-mix(in srgb, var(--tc) 40%, rgba(255,255,255,0.12));
-    background: rgba(10,13,25,0.68);
-    box-shadow:
-      0 8px 32px color-mix(in srgb, var(--tc) 20%, transparent),
-      0 2px 8px rgba(0,0,0,0.4),
-      0 0 0 1px color-mix(in srgb, var(--tc) 18%, transparent);
-    z-index: 10;
-  }
-  .va .tsec:hover .tsec-icon {
-    box-shadow: 0 0 32px color-mix(in srgb, var(--tc) 80%, transparent);
-  }
-  .va .tsec:hover .tsec-name {
-    text-shadow: 0 0 40px color-mix(in srgb, var(--tc) 80%, transparent);
-  }
-
-  /* ── VARIANT B: Neighbor Dim ── */
-  .vb .group:hover .tsec:not(:hover) {
-    opacity: 0.45;
-    transform: scale(0.98);
-    filter: blur(0.5px);
-  }
-  .vb .tsec {
-    transition: opacity .3s, transform .3s, filter .3s, border-color .3s, box-shadow .3s;
-  }
-  .vb .tsec:hover {
-    transform: scale(1.02) translateY(-2px);
-    border-color: color-mix(in srgb, var(--tc) 50%, rgba(255,255,255,0.15));
-    box-shadow:
-      0 12px 40px color-mix(in srgb, var(--tc) 22%, transparent),
-      0 4px 12px rgba(0,0,0,0.5);
-    z-index: 10;
-    opacity: 1;
-  }
-
-  /* ── VARIANT C: Neon Bloom ── */
-  .vc .tsec {
-    transition: border-color .3s, transform .3s, box-shadow .5s;
-  }
-  .vc .tsec:hover {
-    transform: translateY(-4px);
-    border-color: color-mix(in srgb, var(--tc) 60%, transparent);
-    box-shadow:
-      0 0 0 1px color-mix(in srgb, var(--tc) 35%, transparent),
-      0 0 24px color-mix(in srgb, var(--tc) 30%, transparent),
-      0 0 60px color-mix(in srgb, var(--tc) 14%, transparent),
-      0 16px 40px rgba(0,0,0,0.4);
-  }
-  .vc .tsec:hover .tsec-head {
-    background: linear-gradient(135deg,
-      color-mix(in srgb, var(--tc) 22%, #080d1a),
-      #080d1a);
-  }
-  .vc .tsec:hover .tsec-icon {
-    box-shadow: 0 0 36px color-mix(in srgb, var(--tc) 90%, transparent),
-                0 0 8px color-mix(in srgb, var(--tc) 60%, transparent);
-    background: color-mix(in srgb, var(--tc) 22%, rgba(0,0,0,0.3));
-  }
-  .vc .tsec:hover .tsec-name {
-    text-shadow: 0 0 30px color-mix(in srgb, var(--tc) 100%, transparent),
-                 0 0 60px color-mix(in srgb, var(--tc) 60%, transparent);
-  }
-  .vc .tsec:hover .tsec-head::after {
-    opacity: 1;
-  }
-  .vc .tsec .tsec-head::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg,
-      color-mix(in srgb, var(--tc) 8%, transparent) 0%,
-      transparent 60%);
-    opacity: 0;
-    transition: opacity .3s;
-    pointer-events: none;
-  }
-
-  /* ── VARIANT D: Magnetic Expand ── */
-  .vd .tsec {
-    transition: border-color .3s, background .3s, transform .4s cubic-bezier(.34,1.4,.64,1), box-shadow .4s, max-height .4s;
-  }
-  .vd .tsec:hover {
-    transform: scaleX(1.012) translateY(-2px);
-    border-color: color-mix(in srgb, var(--tc) 45%, rgba(255,255,255,0.1));
-    background: rgba(10,13,25,0.7);
-    box-shadow:
-      0 10px 36px color-mix(in srgb, var(--tc) 18%, transparent),
-      0 2px 8px rgba(0,0,0,0.4);
-    z-index: 10;
-  }
-  .vd .tsec:hover .tsec-head {
-    border-left-width: 4px;
-  }
-  .vd .tsec:hover .tsec-icon {
-    transform: scale(1.12);
-    box-shadow: 0 0 28px color-mix(in srgb, var(--tc) 75%, transparent);
-  }
-  .vd .tsec .tsec-icon {
-    transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .35s;
-  }
-  .vd .tsec:hover .subcat {
-    border-color: color-mix(in srgb, var(--sc) 40%, rgba(255,255,255,0.1));
-  }
-  .vd .tsec .subcat {
-    transition: border-color .4s, background .3s, box-shadow .3s, transform .3s;
-  }
-
-  /* ── ENTRANCE ANIMATION ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeUpBounce {
-    from { opacity: 0; transform: translateY(24px) scale(0.97); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
-  }
-  .va .tsec, .vc .tsec, .vd .tsec {
-    animation: fadeUp .45s ease both;
-  }
-  .vb .tsec {
-    animation: fadeUpBounce .5s cubic-bezier(.34,1.4,.64,1) both;
-  }
-
-  /* ── SPOTLIGHT (all variants) ── */
-  .tsec::after {
-    content: '';
-    position: absolute; inset: 0; border-radius: 12px;
-    pointer-events: none; z-index: 0;
-    background: radial-gradient(circle 240px at var(--mx) var(--my),
-      color-mix(in srgb, var(--tc) 7%, transparent) 0%,
-      transparent 65%);
-    opacity: 0;
-    transition: opacity .3s;
-  }
-  .tsec:hover::after { opacity: 1; }
-
-  /* ── COMPARISON INDICATOR ── */
-  .compare-bar {
-    display: flex; align-items: center; gap: 12px;
-    padding: 10px 16px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 10px;
-    margin-bottom: 28px;
-    font-size: 12px; color: var(--muted);
-  }
-  .compare-bar strong { color: var(--text); }
-
-  /* ── PICK BUTTON ── */
+  /* pick */
   .pick-btn {
     display: inline-flex; align-items: center; gap: 6px;
-    margin-top: 20px;
-    padding: 8px 18px; border-radius: 8px;
+    margin-top: 24px; padding: 8px 18px; border-radius: 8px;
     font-size: 12px; font-weight: 700;
     border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(255,255,255,0.05);
-    color: var(--text);
-    cursor: pointer;
-    transition: background .2s, border-color .2s, transform .15s;
+    background: rgba(255,255,255,0.05); color: var(--text);
+    cursor: pointer; transition: background .2s, transform .15s;
   }
   .pick-btn:hover { background: rgba(255,255,255,0.09); transform: translateY(-1px); }
 
-  /* group container for vb */
-  .group { }
+  /* ════════════════════════════════════════════
+     VARIANT A — Staggered Bounce In
+     Cards fly in one by one with spring overshoot,
+     then sit perfectly still. Clean & punchy.
+  ════════════════════════════════════════════ */
+  @keyframes va-in {
+    0%   { opacity: 0; transform: translateY(28px) scale(0.94); }
+    70%  { opacity: 1; transform: translateY(-5px) scale(1.01); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .va .tsec {
+    animation: va-in .6s cubic-bezier(.34,1.3,.64,1) both;
+  }
+  .va .tsec:nth-child(1) { animation-delay: .05s; }
+  .va .tsec:nth-child(2) { animation-delay: .18s; }
+  .va .tsec:nth-child(3) { animation-delay: .31s; }
+
+  @keyframes va-sub-in {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  .va .subcat {
+    animation: va-sub-in .35s ease both;
+  }
+  .va .tsec:nth-child(1) .subcat:nth-child(1) { animation-delay: .35s; }
+  .va .tsec:nth-child(1) .subcat:nth-child(2) { animation-delay: .44s; }
+  .va .tsec:nth-child(1) .subcat:nth-child(3) { animation-delay: .53s; }
+  .va .tsec:nth-child(2) .subcat:nth-child(1) { animation-delay: .48s; }
+  .va .tsec:nth-child(2) .subcat:nth-child(2) { animation-delay: .57s; }
+  .va .tsec:nth-child(3) .subcat:nth-child(1) { animation-delay: .61s; }
+  .va .tsec:nth-child(3) .subcat:nth-child(2) { animation-delay: .70s; }
+  .va .tsec:nth-child(3) .subcat:nth-child(3) { animation-delay: .79s; }
+
+  /* ════════════════════════════════════════════
+     VARIANT B — Pulse Glow (idle breathing)
+     Cards breathe with a slow color-glow pulse
+     on the border and icon — always alive.
+  ════════════════════════════════════════════ */
+  @keyframes vb-in {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes vb-pulse-border {
+    0%, 100% { box-shadow: 0 0 0 1px color-mix(in srgb, var(--tc) 10%, transparent),
+                            0 0 18px color-mix(in srgb, var(--tc) 8%, transparent); }
+    50%       { box-shadow: 0 0 0 1px color-mix(in srgb, var(--tc) 32%, transparent),
+                            0 0 32px color-mix(in srgb, var(--tc) 18%, transparent); }
+  }
+  @keyframes vb-pulse-icon {
+    0%, 100% { box-shadow: 0 0 18px color-mix(in srgb, var(--tc) 40%, transparent); }
+    50%       { box-shadow: 0 0 36px color-mix(in srgb, var(--tc) 80%, transparent),
+                            0 0 8px  color-mix(in srgb, var(--tc) 50%, transparent); }
+  }
+  .vb .tsec {
+    animation: vb-in .5s ease both, vb-pulse-border 3.5s ease-in-out infinite;
+  }
+  .vb .tsec:nth-child(1) { animation-delay: .05s, .8s;  animation-duration: .5s, 3.5s; }
+  .vb .tsec:nth-child(2) { animation-delay: .18s, 1.9s; animation-duration: .5s, 4.1s; }
+  .vb .tsec:nth-child(3) { animation-delay: .31s, 0.4s; animation-duration: .5s, 3.8s; }
+  .vb .tsec-icon {
+    animation: vb-pulse-icon 3.5s ease-in-out infinite;
+  }
+  .vb .tsec:nth-child(1) .tsec-icon { animation-delay: .8s;  animation-duration: 3.5s; }
+  .vb .tsec:nth-child(2) .tsec-icon { animation-delay: 1.9s; animation-duration: 4.1s; }
+  .vb .tsec:nth-child(3) .tsec-icon { animation-delay: .4s;  animation-duration: 3.8s; }
+
+  /* ════════════════════════════════════════════
+     VARIANT C — Scan Line Sweep
+     A shimmering highlight sweeps across each
+     card on load, like a scanner activating.
+     Then cards stay still with vivid borders.
+  ════════════════════════════════════════════ */
+  @keyframes vc-in {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes vc-scan {
+    0%   { transform: translateX(-100%); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translateX(200%); opacity: 0; }
+  }
+  .vc .tsec {
+    animation: vc-in .45s ease both;
+    border-color: color-mix(in srgb, var(--tc) 22%, rgba(255,255,255,0.06));
+    box-shadow: 0 0 12px color-mix(in srgb, var(--tc) 10%, transparent);
+  }
+  .vc .tsec:nth-child(1) { animation-delay: .05s; }
+  .vc .tsec:nth-child(2) { animation-delay: .18s; }
+  .vc .tsec:nth-child(3) { animation-delay: .31s; }
+
+  .vc .tsec::after {
+    content: '';
+    position: absolute; inset: 0; z-index: 5; pointer-events: none;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--tc) 18%, transparent) 40%,
+      color-mix(in srgb, var(--tc) 28%, white) 50%,
+      color-mix(in srgb, var(--tc) 18%, transparent) 60%,
+      transparent 100%);
+    width: 60%;
+    animation: vc-scan .9s ease both;
+  }
+  .vc .tsec:nth-child(1)::after { animation-delay: .35s; }
+  .vc .tsec:nth-child(2)::after { animation-delay: .6s; }
+  .vc .tsec:nth-child(3)::after { animation-delay: .85s; }
+
+  /* stronger resting state borders */
+  .vc .tsec-head {
+    border-left-width: 4px;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--tc) 20%, #080d1a), #080d1a);
+  }
+  .vc .tsec-name {
+    text-shadow: 0 0 30px color-mix(in srgb, var(--tc) 75%, transparent);
+  }
+  .vc .tsec-icon {
+    box-shadow: 0 0 24px color-mix(in srgb, var(--tc) 70%, transparent);
+    background: color-mix(in srgb, var(--tc) 18%, rgba(0,0,0,0.3));
+  }
+
+  /* ════════════════════════════════════════════
+     VARIANT D — Float Wave
+     Cards continuously float up & down with an
+     offset wave — the entire grid breathes as
+     a living organism.
+  ════════════════════════════════════════════ */
+  @keyframes vd-in {
+    from { opacity: 0; transform: translateY(24px) scale(0.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes vd-float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-6px); }
+  }
+  .vd .tsec {
+    animation: vd-in .55s cubic-bezier(.34,1.2,.64,1) both, vd-float 4s ease-in-out infinite;
+    border-color: color-mix(in srgb, var(--tc) 20%, rgba(255,255,255,0.06));
+  }
+  .vd .tsec:nth-child(1) {
+    animation-delay: .05s, 1s;
+    animation-duration: .55s, 4.0s;
+  }
+  .vd .tsec:nth-child(2) {
+    animation-delay: .18s, 1.6s;
+    animation-duration: .55s, 4.4s;
+  }
+  .vd .tsec:nth-child(3) {
+    animation-delay: .31s, 0.8s;
+    animation-duration: .55s, 3.8s;
+  }
+  .vd .tsec-icon {
+    animation: vd-float 3s ease-in-out infinite reverse;
+  }
+  .vd .tsec:nth-child(1) .tsec-icon { animation-delay: .6s; }
+  .vd .tsec:nth-child(2) .tsec-icon { animation-delay: 1.2s; }
+  .vd .tsec:nth-child(3) .tsec-icon { animation-delay: 0.3s; }
+
+  .vd .tsec-head {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--tc) 16%, #080d1a), #080d1a);
+  }
 </style>
 </head>
 <body>
@@ -329,29 +309,27 @@
 <nav>
   <div class="brand">web-dev-guide</div>
   <div class="tabs">
-    <button class="tab active" onclick="showVariant('a')">A · Scale Pop</button>
-    <button class="tab" onclick="showVariant('b')">B · Neighbor Dim</button>
-    <button class="tab" onclick="showVariant('c')">C · Neon Bloom</button>
-    <button class="tab" onclick="showVariant('d')">D · Icon Spring</button>
+    <button class="tab active" onclick="showVariant('a')">A · Bounce In</button>
+    <button class="tab" onclick="showVariant('b')">B · Pulse Glow</button>
+    <button class="tab" onclick="showVariant('c')">C · Scan Sweep</button>
+    <button class="tab" onclick="showVariant('d')">D · Float Wave</button>
   </div>
 </nav>
 
 <div class="page">
 
-  <!-- ──────────── VARIANT A ──────────── -->
+  <!-- A -->
   <div id="panel-a" class="variant-panel active">
     <div class="variant-header">
       <div class="variant-label">
         <span class="variant-badge" style="background:rgba(91,156,245,.15);border:1px solid rgba(91,156,245,.3);color:#5b9cf5">Variant A</span>
-        <span class="variant-title">Scale Pop</span>
+        <span class="variant-title">Bounce In</span>
       </div>
-      <p class="variant-desc">Hover hebt die Karte mit einem Federbounce an — scale(1.025) + tiefer Farbschatten. Klar, direkt, dominant. Karten "schweben" über den Rest.</p>
+      <p class="variant-desc">Karten fliegen beim Laden nacheinander mit einem Federbounce rein — danach vollkommen ruhig. Subcategory-Chips folgen mit Verzögerung. Wechsle Tab und komm zurück um es erneut zu sehen.</p>
     </div>
-    <div class="compare-bar">
-      Hover over a card → <strong>spring scale + colored drop shadow</strong>. Cards lift cleanly above the grid.
-    </div>
-    <div class="va">
-      <div class="tsec" style="--tc:#5b9cf5" onmousemove="setSpot(this,event)">
+    <div class="hint"><span class="dot"></span> Kein Hover nötig — Animation läuft beim Seitenload automatisch</div>
+    <div class="va" id="va-grid">
+      <div class="tsec" style="--tc:#5b9cf5">
         <div class="tsec-head">
           <div class="tsec-icon">🎨</div>
           <div><div class="tsec-name">CSS</div><div class="tsec-sub">Styling &amp; Layout</div></div>
@@ -363,7 +341,7 @@
           <div class="subcat" style="--sc:#4ade80"><div class="subcat-top"><span class="subcat-icon">✨</span><span class="subcat-label">Animations</span><span class="subcat-cnt">7</span></div><div class="subcat-topics">keyframes · transitions · easing</div></div>
         </div>
       </div>
-      <div class="tsec" style="--tc:#f472b6" onmousemove="setSpot(this,event)">
+      <div class="tsec" style="--tc:#f472b6">
         <div class="tsec-head">
           <div class="tsec-icon">📄</div>
           <div><div class="tsec-name">HTML</div><div class="tsec-sub">Structure &amp; Semantics</div></div>
@@ -374,7 +352,7 @@
           <div class="subcat" style="--sc:#fbbf24"><div class="subcat-top"><span class="subcat-icon">♿</span><span class="subcat-label">Accessibility</span><span class="subcat-cnt">5</span></div><div class="subcat-topics">aria · roles · focus</div></div>
         </div>
       </div>
-      <div class="tsec" style="--tc:#fbbf24" onmousemove="setSpot(this,event)">
+      <div class="tsec" style="--tc:#fbbf24">
         <div class="tsec-head">
           <div class="tsec-icon">⚡</div>
           <div><div class="tsec-name">JavaScript</div><div class="tsec-sub">Interactivity &amp; Logic</div></div>
@@ -387,105 +365,76 @@
         </div>
       </div>
     </div>
-    <button class="pick-btn" onclick="pick('A · Scale Pop')">✓ Diese Variante wählen</button>
+    <button class="pick-btn" onclick="pick('A · Bounce In')">✓ Diese Variante wählen</button>
+    <button class="pick-btn" style="margin-left:8px" onclick="replay('va-grid')">↺ Nochmal abspielen</button>
   </div>
 
-  <!-- ──────────── VARIANT B ──────────── -->
+  <!-- B -->
   <div id="panel-b" class="variant-panel">
     <div class="variant-header">
       <div class="variant-label">
         <span class="variant-badge" style="background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.3);color:#4ade80">Variant B</span>
-        <span class="variant-title">Neighbor Dim</span>
+        <span class="variant-title">Pulse Glow</span>
       </div>
-      <p class="variant-desc">Beim Hover über eine Karte werden alle anderen gedimmt (opacity 0.45 + blur). Die aktive Karte tritt extrem in den Vordergrund — dramatischer Fokuseffekt.</p>
+      <p class="variant-desc">Karten atmen dauerhaft — Border und Icon pulsieren sanft in der Akzentfarbe, jede Karte mit eigenem Rhythmus. Lebendig auch ohne Interaktion.</p>
     </div>
-    <div class="compare-bar">
-      Hover over a card → <strong>neighbors fade + blur away</strong>. Active card dominates the entire grid.
-    </div>
+    <div class="hint"><span class="dot"></span> Kein Hover nötig — Karten pulsieren ständig</div>
     <div class="vb">
-      <div class="group">
-        <div class="tsec" style="--tc:#5b9cf5" onmousemove="setSpot(this,event)">
-          <div class="tsec-head">
-            <div class="tsec-icon">🎨</div>
-            <div><div class="tsec-name">CSS</div><div class="tsec-sub">Styling &amp; Layout</div></div>
-            <span class="tsec-badge">42 Topics</span>
-          </div>
-          <div class="tsec-body">
-            <div class="subcat" style="--sc:#5b9cf5"><div class="subcat-top"><span class="subcat-icon">📐</span><span class="subcat-label">Flexbox</span><span class="subcat-cnt">8</span></div><div class="subcat-topics">justify · align · flex-wrap</div></div>
-            <div class="subcat" style="--sc:#a78bfa"><div class="subcat-top"><span class="subcat-icon">🗂️</span><span class="subcat-label">Grid</span><span class="subcat-cnt">10</span></div><div class="subcat-topics">template · areas · fr unit</div></div>
-            <div class="subcat" style="--sc:#4ade80"><div class="subcat-top"><span class="subcat-icon">✨</span><span class="subcat-label">Animations</span><span class="subcat-cnt">7</span></div><div class="subcat-topics">keyframes · transitions · easing</div></div>
-          </div>
+      <div class="tsec" style="--tc:#5b9cf5">
+        <div class="tsec-head"><div class="tsec-icon">🎨</div><div><div class="tsec-name">CSS</div><div class="tsec-sub">Styling &amp; Layout</div></div><span class="tsec-badge">42 Topics</span></div>
+        <div class="tsec-body">
+          <div class="subcat" style="--sc:#5b9cf5"><div class="subcat-top"><span class="subcat-icon">📐</span><span class="subcat-label">Flexbox</span><span class="subcat-cnt">8</span></div><div class="subcat-topics">justify · align · flex-wrap</div></div>
+          <div class="subcat" style="--sc:#a78bfa"><div class="subcat-top"><span class="subcat-icon">🗂️</span><span class="subcat-label">Grid</span><span class="subcat-cnt">10</span></div><div class="subcat-topics">template · areas · fr unit</div></div>
+          <div class="subcat" style="--sc:#4ade80"><div class="subcat-top"><span class="subcat-icon">✨</span><span class="subcat-label">Animations</span><span class="subcat-cnt">7</span></div><div class="subcat-topics">keyframes · transitions · easing</div></div>
         </div>
-        <div class="tsec" style="--tc:#f472b6" onmousemove="setSpot(this,event)">
-          <div class="tsec-head">
-            <div class="tsec-icon">📄</div>
-            <div><div class="tsec-name">HTML</div><div class="tsec-sub">Structure &amp; Semantics</div></div>
-            <span class="tsec-badge">18 Topics</span>
-          </div>
-          <div class="tsec-body">
-            <div class="subcat" style="--sc:#f472b6"><div class="subcat-top"><span class="subcat-icon">🏗️</span><span class="subcat-label">Semantics</span><span class="subcat-cnt">6</span></div><div class="subcat-topics">article · section · nav</div></div>
-            <div class="subcat" style="--sc:#fbbf24"><div class="subcat-top"><span class="subcat-icon">♿</span><span class="subcat-label">Accessibility</span><span class="subcat-cnt">5</span></div><div class="subcat-topics">aria · roles · focus</div></div>
-          </div>
+      </div>
+      <div class="tsec" style="--tc:#f472b6">
+        <div class="tsec-head"><div class="tsec-icon">📄</div><div><div class="tsec-name">HTML</div><div class="tsec-sub">Structure &amp; Semantics</div></div><span class="tsec-badge">18 Topics</span></div>
+        <div class="tsec-body">
+          <div class="subcat" style="--sc:#f472b6"><div class="subcat-top"><span class="subcat-icon">🏗️</span><span class="subcat-label">Semantics</span><span class="subcat-cnt">6</span></div><div class="subcat-topics">article · section · nav</div></div>
+          <div class="subcat" style="--sc:#fbbf24"><div class="subcat-top"><span class="subcat-icon">♿</span><span class="subcat-label">Accessibility</span><span class="subcat-cnt">5</span></div><div class="subcat-topics">aria · roles · focus</div></div>
         </div>
-        <div class="tsec" style="--tc:#fbbf24" onmousemove="setSpot(this,event)">
-          <div class="tsec-head">
-            <div class="tsec-icon">⚡</div>
-            <div><div class="tsec-name">JavaScript</div><div class="tsec-sub">Interactivity &amp; Logic</div></div>
-            <span class="tsec-badge">35 Topics</span>
-          </div>
-          <div class="tsec-body">
-            <div class="subcat" style="--sc:#fbbf24"><div class="subcat-top"><span class="subcat-icon">🔄</span><span class="subcat-label">Async</span><span class="subcat-cnt">9</span></div><div class="subcat-topics">promises · async/await · fetch</div></div>
-            <div class="subcat" style="--sc:#f472b6"><div class="subcat-top"><span class="subcat-icon">🧩</span><span class="subcat-label">DOM</span><span class="subcat-cnt">7</span></div><div class="subcat-topics">events · selectors · manipulation</div></div>
-            <div class="subcat" style="--sc:#4ade80"><div class="subcat-top"><span class="subcat-icon">🔧</span><span class="subcat-label">Modules</span><span class="subcat-cnt">5</span></div><div class="subcat-topics">import · export · bundling</div></div>
-          </div>
+      </div>
+      <div class="tsec" style="--tc:#fbbf24">
+        <div class="tsec-head"><div class="tsec-icon">⚡</div><div><div class="tsec-name">JavaScript</div><div class="tsec-sub">Interactivity &amp; Logic</div></div><span class="tsec-badge">35 Topics</span></div>
+        <div class="tsec-body">
+          <div class="subcat" style="--sc:#fbbf24"><div class="subcat-top"><span class="subcat-icon">🔄</span><span class="subcat-label">Async</span><span class="subcat-cnt">9</span></div><div class="subcat-topics">promises · async/await · fetch</div></div>
+          <div class="subcat" style="--sc:#f472b6"><div class="subcat-top"><span class="subcat-icon">🧩</span><span class="subcat-label">DOM</span><span class="subcat-cnt">7</span></div><div class="subcat-topics">events · selectors · manipulation</div></div>
+          <div class="subcat" style="--sc:#4ade80"><div class="subcat-top"><span class="subcat-icon">🔧</span><span class="subcat-label">Modules</span><span class="subcat-cnt">5</span></div><div class="subcat-topics">import · export · bundling</div></div>
         </div>
       </div>
     </div>
-    <button class="pick-btn" onclick="pick('B · Neighbor Dim')">✓ Diese Variante wählen</button>
+    <button class="pick-btn" onclick="pick('B · Pulse Glow')">✓ Diese Variante wählen</button>
   </div>
 
-  <!-- ──────────── VARIANT C ──────────── -->
+  <!-- C -->
   <div id="panel-c" class="variant-panel">
     <div class="variant-header">
       <div class="variant-label">
         <span class="variant-badge" style="background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.3);color:#a78bfa">Variant C</span>
-        <span class="variant-title">Neon Bloom</span>
+        <span class="variant-title">Scan Sweep</span>
       </div>
-      <p class="variant-desc">Hover erzeugt ein intensives mehrschichtiges Neon-Glühen in der Akzentfarbe — 3 Glow-Ebenen, header hellt auf, Name leuchtet. Edgy und futuristisch.</p>
+      <p class="variant-desc">Beim Laden fährt ein heller Scan-Strahl über jede Karte — wie ein System das hochfährt. Danach starke Resting-State Borders &amp; leuchtende Icons. Kein Idle-Loop.</p>
     </div>
-    <div class="compare-bar">
-      Hover over a card → <strong>layered neon glow + bloom on title + brighter header</strong>. High visual drama.
-    </div>
-    <div class="vc">
-      <div class="tsec" style="--tc:#5b9cf5" onmousemove="setSpot(this,event)">
-        <div class="tsec-head">
-          <div class="tsec-icon">🎨</div>
-          <div><div class="tsec-name">CSS</div><div class="tsec-sub">Styling &amp; Layout</div></div>
-          <span class="tsec-badge">42 Topics</span>
-        </div>
+    <div class="hint"><span class="dot"></span> Kein Hover nötig — Sweep läuft einmalig beim Load</div>
+    <div class="vc" id="vc-grid">
+      <div class="tsec" style="--tc:#5b9cf5">
+        <div class="tsec-head"><div class="tsec-icon">🎨</div><div><div class="tsec-name">CSS</div><div class="tsec-sub">Styling &amp; Layout</div></div><span class="tsec-badge">42 Topics</span></div>
         <div class="tsec-body">
           <div class="subcat" style="--sc:#5b9cf5"><div class="subcat-top"><span class="subcat-icon">📐</span><span class="subcat-label">Flexbox</span><span class="subcat-cnt">8</span></div><div class="subcat-topics">justify · align · flex-wrap</div></div>
           <div class="subcat" style="--sc:#a78bfa"><div class="subcat-top"><span class="subcat-icon">🗂️</span><span class="subcat-label">Grid</span><span class="subcat-cnt">10</span></div><div class="subcat-topics">template · areas · fr unit</div></div>
           <div class="subcat" style="--sc:#4ade80"><div class="subcat-top"><span class="subcat-icon">✨</span><span class="subcat-label">Animations</span><span class="subcat-cnt">7</span></div><div class="subcat-topics">keyframes · transitions · easing</div></div>
         </div>
       </div>
-      <div class="tsec" style="--tc:#f472b6" onmousemove="setSpot(this,event)">
-        <div class="tsec-head">
-          <div class="tsec-icon">📄</div>
-          <div><div class="tsec-name">HTML</div><div class="tsec-sub">Structure &amp; Semantics</div></div>
-          <span class="tsec-badge">18 Topics</span>
-        </div>
+      <div class="tsec" style="--tc:#f472b6">
+        <div class="tsec-head"><div class="tsec-icon">📄</div><div><div class="tsec-name">HTML</div><div class="tsec-sub">Structure &amp; Semantics</div></div><span class="tsec-badge">18 Topics</span></div>
         <div class="tsec-body">
           <div class="subcat" style="--sc:#f472b6"><div class="subcat-top"><span class="subcat-icon">🏗️</span><span class="subcat-label">Semantics</span><span class="subcat-cnt">6</span></div><div class="subcat-topics">article · section · nav</div></div>
           <div class="subcat" style="--sc:#fbbf24"><div class="subcat-top"><span class="subcat-icon">♿</span><span class="subcat-label">Accessibility</span><span class="subcat-cnt">5</span></div><div class="subcat-topics">aria · roles · focus</div></div>
         </div>
       </div>
-      <div class="tsec" style="--tc:#fbbf24" onmousemove="setSpot(this,event)">
-        <div class="tsec-head">
-          <div class="tsec-icon">⚡</div>
-          <div><div class="tsec-name">JavaScript</div><div class="tsec-sub">Interactivity &amp; Logic</div></div>
-          <span class="tsec-badge">35 Topics</span>
-        </div>
+      <div class="tsec" style="--tc:#fbbf24">
+        <div class="tsec-head"><div class="tsec-icon">⚡</div><div><div class="tsec-name">JavaScript</div><div class="tsec-sub">Interactivity &amp; Logic</div></div><span class="tsec-badge">35 Topics</span></div>
         <div class="tsec-body">
           <div class="subcat" style="--sc:#fbbf24"><div class="subcat-top"><span class="subcat-icon">🔄</span><span class="subcat-label">Async</span><span class="subcat-cnt">9</span></div><div class="subcat-topics">promises · async/await · fetch</div></div>
           <div class="subcat" style="--sc:#f472b6"><div class="subcat-top"><span class="subcat-icon">🧩</span><span class="subcat-label">DOM</span><span class="subcat-cnt">7</span></div><div class="subcat-topics">events · selectors · manipulation</div></div>
@@ -493,51 +442,38 @@
         </div>
       </div>
     </div>
-    <button class="pick-btn" onclick="pick('C · Neon Bloom')">✓ Diese Variante wählen</button>
+    <button class="pick-btn" onclick="pick('C · Scan Sweep')">✓ Diese Variante wählen</button>
+    <button class="pick-btn" style="margin-left:8px" onclick="replay('vc-grid')">↺ Nochmal abspielen</button>
   </div>
 
-  <!-- ──────────── VARIANT D ──────────── -->
+  <!-- D -->
   <div id="panel-d" class="variant-panel">
     <div class="variant-header">
       <div class="variant-label">
         <span class="variant-badge" style="background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.3);color:#fbbf24">Variant D</span>
-        <span class="variant-title">Icon Spring</span>
+        <span class="variant-title">Float Wave</span>
       </div>
-      <p class="variant-desc">Das Icon springt mit Federbounce nach vorne (scale 1.12), die linke Border wird dicker, Subcards leuchten subtil auf. Kräftig aber nicht übertrieben.</p>
+      <p class="variant-desc">Karten schweben dauerhaft auf und ab — jede mit eigenem Rhythmus, wie im Wasser. Icons floaten in Gegenrichtung. Die gesamte Startseite wirkt wie ein lebendes Ding.</p>
     </div>
-    <div class="compare-bar">
-      Hover over a card → <strong>icon bounces forward + thicker border + subcards glow</strong>. Energetic but clean.
-    </div>
+    <div class="hint"><span class="dot"></span> Kein Hover nötig — Karten floaten kontinuierlich</div>
     <div class="vd">
-      <div class="tsec" style="--tc:#5b9cf5" onmousemove="setSpot(this,event)">
-        <div class="tsec-head">
-          <div class="tsec-icon">🎨</div>
-          <div><div class="tsec-name">CSS</div><div class="tsec-sub">Styling &amp; Layout</div></div>
-          <span class="tsec-badge">42 Topics</span>
-        </div>
+      <div class="tsec" style="--tc:#5b9cf5">
+        <div class="tsec-head"><div class="tsec-icon">🎨</div><div><div class="tsec-name">CSS</div><div class="tsec-sub">Styling &amp; Layout</div></div><span class="tsec-badge">42 Topics</span></div>
         <div class="tsec-body">
           <div class="subcat" style="--sc:#5b9cf5"><div class="subcat-top"><span class="subcat-icon">📐</span><span class="subcat-label">Flexbox</span><span class="subcat-cnt">8</span></div><div class="subcat-topics">justify · align · flex-wrap</div></div>
           <div class="subcat" style="--sc:#a78bfa"><div class="subcat-top"><span class="subcat-icon">🗂️</span><span class="subcat-label">Grid</span><span class="subcat-cnt">10</span></div><div class="subcat-topics">template · areas · fr unit</div></div>
           <div class="subcat" style="--sc:#4ade80"><div class="subcat-top"><span class="subcat-icon">✨</span><span class="subcat-label">Animations</span><span class="subcat-cnt">7</span></div><div class="subcat-topics">keyframes · transitions · easing</div></div>
         </div>
       </div>
-      <div class="tsec" style="--tc:#f472b6" onmousemove="setSpot(this,event)">
-        <div class="tsec-head">
-          <div class="tsec-icon">📄</div>
-          <div><div class="tsec-name">HTML</div><div class="tsec-sub">Structure &amp; Semantics</div></div>
-          <span class="tsec-badge">18 Topics</span>
-        </div>
+      <div class="tsec" style="--tc:#f472b6">
+        <div class="tsec-head"><div class="tsec-icon">📄</div><div><div class="tsec-name">HTML</div><div class="tsec-sub">Structure &amp; Semantics</div></div><span class="tsec-badge">18 Topics</span></div>
         <div class="tsec-body">
           <div class="subcat" style="--sc:#f472b6"><div class="subcat-top"><span class="subcat-icon">🏗️</span><span class="subcat-label">Semantics</span><span class="subcat-cnt">6</span></div><div class="subcat-topics">article · section · nav</div></div>
           <div class="subcat" style="--sc:#fbbf24"><div class="subcat-top"><span class="subcat-icon">♿</span><span class="subcat-label">Accessibility</span><span class="subcat-cnt">5</span></div><div class="subcat-topics">aria · roles · focus</div></div>
         </div>
       </div>
-      <div class="tsec" style="--tc:#fbbf24" onmousemove="setSpot(this,event)">
-        <div class="tsec-head">
-          <div class="tsec-icon">⚡</div>
-          <div><div class="tsec-name">JavaScript</div><div class="tsec-sub">Interactivity &amp; Logic</div></div>
-          <span class="tsec-badge">35 Topics</span>
-        </div>
+      <div class="tsec" style="--tc:#fbbf24">
+        <div class="tsec-head"><div class="tsec-icon">⚡</div><div><div class="tsec-name">JavaScript</div><div class="tsec-sub">Interactivity &amp; Logic</div></div><span class="tsec-badge">35 Topics</span></div>
         <div class="tsec-body">
           <div class="subcat" style="--sc:#fbbf24"><div class="subcat-top"><span class="subcat-icon">🔄</span><span class="subcat-label">Async</span><span class="subcat-cnt">9</span></div><div class="subcat-topics">promises · async/await · fetch</div></div>
           <div class="subcat" style="--sc:#f472b6"><div class="subcat-top"><span class="subcat-icon">🧩</span><span class="subcat-label">DOM</span><span class="subcat-cnt">7</span></div><div class="subcat-topics">events · selectors · manipulation</div></div>
@@ -545,10 +481,10 @@
         </div>
       </div>
     </div>
-    <button class="pick-btn" onclick="pick('D · Icon Spring')">✓ Diese Variante wählen</button>
+    <button class="pick-btn" onclick="pick('D · Float Wave')">✓ Diese Variante wählen</button>
   </div>
 
-</div><!-- /page -->
+</div>
 
 <script>
   function showVariant(key) {
@@ -558,10 +494,13 @@
     document.querySelectorAll('nav .tab')[['a','b','c','d'].indexOf(key)].classList.add('active')
   }
 
-  function setSpot(el, e) {
-    const r = el.getBoundingClientRect()
-    el.style.setProperty('--mx', (e.clientX - r.left) + 'px')
-    el.style.setProperty('--my', (e.clientY - r.top) + 'px')
+  function replay(gridId) {
+    const grid = document.getElementById(gridId)
+    if (!grid) return
+    // Clone to restart animations
+    const clone = grid.cloneNode(true)
+    clone.id = gridId
+    grid.parentNode.replaceChild(clone, grid)
   }
 
   function pick(label) {
@@ -571,6 +510,7 @@
       background:#12151f;border:1px solid rgba(255,255,255,0.15);
       border-radius:12px;padding:12px 24px;font-size:13px;font-weight:600;
       color:#e8ecf3;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,0.5);
+      white-space:nowrap;
     `
     banner.textContent = '✓ Gewählt: ' + label + ' — sag mir in Claude, dann implementiere ich es!'
     document.body.appendChild(banner)
