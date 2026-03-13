@@ -151,12 +151,22 @@ export const CATEGORIES: Category[] = [
   {
     id: 'git',
     title: 'Git & GitHub',
-    description: 'Version Control · Branching · Collaboration',
+    description: 'Version Control · Workflow · Remotes',
     color: '#f97316',
     icon: 'GitBranch',
-    topicIds: ['git-intro', 'git-workflow', 'git-github'],
+    topicIds: ['git-intro', 'git-workflow', 'git-gitignore', 'git-github'],
     cardLabel: 'Basics',
     cardEmoji: '🌿',
+  },
+  {
+    id: 'git-collab',
+    title: 'Collaboration',
+    description: 'Merge Conflicts · Undo · Stash',
+    color: '#fb7185',
+    icon: 'Users',
+    topicIds: ['git-merge-conflicts', 'git-undo-stash'],
+    cardLabel: 'Teamwork',
+    cardEmoji: '🤝',
   },
 ]
 
@@ -179,7 +189,7 @@ export const CATEGORY_GROUPS: CategoryGroup[] = [
   {
     key: 'tools',
     label: 'TOOLS',
-    categoryIds: ['git'],
+    categoryIds: ['git', 'git-collab'],
   },
 ]
 
@@ -199,6 +209,7 @@ export const TECH_SECTION_META: Record<string, TechSectionMeta> = {
   http:        { title: 'HTTP',       subtitle: 'Hypertext Transfer Protocol',color: '#fb923c' },
   postgresql:  { title: 'PostgreSQL', subtitle: 'Relational Database',        color: '#60a5fa' },
   git:         { title: 'Git',        subtitle: 'Version Control System',     color: '#f97316' },
+  'git-collab': { title: 'Git',       subtitle: 'Version Control System',     color: '#f97316' },
 }
 
 /** Returns the tech grouping key for a category.
@@ -207,6 +218,7 @@ export const TECH_SECTION_META: Record<string, TechSectionMeta> = {
 export function getTechKey(categoryId: CategoryId): string {
   if (categoryId.startsWith('html-')) return 'html'
   if (categoryId.startsWith('css-')) return 'css'
+  if (categoryId === 'git' || categoryId.startsWith('git-')) return 'git'
   return categoryId
 }
 
@@ -269,7 +281,10 @@ export const TOPIC_ICONS: Record<string, string> = {
   'postgres-crud':             'Database',
   'git-intro':                 'GitCommit',
   'git-workflow':              'GitBranch',
+  'git-gitignore':             'FileX',
   'git-github':                'Github',
+  'git-merge-conflicts':       'GitMerge',
+  'git-undo-stash':            'RotateCcw',
 }
 
 /** English display labels for topic IDs (used on homepage subcategory cards) */
@@ -323,5 +338,8 @@ export const TOPIC_LABELS: Record<string, string> = {
   'postgres-crud':               'CRUD',
   'git-intro':                   'What is Git?',
   'git-workflow':                'Git Workflow',
+  'git-gitignore':               '.gitignore',
   'git-github':                  'GitHub',
+  'git-merge-conflicts':         'Merge Conflicts',
+  'git-undo-stash':              'Undo & Stash',
 }

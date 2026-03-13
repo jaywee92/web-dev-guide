@@ -8,7 +8,7 @@ import {
   StretchHorizontal, LayoutGrid, Smartphone, Variable, SunMoon, RotateCcw, Zap, Play,
   Braces, Lock, FileCode, Shuffle, Component, RefreshCw, Cpu, Route,
   Globe, HardDrive, ArrowLeftRight, Server, Activity, Search, Merge, Database,
-  Github, GitCommit,
+  Github, GitCommit, Users, FileX, GitMerge,
   type LucideProps,
 } from 'lucide-react'
 import { TOPICS } from '@/data/topics'
@@ -23,7 +23,7 @@ const ICON_MAP: Record<string, IconComp> = {
   StretchHorizontal, LayoutGrid, Smartphone, Variable, SunMoon, RotateCcw, Zap, Play,
   Braces, Lock, FileCode, Shuffle, Component, RefreshCw, Cpu, Route,
   Globe, HardDrive, ArrowLeftRight, Server, Activity, Search, Merge, Database,
-  Github, GitCommit,
+  Github, GitCommit, Users, FileX, GitMerge,
 }
 
 interface Props {

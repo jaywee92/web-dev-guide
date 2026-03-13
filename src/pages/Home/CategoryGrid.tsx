@@ -8,6 +8,7 @@ import {
   StretchHorizontal, Smartphone, Variable, SunMoon, RotateCcw, Play,
   Braces, Lock, FileCode, Shuffle, Component, RefreshCw, Cpu, Route,
   HardDrive, Server, Activity, Search, Merge, Github, GitCommit,
+  Users, FileX, GitMerge,
 } from 'lucide-react'
 import { CATEGORIES, CATEGORY_GROUPS, getTechKey, TECH_SECTION_META, TOPIC_LABELS, TOPIC_ICONS } from '@/data/categories'
 import type { Category, CategoryId } from '@/types'
@@ -23,6 +24,7 @@ const ICONS: Record<string, ComponentType<{ size?: number; color?: string }>> = 
   StretchHorizontal, Smartphone, Variable, SunMoon, RotateCcw, Play,
   Braces, Lock, FileCode, Shuffle, Component, RefreshCw, Cpu, Route,
   HardDrive, Server, Activity, Search, Merge, Github, GitCommit,
+  Users, FileX, GitMerge,
 }
 
 function deriveTechSections(categoryIds: CategoryId[]): Array<{ techKey: string; categories: Category[] }> {
