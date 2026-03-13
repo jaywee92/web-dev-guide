@@ -1,6 +1,6 @@
-import { useRef, type ComponentType } from 'react'
+import { useRef, useState, type ComponentType } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, MousePointerClick } from 'lucide-react'
 import type { Topic, ExplanationStep } from '@/types'
 import CodeBlock from '@/components/ui/CodeBlock'
 import { useAnimationStep } from '@/hooks/useAnimationStep'
@@ -23,7 +23,7 @@ export default function SyncExplanation({ topic, AnimComp }: Props) {
         How it works
       </h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '55fr 45fr', gap: 40, alignItems: 'start' }}>
         {/* Left: Sticky animation */}
         <div style={{ position: 'sticky', top: 80 }}>
           {/* Animation panel — click to advance */}
@@ -33,17 +33,18 @@ export default function SyncExplanation({ topic, AnimComp }: Props) {
               background: 'var(--surface)',
               border: '1px solid var(--border)',
               borderRadius: 'var(--radius)',
-              padding: 32,
-              minHeight: 300,
+              padding: '28px 24px',
+              minHeight: 420,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               cursor: ctrl.step < steps.length - 1 ? 'pointer' : 'default',
               userSelect: 'none',
+              overflow: 'hidden',
             }}
           >
             {AnimComp
-              ? <AnimComp step={ctrl.step} compact />
+              ? <AnimComp step={ctrl.step} />
               : <span style={{ color: 'var(--text-muted)' }}>Animation</span>
             }
           </div>
@@ -110,47 +111,6 @@ export default function SyncExplanation({ topic, AnimComp }: Props) {
 
         {/* Right: Scrollable steps */}
         <div>
-          {/* Step pill navigator */}
-          <div style={{
-            display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 28,
-            position: 'sticky', top: 80, zIndex: 10,
-            background: 'linear-gradient(to bottom, var(--bg) 80%, transparent)',
-            paddingBottom: 12,
-          }}>
-            {steps.map((step, i) => (
-              <button
-                key={i}
-                onClick={() => ctrl.goTo(i)}
-                title={step.heading}
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 6,
-                  padding: '4px 10px 4px 4px',
-                  borderRadius: 999,
-                  border: `1px solid ${ctrl.step === i ? topic.color + '80' : 'var(--border)'}`,
-                  background: ctrl.step === i ? topic.color + '18' : 'var(--surface)',
-                  cursor: 'pointer', fontSize: 11, fontFamily: 'var(--font-mono)',
-                  color: ctrl.step === i ? topic.color : 'var(--text-muted)',
-                  transition: 'all 0.2s',
-                  whiteSpace: 'nowrap',
-                  maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis',
-                }}
-              >
-                <span style={{
-                  width: 18, height: 18, borderRadius: '50%', flexShrink: 0,
-                  background: ctrl.step === i ? topic.color : 'var(--surface-bright)',
-                  color: ctrl.step === i ? '#fff' : 'var(--text-muted)',
-                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 9, fontWeight: 700, transition: 'all 0.2s',
-                }}>
-                  {i + 1}
-                </span>
-                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {step.heading.length > 16 ? step.heading.slice(0, 14) + '…' : step.heading}
-                </span>
-              </button>
-            ))}
-          </div>
-
           <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
             {steps.map((step, i) => (
               <StepBlock
@@ -178,36 +138,54 @@ function StepBlock({ step, index, active, onActivate, color }: {
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { margin: '-40% 0px -40% 0px' })
+  const [hovered, setHovered] = useState(false)
 
   if (inView && !active) onActivate()
 
   return (
     <motion.div
       ref={ref}
-      animate={{ opacity: active ? 1 : 0.4, x: active ? 0 : 8 }}
+      animate={{ opacity: active ? 1 : 0.45, x: active ? 0 : 6 }}
       transition={{ duration: 0.3 }}
-      style={{ cursor: 'pointer' }}
-      onClick={onActivate}
+      style={{ cursor: active ? 'default' : 'pointer' }}
+      onClick={!active ? onActivate : undefined}
+      onMouseEnter={() => !active && setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       <div style={{
         display: 'flex', alignItems: 'flex-start', gap: 16,
-        borderLeft: `3px solid ${active ? color : 'transparent'}`,
-        paddingLeft: 12, transition: 'border-color 0.3s', borderRadius: 4,
+        borderLeft: `3px solid ${active ? color : hovered ? color + '55' : 'transparent'}`,
+        paddingLeft: 12,
+        paddingTop: 10, paddingBottom: 10, paddingRight: 10,
+        borderRadius: 8,
+        background: active ? 'transparent' : hovered ? color + '08' : 'transparent',
+        transition: 'border-color 0.2s, background 0.2s',
       }}>
         <span style={{
           width: 28, height: 28, borderRadius: '50%',
-          background: active ? color : 'var(--surface-bright)',
-          border: `2px solid ${active ? color : 'var(--border)'}`,
-          color: active ? '#fff' : 'var(--text-muted)',
+          background: active ? color : hovered ? color + '22' : 'var(--surface-bright)',
+          border: `2px solid ${active ? color : hovered ? color + '55' : 'var(--border)'}`,
+          color: active ? '#fff' : hovered ? color : 'var(--text-muted)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 11, fontWeight: 700, flexShrink: 0, transition: 'all 0.3s',
+          fontSize: 11, fontWeight: 700, flexShrink: 0, transition: 'all 0.2s',
         }}>
           {index + 1}
         </span>
         <div style={{ flex: 1 }}>
-          <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--text)', marginBottom: 8 }}>
-            {step.heading}
-          </h3>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--text)', margin: 0 }}>
+              {step.heading}
+            </h3>
+            {!active && hovered && (
+              <span style={{
+                display: 'inline-flex', alignItems: 'center', gap: 4,
+                fontSize: 10, fontFamily: 'var(--font-mono)',
+                color, opacity: 0.8,
+              }}>
+                <MousePointerClick size={10} /> activate
+              </span>
+            )}
+          </div>
           <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.7, marginBottom: step.codeExample ? 12 : 0 }}>
             {step.text}
           </p>
