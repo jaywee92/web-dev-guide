@@ -11,6 +11,7 @@ import {
   Users, FileX, GitMerge,
 } from 'lucide-react'
 import { CATEGORIES, CATEGORY_GROUPS, getTechKey, TECH_SECTION_META, TOPIC_LABELS, TOPIC_ICONS } from '@/data/categories'
+import { RESOURCE_GROUPS } from '@/data/resources'
 import type { Category, CategoryId } from '@/types'
 import CategoryTooltip from './CategoryTooltip'
 import type { GalaxyHandle } from './GalaxyBackground'
@@ -171,6 +172,85 @@ const TechSection = React.memo(function TechSection({
   )
 })
 
+function ResourcesSection({ globalIndex, galaxyRef, trailRef }: {
+  globalIndex: number
+  galaxyRef: RefObject<GalaxyHandle | null>
+  trailRef: RefObject<TrailHandle | null>
+}) {
+  const navigate = useNavigate()
+  const color = '#a78bfa'
+  const totalLinks = RESOURCE_GROUPS.reduce((s, g) => s + g.resources.length, 0)
+
+  function handleMouseEnter(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = e.currentTarget.getBoundingClientRect()
+    galaxyRef.current?.setHover(color, rect)
+    trailRef.current?.setColor(color)
+  }
+
+  function handleMouseLeave(e: React.MouseEvent<HTMLDivElement>) {
+    e.currentTarget.style.transform = 'perspective(700px) rotateX(0deg) rotateY(0deg)'
+    galaxyRef.current?.setHover(null, null)
+    trailRef.current?.setColor(null)
+  }
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const el = e.currentTarget
+    const rect = el.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    const rx = -((y / rect.height) - 0.5) * 6
+    const ry = ((x / rect.width) - 0.5) * 6
+    el.style.setProperty('--mx', `${x}px`)
+    el.style.setProperty('--my', `${y}px`)
+    el.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg)`
+  }
+
+  return (
+    <div
+      className="tsec"
+      style={{ '--tc': color, '--idx': globalIndex, cursor: 'pointer' } as CSSProperties}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
+      onClick={() => navigate('/resources')}
+    >
+      <div className="tsec-head">
+        <div className="tsec-icon">
+          <Globe size={22} color={color} />
+        </div>
+        <div className="tsec-head-text">
+          <div className="tsec-name">Resources</div>
+          <div className="tsec-sub">Curated external tools, libraries &amp; references</div>
+        </div>
+        <span className="tsec-badge">{totalLinks} Links</span>
+      </div>
+      <div className="tsec-body">
+        {RESOURCE_GROUPS.map(group => (
+          <div
+            key={group.id}
+            className="subcat"
+            style={{ '--sc': group.color } as CSSProperties}
+          >
+            <div className="subcat-top">
+              <Globe size={16} color={group.color} />
+              <span className="subcat-label">{group.label.split(' ').slice(0, 2).join(' ')}</span>
+              <span className="subcat-cnt">{group.resources.length}</span>
+            </div>
+            <div className="subcat-topics">
+              {group.resources.slice(0, 3).map((r, i, arr) => (
+                <span key={r.id} style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>
+                  {r.name}
+                  {i < arr.length - 1 ? <span style={{ opacity: 0.4, margin: '0 3px' }}>·</span> : ''}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function CategoryGrid({ galaxyRef, trailRef }: CategoryGridProps) {
   const [tooltip, setTooltip] = useState<TooltipState | null>(null)
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -229,6 +309,17 @@ export default function CategoryGrid({ galaxyRef, trailRef }: CategoryGridProps)
             </div>
           </div>
         ))}
+      </div>
+
+      <div>
+        <GroupLabel label="Resources" />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 4 }}>
+          <ResourcesSection
+            globalIndex={globalIdx}
+            galaxyRef={galaxyRef}
+            trailRef={trailRef}
+          />
+        </div>
       </div>
 
       {tooltip && (
