@@ -2377,7 +2377,7 @@ export const TOPICS: Topic[] = [
             heading: 'Function declarations vs expressions',
             text: 'Functions can be declared with the function keyword or assigned as expressions. Declarations are hoisted; expressions are not.',
             codeExample: '// Declaration — hoisted\nfunction greet(name: string) {\n  return `Hello, ${name}`\n}\n\n// Expression — not hoisted\nconst greet = (name: string) => `Hello, ${name}`',
-            language: 'javascript',
+            language: 'typescript',
           },
           {
             animationStep: 1,
