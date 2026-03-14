@@ -17,6 +17,7 @@ import CategoryTooltip from './CategoryTooltip'
 import type { GalaxyHandle } from './GalaxyBackground'
 import type { TrailHandle } from './CursorTrail'
 import { useResourceVotes } from '@/hooks/useResourceVotes'
+import { getHost } from '@/lib/getHost'
 
 const ICONS: Record<string, ComponentType<{ size?: number; color?: string }>> = {
   FileCode2, Palette, Zap, Shield, Layers, Globe,
@@ -172,10 +173,6 @@ const TechSection = React.memo(function TechSection({
     </div>
   )
 })
-
-function getHost(url: string): string {
-  try { return new URL(url).host } catch { return url }
-}
 
 function ResourcesSection({ globalIndex, galaxyRef, trailRef }: {
   globalIndex: number

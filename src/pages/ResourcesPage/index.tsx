@@ -2,10 +2,7 @@ import PageWrapper from '@/components/layout/PageWrapper'
 import { RESOURCE_GROUPS } from '@/data/resources'
 import type { Resource, ResourceGroup } from '@/data/resources'
 import { useResourceVotes } from '@/hooks/useResourceVotes'
-
-function getHost(url: string): string {
-  try { return new URL(url).host } catch { return url }
-}
+import { getHost } from '@/lib/getHost'
 
 interface ResourceCardProps {
   r: Resource
