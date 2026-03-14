@@ -240,15 +240,23 @@ function ResourcesSection({ globalIndex, galaxyRef, trailRef }: {
           <div
             key={r.id}
             className="subcat"
-            style={{ '--sc': r.color } as CSSProperties}
+            style={{ '--sc': r.color, display: 'flex', flexDirection: 'column', height: 120 } as CSSProperties}
           >
             <div className="subcat-top">
               <Globe size={16} color={r.color} />
               <span className="subcat-label">{r.name}</span>
               <span className="subcat-cnt">▲ {votes[r.id] ?? 0}</span>
             </div>
-            <div className="subcat-topics">
-              {getHost(r.url)}
+            <div className="subcat-topics" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 4 }}>
+              <span style={{
+                display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
+                overflow: 'hidden', lineHeight: 1.45, fontSize: 11, color: '#8ab4d4',
+              }}>
+                {r.description}
+              </span>
+              <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: '#4a7090' }}>
+                {getHost(r.url)}
+              </span>
             </div>
           </div>
         ))}
