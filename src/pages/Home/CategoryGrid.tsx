@@ -1,5 +1,5 @@
 // src/pages/Home/CategoryGrid.tsx
-import { type ComponentType, type CSSProperties, type RefObject, useEffect, useState, useRef } from 'react'
+import React, { type ComponentType, type CSSProperties, type RefObject, useEffect, useState, useRef, useCallback, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   FileCode2, Palette, Zap, Shield, Layers, Globe, ArrowLeftRight, Database, LayoutGrid, Sparkles, Layout, MousePointer2,
@@ -69,7 +69,7 @@ interface TechSectionProps {
   onCardLeave: () => void
 }
 
-function TechSection({
+const TechSection = React.memo(function TechSection({
   techKey, categories, globalIndex,
   galaxyRef, trailRef,
   onCardHover, onCardLeave,
@@ -169,24 +169,24 @@ function TechSection({
       </div>
     </div>
   )
-}
+})
 
 export default function CategoryGrid({ galaxyRef, trailRef }: CategoryGridProps) {
   const [tooltip, setTooltip] = useState<TooltipState | null>(null)
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  function showTooltip(cat: Category, rect: DOMRect) {
+  const showTooltip = useCallback((cat: Category, rect: DOMRect) => {
     if (hideTimer.current) clearTimeout(hideTimer.current)
     setTooltip({ category: cat, rect })
-  }
+  }, [])
 
-  function scheduleHide() {
+  const scheduleHide = useCallback(() => {
     hideTimer.current = setTimeout(() => setTooltip(null), 120)
-  }
+  }, [])
 
-  function cancelHide() {
+  const cancelHide = useCallback(() => {
     if (hideTimer.current) clearTimeout(hideTimer.current)
-  }
+  }, [])
 
   useEffect(() => {
     return () => {
@@ -194,36 +194,41 @@ export default function CategoryGrid({ galaxyRef, trailRef }: CategoryGridProps)
     }
   }, [])
 
+  const allTechSections = useMemo(() =>
+    CATEGORY_GROUPS.map(group => ({
+      group,
+      techSections: deriveTechSections(group.categoryIds as CategoryId[]),
+    })),
+    []
+  )
+
   let globalIdx = 0
 
   return (
     <section style={{ maxWidth: 1080, margin: '0 auto', padding: '0 32px 80px', width: '100%' }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-        {CATEGORY_GROUPS.map(group => {
-          const techSections = deriveTechSections(group.categoryIds)
-          return (
-            <div key={group.key}>
-              <GroupLabel label={group.label} />
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 4 }}>
-                {techSections.map(ts => {
-                  const idx = globalIdx++
-                  return (
-                    <TechSection
-                      key={ts.techKey}
-                      techKey={ts.techKey}
-                      categories={ts.categories}
-                      globalIndex={idx}
-                      galaxyRef={galaxyRef}
-                      trailRef={trailRef}
-                      onCardHover={showTooltip}
-                      onCardLeave={scheduleHide}
-                    />
-                  )
-                })}
-              </div>
+        {allTechSections.map(({ group, techSections }) => (
+          <div key={group.key}>
+            <GroupLabel label={group.label} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 4 }}>
+              {techSections.map(ts => {
+                const idx = globalIdx++
+                return (
+                  <TechSection
+                    key={ts.techKey}
+                    techKey={ts.techKey}
+                    categories={ts.categories}
+                    globalIndex={idx}
+                    galaxyRef={galaxyRef}
+                    trailRef={trailRef}
+                    onCardHover={showTooltip}
+                    onCardLeave={scheduleHide}
+                  />
+                )
+              })}
             </div>
-          )
-        })}
+          </div>
+        ))}
       </div>
 
       {tooltip && (
