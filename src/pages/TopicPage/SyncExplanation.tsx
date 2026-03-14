@@ -95,7 +95,6 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
                 <StepBlock
                   key={step.heading}
                   step={step}
-                  index={i}
                   active={ctrl.step === i}
                   onActivate={() => ctrl.goTo(i)}
                   color={topic.color}
@@ -109,9 +108,8 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
   )
 }
 
-function StepBlock({ step, index, active, onActivate, color }: {
+function StepBlock({ step, active, onActivate, color }: {
   step: ExplanationStep
-  index: number
   active: boolean
   onActivate: () => void
   color: string
@@ -123,8 +121,6 @@ function StepBlock({ step, index, active, onActivate, color }: {
     if (inView && !active) onActivate()
   }, [inView]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const stepLabel = `STEP ${String(index + 1).padStart(2, '0')}`
-
   return (
     <motion.div
       ref={ref}
@@ -133,34 +129,35 @@ function StepBlock({ step, index, active, onActivate, color }: {
       onClick={!active ? onActivate : undefined}
       style={{
         borderRadius: 12,
-        border: `1px solid ${active ? color + '40' : 'var(--border)'}`,
-        background: 'var(--surface)',
+        border: `1px solid ${active ? color + '45' : 'var(--border)'}`,
+        overflow: 'hidden',
         cursor: active ? 'default' : 'pointer',
         boxShadow: active ? `0 0 24px ${color}10` : 'none',
         transition: 'border-color 0.3s, box-shadow 0.3s',
       }}
     >
-      <div style={{ padding: '18px 22px' }}>
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10,
-        }}>
-          <span style={{
-            fontSize: 10, fontWeight: 800, letterSpacing: '0.1em',
-            fontFamily: 'var(--font-mono)', color,
-            opacity: active ? 1 : 0.7, transition: 'opacity 0.3s',
-          }}>
-            {stepLabel}
+      {/* Header band */}
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 12,
+        padding: '14px 18px',
+        background: active
+          ? `linear-gradient(135deg, ${color}22 0%, ${color}08 100%)`
+          : `linear-gradient(135deg, ${color}0d 0%, ${color}04 100%)`,
+        borderBottom: `1px solid ${active ? color + '20' : 'var(--border)'}`,
+        transition: 'background 0.3s, border-color 0.3s',
+      }}>
+        {step.icon && (
+          <span style={{ fontSize: 22, lineHeight: 1, flexShrink: 0, filter: active ? 'none' : 'grayscale(0.4)', transition: 'filter 0.3s' }}>
+            {step.icon}
           </span>
-          {step.icon && (
-            <span style={{ fontSize: 16, lineHeight: 1, filter: active ? 'none' : 'grayscale(0.5)', transition: 'filter 0.3s' }}>
-              {step.icon}
-            </span>
-          )}
-        </div>
-        <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--text)', margin: '0 0 8px', lineHeight: 1.3 }}>
+        )}
+        <h3 style={{ fontSize: 15, fontWeight: 700, color: 'var(--text)', margin: 0, lineHeight: 1.25 }}>
           {step.heading}
         </h3>
-        <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.75, margin: 0, marginBottom: step.codeExample ? 12 : 0 }}>
+      </div>
+      {/* Body */}
+      <div style={{ padding: '14px 18px', background: 'var(--surface)' }}>
+        <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.75, margin: 0, marginBottom: step.codeExample ? 12 : 0 }}>
           {step.text}
         </p>
         {step.codeExample && (
