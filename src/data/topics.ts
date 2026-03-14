@@ -10,6 +10,7 @@ export const TOPICS: Topic[] = [
     color: '#4ade80',
     estimatedMinutes: 8,
     animationComponent: 'ElementsViz',
+    bannerComponent: 'ElementsBanner',
     playgroundType: 'visual-controls',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -91,6 +92,7 @@ export const TOPICS: Topic[] = [
     color: '#4ade80',
     estimatedMinutes: 8,
     animationComponent: 'TextHeadingsViz',
+    bannerComponent: 'TextHeadingsBanner',
     playgroundType: 'visual-controls',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -171,6 +173,7 @@ export const TOPICS: Topic[] = [
     color: '#4ade80',
     estimatedMinutes: 8,
     animationComponent: 'LinksImagesViz',
+    bannerComponent: 'LinksImagesBanner',
     playgroundType: 'visual-controls',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -251,6 +254,7 @@ export const TOPICS: Topic[] = [
     color: '#4ade80',
     estimatedMinutes: 8,
     animationComponent: 'ListsViz',
+    bannerComponent: 'ListsBanner',
     playgroundType: 'visual-controls',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -326,6 +330,7 @@ export const TOPICS: Topic[] = [
     color: '#4ade80',
     estimatedMinutes: 12,
     animationComponent: 'DomTreeBuilder',
+    bannerComponent: 'DomTreeBanner',
     playgroundType: 'visual-controls',
     sections: [
       {
@@ -398,6 +403,7 @@ export const TOPICS: Topic[] = [
     color: '#4ade80',
     estimatedMinutes: 8,
     animationComponent: 'SemanticViz',
+    bannerComponent: 'SemanticBanner',
     playgroundType: 'none',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -479,6 +485,7 @@ export const TOPICS: Topic[] = [
     color: '#4ade80',
     estimatedMinutes: 10,
     animationComponent: 'FormsViz',
+    bannerComponent: 'FormsBanner',
     playgroundType: 'none',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -581,6 +588,7 @@ export const TOPICS: Topic[] = [
     color: '#fb923c',
     estimatedMinutes: 12,
     animationComponent: 'AccessibilityViz',
+    bannerComponent: 'AccessibilityBanner',
     playgroundType: 'none',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -661,6 +669,7 @@ export const TOPICS: Topic[] = [
     color: '#4ade80',
     estimatedMinutes: 10,
     animationComponent: 'MediaEmbedsViz',
+    bannerComponent: 'MediaEmbedsBanner',
     playgroundType: 'visual-controls',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -741,6 +750,7 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 8,
     animationComponent: 'CSSBasicsViz',
+    bannerComponent: 'CSSBasicsBanner',
     playgroundType: 'css-live',
     defaultCSS: '.text {\n  color: #3b82f6;\n  font-size: 1.5rem;\n  font-weight: bold;\n}',
     previewHTML: '<p class="text">Hello, CSS!</p>',
@@ -821,6 +831,7 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 10,
     animationComponent: 'BoxModelViz',
+    bannerComponent: 'BoxModelBanner',
     playgroundType: 'css-live',
     defaultCSS: '.card {\n  padding: 24px;\n  margin: 16px auto;\n  max-width: 300px;\n  border: 3px solid #3b82f6;\n  border-radius: 12px;\n  background: #1e293b;\n  color: #e2e8f0;\n}',
     previewHTML: '<div class="card"><strong>Card Title</strong><p style="margin:8px 0 0;color:#94a3b8;font-size:13px">Card content goes here.</p></div>',
@@ -892,6 +903,7 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 15,
     animationComponent: 'FlexboxUseCasesViz',
+    bannerComponent: 'FlexboxBanner',
     playgroundType: 'css-live',
     defaultCSS: 'nav {\n  display: flex;\n  gap: 24px;\n  justify-content: center;\n  padding: 16px;\n  background: #1e293b;\n  border-radius: 8px;\n}\nnav a {\n  color: #e2e8f0;\n  text-decoration: none;\n  font-size: 14px;\n}',
     previewHTML: '<nav><a href="#">Home</a><a href="#">About</a><a href="#">Contact</a></nav>',
@@ -968,6 +980,7 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 12,
     animationComponent: 'GridAreasViz',
+    bannerComponent: 'GridBanner',
     playgroundType: 'css-live',
     defaultCSS: '.grid {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 12px;\n}\n.grid div {\n  padding: 20px;\n  background: #1e293b;\n  border-radius: 8px;\n  color: #94a3b8;\n  font-size: 13px;\n  text-align: center;\n}',
     previewHTML: '<div class="grid"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div></div>',
@@ -1043,6 +1056,7 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 10,
     animationComponent: 'SelectorsViz',
+    bannerComponent: 'SelectorsBanner',
     playgroundType: 'css-live',
     defaultCSS: 'p { color: #94a3b8; }\n.highlight { color: #f97316; font-weight: bold; }\na { color: #3b82f6; }\na:hover { color: #60a5fa; text-decoration: underline; }',
     previewHTML: '<p>Normal paragraph</p><p class="highlight">Selected paragraph</p><a href="#">Hover over this link</a>',
@@ -1142,6 +1156,7 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 10,
     animationComponent: 'ColorsUnitsViz',
+    bannerComponent: 'ColorsUnitsBanner',
     playgroundType: 'css-live',
     defaultCSS: '.box {\n  width: 10rem;\n  height: 10rem;\n  background: hsl(220, 80%, 60%);\n  border-radius: 50%;\n  margin: 0 auto;\n}',
     previewHTML: '<div class="box"></div>',
@@ -1226,6 +1241,7 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 10,
     animationComponent: 'TypographyViz',
+    bannerComponent: 'TypographyBanner',
     playgroundType: 'css-live',
     defaultCSS: 'h1 {\n  font-family: Georgia, serif;\n  font-size: 2rem;\n  font-weight: 700;\n  color: #f1f5f9;\n  letter-spacing: -0.02em;\n}\np {\n  font-size: 1rem;\n  line-height: 1.7;\n  color: #94a3b8;\n  max-width: 480px;\n}',
     previewHTML: '<article><h1>Article Title</h1><p>Body text goes here. Good typography makes reading comfortable and establishes visual hierarchy.</p></article>',
@@ -1306,6 +1322,7 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 15,
     animationComponent: 'BackgroundsViz',
+    bannerComponent: 'BackgroundsBanner',
     playgroundType: 'css-live',
     defaultCSS: '.hero {\n  background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);\n  padding: 60px 40px;\n  border-radius: 12px;\n  color: white;\n  text-align: center;\n}\n.hero h2 { margin: 0; font-size: 1.8rem; }\n.hero p  { margin: 8px 0 0; opacity: 0.8; }',
     previewHTML: '<div class="hero"><h2>Hero Section</h2><p>Gradient backgrounds set the mood.</p></div>',
@@ -1384,6 +1401,7 @@ export const TOPICS: Topic[] = [
     color: '#a78bfa',
     estimatedMinutes: 8,
     animationComponent: 'ShadowsViz',
+    bannerComponent: 'ShadowsBanner',
     playgroundType: 'css-live',
     defaultCSS: `.box {\n  width: 120px;\n  height: 80px;\n  background: #1e293b;\n  border-radius: 12px;\n  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);\n}`,
     previewHTML: `<div class="box"></div>`,
@@ -1466,6 +1484,7 @@ export const TOPICS: Topic[] = [
     color: '#34d399',
     estimatedMinutes: 8,
     animationComponent: 'OverflowViz',
+    bannerComponent: 'OverflowBanner',
     playgroundType: 'css-live',
     defaultCSS: `.box {\n  width: 200px;\n  height: 80px;\n  border: 2px solid #34d399;\n  border-radius: 8px;\n  padding: 10px;\n  overflow: hidden;\n}`,
     previewHTML: `<div class="box">The quick brown fox jumps over the lazy dog. This text is intentionally long to show overflow behavior.</div>`,
@@ -1539,6 +1558,7 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 12,
     animationComponent: 'DisplayPositioningViz',
+    bannerComponent: 'DisplayPositioningBanner',
     playgroundType: 'css-live',
     defaultCSS: '.container {\n  display: flex;\n  gap: 16px;\n  padding: 16px;\n}\n.box {\n  position: relative;\n  padding: 20px 24px;\n  background: #1e293b;\n  border-radius: 8px;\n  color: #94a3b8;\n}\n.badge {\n  position: absolute;\n  top: -8px;\n  right: -8px;\n  background: #3b82f6;\n  color: white;\n  font-size: 11px;\n  padding: 2px 6px;\n  border-radius: 99px;\n}',
     previewHTML: '<div class="container"><div class="box">Block A</div><div class="box">Block B<span class="badge">new</span></div></div>',
@@ -1622,6 +1642,7 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 15,
     animationComponent: 'ResponsiveViz',
+    bannerComponent: 'ResponsiveBanner',
     playgroundType: 'css-live',
     defaultCSS: '.grid {\n  display: grid;\n  grid-template-columns: 1fr;\n  gap: 16px;\n}\n@media (min-width: 600px) {\n  .grid { grid-template-columns: 1fr 1fr; }\n}\n@media (min-width: 900px) {\n  .grid { grid-template-columns: repeat(3, 1fr); }\n}\n.card {\n  padding: 20px;\n  background: #1e293b;\n  border-radius: 8px;\n  color: #94a3b8;\n}',
     previewHTML: '<div class="grid"><div class="card">Card 1</div><div class="card">Card 2</div><div class="card">Card 3</div></div>',
@@ -1698,6 +1719,7 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 8,
     animationComponent: 'ImagesViz',
+    bannerComponent: 'ImagesBanner',
     playgroundType: 'css-live',
     defaultCSS: '.avatar {\n  width: 120px;\n  height: 120px;\n  border-radius: 50%;\n  object-fit: cover;\n  border: 3px solid #3b82f6;\n  display: block;\n  margin: 0 auto;\n}',
     previewHTML: '<img class="avatar" src="https://picsum.photos/200/200" alt="avatar">',
@@ -1775,6 +1797,7 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 10,
     animationComponent: 'CustomPropertiesViz',
+    bannerComponent: 'CustomPropertiesBanner',
     playgroundType: 'css-live',
     defaultCSS: ':root {\n  --color-primary: #3b82f6;\n  --radius: 8px;\n}\n\n.btn {\n  background: var(--color-primary);\n  border-radius: var(--radius);\n  padding: 10px 20px;\n  color: white;\n  border: none;\n  cursor: pointer;\n}\n\n.card {\n  border: 2px solid var(--color-primary);\n  border-radius: var(--radius);\n  padding: 16px;\n}',
     previewHTML: '<div class="card"><p style="margin:0 0 12px;color:#94a3b8">A card with border</p><button class="btn">Click me</button></div>',
@@ -1817,6 +1840,7 @@ export const TOPICS: Topic[] = [
     color: '#818cf8',
     estimatedMinutes: 10,
     animationComponent: 'ThemingViz',
+    bannerComponent: 'ThemingBanner',
     playgroundType: 'css-live',
     defaultCSS: `:root {\n  --bg: #ffffff;\n  --text: #1e293b;\n  --primary: #3b82f6;\n  --surface: #f1f5f9;\n}\n\n.dark {\n  --bg: #0f172a;\n  --text: #e2e8f0;\n  --primary: #818cf8;\n  --surface: #1e293b;\n}\n\nbody {\n  background: var(--bg);\n  color: var(--text);\n}\n\n.card {\n  background: var(--surface);\n  padding: 16px;\n  border-radius: 8px;\n}\n\n.btn {\n  background: var(--primary);\n  color: white;\n  padding: 8px 16px;\n  border-radius: 6px;\n  border: none;\n}`,
     previewHTML: `<div class="card">\n  <h3>Hello World</h3>\n  <p>Themed with CSS variables</p>\n  <button class="btn">Click me</button>\n</div>`,
@@ -1890,6 +1914,7 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 10,
     animationComponent: 'TransformsViz',
+    bannerComponent: 'TransformsBanner',
     playgroundType: 'css-live',
     defaultCSS: '.box {\n  width: 100px;\n  height: 100px;\n  background: #3b82f6;\n  border-radius: 8px;\n  margin: 40px auto;\n  transform: rotate(15deg) scale(1.1);\n  transition: transform 0.3s ease;\n}\n\n.box:hover {\n  transform: rotate(0deg) scale(1.2);\n}',
     previewHTML: '<div class="box"></div>',
@@ -1933,6 +1958,7 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 10,
     animationComponent: 'TransitionsViz',
+    bannerComponent: 'TransitionsBanner',
     playgroundType: 'css-live',
     defaultCSS: '.btn {\n  background: #3b82f6;\n  color: white;\n  padding: 12px 24px;\n  border: none;\n  border-radius: 8px;\n  font-size: 14px;\n  cursor: pointer;\n  transition: background 0.3s ease, transform 0.2s ease;\n}\n\n.btn:hover {\n  background: #1d4ed8;\n  transform: translateY(-2px);\n}',
     previewHTML: '<button class="btn">Hover me</button>',
@@ -1975,6 +2001,7 @@ export const TOPICS: Topic[] = [
     color: '#5b9cf5',
     estimatedMinutes: 12,
     animationComponent: 'AnimationsViz',
+    bannerComponent: 'AnimationsBanner',
     playgroundType: 'css-live',
     defaultCSS: '.ball {\n  width: 60px;\n  height: 60px;\n  border-radius: 50%;\n  background: #3b82f6;\n  margin: 60px auto 0;\n  animation: bounce 1s ease-in-out infinite alternate;\n}\n\n@keyframes bounce {\n  from { transform: translateY(0); }\n  to   { transform: translateY(-80px); }\n}',
     previewHTML: '<div class="ball"></div>',
@@ -2018,6 +2045,7 @@ export const TOPICS: Topic[] = [
     color: '#fbbf24',
     estimatedMinutes: 14,
     animationComponent: 'EventLoopViz',
+    bannerComponent: 'EventLoopBanner',
     playgroundType: 'none',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -2096,6 +2124,7 @@ export const TOPICS: Topic[] = [
     color: '#fbbf24',
     estimatedMinutes: 10,
     animationComponent: 'ClosureViz',
+    bannerComponent: 'ClosureBanner',
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -2168,6 +2197,7 @@ export const TOPICS: Topic[] = [
     color: '#fbbf24',
     estimatedMinutes: 8,
     animationComponent: 'VariablesViz',
+    bannerComponent: 'VariablesBanner',
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -2247,6 +2277,7 @@ export const TOPICS: Topic[] = [
     color: '#fbbf24',
     estimatedMinutes: 12,
     animationComponent: 'ArraysViz',
+    bannerComponent: 'ArraysBanner',
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -2329,6 +2360,7 @@ export const TOPICS: Topic[] = [
     color: '#fb923c',
     estimatedMinutes: 14,
     animationComponent: 'AnimatedFlow',
+    bannerComponent: 'AnimatedFlowBanner',
     playgroundType: 'none',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -2396,6 +2428,7 @@ export const TOPICS: Topic[] = [
     color: '#fb923c',
     estimatedMinutes: 10,
     animationComponent: 'RestViz',
+    bannerComponent: 'RestBanner',
     playgroundType: 'none',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -2474,6 +2507,7 @@ export const TOPICS: Topic[] = [
     color: '#fb923c',
     estimatedMinutes: 8,
     animationComponent: 'StatusCodesViz',
+    bannerComponent: 'StatusCodesBanner',
     playgroundType: 'none',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -2551,6 +2585,7 @@ export const TOPICS: Topic[] = [
     color: '#60a5fa',
     estimatedMinutes: 12,
     animationComponent: 'QueriesViz',
+    bannerComponent: 'QueriesBanner',
     playgroundType: 'none',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -2629,6 +2664,7 @@ export const TOPICS: Topic[] = [
     color: '#60a5fa',
     estimatedMinutes: 14,
     animationComponent: 'JoinsViz',
+    bannerComponent: 'JoinsBanner',
     playgroundType: 'none',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -2707,6 +2743,7 @@ export const TOPICS: Topic[] = [
     color: '#60a5fa',
     estimatedMinutes: 12,
     animationComponent: 'CrudViz',
+    bannerComponent: 'CrudBanner',
     playgroundType: 'none',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -2787,6 +2824,7 @@ export const TOPICS: Topic[] = [
     color: '#a78bfa',
     estimatedMinutes: 12,
     animationComponent: 'TypeScriptViz',
+    bannerComponent: 'TypeScriptBanner',
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -2867,6 +2905,7 @@ export const TOPICS: Topic[] = [
     color: '#34d399',
     estimatedMinutes: 12,
     animationComponent: 'FetchViz',
+    bannerComponent: 'FetchBanner',
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -2945,6 +2984,7 @@ export const TOPICS: Topic[] = [
     color: '#34d399',
     estimatedMinutes: 10,
     animationComponent: 'DomEventsViz',
+    bannerComponent: 'DomEventsBanner',
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -3023,6 +3063,7 @@ export const TOPICS: Topic[] = [
     color: '#34d399',
     estimatedMinutes: 8,
     animationComponent: 'StorageViz',
+    bannerComponent: 'StorageBanner',
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -3102,6 +3143,7 @@ export const TOPICS: Topic[] = [
     color: '#f472b6',
     estimatedMinutes: 12,
     animationComponent: 'ComponentsViz',
+    bannerComponent: 'ComponentsBanner',
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -3181,6 +3223,7 @@ export const TOPICS: Topic[] = [
     color: '#f472b6',
     estimatedMinutes: 14,
     animationComponent: 'StateViz',
+    bannerComponent: 'StateBanner',
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -3259,6 +3302,7 @@ export const TOPICS: Topic[] = [
     color: '#f472b6',
     estimatedMinutes: 12,
     animationComponent: 'UseEffectViz',
+    bannerComponent: 'UseEffectBanner',
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -3337,6 +3381,7 @@ export const TOPICS: Topic[] = [
     color: '#a78bfa',
     estimatedMinutes: 10,
     animationComponent: 'InterfacesViz',
+    bannerComponent: 'InterfacesBanner',
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -3417,6 +3462,7 @@ export const TOPICS: Topic[] = [
     color: '#a78bfa',
     estimatedMinutes: 12,
     animationComponent: 'GenericsViz',
+    bannerComponent: 'GenericsBanner',
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -3496,6 +3542,7 @@ export const TOPICS: Topic[] = [
     color: '#f472b6',
     estimatedMinutes: 12,
     animationComponent: 'RouterViz',
+    bannerComponent: 'RouterBanner',
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -3578,6 +3625,7 @@ export const TOPICS: Topic[] = [
     color: '#2dd4bf',
     estimatedMinutes: 7,
     animationComponent: 'GitIntroViz',
+    bannerComponent: 'GitIntroBanner',
     playgroundType: 'none',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -3648,6 +3696,7 @@ export const TOPICS: Topic[] = [
     color: '#2dd4bf',
     estimatedMinutes: 8,
     animationComponent: 'GitWorkflowViz',
+    bannerComponent: 'GitWorkflowBanner',
     playgroundType: 'none',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -3722,6 +3771,7 @@ export const TOPICS: Topic[] = [
     color: '#2dd4bf',
     estimatedMinutes: 5,
     animationComponent: 'GitIgnoreViz',
+    bannerComponent: 'GitIgnoreBanner',
     playgroundType: 'none',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -3788,6 +3838,7 @@ export const TOPICS: Topic[] = [
     color: '#2dd4bf',
     estimatedMinutes: 6,
     animationComponent: 'GitHubViz',
+    bannerComponent: 'GitHubBanner',
     playgroundType: 'none',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -3848,6 +3899,7 @@ export const TOPICS: Topic[] = [
     color: '#5eead4',
     estimatedMinutes: 8,
     animationComponent: 'GitCollabSetupViz',
+    bannerComponent: 'GitCollabSetupBanner',
     playgroundType: 'none',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -3914,6 +3966,7 @@ export const TOPICS: Topic[] = [
     color: '#5eead4',
     estimatedMinutes: 7,
     animationComponent: 'GitConflictViz',
+    bannerComponent: 'GitConflictBanner',
     playgroundType: 'none',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -3977,6 +4030,7 @@ export const TOPICS: Topic[] = [
     color: '#5eead4',
     estimatedMinutes: 8,
     animationComponent: 'GitUndoViz',
+    bannerComponent: 'GitUndoBanner',
     playgroundType: 'none',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
