@@ -24,10 +24,17 @@ export default function TopicPage() {
     () => topic ? getAnimationComponent(topic.animationComponent) : null
   )
 
+  const [animLoading, setAnimLoading] = useState<boolean>(() => {
+    // True when component is NOT yet in cache (null = not loaded yet)
+    return topic ? getAnimationComponent(topic.animationComponent) === null : false
+  })
+
   useEffect(() => {
     if (!topic) return
+    setAnimLoading(getAnimationComponent(topic.animationComponent) === null)
     preloadAnimation(topic.animationComponent).then(() => {
       setAnimComp(() => getAnimationComponent(topic.animationComponent))
+      setAnimLoading(false)
     })
   }, [topic?.animationComponent])
 
@@ -43,7 +50,35 @@ export default function TopicPage() {
   }, [topic?.bannerComponent])
 
   if (!topic) {
-    return <div style={{ padding: 40, color: 'var(--text-muted)' }}>Topic not found.</div>
+    return (
+      <PageWrapper>
+        <div style={{
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          minHeight: 'calc(100vh - 60px)', gap: 16, textAlign: 'center', padding: 40,
+        }}>
+          <div style={{ fontSize: 72, fontWeight: 900, fontFamily: 'var(--font-mono)', color: 'var(--text-faint)', lineHeight: 1 }}>
+            404
+          </div>
+          <h1 style={{ fontSize: 24, fontWeight: 700, color: 'var(--text)', margin: 0 }}>
+            Topic not found
+          </h1>
+          <p style={{ fontSize: 15, color: 'var(--text-muted)', margin: 0 }}>
+            We couldn't find the topic you're looking for.
+          </p>
+          <button
+            onClick={() => navigate('/')}
+            style={{
+              marginTop: 8, padding: '9px 20px',
+              borderRadius: 8, border: '1px solid var(--border)',
+              background: 'var(--surface)', color: 'var(--text)',
+              fontSize: 14, cursor: 'pointer', fontFamily: 'var(--font-mono)',
+            }}
+          >
+            ← Back to Overview
+          </button>
+        </div>
+      </PageWrapper>
+    )
   }
 
   const category = getCategoryForTopic(topic.id)
@@ -152,7 +187,7 @@ export default function TopicPage() {
 
           {/* Phase 2: Explanation */}
           <div id="explanation" style={{ marginTop: 0 }}>
-            <SyncExplanation topic={topic} AnimComp={AnimComp} />
+            <SyncExplanation topic={topic} AnimComp={AnimComp} animLoading={animLoading} />
           </div>
 
           {/* Key Takeaways */}

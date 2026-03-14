@@ -7,9 +7,10 @@ import { useAnimationStep } from '@/hooks/useAnimationStep'
 interface Props {
   topic: Topic
   AnimComp: ComponentType<{ step: number; compact?: boolean }> | null
+  animLoading?: boolean
 }
 
-export default function SyncExplanation({ topic, AnimComp }: Props) {
+export default function SyncExplanation({ topic, AnimComp, animLoading }: Props) {
   const explanationSection = topic.sections.find(s => s.type === 'explanation')
   const steps = explanationSection?.steps ?? []
   const ctrl = useAnimationStep({ totalSteps: Math.max(steps.length, 1), autoPlay: false })
@@ -17,76 +18,85 @@ export default function SyncExplanation({ topic, AnimComp }: Props) {
   if (steps.length === 0) return null
 
   return (
-    <section style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px 80px' }}>
-      <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 40, color: 'var(--text)' }}>
-        How it works
-      </h2>
+    <>
+      <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+      <section style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px 80px' }}>
+        <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 40, color: 'var(--text)' }}>
+          How it works
+        </h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(360px, 55fr) minmax(0, 45fr)', gap: 40, alignItems: 'start' }}>
-        {/* Left: Sticky animation */}
-        <div style={{ position: 'sticky', top: 80 }}>
-          {/* Animation panel — click to advance */}
-          <div
-            onClick={ctrl.next}
-            style={{
-              background: 'var(--surface)',
-              border: '1px solid var(--border)',
-              borderRadius: 'var(--radius)',
-              padding: '24px',
-              height: 460,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: ctrl.step < steps.length - 1 ? 'pointer' : 'default',
-              userSelect: 'none',
-              overflow: 'hidden',
-            }}
-          >
-            {AnimComp
-              ? <AnimComp step={ctrl.step} />
-              : <span style={{ color: 'var(--text-muted)' }}>Animation</span>
-            }
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(360px, 55fr) minmax(0, 45fr)', gap: 40, alignItems: 'start' }}>
+          {/* Left: Sticky animation */}
+          <div style={{ position: 'sticky', top: 80 }}>
+            {/* Animation panel — click to advance */}
+            <div
+              onClick={ctrl.next}
+              style={{
+                background: 'var(--surface)',
+                border: '1px solid var(--border)',
+                borderRadius: 'var(--radius)',
+                padding: '24px',
+                height: 460,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: ctrl.step < steps.length - 1 ? 'pointer' : 'default',
+                userSelect: 'none',
+                overflow: 'hidden',
+              }}
+            >
+              {AnimComp ? (
+                <AnimComp step={ctrl.step} />
+              ) : animLoading ? (
+                <div style={{
+                  width: 60, height: 60, borderRadius: '50%',
+                  border: `2px solid ${topic.color}20`,
+                  borderTopColor: topic.color,
+                  animation: 'spin 1s linear infinite',
+                }} />
+              ) : null}
+            </div>
+
+            {/* Step dots */}
+            <div style={{ display: 'flex', gap: 6, alignItems: 'center', justifyContent: 'center', marginTop: 14 }}>
+              {steps.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => ctrl.goTo(i)}
+                  title={`Step ${i + 1}`}
+                  style={{
+                    width: ctrl.step === i ? 24 : 8,
+                    height: 8,
+                    borderRadius: 4,
+                    background: ctrl.step === i ? topic.color : 'var(--border)',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: 0,
+                    transition: 'all 0.25s',
+                  }}
+                />
+              ))}
+            </div>
           </div>
 
-          {/* Step dots */}
-          <div style={{ display: 'flex', gap: 6, alignItems: 'center', justifyContent: 'center', marginTop: 14 }}>
-            {steps.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => ctrl.goTo(i)}
-                title={`Step ${i + 1}`}
-                style={{
-                  width: ctrl.step === i ? 24 : 8,
-                  height: 8,
-                  borderRadius: 4,
-                  background: ctrl.step === i ? topic.color : 'var(--border)',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: 0,
-                  transition: 'all 0.25s',
-                }}
-              />
-            ))}
+          {/* Right: Scrollable steps */}
+          <div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+              {steps.map((step, i) => (
+                <StepBlock
+                  key={step.heading}
+                  step={step}
+                  index={i}
+                  active={ctrl.step === i}
+                  onActivate={() => ctrl.goTo(i)}
+                  color={topic.color}
+                />
+              ))}
+            </div>
           </div>
         </div>
-
-        {/* Right: Scrollable steps */}
-        <div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
-            {steps.map((step, i) => (
-              <StepBlock
-                key={step.heading}
-                step={step}
-                index={i}
-                active={ctrl.step === i}
-                onActivate={() => ctrl.goTo(i)}
-                color={topic.color}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   )
 }
 
