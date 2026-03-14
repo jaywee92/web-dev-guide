@@ -25,7 +25,7 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
           How it works
         </h2>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(360px, 55fr) minmax(0, 45fr)', gap: 40, alignItems: 'start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 44fr) minmax(0, 56fr)', gap: 40, alignItems: 'start' }}>
           {/* Left: Sticky animation */}
           <div style={{ position: 'sticky', top: 80 }}>
             {/* Animation panel — click to advance */}
@@ -90,7 +90,7 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
 
           {/* Right: Scrollable steps */}
           <div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {steps.map((step, i) => (
                 <StepBlock
                   key={step.heading}
@@ -128,62 +128,36 @@ function StepBlock({ step, index, active, onActivate, color }: {
   return (
     <motion.div
       ref={ref}
-      animate={{ opacity: active ? 1 : 0.38, y: active ? 0 : 6 }}
+      animate={{ opacity: active ? 1 : 0.38, y: active ? 0 : 5 }}
       transition={{ duration: 0.3 }}
       onClick={!active ? onActivate : undefined}
       style={{
-        borderRadius: 16, overflow: 'hidden',
+        borderRadius: 12,
         border: `1px solid ${active ? color + '40' : 'var(--border)'}`,
+        background: 'var(--surface)',
         cursor: active ? 'default' : 'pointer',
-        boxShadow: active ? `0 0 28px ${color}12` : 'none',
-        transition: 'border-color 0.3s, box-shadow 0.3s, opacity 0.3s',
+        boxShadow: active ? `0 0 24px ${color}10` : 'none',
+        transition: 'border-color 0.3s, box-shadow 0.3s',
       }}
     >
-      {/* Visual header — gradient background + icon */}
-      <div style={{
-        height: 110,
-        background: `linear-gradient(135deg, ${color}28, ${color}0a)`,
-        borderBottom: `1px solid ${active ? color + '30' : 'var(--border)'}`,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        position: 'relative', overflow: 'hidden',
-        transition: 'border-color 0.3s',
-      }}>
-        {/* Floating accent circles */}
+      <div style={{ padding: '18px 22px' }}>
         <div style={{
-          position: 'absolute', width: 80, height: 80, borderRadius: '50%',
-          background: color + '12', top: -20, left: -20,
-        }} />
-        <div style={{
-          position: 'absolute', width: 50, height: 50, borderRadius: '50%',
-          background: color + '0d', bottom: -10, right: 24,
-        }} />
-        {/* Icon or step number */}
-        {step.icon
-          ? <span style={{ fontSize: 44, lineHeight: 1, position: 'relative', zIndex: 1, filter: active ? 'none' : 'grayscale(0.4)' }}>{step.icon}</span>
-          : (
-            <span style={{
-              position: 'relative', zIndex: 1,
-              fontSize: 36, fontWeight: 900, fontFamily: 'var(--font-mono)',
-              color: active ? color : color + '70',
-              letterSpacing: '-0.02em',
-              transition: 'color 0.3s',
-            }}>
-              {String(index + 1).padStart(2, '0')}
-            </span>
-          )
-        }
-      </div>
-
-      {/* Card body */}
-      <div style={{ padding: '16px 20px', background: 'var(--surface)' }}>
-        <div style={{
-          fontSize: 10, fontWeight: 800, letterSpacing: '0.1em',
-          fontFamily: 'var(--font-mono)', color,
-          marginBottom: 6, opacity: active ? 1 : 0.7,
+          display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10,
         }}>
-          {stepLabel}
+          <span style={{
+            fontSize: 10, fontWeight: 800, letterSpacing: '0.1em',
+            fontFamily: 'var(--font-mono)', color,
+            opacity: active ? 1 : 0.7, transition: 'opacity 0.3s',
+          }}>
+            {stepLabel}
+          </span>
+          {step.icon && (
+            <span style={{ fontSize: 16, lineHeight: 1, filter: active ? 'none' : 'grayscale(0.5)', transition: 'filter 0.3s' }}>
+              {step.icon}
+            </span>
+          )}
         </div>
-        <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--text)', margin: '0 0 10px', lineHeight: 1.3 }}>
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--text)', margin: '0 0 8px', lineHeight: 1.3 }}>
           {step.heading}
         </h3>
         <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.75, margin: 0, marginBottom: step.codeExample ? 12 : 0 }}>
