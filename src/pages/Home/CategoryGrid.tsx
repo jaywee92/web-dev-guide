@@ -183,7 +183,7 @@ function ResourcesSection({ globalIndex, galaxyRef, trailRef }: {
   const color = '#a78bfa'
   const { votes, loading } = useResourceVotes()
 
-  const allResources = RESOURCE_GROUPS.flatMap(g => g.resources)
+  const allResources = RESOURCE_GROUPS.flatMap(g => g.resources.map(r => ({ ...r, groupLabel: g.label, groupColor: g.color })))
   const top5 = [...allResources]
     .sort((a, b) => (votes[b.id] ?? 0) - (votes[a.id] ?? 0))
     .slice(0, 5)
@@ -240,18 +240,18 @@ function ResourcesSection({ globalIndex, galaxyRef, trailRef }: {
           <div
             key={r.id}
             className="subcat"
-            style={{ '--sc': r.color, display: 'flex', flexDirection: 'column', height: 120 } as CSSProperties}
+            style={{ '--sc': r.color, display: 'flex', flexDirection: 'column' } as CSSProperties}
           >
             <div className="subcat-top">
               <Globe size={16} color={r.color} />
               <span className="subcat-label">{r.name}</span>
               <span className="subcat-cnt">▲ {votes[r.id] ?? 0}</span>
             </div>
-            <div className="subcat-topics" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 4 }}>
-              <span style={{
-                display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
-                overflow: 'hidden', lineHeight: 1.45, fontSize: 11, color: '#8ab4d4',
-              }}>
+            <div className="subcat-topics" style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: r.groupColor, letterSpacing: '0.06em' }}>
+                {r.groupLabel}
+              </span>
+              <span style={{ lineHeight: 1.45, fontSize: 11, color: '#8ab4d4' }}>
                 {r.description}
               </span>
               <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: '#4a7090' }}>
