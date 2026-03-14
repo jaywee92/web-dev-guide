@@ -1,13 +1,30 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, X, Clock, ArrowRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useAppStore } from '@/store/useAppStore'
 import { useSearch } from '@/hooks/useSearch'
+import { CATEGORIES } from '@/data/categories'
+
+function highlight(text: string, query: string): React.ReactNode {
+  if (!query.trim()) return text
+  const idx = text.toLowerCase().indexOf(query.toLowerCase())
+  if (idx === -1) return text
+  return (
+    <>
+      {text.slice(0, idx)}
+      <mark style={{ background: 'none', color: 'inherit', fontWeight: 700 }}>
+        {text.slice(idx, idx + query.length)}
+      </mark>
+      {text.slice(idx + query.length)}
+    </>
+  )
+}
 
 export default function SearchPalette() {
   const { searchOpen, setSearchOpen } = useAppStore()
   const [query, setQuery] = useState('')
+  const [activeIdx, setActiveIdx] = useState(-1)
   const results = useSearch(query)
   const navigate = useNavigate()
   const inputRef = useRef<HTMLInputElement>(null)
@@ -20,15 +37,37 @@ export default function SearchPalette() {
   }, [searchOpen])
 
   useEffect(() => {
+    setActiveIdx(-1)
+  }, [query])
+
+  useEffect(() => {
     const h = (e: KeyboardEvent) => { if (e.key === 'Escape') setSearchOpen(false) }
     window.addEventListener('keydown', h)
     return () => window.removeEventListener('keydown', h)
   }, [setSearchOpen])
 
-  const go = (topicId: string) => {
+  const go = useCallback((topicId: string) => {
     navigate(`/topic/${topicId}`)
     setSearchOpen(false)
-  }
+  }, [navigate, setSearchOpen])
+
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => {
+      if (!searchOpen) return
+      if (e.key === 'ArrowDown') {
+        e.preventDefault()
+        setActiveIdx(i => Math.min(i + 1, results.length - 1))
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault()
+        setActiveIdx(i => Math.max(i - 1, 0))
+      } else if (e.key === 'Enter' && activeIdx >= 0) {
+        e.preventDefault()
+        go(results[activeIdx].id)
+      }
+    }
+    window.addEventListener('keydown', h)
+    return () => window.removeEventListener('keydown', h)
+  }, [searchOpen, results, activeIdx, go])
 
   return (
     <AnimatePresence>
@@ -73,24 +112,46 @@ export default function SearchPalette() {
             {/* Results */}
             {results.length > 0 ? (
               <div style={{ padding: 8 }}>
-                {results.map(topic => (
-                  <button
-                    key={topic.id}
-                    onClick={() => go(topic.id)}
-                    className="w-full text-left flex items-center gap-3 px-3 py-3 rounded-lg"
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', borderRadius: 8, width: '100%' }}
-                    onMouseEnter={e => (e.currentTarget.style.background = 'var(--surface-bright)')}
-                    onMouseLeave={e => (e.currentTarget.style.background = 'none')}
-                  >
-                    <div style={{ flex: 1, textAlign: 'left' }}>
-                      <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', marginBottom: 2 }}>
-                        {topic.title}
+                {results.map((topic, i) => {
+                  const cat = CATEGORIES.find(c => c.id === topic.category)
+                  return (
+                    <button
+                      key={topic.id}
+                      onClick={() => go(topic.id)}
+                      className="w-full text-left flex items-center gap-3 px-3 py-3 rounded-lg"
+                      style={{
+                        background: activeIdx === i ? 'var(--surface-bright)' : 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        borderRadius: 8,
+                        width: '100%',
+                        transition: 'background 150ms ease',
+                      }}
+                      onMouseEnter={() => setActiveIdx(i)}
+                    >
+                      <div style={{ flex: 1, textAlign: 'left' }}>
+                        {cat && (
+                          <div
+                            style={{
+                              fontSize: 10,
+                              fontFamily: 'var(--font-mono)',
+                              color: cat.color,
+                              marginBottom: 3,
+                              opacity: 0.8,
+                            }}
+                          >
+                            {cat.title}
+                          </div>
+                        )}
+                        <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', marginBottom: 2 }}>
+                          {highlight(topic.title, query)}
+                        </div>
+                        <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{topic.description}</div>
                       </div>
-                      <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{topic.description}</div>
-                    </div>
-                    <ArrowRight size={14} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
-                  </button>
-                ))}
+                      <ArrowRight size={14} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
+                    </button>
+                  )
+                })}
               </div>
             ) : query ? (
               <div style={{ padding: 32, textAlign: 'center', color: 'var(--text-muted)', fontSize: 14 }}>
