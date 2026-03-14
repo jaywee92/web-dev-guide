@@ -2039,6 +2039,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'js-event-loop',
+    nextTopicId: 'js-closures',
     title: 'The Event Loop',
     description: 'How JavaScript handles async code with a single thread',
     category: 'javascript',
@@ -2118,6 +2119,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'js-closures',
+    nextTopicId: 'js-variables',
     title: 'Closures',
     description: 'Functions that remember the scope where they were created',
     category: 'javascript',
@@ -2191,6 +2193,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'js-variables',
+    nextTopicId: 'js-arrays',
     title: 'Variables & Data Types',
     description: 'var, let, const and the six primitive types in JavaScript',
     category: 'javascript',
@@ -2271,6 +2274,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'js-arrays',
+    nextTopicId: 'js-functions',
     title: 'Arrays & Objects',
     description: 'Ordered lists and key-value structures — the backbone of JS data',
     category: 'javascript',
@@ -2353,7 +2357,130 @@ export const TOPICS: Topic[] = [
     },
   },
   {
+    id: 'js-functions',
+    title: 'Functions & Scope',
+    description: 'How functions create scope, closures, and encapsulate reusable logic',
+    category: 'javascript',
+    color: '#fb923c',
+    estimatedMinutes: 10,
+    animationComponent: 'ClosureViz',
+    playgroundType: 'monaco',
+    nextTopicId: 'js-promises',
+    sections: [
+      { id: 'intro', type: 'intro', steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation',
+        steps: [
+          {
+            animationStep: 0,
+            heading: 'Function declarations vs expressions',
+            text: 'Functions can be declared with the function keyword or assigned as expressions. Declarations are hoisted; expressions are not.',
+            codeExample: '// Declaration — hoisted\nfunction greet(name: string) {\n  return `Hello, ${name}`\n}\n\n// Expression — not hoisted\nconst greet = (name: string) => `Hello, ${name}`',
+            language: 'javascript',
+          },
+          {
+            animationStep: 1,
+            heading: 'Scope and the scope chain',
+            text: 'Each function creates a new scope. Inner functions can access variables from outer scopes — this chain of scopes is called the scope chain.',
+            codeExample: 'const outer = "I am outer"\n\nfunction inner() {\n  console.log(outer) // accessible via scope chain\n}\n\ninner() // "I am outer"',
+            language: 'javascript',
+          },
+          {
+            animationStep: 2,
+            heading: 'Higher-order functions',
+            text: 'Functions are first-class values in JavaScript. A higher-order function takes a function as argument or returns one.',
+            codeExample: 'const double = (n: number) => n * 2\n\n// map is a higher-order function\nconst result = [1, 2, 3].map(double)\n// [2, 4, 6]',
+            language: 'javascript',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'js-promises',
+    title: 'Promises & Async/Await',
+    description: 'Handle asynchronous operations elegantly with Promises and async/await syntax',
+    category: 'javascript',
+    color: '#4ade80',
+    estimatedMinutes: 12,
+    animationComponent: 'EventLoopViz',
+    playgroundType: 'monaco',
+    nextTopicId: 'js-destructuring',
+    sections: [
+      { id: 'intro', type: 'intro', steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation',
+        steps: [
+          {
+            animationStep: 0,
+            heading: 'What is a Promise?',
+            text: 'A Promise represents a value that will be available in the future. It can be pending, fulfilled, or rejected.',
+            codeExample: 'const p = new Promise<string>((resolve, reject) => {\n  setTimeout(() => resolve("done!"), 1000)\n})\n\np.then(val => console.log(val)) // "done!" after 1s',
+            language: 'javascript',
+          },
+          {
+            animationStep: 1,
+            heading: 'Chaining with .then()',
+            text: 'Promises can be chained: each .then() receives the previous result and returns a new Promise.',
+            codeExample: 'fetch("/api/user")\n  .then(res => res.json())\n  .then(user => console.log(user.name))\n  .catch(err => console.error(err))',
+            language: 'javascript',
+          },
+          {
+            animationStep: 2,
+            heading: 'async/await syntax',
+            text: 'async/await is syntactic sugar over Promises. An async function always returns a Promise; await pauses execution until the Promise settles.',
+            codeExample: 'async function getUser(id: number) {\n  const res = await fetch(`/api/users/${id}`)\n  if (!res.ok) throw new Error("Not found")\n  return res.json()\n}\n\nconst user = await getUser(1)',
+            language: 'typescript',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'js-destructuring',
+    title: 'Destructuring & Spread',
+    description: 'Extract values from arrays and objects with concise destructuring syntax',
+    category: 'javascript',
+    color: '#f472b6',
+    estimatedMinutes: 8,
+    animationComponent: 'VariablesViz',
+    playgroundType: 'monaco',
+    sections: [
+      { id: 'intro', type: 'intro', steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation',
+        steps: [
+          {
+            animationStep: 0,
+            heading: 'Array destructuring',
+            text: 'Extract values from an array by position. Use _ or skip commas to skip elements.',
+            codeExample: 'const [first, second, , fourth] = [1, 2, 3, 4]\nconsole.log(first)  // 1\nconsole.log(fourth) // 4\n\n// With default values\nconst [a = 10, b = 20] = [5]\nconsole.log(a) // 5\nconsole.log(b) // 20',
+            language: 'javascript',
+          },
+          {
+            animationStep: 1,
+            heading: 'Object destructuring',
+            text: 'Extract properties from an object by name. You can rename while destructuring and set defaults.',
+            codeExample: 'const { name, age = 0, role: userRole } = { name: "Alice", role: "admin" }\nconsole.log(name)     // "Alice"\nconsole.log(age)      // 0 (default)\nconsole.log(userRole) // "admin"',
+            language: 'javascript',
+          },
+          {
+            animationStep: 2,
+            heading: 'Spread and rest',
+            text: 'The spread operator (...) expands iterables. Rest syntax collects remaining elements into an array.',
+            codeExample: '// Spread: copy/merge arrays and objects\nconst a = [1, 2, 3]\nconst b = [...a, 4, 5] // [1, 2, 3, 4, 5]\n\n// Rest: collect remaining args\nfunction sum(first: number, ...rest: number[]) {\n  return rest.reduce((acc, n) => acc + n, first)\n}',
+            language: 'typescript',
+          },
+        ],
+      },
+    ],
+  },
+  {
     id: 'http-request-cycle',
+    nextTopicId: 'http-rest',
     title: 'HTTP Request Cycle',
     description: 'What happens between typing a URL and seeing a webpage',
     category: 'http',
@@ -2422,6 +2549,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'http-rest',
+    nextTopicId: 'http-status',
     title: 'REST & HTTP Methods',
     description: 'GET, POST, PUT, DELETE — the verbs of the web',
     category: 'http',
@@ -2579,6 +2707,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'postgres-queries',
+    nextTopicId: 'postgres-joins',
     title: 'SQL Queries',
     description: 'SELECT, WHERE, ORDER BY — read data from PostgreSQL',
     category: 'postgresql',
@@ -2658,6 +2787,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'postgres-joins',
+    nextTopicId: 'postgres-crud',
     title: 'JOINs',
     description: 'Combine data from multiple tables with INNER and LEFT JOIN',
     category: 'postgresql',
@@ -2818,6 +2948,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'ts-basics',
+    nextTopicId: 'ts-interfaces',
     title: 'TypeScript Basics',
     description: 'Static types that catch errors before your code runs',
     category: 'typescript',
@@ -2899,6 +3030,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'webapi-fetch',
+    nextTopicId: 'webapi-events',
     title: 'Fetch API',
     description: 'Make HTTP requests from JavaScript with Promises and async/await',
     category: 'webapis',
@@ -2978,6 +3110,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'webapi-events',
+    nextTopicId: 'webapi-storage',
     title: 'DOM Events',
     description: 'Respond to user interactions with event listeners',
     category: 'webapis',
@@ -3137,6 +3270,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'react-components',
+    nextTopicId: 'react-state',
     title: 'Components & JSX',
     description: 'Build UIs from reusable, composable function components',
     category: 'react',
@@ -3217,6 +3351,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'react-state',
+    nextTopicId: 'react-useeffect',
     title: 'State & Hooks',
     description: 'Manage dynamic data with useState and understand re-renders',
     category: 'react',
@@ -3296,6 +3431,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'react-useeffect',
+    nextTopicId: 'react-router',
     title: 'useEffect & Side Effects',
     description: 'Run code after render — fetch data, subscribe, sync with the DOM',
     category: 'react',
@@ -3375,6 +3511,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'ts-interfaces',
+    nextTopicId: 'ts-generics',
     title: 'TypeScript Interfaces',
     description: 'Define object contracts — optional props, readonly fields, extension, and implementation',
     category: 'typescript',
@@ -3456,6 +3593,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'ts-generics',
+    nextTopicId: 'ts-narrowing',
     title: 'TypeScript Generics',
     description: 'Write reusable, type-safe functions and interfaces that work with any type',
     category: 'typescript',
@@ -3533,6 +3671,87 @@ export const TOPICS: Topic[] = [
         'Confusing Partial<T> with optional properties — Partial makes all properties optional at once; use it for update/patch payloads, not as a replacement for designing interfaces correctly',
       ],
     },
+  },
+  {
+    id: 'ts-narrowing',
+    title: 'Type Narrowing',
+    description: 'Refine broad types to specific ones using type guards and control flow analysis',
+    category: 'typescript',
+    color: '#818cf8',
+    estimatedMinutes: 10,
+    animationComponent: 'VariablesViz',
+    playgroundType: 'monaco',
+    nextTopicId: 'ts-utility-types',
+    sections: [
+      { id: 'intro', type: 'intro', steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation',
+        steps: [
+          {
+            animationStep: 0,
+            heading: 'typeof and instanceof guards',
+            text: 'TypeScript narrows types inside conditional blocks. After typeof check, the type is refined automatically.',
+            codeExample: 'function format(val: string | number) {\n  if (typeof val === "string") {\n    return val.toUpperCase() // string here\n  }\n  return val.toFixed(2)    // number here\n}',
+            language: 'typescript',
+          },
+          {
+            animationStep: 1,
+            heading: 'Discriminated unions',
+            text: 'A discriminated union uses a shared literal property to distinguish between types. TypeScript narrows based on that field.',
+            codeExample: 'type Shape =\n  | { kind: "circle"; radius: number }\n  | { kind: "rect"; width: number; height: number }\n\nfunction area(s: Shape) {\n  if (s.kind === "circle") return Math.PI * s.radius ** 2\n  return s.width * s.height\n}',
+            language: 'typescript',
+          },
+          {
+            animationStep: 2,
+            heading: 'Custom type guards',
+            text: 'A type predicate function (x is T) tells TypeScript the exact narrowed type when the function returns true.',
+            codeExample: 'function isString(val: unknown): val is string {\n  return typeof val === "string"\n}\n\nif (isString(input)) {\n  console.log(input.length) // string here\n}',
+            language: 'typescript',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'ts-utility-types',
+    title: 'Utility Types',
+    description: 'Built-in TypeScript types that transform and derive new types from existing ones',
+    category: 'typescript',
+    color: '#a78bfa',
+    estimatedMinutes: 10,
+    animationComponent: 'ClosureViz',
+    playgroundType: 'monaco',
+    sections: [
+      { id: 'intro', type: 'intro', steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation',
+        steps: [
+          {
+            animationStep: 0,
+            heading: 'Partial and Required',
+            text: 'Partial<T> makes all properties optional. Required<T> makes all properties required. Both derive a new type from an existing interface.',
+            codeExample: 'interface User { id: number; name: string; email: string }\n\ntype UserDraft = Partial<User>\n// { id?: number; name?: string; email?: string }\n\ntype StrictUser = Required<UserDraft>\n// { id: number; name: string; email: string }',
+            language: 'typescript',
+          },
+          {
+            animationStep: 1,
+            heading: 'Pick and Omit',
+            text: 'Pick<T, K> keeps only the listed keys. Omit<T, K> removes the listed keys. Both create a subset type.',
+            codeExample: 'type UserPreview = Pick<User, "id" | "name">\n// { id: number; name: string }\n\ntype PublicUser = Omit<User, "email">\n// { id: number; name: string }',
+            language: 'typescript',
+          },
+          {
+            animationStep: 2,
+            heading: 'Record, Readonly, and ReturnType',
+            text: 'Record<K, V> creates an object type with keys K and values V. Readonly<T> prevents mutation. ReturnType<F> extracts a function\'s return type.',
+            codeExample: 'type Scores = Record<string, number>\n// { [key: string]: number }\n\nconst config: Readonly<User> = { id: 1, name: "Alice", email: "a@b.com" }\n// config.id = 2 // Error: readonly\n\nfunction getUser() { return { id: 1, name: "Alice" } }\ntype User2 = ReturnType<typeof getUser>\n// { id: number; name: string }',
+            language: 'typescript',
+          },
+        ],
+      },
+    ],
   },
   {
     id: 'react-router',
