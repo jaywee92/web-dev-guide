@@ -80,7 +80,71 @@ export async function preloadAnimation(name: string): Promise<void> {
 type BannerComp = ComponentType<Record<string, never>>
 
 // Populated incrementally as banner files are created
-const bannerLazyRegistry: Record<string, () => Promise<{ default: BannerComp }>> = {}
+const bannerLazyRegistry: Record<string, () => Promise<{ default: BannerComp }>> = {
+  // HTML
+  ElementsBanner:      () => import('./banners/html/ElementsBanner'),
+  TextHeadingsBanner:  () => import('./banners/html/TextHeadingsBanner'),
+  LinksImagesBanner:   () => import('./banners/html/LinksImagesBanner'),
+  ListsBanner:         () => import('./banners/html/ListsBanner'),
+  DomTreeBanner:       () => import('./banners/html/DomTreeBanner'),
+  SemanticBanner:      () => import('./banners/html/SemanticBanner'),
+  FormsBanner:         () => import('./banners/html/FormsBanner'),
+  AccessibilityBanner: () => import('./banners/html/AccessibilityBanner'),
+  MediaEmbedsBanner:   () => import('./banners/html/MediaEmbedsBanner'),
+  // CSS
+  CSSBasicsBanner:          () => import('./banners/css/CSSBasicsBanner'),
+  BoxModelBanner:           () => import('./banners/css/BoxModelBanner'),
+  FlexboxBanner:            () => import('./banners/css/FlexboxBanner'),
+  GridBanner:               () => import('./banners/css/GridBanner'),
+  SelectorsBanner:          () => import('./banners/css/SelectorsBanner'),
+  ColorsUnitsBanner:        () => import('./banners/css/ColorsUnitsBanner'),
+  TypographyBanner:         () => import('./banners/css/TypographyBanner'),
+  BackgroundsBanner:        () => import('./banners/css/BackgroundsBanner'),
+  ShadowsBanner:            () => import('./banners/css/ShadowsBanner'),
+  OverflowBanner:           () => import('./banners/css/OverflowBanner'),
+  DisplayPositioningBanner: () => import('./banners/css/DisplayPositioningBanner'),
+  ResponsiveBanner:         () => import('./banners/css/ResponsiveBanner'),
+  ImagesBanner:             () => import('./banners/css/ImagesBanner'),
+  CustomPropertiesBanner:   () => import('./banners/css/CustomPropertiesBanner'),
+  ThemingBanner:            () => import('./banners/css/ThemingBanner'),
+  TransformsBanner:         () => import('./banners/css/TransformsBanner'),
+  TransitionsBanner:        () => import('./banners/css/TransitionsBanner'),
+  AnimationsBanner:         () => import('./banners/css/AnimationsBanner'),
+  // JavaScript
+  EventLoopBanner: () => import('./banners/javascript/EventLoopBanner'),
+  ClosureBanner:   () => import('./banners/javascript/ClosureBanner'),
+  VariablesBanner: () => import('./banners/javascript/VariablesBanner'),
+  ArraysBanner:    () => import('./banners/javascript/ArraysBanner'),
+  // TypeScript
+  TypeScriptBanner:  () => import('./banners/typescript/TypeScriptBanner'),
+  InterfacesBanner:  () => import('./banners/typescript/InterfacesBanner'),
+  GenericsBanner:    () => import('./banners/typescript/GenericsBanner'),
+  // React
+  ComponentsBanner: () => import('./banners/react/ComponentsBanner'),
+  StateBanner:      () => import('./banners/react/StateBanner'),
+  UseEffectBanner:  () => import('./banners/react/UseEffectBanner'),
+  RouterBanner:     () => import('./banners/react/RouterBanner'),
+  // Web APIs
+  FetchBanner:     () => import('./banners/webapis/FetchBanner'),
+  DomEventsBanner: () => import('./banners/webapis/DomEventsBanner'),
+  StorageBanner:   () => import('./banners/webapis/StorageBanner'),
+  // HTTP
+  AnimatedFlowBanner: () => import('./banners/http/AnimatedFlowBanner'),
+  RestBanner:         () => import('./banners/http/RestBanner'),
+  StatusCodesBanner:  () => import('./banners/http/StatusCodesBanner'),
+  // PostgreSQL
+  QueriesBanner: () => import('./banners/postgresql/QueriesBanner'),
+  JoinsBanner:   () => import('./banners/postgresql/JoinsBanner'),
+  CrudBanner:    () => import('./banners/postgresql/CrudBanner'),
+  // Git
+  GitIntroBanner:       () => import('./banners/git/GitIntroBanner'),
+  GitWorkflowBanner:    () => import('./banners/git/GitWorkflowBanner'),
+  GitIgnoreBanner:      () => import('./banners/git/GitIgnoreBanner'),
+  GitHubBanner:         () => import('./banners/git/GitHubBanner'),
+  GitCollabSetupBanner: () => import('./banners/git/GitCollabSetupBanner'),
+  GitConflictBanner:    () => import('./banners/git/GitConflictBanner'),
+  GitUndoBanner:        () => import('./banners/git/GitUndoBanner'),
+}
 
 const loadedBannerRegistry: Record<string, BannerComp> = {}
 
