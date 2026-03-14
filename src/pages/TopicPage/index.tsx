@@ -183,11 +183,9 @@ export default function TopicPage() {
           )}
         </div>
       </div>
-      {nextTopic && (
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px 80px' }}>
-          <NextTopicCard topic={nextTopic} />
-        </div>
-      )}
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px 80px' }}>
+        <NextTopicCard topic={nextTopic} currentTopic={topic} />
+      </div>
     </PageWrapper>
   )
 }
