@@ -8,6 +8,7 @@ import TopicPage from '@/pages/TopicPage'
 import SearchPage from '@/pages/SearchPage'
 import SearchPalette from '@/components/ui/SearchPalette'
 import ReferencePage from '@/pages/ReferencePage'
+import ResourcesPage from '@/pages/ResourcesPage'
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
               <Route path="/postgresql" element={<CategoryPage />} />
               <Route path="/git" element={<CategoryPage />} />
               <Route path="/git-collab" element={<CategoryPage />} />
+              <Route path="/resources" element={<ResourcesPage />} />
               <Route path="/topic/:topicId" element={<TopicPage />} />
               <Route path="/search" element={<SearchPage />} />
               <Route path="/reference/html" element={<ReferencePage type="html" />} />
