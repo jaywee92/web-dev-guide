@@ -59,8 +59,8 @@ export default function SearchPalette() {
         setActiveIdx(i => Math.min(i + 1, results.length - 1))
       } else if (e.key === 'ArrowUp') {
         e.preventDefault()
-        setActiveIdx(i => Math.max(i - 1, 0))
-      } else if (e.key === 'Enter' && activeIdx >= 0) {
+        setActiveIdx(i => (i <= 0 ? -1 : i - 1))
+      } else if (e.key === 'Enter' && activeIdx >= 0 && activeIdx < results.length) {
         e.preventDefault()
         go(results[activeIdx].id)
       }
