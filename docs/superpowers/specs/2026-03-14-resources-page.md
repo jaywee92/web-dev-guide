@@ -1,31 +1,30 @@
 # Resources Page — Design Spec
 
 **Date:** 2026-03-14
-**Status:** Draft
+**Status:** Approved
 
 ## Overview
 
-A new standalone `/resources` page listing curated external web development resources. No subcategories, no topics — pure external links. Resources are organized into 5 labeled groups, each rendered as a 3-column showcase grid. Each card has a colored gradient header with SVG icon, title, description, and a URL chip.
+A new standalone `/resources` page listing curated external web development resources. No subcategories, no topics — pure external links. Resources are organized into 5 labeled groups, each rendered as a responsive showcase grid. Each card has a colored gradient header with SVG icon, title, description, and a URL chip.
 
 ---
 
 ## Route & Navigation
 
-- **Route:** `/resources` added to `App.tsx`
-- **Navbar:** A `RESOURCES` text link button added between the Reference dropdown and the Search button. Same visual style as the Reference button (monospace, border, hover color) but a plain `Link` (no dropdown). Accent color: `#a78bfa` (purple).
+- **Route:** `/resources` added to `App.tsx`. The page gets the entrance animation automatically from the existing `<AnimatePresence mode="wait">` wrapper in `App.tsx` — no additional motion wrapping needed.
+- **Navbar:** A `RESOURCES` `<Link>` button inserted between the Reference dropdown and the Search button (i.e. third from right, before Search, after Reference). Visual style: same monospace font, border, padding as the Reference button but no dropdown arrow and no open state. Hover: `onMouseEnter`/`onMouseLeave` handlers set `borderColor` and `color` to `#a78bfa` (same imperative pattern as Reference button). Default color: `var(--text-muted)`. Default border: `var(--border)`.
 
 ---
 
 ## Data Model
 
-**File:** `src/data/resources.tsx`  (`.tsx` to allow JSX icon nodes)
+**File:** `src/data/resources.tsx` (`.tsx` to allow JSX icon nodes)
 
 ```tsx
 export interface Resource {
   id: string
   name: string
   url: string             // full URL (e.g. "https://heroui.com")
-  displayUrl: string      // short display form (e.g. "heroui.com")
   description: string     // 1–2 sentence description
   color: string           // hex, used for icon stroke and gradient tint
   icon: React.ReactNode   // inline SVG children as JSX (no dangerouslySetInnerHTML)
@@ -41,11 +40,18 @@ export interface ResourceGroup {
 export const RESOURCE_GROUPS: ResourceGroup[]
 ```
 
-Icons are JSX rendered inside a fixed `<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={1.5} opacity={0.85}>` wrapper in the page component. Each resource's `icon` field contains only the SVG child elements (`<circle>`, `<path>`, `<polygon>`, etc.) — no wrapper SVG tag, no external references.
+**`displayUrl` is not stored** — derived at render time: `new URL(resource.url).host`.
+
+Icons are JSX fragments defined inline in the data file:
+```tsx
+icon: <><circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" /></>
+```
+
+No `dangerouslySetInnerHTML`, no external assets, no sanitization needed.
 
 **Groups and resources:**
 
-| Group | Label | Color | Resources |
+| Group id | Label | Color | Resources |
 |---|---|---|---|
 | `ui-components` | UI COMPONENT LIBRARIES | `#5b9cf5` | HeroUI, DaisyUI, UIverse.io |
 | `animated-components` | ANIMATED COMPONENTS | `#f472b6` | Aceternity UI, Magic UI, Hover.dev |
@@ -55,18 +61,18 @@ Icons are JSX rendered inside a fixed `<svg width="36" height="36" viewBox="0 0 
 
 **Resource details:**
 
-| id | name | displayUrl | color |
+| id | name | url | color |
 |---|---|---|---|
-| `heroui` | HeroUI | `heroui.com` | `#f472b6` |
-| `daisyui` | DaisyUI | `daisyui.com` | `#4ade80` |
-| `uiverse` | UIverse.io | `uiverse.io` | `#a78bfa` |
-| `aceternity` | Aceternity UI | `ui.aceternity.com` | `#5b9cf5` |
-| `magicui` | Magic UI | `magicui.design` | `#38bdf8` |
-| `hover-dev` | Hover.dev | `hover.dev` | `#fbbf24` |
-| `animejs` | Anime.js | `animejs.com` | `#fb923c` |
-| `reactbits` | ReactBits | `reactbits.dev` | `#e879f9` |
-| `v0` | v0 by Vercel | `v0.dev` | `#34d399` |
-| `webcode-tools` | WebCode.tools | `webcode.tools` | `#2dd4bf` |
+| `heroui` | HeroUI | `https://www.heroui.com` | `#f472b6` |
+| `daisyui` | DaisyUI | `https://daisyui.com` | `#4ade80` |
+| `uiverse` | UIverse.io | `https://uiverse.io` | `#a78bfa` |
+| `aceternity` | Aceternity UI | `https://ui.aceternity.com` | `#5b9cf5` |
+| `magicui` | Magic UI | `https://magicui.design` | `#38bdf8` |
+| `hover-dev` | Hover.dev | `https://www.hover.dev` | `#fbbf24` |
+| `animejs` | Anime.js | `https://animejs.com` | `#fb923c` |
+| `reactbits` | ReactBits | `https://reactbits.dev` | `#e879f9` |
+| `v0` | v0 by Vercel | `https://v0.dev` | `#34d399` |
+| `webcode-tools` | WebCode.tools | `https://webcode.tools` | `#2dd4bf` |
 
 ---
 
@@ -80,53 +86,44 @@ Single file, no sub-components.
 
 ```
 PageWrapper
-  └─ max-width: 1100px, margin: 0 auto, padding: 48px 40px 80px
+  └─ max-width 1100px, margin auto, padding 48px 24px 80px
       ├─ Page header
-      │    ├─ "RESOURCES" breadcrumb label (monospace, var(--text-faint))
-      │    ├─ <h1> "Useful Resources"
-      │    └─ <p> subtitle
-      └─ [ResourceGroup sections × 5]
+      │    ├─ "RESOURCES" label (11px monospace, var(--text-faint), letter-spacing 0.08em)
+      │    ├─ <h1> "Useful Resources" (28px, 800 weight, var(--text))
+      │    └─ <p> subtitle (14px, var(--text-muted))
+      └─ [ResourceGroup sections × 5]  (marginBottom: 40px each)
            ├─ Group header row
-           │    ├─ 3px colored left accent bar
-           │    ├─ Group label (monospace, group.color)
-           │    ├─ flex-1 divider line
-           │    └─ "N resources" count
-           └─ 3-column CSS grid (gap: 10px)
-                └─ [ResourceCard × N]
+           │    ├─ 3px × 18px colored accent bar (background: group.color, borderRadius: 2px)
+           │    ├─ Group label (11px monospace, group.color, letterSpacing 0.1em, fontWeight 700)
+           │    ├─ flex-1 divider line (height 1px, background var(--border))
+           │    └─ "N resources" count (10px, var(--text-faint))
+           └─ CSS grid
+                └─ gridTemplateColumns: repeat(auto-fill, minmax(280px, 1fr))
+                   gap: 10px
+                   ResourceCard per resource (key={resource.id})
 ```
+
+Using `auto-fill` + `minmax(280px, 1fr)` ensures single-item groups (Animation, React) render as a single naturally sized card rather than spanning an empty 3-column row.
 
 ### ResourceCard
 
-Each card is an `<a target="_blank" rel="noopener noreferrer">` wrapping:
+`<a href={resource.url} target="_blank" rel="noopener noreferrer">` styled as a card. No JS click handlers.
 
-1. **Header area** (height: 80px): `linear-gradient` using `resource.color` at low opacity (10–15%) over the dark base `#0d1a2a`. SVG icon centered (36×36, stroke = `resource.color`, strokeWidth 1.5, opacity 0.85). Small `↗` indicator top-right in `var(--text-faint)`.
+**Structure (flex-column, full height):**
 
-2. **Body** (padding: 12px, flex-column, gap: 6px):
-   - `resource.name` — 13px bold, `var(--text)`
-   - `resource.description` — 11px, `var(--text-muted)`, line-height 1.55, flex: 1
-   - URL chip — `resource.displayUrl ↗`, 10px monospace, `var(--text-faint)`, dark background chip with `var(--border)` border
+1. **Header area** — height 80px, position relative, borderBottom `var(--border)`.
+   - Background: `linear-gradient(135deg, ${resource.color}1a 0%, ${resource.color}0d 100%)` over base `#0d1a2a`. (`1a` = 10%, `0d` = 5% hex alpha — gives a subtle tinted gradient without washing out the dark background.)
+   - Centered: `<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke={resource.color} strokeWidth={1.5} opacity={0.85}>{resource.icon}</svg>`
+   - Top-right: `↗` in 10px `var(--text-faint)`, position absolute top-8 right-8.
 
-**Hover state:** `border-color` transitions from `var(--border)` → `resource.color` at 50% opacity. `0.2s ease` transition.
+2. **Body** — padding 12px, flex-column, gap 6px, flex 1.
+   - Name: 13px, fontWeight 800, `var(--text)`
+   - Description: 11px, `var(--text-muted)`, lineHeight 1.55, flex 1
+   - URL chip: `new URL(resource.url).host + ' ↗'`, 10px monospace, `var(--text-faint)`, background `var(--bg)` or `#07101a`, border `1px solid var(--border)`, borderRadius 5px, padding `4px 8px`, display inline-block, width fit-content.
 
-**No JavaScript click handlers** — pure `<a>` tags with `target="_blank"`.
+**Card base styles:** background `var(--surface)`, border `1px solid var(--border)`, borderRadius 10px, overflow hidden, display flex, flexDirection column, textDecoration none.
 
-### SVG Icon rendering
-
-```tsx
-<svg
-  width="36" height="36" viewBox="0 0 24 24"
-  fill="none" stroke={resource.color} strokeWidth={1.5} opacity={0.85}
->
-  {resource.icon}
-</svg>
-```
-
-Icons are JSX literals defined directly in `resources.tsx`:
-```tsx
-icon: <><circle cx="12" cy="8" r="4" /><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" /></>
-```
-
-No `dangerouslySetInnerHTML`, no external assets, no sanitization needed.
+**Hover:** `onMouseEnter` → `borderColor = resource.color + '80'` (50% alpha). `onMouseLeave` → `borderColor = 'var(--border)'`. Transition: `border-color 0.2s ease`.
 
 ---
 
@@ -134,7 +131,7 @@ No `dangerouslySetInnerHTML`, no external assets, no sanitization needed.
 
 | File | Change |
 |---|---|
-| `src/data/resources.tsx` | New — `RESOURCE_GROUPS` data with JSX icons |
+| `src/data/resources.tsx` | New — `Resource`, `ResourceGroup` interfaces + `RESOURCE_GROUPS` data |
 | `src/pages/ResourcesPage/index.tsx` | New — page component |
-| `src/App.tsx` | Add `<Route path="/resources" element={<ResourcesPage />} />` |
-| `src/components/layout/Navbar.tsx` | Add Resources nav link |
+| `src/App.tsx` | Add `import ResourcesPage` + `<Route path="/resources" element={<ResourcesPage />} />` |
+| `src/components/layout/Navbar.tsx` | Add Resources `<Link>` between Reference dropdown and Search button |
