@@ -13,14 +13,36 @@ Seven improvements across four groups: quick fixes (nextTopicId chains, loading 
 
 ### 1. nextTopicId chains
 
-Each topic category already has an internal chain. The last topic in each category has no `nextTopicId`. Instead of cross-category linking, `NextTopicCard` renders a **"Category complete"** variant when `nextTopicId` is absent:
+Each topic category already has an internal chain. The last topic in each category has no `nextTopicId`. Instead of cross-category linking, `NextTopicCard` renders a **"Category complete"** variant when no next topic exists.
 
-- Checkmark icon (topic color)
+**Current chain ends (no `nextTopicId`):** `html-media`, `css-animations`, `js-arrays`, `ts-generics`, `react-router`, `webapi-storage`, `http-status`, `postgres-crud`, `git-undo-stash`.
+
+**`NextTopicCard` prop change:**
+```tsx
+// Before
+interface Props { topic: Topic }
+
+// After
+interface Props {
+  topic?: Topic          // next topic (undefined = last in category)
+  currentTopic: Topic    // always provided — used for category label in fallback
+}
+```
+
+When `topic` is undefined, render the **"Category complete"** variant:
+- Checkmark icon in `currentTopic.color`
 - Heading: "Category complete!"
-- Subtext: "You've finished all topics in [Category Name]."
+- Subtext: "You've finished all [Category Name] topics." — category name derived from `CATEGORIES[currentTopic.category].label`
 - Button: "← Back to Overview" (navigates to `/`)
 
-The existing `NextTopicCard` component is modified to handle the `nextTopicId === undefined` case. No new component needed.
+In `TopicPage/index.tsx`, change from:
+```tsx
+{nextTopic && <NextTopicCard topic={nextTopic} />}
+```
+to:
+```tsx
+<NextTopicCard topic={nextTopic} currentTopic={topic} />
+```
 
 ### 2. Animation loading state
 
@@ -129,34 +151,29 @@ All stubs: complete data structure, English placeholder content, 3 steps minimum
 
 ---
 
-## Group D — Cmd+K Search Modal
+## Group D — Search Enhancements
 
-### Component: `src/components/ui/SearchModal.tsx`
+`SearchPalette.tsx` (`src/components/ui/SearchPalette.tsx`) is already fully implemented:
+- Cmd+K trigger in `Navbar.tsx` via `useAppStore.setSearchOpen`
+- AnimatePresence modal with overlay, blur, input, results
+- `useSearch` hook for live filtering (title + description, max 8)
+- Escape to close, click overlay to close
+- ⌘K badge in Navbar
+- Empty state + suggestions
 
-**Trigger:** `Cmd+K` (Mac) / `Ctrl+K` (Windows/Linux) — global `keydown` listener in `Navbar.tsx`.
+**Three enhancements only:**
 
-**Visual design:**
-- Full-screen dark overlay: `rgba(0, 0, 0, 0.7)`, backdrop blur
-- Centered panel: `560px` wide, `max-height: 480px`, `border-radius: 14px`, `background: #0d1117`, `border: 1px solid rgba(255,255,255,0.08)`
-- Search input: full-width, `background: transparent`, `border-bottom: 1px solid rgba(255,255,255,0.08)`, `font-size: 16px`, placeholder `"Search topics..."`
-- Shortcut hint: `⌘K` badge visible in Navbar next to Reference button (desktop only)
+**1. Keyboard ↑↓ navigation in results**
 
-**Results list:**
-- Each result: category badge (colored) + topic title + short description (1 line, truncated)
-- Active result: highlighted with `background: rgba(255,255,255,0.06)`
-- Match highlight: searched term wrapped in `<mark>` styled with `color: topic.color, background: transparent, font-weight: 600`
-- Max 8 results shown, scrollable if more
-- Empty state: "No topics found" centered in the results area
+Add `activeIdx: number` state (default -1). On `↓`: increment (max results.length-1), on `↑`: decrement (min 0). On `Enter`: call `go(results[activeIdx].id)` if activeIdx ≥ 0. Reset `activeIdx` to -1 on query change. Active result gets `background: var(--surface-bright)` style.
 
-**Keyboard behavior:**
-- `↑` / `↓`: move active result
-- `Enter`: navigate to active result's topic page, close modal
-- `Escape`: close modal
-- Clicking outside overlay: close modal
+**2. Category badge on each result**
 
-**Data:** filters `topics` array from `src/data/topics.ts` by matching `title`, `description`, and `category` (case-insensitive). No fuzzy matching — simple `includes()`.
+Each result row: add a small colored dot + category label (e.g., "CSS", "JavaScript") in `var(--text-faint)` before the description line. Derive from `CATEGORIES[topic.category].label`.
 
-**State:** `isOpen: boolean` in `Navbar.tsx`, passed as prop to `SearchModal`. Modal is conditionally rendered (not mounted when closed).
+**3. Match highlight**
+
+Wrap matched substring in `<mark style={{ background: 'none', color: 'inherit', fontWeight: 700 }}>`. Applied to `topic.title` display only (not description). Use a `highlight(text, query)` helper that splits on match and wraps.
 
 ---
 
@@ -164,10 +181,10 @@ All stubs: complete data structure, English placeholder content, 3 steps minimum
 
 | File | Change |
 |---|---|
-| `src/components/layout/NextTopicCard.tsx` | Add "category complete" fallback variant |
+| `src/components/ui/NextTopicCard.tsx` | Add "category complete" fallback variant, change prop to `topic?: Topic` + `currentTopic: Topic` |
 | `src/pages/TopicPage/index.tsx` | Loading state, not-found page, SearchModal state |
 | `src/pages/TopicPage/SyncExplanation.tsx` | Keyboard nav on step dots |
 | `src/components/layout/TopicSidebar.tsx` | aria-expanded + React.memo + useMemo |
 | `src/components/layout/Navbar.tsx` | Cmd+K listener, aria-expanded, ⌘K badge, SearchModal |
-| `src/components/ui/SearchModal.tsx` | New file — search modal |
+| `src/components/ui/SearchPalette.tsx` | Enhance existing: keyboard ↑↓ nav, category badge, match highlight |
 | `src/data/topics.ts` | 5 new topic stubs + nextTopicId fixes |
