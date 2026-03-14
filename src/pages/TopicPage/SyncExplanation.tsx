@@ -63,6 +63,15 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
                 <button
                   key={i}
                   onClick={() => ctrl.goTo(i)}
+                  tabIndex={0}
+                  aria-label={`Step ${i + 1}${ctrl.step === i ? ', current' : ''}`}
+                  aria-current={ctrl.step === i ? 'step' : undefined}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      ctrl.goTo(i)
+                    }
+                  }}
                   title={`Step ${i + 1}`}
                   style={{
                     width: ctrl.step === i ? 24 : 8,

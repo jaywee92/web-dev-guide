@@ -97,6 +97,7 @@ export default function TopicSidebar({
               {/* Tech group header */}
               <button
                 onClick={() => toggleTech(techKey)}
+                aria-expanded={isTechOpen}
                 style={{
                   width: '100%', display: 'flex', alignItems: 'center',
                   justifyContent: 'space-between',
@@ -148,6 +149,7 @@ export default function TopicSidebar({
                         {/* Category row */}
                         <button
                           onClick={() => toggleCat(cat.id)}
+                          aria-expanded={isCatOpen}
                           style={{
                             width: '100%', display: 'flex', alignItems: 'center',
                             justifyContent: 'space-between',

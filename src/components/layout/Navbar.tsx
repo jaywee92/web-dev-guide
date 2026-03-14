@@ -31,6 +31,14 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setRefOpen(false)
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [])
+
   // Close dropdown on navigation
   useEffect(() => { setRefOpen(false) }, [location.pathname])
 
@@ -85,6 +93,7 @@ export default function Navbar() {
         <div ref={refRef} style={{ position: 'relative' }}>
           <button
             onClick={() => setRefOpen(o => !o)}
+            aria-expanded={refOpen}
             style={{
               display: 'flex', alignItems: 'center', gap: 6,
               padding: '5px 10px', borderRadius: 8, cursor: 'pointer',
