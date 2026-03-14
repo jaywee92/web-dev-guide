@@ -170,6 +170,37 @@ export default function Navbar() {
           )}
         </div>
 
+        {/* Resources link */}
+        <Link
+          to="/resources"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            padding: '5px 10px',
+            borderRadius: 8,
+            textDecoration: 'none',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            fontWeight: 600,
+            background: 'var(--surface)',
+            border: '1px solid var(--border)',
+            color: 'var(--text-muted)',
+            transition: 'border-color 0.15s, color 0.15s',
+            letterSpacing: '0.04em',
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.borderColor = '#a78bfa'
+            e.currentTarget.style.color = '#a78bfa'
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.borderColor = 'var(--border)'
+            e.currentTarget.style.color = 'var(--text-muted)'
+          }}
+        >
+          RESOURCES
+        </Link>
+
         {/* Search */}
         <button
           onClick={() => setSearchOpen(true)}
