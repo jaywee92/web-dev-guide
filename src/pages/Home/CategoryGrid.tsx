@@ -16,6 +16,7 @@ import type { Category, CategoryId } from '@/types'
 import CategoryTooltip from './CategoryTooltip'
 import type { GalaxyHandle } from './GalaxyBackground'
 import type { TrailHandle } from './CursorTrail'
+import { useResourceVotes } from '@/hooks/useResourceVotes'
 
 const ICONS: Record<string, ComponentType<{ size?: number; color?: string }>> = {
   FileCode2, Palette, Zap, Shield, Layers, Globe,
@@ -172,6 +173,10 @@ const TechSection = React.memo(function TechSection({
   )
 })
 
+function getHost(url: string): string {
+  try { return new URL(url).host } catch { return url }
+}
+
 function ResourcesSection({ globalIndex, galaxyRef, trailRef }: {
   globalIndex: number
   galaxyRef: RefObject<GalaxyHandle | null>
@@ -179,7 +184,14 @@ function ResourcesSection({ globalIndex, galaxyRef, trailRef }: {
 }) {
   const navigate = useNavigate()
   const color = '#a78bfa'
-  const totalLinks = RESOURCE_GROUPS.reduce((s, g) => s + g.resources.length, 0)
+  const { votes, loading } = useResourceVotes()
+
+  const allResources = RESOURCE_GROUPS.flatMap(g => g.resources)
+  const top5 = [...allResources]
+    .sort((a, b) => (votes[b.id] ?? 0) - (votes[a.id] ?? 0))
+    .slice(0, 5)
+  const totalLinks = allResources.length
+  const totalVotes = Object.values(votes).reduce((s, n) => s + n, 0)
 
   function handleMouseEnter(e: React.MouseEvent<HTMLDivElement>) {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -222,27 +234,24 @@ function ResourcesSection({ globalIndex, galaxyRef, trailRef }: {
           <div className="tsec-name">Resources</div>
           <div className="tsec-sub">Curated external tools, libraries &amp; references</div>
         </div>
-        <span className="tsec-badge">{totalLinks} Links</span>
+        <span className="tsec-badge">
+          {loading ? `${totalLinks} Links` : `${totalLinks} Links · ▲ ${totalVotes}`}
+        </span>
       </div>
       <div className="tsec-body">
-        {RESOURCE_GROUPS.map(group => (
+        {top5.map(r => (
           <div
-            key={group.id}
+            key={r.id}
             className="subcat"
-            style={{ '--sc': group.color } as CSSProperties}
+            style={{ '--sc': r.color } as CSSProperties}
           >
             <div className="subcat-top">
-              <Globe size={16} color={group.color} />
-              <span className="subcat-label">{group.label.split(' ').slice(0, 2).join(' ')}</span>
-              <span className="subcat-cnt">{group.resources.length}</span>
+              <Globe size={16} color={r.color} />
+              <span className="subcat-label">{r.name}</span>
+              <span className="subcat-cnt">▲ {votes[r.id] ?? 0}</span>
             </div>
             <div className="subcat-topics">
-              {group.resources.slice(0, 3).map((r, i, arr) => (
-                <span key={r.id} style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>
-                  {r.name}
-                  {i < arr.length - 1 ? <span style={{ opacity: 0.4, margin: '0 3px' }}>·</span> : ''}
-                </span>
-              ))}
+              {getHost(r.url)}
             </div>
           </div>
         ))}
