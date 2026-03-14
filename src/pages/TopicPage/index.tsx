@@ -12,8 +12,9 @@ import KeyTakeaways from './KeyTakeaways'
 import ContentTabs from './ContentTabs'
 import SliderPlayground, { hasSliderConfig } from '@/playgrounds/SliderPlayground'
 import { getCategoryForTopic } from '@/data/categories'
-import { preloadAnimation, getAnimationComponent } from '@/topics/registry'
+import { preloadAnimation, getAnimationComponent, preloadBanner, getBannerComponent } from '@/topics/registry'
 import type { CategoryId } from '@/types'
+import TopicBanner from './TopicBanner'
 
 export default function TopicPage() {
   const { topicId } = useParams()
@@ -29,6 +30,17 @@ export default function TopicPage() {
       setAnimComp(() => getAnimationComponent(topic.animationComponent))
     })
   }, [topic?.animationComponent])
+
+  const [BannerComp, setBannerComp] = useState<ComponentType<Record<string, never>> | null>(
+    () => topic ? getBannerComponent(topic.bannerComponent ?? '') : null
+  )
+
+  useEffect(() => {
+    if (!topic?.bannerComponent) return
+    preloadBanner(topic.bannerComponent).then(() => {
+      setBannerComp(() => getBannerComponent(topic.bannerComponent!))
+    })
+  }, [topic?.bannerComponent])
 
   if (!topic) {
     return <div style={{ padding: 40, color: 'var(--text-muted)' }}>Topic not found.</div>
@@ -136,8 +148,10 @@ export default function TopicPage() {
             )}
           </div>
 
+          <TopicBanner topic={topic} BannerComp={BannerComp} />
+
           {/* Phase 2: Explanation */}
-          <div id="explanation" style={{ marginTop: 32 }}>
+          <div id="explanation" style={{ marginTop: 0 }}>
             <SyncExplanation topic={topic} AnimComp={AnimComp} />
           </div>
 

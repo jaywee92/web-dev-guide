@@ -74,3 +74,23 @@ export async function preloadAnimation(name: string): Promise<void> {
   const mod = await lazyRegistry[name]()
   loadedRegistry[name] = mod.default
 }
+
+// ─── Banner registry ───────────────────────────────────────────────────────
+
+type BannerComp = ComponentType<Record<string, never>>
+
+// Populated incrementally as banner files are created
+const bannerLazyRegistry: Record<string, () => Promise<{ default: BannerComp }>> = {}
+
+const loadedBannerRegistry: Record<string, BannerComp> = {}
+
+export function getBannerComponent(name: string): BannerComp | null {
+  if (!name) return null
+  return loadedBannerRegistry[name] ?? null
+}
+
+export async function preloadBanner(name: string): Promise<void> {
+  if (!name || loadedBannerRegistry[name] || !bannerLazyRegistry[name]) return
+  const mod = await bannerLazyRegistry[name]()
+  loadedBannerRegistry[name] = mod.default
+}
