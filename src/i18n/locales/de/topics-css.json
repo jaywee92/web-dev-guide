@@ -1,1 +1,931 @@
-{}
+{
+  "css-basics": {
+    "title": "Wie CSS funktioniert",
+    "description": "Drei Wege, CSS anzuwenden, und wie die Kaskade Konflikte löst",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Browser-Standardstile",
+        "text": "Ohne CSS wenden Browser ihre eigenen eingebauten Stile an — Serifenschriften, Abstände bei Überschriften, blau unterstrichene Links. Jedes Stylesheet, das du schreibst, überschreibt diese Standardwerte."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Inline-Styles",
+        "text": "CSS direkt auf ein einzelnes Element mit dem style-Attribut anwenden. Inline-Styles haben die höchste Spezifität — sie überschreiben externe und interne Stylesheets. Nur für wirklich einmalige dynamische Werte verwenden (z. B. von JavaScript gesetzt)."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Interner <style>-Tag",
+        "text": "CSS innerhalb eines <style>-Elements im <head> schreiben. Nützlich für einseitige Prototypen oder HTML-E-Mail-Vorlagen. Nicht ideal für mehrseitige Seiten — Stile müssen in jeder Datei dupliziert werden."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Externes Stylesheet",
+        "text": "Eine .css-Datei mit <link> im <head> verknüpfen. Best Practice für echte Projekte — eine Datei gilt für jede Seite. Eine Datei ändern, jede Seite wird aktualisiert."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Die Kaskade",
+        "text": "Wenn mehrere Regeln dasselbe Element ansprechen, nutzt der Browser die Spezifität, um den Gewinner zu bestimmen. Höhere Spezifität gewinnt immer. Gleiche Spezifität? Die spätere Regel im Quellcode gewinnt."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Inline-Style", "note": "Höchste Spezifität — für allgemeines Styling vermeiden" },
+        { "label": "Internes <style>", "note": "Nur für Einzeldatei-Anwendung" },
+        { "label": "Externes <link>", "note": "Best Practice — das verwenden" },
+        { "label": "Spezifitätsreihenfolge", "note": "Höher gewinnt; gleiche Spezifität → später gewinnt" }
+      ],
+      "patterns": [
+        { "title": "CSS-Reset am Anfang des externen Stylesheets" }
+      ],
+      "whenToUse": "Immer ein externes Stylesheet für echte Projekte verwenden. Inline-Styles nur für von JavaScript dynamisch gesetzte Werte. Internes <style> für HTML-E-Mail oder Einzeldatei-Demos.",
+      "commonMistakes": [
+        "Inline-Styles übermäßig verwenden — höchste Spezifität macht sie schwer später zu überschreiben",
+        "Die Kaskade vergessen — wenn ein Stil 'nicht funktioniert', Spezifität prüfen: eine Klassenregel schlägt eine Typregel",
+        "!important bricht die Kaskade und führt zu Spezifitätskriegen — es ist ein letztes Mittel, kein Standard"
+      ]
+    }
+  },
+  "css-selectors": {
+    "title": "Selektoren & Spezifität",
+    "description": "Elemente präzise ansprechen und verstehen, welche Stile gewinnen",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Selektoren sprechen HTML-Elemente an",
+        "text": "CSS-Regeln beginnen mit einem Selektor, der dem Browser sagt, welche Elemente gestylt werden sollen."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Universalselektor *",
+        "text": "Der *-Selektor trifft jedes Element auf der Seite. Häufig für CSS-Resets verwendet."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Typselektoren",
+        "text": "Elemente nach ihrem Tag-Namen ansprechen. Jedes <h1> auf der Seite erhält diesen Stil."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Klassenselektoren",
+        "text": "Klassen beginnen mit einem Punkt. Sie sind wiederverwendbar — viele Elemente können dieselbe Klasse teilen."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Spezifität — welche Regel gewinnt",
+        "text": "Wenn mehrere Regeln dasselbe Element ansprechen, bestimmt die Spezifität den Gewinner. ID > Klasse > Typ. Höhere Spezifität gewinnt immer, unabhängig von der Reihenfolge."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Pseudo-Klassen — zustandsbasiertes Ansprechen",
+        "text": "Pseudo-Klassen sprechen Elemente basierend auf ihrem Zustand oder ihrer Position an. :hover wird ausgelöst, wenn die Maus über dem Element ist. :focus aktiviert sich, wenn ein Formularfeld fokussiert ist. :nth-child(n) trifft nach Position in einer Liste."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Pseudo-Elemente — virtuelle Unterteile",
+        "text": "Pseudo-Elemente stylen einen Teil eines Elements, der nicht im HTML existiert. ::before und ::after fügen generierten Inhalt ein. ::first-line und ::first-letter sprechen Text an. Immer content: \"\" mit ::before/::after verwenden."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Typ", "note": "Alle h1-Elemente" },
+        { "label": "Klasse", "note": "class=\"card\"" },
+        { "label": "ID", "note": "id=\"main\" — eindeutig pro Seite" },
+        { "label": "Attribut", "note": "Attribut-Abgleich" },
+        { "label": "Nachfahre / Kind", "note": "Verschachtelung" },
+        { "label": "Pseudo-Klasse", "note": "Zustand oder Position" },
+        { "label": "Pseudo-Element", "note": "Virtuelle Unterelemente" }
+      ],
+      "patterns": [
+        { "title": "Spezifitätsreihenfolge (niedrig → hoch)" }
+      ],
+      "whenToUse": "Klassenselektoren für das Styling bevorzugen. ID-Selektoren nur als JavaScript-Hooks verwenden, nicht für CSS. Überqualifizierte Selektoren vermeiden (div.card kann einfach .card sein).",
+      "commonMistakes": [
+        "!important übermäßig verwenden — bricht die Kaskade und verursacht Spezifitätskriege",
+        "ID-Selektoren für CSS verwenden — sehr hohe Spezifität macht sie schwer zu überschreiben",
+        ".nav a trifft ALLE verschachtelten Links; .nav > a nur direkte Kinder — leicht zu verwechseln"
+      ]
+    }
+  },
+  "css-colors-units": {
+    "title": "Farben & Einheiten",
+    "description": "Farbformate (hex, rgb, hsl) und CSS-Einheiten (px, em, rem, %)",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Benannte Farben",
+        "text": "CSS hat über 140 benannte Farben wie red, blue, tomato und cornflowerblue. Einfach, aber begrenzt — sie lassen sich nicht fein abstimmen."
+      },
+      {
+        "animationStep": 1,
+        "heading": "HEX-Codes",
+        "text": "Sechs Hex-Ziffern kodieren Rot-, Grün- und Blau-Kanäle (#RRGGBB). Das häufigste Format in Designs. Kurzform: #RGB wenn jedes Paar sich wiederholt."
+      },
+      {
+        "animationStep": 2,
+        "heading": "RGB & RGBA",
+        "text": "rgb() nimmt drei 0–255-Werte für Rot, Grün, Blau. rgba() fügt einen vierten Wert (0–1) für Transparenz hinzu — ideal für Overlays."
+      },
+      {
+        "animationStep": 3,
+        "heading": "HSL & HSLA",
+        "text": "hsl() verwendet Farbton (0–360°), Sättigung (%) und Helligkeit (%). Viel intuitiver für die Erstellung von Farbpaletten — einfach den Farbton verschieben."
+      },
+      {
+        "animationStep": 4,
+        "heading": "CSS-Einheiten",
+        "text": "px ist absolut. em ist relativ zur font-size des Elternelements. rem ist relativ zur Root-<html>-font-size (normalerweise 16px). % ist relativ zur Größe des Elternelements. rem für Schriftgrößen, px für Rahmen, % für Breiten verwenden."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "HEX", "note": "Häufigstes Format" },
+        { "label": "RGB / RGBA", "note": "rgba für Transparenz verwenden" },
+        { "label": "HSL / HSLA", "note": "Bestes Format für Paletten" },
+        { "label": "px", "note": "Absolut, pixelgenau" },
+        { "label": "rem", "note": "Relativ zur Root — für Schrift & Abstände verwenden" },
+        { "label": "em", "note": "Relativ zur Eltern-font-size" },
+        { "label": "%", "note": "Relativ zur Elterndimension" }
+      ],
+      "patterns": [
+        { "title": "CSS Custom Properties für eine Farbpalette" },
+        { "title": "Responsive Typografie-Skala" }
+      ],
+      "whenToUse": "rem für Schriftgrößen und Abstände verwenden (skaliert mit Nutzereinstellungen), px für Rahmen und feine Details, % für Layout-Breiten. HSL beim Aufbau von Farbsystemen bevorzugen — Töne und Schattierungen durch Anpassen der Helligkeit leicht erstellen.",
+      "commonMistakes": [
+        "em und rem unberechenbar mischen — em multipliziert sich durch verschachtelte Elemente, rem nicht. rem als Standard verwenden.",
+        "px für Schriftgrößen verwenden — ignoriert die Browser-Schriftgrößeneinstellungen des Nutzers. rem verwenden.",
+        "rgba für Overlays vergessen — rgba(0,0,0,0.5) statt eines halbtransparenten grauen Hex verwenden."
+      ]
+    }
+  },
+  "css-box-model": {
+    "title": "CSS Box-Modell",
+    "description": "Jedes Element ist eine Box — Inhalt, Padding, Rahmen, Margin",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Content Box",
+        "text": "Der innerste Bereich. Hier leben Text und Bilder. Width und height gelten standardmäßig hier."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Padding",
+        "text": "Abstand zwischen Inhalt und Rahmen. Padding ist innerhalb des Elements — es teilt die Hintergrundfarbe."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Rahmen (Border)",
+        "text": "Eine Linie, die Padding und Inhalt umgibt. Kann unabhängig gestylt werden."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Margin",
+        "text": "Abstand außerhalb des Rahmens. Schiebt andere Elemente weg. Margins können zwischen Geschwisterelementen kollabieren."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "box-sizing", "note": "Reset (global anwenden)" },
+        { "label": "padding", "note": "Innerer Abstand" },
+        { "label": "margin", "note": "Äußerer Abstand" },
+        { "label": "border", "note": "Rahmen + Abrundung" },
+        { "label": "width / height", "note": "Größe" },
+        { "label": "overflow", "note": "Inhalts-Überlauf" }
+      ],
+      "patterns": [
+        { "title": "Einen Seiten-Container zentrieren" },
+        { "title": "Karte mit korrektem Box-Modell" }
+      ],
+      "whenToUse": "Das Box-Modell ist grundlegend — jedes Layout-Problem lässt sich darauf zurückführen. Immer box-sizing: border-box global als erste Regel im Stylesheet setzen.",
+      "commonMistakes": [
+        "box-sizing: border-box vergessen — verursacht Breiten-Überlauf wenn Padding hinzugefügt wird",
+        "margin zum vertikalen Zentrieren verwenden — margin: auto funktioniert nur horizontal für Block-Elemente",
+        "Margin-Kollaps: angrenzende vertikale Margins verschmelzen (der größere gewinnt) — kein Fehler, erwartetes Verhalten"
+      ]
+    }
+  },
+  "css-typography": {
+    "title": "Text & Typografie",
+    "description": "Schriftfamilien, Größen, Gewichte und Text-Styling",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Standard-Browser-Text",
+        "text": "Ohne CSS wenden Browser ihre eigenen Standardstile an — normalerweise Times New Roman bei 16px. Jeder CSS-Reset oder jedes Stylesheet überschreibt diese Standardwerte."
+      },
+      {
+        "animationStep": 1,
+        "heading": "font-family, font-size, font-weight",
+        "text": "font-family setzt die Schriftart — immer mit einem generischen Fallback beenden. font-size steuert, wie groß Text erscheint. font-weight reicht von 100 (dünn) bis 900 (schwarz), wobei 400 = normal und 700 = fett."
+      },
+      {
+        "animationStep": 2,
+        "heading": "text-align & text-decoration",
+        "text": "text-align positioniert Text horizontal (left, center, right, justify). text-decoration steuert Unterstreichungen, Durchstreichungen und deren Stil."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Abstände: letter-spacing & line-height",
+        "text": "letter-spacing passt den Abstand zwischen Zeichen an. line-height steuert die Höhe jeder Zeile — einen einheitenlosen Wert wie 1,6 verwenden, damit er mit der Schriftgröße skaliert."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Google Fonts & @import",
+        "text": "Benutzerdefinierte Schriften mit @import in deinem CSS laden. Google Fonts generiert die URL. @font-face funktioniert genauso, aber für lokal gehostete Schriftdateien."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "font-family", "note": "Immer Fallback hinzufügen" },
+        { "label": "font Kurzform", "note": "weight size/line-height family" },
+        { "label": "text-align", "note": "Horizontale Ausrichtung" },
+        { "label": "text-decoration", "note": "Unterstrichen / Durchgestrichen" },
+        { "label": "text-transform", "note": "Groß-/Kleinschreibungs-Umwandlung" },
+        { "label": "line-height", "note": "Zeilenabstand" },
+        { "label": "letter-spacing", "note": "Zeichenabstand" },
+        { "label": "text-shadow", "note": "Schlagschatten auf Text" }
+      ],
+      "patterns": [
+        { "title": "Google Font importieren und verwenden" },
+        { "title": "Link-Zustände — Unterstreichung entfernen, bei hover hinzufügen" }
+      ],
+      "whenToUse": "font-family, font-size und line-height auf body als Grundlinie setzen — alles erbt davon. rem für Schriftgrößen verwenden. line-height auf 1,5–1,7 für Fließtext setzen, enger (1,1–1,3) für Überschriften.",
+      "commonMistakes": [
+        "Kein generischer Fallback in font-family — wenn die benutzerdefinierte Schrift nicht lädt, wählt der Browser einen unschönen Standard",
+        "px für line-height verwenden — skaliert nicht, wenn sich font-size ändert. Einheitenlose Werte wie 1,5 verwenden",
+        "text-align: justify übermäßig verwenden — erzeugt ungleichmäßige Abstände zwischen Wörtern und beeinträchtigt die Lesbarkeit"
+      ]
+    }
+  },
+  "css-backgrounds-gradients": {
+    "title": "Hintergründe & Verläufe",
+    "description": "Hintergrundfarben, Bilder und CSS-Verlaufsfunktionen",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "background-color",
+        "text": "Der einfachste Hintergrund — eine einfarbige Füllung. Akzeptiert jeden CSS-Farbwert: benannt, hex, rgb, hsl."
+      },
+      {
+        "animationStep": 1,
+        "heading": "background-image",
+        "text": "Ein Bild als Hintergrund mit url() laden. Das Bild beeinflusst den Dokumentenfluss nicht — es ist rein dekorativ. Immer mit einer Fallback-background-color kombinieren."
+      },
+      {
+        "animationStep": 2,
+        "heading": "repeat, position & size",
+        "text": "background-repeat steuert die Kachelung. background-position setzt den Ursprung. background-size: cover füllt den Container, contain passt hinein."
+      },
+      {
+        "animationStep": 3,
+        "heading": "linear-gradient()",
+        "text": "Verläufe sind generierte Bilder — keine Bilddatei nötig. linear-gradient() übergeht Farben in einer geraden Linie. Den Winkel und zwei oder mehr Farbstopps angeben."
+      },
+      {
+        "animationStep": 4,
+        "heading": "radial-gradient()",
+        "text": "radial-gradient() strahlt von einem Mittelpunkt nach außen. Ideal für Spotlight-Effekte und subtile Tiefe. Mit Transparenz für Overlays kombinieren."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "background Kurzform", "note": "color image repeat position / size" },
+        { "label": "background-size", "note": "cover vs. contain" },
+        { "label": "linear-gradient", "note": "Winkel, Farbstopps" },
+        { "label": "radial-gradient", "note": "Form an Position" },
+        { "label": "conic-gradient", "note": "Dreht sich um einen Mittelpunkt" },
+        { "label": "Mehrere Hintergründe", "note": "Stapel: erster liegt oben" }
+      ],
+      "patterns": [
+        { "title": "Hero mit Bild + dunklem Overlay" },
+        { "title": "Verlaufsbutton" }
+      ],
+      "whenToUse": "background-color für einfarbige Füllungen, linear-gradient für gerichtete Übergänge (Buttons, Hero-Bereiche), radial-gradient für Spotlight-/Glüh-Effekte verwenden. Immer background-color als Fallback hinzufügen, wenn background-image verwendet wird.",
+      "commonMistakes": [
+        "background-size: cover für vollflächige Bilder vergessen — ohne es kachelt das Bild oder hinterlässt Lücken",
+        "Kein Fallback-background-color mit background-image — wenn das Bild nicht lädt, ist das Element leer",
+        "Ein Bild verwenden, wenn ein Verlauf ausreichen würde — Verläufe laden sofort und sind auflösungsunabhängig"
+      ]
+    }
+  },
+  "css-shadows": {
+    "title": "Schatten",
+    "description": "box-shadow und text-shadow — Tiefe, Glüheffekte und geschichtete Schatten für visuelle Hierarchie",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "box-shadow Anatomie",
+        "text": "box-shadow nimmt: x-Versatz, y-Versatz, Unschärferadius, Ausbreitungsradius, Farbe. Nur die ersten beiden sind erforderlich. Positives x = rechts, positives y = unten."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Einfacher Schlagschatten",
+        "text": "Ein einzelner Schatten mit leichtem y-Versatz und Unschärfe erzeugt Tiefe. Den Schatten subtil halten — zu stark wirkt veraltet. rgba gibt Transparenzkontrolle."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Geschichtete Schatten",
+        "text": "Mehrere Schatten durch Kommas stapeln für Realismus. Ein enger Nahschatten + ein diffuser Fernschatten ahmt nach, wie Licht tatsächlich verhält. Das ist das Geheimnis hinter polierten UI-Designsystemen."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Eingebetteter Schatten",
+        "text": "inset hinzufügen dreht den Schatten ins Innere der Box. Für gedrückte Button-Zustände, innere Tiefe bei Inputs oder eingesunkene Effekte verwendet."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Glow und text-shadow",
+        "text": "Null Versatz + große Unschärfe = Glühen. Funktioniert bei box-shadow für Halos, text-shadow für glühende Texteffekte. Die text-shadow-Syntax ist identisch, hat aber keine Ausbreitung."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "box-shadow", "note": "spread optional; positiv = nach außen" },
+        { "label": "Mehrere Schatten", "note": "Durch Komma getrennt, erster rendert oben" },
+        { "label": "inset", "note": "Schatten innerhalb der Box" },
+        { "label": "text-shadow", "note": "Gleiche Syntax, kein spread" },
+        { "label": "Glow", "note": "Null Versatz + große Unschärfe = Glühen" }
+      ],
+      "patterns": [
+        { "title": "Geschichteter Karten-Schatten" },
+        { "title": "Fokus-Ring (Barrierefreiheit)" }
+      ],
+      "whenToUse": "box-shadow für Tiefe, Hover-Zustände und Fokus-Ringe verwenden. Gegenüber border für Fokus-Indikatoren bevorzugen (beeinflusst das Layout nicht). text-shadow sparsam verwenden — nur für Hero-Überschriften oder Glüheffekte.",
+      "commonMistakes": [
+        "box-shadow bei hover animieren — wird nicht GPU-kompositiert. Opacity + ein Pseudo-Element für Performance verwenden",
+        "Keine Farbe beim Glow-Schatten — Standard ist currentColor, was möglicherweise nicht gewünscht ist",
+        "Vergessen, dass spread-radius 0 noch erforderlich ist, wenn rgba-Farben verwendet werden"
+      ]
+    }
+  },
+  "css-images": {
+    "title": "Bilder",
+    "description": "Responsive Bilder, object-fit und visuelles Styling",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Ungestylte Bilder laufen über",
+        "text": "Standardmäßig rendern Bilder in ihrer natürlichen (intrinsischen) Größe. Ein 1200px-Foto in einem 400px-Container läuft über — bricht dein Layout."
+      },
+      {
+        "animationStep": 1,
+        "heading": "max-width: 100%",
+        "text": "Die einfachste Lösung für responsive Bilder. Das Bild ist nie breiter als sein Container und skaliert proportional herunter, wenn der Container kleiner ist."
+      },
+      {
+        "animationStep": 2,
+        "heading": "object-fit: cover",
+        "text": "Wenn ein Bild einen Container fester Größe ohne Verzerrung füllen soll. cover skaliert und beschneidet das Bild zum Füllen. object-position verwenden, um den Beschneidungsanker zu steuern."
+      },
+      {
+        "animationStep": 3,
+        "heading": "border-radius",
+        "text": "Ecken eines beliebigen Elements mit border-radius abrunden. 50% bei einem quadratischen Element erzeugt einen perfekten Kreis — ideal für Avatare."
+      },
+      {
+        "animationStep": 4,
+        "heading": "aspect-ratio",
+        "text": "aspect-ratio sperrt die Proportionen eines Containers. Das Bild füllt ihn mit object-fit: cover. Dies verhindert Layout-Verschiebungen während Bilder geladen werden."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Responsives Bild", "note": "Diesen Reset immer einschließen" },
+        { "label": "object-fit", "note": "Wie Bild den Container füllt" },
+        { "label": "object-position", "note": "Beschneidungsanker-Punkt" },
+        { "label": "aspect-ratio", "note": "Proportionen sperren" },
+        { "label": "border-radius", "note": "Abrundung" }
+      ],
+      "patterns": [
+        { "title": "Avatar mit Kreisbeschneidung" },
+        { "title": "Kartenbild mit festem Verhältnis" }
+      ],
+      "whenToUse": "Immer max-width: 100% und height: auto global auf Bilder anwenden. object-fit: cover + aspect-ratio für Thumbnails und Karten verwenden. border-radius: 50% für Avatare. display: block hinzufügen, um den Inline-Abstand unterhalb von Bildern zu entfernen.",
+      "commonMistakes": [
+        "height: auto mit max-width: 100% vergessen — Bild wird verzerrt wenn height in HTML-Attributen gesetzt ist",
+        "object-fit ohne feste Höhe — der Container muss eine definierte Höhe haben, damit object-fit funktioniert",
+        "border-radius auf das img-Element innerhalb eines Containers verwenden — auch overflow: hidden auf dem Container setzen"
+      ]
+    }
+  },
+  "css-display-positioning": {
+    "title": "Display & Positionierung",
+    "description": "Wie Elemente fließen, gestapelt werden und sich relativ zueinander positionieren",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Block-Fluss",
+        "text": "Block-Elemente stapeln sich vertikal — jedes beginnt auf einer neuen Zeile und erstreckt sich über die verfügbare Breite. div, p, h1–h6 und section sind standardmäßig Block-Elemente."
+      },
+      {
+        "animationStep": 1,
+        "heading": "display: inline",
+        "text": "Inline-Elemente sitzen nebeneinander im Textfluss. Sie nehmen nur so viel Breite in Anspruch wie ihr Inhalt. width oder height können nicht auf Inline-Elemente gesetzt werden."
+      },
+      {
+        "animationStep": 2,
+        "heading": "display: inline-block",
+        "text": "Das Beste aus beiden Welten — sitzt inline wie Text, akzeptiert aber width, height, padding und margin wie ein Block."
+      },
+      {
+        "animationStep": 3,
+        "heading": "position: relative",
+        "text": "Das Element bleibt im normalen Fluss, kann aber mit top, right, bottom, left verschoben werden. Der Platz, den es eingenommen hätte, bleibt erhalten. Häufig als Positionierungsanker für absolute Kinder verwendet."
+      },
+      {
+        "animationStep": 4,
+        "heading": "position: absolute",
+        "text": "Entfernt das Element aus dem normalen Fluss — andere Elemente ignorieren es. Positioniert relativ zum nächsten Vorfahren mit position: relative (oder dem Viewport, wenn keiner vorhanden ist). Unverzichtbar für Tooltips, Dropdowns und Overlays."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "display-Werte", "note": "Kern-Display-Werte" },
+        { "label": "position: relative", "note": "Anker + Verschiebung" },
+        { "label": "position: absolute", "note": "Aus dem Fluss" },
+        { "label": "position: fixed", "note": "Relativ zum Viewport" },
+        { "label": "position: sticky", "note": "Scrollen dann haften" },
+        { "label": "z-index", "note": "Stapelreihenfolge (höher = oben)" }
+      ],
+      "patterns": [
+        { "title": "Badge / Tooltip verankert an einer Karte" },
+        { "title": "Vollflächiges Overlay" }
+      ],
+      "whenToUse": "block/inline-block für Dokumentenfluss, Flexbox für 1D-Layouts, Grid für 2D-Layouts verwenden. relative + absolute zusammen für Overlays, Badges und Tooltips verwenden. fixed für Navbars und Modals. sticky für Sidebars.",
+      "commonMistakes": [
+        "position: absolute ohne positionierten Vorfahren — es verankert sich am Viewport statt am beabsichtigten Elternelement",
+        "position verwenden wenn flexbox/grid einfacher ist — absolute Positionierung ist für überlappende Elemente, nicht für allgemeines Layout",
+        "z-index funktioniert nicht — gilt nur für positionierte Elemente (relative, absolute, fixed, sticky)"
+      ]
+    }
+  },
+  "css-flexbox": {
+    "title": "Flexbox",
+    "description": "Eindimensionales Layout — Elemente in Zeilen oder Spalten mühelos ausrichten",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Die klassische Navbar",
+        "text": "Flexbox löst die Navbar in 2 Zeilen: display: flex auf dem Container, dann justify-content: space-between schiebt das Logo nach links und Links nach rechts. Der Browser übernimmt alles dazwischen."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Responsive Karten-Zeilen",
+        "text": "flex-wrap: wrap hinzufügen, damit Karten automatisch in die nächste Zeile rutschen, wenn kein Platz mehr ist. gap ersetzt Margin-Hacks. Jede Karte bekommt flex: 1 1 250px — wachsen, schrumpfen, mindestens 250px breit."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Perfekte Zentrierung",
+        "text": "Die meistgesuchte CSS-Frage: Wie zentriere ich das? Mit Flexbox sind es zwei Eigenschaften auf dem Elternelement. justify-content zentriert auf der Hauptachse, align-items auf der Querachse."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Kern-Eigenschaften im Überblick",
+        "text": "Diese drei Flex-Eigenschaften decken 90 % der echten Layouts ab. Mit diesen beginnen, flex-direction: column für vertikale Stapel hinzufügen."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Container", "note": "Elternelement-Eigenschaften" },
+        { "label": "justify-content", "note": "Hauptachsen-Ausrichtung" },
+        { "label": "align-items", "note": "Querachsen-Ausrichtung" },
+        { "label": "flex (Kind)", "note": "Kindelement-Größen-Kurzform" },
+        { "label": "flex-wrap", "note": "Umbruch" },
+        { "label": "gap", "note": "Abstand zwischen Elementen" }
+      ],
+      "patterns": [
+        { "title": "Navbar: Logo links, Links rechts" },
+        { "title": "Vollbild-Zentrierung" },
+        { "title": "Responsive Kartenzeile mit Umbruch" }
+      ],
+      "whenToUse": "Flexbox ist für eindimensionale Layouts — eine Zeile oder eine Spalte. Für Navbars, Button-Gruppen, vertikales Zentrieren von Inhalten verwenden. CSS Grid für zweidimensionale Layouts verwenden.",
+      "commonMistakes": [
+        "Flex-Eigenschaften auf das falsche Element anwenden — direction/justify/align auf das Elternelement, flex/align-self auf Kinder",
+        "flex: 1 verwenden und feste Größe erwarten — flex: 1 lässt das Element den verbleibenden Platz füllen",
+        "margin statt gap verwenden — gap vermeidet doppelte Abstände an den Kanten, die margin verursacht"
+      ]
+    }
+  },
+  "css-grid": {
+    "title": "CSS Grid",
+    "description": "Zweidimensionales Layout — Zeilen und Spalten gleichzeitig steuern",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Bereiche benennen",
+        "text": "grid-template-areas lässt dich dein Layout als ASCII-Art zeichnen. Jeder String ist eine Zeile. Wiederholte Namen spannen mehrere Spalten. Ein Punkt (.) ist eine leere Zelle."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Kinder zuweisen",
+        "text": "Jedes Kind bekommt einen grid-area-Namen, der zur Vorlage passt. Der Browser platziert es genau — kein Verfolgen von Spalten-/Zeilennummern."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Responsiv mit Bereichen",
+        "text": "Die Vorlage in einer Media-Query neu definieren. Der Browser ordnet alle benannten Bereiche sofort neu an — kein Ändern einzelner grid-column/row-Werte."
+      },
+      {
+        "animationStep": 3,
+        "heading": "fr-Einheit und auto-fit",
+        "text": "fr (Brucheinheit) füllt verbleibenden Platz proportional. Mit repeat(auto-fill, minmax()) für Grids kombinieren, die ihre Spaltenanzahl automatisch anpassen."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Container", "note": "Einfaches 3-Spalten-Grid" },
+        { "label": "fr-Einheit", "note": "Brucheinheit" },
+        { "label": "repeat()", "note": "Wiederholungs-Kurzform" },
+        { "label": "grid-column", "note": "Kind-Spaltenplatzierung" },
+        { "label": "grid-row", "note": "Kind-Zeilenplatzierung" },
+        { "label": "grid-template-areas", "note": "Benannte Bereiche" }
+      ],
+      "patterns": [
+        { "title": "Responsives auto-fill Karten-Grid" },
+        { "title": "Seiten-Layout mit Sidebar" }
+      ],
+      "whenToUse": "Grid für zweidimensionale Layouts (Zeilen UND Spalten gleichzeitig) verwenden. Für eine einzelne Zeile oder Spalte ist Flexbox einfacher. Grid eignet sich hervorragend für Seiten-Level-Layouts und gleichhohe Karten-Grids.",
+      "commonMistakes": [
+        "fr mit % verwechseln — fr verteilt verbleibenden Platz nach festen Größen; % ist immer absolut",
+        "grid-column/row auf den Container anwenden — diese Eigenschaften gehören auf die Kinder",
+        "auto-fill vs. auto-fit verwechseln — auto-fit kollabiert leere Tracks, auto-fill bewahrt sie"
+      ]
+    }
+  },
+  "css-responsive": {
+    "title": "Responsives Design",
+    "description": "Media Queries, mobile-first CSS und fluid Layouts",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Ein Layout für alle Bildschirme",
+        "text": "Ohne Media Queries ist dein Layout fest. Auf Mobilgeräten kann Inhalt überlaufen oder beengt wirken. Responsives Design passt dein CSS an den Viewport an."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Media Query — Tablet-Breakpoint",
+        "text": "@media wendet Stile nur an, wenn eine Bedingung zutrifft. min-width: 768px bedeutet 'diese Stile auf Bildschirmen mit 768px Breite oder breiter anwenden' — der Tablet-Breakpoint."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Desktop-Breakpoint",
+        "text": "Media Queries vom kleinsten zum größten stapeln. Der 1024px-Breakpoint schaltet ein 3-Spalten-Layout für breitere Bildschirme frei."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Mobile-First-Ansatz",
+        "text": "Basisstile für Mobilgeräte schreiben, dann mit min-width-Queries Komplexität für größere Bildschirme hinzufügen. Dies ist das Gegenteil von 'Desktop-First' (max-width). Mobile-First ist der Industriestandard — es erzwingt einfachere Standardwerte."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Fluid Einheiten",
+        "text": "%, vw, vh und rem statt festem px für natürlich skalierende Layouts verwenden. clamp() ist leistungsstark: es setzt ein Minimum, einen fluid Wert und ein Maximum."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Media Query", "note": "Gängige Breakpoints" },
+        { "label": "clamp()", "note": "Fluid mit Grenzen" },
+        { "label": "min() / max()", "note": "Kurzform für begrenzte Breiten" },
+        { "label": "Viewport-Einheiten", "note": "vw, vh, vmin, vmax" }
+      ],
+      "patterns": [
+        { "title": "Mobile-first responsives Grid" },
+        { "title": "Fluid Container" }
+      ],
+      "whenToUse": "Immer Mobile-First bauen — Basisstile für kleine Bildschirme schreiben, mit min-width Media Queries erweitern. Gängige Breakpoints: 480px (großes Telefon), 768px (Tablet), 1024px (Laptop), 1280px (Desktop). clamp() für fluid Typografie verwenden.",
+      "commonMistakes": [
+        "Desktop-First (max-width-Queries) — führt zu komplexem CSS, das schwer zu pflegen ist. Zu min-width wechseln.",
+        "px-Breiten für Layouts hardcoden — % oder Grid mit fr-Einheiten verwenden, damit sie automatisch skalieren",
+        "Zu viele benutzerdefinierte Breakpoints — 3–4 konsistente Breakpoints im gesamten Projekt verwenden"
+      ]
+    }
+  },
+  "css-overflow": {
+    "title": "Overflow & Scrollen",
+    "description": "Steuern, was passiert, wenn Inhalt größer als sein Container ist — präzise verstecken, scrollen oder abschneiden",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Das Overflow-Problem",
+        "text": "Standardmäßig bedeutet overflow: visible, dass Inhalt aus seinem Container herausläuft. Das bricht Layouts — ein Textblock oder Bild kann Geschwisterelemente überlagern."
+      },
+      {
+        "animationStep": 1,
+        "heading": "overflow: hidden",
+        "text": "Schneidet Inhalt an der Container-Grenze ab. Nichts ist scrollbar — der Überlauf verschwindet einfach. Zum Einschließen von gefloateten Kindern, Abschneiden von Bildern oder Erstellen von Masken-Effekten verwenden."
+      },
+      {
+        "animationStep": 2,
+        "heading": "overflow: auto und scroll",
+        "text": "auto fügt eine Scrollleiste nur hinzu, wenn Inhalt überläuft. scroll zeigt die Scrollleiste immer. auto bevorzugen — es vermeidet Layout-Verschiebungen bei Inhaltsgrößenänderungen. Achsen separat mit overflow-x / overflow-y steuern."
+      },
+      {
+        "animationStep": 3,
+        "heading": "text-overflow: ellipsis",
+        "text": "Kürzt Text mit '...' an der Container-Kante. Erfordert drei zusammenwirkende Eigenschaften: white-space: nowrap (Umbruch verhindern), overflow: hidden (Überlauf verstecken), text-overflow: ellipsis (Punkte anzeigen)."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "overflow", "note": "Setzt sowohl x als auch y" },
+        { "label": "overflow-x / overflow-y", "note": "Achsen unabhängig steuern" },
+        { "label": "text-overflow", "note": "Alle drei für '...' erforderlich" },
+        { "label": "scroll-behavior", "note": "Sanftes Scrollen für Anker-Links" }
+      ],
+      "patterns": [
+        { "title": "Einzeilige Kürzung" },
+        { "title": "Mehrzeilige Kürzung (WebKit)" }
+      ],
+      "whenToUse": "overflow: hidden verwenden, um absolut positionierte Kinder einzuschließen oder Bilder abzuschneiden. auto für scrollbare Container verwenden. ellipsis für Kartentitel verwenden, die zu lang sein könnten.",
+      "commonMistakes": [
+        "white-space: nowrap fehlt bei text-overflow: ellipsis — Text umbricht statt zu kürzen",
+        "overflow: hidden auf body/html bricht position: fixed-Elemente",
+        "Vergessen, dass overflow: hidden den child box-shadow und border-radius-Effekte abschneidet"
+      ]
+    }
+  },
+  "css-custom-properties": {
+    "title": "CSS Custom Properties",
+    "description": "Variablen in CSS — einmal deklarieren, überall wiederverwenden, in Kind-Scopes überschreiben",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Das Problem: hartcodierte Werte",
+        "text": "Ohne Variablen wiederholst du denselben Farb-Hex in Dutzenden von Regeln. Die Markenfarbe ändern? Suchen und Ersetzen über jede Datei."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Mit --name deklarieren",
+        "text": "Custom Properties beginnen mit --. Sie auf :root deklarieren, um sie global verfügbar zu machen. Sie kaskadieren genau wie jede CSS-Eigenschaft."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Mit var() verwenden",
+        "text": "Die var()-Funktion liest den Custom-Property-Wert. --color-primary an einer Stelle ändern und jede Regel, die var(--color-primary) verwendet, wird automatisch aktualisiert."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Im Kind-Scope überschreiben",
+        "text": "Die Variable innerhalb eines Selektors neu deklarieren, um sie für diesen Teilbaum zu überschreiben. Kindelemente sehen den neuen Wert; Elemente außerhalb sind nicht betroffen."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Design-Token-System",
+        "text": "Ein kleiner Satz von Custom Properties (Farben, Abstände, Radien) wird dein Designsystem. Komponenten referenzieren Tokens — einen Token ändern und die gesamte UI aktualisiert sich."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Variable deklarieren", "note": ":root = globaler Scope" },
+        { "label": "Variable verwenden" },
+        { "label": "Fallback-Wert", "note": "Zweites Argument = Fallback wenn nicht gesetzt" },
+        { "label": "Im Scope überschreiben", "note": "Betrifft nur Kinder von .dark" }
+      ],
+      "whenToUse": "Custom Properties für jeden Wert verwenden, der 3+ Mal wiederholt wird, oder jeden Wert, der sich zwischen Themes oder Kontexten ändert.",
+      "commonMistakes": [
+        "Das --Präfix vergessen — --my-var ist gültig, my-var ist nur ein normales Attribut",
+        "var() ohne Fallback bei kritischen Eigenschaften verwenden — wenn undefiniert, ist die Eigenschaft ungültig",
+        "Custom Properties für Einzelwerte übermäßig verwenden — sie sind für gemeinsame, wiederverwendbare Tokens"
+      ]
+    }
+  },
+  "css-variables-theming": {
+    "title": "Theming & Dark Mode",
+    "description": "Hell-/Dunkle Themes mit CSS Custom Properties — ein Stylesheet, zwei Farbschemata",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Das Problem mit hartcodierten Farben",
+        "text": "Wenn Farben über 50 CSS-Dateien verstreut sind, bedeutet das Ändern deiner Markenfarbe grep-und-ersetzen über die gesamte Codebasis. Eine übersehene Instanz und deine UI ist inkonsistent."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Design-Tokens mit :root",
+        "text": ":root-Variablen sind global verfügbar. Das gesamte Design-Token-System hier definieren — Farben, Abstände, Radius, Schatten. Komponenten referenzieren Tokens, niemals Rohwerte."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Dark Mode mit Klassen-Override",
+        "text": "Dieselben Variablennamen in einer .dark-Klasse überschreiben. Diese Klasse in JavaScript zu <html> oder <body> hinzufügen/entfernen. Kein Komponentencode ändert sich — alle lesen dieselben Variablennamen."
+      },
+      {
+        "animationStep": 3,
+        "heading": "prefers-color-scheme",
+        "text": "Die OS-Präferenz des Nutzers automatisch respektieren. Die Media Query liest die Systemeinstellung und aktiviert die Dunkle-Token-Overrides — kein JavaScript für den Anfangszustand nötig."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Variable definieren", "note": ":root = höchster Scope (html-Element)" },
+        { "label": "Variable verwenden" },
+        { "label": "Fallback", "note": "Zweites Argument verwendet wenn var undefiniert" },
+        { "label": "Dunkler Override", "note": "Im Scope neu definieren, alle Konsumenten aktualisieren" },
+        { "label": "Systempräferenz", "note": "OS Dark Mode automatisch erkennen" }
+      ],
+      "patterns": [
+        { "title": "Token-System" }
+      ],
+      "whenToUse": "Immer Farben als CSS-Variablen definieren, nicht als Rohwerte. Mit prefers-color-scheme für automatischen Dark Mode kombinieren. Klassen-basiertes Umschalten verwenden, wenn ein nutzergesteuerter Schalter benötigt wird.",
+      "commonMistakes": [
+        "var() innerhalb von calc() verwenden — funktioniert einwandfrei: calc(var(--spacing) * 2)",
+        "Variablen innerhalb eines Komponenten-Selektors statt :root definieren — sie sind dann nicht global verfügbar",
+        "Keinen Fallback-Wert für Variablen angeben, die möglicherweise nicht definiert sind"
+      ]
+    }
+  },
+  "css-transforms": {
+    "title": "CSS Transforms",
+    "description": "Elemente bewegen, rotieren, skalieren und verzerren ohne den Dokumentenfluss zu beeinflussen",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Kein Transform",
+        "text": "Ohne Transform sitzt das Element in seinem normalen Dokumentenfluss. Transforms werden visuell angewendet — sie schieben andere Elemente nicht weg."
+      },
+      {
+        "animationStep": 1,
+        "heading": "translate()",
+        "text": "translate(x, y) bewegt das Element von seiner normalen Position. Anders als margin beeinflusst es das umliegende Layout nicht — andere Elemente bleiben an ihrem Platz."
+      },
+      {
+        "animationStep": 2,
+        "heading": "rotate()",
+        "text": "rotate(angle) dreht das Element um seinen transform-origin (Standard: Mitte). Positive Werte = im Uhrzeigersinn."
+      },
+      {
+        "animationStep": 3,
+        "heading": "scale()",
+        "text": "scale(n) skaliert das Element visuell. 1 = Originalgröße, 1,5 = 50% größer, 0,5 = halbe Größe."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Transforms kombinieren",
+        "text": "Mehrere Transform-Funktionen stapeln sich von links nach rechts. Die Reihenfolge ist wichtig — rotieren dann verschieben ist anders als verschieben dann rotieren."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Translate", "note": "translateX() / translateY() funktionieren auch" },
+        { "label": "Rotate", "note": "Positiv = im Uhrzeigersinn" },
+        { "label": "Scale", "note": "scaleX() / scaleY() für eine Achse" },
+        { "label": "Kombiniert", "note": "Reihenfolge ist wichtig!" },
+        { "label": "Transform Origin", "note": "Standard ist center center" }
+      ],
+      "whenToUse": "Transforms für Hover-Effekte, Animationen und Positionierung von UI-Elementen verwenden. transform gegenüber margin/top/left für animierte Bewegungen bevorzugen — es ist GPU-beschleunigt.",
+      "commonMistakes": [
+        "transform mit position verwechseln — transform ist nur visuell, beeinflusst den Fluss nicht",
+        "Vergessen, dass die Reihenfolge wichtig ist — rotate dann translate != translate dann rotate",
+        "px für translate bei fluid Layouts verwenden — % verwenden, um relativ zum Element selbst zu verschieben"
+      ]
+    }
+  },
+  "css-transitions": {
+    "title": "CSS Transitions",
+    "description": "Eigenschaftsänderungen zwischen Zuständen sanft animieren",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Ohne Transition",
+        "text": "Ohne Transition springt jede Eigenschaftsänderung sofort. Es funktioniert, wirkt aber abrupt."
+      },
+      {
+        "animationStep": 1,
+        "heading": "transition: property duration hinzufügen",
+        "text": "transition weist den Browser an, die benannte Eigenschaft über eine gegebene Dauer zu animieren. Die Animation spielt in beide Richtungen automatisch."
+      },
+      {
+        "animationStep": 2,
+        "heading": "transition: all",
+        "text": "all animiert jede sich ändernde Eigenschaft. Bequem, kann aber langsam sein — für Performance lieber spezifische Eigenschaften aufführen."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Timing-Funktionen",
+        "text": "Die Timing-Funktion steuert das Tempo. ease-in-out beginnt langsam, beschleunigt, dann verlangsamt — das natürlichste Gefühl für UI."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Mehrere Transitions",
+        "text": "Durch Komma trennen, um jeder Eigenschaft eine andere Dauer zu geben. Häufig: Farbe transitiert langsamer als transform."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Die richtigen Eigenschaften animieren",
+        "text": "Nicht alle CSS-Eigenschaften sind gleich. transform und opacity laufen auf dem GPU-Compositor-Thread — sie lösen niemals Neuberechnungen des Layouts aus. width, height, top, left erzwingen bei jedem Frame einen Reflow und verursachen Ruckeln. translate() statt left/top für Bewegungen bevorzugen."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Einzelne Eigenschaft", "note": "property duration timing" },
+        { "label": "Mehrere" },
+        { "label": "Alle Eigenschaften", "note": "Bequem, aber für Performance vermeiden" },
+        { "label": "Mit Verzögerung", "note": "Letzter Wert = Verzögerung vor Beginn" }
+      ],
+      "whenToUse": "Transitions für Zustandsänderungen durch CSS-Pseudo-Klassen (:hover, :focus, :checked) oder Klassen-Umschalten verwenden. Für komplexe zeitgesteuerte Sequenzen stattdessen animation verwenden.",
+      "commonMistakes": [
+        "transition auf :hover setzen — spielt nur beim Hover-Eingang, nicht beim Hover-Ausgang. transition immer auf das Basiselement setzen",
+        "transition: all in leistungssensitiven Komponenten — stattdessen spezifische Eigenschaften aufführen",
+        "Layout-Eigenschaften animieren (width, height) — transform und opacity animieren; sie sind GPU-beschleunigt"
+      ]
+    }
+  },
+  "css-animations": {
+    "title": "CSS Animationen",
+    "description": "@keyframes-Animationen, die automatisch laufen, wiederholen und füllen",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Animationen vs. Transitions",
+        "text": "Transitions reagieren auf Zustandsänderungen. Animationen laufen von selbst — keine Benutzerinteraktion nötig. Sie haben definierte Keyframes, können schleifen und pausieren."
+      },
+      {
+        "animationStep": 1,
+        "heading": "@keyframes",
+        "text": "Die Animation mit @keyframes + einem Namen definieren. from/to für zwei Zustände verwenden, oder Prozentsätze (0%, 50%, 100%) für mehrere Stopps."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Mit animation-Kurzform anwenden",
+        "text": "Die animation-Kurzform nimmt Name, Dauer, Timing und mehr. Ohne Dauer spielt die Animation in 0 Sekunden und ist unsichtbar."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Mit iteration-count wiederholen",
+        "text": "animation-iteration-count: infinite schleift für immer. alternate verwenden, um vorwärts dann rückwärts zu spielen — erzeugt sanftes Bouncing ohne Sprünge."
+      },
+      {
+        "animationStep": 4,
+        "heading": "animation-fill-mode",
+        "text": "fill-mode steuert den Zustand des Elements nach der Animation. forwards hält den letzten Keyframe — das Element bleibt dort, wo die Animation endete."
+      },
+      {
+        "animationStep": 5,
+        "heading": "animation-fill-mode",
+        "text": "Ohne fill-mode springt ein Element nach dem Ende der Animation in seinen ursprünglichen Zustand zurück. forwards hält den letzten Keyframe angewendet. backwards wendet den ersten Keyframe sofort an (vor Verzögerung). both macht beides."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "@keyframes" },
+        { "label": "Kurzform anwenden", "note": "name duration timing fill-mode" },
+        { "label": "Endlos schleifen" },
+        { "label": "Bounce (alternate)", "note": "Spielt vorwärts dann rückwärts" },
+        { "label": "Mit Verzögerung", "note": "Vierter Wert = Verzögerung" }
+      ],
+      "whenToUse": "@keyframes für Schleifen-Effekte (Spinner, Pulse), Eingangs-Animationen (fade-in, slide-in) oder mehrstufige Sequenzen verwenden. Transitions für einfache Zwei-Zustand-Änderungen verwenden.",
+      "commonMistakes": [
+        "Layout-Eigenschaften animieren (width, height) — immer stattdessen transform und opacity animieren",
+        "animation-fill-mode: forwards vergessen, wenn der Endzustand bestehen bleiben soll",
+        "animation-iteration-count nicht setzen, wenn es schleifen soll (Standard ist 1)"
+      ]
+    }
+  },
+  "css-tailwind": {
+    "title": "Tailwind CSS",
+    "description": "Tailwind CSS ist ein Utility-First-Framework: kleine, zweckgebundene Klassen wie `flex`, `p-4` oder `text-blue-500` direkt auf Elementen anwenden.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Utility-First-Ansatz",
+        "text": "In Tailwind stylt man Elemente, indem man kleine zweckgebundene Klassen direkt auf dem Element kombiniert, anstatt benutzerdefiniertes CSS zu schreiben. Jede Klasse macht genau eine Sache: p-4 fügt Padding hinzu, text-blue-500 setzt die Farbe, flex aktiviert Flexbox. Kein Benennen von CSS-Klassen erforderlich."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Responsive Präfixe",
+        "text": "Tailwind ist Mobile-First. Unpräfixierte Klassen gelten für alle Bildschirmgrößen. Responsive Präfixe (sm:, md:, lg:, xl:) wenden die Klasse nur ab diesem Breakpoint und darüber an. Stapeln für vollständig responsive Layouts ohne Media-Query-Boilerplate."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Gängige Utility-Klassen",
+        "text": "Tailwind deckt Abstände (p-, m-), Größen (w-, h-), Typografie (text-, font-), Farben (bg-, text-, border-), Flexbox/Grid (flex, grid, items-, justify-), Rahmen (rounded-, border-) und Effekte (shadow-, opacity-) ab. Die vollständige Liste ist in den offiziellen Docs."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Setup: CDN und npm",
+        "text": "Für schnelles Prototyping das CDN-Play-Skript zum HTML hinzufügen. Für Produktion via npm installieren und ein PostCSS-Plugin oder die Vite/CLI-Integration verwenden — dies ermöglicht das Bereinigen ungenutzter Stile und das Anpassen des Designsystems via tailwind.config.js."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Padding / Margin" },
+        { "label": "Flex-Layout" },
+        { "label": "Responsive Präfix" },
+        { "label": "Hover-Zustand" },
+        { "label": "Text & Farbe" }
+      ],
+      "patterns": [
+        { "title": "Button" },
+        { "title": "Karte" }
+      ],
+      "whenToUse": "Tailwind verwenden, wenn schnelle Iteration ohne Wechsel zwischen HTML- und CSS-Dateien gewünscht ist. Ideal für komponentenbasierte Projekte.",
+      "commonMistakes": [
+        "Versuchen, dynamische Klassen-Strings zu schreiben, die Tailwind beim Build nicht erkennen kann — safelist für dynamische Werte verwenden.",
+        "Die Reihenfolge der Responsive-Präfixe vergessen — Mobile-First bedeutet, dass Basisstile für alle Größen gelten.",
+        "Beliebige Werte zu oft verwenden (`w-[347px]`) — Abstands-Skalierungswerte für Konsistenz bevorzugen."
+      ]
+    }
+  }
+}
