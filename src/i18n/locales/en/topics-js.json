@@ -224,6 +224,11 @@
         "animationStep": 4,
         "heading": "Lexical this in Arrow Functions",
         "text": "Arrow functions do not have their own `this`. They inherit `this` from the enclosing scope where they were defined. This makes them ideal for callbacks inside methods, but unsuitable for defining object methods themselves."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Default & Rest Parameters",
+        "text": "Default parameters provide a fallback value when an argument is omitted or undefined. Rest parameters collect all remaining arguments into an array — they must be last in the parameter list."
       }
     ]
   },
