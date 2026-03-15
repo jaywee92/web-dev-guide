@@ -214,7 +214,22 @@
       { "animationStep": 0, "heading": "DOM-Baumstruktur", "text": "Das DOM repräsentiert dein HTML als Baum von Knoten. Das document-Objekt ist die Wurzel. HTML-Elemente sind Element-Knoten; Text darin sind Text-Knoten. JavaScript kann diesen Baum über Eltern-, Kind- und Geschwisterbeziehungen traversieren." },
       { "animationStep": 1, "heading": "Elemente auswählen", "text": "querySelector gibt das erste Element zurück, das einem CSS-Selektor entspricht. querySelectorAll gibt eine NodeList aller Übereinstimmungen zurück. getElementById und getElementsByClassName sind ältere Alternativen — querySelector ist flexibler und wird bevorzugt." },
       { "animationStep": 2, "heading": "Elemente erstellen und einfügen", "text": "createElement(tag) erstellt ein losgelöstes Element. Setze seine Eigenschaften (textContent, className usw.) und füge es dann mit appendChild, prepend oder insertBefore in das DOM ein. Das Element erscheint auf der Seite erst nach dem Einfügen." },
-      { "animationStep": 3, "heading": "Element-Eigenschaften lesen und ändern", "text": "Verwende textContent, um Text sicher zu lesen oder zu setzen. classList bietet add, remove, toggle und contains für das CSS-Klassen-Management. setAttribute / getAttribute lesen und schreiben HTML-Attribute. style ermöglicht das direkte Setzen von Inline-CSS." }
+      { "animationStep": 3, "heading": "Element-Eigenschaften lesen und ändern", "text": "Verwende textContent, um Text sicher zu lesen oder zu setzen. classList bietet add, remove, toggle und contains für das CSS-Klassen-Management. setAttribute / getAttribute lesen und schreiben HTML-Attribute. style ermöglicht das direkte Setzen von Inline-CSS." },
+      {
+        "animationStep": 4,
+        "heading": "DOM-Interfaces",
+        "text": "Das DOM ist als Hierarchie von Interfaces aufgebaut. Document ist der Einstiegspunkt. Node ist die Basis für alle DOM-Knoten (Elemente, Text, Kommentare). Element erweitert Node und fügt HTML-spezifische Methoden hinzu. Dieses Hierarchieverständnis erklärt, welche Methoden auf welchen Objekten verfügbar sind."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Erweiterte Abfragen",
+        "text": "Neben querySelector sind zwei Traversal-Methoden besonders nützlich: closest() durchläuft die Vorfahrenkette nach oben und gibt das erste passende Element zurück — ideal für Event-Delegation. matches() prüft, ob ein Element einem Selektor entspricht — nützlich in Event-Handlern zum Filtern von Zielelementen."
+      },
+      {
+        "animationStep": 6,
+        "heading": "NodeList vs. Array",
+        "text": "querySelectorAll gibt eine NodeList zurück, die einem Array ähnelt, aber keine Array-Methoden (map, filter, reduce) besitzt. Konvertiere sie mit Array.from() oder Spread-Syntax. Außerdem: getElementsByClassName und getElementsByTagName geben live HTMLCollections zurück, die sich automatisch aktualisieren; querySelectorAll gibt einen statischen Snapshot zurück."
+      }
     ],
     "cheatSheet": {
       "syntax": [
