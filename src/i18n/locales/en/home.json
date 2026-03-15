@@ -1,1 +1,12 @@
-{}
+{
+  "badge": "Learning by Animation",
+  "heading1": "Web Dev",
+  "heading2": "Visual Guide",
+  "tagline": "From Bottom to Top — every concept animated, every skill earned. Watch it work, then build it yourself.",
+  "groups": {
+    "markup-style": "MARKUP & STYLE",
+    "programmierung": "PROGRAMMING",
+    "frameworks-web": "FRAMEWORKS & WEB",
+    "tools": "TOOLS"
+  }
+}
