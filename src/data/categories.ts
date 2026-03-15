@@ -89,14 +89,44 @@ export const CATEGORIES: Category[] = [
     cardEmoji: '✨️',
   },
   {
+    id: 'css-frameworks',
+    title: 'CSS Frameworks',
+    description: 'Tailwind · Utility-first CSS',
+    color: '#06b6d4',
+    icon: 'Wind',
+    topicIds: ['css-tailwind'],
+    cardLabel: 'Frameworks',
+    cardEmoji: '🌊',
+  },
+  {
     id: 'javascript',
-    title: 'JavaScript',
-    description: 'Language of the browser',
+    title: 'JavaScript Basics',
+    description: 'Variables · Arrays · Functions · Control Flow',
     color: '#fbbf24',
     icon: 'Zap',
-    topicIds: ['js-variables', 'js-arrays', 'js-event-loop', 'js-closures', 'js-functions', 'js-promises', 'js-destructuring'],
+    topicIds: ['js-variables', 'js-control-flow', 'js-arrays', 'js-functions', 'js-destructuring'],
     cardLabel: 'Basics',
     cardEmoji: '📖',
+  },
+  {
+    id: 'javascript-oop',
+    title: 'Objects & Classes',
+    description: 'OOP · Classes · Prototypes · Timers',
+    color: '#fbbf24',
+    icon: 'Box',
+    topicIds: ['js-oop', 'js-timers', 'js-event-loop', 'js-closures'],
+    cardLabel: 'OOP',
+    cardEmoji: '🧱',
+  },
+  {
+    id: 'javascript-async',
+    title: 'Async & Modules',
+    description: 'Promises · Async/Await · ESM · npm',
+    color: '#fbbf24',
+    icon: 'Layers',
+    topicIds: ['js-promises', 'js-modules'],
+    cardLabel: 'Async',
+    cardEmoji: '⚡',
   },
   {
     id: 'typescript',
@@ -124,7 +154,7 @@ export const CATEGORIES: Category[] = [
     description: 'Browser built-ins',
     color: '#34d399',
     icon: 'Globe',
-    topicIds: ['webapi-fetch', 'webapi-events', 'webapi-storage'],
+    topicIds: ['webapi-fetch', 'webapi-dom', 'webapi-events', 'webapi-storage'],
     cardLabel: 'Browser APIs',
     cardEmoji: '🌐',
   },
@@ -174,12 +204,12 @@ export const CATEGORY_GROUPS: CategoryGroup[] = [
   {
     key: 'markup-style',
     label: 'MARKUP & STYLE',
-    categoryIds: ['html-core', 'html-structure', 'html-interactive', 'css-basics', 'css-layout', 'css-modern'],
+    categoryIds: ['html-core', 'html-structure', 'html-interactive', 'css-basics', 'css-layout', 'css-modern', 'css-frameworks'],
   },
   {
     key: 'programmierung',
     label: 'PROGRAMMING',
-    categoryIds: ['javascript', 'typescript'],
+    categoryIds: ['javascript', 'javascript-oop', 'javascript-async', 'typescript'],
   },
   {
     key: 'frameworks-web',
@@ -203,6 +233,9 @@ export const TECH_SECTION_META: Record<string, TechSectionMeta> = {
   html:        { title: 'HTML',       subtitle: 'Hypertext Markup Language',  color: '#4ade80' },
   css:         { title: 'CSS',        subtitle: 'Cascading Style Sheets',     color: '#5b9cf5' },
   javascript:  { title: 'JavaScript', subtitle: 'Language of the Web',        color: '#fbbf24' },
+  'javascript-oop':   { title: 'JavaScript', subtitle: 'Objects & Classes',  color: '#fbbf24' },
+  'javascript-async': { title: 'JavaScript', subtitle: 'Async & Modules',    color: '#fbbf24' },
+  'css-frameworks':   { title: 'CSS',         subtitle: 'Utility Frameworks', color: '#06b6d4' },
   typescript:  { title: 'TypeScript', subtitle: 'Typed JavaScript',           color: '#818cf8' },
   react:       { title: 'React',      subtitle: 'UI Component Framework',     color: '#f472b6' },
   webapis:     { title: 'Web APIs',   subtitle: 'Browser Interfaces',         color: '#34d399' },
@@ -219,6 +252,8 @@ export function getTechKey(categoryId: CategoryId): string {
   if (categoryId.startsWith('html-')) return 'html'
   if (categoryId.startsWith('css-')) return 'css'
   if (categoryId === 'git' || categoryId.startsWith('git-')) return 'git'
+  if (categoryId === 'javascript-oop' || categoryId === 'javascript-async') return 'javascript'
+  if (categoryId === 'css-frameworks') return 'css'
   return categoryId
 }
 
@@ -259,6 +294,12 @@ export const TOPIC_ICONS: Record<string, string> = {
   'css-transforms':            'RotateCcw',
   'css-transitions':           'Zap',
   'css-animations':            'Play',
+  'js-control-flow': 'GitBranch',
+  'js-oop':          'Box',
+  'js-timers':       'Timer',
+  'js-modules':      'Package',
+  'webapi-dom':      'Layout',
+  'css-tailwind':    'Wind',
   'js-variables':              'Braces',
   'js-arrays':                 'List',
   'js-event-loop':             'RefreshCw',
@@ -322,6 +363,12 @@ export const TOPIC_LABELS: Record<string, string> = {
   'css-transforms':              'Transforms',
   'css-transitions':             'Transitions',
   'css-animations':              'Animations',
+  'js-control-flow': 'Control Flow',
+  'js-oop':          'Objects & Classes',
+  'js-timers':       'Timers & Globals',
+  'js-modules':      'Modules & Bundlers',
+  'webapi-dom':      'DOM API',
+  'css-tailwind':    'Tailwind CSS',
   'js-variables':                'Variables',
   'js-arrays':                   'Arrays',
   'js-event-loop':               'Event Loop',
