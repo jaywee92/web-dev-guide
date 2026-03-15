@@ -84,6 +84,95 @@
       ]
     }
   },
+  "http-ssr-csr": {
+    "title": "SSR vs CSR",
+    "description": "Server-Side Rendering vs Client-Side Rendering — how web pages are built and delivered.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Server-Side Rendering (SSR)",
+        "text": "In SSR, the server generates the complete HTML for each request and sends a ready-to-display page to the browser. The browser receives full markup immediately — minimal JavaScript needed to show content. Examples: PHP, Django templates, Ruby on Rails, Next.js with getServerSideProps. Pros: fast first paint, excellent SEO, works without JS. Cons: full server hit per navigation, slower subsequent transitions."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Client-Side Rendering (CSR)",
+        "text": "In CSR, the server sends a minimal HTML shell plus a JavaScript bundle. The browser downloads, parses, and executes the JS, which then renders the full UI. Examples: Create React App, Vue SPA, Angular — any single-page application. Pros: fast navigation after initial load, rich interactions, cheap static hosting. Cons: slow initial load (JS bundle must download+parse+execute), SEO requires extra configuration."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Direct Comparison",
+        "text": "SSR and CSR make different trade-offs. SSR wins on first paint speed and SEO but requires a server for every page view. CSR wins on subsequent navigation speed and hosting cost but struggles with initial load time and search engine crawling. Neither is universally better — choose based on your app's priorities."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Hybrid Approaches",
+        "text": "Modern meta-frameworks blend SSR and CSR per route. SSG (Static Site Generation) pre-builds HTML at build time — fastest possible, no server needed (Astro, Next.js). ISR (Incremental Static Regeneration) rebuilds pages on demand or on schedule. Islands Architecture uses SSR for the shell with selective CSR hydration for interactive parts. Next.js, Nuxt, and SvelteKit let you choose SSR/CSR/SSG per route."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "SSR", "note": "Fast first paint, good SEO" },
+        { "label": "CSR", "note": "Fast navigation, slow initial load" },
+        { "label": "SSG", "note": "Fastest, no server needed" }
+      ],
+      "patterns": [
+        { "title": "Choose per route (Next.js)" }
+      ],
+      "whenToUse": "Use SSR for content that must be fresh per request and SEO-critical (product pages, news). Use CSR for dashboards and app UIs behind a login. Use SSG for marketing pages, docs, and blogs.",
+      "commonMistakes": [
+        "Assuming CSR is always faster — for first-time visitors on slow connections, SSR often wins.",
+        "Using SSR for everything in Next.js — SSG pages are served from CDN and are much faster.",
+        "Ignoring hydration — React SSR sends HTML, then 'hydrates' it with JS; mismatches cause flicker."
+      ]
+    }
+  },
+  "db-intro": {
+    "title": "Databases & SQL Intro",
+    "description": "What databases are, why we use them, and how relational and NoSQL databases differ.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "What is a Database?",
+        "text": "A database is an organised collection of structured data managed by a Database Management System (DBMS). Key components: the data itself, a schema (structure definition), the DBMS engine, queries, and users. Unlike plain files, databases support concurrent access, complex queries, referential integrity, and transactions."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Relational Databases",
+        "text": "Relational databases store data in tables — rows are records, columns are typed attributes. A primary key uniquely identifies each row (often SERIAL or AUTO_INCREMENT). ACID guarantees ensure data integrity: Atomicity (all-or-nothing), Consistency (always valid state), Isolation (concurrent-safe), Durability (committed = permanent). Examples: PostgreSQL, MySQL, SQLite."
+      },
+      {
+        "animationStep": 2,
+        "heading": "NoSQL Databases",
+        "text": "NoSQL databases trade rigid schemas for flexibility and scale. Four main types: Document stores (MongoDB) — JSON-like documents with nested data. Key-Value (Redis) — ultra-fast in-memory, ideal for caching. Graph (Neo4j) — nodes and edges for relationship-heavy queries. Column-oriented (Cassandra) — high write throughput for time-series and analytics."
+      },
+      {
+        "animationStep": 3,
+        "heading": "SQL vs NoSQL: When to Use Which",
+        "text": "Use SQL when: data has clear relationships, you need ACID guarantees, or you run complex JOIN queries and reports. Use NoSQL when: data structure is variable or nested, you need massive horizontal scale, or your workload is write-heavy. In practice, many systems use both — PostgreSQL for persistent data, Redis for caching."
+      },
+      {
+        "animationStep": 4,
+        "heading": "SQL Syntax Primer",
+        "text": "SQL (Structured Query Language) is the standard for relational databases. CREATE TABLE defines a table's schema with column names, types, and constraints. Common data types: SERIAL (auto-increment integer), VARCHAR(n) (string up to n chars), INT, BOOLEAN, TIMESTAMP, TEXT (unlimited string), DECIMAL(p,s). Constraints: PRIMARY KEY, NOT NULL, UNIQUE, DEFAULT, FOREIGN KEY."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "CREATE TABLE", "note": "Define schema with types and constraints" },
+        { "label": "Common data types", "note": "Most-used PostgreSQL types" },
+        { "label": "Constraints", "note": "Enforce data integrity" }
+      ],
+      "patterns": [
+        { "title": "Table with FK" }
+      ],
+      "whenToUse": "Use a relational database (PostgreSQL) when your data has relationships, you need ACID guarantees, or you run complex queries. Add a key-value store (Redis) for caching or sessions.",
+      "commonMistakes": [
+        "Using TEXT for everything — choosing the right data type enables better validation and index performance.",
+        "Skipping NOT NULL — allow NULL only when absence of a value is genuinely meaningful.",
+        "Forgetting REFERENCES (foreign keys) — without them the database cannot enforce referential integrity."
+      ]
+    }
+  },
   "postgres-queries": {
     "title": "SQL Queries",
     "description": "SELECT, WHERE, ORDER BY — read data from PostgreSQL",
@@ -95,7 +184,17 @@
       { "animationStep": 4, "heading": "LIMIT — control result count", "text": "LIMIT caps the number of rows returned. Combined with OFFSET, it implements pagination." },
       { "animationStep": 5, "heading": "SELECT with WHERE and ORDER BY", "text": "WHERE filters rows that match a condition. You can combine multiple conditions with AND and OR. ORDER BY sorts results — ASC (default) for ascending, DESC for descending. Always alias ambiguous columns in multi-table queries." },
       { "animationStep": 6, "heading": "Aggregate Functions: COUNT, SUM, AVG", "text": "Aggregate functions compute a single result from a set of rows. COUNT(*) counts rows, SUM adds numeric values, AVG computes the mean, MIN/MAX find extremes. They are typically combined with GROUP BY." },
-      { "animationStep": 7, "heading": "GROUP BY and HAVING", "text": "GROUP BY collapses rows that share the same value in a column into a single row, letting aggregates operate per group. HAVING filters groups after aggregation — like WHERE, but for groups." }
+      { "animationStep": 7, "heading": "GROUP BY and HAVING", "text": "GROUP BY collapses rows that share the same value in a column into a single row, letting aggregates operate per group. HAVING filters groups after aggregation — like WHERE, but for groups." },
+      {
+        "animationStep": 8,
+        "heading": "HAVING vs WHERE",
+        "text": "WHERE filters individual rows before GROUP BY runs. HAVING filters groups after GROUP BY — it can reference aggregate functions. Rule of thumb: if your condition uses COUNT, SUM, or AVG, use HAVING; otherwise use WHERE. Both can appear in the same query."
+      },
+      {
+        "animationStep": 9,
+        "heading": "Subqueries",
+        "text": "A subquery is a SELECT nested inside another query. The inner query runs first; its result is used by the outer query. Scalar subqueries return a single value (usable in WHERE). IN subqueries return a list of values. Correlated subqueries reference the outer query's columns — powerful but run once per outer row, so prefer JOINs for performance on large datasets."
+      }
     ],
     "cheatSheet": {
       "syntax": [
