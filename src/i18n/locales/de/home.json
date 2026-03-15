@@ -1,0 +1,12 @@
+{
+  "badge": "Lernen durch Animation",
+  "heading1": "Web Dev",
+  "heading2": "Visual Guide",
+  "tagline": "Komplexe Konzepte. Einfache Animationen. Von HTML bis PostgreSQL — sieh wie es funktioniert, dann bau es selbst.",
+  "groups": {
+    "markup-style": "MARKUP & STIL",
+    "programmierung": "PROGRAMMIERUNG",
+    "frameworks-web": "FRAMEWORKS & WEB",
+    "tools": "WERKZEUGE"
+  }
+}

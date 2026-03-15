@@ -1,0 +1,605 @@
+{
+  "js-variables": {
+    "title": "Variables & Data Types",
+    "description": "var, let, const and the six primitive types in JavaScript",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "var — the old way",
+        "text": "var is function-scoped and hoisted, which causes unexpected bugs. Modern JavaScript avoids it."
+      },
+      {
+        "animationStep": 1,
+        "heading": "let — block-scoped",
+        "text": "let creates a variable that lives only in the block where it is declared. You can reassign it."
+      },
+      {
+        "animationStep": 2,
+        "heading": "const — cannot be reassigned",
+        "text": "const bindings cannot be reassigned after creation. For objects and arrays, the contents can still change."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Primitive types",
+        "text": "JavaScript has six primitive types. They are immutable values — not objects."
+      },
+      {
+        "animationStep": 4,
+        "heading": "typeof operator",
+        "text": "The typeof operator returns a string describing the type. Watch out: typeof null returns \"object\" — a known JavaScript quirk."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Arithmetic Operators",
+        "text": "JavaScript supports the standard arithmetic operators: + (add), - (subtract), * (multiply), / (divide), % (modulo), and ** (exponentiation). The modulo operator is especially useful for checking if a number is even or odd."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Comparison & Logical Operators",
+        "text": "Comparison operators (===, !==, >, <, >=, <=) return true or false. Always prefer === (strict equality) over == to avoid type coercion surprises. Logical operators && (AND), || (OR), and ! (NOT) combine boolean expressions."
+      },
+      {
+        "animationStep": 7,
+        "heading": "try / catch / finally",
+        "text": "Wrap risky code in a try block. If an error is thrown, execution jumps to the catch block where you can handle it gracefully. The optional finally block always runs, regardless of whether an error occurred."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        {
+          "label": "const / let / var",
+          "note": "Prefer const; use let when value changes; never var"
+        },
+        {
+          "label": "typeof",
+          "note": "Returns type as a string; null quirk is historical"
+        },
+        {
+          "label": "Object destructuring",
+          "note": "Extracts named properties from an object"
+        },
+        {
+          "label": "Array destructuring",
+          "note": "Extracts by position"
+        },
+        {
+          "label": "Template literals",
+          "note": "Backticks allow interpolation and multiline strings"
+        }
+      ],
+      "patterns": [
+        { "title": "Swapping variables" },
+        { "title": "Default destructuring" }
+      ],
+      "whenToUse": "Use const by default for every variable; switch to let only when you need to reassign. Use destructuring to pull values out of objects/arrays cleanly, and template literals for any string that embeds a variable.",
+      "commonMistakes": [
+        "Using var inside a for loop — it leaks into the surrounding function scope; use let instead to get per-iteration block scope",
+        "Confusing typeof null === \"object\" with null actually being an object — it is a primitive; check with val === null explicitly",
+        "Assuming const prevents mutation of objects — const only prevents reassignment of the binding; object properties can still change freely"
+      ]
+    }
+  },
+  "js-arrays": {
+    "title": "Arrays & Objects",
+    "description": "Ordered lists and key-value structures — the backbone of JS data",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Arrays — ordered lists",
+        "text": "An array holds ordered values accessible by numeric index starting at 0."
+      },
+      {
+        "animationStep": 1,
+        "heading": "push and pop",
+        "text": "push() adds to the end; pop() removes from the end. There is also unshift/shift for the beginning."
+      },
+      {
+        "animationStep": 2,
+        "heading": "map — transform every element",
+        "text": "map() returns a new array with each element transformed by a callback. The original array is not modified."
+      },
+      {
+        "animationStep": 3,
+        "heading": "filter — keep matching elements",
+        "text": "filter() returns a new array containing only elements where the callback returns true."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Objects — key-value pairs",
+        "text": "Objects store named properties. Access them with dot notation or bracket notation."
+      },
+      {
+        "animationStep": 5,
+        "heading": "push / pop / shift / unshift",
+        "text": "These four methods mutate the array in place. push/pop work at the end; shift/unshift at the start. push and unshift return the new length; pop and shift return the removed element."
+      },
+      {
+        "animationStep": 6,
+        "heading": "slice and join",
+        "text": "slice(start, end) returns a new array from index start up to (but not including) end — the original is unchanged. join(separator) converts all elements to a string separated by the given character."
+      },
+      {
+        "animationStep": 7,
+        "heading": "splice — insert and remove in place",
+        "text": "splice(start, deleteCount, ...items) mutates the array: removes deleteCount elements at start, then inserts any provided items. It returns the removed elements."
+      },
+      {
+        "animationStep": 8,
+        "heading": "reverse",
+        "text": "reverse() reverses the array in place and returns the same array (mutates the original). To reverse without mutation, spread into a new array first."
+      },
+      {
+        "animationStep": 9,
+        "heading": "forEach and map",
+        "text": "forEach runs a function for every element — useful for side effects but returns nothing. map returns a new array of transformed values. Use map when you need the result; forEach when you just need to act."
+      },
+      {
+        "animationStep": 10,
+        "heading": "find and filter",
+        "text": "find returns the first element that matches the predicate (or undefined). filter returns a new array of all matching elements. Both are non-mutating."
+      },
+      {
+        "animationStep": 11,
+        "heading": "reduce",
+        "text": "reduce(callback, initialValue) processes every element sequentially, accumulating a single result. The callback receives the accumulator and current element. Great for sums, counts, and data transformations."
+      },
+      {
+        "animationStep": 12,
+        "heading": "some and every",
+        "text": "some returns true if at least one element passes the test. every returns true only if all elements pass. Both short-circuit: they stop as soon as the result is determined."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        {
+          "label": "map",
+          "note": "Returns new array; original unchanged"
+        },
+        {
+          "label": "filter",
+          "note": "Keeps elements where callback returns true"
+        },
+        {
+          "label": "reduce",
+          "note": "Accumulates into a single value; second arg is initial"
+        },
+        {
+          "label": "find / findIndex",
+          "note": "Returns first match (or -1); does not return an array"
+        },
+        {
+          "label": "some / every",
+          "note": "Return boolean; short-circuit on first result"
+        },
+        {
+          "label": "push / pop",
+          "note": "Mutating methods — avoid in React state"
+        },
+        {
+          "label": "Spread — immutable add",
+          "note": "Creates a new array; preferred in React state updates"
+        },
+        {
+          "label": "flat / flatMap",
+          "note": "flat collapses one level; flatMap maps then flattens"
+        }
+      ],
+      "patterns": [
+        { "title": "Chain map + filter" },
+        { "title": "Immutable push (React-safe)" }
+      ],
+      "whenToUse": "Prefer map/filter/reduce for transformations — they are declarative and do not mutate the original. Use push/pop only when mutation is intentional and safe (not in React state). Reach for flat/flatMap when working with nested arrays.",
+      "commonMistakes": [
+        "Using forEach when you need a return value — forEach always returns undefined; use map, filter, or reduce instead",
+        "Mutating state arrays directly with push — React will not detect the change; always create a new array with spread or concat",
+        "Forgetting the initial value in reduce — without it, reduce uses the first element as the accumulator and skips it, which can produce wrong results on empty arrays"
+      ]
+    }
+  },
+  "js-functions": {
+    "title": "Functions & Scope",
+    "description": "How functions create scope, closures, and encapsulate reusable logic",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Function declarations vs expressions",
+        "text": "Functions can be declared with the function keyword or assigned as expressions. Declarations are hoisted; expressions are not."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Scope and the scope chain",
+        "text": "Each function creates a new scope. Inner functions can access variables from outer scopes — this chain of scopes is called the scope chain."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Higher-order functions",
+        "text": "Functions are first-class values in JavaScript. A higher-order function takes a function as argument or returns one."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Arrow Function Syntax",
+        "text": "Arrow functions are a compact alternative to function expressions. When the body is a single expression, you can omit the curly braces and return keyword — the value is returned implicitly."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Lexical this in Arrow Functions",
+        "text": "Arrow functions do not have their own `this`. They inherit `this` from the enclosing scope where they were defined. This makes them ideal for callbacks inside methods, but unsuitable for defining object methods themselves."
+      }
+    ]
+  },
+  "js-destructuring": {
+    "title": "Destructuring & Spread",
+    "description": "Extract values from arrays and objects with concise destructuring syntax",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Array destructuring",
+        "text": "Extract values from an array by position. Use _ or skip commas to skip elements."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Object destructuring",
+        "text": "Extract properties from an object by name. You can rename while destructuring and set defaults."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Spread and rest",
+        "text": "The spread operator (...) expands iterables. Rest syntax collects remaining elements into an array."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Built-in Objects: Math, Date, String",
+        "text": "JavaScript ships with built-in global objects. Math provides static methods for math operations. Date creates date/time objects. String methods like split, trim, and includes operate on string primitives via auto-boxing."
+      }
+    ]
+  },
+  "js-control-flow": {
+    "title": "Control Flow",
+    "description": "Control flow statements let you make decisions and repeat actions — if/else, switch, and loops.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "if / else if / else",
+        "text": "The if statement runs a block only when its condition is truthy. else if chains additional conditions. else is the fallback when no condition matches. Conditions are coerced to boolean — any value can be used, not just true/false."
+      },
+      {
+        "animationStep": 1,
+        "heading": "switch Statement",
+        "text": "switch compares a value against a list of cases using strict equality. Each case needs a break to prevent fall-through into the next case. The default case is the fallback, similar to else."
+      },
+      {
+        "animationStep": 2,
+        "heading": "for Loop",
+        "text": "The classic for loop has three parts: initialization (let i = 0), condition (i < 10), and update (i++). It is ideal when you know how many iterations you need, especially for arrays."
+      },
+      {
+        "animationStep": 3,
+        "heading": "while and do-while",
+        "text": "while repeats as long as its condition is truthy — the condition is checked before each iteration. do-while always runs the body at least once because the check comes after. Use these when the number of iterations is unknown."
+      },
+      {
+        "animationStep": 4,
+        "heading": "break and continue",
+        "text": "break exits the nearest enclosing loop immediately. continue skips the rest of the current iteration and moves to the next. Both make loops more expressive without needing extra boolean flags."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "if / else if / else" },
+        { "label": "switch" },
+        { "label": "for loop" },
+        { "label": "while loop" },
+        { "label": "break / continue" }
+      ],
+      "patterns": [
+        { "title": "Early return guard" },
+        { "title": "Loop with index" }
+      ],
+      "whenToUse": "Use if/else for binary decisions, switch for many discrete values, for loops for counted iterations, and while for condition-driven loops.",
+      "commonMistakes": [
+        "Forgetting `break` in switch cases causes fall-through to the next case.",
+        "Using `=` (assignment) instead of `===` (comparison) inside an if condition.",
+        "Infinite loop: forgetting to update the loop variable so the condition never becomes false."
+      ]
+    }
+  },
+  "js-oop": {
+    "title": "Objects & Classes",
+    "description": "Object-Oriented Programming models real-world entities as objects. JavaScript classes are syntactic sugar over prototype-based inheritance.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "OOP Concepts",
+        "text": "Object-Oriented Programming organizes code around objects that combine state (properties) and behavior (methods). The four pillars are: encapsulation (hiding internal details), abstraction (exposing only what is needed), inheritance (extending existing types), and polymorphism (same interface, different behavior)."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Classes and Constructors",
+        "text": "A class is a blueprint for creating objects. The constructor method runs when you call new ClassName(). Properties set with this inside the constructor belong to each instance. Methods defined in the class body are shared via the prototype."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Inheritance with extends",
+        "text": "A subclass extends a parent class and inherits all its methods. Call super() in the subclass constructor to invoke the parent constructor. You can override parent methods by redefining them in the subclass."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Prototype Chain",
+        "text": "Every JavaScript object has a hidden [[Prototype]] link. When you access a property, JS looks on the object itself first, then walks up the prototype chain until it finds the property or reaches null. Class methods live on the prototype, not on each instance."
+      },
+      {
+        "animationStep": 4,
+        "heading": "The this Keyword",
+        "text": "`this` refers to the object a method was called on. In a class method it points to the instance. In a standalone function it depends on how the function is called. Arrow functions inherit `this` from their outer scope instead of defining their own."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Class definition" },
+        { "label": "Instantiation" },
+        { "label": "Inheritance" },
+        { "label": "Static method" },
+        { "label": "Prototype chain" }
+      ],
+      "patterns": [
+        { "title": "Factory pattern via class" },
+        { "title": "super() call" }
+      ],
+      "whenToUse": "Use classes when you need multiple instances that share behavior, and inheritance when one type extends another.",
+      "commonMistakes": [
+        "Forgetting `new` — calling a class without `new` throws a TypeError.",
+        "Accessing `this` before `super()` in a subclass constructor.",
+        "Mutating inherited prototype properties directly instead of using instance properties."
+      ]
+    }
+  },
+  "js-timers": {
+    "title": "Timers & Async Globals",
+    "description": "setTimeout and setInterval let you delay and repeat code execution.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "setTimeout — Run Once After a Delay",
+        "text": "setTimeout(callback, delayMs) schedules callback to run after at least delayMs milliseconds. It returns a timer ID. The actual delay may be slightly longer because the callback enters the macrotask queue and must wait for the call stack to be clear."
+      },
+      {
+        "animationStep": 1,
+        "heading": "setInterval — Repeat on a Schedule",
+        "text": "setInterval(callback, intervalMs) calls callback repeatedly every intervalMs milliseconds. It returns an ID you must use to cancel it with clearInterval. Always cancel intervals when they are no longer needed to avoid memory leaks."
+      },
+      {
+        "animationStep": 2,
+        "heading": "clearTimeout and clearInterval",
+        "text": "Pass the timer ID returned by setTimeout or setInterval to the corresponding clear function to cancel the pending execution. This is essential in components that mount/unmount — always clean up timers on teardown."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "setTimeout" },
+        { "label": "clearTimeout" },
+        { "label": "setInterval" },
+        { "label": "clearInterval" },
+        { "label": "Nested setTimeout (poll)" }
+      ],
+      "patterns": [
+        { "title": "Debounce pattern" },
+        { "title": "Self-clearing interval" }
+      ],
+      "whenToUse": "Use setTimeout for one-off delays, setInterval for repeating actions, and always store the ID so you can cancel with clearTimeout/clearInterval.",
+      "commonMistakes": [
+        "Using setInterval without clearing it — causes memory leaks in SPAs.",
+        "Passing a string to setTimeout instead of a function: setTimeout(\"doSomething()\", 500) — avoid this.",
+        "Expecting exact timing — timer callbacks are queued; actual delay can be longer than specified."
+      ]
+    }
+  },
+  "js-event-loop": {
+    "title": "The Event Loop",
+    "description": "How JavaScript handles async code with a single thread",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "JavaScript is single-threaded",
+        "text": "JavaScript runs on a single thread — one operation at a time. The Call Stack tracks what is currently executing."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Synchronous code runs immediately",
+        "text": "Regular function calls push onto the Call Stack. When they return, they pop off."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Async code goes to Web APIs",
+        "text": "setTimeout, fetch, and event listeners are handled by Web APIs — outside the JS engine. The callback waits in the Task Queue."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Stack must be empty first",
+        "text": "Even with a 0ms timeout, the callback waits. The Call Stack must finish all synchronous work before the Event Loop picks up queued tasks."
+      },
+      {
+        "animationStep": 4,
+        "heading": "The Event Loop",
+        "text": "The Event Loop continuously checks: is the Call Stack empty? If yes, it moves the next task from the Queue to the Stack."
+      },
+      {
+        "animationStep": 5,
+        "heading": "The Call Stack",
+        "text": "JavaScript is single-threaded. All synchronous code runs on the call stack — a LIFO structure. When a function is called it is pushed onto the stack; when it returns it is popped off. Long-running code blocks the stack and freezes the UI."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Microtask Queue",
+        "text": "Promise callbacks (.then, .catch, .finally) and queueMicrotask() callbacks go into the microtask queue — which is drained completely before the next macrotask (setTimeout, setInterval) runs. Microtasks always run before the next render."
+      },
+      {
+        "animationStep": 7,
+        "heading": "Event Loop Phases",
+        "text": "The event loop picks one macrotask from the queue, runs it to completion on the call stack, then drains the microtask queue fully, then the browser may render, then the loop picks the next macrotask. This cycle is called a \"tick\"."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        {
+          "label": "setTimeout",
+          "note": "Macro-task — runs after current stack + microtasks"
+        },
+        {
+          "label": "Promise / .then",
+          "note": "Microtask — runs before next macro-task"
+        },
+        {
+          "label": "async / await",
+          "note": "Sugar over Promises; pauses at each await"
+        },
+        {
+          "label": "Execution order",
+          "note": "sync → microtask queue → macro-task queue"
+        }
+      ],
+      "patterns": [
+        { "title": "async/await with error handling" },
+        { "title": "Promise.all — parallel requests" }
+      ],
+      "whenToUse": "Understand the event loop whenever code behaves unexpectedly with async operations — it explains why setTimeout(fn, 0) still runs after .then() callbacks, and why blocking the main thread freezes the UI.",
+      "commonMistakes": [
+        "Assuming setTimeout(fn, 0) runs immediately — it is still a macro-task and yields to pending microtasks first",
+        "Forgetting that await only pauses the current async function, not the entire program — other code continues running",
+        "Not handling rejected Promises — unhandled rejections cause runtime warnings and can crash Node.js processes"
+      ]
+    }
+  },
+  "js-closures": {
+    "title": "Closures",
+    "description": "Functions that remember the scope where they were created",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "A function with local state",
+        "text": "When a function runs, it creates a local scope. Variables inside that scope normally disappear when the function returns."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Returning an inner function",
+        "text": "If we define and return a function inside makeCounter, that inner function can see count — it is in its scope chain."
+      },
+      {
+        "animationStep": 2,
+        "heading": "The outer function returns",
+        "text": "makeCounter() finishes executing, but count is NOT garbage collected. The returned function still holds a reference to it — this is the closure."
+      },
+      {
+        "animationStep": 3,
+        "heading": "The closure in action",
+        "text": "Calling increment() accesses and modifies count — even though we are outside makeCounter. The closure remembers the original scope."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Independent closures",
+        "text": "Each call to makeCounter() creates a fresh scope with its own count. Two counters do not share state."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        {
+          "label": "Basic closure",
+          "note": "Inner function retains reference to outer variable"
+        },
+        {
+          "label": "Counter factory",
+          "note": "Each call creates independent private state"
+        },
+        {
+          "label": "IIFE",
+          "note": "Immediately Invoked Function Expression — runs once"
+        }
+      ],
+      "patterns": [
+        { "title": "Factory function with private state" },
+        { "title": "Module pattern with IIFE" }
+      ],
+      "whenToUse": "Use closures to encapsulate private state, create factory functions that generate configured callbacks, and implement the module pattern. They are the foundation of many React hooks like useState.",
+      "commonMistakes": [
+        "Closing over a loop variable — use let (block-scoped) or create a new scope with an IIFE; var captures the same reference for all iterations",
+        "Creating accidental memory leaks — closures keep their enclosing scope alive; avoid holding large objects in long-lived closures",
+        "Expecting separate calls to makeX() to share state — each invocation creates a fresh closure with its own independent variables"
+      ]
+    }
+  },
+  "js-promises": {
+    "title": "Promises & Async/Await",
+    "description": "Handle asynchronous operations elegantly with Promises and async/await syntax",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "What is a Promise?",
+        "text": "A Promise represents a value that will be available in the future. It can be pending, fulfilled, or rejected."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Chaining with .then()",
+        "text": "Promises can be chained: each .then() receives the previous result and returns a new Promise."
+      },
+      {
+        "animationStep": 2,
+        "heading": "async/await syntax",
+        "text": "async/await is syntactic sugar over Promises. An async function always returns a Promise; await pauses execution until the Promise settles."
+      },
+      {
+        "animationStep": 3,
+        "heading": "async / await Syntax",
+        "text": "async/await is syntactic sugar over Promises. Mark a function async and use await to pause execution until a Promise resolves. The result is assigned like a regular value — no .then() chains needed."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Error Handling in async Functions",
+        "text": "Use try/catch inside async functions to handle both network errors and non-2xx responses. Check response.ok before parsing the body — fetch only rejects on network failure, not on 404 or 500 status codes."
+      }
+    ]
+  },
+  "js-modules": {
+    "title": "Modules & Bundlers",
+    "description": "ES Modules let you export values from one file and import them in another. Bundlers like Vite take many module files and produce optimized browser output.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "CommonJS vs ES Modules",
+        "text": "Older Node.js code uses CommonJS: require() to import and module.exports to export. Modern JavaScript uses ES Modules (ESM): import and export statements. ESM is statically analyzable (better tree-shaking) and is now the standard for both browsers and Node.js."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Named and Default Exports",
+        "text": "A file can export multiple named values and one default value. Named imports must use the exact exported name (or be aliased). Default imports can use any name. Prefer named exports for better refactoring and IDE support."
+      },
+      {
+        "animationStep": 2,
+        "heading": "npm and Installing Packages",
+        "text": "npm (Node Package Manager) is the registry for JavaScript packages. npm install saves the package to node_modules and lists it in package.json. Import the package the same way as your own modules — bundlers resolve node_modules automatically."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Bundlers: Parcel and Vite",
+        "text": "Bundlers take many ES Module files and produce optimized browser-ready output. Parcel is zero-config; Vite is fast with Hot Module Replacement for development. Both handle importing CSS, images, and npm packages out of the box."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Named export" },
+        { "label": "Default export" },
+        { "label": "Named import" },
+        { "label": "Default import" },
+        { "label": "npm install" }
+      ],
+      "patterns": [
+        { "title": "Re-export barrel" },
+        { "title": "Dynamic import" }
+      ],
+      "whenToUse": "Use ESM (import/export) for all new projects. Use npm to install packages, then import them the same way.",
+      "commonMistakes": [
+        "Mixing CommonJS (require) and ESM (import) in the same project without a bundler config.",
+        "Omitting the file extension in import paths — browsers require the full path including `.js`.",
+        "Circular imports — module A imports from B which imports from A, causing undefined references."
+      ]
+    }
+  }
+}

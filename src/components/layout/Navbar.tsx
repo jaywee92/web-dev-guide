@@ -2,9 +2,49 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { Search, Sun, Moon, Code2, BookOpen, ChevronDown } from 'lucide-react'
 import { useAppStore } from '@/store/useAppStore'
 import { useEffect, useState, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+import i18n from '@/i18n/index'
+
+function LanguageSwitcher() {
+  const { i18n: i18nHook } = useTranslation()
+  const current = i18nHook.language.startsWith('de') ? 'de' : 'en'
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+      {(['en', 'de'] as const).map(lng => (
+        <button
+          key={lng}
+          onClick={() => i18n.changeLanguage(lng)}
+          style={{
+            padding: '4px 7px',
+            borderRadius: 6,
+            fontSize: 11,
+            fontFamily: 'var(--font-mono)',
+            fontWeight: 600,
+            letterSpacing: '0.04em',
+            cursor: 'pointer',
+            background: current === lng ? 'var(--surface-bright)' : 'transparent',
+            border: `1px solid ${current === lng ? 'var(--border)' : 'transparent'}`,
+            color: current === lng ? 'var(--text)' : 'var(--text-muted)',
+            transition: 'all 0.15s',
+          }}
+          onMouseEnter={e => {
+            if (current !== lng) e.currentTarget.style.color = 'var(--text)'
+          }}
+          onMouseLeave={e => {
+            if (current !== lng) e.currentTarget.style.color = 'var(--text-muted)'
+          }}
+        >
+          {lng.toUpperCase()}
+        </button>
+      ))}
+    </div>
+  )
+}
 
 export default function Navbar() {
   const { theme, toggleTheme, setSearchOpen } = useAppStore()
+  const { t } = useTranslation('common')
   const [refOpen, setRefOpen] = useState(false)
   const refRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
@@ -118,7 +158,7 @@ export default function Navbar() {
             }}
           >
             <BookOpen size={12} />
-            <span>REFERENCE</span>
+            <span>{t('reference')}</span>
             <ChevronDown
               size={11}
               style={{ transform: refOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}
@@ -141,8 +181,8 @@ export default function Navbar() {
               zIndex: 60,
             }}>
               {[
-                { label: 'HTML Reference', path: '/reference/html', color: '#4ade80' },
-                { label: 'CSS Reference',  path: '/reference/css',  color: '#5b9cf5' },
+                { label: t('htmlReference'), path: '/reference/html', color: '#4ade80' },
+                { label: t('cssReference'),  path: '/reference/css',  color: '#5b9cf5' },
               ].map(item => (
                 <button
                   key={item.path}
@@ -198,7 +238,7 @@ export default function Navbar() {
             e.currentTarget.style.color = 'var(--text-muted)'
           }}
         >
-          RESOURCES
+          {t('resources')}
         </Link>
 
         {/* Search */}
@@ -224,7 +264,7 @@ export default function Navbar() {
           }}
         >
           <Search size={12} />
-          {!isHome && <span style={{ flex: 1, color: 'var(--text-faint)' }}>Search topics…</span>}
+          {!isHome && <span style={{ flex: 1, color: 'var(--text-faint)' }}>{t('searchPlaceholder')}</span>}
           <kbd style={{
             fontFamily: 'var(--font-mono)', fontSize: 10,
             color: 'var(--text-faint)',
@@ -235,10 +275,12 @@ export default function Navbar() {
           }}>⌘K</kbd>
         </button>
 
+        <LanguageSwitcher />
+
         {/* Theme toggle */}
         <button
           onClick={toggleTheme}
-          title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          title={theme === 'dark' ? t('lightMode') : t('darkMode')}
           style={{
             width: 34, height: 34, borderRadius: 8,
             display: 'flex', alignItems: 'center', justifyContent: 'center',

@@ -1,0 +1,469 @@
+{
+  "html-basics": {
+    "title": "Elemente & Attribute",
+    "description": "Anatomie von HTML-Elementen — Tags, Inhalt, schließende Tags und wie Attribute sie konfigurieren",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "HTML besteht aus Elementen",
+        "text": "Alles Sichtbare auf einer Webseite ist ein HTML-Element — eine Überschrift, ein Absatz, ein Link, ein Bild. Elemente teilen dem Browser mit, was der Inhalt bedeutet, nicht nur wie er aussieht."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Öffnendes Tag",
+        "text": "Das öffnende Tag gibt dem Element seinen Namen. <p> steht für Absatz. <h1> für Hauptüberschrift. <a> für Anker (Link). Der Name bestimmt, wie der Browser den Inhalt darstellt."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Inhalt",
+        "text": "Der Inhalt befindet sich zwischen den Tags. Er kann Text, andere Elemente oder eine Mischung aus beidem sein. Das Verschachteln von Elementen ineinander bildet die Baumstruktur der Seite."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Schließendes Tag",
+        "text": "Das schließende Tag hat einen Schrägstrich vor dem Namen. Es beendet das Element. Einige Elemente — wie <img>, <br>, <hr>, <input> — sind leere Elemente ohne Inhalt und ohne schließendes Tag."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Attribute",
+        "text": "Attribute stehen im öffnenden Tag und liefern zusätzliche Informationen. Sie kommen als Name=\"Wert\"-Paare. Gängige Attribute: href (Link-URL), src (Bildquelle), alt (Alternativtext), id (eindeutiger Name), class (Styling-Gruppe)."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Einfaches Element", "note": "Öffnendes Tag · Inhalt · schließendes Tag" },
+        { "label": "Leeres Element (void)", "note": "Kein schließendes Tag — kein Inhalt" },
+        { "label": "id", "note": "Eindeutig pro Seite — für JS & Anker-Links verwendet" },
+        { "label": "class", "note": "Mehrere Klassen durch Leerzeichen getrennt" },
+        { "label": "href", "note": "Link-Ziel" },
+        { "label": "src + alt", "note": "alt ist für Barrierefreiheit & SEO erforderlich" }
+      ],
+      "patterns": [
+        { "title": "Verlinktes Bild" },
+        { "title": "Input mit Label" }
+      ],
+      "whenToUse": "Verwende das spezifischste semantische Element für jede Aufgabe. Wähle <button> statt <div onclick>, <a> statt <span onclick>, <strong> statt <b> für Wichtigkeit.",
+      "commonMistakes": [
+        "Das schließende Tag vergessen — die meisten Elemente benötigen </tagname>, sonst bricht das Rendering",
+        "Fehlendes alt= bei Bildern — für Barrierefreiheit erforderlich und führt zu fehlgeschlagener HTML-Validierung",
+        "Eine id duplizieren — id muss pro Seite eindeutig sein, sonst gibt querySelector das falsche Element zurück"
+      ]
+    }
+  },
+  "html-text": {
+    "title": "Text & Überschriften",
+    "description": "Text mit Überschriftenebenen, Absätzen und semantischer Inline-Formatierung strukturieren",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Überschriftenhierarchie",
+        "text": "HTML hat sechs Überschriftenebenen: <h1> bis <h6>. <h1> ist die wichtigste — einmal pro Seite für den Haupttitel verwendet. Folgende Überschriften erstellen eine Dokumentgliederung, die Browser, Suchmaschinen und Screenreader nutzen."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Absätze",
+        "text": "Der <p>-Tag definiert einen Absatz. Browser fügen automatisch Abstand ober- und unterhalb jedes Absatzes hinzu. Verwende niemals <br>-Tags nur zum Hinzufügen von vertikalem Abstand — nutze stattdessen CSS-Margins."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Semantisch vs. präsentational",
+        "text": "<strong> und <em> tragen Bedeutung: Wichtigkeit und Betonung. Screenreader lesen sie unterschiedlich vor. <b> und <i> sind rein visuell ohne semantischen Gehalt. Bevorzuge <strong>/<em>, wenn die Bedeutung wichtig ist."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Inline-Textelemente",
+        "text": "HTML hat viele Inline-Elemente für reichhaltigen Text. <mark> hebt hervor. <del> zeigt gelöschten Text. <ins> zeigt eingefügten Text. <small> verringert die Größe. <sub> und <sup> erzeugen tief- und hochgestellten Text."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Blockzitate und Code",
+        "text": "<blockquote> umschließt aus einer anderen Quelle zitierten Inhalt. <code> zeigt Inline-Code in Monospace an. <pre> bewahrt Leerzeichen und Zeilenumbrüche — kombiniert mit <code> für mehrzeilige Codeblöcke."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Überschriften", "note": "h1 einmal pro Seite; niemals Ebenen überspringen" },
+        { "label": "Absatz", "note": "Block-Element — fügt vertikalen Abstand hinzu" },
+        { "label": "<strong> / <em>", "note": "Semantisch: Wichtigkeit / Betonung" },
+        { "label": "<mark> / <del> / <ins>", "note": "Anmerkungs- und Änderungsmarkierungen" },
+        { "label": "<sub> / <sup>", "note": "Tief- / Hochgestellt" },
+        { "label": "<pre><code>", "note": "Mehrzeiliger Codeblock mit Leerzeichen-Erhaltung" }
+      ],
+      "patterns": [
+        { "title": "Artikel mit Überschriften" }
+      ],
+      "whenToUse": "Verwende Überschriften, um eine logische Dokumentgliederung zu erstellen, nicht um die Schriftgröße zu steuern (nutze dafür CSS). Bevorzuge immer semantische Elemente: <strong> statt <b>, <em> statt <i>.",
+      "commonMistakes": [
+        "<h1> mehrfach verwenden — nur einmal pro Seite für SEO und Barrierefreiheit",
+        "Überschriftenebenen überspringen (h1 → h3) — Überschriften müssen sequenziell sein",
+        "<br> für Absatz-Abstände verwenden — nutze stattdessen <p>-Tags und CSS-Margin"
+      ]
+    }
+  },
+  "html-links-images": {
+    "title": "Links & Bilder",
+    "description": "Mit Anker-Links navigieren und Bilder mit aussagekräftigem Alternativtext einbetten",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Das Anker-Element",
+        "text": "Der <a>-Tag (Anker) erstellt einen Link. Das href-Attribut enthält das Ziel — eine URL, einen Pfad oder sogar eine E-Mail-Adresse. Ohne href ist es kein Link."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Absolute vs. relative URLs",
+        "text": "Absolute URLs beginnen mit https:// — sie funktionieren von überall. Relative URLs beschreiben einen Pfad von der aktuellen Seite. Verwende relative Links für interne Navigation, damit die Seite in jeder Umgebung funktioniert."
+      },
+      {
+        "animationStep": 2,
+        "heading": "target und download",
+        "text": "target=\"_blank\" öffnet den Link in einem neuen Tab. Füge immer rel=\"noopener\" aus Sicherheitsgründen hinzu. Das download-Attribut weist den Browser an, die Datei herunterzuladen statt dorthin zu navigieren."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Das <img>-Element",
+        "text": "<img> ist ein leeres Element — kein schließendes Tag. src verweist auf die Bilddatei. alt liefert Text für Screenreader und wenn das Bild nicht geladen werden kann. width und height verhindern Layout-Verschiebungen."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Warum Alternativtext wichtig ist",
+        "text": "Alternativtext wird von Screenreadern für blinde Nutzer laut vorgelesen. Er erscheint auch, wenn das Bild nicht geladen werden kann. Beschreibe, was auf dem Bild zu sehen ist, nicht nur den Dateinamen. Für dekorative Bilder verwende ein leeres alt=\"\", damit Screenreader es überspringen."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "<a href>", "note": "href ist für einen echten Link erforderlich" },
+        { "label": "Neuer Tab", "note": "rel=\"noopener\" verhindert Tab-Jacking" },
+        { "label": "Anker-Link", "note": "Seitenübergreifende Navigation" },
+        { "label": "<img>", "note": "width/height verhindern Layout-Verschiebungen" },
+        { "label": "Verlinktes Bild", "note": "img in a einwickeln, um es anklickbar zu machen" },
+        { "label": "HTML-Kommentar", "note": "Für Nutzer unsichtbar, im Quellcode sichtbar" }
+      ],
+      "patterns": [
+        { "title": "Navigationsliste" }
+      ],
+      "whenToUse": "Verwende <a> für alle Navigation. Nutze alt=\"\" (leer) für rein dekorative Bilder. Setze width/height bei jedem <img>, um Content Layout Shift (CLS) zu verhindern.",
+      "commonMistakes": [
+        "Fehlendes rel=\"noopener\" bei target=\"_blank\"-Links — Sicherheitslücke",
+        "alt=\"image.jpg\" oder alt=\"image\" — beschreibe den Inhalt, nicht den Dateinamen",
+        "width/height bei Bildern weglassen — verursacht Layout-Verschiebungen beim Laden der Seite"
+      ]
+    }
+  },
+  "html-lists": {
+    "title": "Listen & Struktur",
+    "description": "Inhalte mit geordneten und ungeordneten Listen organisieren und Block- vs. Inline-Layout verstehen",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Ungeordnete Listen",
+        "text": "<ul> erstellt eine Aufzählungsliste. Jeder Eintrag wird in <li> eingeschlossen. Verwende ungeordnete Listen, wenn die Reihenfolge keine Rolle spielt — ein Navigationsmenü, eine Feature-Liste, eine Sammlung von Tags."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Geordnete Listen",
+        "text": "<ol> erstellt eine nummerierte Liste. Einträge sind ebenfalls <li>. Verwende geordnete Listen, wenn die Reihenfolge wichtig ist — Schritte in einem Tutorial, Ranglisten, ein Rezept. Der Browser übernimmt die Nummerierung automatisch."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Verschachtelte Listen",
+        "text": "Listen können innerhalb von Listenelementen verschachtelt werden. Ein <li> kann ein weiteres <ul> oder <ol> enthalten. Dadurch entstehen hierarchische Strukturen — wie ein Inhaltsverzeichnis oder eine Gliederung."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Block- vs. Inline-Elemente",
+        "text": "Block-Elemente (<div>, <p>, <h1>, <ul>) beginnen auf einer neuen Zeile und nehmen die volle Breite ein. Inline-Elemente (<span>, <a>, <strong>, <img>) fließen im Text mit. Dies bestimmt, wie Elemente aneinandergereiht und umgebrochen werden."
+      },
+      {
+        "animationStep": 4,
+        "heading": "<div> und <span>",
+        "text": "<div> ist ein generischer Block-Container — keine semantische Bedeutung, nur Gruppierung. <span> ist ein generischer Inline-Container. Verwende sie als Styling-Hooks oder JavaScript-Ziele, wenn kein semantisches Element passt. Bevorzuge semantische Elemente, wenn möglich."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "<ul>", "note": "Ungeordnet (Aufzählungspunkte) — Reihenfolge irrelevant" },
+        { "label": "<ol>", "note": "Geordnet (Nummern) — Reihenfolge wichtig" },
+        { "label": "Verschachtelte Liste", "note": "Verschachteltes <ul>/<ol> innerhalb von <li>" },
+        { "label": "<div>", "note": "Generischer Block-Container, keine Bedeutung" },
+        { "label": "<span>", "note": "Generischer Inline-Container, keine Bedeutung" },
+        { "label": "Definitionsliste", "note": "<dl>/<dt>/<dd> für Begriff-Definition-Paare" }
+      ],
+      "patterns": [
+        { "title": "Navigationsmenü" }
+      ],
+      "whenToUse": "Navigationsmenüs sollten immer <ul>-Listen sein. Schritte und Verfahren verwenden <ol>. Verwende <div> und <span> nur, wenn kein semantisches Element passt — sie tragen keinerlei Bedeutung.",
+      "commonMistakes": [
+        "Block-Elemente (<div>, <p>) innerhalb von Inline-Elementen (<span>, <a>) einfügen — ungültiges HTML",
+        "<br> zum Trennen von Elementen verwenden — nutze stattdessen eine richtige Liste",
+        "<li> innerhalb von <ul>/<ol> weglassen — direkte Kinder von Listen müssen <li> sein"
+      ]
+    }
+  },
+  "html-dom": {
+    "title": "Der DOM-Baum",
+    "description": "Wie Browser HTML in einen lebendigen Baum aus Knoten parsen",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "HTML ist nur Text",
+        "text": "Wenn dein Browser eine HTML-Datei empfängt, sieht er reinen Text — Tags, Attribute, Inhalt. Das DOM ist das, was der Browser aus diesem Text aufbaut."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Das Parsen beginnt oben",
+        "text": "Der Browser liest dein HTML von oben nach unten und erstellt für jedes Element einen Knoten. Der <html>-Tag wird zur Wurzel."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Kinder verzweigen sich nach außen",
+        "text": "Verschachtelte Elemente werden zu Kindknoten. Der Baum wächst, während jedes Tag geparst wird."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Text ist auch ein Knoten",
+        "text": "Jedes Textstück zwischen Tags ist sein eigener Textknoten im Baum."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "querySelector", "note": "CSS-Selector → erster Treffer" },
+        { "label": "querySelectorAll", "note": "Alle Treffer → NodeList" },
+        { "label": "createElement", "note": "Element erstellen" },
+        { "label": "appendChild", "note": "In den DOM einfügen" },
+        { "label": "textContent", "note": "Text sicher setzen" },
+        { "label": "setAttribute", "note": "Attribute lesen/schreiben" },
+        { "label": "classList", "note": "CSS-Klassen verwalten" }
+      ],
+      "patterns": [
+        { "title": "Abfragen → ändern → anhängen" },
+        { "title": "Eine Liste aus Daten erstellen" }
+      ],
+      "whenToUse": "Verwende DOM-APIs, wenn du die Seite ohne Framework dynamisch änderst. In React- oder Vue-Apps bevorzuge State + JSX für die UI-Steuerung.",
+      "commonMistakes": [
+        "innerHTML mit Nutzereingaben setzen — XSS-Risiko; verwende textContent für einfachen Text",
+        "querySelector aufrufen, bevor das DOM geladen ist — in DOMContentLoaded einwickeln oder Script am Ende des body platzieren",
+        "Vergessen, dass querySelectorAll eine NodeList zurückgibt, kein Array — Array.from() verwenden, um auf Array-Methoden wie .map() zuzugreifen"
+      ]
+    }
+  },
+  "html-semantic": {
+    "title": "Semantisches HTML",
+    "description": "Bedeutungsvolle Elemente, die Struktur beschreiben, nicht nur Aussehen",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Das Div-Suppen-Problem",
+        "text": "Wenn man nur <div>-Elemente verwendet, teilt das Browsern und Screenreadern nichts über die Struktur der Seite mit. Jede Box sieht gleich aus."
+      },
+      {
+        "animationStep": 1,
+        "heading": "<header>",
+        "text": "Das <header>-Element enthält einleitenden Inhalt — Logo, Seitenname, Hauptnavigation. Es kann einmal pro Seite oder einmal pro Abschnitt vorkommen."
+      },
+      {
+        "animationStep": 2,
+        "heading": "<nav>",
+        "text": "Das <nav>-Element markiert einen Block mit Navigationslinks. Screenreader und Suchmaschinen verwenden es, um die Seitenstruktur zu verstehen."
+      },
+      {
+        "animationStep": 3,
+        "heading": "<main> und <article>",
+        "text": "<main> enthält den primären einzigartigen Inhalt der Seite. <article> ist für in sich abgeschlossenen Inhalt wie einen Blog-Beitrag oder eine Neuigkeit."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Das Gesamtbild",
+        "text": "Mit semantischem HTML verstehen Browser, Suchmaschinen und assistive Technologien die Seitenstruktur — ohne CSS-Klassen für die Bedeutung."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "<header>", "note": "Seiten- oder Abschnittskopf" },
+        { "label": "<nav>", "note": "Navigationslinks" },
+        { "label": "<main>", "note": "Hauptinhalt — einmal pro Seite" },
+        { "label": "<article>", "note": "In sich abgeschlossener Inhalt" },
+        { "label": "<section>", "note": "Thematische Gruppe — benötigt eine Überschrift" },
+        { "label": "<aside>", "note": "Randinhalt / Sidebar" },
+        { "label": "<footer>", "note": "Abschließende Informationen" }
+      ],
+      "patterns": [
+        { "title": "Standard-Seitengerüst" }
+      ],
+      "whenToUse": "Bevorzuge immer semantische Elemente gegenüber generischen divs. Sie verbessern Barrierefreiheit (Screenreader), SEO-Ranking und Lesbarkeit des Codes ohne Mehraufwand.",
+      "commonMistakes": [
+        "Alles mit div umsetzen — semantische Elemente tragen Bedeutung für Browser und assistive Technologien",
+        "Mehrere main-Elemente auf einer Seite — nur eines ist erlaubt",
+        "Überschriftenebenen überspringen (h1 → h3) — Überschriften müssen für Barrierefreiheit sequenziell sein"
+      ]
+    }
+  },
+  "html-forms": {
+    "title": "Formulare & Eingaben",
+    "description": "Nutzereingaben mit Formularen, Labels und interaktiven Steuerelementen erfassen",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Das <form>-Element",
+        "text": "Ein <form> umschließt alle Eingabefelder und sendet Daten an einen Server. Das action-Attribut setzt die URL; method setzt GET oder POST."
+      },
+      {
+        "animationStep": 1,
+        "heading": "<label> und <input>",
+        "text": "Jedes Eingabefeld sollte ein Label haben. Die Verbindung mit for/id macht das Label anklickbar und verbessert die Barrierefreiheit."
+      },
+      {
+        "animationStep": 2,
+        "heading": "<select> und <option>",
+        "text": "<select> erstellt ein Dropdown-Menü. Jede <option> ist eine Auswahlmöglichkeit. Das value-Attribut ist das, was beim Absenden übertragen wird."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Checkbox und Radio",
+        "text": "Checkboxen erlauben Mehrfachauswahl. Radio-Buttons in derselben Gruppe erlauben nur eine Auswahl."
+      },
+      {
+        "animationStep": 4,
+        "heading": "<button type=\"submit\">",
+        "text": "Der Absende-Button sendet das Formular. type=\"submit\" ist die Standardeinstellung. type=\"button\" verhindert das Absenden — nützlich für JavaScript-Aktionen."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Eingebaute HTML5-Validierung",
+        "text": "Füge required, minlength, maxlength, pattern, min, max direkt in HTML ein — der Browser validiert vor dem Absenden, kein JavaScript nötig. required allein blockiert das Absenden leerer Felder."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Constraint Validation API",
+        "text": "Für benutzerdefinierte Fehlermeldungen oder Echtzeit-Feedback verwende die Constraint Validation API. setCustomValidity() überschreibt die Browser-Meldung. checkValidity() gibt true/false zurück, ohne das Formular abzusenden."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "<form>", "note": "Umschließt alle Eingaben" },
+        { "label": "<input>", "note": "type: text/email/password/number/checkbox/radio" },
+        { "label": "label + for", "note": "for= verknüpft mit input id=" },
+        { "label": "<select>", "note": "Dropdown-Menü" },
+        { "label": "<textarea>", "note": "Mehrzeiliger Text" },
+        { "label": "<button>", "note": "type: submit / button / reset" },
+        { "label": "required", "note": "Blockiert Formular-Absenden wenn leer" },
+        { "label": "pattern", "note": "Regex — Browser validiert beim Absenden" },
+        { "label": "minlength / maxlength", "note": "Zeichenanzahl-Begrenzungen" }
+      ],
+      "patterns": [
+        { "title": "Formulardaten in JS lesen" },
+        { "title": "Kontrolliertes Input mit React" }
+      ],
+      "whenToUse": "Verwende native Formular-Elemente für alle Nutzereingaben — sie haben eingebaute Barrierefreiheit, Tastaturunterstützung und Validierung kostenlos. Verwende FormData, um Werte beim Absenden auszulesen.",
+      "commonMistakes": [
+        "Fehlendes Label für jedes Eingabefeld — immer Label mit for/id verknüpfen, damit Screenreader funktionieren",
+        "e.preventDefault() vergessen beim Verarbeiten von submit in JS — verursacht Seitenneuladen",
+        "name= bei Inputs nicht setzen — FormData und Formular-Absenden erfassen den Wert nicht",
+        "Nur auf Client-seitige Validierung vertrauen — immer auch serverseitig validieren",
+        "pattern ohne title= verwenden — Browser zeigt generisches 'Bitte Format einhalten' ohne Hinweis"
+      ]
+    }
+  },
+  "html-accessibility": {
+    "title": "Barrierefreiheit (a11y)",
+    "description": "ARIA-Rollen, Tastaturnavigation, Fokus-Verwaltung — von Anfang an für alle Nutzer bauen",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Wer braucht Barrierefreiheit?",
+        "text": "Etwa 15 % der Menschen haben eine Behinderung. Screenreader-Nutzer navigieren über Überschriften und Landmarks. Tastaturnutzer können keine Maus verwenden. Farbenblinde Nutzer benötigen ausreichend Kontrast. Semantisches HTML gibt dir das meiste kostenlos — ARIA füllt die Lücken."
+      },
+      {
+        "animationStep": 1,
+        "heading": "aria-label und aria-labelledby",
+        "text": "Wenn sichtbarer Text nicht ausreicht, liefert aria-label einen barrierefreien Namen. Nur-Icon-Buttons, Schließen-Buttons und Formular-Inputs benötigen alle beschreibende Labels."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Fokus-Verwaltung",
+        "text": "Tastaturnutzer navigieren mit Tab durch interaktive Elemente. Der Fokus muss sichtbar sein — entferne niemals :focus-Styles ohne Ersatz. Verwende :focus-visible, um Fokus-Ringe nur bei Tastaturnavigation anzuzeigen, nicht bei Mausklicks."
+      },
+      {
+        "animationStep": 3,
+        "heading": "tabindex",
+        "text": "tabindex=\"0\" macht jedes Element in der natürlichen DOM-Reihenfolge per Tastatur fokussierbar. tabindex=\"-1\" erlaubt programmatischen Fokus (el.focus()), entfernt es aber aus der Tab-Sequenz. Verwende niemals tabindex > 0 — es bricht die natürliche Reihenfolge."
+      },
+      {
+        "animationStep": 4,
+        "heading": "ARIA-Rollen und Live-Regionen",
+        "text": "role= überschreibt die implizite Rolle des Elements. ARIA-Live-Regionen kündigen dynamische Inhaltsänderungen für Screenreader an. aria-live='polite' wartet auf Stille, 'assertive' unterbricht sofort."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "aria-label", "note": "Überschreibt Button-Text für Screenreader" },
+        { "label": "aria-labelledby", "note": "Verweist auf den Text eines anderen Elements" },
+        { "label": "aria-describedby", "note": "Verknüpft mit Hilfe-/Fehlertext" },
+        { "label": "role", "note": "Implizite semantische Rolle überschreiben" },
+        { "label": "tabindex", "note": "Niemals tabindex > 0 verwenden" },
+        { "label": "aria-hidden", "note": "Vor Screenreadern verstecken (dekorativ)" }
+      ],
+      "patterns": [
+        { "title": "Skip-Link" },
+        { "title": "Barrierefreier Icon-Button" }
+      ],
+      "whenToUse": "Zuerst semantisches HTML verwenden — <button>, <a>, <input>, Überschriften, Landmarks. ARIA nur hinzufügen, wenn HTML-Semantik nicht ausreicht. 'Kein ARIA ist besser als schlechtes ARIA.'",
+      "commonMistakes": [
+        ":focus-Umrandung ohne Ersatz entfernen — Tastaturnutzer verlieren jedes Navigations-Feedback",
+        "aria-label auf nicht-interaktiven Elementen verwenden — hilft nicht ohne role=",
+        "role=\"button\" ohne onkeydown-Handler — Klick funktioniert mit Maus, aber nicht mit Enter/Leertaste",
+        "aria-hidden=\"true\" auf fokussierbaren Elementen — Screenreader überspringt es, aber die Tastatur erreicht es trotzdem"
+      ]
+    }
+  },
+  "html-media": {
+    "title": "Medien & Einbettungen",
+    "description": "Video, Audio, iframes und responsive Bilder mit nativen HTML-Elementen einbetten",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "<iframe> — Seite in einer Seite",
+        "text": "Ein <iframe> bettet ein weiteres HTML-Dokument in deine Seite ein. YouTube-Einbettungen, Google Maps und CodePen-Vorschauen verwenden alle iframes. Der eingebettete Inhalt läuft in seinem eigenen isolierten Browser-Kontext."
+      },
+      {
+        "animationStep": 1,
+        "heading": "<video>",
+        "text": "Das <video>-Element bettet Video nativ ein. Das controls-Attribut fügt eine Play/Pause/Lautstärke-Oberfläche hinzu. Füge mehrere <source>-Elemente für Browser-Kompatibilität ein — der Browser wählt das erste Format, das er unterstützt."
+      },
+      {
+        "animationStep": 2,
+        "heading": "<audio>",
+        "text": "<audio> funktioniert genauso wie <video>, aber für Ton. Das controls-Attribut fügt einen Player hinzu. Ohne controls ist das Audio unsichtbar und spielt nur mit JavaScript."
+      },
+      {
+        "animationStep": 3,
+        "heading": "<picture> — responsive Bilder",
+        "text": "<picture> liefert verschiedene Bilder je nach Bildschirmgröße oder Format-Unterstützung. Der Browser wählt die erste passende <source>. Das <img>-Fallback ist immer erforderlich — es ist das, was tatsächlich das Bild rendert."
+      },
+      {
+        "animationStep": 4,
+        "heading": "<code> und <pre>",
+        "text": "<code> zeigt Inline-Code in Monospace-Schrift an. Wickle es in <pre> ein, um Leerzeichen und Zeilenumbrüche für mehrzeilige Codeblöcke zu bewahren. So zeigen Dokumentationsseiten, READMEs und Tech-Blogs Codebeispiele."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "<iframe>", "note": "Immer title für Barrierefreiheit setzen" },
+        { "label": "<video>", "note": "controls-Attribut zeigt UI" },
+        { "label": "<audio>", "note": "Mehrere Quellen für Browser-Kompatibilität" },
+        { "label": "<picture>", "note": "<img>-Fallback ist erforderlich" },
+        { "label": "<pre><code>", "note": "Bewahrt Leerzeichen + Zeilenumbrüche" },
+        { "label": "Video Autoplay", "note": "muted erforderlich für Autoplay in Browsern" }
+      ],
+      "patterns": [
+        { "title": "Responsiver Video-Wrapper" }
+      ],
+      "whenToUse": "Verwende <video>/<audio> für selbst gehostete Medien. Verwende <iframe> für Drittanbieter-Einbettungen (YouTube, Maps). Verwende <picture>, wenn du für verschiedene Bildschirmgrößen oder Format-Unterstützung unterschiedliche Bilder benötigst.",
+      "commonMistakes": [
+        "Fehlendes title bei <iframe> — für Screenreader erforderlich",
+        "Autoplay-Video ohne muted — Browser blockieren Autoplay mit Ton standardmäßig",
+        "Das <img>-Fallback in <picture> weglassen — das img ist erforderlich, source-Elemente sind optional"
+      ]
+    }
+  }
+}

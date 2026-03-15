@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, X, Clock, ArrowRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useAppStore } from '@/store/useAppStore'
 import { useSearch } from '@/hooks/useSearch'
 import { CATEGORIES } from '@/data/categories'
@@ -22,6 +23,7 @@ function highlight(text: string, query: string): React.ReactNode {
 }
 
 export default function SearchPalette() {
+  const { t } = useTranslation('common')
   const { searchOpen, setSearchOpen } = useAppStore()
   const [query, setQuery] = useState('')
   const [activeIdx, setActiveIdx] = useState(-1)
@@ -98,7 +100,7 @@ export default function SearchPalette() {
                 ref={inputRef}
                 value={query}
                 onChange={e => setQuery(e.target.value)}
-                placeholder="Search topics…"
+                placeholder={t('searchPlaceholder')}
                 style={{
                   flex: 1, background: 'none', border: 'none', outline: 'none',
                   color: 'var(--text)', fontSize: 15,

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ExternalLink } from 'lucide-react'
 import { HTML_REFERENCE } from '@/data/htmlReference'
 import { CSS_REFERENCE } from '@/data/cssReference'
@@ -29,6 +30,7 @@ const META = {
 }
 
 export default function ReferencePage({ type }: Props) {
+  const { t } = useTranslation('reference')
   const meta = META[type]
   const [activeCategory, setActiveCategory] = useState(meta.data[0]?.id ?? '')
 
@@ -76,9 +78,9 @@ export default function ReferencePage({ type }: Props) {
                 marginBottom: 8,
               }}
             >
-              {meta.title}
+              {t(type === 'html' ? 'htmlTitle' : 'cssTitle')}
             </h1>
-            <p style={{ fontSize: 15, color: 'var(--text-muted)' }}>{meta.subtitle}</p>
+            <p style={{ fontSize: 15, color: 'var(--text-muted)' }}>{t(type === 'html' ? 'htmlSubtitle' : 'cssSubtitle')}</p>
           </div>
           <a
             href={meta.siteUrl}
@@ -154,7 +156,7 @@ export default function ReferencePage({ type }: Props) {
       {/* Content */}
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '48px 24px 80px' }}>
         {meta.data.map(cat => (
-          <CategorySection key={cat.id} id={`cat-${cat.id}`} category={cat} />
+          <CategorySection key={cat.id} id={`cat-${cat.id}`} category={cat} type={type} />
         ))}
       </div>
     </PageWrapper>

@@ -1,14 +1,15 @@
 import { useRef, useState, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import PageWrapper from '@/components/layout/PageWrapper'
-import { RESOURCE_GROUPS } from '@/data/resources'
 import type { Resource, ResourceGroup } from '@/data/resources'
+import { useResourceGroups } from '@/i18n/hooks'
 import { useResourceVotes } from '@/hooks/useResourceVotes'
 import { getHost } from '@/lib/getHost'
+import { useTranslation } from 'react-i18next'
 
 // ─── Top 5 Section ────────────────────────────────────────────────────────────
 
-const ALL_RESOURCES: Resource[] = RESOURCE_GROUPS.flatMap(g => g.resources)
+// ALL_RESOURCES is passed as a prop to TopResourcesBar (computed from useResourceGroups inside ResourcesPage)
 
 function TopCard({
   r, rank, votes, previewEnabled, soundEnabled,
@@ -113,16 +114,17 @@ function TopCard({
 }
 
 function TopResourcesBar({
-  votes, loading, hideAI, previewEnabled, soundEnabled,
+  votes, loading, hideAI, previewEnabled, soundEnabled, allResources,
 }: {
   votes: Record<string, number>
   loading: boolean
   hideAI: boolean
   previewEnabled: boolean
   soundEnabled: boolean
+  allResources: Resource[]
 }) {
   const top5 = useMemo(() => {
-    return ALL_RESOURCES
+    return allResources
       .filter(r => (votes[r.id] ?? 0) > 0 && (!hideAI || !r.isAI))
       .sort((a, b) => (votes[b.id] ?? 0) - (votes[a.id] ?? 0))
       .slice(0, 5)
@@ -419,18 +421,20 @@ function ResourceGroupSection({ group, votes, hasVoted, submitting, onUpvote, lo
 
 export default function ResourcesPage() {
   const { votes, hasVoted, submitting, upvote, loading } = useResourceVotes()
+  const resourceGroups = useResourceGroups()
+  const { t } = useTranslation('resources')
   const [previewEnabled, setPreviewEnabled] = useState(true)
   const [soundEnabled, setSoundEnabled] = useState(true)
   const [hideAI, setHideAI] = useState(false)
 
   const filteredGroups = useMemo(() =>
-    RESOURCE_GROUPS
+    resourceGroups
       .map(g => ({
         ...g,
         resources: g.resources.filter(r => !hideAI || !(g.isAI || r.isAI)),
       }))
       .filter(g => g.resources.length > 0),
-    [hideAI]
+    [resourceGroups, hideAI]
   )
 
   return (
@@ -445,22 +449,22 @@ export default function ResourcesPage() {
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
             <div>
               <h1 style={{ fontSize: 28, fontWeight: 800, color: 'var(--text)', margin: '0 0 10px' }}>
-                Useful Resources
+                {t('title')}
               </h1>
               <p style={{ fontSize: 14, color: 'var(--text-muted)', margin: 0, maxWidth: 520 }}>
-                A curated collection of tools, libraries, and references to help you build better web projects.
+                {t('subtitle')}
               </p>
             </div>
             {/* Toggles */}
             <div style={{ display: 'flex', gap: 10, flexShrink: 0 }}>
-              <Toggle on={previewEnabled} onChange={setPreviewEnabled} label="Short Preview" icon="📱" hint="hover to preview" />
-              <Toggle on={soundEnabled} onChange={setSoundEnabled} label="Sound" icon="🎵" hint="autoplay with audio" />
-              <Toggle on={hideAI} onChange={setHideAI} label="Fu*k AI" icon="🖕" hint="AI hidden" hintOff="AI visible" />
+              <Toggle on={previewEnabled} onChange={setPreviewEnabled} label={t('shortPreview')} icon="📱" hint={t('hoverToPreview')} />
+              <Toggle on={soundEnabled} onChange={setSoundEnabled} label={t('sound')} icon="🎵" hint={t('autoplawWithAudio')} />
+              <Toggle on={hideAI} onChange={setHideAI} label={t('fuckAI')} icon="🖕" hint={t('aiHidden')} hintOff={t('aiVisible')} />
             </div>
           </div>
         </div>
 
-        <TopResourcesBar votes={votes} loading={loading} hideAI={hideAI} previewEnabled={previewEnabled} soundEnabled={soundEnabled} />
+        <TopResourcesBar votes={votes} loading={loading} hideAI={hideAI} previewEnabled={previewEnabled} soundEnabled={soundEnabled} allResources={resourceGroups.flatMap(g => g.resources)} />
 
         {filteredGroups.map(group => (
           <ResourceGroupSection

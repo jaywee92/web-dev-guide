@@ -1,0 +1,15 @@
+{
+  "reference": "REFERENCE",
+  "htmlReference": "HTML Reference",
+  "cssReference": "CSS Reference",
+  "resources": "RESOURCES",
+  "searchPlaceholder": "Search topics…",
+  "lightMode": "Switch to light mode",
+  "darkMode": "Switch to dark mode",
+  "tagline": "Web Dev Visual Guide · Learning by Animation",
+  "notFound": "404",
+  "topicNotFound": "Topic not found",
+  "topicNotFoundDesc": "We couldn't find the topic you're looking for.",
+  "backToOverview": "← Back to Overview",
+  "comingSoon": "Coming soon"
+}

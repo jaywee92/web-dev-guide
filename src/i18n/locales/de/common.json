@@ -1,0 +1,15 @@
+{
+  "reference": "REFERENZ",
+  "htmlReference": "HTML Referenz",
+  "cssReference": "CSS Referenz",
+  "resources": "RESSOURCEN",
+  "searchPlaceholder": "Themen suchen…",
+  "lightMode": "Zum hellen Modus wechseln",
+  "darkMode": "Zum dunklen Modus wechseln",
+  "tagline": "Web Dev Visual Guide · Lernen durch Animation",
+  "notFound": "404",
+  "topicNotFound": "Thema nicht gefunden",
+  "topicNotFoundDesc": "Das gesuchte Thema konnte nicht gefunden werden.",
+  "backToOverview": "← Zurück zur Übersicht",
+  "comingSoon": "Demnächst verfügbar"
+}

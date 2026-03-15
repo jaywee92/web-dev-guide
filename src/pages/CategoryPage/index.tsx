@@ -2,8 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowLeft, ExternalLink } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { getCategoryById } from '@/data/categories'
-import { TOPICS } from '@/data/topics'
+import { useCategories, useTopics } from '@/i18n/hooks'
 import PageWrapper from '@/components/layout/PageWrapper'
 import StaggerChildren, { staggerItem } from '@/components/animations/primitives/StaggerChildren'
 
@@ -11,8 +10,10 @@ export default function CategoryPage() {
   const location = useLocation()
   const navigate = useNavigate()
   const categoryId = location.pathname.slice(1)
-  const category = getCategoryById(categoryId)
-  const topics = TOPICS.filter(t => t.category === categoryId)
+  const categories = useCategories()
+  const allTopics = useTopics()
+  const category = categories.find(c => c.id === categoryId)
+  const topics = allTopics.filter(t => t.category === categoryId)
 
   if (!category) {
     return (

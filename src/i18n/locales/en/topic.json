@@ -1,0 +1,8 @@
+{
+  "cheatSheet": "Cheat Sheet",
+  "playground": "Playground",
+  "whatIs": "What is {{title}}?",
+  "howItWorks": "How it works",
+  "stepOf": "Step {{current}} of {{total}}",
+  "keyTakeaways": "Key Takeaways"
+}

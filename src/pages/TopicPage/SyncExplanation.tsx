@@ -1,5 +1,6 @@
 import { useRef, useEffect, type ComponentType } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import type { Topic, ExplanationStep } from '@/types'
 import CodeBlock from '@/components/ui/CodeBlock'
 import { useAnimationStep } from '@/hooks/useAnimationStep'
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function SyncExplanation({ topic, AnimComp, animLoading }: Props) {
+  const { t } = useTranslation('topic')
   const explanationSection = topic.sections.find(s => s.type === 'explanation')
   const steps = explanationSection?.steps ?? []
   const ctrl = useAnimationStep({ totalSteps: Math.max(steps.length, 1), autoPlay: false })
@@ -22,7 +24,7 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
       <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
       <section style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px 80px' }}>
         <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 40, color: 'var(--text)' }}>
-          How it works
+          {t('howItWorks')}
         </h2>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 44fr) minmax(0, 56fr)', gap: 40, alignItems: 'start' }}>
