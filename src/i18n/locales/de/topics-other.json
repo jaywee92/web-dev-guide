@@ -84,6 +84,95 @@
       ]
     }
   },
+  "http-ssr-csr": {
+    "title": "SSR vs. CSR",
+    "description": "Server-Side Rendering vs. Client-Side Rendering — wie Webseiten aufgebaut und ausgeliefert werden.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Server-Side Rendering (SSR)",
+        "text": "Bei SSR generiert der Server für jede Anfrage vollständiges HTML und sendet eine sofort darstellbare Seite an den Browser. Der Browser empfängt das vollständige Markup sofort — es wird kaum JavaScript benötigt, um Inhalte anzuzeigen. Beispiele: PHP, Django-Templates, Ruby on Rails, Next.js mit getServerSideProps. Vorteile: schneller First Paint, hervorragendes SEO, funktioniert ohne JS. Nachteile: vollständiger Server-Aufruf pro Navigation, langsamere Folgeübergänge."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Client-Side Rendering (CSR)",
+        "text": "Bei CSR sendet der Server eine minimale HTML-Hülle plus ein JavaScript-Bundle. Der Browser lädt das JS herunter, parst und führt es aus, woraufhin die vollständige Benutzeroberfläche gerendert wird. Beispiele: Create React App, Vue SPA, Angular — jede Single-Page-Applikation. Vorteile: schnelle Navigation nach dem ersten Laden, reichhaltige Interaktionen, günstiges statisches Hosting. Nachteile: langsames erstes Laden, SEO erfordert zusätzliche Konfiguration."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Direkter Vergleich",
+        "text": "SSR und CSR treffen unterschiedliche Kompromisse. SSR gewinnt bei der Geschwindigkeit des ersten Seitenaufbaus und SEO, benötigt aber für jede Seitenanfrage einen Server. CSR gewinnt bei der Navigationsgeschwindigkeit nach dem ersten Laden und den Hosting-Kosten, hat aber Probleme bei der Ladezeit und der Suchmaschinenindexierung. Keines ist universell besser — wähle basierend auf den Prioritäten deiner App."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Hybride Ansätze",
+        "text": "Moderne Meta-Frameworks kombinieren SSR und CSR pro Route. SSG (Static Site Generation) erstellt HTML zur Build-Zeit — schnellstmöglich, kein Server nötig (Astro, Next.js). ISR (Incremental Static Regeneration) erstellt Seiten auf Abruf oder nach Zeitplan neu. Islands Architecture verwendet SSR für die Hülle mit selektiver CSR-Hydration für interaktive Teile. Next.js, Nuxt und SvelteKit ermöglichen die Wahl von SSR/CSR/SSG pro Route."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "SSR", "note": "Schneller First Paint, gutes SEO" },
+        { "label": "CSR", "note": "Schnelle Navigation, langsames erstes Laden" },
+        { "label": "SSG", "note": "Am schnellsten, kein Server nötig" }
+      ],
+      "patterns": [
+        { "title": "Pro Route wählen (Next.js)" }
+      ],
+      "whenToUse": "Verwende SSR für inhaltlich aktuelle, SEO-kritische Seiten (Produktseiten, Nachrichten). CSR für Dashboards und App-UIs hinter einem Login. SSG für Marketing-Seiten, Dokumentationen und Blogs.",
+      "commonMistakes": [
+        "Davon ausgehen, CSR sei immer schneller — für Erstbesucher mit langsamer Verbindung gewinnt SSR oft.",
+        "In Next.js alles auf SSR setzen — SSG-Seiten werden vom CDN ausgeliefert und sind deutlich schneller.",
+        "Hydration ignorieren — React SSR sendet HTML, dann wird es mit JS hydratisiert; Abweichungen verursachen Flackern."
+      ]
+    }
+  },
+  "db-intro": {
+    "title": "Datenbanken & SQL Intro",
+    "description": "Was Datenbanken sind, warum wir sie nutzen und wie sich relationale und NoSQL-Datenbanken unterscheiden.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Was ist eine Datenbank?",
+        "text": "Eine Datenbank ist eine organisierte Sammlung strukturierter Daten, die von einem Datenbankmanagementsystem (DBMS) verwaltet wird. Kernkomponenten: die Daten selbst, ein Schema (Strukturdefinition), die DBMS-Engine, Abfragen und Benutzer. Im Gegensatz zu einfachen Dateien unterstützen Datenbanken gleichzeitigen Zugriff, komplexe Abfragen, referenzielle Integrität und Transaktionen."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Relationale Datenbanken",
+        "text": "Relationale Datenbanken speichern Daten in Tabellen — Zeilen sind Datensätze, Spalten sind typisierte Attribute. Ein Primärschlüssel identifiziert jede Zeile eindeutig (oft SERIAL oder AUTO_INCREMENT). ACID-Garantien sichern die Datenintegrität: Atomizität (alles oder nichts), Konsistenz (immer gültiger Zustand), Isolation (konkurrenzsicher), Dauerhaftigkeit (Committed = permanent). Beispiele: PostgreSQL, MySQL, SQLite."
+      },
+      {
+        "animationStep": 2,
+        "heading": "NoSQL-Datenbanken",
+        "text": "NoSQL-Datenbanken tauschen starre Schemata gegen Flexibilität und Skalierbarkeit. Vier Haupttypen: Document Stores (MongoDB) — JSON-ähnliche Dokumente mit verschachtelten Daten. Key-Value (Redis) — ultraschneller In-Memory-Speicher, ideal für Caching. Graph (Neo4j) — Knoten und Kanten für beziehungsintensive Abfragen. Column-oriented (Cassandra) — hoher Schreibdurchsatz für Zeitreihendaten und Analysen."
+      },
+      {
+        "animationStep": 3,
+        "heading": "SQL vs. NoSQL: Wann was nutzen?",
+        "text": "Verwende SQL, wenn: Daten klare Beziehungen haben, ACID-Garantien erforderlich sind oder komplexe JOIN-Abfragen und Reports benötigt werden. Verwende NoSQL, wenn: die Datenstruktur variabel oder verschachtelt ist, massive horizontale Skalierung nötig ist oder der Workload schreibintensiv ist. In der Praxis nutzen viele Systeme beides — PostgreSQL für persistente Daten, Redis für Caching."
+      },
+      {
+        "animationStep": 4,
+        "heading": "SQL-Syntax-Primer",
+        "text": "SQL (Structured Query Language) ist der Standard für relationale Datenbanken. CREATE TABLE definiert das Schema einer Tabelle mit Spaltennamen, Typen und Constraints. Häufige Datentypen: SERIAL (Auto-Increment-Integer), VARCHAR(n) (Zeichenkette bis n Zeichen), INT, BOOLEAN, TIMESTAMP, TEXT (unbegrenzte Zeichenkette), DECIMAL(p,s). Constraints: PRIMARY KEY, NOT NULL, UNIQUE, DEFAULT, FOREIGN KEY."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "CREATE TABLE", "note": "Schema mit Typen und Constraints definieren" },
+        { "label": "Häufige Datentypen", "note": "Meist verwendete PostgreSQL-Typen" },
+        { "label": "Constraints", "note": "Datenintegrität erzwingen" }
+      ],
+      "patterns": [
+        { "title": "Tabelle mit FK" }
+      ],
+      "whenToUse": "Verwende eine relationale Datenbank (PostgreSQL), wenn deine Daten Beziehungen haben, ACID-Garantien benötigt werden oder komplexe Abfragen erforderlich sind. Füge einen Key-Value-Store (Redis) für Caching oder Sessions hinzu.",
+      "commonMistakes": [
+        "TEXT für alles verwenden — der richtige Datentyp ermöglicht bessere Validierung und Index-Performance.",
+        "NOT NULL weglassen — erlaube NULL nur, wenn das Fehlen eines Wertes wirklich sinnvoll ist.",
+        "REFERENCES (Foreign Keys) vergessen — ohne sie kann die Datenbank referenzielle Integrität nicht erzwingen."
+      ]
+    }
+  },
   "postgres-queries": {
     "title": "SQL-Abfragen",
     "description": "SELECT, WHERE, ORDER BY — Daten aus PostgreSQL lesen",
@@ -95,7 +184,9 @@
       { "animationStep": 4, "heading": "LIMIT — Ergebnisanzahl steuern", "text": "LIMIT begrenzt die Anzahl der zurückgegebenen Zeilen. In Kombination mit OFFSET implementiert es Paginierung." },
       { "animationStep": 5, "heading": "SELECT mit WHERE und ORDER BY", "text": "WHERE filtert Zeilen, die eine Bedingung erfüllen. Du kannst mehrere Bedingungen mit AND und OR kombinieren. ORDER BY sortiert Ergebnisse — ASC (Standard) für aufsteigend, DESC für absteigend. Alias immer mehrdeutige Spalten in Multi-Tabellen-Abfragen." },
       { "animationStep": 6, "heading": "Aggregatfunktionen: COUNT, SUM, AVG", "text": "Aggregatfunktionen berechnen ein einzelnes Ergebnis aus einer Menge von Zeilen. COUNT(*) zählt Zeilen, SUM addiert numerische Werte, AVG berechnet den Durchschnitt, MIN/MAX finden Extremwerte. Sie werden typischerweise mit GROUP BY kombiniert." },
-      { "animationStep": 7, "heading": "GROUP BY und HAVING", "text": "GROUP BY fasst Zeilen, die denselben Wert in einer Spalte teilen, zu einer einzelnen Zeile zusammen, sodass Aggregate pro Gruppe operieren. HAVING filtert Gruppen nach der Aggregation — wie WHERE, aber für Gruppen." }
+      { "animationStep": 7, "heading": "GROUP BY und HAVING", "text": "GROUP BY fasst Zeilen, die denselben Wert in einer Spalte teilen, zu einer einzelnen Zeile zusammen, sodass Aggregate pro Gruppe operieren. HAVING filtert Gruppen nach der Aggregation — wie WHERE, aber für Gruppen." },
+      { "animationStep": 8, "heading": "HAVING vs. WHERE", "text": "WHERE filtert einzelne Zeilen, bevor GROUP BY ausgeführt wird. HAVING filtert Gruppen nach GROUP BY — es kann auf Aggregatfunktionen verweisen. Faustregel: Wenn deine Bedingung COUNT, SUM oder AVG verwendet, nutze HAVING; andernfalls WHERE. Beide können in derselben Abfrage vorkommen." },
+      { "animationStep": 9, "heading": "Subqueries", "text": "Eine Subquery ist ein SELECT, das innerhalb einer anderen Abfrage verschachtelt ist. Die innere Abfrage wird zuerst ausgeführt; ihr Ergebnis wird von der äußeren Abfrage verwendet. Skalare Subqueries geben einen einzelnen Wert zurück (verwendbar in WHERE). IN-Subqueries geben eine Werteliste zurück. Korrelierte Subqueries referenzieren Spalten der äußeren Abfrage — mächtig, aber sie laufen einmal pro äußerer Zeile; bevorzuge JOINs für große Datensätze." }
     ],
     "cheatSheet": {
       "syntax": [
