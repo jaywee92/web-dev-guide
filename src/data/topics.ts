@@ -3517,7 +3517,44 @@ export const TOPICS: Topic[] = [
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
-      { id: 'explanation', type: 'explanation', steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation',
+        steps: [
+          {
+            animationStep: 0,
+            icon: '🌳',
+            heading: 'DOM Tree Structure',
+            text: 'The DOM represents your HTML as a tree of nodes. The document object is the root. HTML elements are Element nodes; text inside them are Text nodes. JavaScript can traverse this tree using parent, child, and sibling relationships.',
+            codeExample: `// document is the root\nconsole.log(document.documentElement); // <html>\nconsole.log(document.body);            // <body>\n\n// Navigate the tree\nconst first = document.body.firstElementChild;\nconsole.log(first.tagName);           // e.g. 'HEADER'`,
+            language: 'javascript',
+          },
+          {
+            animationStep: 1,
+            icon: '🔍',
+            heading: 'Selecting Elements',
+            text: 'querySelector returns the first element matching a CSS selector. querySelectorAll returns a NodeList of all matches. getElementById and getElementsByClassName are older alternatives — querySelector is more flexible and preferred.',
+            codeExample: `// Single element\nconst title = document.querySelector('h1');\nconst btn   = document.querySelector('#submit');\n\n// All matching elements\nconst items = document.querySelectorAll('.menu-item');\nitems.forEach(item => console.log(item.textContent));`,
+            language: 'javascript',
+          },
+          {
+            animationStep: 2,
+            icon: '🛠️',
+            heading: 'Creating and Inserting Elements',
+            text: 'createElement(tag) creates a detached element. Set its properties (textContent, className, etc.) then attach it to the DOM with appendChild, prepend, or insertBefore. The element appears in the page only after attachment.',
+            codeExample: `const li = document.createElement('li');\nli.textContent = 'New item';\nli.className = 'menu-item';\n\nconst list = document.querySelector('ul');\nlist.appendChild(li); // adds at the end\n\n// Or insert before a specific node:\nlist.insertBefore(li, list.firstChild);`,
+            language: 'javascript',
+          },
+          {
+            animationStep: 3,
+            icon: '✏️',
+            heading: 'Reading and Changing Element Properties',
+            text: 'Use textContent to read or set text safely. classList provides add, remove, toggle, and contains for CSS class management. setAttribute / getAttribute read and write HTML attributes. style lets you set inline CSS directly.',
+            codeExample: `const el = document.querySelector('.card');\n\nel.textContent = 'Updated text';\nel.classList.add('active');\nel.classList.toggle('hidden');\n\nel.setAttribute('data-id', '42');\nconsole.log(el.getAttribute('data-id')); // '42'\n\nel.style.color = 'red';`,
+            language: 'javascript',
+          },
+        ],
+      },
       { id: 'playground', type: 'playground', steps: [] },
     ],
     cheatSheet: {
@@ -4889,7 +4926,44 @@ export const TOPICS: Topic[] = [
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
-      { id: 'explanation', type: 'explanation', steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation',
+        steps: [
+          {
+            animationStep: 0,
+            icon: '🧩',
+            heading: 'Utility-First Approach',
+            text: 'In Tailwind, you style elements by composing small single-purpose classes directly on the element rather than writing custom CSS. Each class does exactly one thing: p-4 adds padding, text-blue-500 sets color, flex enables flexbox. No naming of CSS classes required.',
+            codeExample: `<!-- Traditional CSS approach -->\n<div class="card">...</div>\n<style>.card { padding: 1rem; background: white; border-radius: 0.5rem; }</style>\n\n<!-- Tailwind utility approach -->\n<div class="p-4 bg-white rounded-lg shadow">...</div>`,
+            language: 'html',
+          },
+          {
+            animationStep: 1,
+            icon: '📱',
+            heading: 'Responsive Prefixes',
+            text: 'Tailwind is mobile-first. Unprefixed classes apply to all screen sizes. Responsive prefixes (sm:, md:, lg:, xl:) apply the class only at that breakpoint and above. Stack them to build fully responsive layouts without media query boilerplate.',
+            codeExample: `<!-- 1 column on mobile, 2 on md+, 3 on lg+ -->\n<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">\n  <div class="p-4 bg-white rounded">Card 1</div>\n  <div class="p-4 bg-white rounded">Card 2</div>\n  <div class="p-4 bg-white rounded">Card 3</div>\n</div>`,
+            language: 'html',
+          },
+          {
+            animationStep: 2,
+            icon: '🎨',
+            heading: 'Common Utility Classes',
+            text: 'Tailwind covers spacing (p-, m-), sizing (w-, h-), typography (text-, font-), colors (bg-, text-, border-), flexbox/grid (flex, grid, items-, justify-), borders (rounded-, border-), and effects (shadow-, opacity-). The full list is in the official docs.',
+            codeExample: `<button class="\n  px-6 py-3\n  bg-indigo-600 text-white\n  font-semibold text-sm\n  rounded-lg shadow\n  hover:bg-indigo-700\n  transition-colors duration-200\n">\n  Save changes\n</button>`,
+            language: 'html',
+          },
+          {
+            animationStep: 3,
+            icon: '⚙️',
+            heading: 'Setup: CDN and npm',
+            text: 'For quick prototyping, add the CDN Play script to your HTML. For production, install via npm and use a PostCSS plugin or the Vite/CLI integration — this enables purging unused styles and customizing the design system via tailwind.config.js.',
+            codeExample: `<!-- CDN (prototyping only) -->\n<!-- Add script src from cdn.tailwindcss.com to your HTML -->\n\n<!-- npm setup -->\n<!-- npm install -D tailwindcss -->\n<!-- npx tailwindcss init -->\n<!-- Add @tailwind directives to CSS:\n  @tailwind base;\n  @tailwind components;\n  @tailwind utilities;\n-->`,
+            language: 'html',
+          },
+        ],
+      },
       { id: 'playground', type: 'playground', steps: [] },
     ],
     cheatSheet: {
