@@ -2289,7 +2289,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'js-closures',
-    nextTopicId: 'js-variables',
+    nextTopicId: 'js-promises',
     title: 'Closures',
     description: 'Functions that remember the scope where they were created',
     category: 'javascript',
@@ -2704,7 +2704,7 @@ export const TOPICS: Topic[] = [
     estimatedMinutes: 10,
     animationComponent: 'ClosureViz',
     playgroundType: 'monaco',
-    nextTopicId: 'js-promises',
+    nextTopicId: 'js-destructuring',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
       {
@@ -2761,7 +2761,7 @@ export const TOPICS: Topic[] = [
     estimatedMinutes: 12,
     animationComponent: 'EventLoopViz',
     playgroundType: 'monaco',
-    nextTopicId: 'js-destructuring',
+    nextTopicId: 'js-modules',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
       {
@@ -3579,7 +3579,7 @@ export const TOPICS: Topic[] = [
   },
   {
     id: 'webapi-fetch',
-    nextTopicId: 'webapi-events',
+    nextTopicId: 'webapi-dom',
     title: 'Fetch API',
     description: 'Make HTTP requests from JavaScript with Promises and async/await',
     category: 'webapis',
