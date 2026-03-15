@@ -906,6 +906,31 @@
         "animationStep": 3,
         "heading": "Setup: CDN and npm",
         "text": "For quick prototyping, add the CDN Play script to your HTML. For production, install via npm and use a PostCSS plugin or the Vite/CLI integration — this enables purging unused styles and customizing the design system via tailwind.config.js."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Why CSS Frameworks?",
+        "text": "Raw CSS has pain points: repetitive rules, naming conventions (BEM), and maintaining media queries across a large codebase. Utility-first frameworks solve this by applying single-purpose classes directly in HTML — no naming decisions, no context switching between files."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Responsive Breakpoints",
+        "text": "Tailwind is mobile-first. Unprefixed classes apply to all screen sizes; breakpoint prefixes apply from that width upward. Breakpoints: sm: 640px · md: 768px · lg: 1024px · xl: 1280px · 2xl: 1536px. Stack prefixes to build fully responsive layouts without writing a single media query."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Dark Mode",
+        "text": "Enable dark mode by adding darkMode: 'class' to tailwind.config.js. Then toggle the dark class on the <html> element (via JavaScript). Any class prefixed with dark: activates only when the dark class is present on a parent — letting you theme your entire app with a single toggle."
+      },
+      {
+        "animationStep": 7,
+        "heading": "Arbitrary Values",
+        "text": "When you need an exact value outside the design system, use square bracket syntax. Works on any utility property: widths, colors, spacing, grid templates, even CSS calc() expressions. Use sparingly — prefer design tokens for consistency across the project."
+      },
+      {
+        "animationStep": 8,
+        "heading": "@layer & @apply",
+        "text": "@layer organises your CSS into three buckets: base (global resets), components (reusable UI patterns), utilities (single-purpose custom classes). @apply lets you compose Tailwind utilities into a custom class — useful when a pattern repeats across many elements but you still want Tailwind's design tokens."
       }
     ],
     "cheatSheet": {
