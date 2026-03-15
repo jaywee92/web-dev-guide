@@ -906,6 +906,31 @@
         "animationStep": 3,
         "heading": "Setup: CDN und npm",
         "text": "Für schnelles Prototyping das CDN-Play-Skript zum HTML hinzufügen. Für Produktion via npm installieren und ein PostCSS-Plugin oder die Vite/CLI-Integration verwenden — dies ermöglicht das Bereinigen ungenutzter Stile und das Anpassen des Designsystems via tailwind.config.js."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Warum CSS-Frameworks?",
+        "text": "Reines CSS hat Schwächen: repetitive Regeln, Namenskonventionen (BEM) und die Pflege von Media Queries in großen Codebasen. Utility-first-Frameworks lösen dies, indem sie Single-Purpose-Klassen direkt im HTML anwenden — keine Benennungsentscheidungen, kein Kontextwechsel zwischen Dateien."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Responsive Breakpoints",
+        "text": "Tailwind ist Mobile-first. Klassen ohne Präfix gelten für alle Bildschirmgrößen; Breakpoint-Präfixe gelten ab dieser Breite aufwärts. Breakpoints: sm: 640px · md: 768px · lg: 1024px · xl: 1280px · 2xl: 1536px. Kombiniere Präfixe für vollständig responsive Layouts — ganz ohne Media Queries."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Dark Mode",
+        "text": "Aktiviere den Dark Mode, indem du darkMode: 'class' in tailwind.config.js setzt. Dann wird die Klasse dark am <html>-Element per JavaScript umgeschaltet. Jede Klasse mit dem Präfix dark: ist nur aktiv, wenn ein übergeordnetes Element die dark-Klasse trägt — so kannst du das gesamte Erscheinungsbild mit einem einzigen Schalter ändern."
+      },
+      {
+        "animationStep": 7,
+        "heading": "Beliebige Werte",
+        "text": "Wenn du einen exakten Wert außerhalb des Design-Systems benötigst, nutze die eckige-Klammer-Syntax. Funktioniert mit jeder Utility-Eigenschaft: Breiten, Farben, Abstände, Grid-Templates, sogar CSS calc()-Ausdrücke. Sparsam einsetzen — bevorzuge Design-Tokens für konsistente Gestaltung."
+      },
+      {
+        "animationStep": 8,
+        "heading": "@layer & @apply",
+        "text": "@layer teilt dein CSS in drei Ebenen auf: base (globale Resets), components (wiederverwendbare UI-Muster) und utilities (benutzerdefinierte Single-Purpose-Klassen). @apply ermöglicht es, Tailwind-Utilities in einer eigenen Klasse zusammenzufassen — nützlich, wenn sich ein Muster häufig wiederholt, aber die Design-Tokens erhalten bleiben sollen."
       }
     ],
     "cheatSheet": {
