@@ -1,13 +1,25 @@
+import { useTranslation } from 'react-i18next'
 import { ExternalLink } from 'lucide-react'
 import type { ReferenceEntry } from '@/types'
 import CodeBlock from '@/components/ui/CodeBlock'
 
+function toRefKey(name: string): string {
+  return name
+    .replace(/[<>]/g, '')
+    .replace(/\s*\/\s*/g, '-')
+    .replace(/:\s*/g, '-')
+    .toLowerCase()
+    .trim()
+}
+
 interface Props {
   entry: ReferenceEntry
   accentColor: string
+  type: 'html' | 'css'
 }
 
-export default function ReferenceCard({ entry, accentColor }: Props) {
+export default function ReferenceCard({ entry, accentColor, type }: Props) {
+  const { t } = useTranslation('reference')
   return (
     <div
       style={{
@@ -43,7 +55,7 @@ export default function ReferenceCard({ entry, accentColor }: Props) {
             {entry.name}
           </div>
           <div style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.5 }}>
-            {entry.description}
+            {t(`${type}.${toRefKey(entry.name)}.description` as never, { defaultValue: entry.description })}
           </div>
         </div>
         <a

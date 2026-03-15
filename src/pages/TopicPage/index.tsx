@@ -1,7 +1,9 @@
 import { useState, useEffect, type ComponentType } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { ArrowLeft, ExternalLink, Clock } from 'lucide-react'
 import { getTopicById } from '@/data/topics'
+import { useTopic } from '@/i18n/hooks'
 import PageWrapper from '@/components/layout/PageWrapper'
 import SyncExplanation from './SyncExplanation'
 import PlaygroundSection from './PlaygroundSection'
@@ -19,7 +21,9 @@ import TopicBanner from './TopicBanner'
 export default function TopicPage() {
   const { topicId } = useParams()
   const navigate = useNavigate()
-  const topic = topicId ? getTopicById(topicId) : undefined
+  const { t } = useTranslation('common')
+  const { t: tTopic } = useTranslation('topic')
+  const topic = useTopic(topicId ?? '')
   const [AnimComp, setAnimComp] = useState<ComponentType<{ step: number; compact?: boolean }> | null>(
     () => topic ? getAnimationComponent(topic.animationComponent) : null
   )
@@ -57,13 +61,13 @@ export default function TopicPage() {
           minHeight: 'calc(100vh - 60px)', gap: 16, textAlign: 'center', padding: 40,
         }}>
           <div style={{ fontSize: 72, fontWeight: 900, fontFamily: 'var(--font-mono)', color: 'var(--text-faint)', lineHeight: 1 }}>
-            404
+            {t('notFound')}
           </div>
           <h1 style={{ fontSize: 24, fontWeight: 700, color: 'var(--text)', margin: 0 }}>
-            Topic not found
+            {t('topicNotFound')}
           </h1>
           <p style={{ fontSize: 15, color: 'var(--text-muted)', margin: 0 }}>
-            We couldn't find the topic you're looking for.
+            {t('topicNotFoundDesc')}
           </p>
           <button
             onClick={() => navigate('/')}
@@ -74,7 +78,7 @@ export default function TopicPage() {
               fontSize: 14, cursor: 'pointer', fontFamily: 'var(--font-mono)',
             }}
           >
-            ← Back to Overview
+            {t('backToOverview')}
           </button>
         </div>
       </PageWrapper>
@@ -200,7 +204,7 @@ export default function TopicPage() {
               tabs={[
                 ...(hasCheatSheet ? [{
                   id: 'cheatsheet',
-                  label: 'Cheat Sheet',
+                  label: tTopic('cheatSheet'),
                   content: <CheatSheet key={topic.id} data={topic.cheatSheet!} color={topic.color} language={cheatSheetLang} />,
                 }] : []),
                 ...(hasSliderConfig(topic.id) ? [{
@@ -210,7 +214,7 @@ export default function TopicPage() {
                 }] : []),
                 ...(hasPlayground ? [{
                   id: 'playground',
-                  label: 'Playground',
+                  label: tTopic('playground'),
                   content: <PlaygroundSection topic={topic} />,
                 }] : []),
               ]}

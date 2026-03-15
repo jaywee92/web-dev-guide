@@ -1,5 +1,6 @@
 // src/pages/TopicPage/KeyTakeaways.tsx
 import { CheckCircle2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { Topic } from '@/types'
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
 }
 
 export default function KeyTakeaways({ topic }: Props) {
+  const { t } = useTranslation('topic')
   const steps = topic.sections.find(s => s.type === 'explanation')?.steps ?? []
   if (steps.length < 2) return null
 
@@ -27,7 +29,7 @@ export default function KeyTakeaways({ topic }: Props) {
         textTransform: 'uppercase',
         marginBottom: 14,
       }}>
-        Key Takeaways
+        {t('keyTakeaways')}
       </div>
       <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
         {steps.map((step, i) => (
