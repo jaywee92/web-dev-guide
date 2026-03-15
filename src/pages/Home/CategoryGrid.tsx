@@ -10,7 +10,9 @@ import {
   HardDrive, Server, Activity, Search, Merge, Github, GitCommit,
   Users, FileX, GitMerge,
 } from 'lucide-react'
-import { CATEGORIES, CATEGORY_GROUPS, getTechKey, TECH_SECTION_META, TOPIC_LABELS, TOPIC_ICONS } from '@/data/categories'
+import { getTechKey, TOPIC_ICONS } from '@/data/categories'
+import type { TechSectionMeta } from '@/data/categories'
+import { useCategories, useCategoryGroups, useTechMeta, useTopicLabels } from '@/i18n/hooks'
 import { RESOURCE_GROUPS } from '@/data/resources'
 import type { Category, CategoryId } from '@/types'
 import CategoryTooltip from './CategoryTooltip'
@@ -30,10 +32,10 @@ const ICONS: Record<string, ComponentType<{ size?: number; color?: string }>> = 
   Users, FileX, GitMerge,
 }
 
-function deriveTechSections(categoryIds: CategoryId[]): Array<{ techKey: string; categories: Category[] }> {
+function deriveTechSections(categoryIds: CategoryId[], categories: Category[]): Array<{ techKey: string; categories: Category[] }> {
   const sections: Array<{ techKey: string; categories: Category[] }> = []
   for (const id of categoryIds) {
-    const cat = CATEGORIES.find(c => c.id === id)
+    const cat = categories.find(c => c.id === id)
     if (!cat) continue
     const key = getTechKey(id)
     const last = sections[sections.length - 1]
@@ -64,7 +66,9 @@ function GroupLabel({ label }: { label: string }) {
 
 interface TechSectionProps {
   techKey: string
+  meta: TechSectionMeta | undefined
   categories: Category[]
+  topicLabels: Record<string, string>
   globalIndex: number
   galaxyRef: RefObject<GalaxyHandle | null>
   trailRef: RefObject<TrailHandle | null>
@@ -73,12 +77,11 @@ interface TechSectionProps {
 }
 
 const TechSection = React.memo(function TechSection({
-  techKey, categories, globalIndex,
+  techKey: _techKey, meta, categories, topicLabels, globalIndex,
   galaxyRef, trailRef,
   onCardHover, onCardLeave,
 }: TechSectionProps) {
   const navigate = useNavigate()
-  const meta = TECH_SECTION_META[techKey]
   const primaryCategory = categories[0]
   const Icon = ICONS[primaryCategory.icon] ?? FileCode2
   const color = meta?.color ?? primaryCategory.color
@@ -161,7 +164,7 @@ const TechSection = React.memo(function TechSection({
                 return (
                   <span key={tid} style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>
                     {TI && <span style={{ opacity: 0.6, lineHeight: 0, flexShrink: 0 }}><TI size={11} color="currentColor" /></span>}
-                    {TOPIC_LABELS[tid] ?? tid.replace(/^[a-z]+-/, '').replace(/-/g, ' ')}
+                    {topicLabels[tid] ?? tid.replace(/^[a-z]+-/, '').replace(/-/g, ' ')}
                     {i < arr.length - 1 ? <span style={{ opacity: 0.4, margin: '0 3px' }}>·</span> : ''}
                   </span>
                 )
@@ -266,6 +269,11 @@ function ResourcesSection({ globalIndex, galaxyRef, trailRef }: {
 }
 
 export default function CategoryGrid({ galaxyRef, trailRef }: CategoryGridProps) {
+  const categories = useCategories()
+  const categoryGroups = useCategoryGroups()
+  const techMeta = useTechMeta()
+  const topicLabels = useTopicLabels()
+
   const [tooltip, setTooltip] = useState<TooltipState | null>(null)
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -289,11 +297,11 @@ export default function CategoryGrid({ galaxyRef, trailRef }: CategoryGridProps)
   }, [])
 
   const allTechSections = useMemo(() =>
-    CATEGORY_GROUPS.map(group => ({
+    categoryGroups.map(group => ({
       group,
-      techSections: deriveTechSections(group.categoryIds as CategoryId[]),
+      techSections: deriveTechSections(group.categoryIds as CategoryId[], categories),
     })),
-    []
+    [categoryGroups, categories]
   )
 
   let globalIdx = 0
@@ -311,7 +319,9 @@ export default function CategoryGrid({ galaxyRef, trailRef }: CategoryGridProps)
                   <TechSection
                     key={ts.techKey}
                     techKey={ts.techKey}
+                    meta={techMeta[ts.techKey]}
                     categories={ts.categories}
+                    topicLabels={topicLabels}
                     globalIndex={idx}
                     galaxyRef={galaxyRef}
                     trailRef={trailRef}
