@@ -2040,8 +2040,8 @@ export const TOPICS: Topic[] = [
   {
     id: 'js-oop',
     category: 'javascript-oop',
-    animationComponent: undefined,
-    bannerComponent: undefined,
+    animationComponent: 'ClosureViz',
+    bannerComponent: 'OOPBanner',
     nextTopicId: 'js-timers',
     title: 'Objects & Classes',
     description: 'Object-Oriented Programming models real-world entities as objects. JavaScript classes are syntactic sugar over prototype-based inheritance.',
@@ -2121,8 +2121,8 @@ export const TOPICS: Topic[] = [
   {
     id: 'js-timers',
     category: 'javascript-oop',
-    animationComponent: undefined,
-    bannerComponent: undefined,
+    animationComponent: 'EventLoopViz',
+    bannerComponent: 'TimersBanner',
     nextTopicId: 'js-event-loop',
     title: 'Timers & Async Globals',
     description: 'setTimeout and setInterval let you delay and repeat code execution.',
@@ -2469,8 +2469,8 @@ export const TOPICS: Topic[] = [
   {
     id: 'js-control-flow',
     category: 'javascript',
-    animationComponent: undefined,
-    bannerComponent: undefined,
+    animationComponent: 'VariablesViz',
+    bannerComponent: 'ControlFlowBanner',
     nextTopicId: 'js-arrays',
     title: 'Control Flow',
     description: 'Control flow statements let you make decisions and repeat actions — if/else, switch, and loops.',
@@ -2703,6 +2703,7 @@ export const TOPICS: Topic[] = [
     color: '#fb923c',
     estimatedMinutes: 10,
     animationComponent: 'ClosureViz',
+    bannerComponent: 'FunctionsBanner',
     playgroundType: 'monaco',
     nextTopicId: 'js-destructuring',
     sections: [
@@ -2760,6 +2761,7 @@ export const TOPICS: Topic[] = [
     color: '#4ade80',
     estimatedMinutes: 12,
     animationComponent: 'EventLoopViz',
+    bannerComponent: 'PromisesBanner',
     playgroundType: 'monaco',
     nextTopicId: 'js-modules',
     sections: [
@@ -2817,6 +2819,7 @@ export const TOPICS: Topic[] = [
     color: '#f472b6',
     estimatedMinutes: 8,
     animationComponent: 'VariablesViz',
+    bannerComponent: 'DestructuringBanner',
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -2860,8 +2863,8 @@ export const TOPICS: Topic[] = [
   {
     id: 'js-modules',
     category: 'javascript-async',
-    animationComponent: undefined,
-    bannerComponent: undefined,
+    animationComponent: 'VariablesViz',
+    bannerComponent: 'ModulesBanner',
     nextTopicId: undefined,
     title: 'Modules & Bundlers',
     description: 'ES Modules let you export values from one file and import them in another. Bundlers like Vite take many module files and produce optimized browser output.',
@@ -3507,8 +3510,8 @@ export const TOPICS: Topic[] = [
   {
     id: 'webapi-dom',
     category: 'webapis',
-    animationComponent: undefined,
-    bannerComponent: undefined,
+    animationComponent: 'DomEventsViz',
+    bannerComponent: 'DomBanner',
     nextTopicId: 'webapi-events',
     title: 'DOM API',
     description: 'The Document Object Model represents your HTML as a tree of nodes. JavaScript can traverse, select, create, and modify elements.',
@@ -4285,6 +4288,7 @@ export const TOPICS: Topic[] = [
     color: '#818cf8',
     estimatedMinutes: 10,
     animationComponent: 'VariablesViz',
+    bannerComponent: 'NarrowingBanner',
     playgroundType: 'monaco',
     nextTopicId: 'ts-utility-types',
     sections: [
@@ -4326,6 +4330,7 @@ export const TOPICS: Topic[] = [
     color: '#a78bfa',
     estimatedMinutes: 10,
     animationComponent: 'ClosureViz',
+    bannerComponent: 'UtilityTypesBanner',
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -4916,8 +4921,8 @@ export const TOPICS: Topic[] = [
   {
     id: 'css-tailwind',
     category: 'css-frameworks',
-    animationComponent: undefined,
-    bannerComponent: undefined,
+    animationComponent: 'CSSBasicsViz',
+    bannerComponent: 'TailwindBanner',
     nextTopicId: undefined,
     title: 'Tailwind CSS',
     description: 'Tailwind CSS is a utility-first framework: apply small single-purpose classes like `flex`, `p-4`, or `text-blue-500` directly on elements.',
