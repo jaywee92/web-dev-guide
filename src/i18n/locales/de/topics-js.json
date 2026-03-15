@@ -224,6 +224,11 @@
         "animationStep": 4,
         "heading": "Lexikalisches this in Arrow Functions",
         "text": "Arrow Functions haben kein eigenes `this`. Sie erben `this` aus dem umgebenden Scope, in dem sie definiert wurden. Das macht sie ideal für Callbacks innerhalb von Methoden, aber ungeeignet für die Definition von Objektmethoden selbst."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Standard- & Rest-Parameter",
+        "text": "Standardparameter bieten einen Fallback-Wert, wenn ein Argument fehlt oder undefined ist. Rest-Parameter sammeln alle verbleibenden Argumente in einem Array — sie müssen immer am Ende der Parameterliste stehen."
       }
     ]
   },
