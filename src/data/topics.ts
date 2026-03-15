@@ -2040,7 +2040,7 @@ export const TOPICS: Topic[] = [
   {
     id: 'js-oop',
     category: 'javascript-oop',
-    animationComponent: 'VariablesViz',
+    animationComponent: undefined,
     bannerComponent: undefined,
     nextTopicId: 'js-timers',
     title: 'Objects & Classes',
@@ -2076,7 +2076,7 @@ export const TOPICS: Topic[] = [
   {
     id: 'js-timers',
     category: 'javascript-oop',
-    animationComponent: 'VariablesViz',
+    animationComponent: undefined,
     bannerComponent: undefined,
     nextTopicId: 'js-event-loop',
     title: 'Timers & Async Globals',
@@ -2095,6 +2095,7 @@ export const TOPICS: Topic[] = [
         { label: 'clearTimeout', code: 'clearTimeout(id);' },
         { label: 'setInterval', code: 'const id = setInterval(() => { ... }, intervalMs);' },
         { label: 'clearInterval', code: 'clearInterval(id);' },
+        { label: 'Nested setTimeout (poll)', code: 'function poll() { fetch("/status").then(check); setTimeout(poll, 2000); }\npoll();' },
       ],
       patterns: [
         { title: 'Debounce pattern', code: 'let timer;\nfunction debounce(fn, ms) {\n  clearTimeout(timer);\n  timer = setTimeout(fn, ms);\n}', language: 'javascript' },
@@ -2346,7 +2347,7 @@ export const TOPICS: Topic[] = [
   {
     id: 'js-control-flow',
     category: 'javascript',
-    animationComponent: 'VariablesViz',
+    animationComponent: undefined,
     bannerComponent: undefined,
     nextTopicId: 'js-arrays',
     title: 'Control Flow',
@@ -2588,7 +2589,7 @@ export const TOPICS: Topic[] = [
   {
     id: 'js-modules',
     category: 'javascript-async',
-    animationComponent: 'VariablesViz',
+    animationComponent: undefined,
     bannerComponent: undefined,
     nextTopicId: undefined,
     title: 'Modules & Bundlers',
@@ -3174,7 +3175,7 @@ export const TOPICS: Topic[] = [
   {
     id: 'webapi-dom',
     category: 'webapis',
-    animationComponent: 'VariablesViz',
+    animationComponent: undefined,
     bannerComponent: undefined,
     nextTopicId: 'webapi-events',
     title: 'DOM API',
@@ -4490,7 +4491,7 @@ export const TOPICS: Topic[] = [
   {
     id: 'css-tailwind',
     category: 'css-frameworks',
-    animationComponent: 'VariablesViz',
+    animationComponent: undefined,
     bannerComponent: undefined,
     nextTopicId: undefined,
     title: 'Tailwind CSS',

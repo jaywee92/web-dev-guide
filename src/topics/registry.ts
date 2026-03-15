@@ -65,12 +65,13 @@ const lazyRegistry: Record<string, () => Promise<{ default: AnimComp }>> = {
 // Synchronous cache
 const loadedRegistry: Record<string, AnimComp> = {}
 
-export function getAnimationComponent(name: string): AnimComp | null {
+export function getAnimationComponent(name: string | undefined): AnimComp | null {
+  if (!name) return null
   return loadedRegistry[name] ?? null
 }
 
-export async function preloadAnimation(name: string): Promise<void> {
-  if (loadedRegistry[name] || !lazyRegistry[name]) return
+export async function preloadAnimation(name: string | undefined): Promise<void> {
+  if (!name || loadedRegistry[name] || !lazyRegistry[name]) return
   const mod = await lazyRegistry[name]()
   loadedRegistry[name] = mod.default
 }
