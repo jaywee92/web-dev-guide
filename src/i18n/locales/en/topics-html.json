@@ -1,1 +1,469 @@
-{}
+{
+  "html-basics": {
+    "title": "Elements & Attributes",
+    "description": "Anatomy of HTML elements — tags, content, closing tags, and how attributes configure them",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "HTML is made of elements",
+        "text": "Every visible thing on a webpage is an HTML element — a heading, a paragraph, a link, an image. Elements tell the browser what the content means, not just how it looks."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Opening tag",
+        "text": "The opening tag names the element. <p> means paragraph. <h1> means main heading. <a> means anchor (link). The name determines how the browser renders the content."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Content",
+        "text": "Content lives between the tags. It can be text, other elements, or a mix of both. Nesting elements inside each other builds the tree structure of the page."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Closing tag",
+        "text": "The closing tag has a slash before the name. It ends the element. Some elements — like <img>, <br>, <hr>, <input> — are void elements with no content and no closing tag."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Attributes",
+        "text": "Attributes go inside the opening tag and provide extra information. They come in name=\"value\" pairs. Common ones: href (link URL), src (image source), alt (alt text), id (unique name), class (styling group)."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Basic element", "note": "Opening tag · content · closing tag" },
+        { "label": "Void element", "note": "No closing tag — no content" },
+        { "label": "id", "note": "Unique per page — used for JS & anchor links" },
+        { "label": "class", "note": "Multiple classes separated by spaces" },
+        { "label": "href", "note": "Link destination" },
+        { "label": "src + alt", "note": "alt is required for accessibility & SEO" }
+      ],
+      "patterns": [
+        { "title": "Linked image" },
+        { "title": "Input with label" }
+      ],
+      "whenToUse": "Use the most specific semantic element for each job. Choose <button> over <div onclick>, <a> over <span onclick>, <strong> over <b> for importance.",
+      "commonMistakes": [
+        "Forgetting the closing tag — most elements need </tagname> or rendering breaks",
+        "Missing alt= on images — required for accessibility and fails HTML validation",
+        "Duplicating an id — id must be unique per page or querySelector returns wrong element"
+      ]
+    }
+  },
+  "html-text": {
+    "title": "Text & Headings",
+    "description": "Structure text with heading levels, paragraphs, and semantic inline formatting",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Heading hierarchy",
+        "text": "HTML has six heading levels: <h1> through <h6>. <h1> is the most important — used once per page for the main title. Subsequent headings create a document outline that browsers, search engines, and screen readers all use."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Paragraphs",
+        "text": "The <p> tag defines a paragraph. Browsers automatically add space above and below each paragraph. Never use <br> tags just to add vertical spacing — use CSS margins instead."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Semantic vs presentational",
+        "text": "<strong> and <em> carry meaning: importance and emphasis. Screen readers announce them differently. <b> and <i> are purely visual with no semantic weight. Prefer <strong>/<em> when the meaning matters."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Inline text elements",
+        "text": "HTML has many inline elements for rich text. <mark> highlights. <del> shows deleted text. <ins> shows inserted text. <small> reduces size. <sub> and <sup> create subscript and superscript."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Block quotes and code",
+        "text": "<blockquote> wraps content quoted from another source. <code> displays inline code in monospace. <pre> preserves whitespace and line breaks — combined with <code> for multi-line snippets."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Headings", "note": "h1 once per page; never skip levels" },
+        { "label": "Paragraph", "note": "Block element — adds vertical spacing" },
+        { "label": "<strong> / <em>", "note": "Semantic: importance / emphasis" },
+        { "label": "<mark> / <del> / <ins>", "note": "Annotation and revision markers" },
+        { "label": "<sub> / <sup>", "note": "Subscript / superscript" },
+        { "label": "<pre><code>", "note": "Multi-line code block preserving whitespace" }
+      ],
+      "patterns": [
+        { "title": "Article with headings" }
+      ],
+      "whenToUse": "Use headings to create a logical document outline, not to control font size (use CSS for that). Always prefer semantic elements: <strong> over <b>, <em> over <i>.",
+      "commonMistakes": [
+        "Using <h1> multiple times — one per page for SEO and accessibility",
+        "Skipping heading levels (h1 → h3) — headings must be sequential",
+        "Using <br> for paragraph spacing — use <p> tags and CSS margin instead"
+      ]
+    }
+  },
+  "html-links-images": {
+    "title": "Links & Images",
+    "description": "Navigate with anchor links and embed images with meaningful alt text",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "The anchor element",
+        "text": "The <a> (anchor) tag creates a link. The href attribute holds the destination — a URL, a path, or even an email address. Without href, it's not a link."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Absolute vs relative URLs",
+        "text": "Absolute URLs start with https:// — they work from anywhere. Relative URLs describe a path from the current page. Use relative links for internal navigation so the site works in any environment."
+      },
+      {
+        "animationStep": 2,
+        "heading": "target and download",
+        "text": "target=\"_blank\" opens the link in a new tab. Always add rel=\"noopener\" with it for security. The download attribute tells the browser to download the file instead of navigating to it."
+      },
+      {
+        "animationStep": 3,
+        "heading": "The <img> element",
+        "text": "<img> is a void element — no closing tag. src points to the image file. alt provides text for screen readers and when the image fails to load. width and height prevent layout shift."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Why alt text matters",
+        "text": "Alt text is read aloud by screen readers for blind users. It also appears when the image fails to load. Describe what is in the image, not just its file name. For decorative images, use an empty alt=\"\" so screen readers skip it."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "<a href>", "note": "href is required for a real link" },
+        { "label": "New tab", "note": "rel=\"noopener\" prevents tab-jacking" },
+        { "label": "Anchor link", "note": "In-page navigation" },
+        { "label": "<img>", "note": "width/height prevent layout shift" },
+        { "label": "Linked image", "note": "Wrap img in a to make it clickable" },
+        { "label": "HTML comment", "note": "Invisible to users, visible in source" }
+      ],
+      "patterns": [
+        { "title": "Navigation list" }
+      ],
+      "whenToUse": "Use <a> for all navigation. Use alt=\"\" (empty) for purely decorative images. Set width/height on every <img> to prevent content layout shift (CLS).",
+      "commonMistakes": [
+        "Missing rel=\"noopener\" on target=\"_blank\" links — security vulnerability",
+        "alt=\"image.jpg\" or alt=\"image\" — describe the content, not the filename",
+        "Omitting width/height on images — causes layout shift as page loads"
+      ]
+    }
+  },
+  "html-lists": {
+    "title": "Lists & Structure",
+    "description": "Organize content with ordered and unordered lists, and understand block vs inline layout",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Unordered lists",
+        "text": "<ul> creates a bulleted list. Each item is wrapped in <li>. Use unordered lists when the order doesn't matter — a navigation menu, a feature list, a set of tags."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Ordered lists",
+        "text": "<ol> creates a numbered list. Items are still <li>. Use ordered lists when sequence matters — steps in a tutorial, rankings, a recipe. The browser handles the numbering automatically."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Nested lists",
+        "text": "Lists can be nested inside list items. An <li> can contain another <ul> or <ol>. This creates hierarchical structures — like a table of contents or an outline."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Block vs inline elements",
+        "text": "Block elements (<div>, <p>, <h1>, <ul>) start on a new line and take full width. Inline elements (<span>, <a>, <strong>, <img>) flow within text. This determines how elements stack and wrap."
+      },
+      {
+        "animationStep": 4,
+        "heading": "<div> and <span>",
+        "text": "<div> is a generic block container — no semantic meaning, just grouping. <span> is a generic inline container. Use them for styling hooks or JavaScript targets when no semantic element fits. Prefer semantic elements when possible."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "<ul>", "note": "Unordered (bullets) — order irrelevant" },
+        { "label": "<ol>", "note": "Ordered (numbers) — sequence matters" },
+        { "label": "Nested list", "note": "Nested <ul>/<ol> inside <li>" },
+        { "label": "<div>", "note": "Generic block container, no meaning" },
+        { "label": "<span>", "note": "Generic inline container, no meaning" },
+        { "label": "Description list", "note": "<dl>/<dt>/<dd> for term-definition pairs" }
+      ],
+      "patterns": [
+        { "title": "Navigation menu" }
+      ],
+      "whenToUse": "Navigation menus should always be <ul> lists. Steps and procedures use <ol>. Use <div> and <span> only when no semantic element fits — they carry zero meaning.",
+      "commonMistakes": [
+        "Putting block elements (<div>, <p>) inside inline elements (<span>, <a>) — invalid HTML",
+        "Using <br> to separate items — use a proper list instead",
+        "Skipping <li> inside <ul>/<ol> — direct children of lists must be <li>"
+      ]
+    }
+  },
+  "html-dom": {
+    "title": "The DOM Tree",
+    "description": "How browsers parse HTML into a living tree of nodes",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "HTML is just text",
+        "text": "When your browser receives an HTML file, it sees plain text — tags, attributes, content. The DOM is what the browser builds from that text."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Parsing starts at the top",
+        "text": "The browser reads your HTML top to bottom, creating a node for each element. The <html> tag becomes the root."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Children branch outward",
+        "text": "Nested elements become child nodes. The tree grows as each tag is parsed."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Text is a node too",
+        "text": "Every piece of text content between tags is its own text node in the tree."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "querySelector", "note": "CSS selector → first match" },
+        { "label": "querySelectorAll", "note": "All matches → NodeList" },
+        { "label": "createElement", "note": "Create element" },
+        { "label": "appendChild", "note": "Insert into DOM" },
+        { "label": "textContent", "note": "Set text safely" },
+        { "label": "setAttribute", "note": "Read/write attributes" },
+        { "label": "classList", "note": "Manage CSS classes" }
+      ],
+      "patterns": [
+        { "title": "Query → modify → append" },
+        { "title": "Create a list from data" }
+      ],
+      "whenToUse": "Use DOM APIs when dynamically changing the page without a framework. In React or Vue apps, prefer state + JSX to drive UI instead.",
+      "commonMistakes": [
+        "Setting innerHTML with user input — XSS risk; use textContent for plain text instead",
+        "Calling querySelector before the DOM is loaded — wrap in DOMContentLoaded or put script at end of body",
+        "Forgetting querySelectorAll returns a NodeList not an Array — use Array.from() to access array methods like .map()"
+      ]
+    }
+  },
+  "html-semantic": {
+    "title": "Semantic HTML",
+    "description": "Meaningful elements that describe structure, not just appearance",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "The div soup problem",
+        "text": "Using only <div> elements tells browsers and screen readers nothing about your page's structure. Every box looks the same."
+      },
+      {
+        "animationStep": 1,
+        "heading": "<header>",
+        "text": "The <header> element contains introductory content — logo, site name, top navigation. There can be one per page or one per section."
+      },
+      {
+        "animationStep": 2,
+        "heading": "<nav>",
+        "text": "The <nav> element marks a block of navigation links. Screen readers and search engines use it to understand site structure."
+      },
+      {
+        "animationStep": 3,
+        "heading": "<main> and <article>",
+        "text": "<main> contains the primary unique content of the page. <article> is for self-contained content like a blog post or news story."
+      },
+      {
+        "animationStep": 4,
+        "heading": "The full picture",
+        "text": "With semantic HTML, browsers, search engines, and assistive technologies all understand your page structure — no CSS classes required for meaning."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "<header>", "note": "Site or section header" },
+        { "label": "<nav>", "note": "Navigation links" },
+        { "label": "<main>", "note": "Primary content — one per page" },
+        { "label": "<article>", "note": "Self-contained content" },
+        { "label": "<section>", "note": "Thematic group — needs a heading" },
+        { "label": "<aside>", "note": "Tangential content / sidebar" },
+        { "label": "<footer>", "note": "Closing info" }
+      ],
+      "patterns": [
+        { "title": "Standard page skeleton" }
+      ],
+      "whenToUse": "Always prefer semantic elements over generic div. They improve accessibility (screen readers), SEO ranking, and code readability at zero extra cost.",
+      "commonMistakes": [
+        "Using div for everything — semantic elements carry meaning for browsers and assistive tech",
+        "Multiple main elements on one page — only one is allowed",
+        "Skipping heading levels (h1 → h3) — headings must be sequential for accessibility"
+      ]
+    }
+  },
+  "html-forms": {
+    "title": "Forms & Inputs",
+    "description": "Collect user input with forms, labels, and interactive controls",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "The <form> element",
+        "text": "A <form> wraps all input controls and submits data to a server. The action attribute sets the URL; method sets GET or POST."
+      },
+      {
+        "animationStep": 1,
+        "heading": "<label> and <input>",
+        "text": "Every input should have a label. Connecting them with for/id makes the label clickable and improves accessibility."
+      },
+      {
+        "animationStep": 2,
+        "heading": "<select> and <option>",
+        "text": "<select> creates a dropdown. Each <option> is a choice. The value attribute is what gets submitted."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Checkbox and radio",
+        "text": "Checkboxes allow multiple selections. Radio buttons in the same group allow only one selection."
+      },
+      {
+        "animationStep": 4,
+        "heading": "<button type=\"submit\">",
+        "text": "The submit button sends the form. type=\"submit\" is the default. type=\"button\" prevents submission — useful for JavaScript actions."
+      },
+      {
+        "animationStep": 5,
+        "heading": "HTML5 built-in validation",
+        "text": "Add required, minlength, maxlength, pattern, min, max directly in HTML — the browser validates before submit, no JavaScript needed. required alone blocks empty submission."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Constraint validation API",
+        "text": "For custom error messages or real-time feedback, use the Constraint Validation API. setCustomValidity() overrides the browser message. checkValidity() returns true/false without submitting."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "<form>", "note": "Wraps all inputs" },
+        { "label": "<input>", "note": "type: text/email/password/number/checkbox/radio" },
+        { "label": "label + for", "note": "for= links to input id=" },
+        { "label": "<select>", "note": "Dropdown menu" },
+        { "label": "<textarea>", "note": "Multi-line text" },
+        { "label": "<button>", "note": "type: submit / button / reset" },
+        { "label": "required", "note": "Blocks form submit if empty" },
+        { "label": "pattern", "note": "Regex — browser validates on submit" },
+        { "label": "minlength / maxlength", "note": "Character count limits" }
+      ],
+      "patterns": [
+        { "title": "Read form data in JS" },
+        { "title": "Controlled input with React" }
+      ],
+      "whenToUse": "Use native form elements for all user input — they have built-in accessibility, keyboard support, and validation for free. Use FormData to read values on submit.",
+      "commonMistakes": [
+        "Missing label for every input — always pair label with for/id so screen readers work",
+        "Forgetting e.preventDefault() when handling submit in JS — causes page reload",
+        "Not setting name= on inputs — FormData and form submission will not capture the value",
+        "Relying only on client-side validation — always re-validate on the server",
+        "Using pattern without title= — browser shows generic \"Please match format\" without a hint"
+      ]
+    }
+  },
+  "html-accessibility": {
+    "title": "Accessibility (a11y)",
+    "description": "ARIA roles, keyboard navigation, focus management — build for all users from the start",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Who needs accessibility?",
+        "text": "About 15% of people have a disability. Screen reader users navigate by headings and landmarks. Keyboard users can't use a mouse. Color-blind users need contrast. Semantic HTML gives you most of this for free — ARIA fills the gaps."
+      },
+      {
+        "animationStep": 1,
+        "heading": "aria-label and aria-labelledby",
+        "text": "When visible text isn't enough, aria-label provides an accessible name. Icons-only buttons, close buttons, and form inputs all need descriptive labels."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Focus management",
+        "text": "Keyboard users Tab through interactive elements. Focus must be visible — never remove :focus styles without replacing them. Use :focus-visible to show rings only for keyboard navigation, not clicks."
+      },
+      {
+        "animationStep": 3,
+        "heading": "tabindex",
+        "text": "tabindex=\"0\" makes any element keyboard-focusable in natural DOM order. tabindex=\"-1\" allows programmatic focus (el.focus()) but removes from tab sequence. Never use tabindex > 0 — it breaks natural order."
+      },
+      {
+        "animationStep": 4,
+        "heading": "ARIA roles and live regions",
+        "text": "role= overrides the element's implicit role. ARIA live regions announce dynamic content changes to screen readers. aria-live='polite' waits for silence, 'assertive' interrupts immediately."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "aria-label", "note": "Overrides button text for screen readers" },
+        { "label": "aria-labelledby", "note": "References another element's text" },
+        { "label": "aria-describedby", "note": "Links to helper/error text" },
+        { "label": "role", "note": "Override implicit semantic role" },
+        { "label": "tabindex", "note": "Never use tabindex > 0" },
+        { "label": "aria-hidden", "note": "Hides from screen readers (decorative)" }
+      ],
+      "patterns": [
+        { "title": "Skip link" },
+        { "title": "Accessible icon button" }
+      ],
+      "whenToUse": "Use semantic HTML first — <button>, <a>, <input>, headings, landmarks. Add ARIA only when HTML semantics aren't enough. 'No ARIA is better than bad ARIA.'",
+      "commonMistakes": [
+        "Removing :focus outline without replacement — keyboard users lose all navigation feedback",
+        "Using aria-label on non-interactive elements — doesn't help unless paired with role=",
+        "role=\"button\" without onkeydown handler — click works with mouse but not Enter/Space",
+        "aria-hidden=\"true\" on focusable elements — screen reader skips it but keyboard still reaches it"
+      ]
+    }
+  },
+  "html-media": {
+    "title": "Media & Embeds",
+    "description": "Embed video, audio, iframes, and responsive images with native HTML elements",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "<iframe> — page within a page",
+        "text": "An <iframe> embeds another HTML document inside your page. YouTube embeds, Google Maps, and CodePen previews all use iframes. The embedded content runs in its own isolated browsing context."
+      },
+      {
+        "animationStep": 1,
+        "heading": "<video>",
+        "text": "The <video> element embeds video natively. The controls attribute adds play/pause/volume UI. Include multiple <source> elements for browser compatibility — the browser picks the first format it supports."
+      },
+      {
+        "animationStep": 2,
+        "heading": "<audio>",
+        "text": "<audio> works the same as <video> but for sound. The controls attribute adds a player. Without controls, the audio is invisible and plays only with JavaScript."
+      },
+      {
+        "animationStep": 3,
+        "heading": "<picture> — responsive images",
+        "text": "<picture> serves different images based on screen size or format support. The browser picks the first matching <source>. The <img> fallback is always required — it's what actually renders the image."
+      },
+      {
+        "animationStep": 4,
+        "heading": "<code> and <pre>",
+        "text": "<code> displays inline code in monospace font. Wrap it in <pre> to preserve whitespace and newlines for multi-line snippets. This is how documentation sites, READMEs, and tech blogs show code examples."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "<iframe>", "note": "Always set title for accessibility" },
+        { "label": "<video>", "note": "controls attribute shows UI" },
+        { "label": "<audio>", "note": "Multiple sources for browser compat" },
+        { "label": "<picture>", "note": "<img> fallback is required" },
+        { "label": "<pre><code>", "note": "Preserves whitespace + line breaks" },
+        { "label": "Video autoplay", "note": "muted required for autoplay in browsers" }
+      ],
+      "patterns": [
+        { "title": "Responsive video wrapper" }
+      ],
+      "whenToUse": "Use <video>/<audio> for self-hosted media. Use <iframe> for third-party embeds (YouTube, Maps). Use <picture> when you need different images for different screen sizes or format support.",
+      "commonMistakes": [
+        "Missing title on <iframe> — required for screen readers",
+        "Autoplay video without muted — browsers block autoplay with sound by default",
+        "Omitting the <img> fallback in <picture> — the img is required, source elements are optional"
+      ]
+    }
+  }
+}
