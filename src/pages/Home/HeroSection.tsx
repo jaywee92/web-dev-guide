@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion'
 import { ArrowDown } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import ShinyText from './ShinyText'
 
 export default function HeroSection() {
+  const { t } = useTranslation('home')
   return (
     <section className="relative flex flex-col items-center justify-center text-center px-6 pt-24 pb-16 overflow-hidden">
 
@@ -23,7 +25,7 @@ export default function HeroSection() {
             marginBottom: 24,
           }}
         >
-          Learning by Animation
+          {t('badge')}
         </motion.div>
 
         <motion.h1
@@ -41,7 +43,7 @@ export default function HeroSection() {
             backgroundClip: 'text',
           }}
         >
-          Web Dev
+          {t('heading1')}
           <br />
           <span style={{
             background: 'linear-gradient(135deg, #4ade80, #5b9cf5)',
@@ -49,7 +51,7 @@ export default function HeroSection() {
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
           }}>
-            Visual Guide
+            {t('heading2')}
           </span>
         </motion.h1>
 
@@ -60,7 +62,7 @@ export default function HeroSection() {
           style={{ fontSize: 18, maxWidth: 520, margin: '0 auto 48px' }}
         >
           <ShinyText speed={4}>
-            {'Complex concepts. Simple animations. From HTML to PostgreSQL — watch it work, then build it yourself.'}
+            {t('tagline')}
           </ShinyText>
         </motion.p>
 
