@@ -253,7 +253,6 @@ export function getTechKey(categoryId: CategoryId): string {
   if (categoryId.startsWith('css-')) return 'css'
   if (categoryId === 'git' || categoryId.startsWith('git-')) return 'git'
   if (categoryId === 'javascript-oop' || categoryId === 'javascript-async') return 'javascript'
-  if (categoryId === 'css-frameworks') return 'css'
   return categoryId
 }
 

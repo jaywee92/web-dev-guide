@@ -60,7 +60,7 @@ export default function HeroSection() {
           style={{ fontSize: 18, maxWidth: 520, margin: '0 auto 48px' }}
         >
           <ShinyText speed={4}>
-            {'Complex concepts. Simple animations. From HTML to PostgreSQL — watch it work, then build it yourself.'}
+            {'From Bottom to Top — every concept animated, every skill earned. Watch it work, then build it yourself.'}
           </ShinyText>
         </motion.p>
 

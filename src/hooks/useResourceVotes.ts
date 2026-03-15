@@ -33,7 +33,12 @@ export function useResourceVotes(): UseResourceVotesResult {
       .select('resource_id, vote_count')
       .then(({ data }) => {
         if (data) {
-          setVotes(Object.fromEntries(data.map(row => [row.resource_id, row.vote_count])))
+          const votesMap = Object.fromEntries(data.map(row => [row.resource_id, row.vote_count]))
+          setVotes(votesMap)
+          // Reconcile localStorage: drop any IDs that no longer exist in the DB
+          const validVoted = getVoted().filter(id => (votesMap[id] ?? 0) > 0)
+          setVoted(validVoted)
+          setHasVoted(Object.fromEntries(validVoted.map(id => [id, true])))
         }
         setLoading(false)
       })
