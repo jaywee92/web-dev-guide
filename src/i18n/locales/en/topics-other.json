@@ -1,1 +1,714 @@
-{}
+{
+  "http-request-cycle": {
+    "title": "HTTP Request Cycle",
+    "description": "What happens between typing a URL and seeing a webpage",
+    "steps": [
+      { "animationStep": 0, "heading": "The client sends a request", "text": "Your browser (the client) sends an HTTP request to a server. It includes the method (GET, POST), the URL, and headers." },
+      { "animationStep": 1, "heading": "DNS resolution", "text": "The domain name is resolved to an IP address by a DNS server. Like a phone book lookup." },
+      { "animationStep": 2, "heading": "The server processes", "text": "The server receives the request, runs your application code (Flask, Node.js), may query a database." },
+      { "animationStep": 3, "heading": "Database query", "text": "The app queries the database (PostgreSQL, SQLite) and waits for results." },
+      { "animationStep": 4, "heading": "Response sent back", "text": "The server sends an HTTP response: status code (200 OK, 404 Not Found), headers, and the body (HTML, JSON)." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Request structure", "note": "Method + path + headers" },
+        { "label": "Request with body", "note": "Body sent in POST/PUT/PATCH" },
+        { "label": "Response structure", "note": "Status + headers + body" },
+        { "label": "Common request headers", "note": "Headers describe the request" }
+      ],
+      "patterns": [
+        { "title": "Full request/response cycle" }
+      ],
+      "whenToUse": "Understanding the HTTP request cycle helps you debug network issues, read server logs, and design APIs. Every fetch() call in JavaScript follows this cycle.",
+      "commonMistakes": [
+        "Forgetting that GET requests have no body — pass data via query string (?key=val) instead",
+        "Sending the wrong Content-Type header — if the server expects application/json but gets text/plain, the body will not parse correctly",
+        "Confusing authentication (401: who are you?) with authorization (403: you're not allowed) — they are different stages in the request lifecycle"
+      ]
+    }
+  },
+  "http-rest": {
+    "title": "REST & HTTP Methods",
+    "description": "GET, POST, PUT, DELETE — the verbs of the web",
+    "steps": [
+      { "animationStep": 0, "heading": "REST — resources as URLs", "text": "REST (Representational State Transfer) is a convention for designing APIs. Resources are represented as URLs, and HTTP methods express the action." },
+      { "animationStep": 1, "heading": "GET — retrieve data", "text": "GET requests data from the server. They should be safe (no side effects) and idempotent (same result every time). No request body." },
+      { "animationStep": 2, "heading": "POST — create a resource", "text": "POST sends data to create a new resource. The server returns the created resource with status 201 Created." },
+      { "animationStep": 3, "heading": "PUT and PATCH", "text": "PUT replaces the entire resource. PATCH updates only the specified fields. Both target a specific resource by ID in the URL." },
+      { "animationStep": 4, "heading": "DELETE — remove a resource", "text": "DELETE removes the specified resource. A successful delete typically returns 204 No Content." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "GET — list / read", "note": "No body, safe & idempotent" },
+        { "label": "POST — create", "note": "Returns created resource" },
+        { "label": "PUT — replace", "note": "Idempotent full replacement" },
+        { "label": "PATCH — partial update", "note": "Only send changed fields" },
+        { "label": "DELETE — remove", "note": "No response body on success" }
+      ],
+      "patterns": [
+        { "title": "RESTful endpoint design" }
+      ],
+      "whenToUse": "Use REST conventions when building or consuming HTTP APIs. Consistent method + URL conventions make APIs intuitive and self-documenting.",
+      "commonMistakes": [
+        "Using POST for everything instead of matching the HTTP method to the action (GET for reads, DELETE for deletes)",
+        "Putting actions in URLs like /deleteUser/42 — REST uses the HTTP method for the action and the URL for the resource",
+        "Returning 200 for created resources — use 201 Created for POST responses and 204 No Content for successful DELETEs"
+      ]
+    }
+  },
+  "http-status": {
+    "title": "Status Codes",
+    "description": "What 200, 404, and 500 mean — and why they matter",
+    "steps": [
+      { "animationStep": 0, "heading": "Every response has a status code", "text": "HTTP status codes are 3-digit numbers grouped by category. The first digit indicates success, redirect, or error." },
+      { "animationStep": 1, "heading": "2xx — Success", "text": "200 OK is the standard success response. 201 Created is returned after a successful POST. 204 No Content means success with no body." },
+      { "animationStep": 2, "heading": "3xx — Redirection", "text": "301 Moved Permanently tells the client the resource has a new URL. 302 Found is a temporary redirect." },
+      { "animationStep": 3, "heading": "4xx — Client errors", "text": "4xx errors mean the client made a mistake. 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found." },
+      { "animationStep": 4, "heading": "5xx — Server errors", "text": "5xx errors mean something went wrong on the server side — not the client's fault." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "2xx — Success", "note": "Everything went well" },
+        { "label": "3xx — Redirection", "note": "Client should go elsewhere" },
+        { "label": "4xx — Client errors", "note": "Client's mistake" },
+        { "label": "5xx — Server errors", "note": "Server's mistake" }
+      ],
+      "patterns": [
+        { "title": "Error handling by status range" }
+      ],
+      "whenToUse": "Read status codes to understand what happened in an API call. Return the correct status from your own APIs to communicate intent clearly.",
+      "commonMistakes": [
+        "Returning 200 for error responses — always use the correct status code (400 for bad input, 404 for missing resources)",
+        "Treating 401 and 403 as the same — 401 means not logged in, 403 means logged in but not permitted",
+        "Ignoring 5xx errors in the client — these are server failures that users need to know about, not silently swallow"
+      ]
+    }
+  },
+  "postgres-queries": {
+    "title": "SQL Queries",
+    "description": "SELECT, WHERE, ORDER BY — read data from PostgreSQL",
+    "steps": [
+      { "animationStep": 0, "heading": "Tables store rows of data", "text": "A database table is like a spreadsheet — rows are records, columns are fields. Each table has a defined schema." },
+      { "animationStep": 1, "heading": "SELECT", "text": "SELECT retrieves data. * means all columns. You can specify column names to return only what you need." },
+      { "animationStep": 2, "heading": "WHERE — filter rows", "text": "WHERE adds conditions to filter which rows are returned. Use AND and OR for multiple conditions." },
+      { "animationStep": 3, "heading": "ORDER BY — sort results", "text": "ORDER BY sorts the result set. ASC is ascending (default), DESC is descending. Sort by multiple columns." },
+      { "animationStep": 4, "heading": "LIMIT — control result count", "text": "LIMIT caps the number of rows returned. Combined with OFFSET, it implements pagination." },
+      { "animationStep": 5, "heading": "SELECT with WHERE and ORDER BY", "text": "WHERE filters rows that match a condition. You can combine multiple conditions with AND and OR. ORDER BY sorts results — ASC (default) for ascending, DESC for descending. Always alias ambiguous columns in multi-table queries." },
+      { "animationStep": 6, "heading": "Aggregate Functions: COUNT, SUM, AVG", "text": "Aggregate functions compute a single result from a set of rows. COUNT(*) counts rows, SUM adds numeric values, AVG computes the mean, MIN/MAX find extremes. They are typically combined with GROUP BY." },
+      { "animationStep": 7, "heading": "GROUP BY and HAVING", "text": "GROUP BY collapses rows that share the same value in a column into a single row, letting aggregates operate per group. HAVING filters groups after aggregation — like WHERE, but for groups." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "SELECT with WHERE", "note": "Filter rows with conditions" },
+        { "label": "ORDER BY + LIMIT", "note": "Sort + paginate" },
+        { "label": "COUNT / AVG with GROUP BY", "note": "Aggregate per group" },
+        { "label": "Parameterized query", "note": "Always use $1 params — never string interpolation" }
+      ],
+      "patterns": [
+        { "title": "Filter + sort + paginate" },
+        { "title": "Aggregate with HAVING" }
+      ],
+      "whenToUse": "Use SELECT queries whenever you need to read data from PostgreSQL. Add WHERE to filter, ORDER BY to sort, LIMIT/OFFSET to paginate, and GROUP BY for aggregates.",
+      "commonMistakes": [
+        "Using SELECT * in production — always name the columns you need to avoid fetching unnecessary data and to make schema changes safer",
+        "Forgetting LIMIT on large tables — without it a query can return millions of rows and crash your app",
+        "Using HAVING without GROUP BY — HAVING filters groups and only makes sense after GROUP BY; use WHERE to filter individual rows instead"
+      ]
+    }
+  },
+  "postgres-joins": {
+    "title": "JOINs",
+    "description": "Combine data from multiple tables with INNER and LEFT JOIN",
+    "steps": [
+      { "animationStep": 0, "heading": "Data lives in separate tables", "text": "In a relational database, data is split across tables to avoid duplication. A users table and a posts table are linked by a foreign key." },
+      { "animationStep": 1, "heading": "Foreign keys link tables", "text": "The foreign key is a column that references the primary key of another table. This is how relationships are defined." },
+      { "animationStep": 2, "heading": "INNER JOIN", "text": "INNER JOIN returns rows where there is a match in both tables. If a user has no posts, they do not appear in the result." },
+      { "animationStep": 3, "heading": "LEFT JOIN", "text": "LEFT JOIN returns all rows from the left table, with NULLs for missing matches. Use this when you want results even if no match exists." },
+      { "animationStep": 4, "heading": "Aliases and multiple joins", "text": "Use aliases to shorten table names. You can chain multiple JOINs to combine three or more tables." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "INNER JOIN", "note": "Only rows with matches in both tables" },
+        { "label": "LEFT JOIN", "note": "All left rows, NULLs for missing right" },
+        { "label": "Table aliases", "note": "Alias with short name for readability" },
+        { "label": "Multiple JOIN chain", "note": "Chain joins for three+ tables" }
+      ],
+      "patterns": [
+        { "title": "Users + orders with LEFT JOIN" },
+        { "title": "Three-table join" }
+      ],
+      "whenToUse": "Use JOINs when data you need lives in multiple tables linked by foreign keys. Use INNER JOIN when both sides must exist; use LEFT JOIN when you want results even if the right side is missing.",
+      "commonMistakes": [
+        "Using INNER JOIN when LEFT JOIN is needed — if users with no orders should still appear, INNER JOIN will silently exclude them",
+        "Forgetting the ON clause — without it you get a Cartesian product (every row × every row), which can produce millions of rows",
+        "Not aliasing tables in multi-join queries — ambiguous column names cause errors; always alias when joining more than two tables"
+      ]
+    }
+  },
+  "postgres-crud": {
+    "title": "Schema & CRUD",
+    "description": "Create tables, insert, update, and delete rows",
+    "steps": [
+      { "animationStep": 0, "heading": "CREATE TABLE", "text": "CREATE TABLE defines the structure (schema) of a table: column names, types, and constraints." },
+      { "animationStep": 1, "heading": "INSERT — add rows", "text": "INSERT INTO adds new rows. You can insert one row or multiple rows in a single statement." },
+      { "animationStep": 2, "heading": "UPDATE — modify rows", "text": "UPDATE changes existing rows. Always use WHERE — without it, every row in the table is updated." },
+      { "animationStep": 3, "heading": "DELETE — remove rows", "text": "DELETE removes rows. Always use WHERE — without it, all rows are deleted." },
+      { "animationStep": 4, "heading": "Constraints protect data", "text": "Constraints enforce rules at the database level. PRIMARY KEY, NOT NULL, UNIQUE, and FOREIGN KEY prevent invalid data from being stored." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "CREATE TABLE", "note": "SERIAL = auto-increment integer" },
+        { "label": "INSERT with RETURNING", "note": "RETURNING gets the inserted row back" },
+        { "label": "UPDATE with WHERE", "note": "Always WHERE — or every row updates" },
+        { "label": "DELETE with WHERE", "note": "Always WHERE — or every row deletes" },
+        { "label": "Common PG types", "note": "Common PostgreSQL column types" },
+        { "label": "ON CONFLICT (upsert)", "note": "Insert or update if duplicate key" }
+      ],
+      "patterns": [
+        { "title": "Full CRUD for a users table" },
+        { "title": "Upsert pattern" }
+      ],
+      "whenToUse": "Use these patterns for every table you create and every CRUD operation in your app. Always use RETURNING to get back the affected row and avoid a second query.",
+      "commonMistakes": [
+        "Running UPDATE or DELETE without a WHERE clause — this modifies or removes every row in the table; always double-check your WHERE condition",
+        "Not using parameterized queries ($1, $2) — string interpolation in SQL is the most common cause of SQL injection vulnerabilities",
+        "Forgetting TIMESTAMPTZ vs TIMESTAMP — TIMESTAMP stores no timezone; TIMESTAMPTZ stores UTC and converts on read; always use TIMESTAMPTZ for created_at/updated_at"
+      ]
+    }
+  },
+  "ts-basics": {
+    "title": "TypeScript Basics",
+    "description": "Static types that catch errors before your code runs",
+    "steps": [
+      { "animationStep": 0, "heading": "JavaScript types are implicit", "text": "In JavaScript, variables have types at runtime, but you never declare them. The type is inferred from the value." },
+      { "animationStep": 1, "heading": "TypeScript makes types explicit", "text": "TypeScript adds type annotations using a colon after the variable name. This tells the compiler exactly what type is expected." },
+      { "animationStep": 2, "heading": "Type errors caught at compile time", "text": "If you try to assign the wrong type, TypeScript flags it immediately — before the code ever runs." },
+      { "animationStep": 3, "heading": "Interfaces define object shapes", "text": "An interface describes what properties an object must have. TypeScript will error if a required property is missing or has the wrong type." },
+      { "animationStep": 4, "heading": "Generics — reusable typed functions", "text": "Generics allow functions and classes to work with any type while still enforcing type safety. T is a placeholder that is filled in at call time." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Primitive annotations", "note": "any disables checks; unknown forces you to narrow first" },
+        { "label": "Array type", "note": "Both syntaxes are equivalent; T[] is more common" },
+        { "label": "Union type", "note": "Variable can hold any of the listed types" },
+        { "label": "Type alias", "note": "Give a name to reusable types or literal unions" },
+        { "label": "Function signature", "note": "Annotate parameters and the return type separately" },
+        { "label": "void", "note": "Use void for functions that do not return a value" }
+      ],
+      "patterns": [
+        { "title": "Typed function" },
+        { "title": "Union type narrowing" }
+      ],
+      "whenToUse": "Add TypeScript to any project that will grow beyond a few files, is worked on by a team, or needs to be maintained long-term. Start with strict: true in tsconfig to catch the most errors. Use unknown over any whenever a value comes from an external source.",
+      "commonMistakes": [
+        "Overusing any — it silences all TypeScript errors but defeats the purpose; prefer unknown, a union type, or a proper interface",
+        "Annotating variables that TypeScript can already infer — let name: string = \"Alice\" is redundant; just write let name = \"Alice\"",
+        "Confusing type and interface — both can describe object shapes; interfaces are extensible with extends and are preferred for public APIs"
+      ]
+    }
+  },
+  "webapi-dom": {
+    "title": "DOM API",
+    "description": "The Document Object Model represents your HTML as a tree of nodes. JavaScript can traverse, select, create, and modify elements.",
+    "steps": [
+      { "animationStep": 0, "heading": "DOM Tree Structure", "text": "The DOM represents your HTML as a tree of nodes. The document object is the root. HTML elements are Element nodes; text inside them are Text nodes. JavaScript can traverse this tree using parent, child, and sibling relationships." },
+      { "animationStep": 1, "heading": "Selecting Elements", "text": "querySelector returns the first element matching a CSS selector. querySelectorAll returns a NodeList of all matches. getElementById and getElementsByClassName are older alternatives — querySelector is more flexible and preferred." },
+      { "animationStep": 2, "heading": "Creating and Inserting Elements", "text": "createElement(tag) creates a detached element. Set its properties (textContent, className, etc.) then attach it to the DOM with appendChild, prepend, or insertBefore. The element appears in the page only after attachment." },
+      { "animationStep": 3, "heading": "Reading and Changing Element Properties", "text": "Use textContent to read or set text safely. classList provides add, remove, toggle, and contains for CSS class management. setAttribute / getAttribute read and write HTML attributes. style lets you set inline CSS directly." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "querySelector" },
+        { "label": "querySelectorAll" },
+        { "label": "createElement" },
+        { "label": "appendChild" },
+        { "label": "textContent" }
+      ],
+      "patterns": [
+        { "title": "Create and insert" },
+        { "title": "Remove element" }
+      ],
+      "whenToUse": "Use the DOM API to read, create, and modify page content from JavaScript without a framework.",
+      "commonMistakes": [
+        "Running DOM queries before the document is ready — wrap in DOMContentLoaded or place script at end of body.",
+        "Using getElementById when the element has a class, not an id.",
+        "querySelectorAll returns a NodeList, not an Array — use Array.from() to use array methods on it."
+      ]
+    }
+  },
+  "webapi-fetch": {
+    "title": "Fetch API",
+    "description": "Make HTTP requests from JavaScript with Promises and async/await",
+    "steps": [
+      { "animationStep": 0, "heading": "The Fetch API", "text": "fetch() is the modern browser API for making HTTP requests. It replaced XMLHttpRequest and returns a Promise." },
+      { "animationStep": 1, "heading": "fetch() returns a Promise", "text": "The request is sent immediately but the response arrives later. fetch() returns a Promise that resolves when the server responds." },
+      { "animationStep": 2, "heading": "The Response object", "text": "The resolved value is a Response. It contains status, headers, and the body — but the body must be explicitly parsed." },
+      { "animationStep": 3, "heading": "Parsing the response body", "text": "response.json() parses the body as JSON and returns another Promise. response.text() returns raw text." },
+      { "animationStep": 4, "heading": "async/await syntax", "text": "async/await makes fetch code read like synchronous code. Always wrap in try/catch for error handling." },
+      { "animationStep": 5, "heading": "GET — Reading a Response", "text": "fetch() returns a Promise that resolves to a Response object. Call response.json() to parse the body as JSON (also async). Always check response.ok or response.status before trusting the data." },
+      { "animationStep": 6, "heading": "POST / PUT / DELETE with a Body", "text": "To send data, pass an options object as the second argument to fetch. Set the method, a Content-Type header, and serialize the body to JSON with JSON.stringify." },
+      { "animationStep": 7, "heading": "RESTful API Principles", "text": "REST uses HTTP methods semantically: GET reads, POST creates, PUT/PATCH updates, DELETE removes. Each endpoint represents a resource (e.g. /posts, /posts/1). Responses carry HTTP status codes — 2xx for success, 4xx for client errors, 5xx for server errors." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "GET fetch", "note": "Default method is GET" },
+        { "label": "POST with body + headers", "note": "Always set Content-Type for JSON bodies" },
+        { "label": "res.ok check", "note": "res.ok is true for 200-299" },
+        { "label": "Response body methods", "note": "Body can only be consumed once" }
+      ],
+      "patterns": [
+        { "title": "async/await GET with error handling" },
+        { "title": "POST JSON" }
+      ],
+      "whenToUse": "Use fetch() to communicate with backend APIs from the browser. Prefer async/await over .then() chains for readability.",
+      "commonMistakes": [
+        "Not checking res.ok — fetch() only rejects on network failure, not on 4xx/5xx responses; always check res.ok or res.status",
+        "Forgetting to await res.json() — the body parse is also async; calling .json() without await returns a Promise, not the data",
+        "Not setting Content-Type: application/json when posting JSON — the server may not parse the body correctly without this header"
+      ]
+    }
+  },
+  "webapi-events": {
+    "title": "DOM Events",
+    "description": "Respond to user interactions with event listeners",
+    "steps": [
+      { "animationStep": 0, "heading": "Events are user actions", "text": "The browser fires events when users interact — clicking, typing, scrolling, hovering. JavaScript can listen and respond." },
+      { "animationStep": 1, "heading": "addEventListener", "text": "addEventListener attaches a callback function to an element. The callback runs every time the event fires." },
+      { "animationStep": 2, "heading": "The Event object", "text": "The callback receives an Event object with information about what happened: the target element, mouse position, key pressed, and more." },
+      { "animationStep": 3, "heading": "Event bubbling", "text": "Events bubble up the DOM tree by default. A click on an inner element also fires on all its ancestors — unless stopped." },
+      { "animationStep": 4, "heading": "stopPropagation and preventDefault", "text": "stopPropagation() stops the event from bubbling. preventDefault() cancels the browser's default action (e.g. following a link, submitting a form)." },
+      { "animationStep": 5, "heading": "EventTarget and addEventListener", "text": "Any DOM element implements the EventTarget interface, giving it addEventListener(type, handler, options). You can attach multiple listeners to the same event type. Always use addEventListener instead of inline handlers for better separation of concerns." },
+      { "animationStep": 6, "heading": "Event Propagation: Bubbling and Capturing", "text": "Events first travel down the DOM tree from root to target (capture phase), then bubble back up from target to root (bubble phase). By default, listeners run in the bubble phase. Call event.stopPropagation() to prevent the event from traveling further." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "addEventListener", "note": "Attach a listener to an element" },
+        { "label": "removeEventListener", "note": "Inline arrow functions cannot be removed" },
+        { "label": "Event object properties", "note": "Available on every event object" },
+        { "label": "Common event names", "note": "Full list at MDN Event reference" }
+      ],
+      "patterns": [
+        { "title": "Event delegation" },
+        { "title": "Cleanup on unmount (React)" }
+      ],
+      "whenToUse": "Use DOM events to respond to user interactions: clicks, form input, keyboard shortcuts, and scroll. In React, use synthetic events on JSX elements instead of addEventListener directly.",
+      "commonMistakes": [
+        "Using an inline arrow function with removeEventListener — it creates a new function reference each time, so the listener is never actually removed",
+        "Forgetting preventDefault on form submit — without it the browser navigates to the form action URL and reloads the page",
+        "Not cleaning up event listeners on unmount — listeners on window or document persist after the component unmounts, causing memory leaks and duplicate handlers"
+      ]
+    }
+  },
+  "webapi-storage": {
+    "title": "localStorage",
+    "description": "Persist data in the browser without a server",
+    "steps": [
+      { "animationStep": 0, "heading": "Browser storage", "text": "Browsers provide built-in key-value storage that works without any server. Useful for preferences, cached data, and offline state." },
+      { "animationStep": 1, "heading": "setItem", "text": "setItem(key, value) stores a string value. Non-string values must be serialized with JSON.stringify." },
+      { "animationStep": 2, "heading": "getItem", "text": "getItem(key) retrieves the stored value. Returns null if the key does not exist. Parse JSON values with JSON.parse." },
+      { "animationStep": 3, "heading": "localStorage persists", "text": "Data in localStorage survives page refreshes, tab closes, and browser restarts. It stays until explicitly cleared." },
+      { "animationStep": 4, "heading": "sessionStorage — tab-scoped", "text": "sessionStorage has the same API as localStorage but is cleared when the tab or window is closed." },
+      { "animationStep": 5, "heading": "localStorage vs sessionStorage", "text": "Both store key/value string pairs in the browser, but localStorage persists across browser sessions while sessionStorage is cleared when the tab closes. Neither should store sensitive data — they are accessible to any script on the page." },
+      { "animationStep": 6, "heading": "setItem / getItem / removeItem / clear", "text": "The Web Storage API is a simple key/value store. All values are stored as strings — use JSON.stringify and JSON.parse to store and retrieve objects." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "setItem / getItem", "note": "Values are always strings" },
+        { "label": "removeItem / clear", "note": "clear() wipes everything in the origin" },
+        { "label": "JSON.stringify / parse", "note": "Objects must be serialized to string" },
+        { "label": "sessionStorage", "note": "Tab-scoped, not persistent" },
+        { "label": "Null check on getItem", "note": "getItem returns null if key missing" }
+      ],
+      "patterns": [
+        { "title": "Safe JSON read with fallback" },
+        { "title": "Custom usePersist hook" }
+      ],
+      "whenToUse": "Use localStorage for user preferences, cached data, or state that should survive page reloads. Use sessionStorage for temporary state within a single session. Never store sensitive data like passwords or tokens.",
+      "commonMistakes": [
+        "Storing objects directly without JSON.stringify — localStorage only stores strings; objects become \"[object Object]\"",
+        "Not handling the null return from getItem — if the key was never set getItem returns null, which causes JSON.parse(null) errors",
+        "Storing auth tokens in localStorage — it is accessible via JavaScript and vulnerable to XSS; use HttpOnly cookies for sensitive tokens instead"
+      ]
+    }
+  },
+  "react-components": {
+    "title": "Components & JSX",
+    "description": "Build UIs from reusable, composable function components",
+    "steps": [
+      { "animationStep": 0, "heading": "HTML is static markup", "text": "Plain HTML defines the structure once. To reuse a button, you copy-paste the markup — which quickly becomes hard to maintain." },
+      { "animationStep": 1, "heading": "JSX — HTML in JavaScript", "text": "JSX lets you write HTML-like syntax inside JavaScript. It looks like HTML but it is transformed to JavaScript function calls by Babel." },
+      { "animationStep": 2, "heading": "A component is a function", "text": "A React component is a function that accepts props and returns JSX. The function name must start with a capital letter." },
+      { "animationStep": 3, "heading": "Components compose", "text": "You build complex UIs by nesting components. Each component can contain other components — forming a tree." },
+      { "animationStep": 4, "heading": "Props — data flows down", "text": "Props are arguments passed to components. They flow only from parent to child — never the other way." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Function component", "note": "Component name must be capitalized" },
+        { "label": "Props with TS interface", "note": "Interface documents the prop contract" },
+        { "label": "JSX conditional (&&, ternary)", "note": "&& renders nothing when false; ternary for either/or" },
+        { "label": ".map with key", "note": "key must be stable and unique among siblings" },
+        { "label": "children prop", "note": "children is whatever is between the tags" }
+      ],
+      "patterns": [
+        { "title": "Typed props component" },
+        { "title": "List rendering" }
+      ],
+      "whenToUse": "Use function components for all new React code. Define a TypeScript interface for props whenever a component accepts more than one or two props.",
+      "commonMistakes": [
+        "Using index as key in lists — if items reorder or are removed, index keys cause React to misidentify elements and produce rendering bugs",
+        "Mutating props inside a component — props are read-only; if you need to change a value, copy it into local state with useState",
+        "Calling a component as a plain function — always render as JSX (<MyComp />) not as a function call (MyComp()), otherwise React cannot track its lifecycle"
+      ]
+    }
+  },
+  "react-state": {
+    "title": "State & Hooks",
+    "description": "Manage dynamic data with useState and understand re-renders",
+    "steps": [
+      { "animationStep": 0, "heading": "State is dynamic data", "text": "State is data that can change over time and causes the component to re-render when it does. Props come from outside; state lives inside." },
+      { "animationStep": 1, "heading": "useState", "text": "useState is a Hook that returns the current value and a setter function. React tracks the value between renders." },
+      { "animationStep": 2, "heading": "Calling the setter re-renders", "text": "When you call setCount, React schedules a re-render. The component function runs again with the new state value." },
+      { "animationStep": 3, "heading": "State is local to each instance", "text": "If you render two <Counter /> components, each has its own independent count. State is not shared unless you lift it up." },
+      { "animationStep": 4, "heading": "Rules of Hooks", "text": "Hooks must always be called at the top level of a component — never inside conditions, loops, or nested functions." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "useState declaration", "note": "Initial value sets the type" },
+        { "label": "Functional updater", "note": "Use prev => when new state depends on old state" },
+        { "label": "Object state spread update", "note": "Never mutate the state object directly" },
+        { "label": "Array state immutable push", "note": "Always return a new array" }
+      ],
+      "patterns": [
+        { "title": "Toggle boolean" },
+        { "title": "Immutable array add" }
+      ],
+      "whenToUse": "Use useState for any value that changes over time and should trigger a re-render: form inputs, toggle state, loaded data, counters.",
+      "commonMistakes": [
+        "Mutating state directly — doing state.push(item) or state.name = \"x\" does not trigger a re-render; always call the setter with a new value",
+        "Not using the functional updater when new state depends on old state — setCount(count + 1) can miss updates in batched renders; use setCount(prev => prev + 1)",
+        "Storing derived values in state — if a value can be computed from existing state or props, compute it during render instead of keeping a separate useState"
+      ]
+    }
+  },
+  "react-useeffect": {
+    "title": "useEffect & Side Effects",
+    "description": "Run code after render — fetch data, subscribe, sync with the DOM",
+    "steps": [
+      { "animationStep": 0, "heading": "Side effects happen after render", "text": "A side effect is any work that affects something outside the component: network requests, timers, DOM manipulation. useEffect runs these after the render." },
+      { "animationStep": 1, "heading": "Empty deps — run once", "text": "Passing an empty array [] as the second argument tells React to run the effect only once — when the component first mounts." },
+      { "animationStep": 2, "heading": "Deps array — re-run on change", "text": "List the values the effect depends on. React re-runs the effect whenever any of those values change." },
+      { "animationStep": 3, "heading": "Cleanup function", "text": "Return a function from useEffect to clean up before the next run or on unmount. Essential for timers, subscriptions, and event listeners." },
+      { "animationStep": 4, "heading": "Common use cases", "text": "useEffect is for anything that needs to happen outside the render cycle: data fetching, subscriptions, DOM manipulation, analytics." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Run once on mount ([])", "note": "Empty array = mount only" },
+        { "label": "Run on dep change ([dep])", "note": "List all values the effect reads" },
+        { "label": "Cleanup return", "note": "Returned function runs before next effect + on unmount" },
+        { "label": "Run every render (no array)", "note": "Omit second arg to run after every render" }
+      ],
+      "patterns": [
+        { "title": "Fetch on mount" },
+        { "title": "Subscribe + unsubscribe" }
+      ],
+      "whenToUse": "Use useEffect for side effects that must happen after render: data fetching, subscriptions, timers, and DOM manipulation. If the effect reads state or props, list them in the deps array.",
+      "commonMistakes": [
+        "Missing dependencies in the deps array — if the effect uses a prop or state value, it must be in the array or the effect will run with a stale closure",
+        "Forgetting the cleanup return — effects that set up subscriptions, timers, or event listeners must return a cleanup function to prevent memory leaks",
+        "Putting an async function directly in useEffect — useEffect cannot return a Promise; wrap async code in an inner async function and call it"
+      ]
+    }
+  },
+  "react-router": {
+    "title": "React Router",
+    "description": "Add client-side navigation to your app — pages, links, and URL parameters",
+    "steps": [
+      { "animationStep": 0, "heading": "Client-side routing", "text": "Traditional websites load a new HTML page on every navigation. React Router intercepts the URL change and swaps components instead — no full page reload." },
+      { "animationStep": 1, "heading": "BrowserRouter wraps your app", "text": "BrowserRouter provides routing context to your entire app. It uses the HTML5 History API to keep the URL in sync with the UI." },
+      { "animationStep": 2, "heading": "Routes and Route", "text": "Routes picks the first matching Route and renders its element. Each Route maps a URL path to a component." },
+      { "animationStep": 3, "heading": "Link — navigate without reload", "text": "Use Link instead of <a href>. Link updates the URL and renders the matching component without a full page reload." },
+      { "animationStep": 4, "heading": "useParams — dynamic segments", "text": "URL segments prefixed with : are dynamic. useParams returns an object with the matched values." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "BrowserRouter / Routes / Route setup", "note": "* catches unmatched routes (404 page)" },
+        { "label": "Link", "note": "Use Link instead of <a> to avoid full reload" },
+        { "label": "useNavigate", "note": "Programmatic navigation" },
+        { "label": "useParams", "note": "All params are strings" },
+        { "label": "useSearchParams", "note": "Read/write query string params" },
+        { "label": "Outlet (nested routes)", "note": "Outlet is where child routes render" }
+      ],
+      "patterns": [
+        { "title": "Protected route" },
+        { "title": "Navigate programmatically" }
+      ],
+      "whenToUse": "Use React Router when your app has multiple views that map to different URLs. Use Link for navigation in the UI and useNavigate for programmatic navigation after events like form submission.",
+      "commonMistakes": [
+        "Using <a href> instead of <Link> — anchor tags cause a full page reload and lose React state; always use Link for internal navigation",
+        "Forgetting to add BrowserRouter at the app root — all Router hooks (useNavigate, useParams, etc.) throw errors if there is no Router context above them",
+        "Assuming useParams values are numbers — URL params are always strings; parse with parseInt or Number() before using as a numeric ID"
+      ]
+    }
+  },
+  "ts-interfaces": {
+    "title": "TypeScript Interfaces",
+    "description": "Define object contracts — optional props, readonly fields, extension, and implementation",
+    "steps": [
+      { "animationStep": 0, "heading": "Interfaces describe object shapes", "text": "An interface defines a contract: any object assigned that type must have exactly those properties with those types. It documents intent and lets TypeScript enforce it." },
+      { "animationStep": 1, "heading": "Optional and readonly properties", "text": "Mark a property with ? to make it optional. Mark it with readonly to prevent mutation after creation." },
+      { "animationStep": 2, "heading": "Extending interfaces", "text": "Use extends to build on an existing interface. The child interface inherits all parent properties and adds its own." },
+      { "animationStep": 3, "heading": "Implementing an interface", "text": "A class can implement an interface, promising to provide all the required properties and methods. TypeScript errors if anything is missing." },
+      { "animationStep": 4, "heading": "Index signatures for dynamic keys", "text": "When you don't know all property names up front, use an index signature to allow any string key with a specific value type." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Interface declaration", "note": "Defines the required shape; any extra property is an error" },
+        { "label": "Optional property (?)", "note": "Missing optional props are fine; present ones are type-checked" },
+        { "label": "readonly", "note": "Cannot assign after object creation" },
+        { "label": "extends", "note": "Child inherits all parent properties" },
+        { "label": "implements", "note": "Class must provide every interface member" },
+        { "label": "Index signature", "note": "Allows any string key with a typed value" }
+      ],
+      "patterns": [
+        { "title": "Extending a base interface" },
+        { "title": "Class implementing interface" }
+      ],
+      "whenToUse": "Use interfaces to define contracts for objects and classes, especially for public API shapes and function parameters. Prefer interfaces over type aliases for object shapes because they support extends and produce clearer error messages.",
+      "commonMistakes": [
+        "Adding extra properties to an object literal assigned to an interface — TypeScript performs excess property checks on literals; extract to a variable first if you need extra fields",
+        "Confusing readonly with Object.freeze() — readonly is compile-time only; the object is still mutable at runtime unless you also freeze it",
+        "Forgetting that implements does not inherit implementation — a class implementing an interface must still provide its own method bodies"
+      ]
+    }
+  },
+  "ts-generics": {
+    "title": "TypeScript Generics",
+    "description": "Write reusable, type-safe functions and interfaces that work with any type",
+    "steps": [
+      { "animationStep": 0, "heading": "The problem: rigid types", "text": "Without generics you need a separate function for each type — firstNumber, firstString, firstBoolean. This violates DRY." },
+      { "animationStep": 1, "heading": "Generic functions with <T>", "text": "A type parameter <T> is a placeholder that gets replaced with a real type at call time. One function works for all types." },
+      { "animationStep": 2, "heading": "TypeScript infers T automatically", "text": "You rarely need to write the type argument explicitly — TypeScript infers it from what you pass in." },
+      { "animationStep": 3, "heading": "Generic interfaces", "text": "Interfaces can also have type parameters. The type is specified when you use the interface." },
+      { "animationStep": 4, "heading": "Constraints with extends", "text": "Use extends to restrict what types T can be. This lets you safely access properties that are guaranteed to exist." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Generic function <T>", "note": "T is a placeholder replaced at call time" },
+        { "label": "Inference at call site", "note": "TypeScript infers T; explicit annotation is rarely needed" },
+        { "label": "Generic interface", "note": "Parameterize the shape; caller specifies T" },
+        { "label": "Constraint with extends", "note": "Restricts T to types that have a length property" },
+        { "label": "Utility types", "note": "Built-in mapped types; no import needed" }
+      ],
+      "patterns": [
+        { "title": "Identity function" },
+        { "title": "Constrained generic" }
+      ],
+      "whenToUse": "Use generics when you find yourself writing the same function or interface multiple times for different types. They are the primary tool for reusable, type-safe utilities — array helpers, API wrappers, data containers, and custom hooks.",
+      "commonMistakes": [
+        "Using any instead of a generic — any throws away type information; a generic preserves and propagates it through the call site",
+        "Over-constraining with extends — only add constraints when you need to access a specific property; unnecessary constraints reduce reusability",
+        "Confusing Partial<T> with optional properties — Partial makes all properties optional at once; use it for update/patch payloads, not as a replacement for designing interfaces correctly"
+      ]
+    }
+  },
+  "ts-narrowing": {
+    "title": "Type Narrowing",
+    "description": "Refine broad types to specific ones using type guards and control flow analysis",
+    "steps": [
+      { "animationStep": 0, "heading": "typeof and instanceof guards", "text": "TypeScript narrows types inside conditional blocks. After typeof check, the type is refined automatically." },
+      { "animationStep": 1, "heading": "Discriminated unions", "text": "A discriminated union uses a shared literal property to distinguish between types. TypeScript narrows based on that field." },
+      { "animationStep": 2, "heading": "Custom type guards", "text": "A type predicate function (x is T) tells TypeScript the exact narrowed type when the function returns true." }
+    ]
+  },
+  "ts-utility-types": {
+    "title": "Utility Types",
+    "description": "Built-in TypeScript types that transform and derive new types from existing ones",
+    "steps": [
+      { "animationStep": 0, "heading": "Partial and Required", "text": "Partial<T> makes all properties optional. Required<T> makes all properties required. Both derive a new type from an existing interface." },
+      { "animationStep": 1, "heading": "Pick and Omit", "text": "Pick<T, K> keeps only the listed keys. Omit<T, K> removes the listed keys. Both create a subset type." },
+      { "animationStep": 2, "heading": "Record, Readonly, and ReturnType", "text": "Record<K, V> creates an object type with keys K and values V. Readonly<T> prevents mutation. ReturnType<F> extracts a function's return type." }
+    ]
+  },
+  "git-intro": {
+    "title": "What is Git?",
+    "description": "Distributed version control — why it exists, how it works, and the 4 key areas every developer uses daily",
+    "steps": [
+      { "animationStep": 0, "heading": "The problem: who has the latest version?", "text": "When multiple developers work on the same project, files get emailed, overwritten, or lost. Version control solves this by giving every change a history — so you always know what changed, when, and why." },
+      { "animationStep": 1, "heading": "Working Directory", "text": "Your local files on disk. This is where you write and edit code. Git watches this folder but does not automatically save anything — you decide what gets tracked." },
+      { "animationStep": 2, "heading": "Staging Area", "text": "A holding area for changes you want to include in the next snapshot. Use git add to move files here. You can stage some files and leave others out — giving you precise control over what you commit." },
+      { "animationStep": 3, "heading": "Local Repository", "text": "The .git folder on your machine stores the full project history. Every commit is a permanent snapshot. You can always travel back to any previous state — nothing is ever truly lost." },
+      { "animationStep": 4, "heading": "All 4 areas together", "text": "The full Git flow: Working Directory → Staging Area → Local Repo → Remote Repo. Changes move forward through these areas and can flow back (checkout, pull) when needed." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Initialize a new repo", "note": "creates .git folder in current directory" },
+        { "label": "Clone an existing repo", "note": "downloads full history" },
+        { "label": "Check current status", "note": "shows modified, staged, and untracked files" },
+        { "label": "Stage files", "note": "add specific file or everything" },
+        { "label": "Commit staged changes", "note": "saves a permanent snapshot" },
+        { "label": "View commit history", "note": "--oneline gives compact view" }
+      ],
+      "whenToUse": "Use git init for new projects, git clone to work on existing ones. Always git status before committing to see what's changed.",
+      "commonMistakes": [
+        "Committing without a message — always write a short, meaningful message describing what changed and why",
+        "Running git add . blindly — check git status first so you don't accidentally stage build files or secrets",
+        "Thinking git saves automatically — nothing is saved until you explicitly git add and git commit"
+      ]
+    }
+  },
+  "git-workflow": {
+    "title": "Git Workflow",
+    "description": "The daily development loop — branching, staging, committing, and pushing changes",
+    "steps": [
+      { "animationStep": 0, "heading": "The daily Git loop", "text": "Every day in a development team follows the same pattern: get the latest code, create a branch, make changes, stage them, commit, then push to share with the team." },
+      { "animationStep": 1, "heading": "Start: init or clone", "text": "For a brand new project use git init. To work on an existing project, git clone downloads the full history. You only do this once per project." },
+      { "animationStep": 2, "heading": "Create a branch", "text": "Always work in a branch — never directly on main. A branch is an isolated copy of the codebase. Your changes stay contained until you decide to merge them back." },
+      { "animationStep": 3, "heading": "Stage and commit", "text": "Make changes, stage the relevant files, then commit with a descriptive message. Commit often — small commits are easier to review, understand, and revert if something goes wrong." },
+      { "animationStep": 4, "heading": "Push to remote", "text": "Push your branch to the remote repository so teammates can see it. The -u flag sets the upstream so future pushes just need git push." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Create + switch to branch", "note": "shorthand for git branch + git checkout" },
+        { "label": "Switch branch", "note": "or: git switch <branch-name>" },
+        { "label": "Stage all changes", "note": "stages all modified and new files" },
+        { "label": "Commit", "note": "snapshot staged changes" },
+        { "label": "Push branch to remote", "note": "-u sets upstream for future pushes" },
+        { "label": "Pull latest from remote", "note": "fetch + merge remote changes into current branch" },
+        { "label": "Merge branch into current", "note": "integrates another branch's history" }
+      ],
+      "commonMistakes": [
+        "Working directly on main — always create a feature branch so your changes don't disrupt the stable codebase",
+        "Forgetting to pull before starting new work — stale code causes merge conflicts; always git pull first",
+        "Giant commits — commit small logical units of work; it's easier to review and safer to revert"
+      ]
+    }
+  },
+  "git-gitignore": {
+    "title": ".gitignore",
+    "description": "Tell Git which files to never track — secrets, dependencies, and build output stay out of your repo",
+    "steps": [
+      { "animationStep": 0, "heading": "Without .gitignore — everything gets committed", "text": "Run git add . without a .gitignore and you'll accidentally commit node_modules (200MB+), your .env secrets, and build output. Once in git history, they're hard to remove completely." },
+      { "animationStep": 1, "heading": "Create a .gitignore file", "text": "Add a file named .gitignore in the root of your project. List what to ignore — Git will never stage or commit those files. Commit the .gitignore itself so teammates get the same rules." },
+      { "animationStep": 2, "heading": "Pattern syntax", "text": "Each line is a pattern. Use / to match directories, * as a wildcard, ! to un-ignore something specific. Patterns are matched from the project root." },
+      { "animationStep": 3, "heading": "With .gitignore — only your code is tracked", "text": "After adding .gitignore, git add . only stages your actual source files. Secrets stay local, node_modules stays off GitHub, and your repo stays lean and clean." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Ignore a folder", "note": "trailing / means directory" },
+        { "label": "Ignore a file", "note": "exact filename match" },
+        { "label": "Wildcard pattern", "note": "* matches any characters" },
+        { "label": "Un-ignore an exception", "note": "! negates the pattern" },
+        { "label": "Check if file is ignored", "note": "shows which rule is matching" },
+        { "label": "Remove already-tracked file", "note": "stops tracking without deleting" }
+      ],
+      "whenToUse": "Create a .gitignore as the very first step in every new project, before your first commit. Use gitignore.io or GitHub's templates for your tech stack.",
+      "commonMistakes": [
+        "Committing node_modules or .env before adding .gitignore — to fix, use git rm --cached and then add the rules",
+        "Forgetting the trailing slash on directories — \"node_modules\" ignores a file called node_modules; \"node_modules/\" ignores the folder",
+        "Adding .gitignore rules after the files are already tracked — git ignores only untracked files; already-committed files need git rm --cached first"
+      ]
+    }
+  },
+  "git-github": {
+    "title": "GitHub",
+    "description": "GitHub is not Git — it's a platform that hosts repos online and adds collaboration features like Pull Requests",
+    "steps": [
+      { "animationStep": 0, "heading": "Git ≠ GitHub", "text": "Git is a command-line tool that runs on your machine. GitHub is a website that hosts Git repositories online. You can use Git without GitHub, but GitHub needs Git. Think of Git as the engine and GitHub as the garage." },
+      { "animationStep": 1, "heading": "Remote repository", "text": "GitHub stores a copy of your repository in the cloud. Every team member clones it once, then uses git pull to get the latest changes and git push to share their work. The remote is the single source of truth." },
+      { "animationStep": 2, "heading": "Pull Requests", "text": "A Pull Request (PR) is a GitHub feature that lets you propose merging a branch into main. Before merging, teammates can review the code, leave comments, request changes, and approve. This keeps the main branch clean and reviewed." },
+      { "animationStep": 3, "heading": "Forking & open source", "text": "Fork creates your own copy of someone else's repository. You can make changes freely, then open a PR back to the original. This is how millions of developers contribute to open source projects without needing direct access." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Add remote", "note": "\"origin\" is the conventional name for the main remote" },
+        { "label": "Push branch + set upstream", "note": "-u links local branch to remote" },
+        { "label": "Pull remote changes", "note": "fetch + merge into current branch" },
+        { "label": "List remotes", "note": "shows fetch and push URLs" },
+        { "label": "Create PR", "note": "gh CLI tool for GitHub" }
+      ],
+      "whenToUse": "Use GitHub (or GitLab/Bitbucket) whenever collaborating with others or backing up your work. Always use Pull Requests for code that others depend on — never push directly to main on shared projects.",
+      "commonMistakes": [
+        "Pushing directly to main on a shared repo — always use PRs so changes can be reviewed before they affect everyone",
+        "Confusing git pull with git fetch — git pull merges immediately; git fetch just downloads without merging",
+        "Forgetting to add a remote — a local git repo has no connection to GitHub until you git remote add origin <url>"
+      ]
+    }
+  },
+  "git-collab-setup": {
+    "title": "Team Collaboration Setup",
+    "description": "How to set up a shared GitHub repo, invite collaborators, protect main, and run the team PR workflow",
+    "steps": [
+      { "animationStep": 0, "heading": "Create a repo and invite your team", "text": "Start on GitHub: create a new repository, then go to Settings → Collaborators → Add people. Teammates receive an email invite — they must accept before they can push. For organisations, use Teams to manage access at scale." },
+      { "animationStep": 1, "heading": "Everyone clones the same remote", "text": "Every team member runs git clone once. This downloads the full history and sets origin as the remote name automatically. From then on they use git pull to sync and git push to share." },
+      { "animationStep": 2, "heading": "Protect main — require Pull Request reviews", "text": "Go to Settings → Branches → Add branch protection rule for main. Enable \"Require a pull request before merging\" and \"Require approvals\". This prevents anyone from pushing directly to main — all changes must go through a reviewed PR." },
+      { "animationStep": 3, "heading": "The daily team loop", "text": "Every feature or fix follows the same cycle: pull latest main, create a branch, commit your work, push the branch, open a PR, get a review, then merge. Small focused PRs are easier to review and less likely to conflict." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Clone a shared repo", "note": "done once per machine" },
+        { "label": "Sync with remote main", "note": "do this before starting new work" },
+        { "label": "Push a feature branch", "note": "never push directly to main" },
+        { "label": "Create PR via CLI", "note": "requires gh CLI tool" },
+        { "label": "List open PRs", "note": "shows all open pull requests" },
+        { "label": "Check out a PR locally", "note": "review a teammate's branch locally" }
+      ],
+      "whenToUse": "Use branch protection on every shared repo from day one. Every team member works in branches — never directly in main. Use PRs for all changes, even small ones, so changes are visible and reviewed.",
+      "commonMistakes": [
+        "Pushing directly to main — without branch protection anyone can accidentally break the shared codebase",
+        "Long-lived branches — the longer a branch lives, the more conflicts it collects; merge small and often",
+        "Forgetting to pull before branching — always git pull origin main first, otherwise your branch starts from stale code"
+      ]
+    }
+  },
+  "git-merge-conflicts": {
+    "title": "Merge Conflicts",
+    "description": "What happens when two branches edit the same line — and how to resolve it step by step",
+    "steps": [
+      { "animationStep": 0, "heading": "Conflicts happen when two branches edit the same line", "text": "When you merge a branch and both sides modified the same part of a file, Git can't decide automatically which version to keep. It pauses the merge and asks you to resolve it manually." },
+      { "animationStep": 1, "heading": "Git inserts conflict markers into the file", "text": "Git marks the conflict directly in the file with <<<<<<< (your branch), ======= (separator), and >>>>>>> (the incoming branch). Everything between the markers is the content in conflict." },
+      { "animationStep": 2, "heading": "Edit the file to resolve", "text": "Open the file in your editor. Decide what to keep — your version, their version, or a combination. Delete all three marker lines completely. Most editors (VS Code) show a visual conflict resolver with one-click options." },
+      { "animationStep": 3, "heading": "Mark resolved and finish the merge", "text": "After editing all conflicted files, stage them to tell Git they're resolved, then run git commit. Git creates the merge commit automatically with a default message." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Check what's conflicting", "note": "\"both modified\" = conflict files" },
+        { "label": "Open conflict tool", "note": "uses your configured editor" },
+        { "label": "Stage resolved file", "note": "marks the conflict as resolved" },
+        { "label": "Finish merge", "note": "Git provides the merge commit message" },
+        { "label": "Abort the merge", "note": "cancel and go back to before merge" }
+      ],
+      "commonMistakes": [
+        "Leaving marker lines (<<<, ===, >>>) in the file — always remove ALL markers; the code won't work otherwise",
+        "Running git commit before staging all resolved files — use git status to confirm no \"both modified\" files remain",
+        "Panicking and git merge --abort unnecessarily — conflicts look scary but are just a text edit; take it step by step"
+      ]
+    }
+  },
+  "git-undo-stash": {
+    "title": "Undo & Stash",
+    "description": "Three levels of undo in Git — discard changes, uncommit, or safely reverse on shared branches",
+    "steps": [
+      { "animationStep": 0, "heading": "3 tools for undoing in Git", "text": "Git gives you different undo tools depending on where in the workflow you are. git restore discards uncommitted edits, git reset moves the HEAD pointer back, and git revert is the safe option for shared branches." },
+      { "animationStep": 1, "heading": "git restore — discard working directory changes", "text": "Throws away all edits to a file and restores it to its last committed state. Use --staged to unstage without discarding changes. Warning: this cannot be undone." },
+      { "animationStep": 2, "heading": "git stash — shelve work temporarily", "text": "Stash saves your uncommitted changes on a stack and gives you a clean working directory. Perfect when you need to switch branches mid-work without losing anything." },
+      { "animationStep": 3, "heading": "git revert — safe undo on shared branches", "text": "git revert creates a new commit that undoes a previous commit. It never rewrites history, so it's safe to use on main or any branch others are working on." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Discard file changes", "note": "irreversible — permanently discards edits" },
+        { "label": "Discard all changes", "note": "wipes all uncommitted modifications" },
+        { "label": "Unstage files", "note": "removes from staging, keeps edits" },
+        { "label": "Stash changes", "note": "shelves current WIP" },
+        { "label": "Restore stash", "note": "applies last stash and removes it" },
+        { "label": "Safe undo commit", "note": "creates new undo commit — safe for shared branches" },
+        { "label": "Uncommit locally", "note": "moves HEAD back 1 — never use on pushed commits" }
+      ],
+      "whenToUse": "Use git restore for quick discard of local edits. Use git stash when switching context. Use git revert on any branch that others have pulled from — never git reset on public history.",
+      "commonMistakes": [
+        "Using git reset on already-pushed commits — this rewrites history and will force-push errors or confuse teammates; use git revert instead",
+        "git restore . with unsaved work you meant to keep — there is no undo; double-check git status before running",
+        "Losing stashes — git stash drop removes a stash permanently; use git stash list to confirm before dropping"
+      ]
+    }
+  }
+}
