@@ -1,8 +1,9 @@
 import PageWrapper from '@/components/layout/PageWrapper'
-import { RESOURCE_GROUPS } from '@/data/resources'
 import type { Resource, ResourceGroup } from '@/data/resources'
+import { useResourceGroups } from '@/i18n/hooks'
 import { useResourceVotes } from '@/hooks/useResourceVotes'
 import { getHost } from '@/lib/getHost'
+import { useTranslation } from 'react-i18next'
 
 interface ResourceCardProps {
   r: Resource
@@ -124,6 +125,8 @@ function ResourceGroupSection({ group, votes, hasVoted, submitting, onUpvote, lo
 
 export default function ResourcesPage() {
   const { votes, hasVoted, submitting, upvote, loading } = useResourceVotes()
+  const resourceGroups = useResourceGroups()
+  const { t } = useTranslation('resources')
 
   return (
     <PageWrapper>
@@ -133,13 +136,13 @@ export default function ResourcesPage() {
             RESOURCES
           </div>
           <h1 style={{ fontSize: 28, fontWeight: 800, color: 'var(--text)', margin: '0 0 10px' }}>
-            Useful Resources
+            {t('title')}
           </h1>
           <p style={{ fontSize: 14, color: 'var(--text-muted)', margin: 0, maxWidth: 520 }}>
-            A curated collection of tools, libraries, and references to help you build better web projects.
+            {t('subtitle')}
           </p>
         </div>
-        {RESOURCE_GROUPS.map(group => (
+        {resourceGroups.map(group => (
           <ResourceGroupSection
             key={group.id}
             group={group}
