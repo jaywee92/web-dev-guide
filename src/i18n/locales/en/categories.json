@@ -72,6 +72,8 @@
     "http-request-cycle":        "Request Cycle",
     "http-rest":                 "REST",
     "http-status":               "Status Codes",
+    "http-ssr-csr":              "SSR vs CSR",
+    "db-intro":                  "Databases & SQL Intro",
     "postgres-queries":          "Queries",
     "postgres-joins":            "Joins",
     "postgres-crud":             "CRUD",
