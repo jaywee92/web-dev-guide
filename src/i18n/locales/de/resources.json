@@ -1,1 +1,63 @@
-{}
+{
+  "title": "Nützliche Ressourcen",
+  "subtitle": "Eine kuratierte Sammlung von Tools, Bibliotheken und Referenzen, um bessere Webprojekte zu erstellen.",
+  "shortPreview": "Kurzvorschau",
+  "sound": "Ton",
+  "fuckAI": "Fu*k AI",
+  "hoverToPreview": "zum Vorschauen hovern",
+  "autoplawWithAudio": "Autoplay mit Ton",
+  "aiHidden": "KI ausgeblendet",
+  "aiVisible": "KI sichtbar",
+  "topResources": "TOP-RESSOURCEN",
+  "communityPicks": "Community-Auswahl",
+  "voteCount": "▲ {{count}} Stimmen",
+  "groups": {
+    "ui-components": "UI-KOMPONENTENBIBLIOTHEKEN",
+    "animated-components": "ANIMIERTE KOMPONENTEN",
+    "animation": "ANIMATION & BEWEGUNG",
+    "react": "REACT-RESSOURCEN",
+    "tools": "TOOLS & KI"
+  },
+  "items": {
+    "heroui": {
+      "name": "HeroUI",
+      "description": "Schöne, barrierefreie React-Komponentenbibliothek mit Dark Mode, Tailwind-Integration und über 50 sofort einsetzbaren Komponenten."
+    },
+    "daisyui": {
+      "name": "DaisyUI",
+      "description": "Die beliebteste Tailwind CSS-Komponentenbibliothek. Fügt semantische Klassennamen hinzu, damit du weniger CSS schreibst und dich auf die Struktur konzentrierst."
+    },
+    "uiverse": {
+      "name": "UIverse.io",
+      "description": "Open-Source-Community für CSS- und Tailwind-UI-Elemente. Tausende kostenlose Buttons, Cards, Loader und mehr zum Durchstöbern."
+    },
+    "aceternity": {
+      "name": "Aceternity UI",
+      "description": "Beeindruckende animierte React- und Tailwind-Komponenten. Parallax-Cards, Texteffekte, Verläufe und scrollbasierte Animationen."
+    },
+    "magicui": {
+      "name": "Magic UI",
+      "description": "Über 150 kostenlose animierte React-Komponenten. Border-Beams, Shimmer-Effekte und aufmerksamkeitsstarke Micro-Interactions."
+    },
+    "hover-dev": {
+      "name": "Hover.dev",
+      "description": "Interaktive Hover-Animationen und Bewegungseffekte für React. Sofort einsetzbare Komponenten mit Spring-Physik."
+    },
+    "animejs": {
+      "name": "Anime.js",
+      "description": "Leichtgewichtige JavaScript-Animationsbibliothek. Animiere CSS-Eigenschaften, SVGs, DOM-Attribute und JS-Objekte mit einer sauberen API."
+    },
+    "reactbits": {
+      "name": "ReactBits",
+      "description": "Animierte React-Komponentenbibliothek mit kreativen UI-Mustern — Hintergründe, Texteffekte und interaktive Komponenten."
+    },
+    "v0": {
+      "name": "v0 by Vercel",
+      "description": "KI-gestützter UI-Generator von Vercel. Beschreibe eine Komponente auf Deutsch und erhalte sofort produktionsreifen React- und Tailwind-Code."
+    },
+    "webcode-tools": {
+      "name": "WebCode.tools",
+      "description": "Sammlung praktischer Web-Code-Generatoren. Erstelle schnell CSS-Verläufe, Schatten, Flexbox-Layouts, Meta-Tags und mehr."
+    }
+  }
+}
