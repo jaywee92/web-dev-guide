@@ -25,6 +25,8 @@ import deTopicsHtml from './locales/de/topics-html.json'
 import deTopicsCss from './locales/de/topics-css.json'
 import deTopicsJs from './locales/de/topics-js.json'
 import deTopicsOther from './locales/de/topics-other.json'
+import enGuestbook from './locales/en/guestbook.json'
+import deGuestbook from './locales/de/guestbook.json'
 
 i18n
   .use(LanguageDetector)
@@ -42,6 +44,7 @@ i18n
         'topics-css': enTopicsCss,
         'topics-js': enTopicsJs,
         'topics-other': enTopicsOther,
+        guestbook: enGuestbook,
       },
       de: {
         common: deCommon,
@@ -54,6 +57,7 @@ i18n
         'topics-css': deTopicsCss,
         'topics-js': deTopicsJs,
         'topics-other': deTopicsOther,
+        guestbook: deGuestbook,
       },
     },
     defaultNS: 'common',

@@ -1,0 +1,18 @@
+{
+  "navLabel": "GUESTBOOK",
+  "panelTitle": "GUESTBOOK",
+  "pageTitle": "Gästebuch",
+  "pageSubtitle": "Hinterlasse eine Nachricht — sag Hallo oder teile einen Gedanken.",
+  "namePlaceholder": "Name",
+  "emojiPlaceholder": "✨",
+  "messagePlaceholder": "Hinterlasse eine Nachricht...",
+  "sendButton": "SENDEN",
+  "rateLimit": "1 / 24h",
+  "rateLimitWait": "Verfügbar in {{h}}h {{m}}m",
+  "emptyState": "Noch keine Einträge — sei der Erste!",
+  "entriesCount_one": "{{count}} Eintrag",
+  "entriesCount_other": "{{count}} Einträge",
+  "errorSubmit": "Konnte nicht gesendet werden — bitte erneut versuchen.",
+  "allEntries": "ALLE EINTRÄGE",
+  "newestFirst": "NEUESTE ZUERST"
+}
