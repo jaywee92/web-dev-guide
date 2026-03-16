@@ -123,7 +123,8 @@ const bannerLazyRegistry: Record<string, () => Promise<{ default: BannerComp }>>
   OOPBanner:          () => import('./banners/javascript/OOPBanner'),
   TimersBanner:       () => import('./banners/javascript/TimersBanner'),
   PromisesBanner:     () => import('./banners/javascript/PromisesBanner'),
-  ModulesBanner:      () => import('./banners/javascript/ModulesBanner'),
+  ModulesBanner:       () => import('./banners/javascript/ModulesBanner'),
+  NpmBundlersBanner:   () => import('./banners/javascript/NpmBundlersBanner'),
   // TypeScript
   TypeScriptBanner:   () => import('./banners/typescript/TypeScriptBanner'),
   InterfacesBanner:   () => import('./banners/typescript/InterfacesBanner'),

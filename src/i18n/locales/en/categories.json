@@ -56,6 +56,7 @@
     "js-closures":               "Closures",
     "js-promises":               "Promises & Async",
     "js-modules":                "Modules & Bundlers",
+    "js-npm-bundlers":           "npm & Bundlers",
     "ts-basics":                 "Basics",
     "ts-interfaces":             "Interfaces",
     "ts-generics":               "Generics",

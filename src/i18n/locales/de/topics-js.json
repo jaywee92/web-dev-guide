@@ -606,5 +606,53 @@
         "Zirkuläre Importe — Modul A importiert aus B, das aus A importiert, was zu undefined-Referenzen führt."
       ]
     }
+  },
+  "js-npm-bundlers": {
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Die npm-Registry",
+        "text": "npm ist sowohl ein Kommandozeilentool als auch eine Registry mit über 2 Millionen Open-Source-Paketen. npm install lädt das Paket in node_modules herunter und trägt es in package.json ein. Verwende -D für devDependencies (Build-Tools, Test-Runner). Bewerte Pakete anhand von wöchentlichen Downloads, letztem Veröffentlichungsdatum, Bundle-Größe und Sicherheits-Audits."
+      },
+      {
+        "animationStep": 1,
+        "heading": "package.json & Lockfile",
+        "text": "package.json ist das Projektmanifest: Es listet Skripte, dependencies und devDependencies auf. package-lock.json speichert exakt aufgelöste Versionen für reproduzierbare Installationen — immer committen. node_modules wird aus dem Lockfile erzeugt und darf niemals committet werden."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Was Bundler tun",
+        "text": "Ein Bundler löst deinen Import-Graphen ausgehend vom Einstiegspunkt auf, kombiniert alle Module, eliminiert toten Code (Tree-Shaking) und erzeugt optimierte Browser-Ausgabe. Er verarbeitet auch CSS-Imports, Bild-Assets, TypeScript-Kompilierung und Code-Splitting."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Bundler im Vergleich",
+        "text": "Webpack ist am ausgereiftesten und konfigurierbarstem, aber komplex. Rollup eignet sich ideal für Bibliotheken mit überlegenem Tree-Shaking. Parcel ist zero-config und super für Einsteiger. Vite nutzt natives ESM für sofortigen Dev-Server-Start und Rollup für Production — der moderne Standard für neue Projekte."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Dev-Server & HMR",
+        "text": "Vites Dev-Server liefert Dateien als natives ESM — kein Build-Schritt, daher startet er nahezu sofort. Hot Module Replacement (HMR) schiebt nur das geänderte Modul in den Browser ohne vollständigen Seitenreload und bewahrt den Anwendungszustand. Production-Builds nutzen Rollup für vollständige Optimierung."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Abhängigkeit installieren" },
+        { "label": "Dev-Abhängigkeit installieren" },
+        { "label": "Skript ausführen" },
+        { "label": "Saubere Installation (CI)" },
+        { "label": "Pakete prüfen" }
+      ],
+      "patterns": [
+        { "title": "Vite-Projekt aufsetzen" },
+        { "title": "package.json-Skripte" }
+      ],
+      "whenToUse": "Verwende npm zur Paketverwaltung und Vite für neue Projekte. package-lock.json committen, node_modules niemals committen.",
+      "commonMistakes": [
+        "node_modules committen — stattdessen in .gitignore eintragen.",
+        "package-lock.json nicht committen — Teammitglieder erhalten dann unterschiedliche aufgelöste Versionen.",
+        "devDependencies ohne -D installieren — sie landen dann im Production-Bundle."
+      ]
+    }
   }
 }
