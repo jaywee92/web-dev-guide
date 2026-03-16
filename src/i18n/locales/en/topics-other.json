@@ -861,5 +861,52 @@
         "Losing stashes — git stash drop removes a stash permanently; use git stash list to confirm before dropping"
       ]
     }
+  },
+  "react-router-advanced": {
+    "title": "React Router as a Framework",
+    "description": "Go beyond the library — use React Router v7's framework mode with route modules, loaders, and actions for full-stack data handling",
+    "steps": [
+      { "animationStep": 0, "heading": "Library vs Framework mode", "text": "React Router started as a client-side routing library. In v7, it can also run as a full framework — handling file-based routes, server-side rendering, and data loading out of the box. In library mode you configure BrowserRouter yourself; in framework mode you scaffold with create-react-router and React Router owns the entry point." },
+      { "animationStep": 1, "heading": "routes.js config", "text": "Framework mode uses a routes.js file to declare your route tree. The index() helper declares the index route; route() declares named routes with a URL pattern and a file path to the route module." },
+      { "animationStep": 2, "heading": "Route modules", "text": "A route module is a file that exports named functions React Router understands: default (the component), loader/clientLoader (data fetching), action/clientAction (mutations), and ErrorBoundary (error UI). React Router wires these automatically — no manual prop passing needed." },
+      { "animationStep": 3, "heading": "clientLoader — CSR data loading", "text": "clientLoader fetches data in the browser before the component renders. It receives { params } for URL parameters. Export HydrateFallback to show a loading UI while it runs on the first visit." },
+      { "animationStep": 4, "heading": "loader — SSR data loading", "text": "loader runs on the server — before the HTML is sent to the browser. It can safely access databases or server-only APIs without exposing them to the client bundle. The component receives the same loaderData prop — no changes needed." },
+      { "animationStep": 5, "heading": "Form & actions", "text": "clientAction and action handle form mutations. React Router's Form component serialises the submission and calls the matching action. The result is available as actionData. After the action runs, loaders automatically revalidate — no manual refetch." },
+      { "animationStep": 6, "heading": "Rendering strategies", "text": "React Router v7 supports three rendering strategies in react-router.config.js. CSR (SPA mode) renders everything in the browser; SSR renders HTML on every server request; SSG pre-renders pages at build time. Your choice determines when loaders run." }
+    ]
+  },
+  "react-data-fetching": {
+    "title": "Data Fetching Strategies",
+    "description": "Understand the fetch-on-render waterfall and how render-as-you-fetch with Suspense eliminates it",
+    "steps": [
+      { "animationStep": 0, "heading": "The waterfall problem", "text": "When a parent component fetches data and only renders a child after its data arrives, and that child fetches its own data, you get a waterfall — each request waits for the previous one. Total wait time equals the sum of all requests." },
+      { "animationStep": 1, "heading": "Fetch-on-render (useEffect pattern)", "text": "The classic pattern puts fetching inside useEffect. The component renders first with a spinner, then the effect fires, then state updates cause a re-render with data. It forces sequential rendering: a child cannot start fetching until its parent has finished and rendered it." },
+      { "animationStep": 2, "heading": "Render-as-you-fetch", "text": "Render-as-you-fetch starts all fetches before the component tree renders — then renders components that suspend until their data arrives. Fetches run in parallel so total time equals the slowest single request, not the sum." },
+      { "animationStep": 3, "heading": "Suspense + use()", "text": "React's use() hook unwraps a promise inside a component. If the promise is not resolved yet, the component suspends and React shows the nearest Suspense fallback. Once resolved, the component renders with the data. ErrorBoundary catches rejections." },
+      { "animationStep": 4, "heading": "Loaders as the solution", "text": "The cleanest render-as-you-fetch implementation delegates fetching to your router. React Router's loader runs the moment a navigation starts — before any component renders — and returns the data the route needs. No useEffect, no manual promise management." }
+    ]
+  },
+  "react-mutations": {
+    "title": "Data Mutations",
+    "description": "Send data back to the server — from classic onSubmit patterns to React 19 form actions and useFormStatus",
+    "steps": [
+      { "animationStep": 0, "heading": "onSubmit + preventDefault", "text": "The classic React form pattern intercepts the native submit event, calls preventDefault() to stop the page from reloading, then manually sends the data with fetch. You manage loading, error, and success state yourself with useState." },
+      { "animationStep": 1, "heading": "Form actions (React 19)", "text": "React 19 introduces the action prop on form elements. Pass an async function directly — React calls it with a FormData object when the form submits. No onSubmit, no preventDefault needed." },
+      { "animationStep": 2, "heading": "FormData", "text": "FormData is the browser's built-in way to collect form field values. Each input's name attribute becomes a key. formData.get() retrieves a single value; formData.getAll() retrieves multiple values for checkboxes and multi-select inputs." },
+      { "animationStep": 3, "heading": "useFormStatus — pending state", "text": "useFormStatus() from react-dom reads the pending state of the nearest parent form action. Use it inside a submit button component to disable the button while the action runs. The component must be inside the form — it reads context, not props." },
+      { "animationStep": 4, "heading": "Error boundaries for forms", "text": "If a form action throws, wrapping the form in an ErrorBoundary catches the error and renders a fallback UI. The fallback receives resetErrorBoundary so the user can retry. Best for unexpected server failures — not per-field validation." },
+      { "animationStep": 5, "heading": "useActionState", "text": "useActionState(action, initialState) wraps a form action and returns the latest result as state — perfect for per-field validation errors. Your action receives (previousState, formData) and returns the new state with validation errors or a success flag." }
+    ]
+  },
+  "react-tanstack-query": {
+    "title": "TanStack Query",
+    "description": "Add smart client-side caching to your React app — stale-while-revalidate, background refetch, and mutations without the boilerplate",
+    "steps": [
+      { "animationStep": 0, "heading": "The caching problem", "text": "Every time a user navigates back to a route, a plain useEffect fetch fires again — even if the data has not changed. Client-side caching stores fetch results keyed by query, so subsequent visits are instant and the network is only hit when data is stale." },
+      { "animationStep": 1, "heading": "Stale vs fresh data", "text": "TanStack Query tracks whether cached data is fresh (recently fetched — serve as-is) or stale (old enough that a background refetch should happen). staleTime controls the window — 0 means always stale, Infinity means never auto-refetch. Default is 0." },
+      { "animationStep": 2, "heading": "useQuery", "text": "useQuery takes a queryKey and a queryFn. queryKey is an array that uniquely identifies the query — include all variables the fetch depends on. queryFn is the async function. Returns data, isLoading, isError, and error." },
+      { "animationStep": 3, "heading": "Background refetch", "text": "When a stale query mounts again, TanStack Query shows the cached data immediately and refetches in the background. If new data arrives, the UI updates automatically. Users see content instantly on return visits — no full spinner." },
+      { "animationStep": 4, "heading": "useMutation", "text": "useMutation handles write operations. Call mutate with your variables to trigger it. Use onSuccess to invalidate related queries — queryClient.invalidateQueries() marks matching queries stale and triggers a refetch, keeping the UI in sync after mutations." }
+    ]
   }
 }
