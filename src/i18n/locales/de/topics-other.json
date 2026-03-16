@@ -445,7 +445,10 @@
       { "animationStep": 1, "heading": "JSX — HTML in JavaScript", "text": "JSX ermöglicht das Schreiben von HTML-ähnlicher Syntax innerhalb von JavaScript. Es sieht wie HTML aus, wird aber von Babel in JavaScript-Funktionsaufrufe umgewandelt." },
       { "animationStep": 2, "heading": "Eine Komponente ist eine Funktion", "text": "Eine React-Komponente ist eine Funktion, die Props akzeptiert und JSX zurückgibt. Der Funktionsname muss mit einem Großbuchstaben beginnen." },
       { "animationStep": 3, "heading": "Komponenten kombinieren", "text": "Du baust komplexe UIs durch das Verschachteln von Komponenten. Jede Komponente kann andere Komponenten enthalten — und bildet so einen Baum." },
-      { "animationStep": 4, "heading": "Props — Daten fließen nach unten", "text": "Props sind Argumente, die an Komponenten übergeben werden. Sie fließen nur vom Elternteil zum Kind — niemals umgekehrt." }
+      { "animationStep": 4, "heading": "Props — Daten fließen nach unten", "text": "Props sind Argumente, die an Komponenten übergeben werden. Sie fließen nur vom Elternteil zum Kind — niemals umgekehrt." },
+      { "animationStep": 5, "heading": "Events", "text": "React verwendet camelCase-Event-Props (onClick, onChange, onSubmit). Du übergibst eine Funktionsreferenz – keinen Aufruf. React kapselt das native Event in ein SyntheticEvent, das in allen Browsern gleich funktioniert." },
+      { "animationStep": 6, "heading": "Conditional Rendering", "text": "Verwende einfaches JavaScript innerhalb von JSX, um UI bedingt anzuzeigen. Ternary für entweder/oder, && für zeigen-oder-nichts, Early Return für komplexe Verzweigungen." },
+      { "animationStep": 7, "heading": "Listen rendern", "text": "Verwende .map(), um ein Array in JSX-Elemente umzuwandeln. Jedes Element in einer Liste benötigt eine stabile key-Prop – React nutzt sie, um Änderungen zu verfolgen. Verwende eine eindeutige ID aus deinen Daten, nie den Array-Index." }
     ],
     "cheatSheet": {
       "syntax": [
@@ -475,7 +478,10 @@
       { "animationStep": 1, "heading": "useState", "text": "useState ist ein Hook, der den aktuellen Wert und eine Setter-Funktion zurückgibt. React verfolgt den Wert zwischen Renders." },
       { "animationStep": 2, "heading": "Den Setter aufrufen löst Re-Render aus", "text": "Wenn du setCount aufrufst, plant React ein Re-Render. Die Komponentenfunktion wird erneut mit dem neuen State-Wert ausgeführt." },
       { "animationStep": 3, "heading": "State ist lokal für jede Instanz", "text": "Wenn du zwei <Counter />-Komponenten renderst, hat jede ihren eigenen unabhängigen count. State wird nicht geteilt, außer du hebst ihn hoch." },
-      { "animationStep": 4, "heading": "Regeln der Hooks", "text": "Hooks müssen immer auf der obersten Ebene einer Komponente aufgerufen werden — niemals innerhalb von Bedingungen, Schleifen oder verschachtelten Funktionen." }
+      { "animationStep": 4, "heading": "Regeln der Hooks", "text": "Hooks müssen immer auf der obersten Ebene einer Komponente aufgerufen werden — niemals innerhalb von Bedingungen, Schleifen oder verschachtelten Funktionen." },
+      { "animationStep": 5, "heading": "Updater-Funktionen", "text": "Wenn der neue State vom vorherigen Wert abhängt, übergib dem Setter eine Funktion statt eines Wertes. React ruft sie mit dem aktuellsten State auf – selbst wenn mehrere Updates gebatcht wurden." },
+      { "animationStep": 6, "heading": "State mit Objekten & Arrays", "text": "State niemals direkt mutieren – React erkennt die Änderung nicht. Erstelle immer ein neues Objekt oder Array mit dem Spread-Operator. Für Objekte: spreaden und überschreiben. Für Arrays: map, filter oder spread verwenden." },
+      { "animationStep": 7, "heading": "State hochheben", "text": "Geschwisterkomponenten können State nicht direkt teilen. Hebe den State zum nächsten gemeinsamen Elternteil hoch. Der Elternteil besitzt den State und gibt ihn über Props weiter – zusammen mit dem Setter, damit Kinder Updates auslösen können." }
     ],
     "cheatSheet": {
       "syntax": [
@@ -504,7 +510,9 @@
       { "animationStep": 1, "heading": "Leere deps — einmalig ausführen", "text": "Ein leeres Array [] als zweites Argument zu übergeben teilt React mit, den Effect nur einmal auszuführen — wenn die Komponente zum ersten Mal mountet." },
       { "animationStep": 2, "heading": "Deps-Array — bei Änderung erneut ausführen", "text": "Liste die Werte auf, von denen der Effect abhängt. React führt den Effect neu aus, wenn sich einer dieser Werte ändert." },
       { "animationStep": 3, "heading": "Cleanup-Funktion", "text": "Gib eine Funktion von useEffect zurück, um vor dem nächsten Ausführen oder beim Unmount aufzuräumen. Unerlässlich für Timer, Abonnements und Event-Listener." },
-      { "animationStep": 4, "heading": "Häufige Anwendungsfälle", "text": "useEffect ist für alles, was außerhalb des Render-Zyklus passieren muss: Daten fetchen, Abonnements, DOM-Manipulation, Analytics." }
+      { "animationStep": 4, "heading": "Häufige Anwendungsfälle", "text": "useEffect ist für alles, was außerhalb des Render-Zyklus passieren muss: Daten fetchen, Abonnements, DOM-Manipulation, Analytics." },
+      { "animationStep": 5, "heading": "Fetching & Race Conditions", "text": "Beim Fetching innerhalb von useEffect kann eine schnelle zweite Anfrage vor einer langsamen ersten abgeschlossen werden – und veraltete Daten gewinnen. Lösung: Setze ein ignore-Flag in der Cleanup-Funktion, damit nur die neueste Anfrage den State aktualisiert." },
+      { "animationStep": 6, "heading": "Wann useEffect NICHT verwendet werden sollte", "text": "useEffect ist zum Synchronisieren mit externen Systemen gedacht. Vermeide es für: (1) abgeleitete Werte – berechne sie stattdessen beim Rendern; (2) event-gesteuerte Seiteneffekte – platziere sie im Handler; (3) verkettete State-Updates – sie verursachen doppelte Renders." }
     ],
     "cheatSheet": {
       "syntax": [
@@ -533,7 +541,9 @@
       { "animationStep": 1, "heading": "BrowserRouter umhüllt deine App", "text": "BrowserRouter stellt Routing-Kontext für die gesamte App bereit. Es verwendet die HTML5-History-API, um die URL mit der UI synchron zu halten." },
       { "animationStep": 2, "heading": "Routes und Route", "text": "Routes wählt die erste passende Route aus und rendert ihr Element. Jede Route ordnet einem URL-Pfad eine Komponente zu." },
       { "animationStep": 3, "heading": "Link — ohne Neuladen navigieren", "text": "Verwende Link statt <a href>. Link aktualisiert die URL und rendert die passende Komponente ohne vollständiges Seitenneuladen." },
-      { "animationStep": 4, "heading": "useParams — dynamische Segmente", "text": "URL-Segmente mit : als Präfix sind dynamisch. useParams gibt ein Objekt mit den gematchten Werten zurück." }
+      { "animationStep": 4, "heading": "useParams — dynamische Segmente", "text": "URL-Segmente mit : als Präfix sind dynamisch. useParams gibt ein Objekt mit den gematchten Werten zurück." },
+      { "animationStep": 5, "heading": "Layout-Routen & Outlet", "text": "Verschachtle Kind-Routen innerhalb einer Eltern-Route, die gemeinsame UI rendert (Navbar, Sidebar). Die Elternkomponente verwendet <Outlet /> als Platzhalter – React Router rendert die passende Kind-Route dort." },
+      { "animationStep": 6, "heading": "Index-Routen & useNavigate", "text": "Eine Index-Route ist das Standard-Kind – sie rendert, wenn der Elternpfad genau übereinstimmt. useNavigate ermöglicht programmatische Navigation: nach dem Absenden eines Formulars, Login oder anderen Events." }
     ],
     "cheatSheet": {
       "syntax": [
