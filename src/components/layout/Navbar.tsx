@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { Search, Sun, Moon, Code2, BookOpen, ChevronDown } from 'lucide-react'
+import { Search, Sun, Moon, Code2, BookOpen, ChevronDown, Mail } from 'lucide-react'
 import { useAppStore } from '@/store/useAppStore'
 import { useEffect, useState, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -239,6 +239,38 @@ export default function Navbar() {
           }}
         >
           {t('resources')}
+        </Link>
+
+        {/* Guestbook */}
+        <Link
+          to="/guestbook"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            padding: '5px 10px',
+            borderRadius: 8,
+            textDecoration: 'none',
+            fontFamily: 'var(--font-mono)',
+            fontSize: 11,
+            fontWeight: 600,
+            background: 'var(--surface)',
+            border: '1px solid var(--border)',
+            color: 'var(--text-muted)',
+            transition: 'border-color 0.15s, color 0.15s',
+            letterSpacing: '0.04em',
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.borderColor = 'var(--purple)'
+            e.currentTarget.style.color = 'var(--purple)'
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.borderColor = 'var(--border)'
+            e.currentTarget.style.color = 'var(--text-muted)'
+          }}
+        >
+          <Mail size={12} />
+          {t('guestbook')}
         </Link>
 
         {/* Search */}
