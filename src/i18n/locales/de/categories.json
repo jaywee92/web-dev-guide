@@ -16,6 +16,11 @@
   "postgresql":         { "title": "PostgreSQL",           "description": "Relationale Datenbanken",                                   "cardLabel": "SQL-Grundlagen" },
   "git":                { "title": "Git & GitHub",         "description": "Versionskontrolle · Workflow · Remotes",                    "cardLabel": "Grundlagen"     },
   "git-collab":         { "title": "Teamarbeit",           "description": "Merge-Konflikte · Rückgängig · Stash",                      "cardLabel": "Teamarbeit"     },
+  "react-ecosystem": {
+    "title": "React-Ökosystem",
+    "description": "Fortgeschrittene Muster, Datenstrategien und Ökosystem-Tools",
+    "cardLabel": "Ökosystem"
+  },
   "topicLabels": {
     "html-basics":               "Elemente & Attribute",
     "html-text":                 "Text & Überschriften",
@@ -67,6 +72,10 @@
     "react-useeffect":           "useEffect",
     "react-router":              "Router",
     "react-context":             "Context & useReducer",
+    "react-router-advanced": "Router Advanced",
+    "react-data-fetching": "Datenabruf",
+    "react-mutations": "Datenmutationen",
+    "react-tanstack-query": "TanStack Query",
     "webapi-fetch":              "Fetch API",
     "webapi-dom":                "DOM API",
     "webapi-events":             "Events",
@@ -96,6 +105,10 @@
     "css-frameworks":   { "title": "CSS",        "subtitle": "Utility-Frameworks"          },
     "typescript":       { "title": "TypeScript", "subtitle": "Typisiertes JavaScript"      },
     "react":            { "title": "React",      "subtitle": "UI-Komponenten-Framework"    },
+    "react-ecosystem": {
+      "title": "React",
+      "subtitle": "Ökosystem & Muster"
+    },
     "webapis":          { "title": "Web-APIs",   "subtitle": "Browser-Schnittstellen"      },
     "http":             { "title": "HTTP",       "subtitle": "Hypertext Transfer Protocol" },
     "postgresql":       { "title": "PostgreSQL", "subtitle": "Relationale Datenbank"       },
