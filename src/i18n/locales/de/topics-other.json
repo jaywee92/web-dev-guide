@@ -566,6 +566,45 @@
       ]
     }
   },
+  "react-context": {
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Prop Drilling",
+        "text": "Prop Drilling bedeutet, Daten durch Zwischenkomponenten weiterzureichen, die sie gar nicht brauchen – nur damit ein tief verschachteltes Kind sie erhält. Mit wachsenden Bäumen muss jede Schicht Props deklarieren und weiterleiten, die sie selbst nicht verwendet."
+      },
+      {
+        "animationStep": 1,
+        "heading": "createContext & Provider",
+        "text": "createContext() erstellt das Context-Objekt. Umschließe den Teilbaum, der Zugriff benötigt, mit <XContext.Provider value={...}>. Alle Komponenten darin können diesen Wert direkt lesen – egal wie tief sie verschachtelt sind."
+      },
+      {
+        "animationStep": 2,
+        "heading": "useContext",
+        "text": "useContext(MyContext) liest den nächsten Provider darüber im Baum und gibt seinen Wert zurück. Die Komponente rendert automatisch neu, wenn sich der Wert ändert. Jede Komponente kann konsumieren – kein Prop-Passing erforderlich."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Wann Context verwenden",
+        "text": "Context eignet sich am besten für Daten, die wirklich global sind oder von vielen Komponenten geteilt werden. Vermeide ihn für häufig ändernde Daten – jede Context-Wert-Änderung rendert alle Konsumenten neu."
+      },
+      {
+        "animationStep": 4,
+        "heading": "useReducer – was & warum",
+        "text": "Wenn useState mehrere zusammenhängende Felder verwaltet – z. B. einen Warenkorb mit Items, Gesamtpreis und Anzahl – muss jedes Update alle konsistent anfassen. useReducer zentralisiert alle Übergänge in einer reinen Funktion: (state, action) => newState."
+      },
+      {
+        "animationStep": 5,
+        "heading": "dispatch & Actions",
+        "text": "useReducer gibt [state, dispatch] zurück. Actions sind einfache Objekte mit einem type-String und optionalem payload. Der Reducer switcht auf type und gibt ein neues State-Objekt zurück – den bestehenden State niemals direkt mutieren."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Reducer + Context kombiniert",
+        "text": "Beide Muster kombinieren: useReducer in einem Provider platzieren und [state, dispatch] über Context bereitstellen. Jedes Kind kann State lesen oder Actions auslösen – ohne Prop Drilling. Ein Custom Hook gibt Konsumenten eine saubere, fehlersichere API."
+      }
+    ]
+  },
   "ts-interfaces": {
     "title": "TypeScript-Interfaces",
     "description": "Objektverträge definieren — optionale Props, readonly-Felder, Erweiterung und Implementierung",
