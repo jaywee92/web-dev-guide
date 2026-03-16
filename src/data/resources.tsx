@@ -208,6 +208,15 @@ export const RESOURCE_GROUPS: ResourceGroup[] = [
         icon: <><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" /></>,
         youtubeShortId: 'DCgrCd8UMns',
       },
+      {
+        id: 'unicorn-studio',
+        name: 'Unicorn Studio',
+        url: 'https://www.unicorn.studio/',
+        description: 'Browser-based creative canvas for building immersive, interactive web experiences with real-time rendering and no-code animations.',
+        color: '#c084fc',
+        icon: <><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></>,
+        youtubeShortId: 'sjNi7emI24U',
+      },
     ],
   },
   {
