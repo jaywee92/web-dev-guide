@@ -47,7 +47,7 @@ nextTopicId:      undefined  (last in react category)
 | 3 | ✅ | When to use Context | javascript |
 | 4 | ⚙️ | useReducer — what & why | javascript |
 | 5 | 📨 | dispatch & actions | javascript |
-| 6 | 🔗 | Reducer + Context together | jsx |
+| 6 | 🔄 | Reducer + Context together | jsx |
 
 ### Step content
 
