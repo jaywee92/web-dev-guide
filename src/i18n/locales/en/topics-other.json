@@ -562,6 +562,45 @@
       ]
     }
   },
+  "react-context": {
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Prop drilling",
+        "text": "Prop drilling is passing data through intermediate components that don't use it — just so a deeply nested child can receive it. As trees grow, every layer must declare and forward props it doesn't care about."
+      },
+      {
+        "animationStep": 1,
+        "heading": "createContext & Provider",
+        "text": "createContext() creates the context object. Wrap the subtree that needs access with <XContext.Provider value={...}>. Every component inside can read that value directly — no matter how deep."
+      },
+      {
+        "animationStep": 2,
+        "heading": "useContext",
+        "text": "useContext(MyContext) reads the nearest Provider above and returns its value. The component re-renders automatically when the value changes. Any component can consume — no prop passing required."
+      },
+      {
+        "animationStep": 3,
+        "heading": "When to use Context",
+        "text": "Context works best for data that is truly global or shared across many components. Avoid it for frequently-changing data — every context value change re-renders all its consumers."
+      },
+      {
+        "animationStep": 4,
+        "heading": "useReducer — what & why",
+        "text": "When useState manages multiple interrelated fields — like a cart with items, total, and count — every update must touch all of them consistently. useReducer centralises all transitions into one pure function: (state, action) => newState."
+      },
+      {
+        "animationStep": 5,
+        "heading": "dispatch & actions",
+        "text": "useReducer returns [state, dispatch]. Actions are plain objects with a type string and optional payload. The reducer switches on type and returns a new state object — never mutate existing state directly."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Reducer + Context together",
+        "text": "Combine both patterns: put useReducer inside a Provider and expose [state, dispatch] through context. Any child can read state or fire actions without prop drilling. A custom hook gives consumers a clean, error-safe API."
+      }
+    ]
+  },
   "ts-interfaces": {
     "title": "TypeScript Interfaces",
     "description": "Define object contracts — optional props, readonly fields, extension, and implementation",
