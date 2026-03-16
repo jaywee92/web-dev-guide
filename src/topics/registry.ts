@@ -137,6 +137,11 @@ const bannerLazyRegistry: Record<string, () => Promise<{ default: BannerComp }>>
   UseEffectBanner:  () => import('./banners/react/UseEffectBanner'),
   RouterBanner:     () => import('./banners/react/RouterBanner'),
   ContextBanner:    () => import('./banners/react/ContextBanner'),
+  // React Ecosystem
+  RouterAdvancedBanner:  () => import('./banners/react-ecosystem/RouterAdvancedBanner'),
+  DataFetchingBanner:    () => import('./banners/react-ecosystem/DataFetchingBanner'),
+  MutationsBanner:       () => import('./banners/react-ecosystem/MutationsBanner'),
+  TanStackQueryBanner:   () => import('./banners/react-ecosystem/TanStackQueryBanner'),
   // Web APIs
   FetchBanner:     () => import('./banners/webapis/FetchBanner'),
   DomEventsBanner: () => import('./banners/webapis/DomEventsBanner'),
