@@ -21,6 +21,11 @@
     "description": "Advanced patterns, data strategies, and ecosystem tools",
     "cardLabel": "Ecosystem"
   },
+  "nextjs": {
+    "title": "Next.js",
+    "description": "Fullstack React with App Router & RSC",
+    "cardLabel": "Basics"
+  },
   "topicLabels": {
     "html-basics":               "Elements & Attributes",
     "html-text":                 "Text & Headings",
@@ -76,6 +81,7 @@
     "react-data-fetching": "Data Fetching",
     "react-mutations": "Data Mutations",
     "react-tanstack-query": "TanStack Query",
+    "nextjs-basics":             "Next.js",
     "webapi-fetch":              "Fetch API",
     "webapi-dom":                "DOM API",
     "webapi-events":             "Events",
@@ -105,10 +111,8 @@
     "css-frameworks":    { "title": "CSS",        "subtitle": "Utility Frameworks"           },
     "typescript":        { "title": "TypeScript", "subtitle": "Typed JavaScript"             },
     "react":             { "title": "React",      "subtitle": "UI Component Framework"       },
-    "react-ecosystem": {
-      "title": "React",
-      "subtitle": "Ecosystem & Patterns"
-    },
+    "react-ecosystem":   { "title": "React",      "subtitle": "Ecosystem & Patterns"         },
+    "nextjs":            { "title": "Next.js", "subtitle": "Fullstack React Framework"    },
     "webapis":           { "title": "Web APIs",   "subtitle": "Browser Interfaces"           },
     "http":              { "title": "HTTP",       "subtitle": "Hypertext Transfer Protocol"  },
     "postgresql":        { "title": "PostgreSQL", "subtitle": "Relational Database"          },

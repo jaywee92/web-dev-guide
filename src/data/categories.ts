@@ -150,13 +150,23 @@ export const CATEGORIES: Category[] = [
   },
   {
     id: 'react-ecosystem',
-    title: 'React Ecosystem',
+    title: 'React',
     description: 'Advanced patterns, data strategies, and ecosystem tools',
     color: '#a78bfa',
     icon: 'Layers',
     topicIds: ['react-router-advanced', 'react-data-fetching', 'react-mutations', 'react-tanstack-query'],
     cardLabel: 'Ecosystem',
     cardEmoji: '🌐',
+  },
+  {
+    id: 'nextjs',
+    title: 'Next.js',
+    description: 'Fullstack React framework with App Router and React Server Components',
+    color: '#a3b4c6',
+    icon: 'Layers',
+    topicIds: ['nextjs-basics'],
+    cardLabel: 'Basics',
+    cardEmoji: '📖',
   },
   {
     id: 'webapis',
@@ -224,7 +234,7 @@ export const CATEGORY_GROUPS: CategoryGroup[] = [
   {
     key: 'frameworks-web',
     label: 'FRAMEWORKS & WEB',
-    categoryIds: ['react', 'react-ecosystem', 'webapis', 'http', 'postgresql'],
+    categoryIds: ['react', 'react-ecosystem', 'nextjs', 'http', 'webapis', 'postgresql'],
   },
   {
     key: 'tools',
@@ -249,7 +259,8 @@ export const TECH_SECTION_META: Record<string, TechSectionMeta> = {
   typescript:  { title: 'TypeScript', subtitle: 'Typed JavaScript',           color: '#818cf8' },
   react:       { title: 'React',      subtitle: 'UI Component Framework',     color: '#f472b6' },
   'react-ecosystem': { title: 'React', subtitle: 'Ecosystem & Patterns', color: '#a78bfa' },
-  webapis:     { title: 'Web APIs',   subtitle: 'Browser Interfaces',         color: '#34d399' },
+  nextjs: { title: 'Next.js', subtitle: 'Fullstack React Framework', color: '#a3b4c6' },
+  webapis:     { title: 'Browser & Network', subtitle: 'APIs · HTTP · Protocols', color: '#34d399' },
   http:        { title: 'HTTP',       subtitle: 'Hypertext Transfer Protocol',color: '#fb923c' },
   postgresql:  { title: 'PostgreSQL', subtitle: 'Relational Database',        color: '#60a5fa' },
   git:         { title: 'Git',        subtitle: 'Version Control System',     color: '#2dd4bf' },
@@ -264,6 +275,8 @@ export function getTechKey(categoryId: CategoryId): string {
   if (categoryId.startsWith('css-')) return 'css'
   if (categoryId === 'git' || categoryId.startsWith('git-')) return 'git'
   if (categoryId === 'javascript-oop' || categoryId === 'javascript-async') return 'javascript'
+  if (categoryId === 'react-ecosystem') return 'react'
+  if (categoryId === 'http') return 'webapis'
   return categoryId
 }
 

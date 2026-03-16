@@ -2,7 +2,7 @@ export type PlaygroundType = 'visual-controls' | 'monaco' | 'none' | 'gradient' 
 export type ThemeMode = 'dark' | 'light'
 export type CategoryId = 'html-core' | 'html-structure' | 'html-interactive'
   | 'css-basics' | 'css-layout' | 'css-modern' | 'css-frameworks'
-  | 'javascript' | 'javascript-oop' | 'javascript-async' | 'typescript' | 'react' | 'react-ecosystem' | 'webapis' | 'http' | 'postgresql'
+  | 'javascript' | 'javascript-oop' | 'javascript-async' | 'typescript' | 'react' | 'react-ecosystem' | 'webapis' | 'http' | 'postgresql' | 'nextjs'
   | 'git' | 'git-collab'
 
 export interface Category {
@@ -12,8 +12,8 @@ export interface Category {
   color: string
   icon: string        // Lucide icon name
   topicIds: string[]  // ordered
-  cardLabel?: string   // short label shown on the homepage card, e.g. "Grundlagen" (falls back to title)
-  cardEmoji?: string   // emoji shown next to cardLabel, e.g. "📖" (falls back to '📖')
+  cardLabel?: string
+  cardEmoji?: string
 }
 
 export interface CheatSheetSyntax {
