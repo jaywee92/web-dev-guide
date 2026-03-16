@@ -273,3 +273,46 @@ code, pre, .mono { font-family: var(--font-mono); }
   color: #6a90b4;
   line-height: 1.7;
 }
+
+/* ── Guestbook Widget ─────────────────────────────────────────────── */
+
+@keyframes gb-env-float {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  33%       { transform: translateY(-10px) rotate(1.5deg); }
+  66%       { transform: translateY(-5px) rotate(-1deg); }
+}
+
+@keyframes gb-env-jiggle {
+  0%   { transform: scale(1) rotate(-2deg); }
+  15%  { transform: scale(1.12) rotate(9deg); }
+  30%  { transform: scale(1.09) rotate(-7deg); }
+  45%  { transform: scale(1.06) rotate(5deg); }
+  60%  { transform: scale(1.03) rotate(-3deg); }
+  80%  { transform: scale(1.01) rotate(1deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.gb-env-svg {
+  animation: gb-env-float 4.5s ease-in-out infinite;
+  filter: drop-shadow(0 4px 16px rgba(167,139,250,0.35)) drop-shadow(0 2px 6px rgba(0,0,0,0.55));
+  transition: filter 0.25s;
+}
+.gb-env-btn:hover .gb-env-svg {
+  filter: drop-shadow(0 6px 24px rgba(167,139,250,0.55)) drop-shadow(0 2px 8px rgba(0,0,0,0.55));
+}
+.gb-env-jiggling .gb-env-svg {
+  animation: gb-env-jiggle 0.5s ease-out forwards;
+}
+.gb-env-open .gb-env-svg {
+  animation: none;
+  transform: scale(0.87);
+  opacity: 0.5;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.gb-env-flap {
+  transform-origin: 29px 16px;
+  transition: transform 0.38s cubic-bezier(0.34, 1.15, 0.64, 1);
+}
+.gb-env-open .gb-env-flap {
+  transform: rotateX(175deg);
+}
