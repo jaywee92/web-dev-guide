@@ -9,6 +9,8 @@ import SearchPage from '@/pages/SearchPage'
 import SearchPalette from '@/components/ui/SearchPalette'
 import ReferencePage from '@/pages/ReferencePage'
 import ResourcesPage from '@/pages/ResourcesPage'
+import GuestbookWidget from '@/components/guestbook/GuestbookWidget'
+import GuestbookPage from '@/pages/GuestbookPage'
 
 export default function App() {
   return (
@@ -16,6 +18,7 @@ export default function App() {
       <div className="min-h-screen flex flex-col" style={{ background: 'var(--bg)' }}>
         <Navbar />
         <SearchPalette />
+        <GuestbookWidget />
         <main className="flex-1">
           <AnimatePresence mode="wait">
             <Routes>
@@ -37,6 +40,7 @@ export default function App() {
               <Route path="/resources" element={<ResourcesPage />} />
               <Route path="/topic/:topicId" element={<TopicPage />} />
               <Route path="/search" element={<SearchPage />} />
+              <Route path="/guestbook" element={<GuestbookPage />} />
               <Route path="/reference/html" element={<ReferencePage type="html" />} />
               <Route path="/reference/css" element={<ReferencePage type="css" />} />
             </Routes>
