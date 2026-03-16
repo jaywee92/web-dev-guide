@@ -144,10 +144,12 @@ const bannerLazyRegistry: Record<string, () => Promise<{ default: BannerComp }>>
   AnimatedFlowBanner: () => import('./banners/http/AnimatedFlowBanner'),
   RestBanner:         () => import('./banners/http/RestBanner'),
   StatusCodesBanner:  () => import('./banners/http/StatusCodesBanner'),
+  SsrCsrBanner:       () => import('./banners/http/SsrCsrBanner'),
   // PostgreSQL
   QueriesBanner: () => import('./banners/postgresql/QueriesBanner'),
   JoinsBanner:   () => import('./banners/postgresql/JoinsBanner'),
   CrudBanner:    () => import('./banners/postgresql/CrudBanner'),
+  DbIntroBanner: () => import('./banners/postgresql/DbIntroBanner'),
   // Git
   GitIntroBanner:       () => import('./banners/git/GitIntroBanner'),
   GitWorkflowBanner:    () => import('./banners/git/GitWorkflowBanner'),
