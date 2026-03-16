@@ -14,7 +14,10 @@
   "groups": {
     "ui-components": "UI-KOMPONENTENBIBLIOTHEKEN",
     "animated-components": "ANIMIERTE KOMPONENTEN",
+    "references": "REFERENZEN",
     "animation": "ANIMATION & BEWEGUNG",
+    "design-tools": "DESIGN-TOOLS",
+    "ai-creative": "KI-KREATIVWERKZEUGE",
     "react": "REACT-RESSOURCEN",
     "tools": "TOOLS & KI"
   },
@@ -31,6 +34,18 @@
       "name": "UIverse.io",
       "description": "Open-Source-Community für CSS- und Tailwind-UI-Elemente. Tausende kostenlose Buttons, Cards, Loader und mehr zum Durchstöbern."
     },
+    "21st-dev": {
+      "name": "21st.dev",
+      "description": "Open-Source-Marktplatz für React-Komponenten — produktionsreife UI-Komponenten der Community entdecken, Vorschau anzeigen und kopieren."
+    },
+    "shadcn": {
+      "name": "shadcn/ui",
+      "description": "Copy-Paste React-Komponenten auf Basis von Radix UI und Tailwind CSS — eigener Code, keine Paketabhängigkeit, vollständig anpassbar."
+    },
+    "lucide": {
+      "name": "Lucide",
+      "description": "Schöne, konsistente Open-Source-Icon-Bibliothek mit über 1500 SVG-Icons — als React-Komponenten, Vue und reines SVG verfügbar."
+    },
     "aceternity": {
       "name": "Aceternity UI",
       "description": "Beeindruckende animierte React- und Tailwind-Komponenten. Parallax-Cards, Texteffekte, Verläufe und scrollbasierte Animationen."
@@ -43,9 +58,113 @@
       "name": "Hover.dev",
       "description": "Interaktive Hover-Animationen und Bewegungseffekte für React. Sofort einsetzbare Komponenten mit Spring-Physik."
     },
+    "cssreference": {
+      "name": "CSS Reference",
+      "description": "Visuelle CSS-Referenz — jede Eigenschaft mit Live-Beispielen, Syntax und Browser-Kompatibilität erklärt."
+    },
+    "htmlreference": {
+      "name": "HTML Reference",
+      "description": "Visuelle HTML-Referenz — jedes Element und Attribut mit Code-Beispielen und Browser-Kompatibilität dokumentiert."
+    },
     "animejs": {
       "name": "Anime.js",
       "description": "Leichtgewichtige JavaScript-Animationsbibliothek. Animiere CSS-Eigenschaften, SVGs, DOM-Attribute und JS-Objekte mit einer sauberen API."
+    },
+    "motion": {
+      "name": "Motion",
+      "description": "Die Web-Animationsbibliothek hinter Framer Motion — produktionsreife Gesten, Übergänge und Scroll-Animationen für React und Vanilla JS."
+    },
+    "gsap": {
+      "name": "GSAP",
+      "description": "Branchenstandard für JavaScript-Animationen — das robusteste Timeline-basierte Animations-Toolkit, auf Millionen von Websites im Einsatz."
+    },
+    "rive": {
+      "name": "Rive",
+      "description": "Interaktive Animationen in Echtzeit erstellen und veröffentlichen — State Machines, spieleähnliche Grafiken und winzige Dateigrößen für jede Plattform."
+    },
+    "paperanimator": {
+      "name": "Paper Animator",
+      "description": "Scroll- und Timeline-Animationen visuell im Browser erstellen — sauberen CSS- und JS-Code exportieren und direkt einfügen."
+    },
+    "jitter": {
+      "name": "Jitter",
+      "description": "Motion-Design-Tool für das Web — animierte UI-Komponenten und Micro-Interactions erstellen und als Video oder Lottie exportieren."
+    },
+    "sketch-meta": {
+      "name": "Sketch Animator",
+      "description": "Metas KI-Tool, das handgezeichnete Skizzen zum Leben erweckt — lade eine Figurzeichnung hoch und sieh sie mit Pose-Animation bewegen."
+    },
+    "unicorn-studio": {
+      "name": "Unicorn Studio",
+      "description": "Browser-basierte kreative Leinwand für immersive, interaktive Web-Erlebnisse mit Echtzeit-Rendering und No-Code-Animationen."
+    },
+    "framer": {
+      "name": "Framer",
+      "description": "Interaktive Websites direkt gestalten und veröffentlichen — Prototyping trifft auf produktionsreifen Site-Builder mit CMS und Animationen."
+    },
+    "kittl": {
+      "name": "Kittl",
+      "description": "KI-gestützte Grafikdesign-Plattform für Logos, Labels, Poster und Print-Assets — Vektorexport, keine Designkenntnisse erforderlich."
+    },
+    "pacdora": {
+      "name": "Pacdora",
+      "description": "Online-Verpackungsdesign-Tool — 3D-Produktmockups und Stanzformen ohne Illustrator oder Photoshop erstellen."
+    },
+    "pngimg": {
+      "name": "PNGimg",
+      "description": "Riesige Bibliothek kostenloser PNG-Bilder mit transparentem Hintergrund — ideal für Mockups, Präsentationen und UI-Komposition."
+    },
+    "svgrepo": {
+      "name": "SVG Repo",
+      "description": "Über 500.000 Open-Source-SVG-Vektoren und Icons durchsuchen und herunterladen — Farben anpassen und Inline-SVG sofort kopieren."
+    },
+    "spline": {
+      "name": "Spline",
+      "description": "Browser-basiertes 3D-Design-Tool — interaktive 3D-Szenen erstellen und direkt in Websites einbetten."
+    },
+    "slideteam": {
+      "name": "SlideTeam",
+      "description": "Riesige Bibliothek professionell gestalteter PowerPoint- und Google-Slides-Vorlagen — fertige Präsentationsdecks für jeden Anlass."
+    },
+    "3dlogolab": {
+      "name": "3D Logo Lab",
+      "description": "Beeindruckende 3D-Logos direkt im Browser generieren — Materialien und Beleuchtung anpassen und hochauflösende Renders kostenlos exportieren."
+    },
+    "napkin-ai": {
+      "name": "Napkin AI",
+      "description": "Text automatisch in übersichtliche Diagramme, Flussdiagramme und visuelle Konzepte umwandeln — ideal für technische Erklärungen."
+    },
+    "dora-run": {
+      "name": "Dora",
+      "description": "KI-gestützter No-Code-Website-Builder mit 3D-Szenen, Scroll-Animationen und kinematischen Interaktionen — kein Code nötig."
+    },
+    "meshy-ai": {
+      "name": "Meshy",
+      "description": "3D-Modelle aus Textprompts oder Bildern mit KI generieren und texturieren — glTF, OBJ, FBX für Web und Spieleentwicklung exportieren."
+    },
+    "krea-ai": {
+      "name": "Krea AI",
+      "description": "KI-Bildgenerierung in Echtzeit — Visuals sofort generieren, verbessern und iterieren."
+    },
+    "autodraw": {
+      "name": "AutoDraw",
+      "description": "Googles KI-Zeichentool — grob skizzieren und es erkennt, was gemeint war — aus Kritzeleien werden sofort saubere Icons."
+    },
+    "klingai": {
+      "name": "Kling AI",
+      "description": "Hochmoderne KI-Videogenerierung — cinematische Clips aus Text- oder Bildprompts mit realistischen Bewegungen und Physik erstellen."
+    },
+    "imagine-explainers": {
+      "name": "Imagine Explainers",
+      "description": "KI-gestützte Erklärvideo-Erstellung — Konzepte, Skripte oder Prompts in animierte Erklärvideos für jedes Thema umwandeln."
+    },
+    "recraft": {
+      "name": "Recraft",
+      "description": "KI-Design-Tool für Vektoren, Icons und Marken-Illustrationen — konsistente visuelle Stile für ein gesamtes Projekt generieren."
+    },
+    "faces-app": {
+      "name": "Faces.app",
+      "description": "KI-gestützter Gesichts- und Avatar-Generator — realistische Porträts, Altersverläufe und stilisierte Gesichter für kreative Projekte erstellen."
     },
     "reactbits": {
       "name": "ReactBits",
@@ -58,6 +177,34 @@
     "webcode-tools": {
       "name": "WebCode.tools",
       "description": "Sammlung praktischer Web-Code-Generatoren. Erstelle schnell CSS-Verläufe, Schatten, Flexbox-Layouts, Meta-Tags und mehr."
+    },
+    "tooooools": {
+      "name": "Tooooools",
+      "description": "Kuratierte Sammlung von Micro-Web-Tools für Entwickler und Designer — schnelle Generatoren, Konverter und Hilfsprogramme."
+    },
+    "10015": {
+      "name": "10015.io",
+      "description": "All-in-One-Tools-Hub mit über 100 Web-Utilities — Textverarbeitung, Code-Formatierer, Bildtools, Farbwähler und mehr."
+    },
+    "seostudio": {
+      "name": "SEO Studio",
+      "description": "Kostenloses SEO-Audit- und Analyse-Toolkit — Meta-Tag-Generatoren, Keyword-Tools und Seitenladezeiten-Einblicke an einem Ort."
+    },
+    "formia": {
+      "name": "Formia",
+      "description": "Schöner, interaktiver Formular-Builder mit konversationsbasiertem Ablauf, Animationen und einbettbaren Formularen — kein Backend nötig."
+    },
+    "astro": {
+      "name": "Astro",
+      "description": "Das Web-Framework für inhaltsgetriebene Websites — standardmäßig kein JavaScript ausliefern, beliebiges UI-Framework nutzen, blitzschnelle Performance."
+    },
+    "vite": {
+      "name": "Vite",
+      "description": "Blitzschnelles Frontend-Build-Tool — sofortiger Server-Start, HMR und optimierte Produktions-Builds für jedes moderne JS-Framework."
+    },
+    "meta-ai": {
+      "name": "Meta AI",
+      "description": "Metas KI-Forschungs- und Produkt-Hub — auf Llama-Modelle, Bildgenerierung und neueste Open-Source-KI-Tools von Meta zugreifen."
     }
   }
 }

@@ -14,7 +14,10 @@
   "groups": {
     "ui-components": "UI COMPONENT LIBRARIES",
     "animated-components": "ANIMATED COMPONENTS",
+    "references": "REFERENCES",
     "animation": "ANIMATION & MOTION",
+    "design-tools": "DESIGN TOOLS",
+    "ai-creative": "AI CREATIVE TOOLS",
     "react": "REACT RESOURCES",
     "tools": "TOOLS & AI"
   },
@@ -31,6 +34,18 @@
       "name": "UIverse.io",
       "description": "Open-source community of CSS & Tailwind UI elements. Browse thousands of free buttons, cards, loaders, and more."
     },
+    "21st-dev": {
+      "name": "21st.dev",
+      "description": "Open-source marketplace for React components — browse, preview, and copy production-ready UI components built by the community."
+    },
+    "shadcn": {
+      "name": "shadcn/ui",
+      "description": "Copy-paste React components built with Radix UI and Tailwind CSS — own the code, no package dependency, fully customizable."
+    },
+    "lucide": {
+      "name": "Lucide",
+      "description": "Beautiful, consistent open-source icon library with 1500+ SVG icons — available as React components, Vue, and plain SVG."
+    },
     "aceternity": {
       "name": "Aceternity UI",
       "description": "Stunning animated React & Tailwind components. Parallax cards, text effects, gradients, and scroll-based animations."
@@ -43,9 +58,113 @@
       "name": "Hover.dev",
       "description": "Interactive hover animations and motion effects for React. Ready-to-paste components with spring physics."
     },
+    "cssreference": {
+      "name": "CSS Reference",
+      "description": "Visual CSS reference guide — every property explained with live examples, syntax, and browser support at a glance."
+    },
+    "htmlreference": {
+      "name": "HTML Reference",
+      "description": "Visual HTML reference — every element and attribute documented with code examples and browser compatibility notes."
+    },
     "animejs": {
       "name": "Anime.js",
       "description": "Lightweight JavaScript animation library. Animate CSS properties, SVGs, DOM attributes, and JS objects with a clean API."
+    },
+    "motion": {
+      "name": "Motion",
+      "description": "The web animation library behind Framer Motion — production-ready gestures, transitions, and scroll animations for React and vanilla JS."
+    },
+    "gsap": {
+      "name": "GSAP",
+      "description": "Industry-standard JavaScript animation library — the most robust timeline-based animation toolkit, used on millions of websites."
+    },
+    "rive": {
+      "name": "Rive",
+      "description": "Design and ship interactive animations in real time — state machines, game-quality graphics, and tiny file sizes for any platform."
+    },
+    "paperanimator": {
+      "name": "Paper Animator",
+      "description": "Create scroll-driven and timeline animations visually in the browser — export clean CSS and JS code ready to paste."
+    },
+    "jitter": {
+      "name": "Jitter",
+      "description": "Motion design tool for the web — create animated UI components, onboarding flows, and micro-interactions and export as video or Lottie."
+    },
+    "sketch-meta": {
+      "name": "Sketch Animator",
+      "description": "Meta's AI tool that brings hand-drawn sketches to life — upload a figure drawing and watch it move with pose animation."
+    },
+    "unicorn-studio": {
+      "name": "Unicorn Studio",
+      "description": "Browser-based creative canvas for building immersive, interactive web experiences with real-time rendering and no-code animations."
+    },
+    "framer": {
+      "name": "Framer",
+      "description": "Design and publish interactive websites directly. Prototyping meets production-ready site builder with CMS and animations."
+    },
+    "kittl": {
+      "name": "Kittl",
+      "description": "AI-powered graphic design platform for logos, labels, posters, and print assets — vector export, no design skills required."
+    },
+    "pacdora": {
+      "name": "Pacdora",
+      "description": "Online packaging design tool — create 3D product mockups and structural dielines without Illustrator or Photoshop."
+    },
+    "pngimg": {
+      "name": "PNGimg",
+      "description": "Huge library of free PNG images with transparent backgrounds — perfect for mockups, presentations, and UI composition."
+    },
+    "svgrepo": {
+      "name": "SVG Repo",
+      "description": "Browse and download 500,000+ open-licensed SVG vectors and icons — search, customize colors, and copy inline SVG instantly."
+    },
+    "spline": {
+      "name": "Spline",
+      "description": "Browser-based 3D design tool — create interactive 3D scenes, objects, and animations and embed them directly into websites."
+    },
+    "slideteam": {
+      "name": "SlideTeam",
+      "description": "Huge library of professionally designed PowerPoint and Google Slides templates — ready-made decks for any presentation."
+    },
+    "3dlogolab": {
+      "name": "3D Logo Lab",
+      "description": "Generate stunning 3D logos directly in the browser — customize materials, lighting, and export high-res renders for free."
+    },
+    "napkin-ai": {
+      "name": "Napkin AI",
+      "description": "Turn text into clean diagrams, flowcharts, and visual concepts automatically — ideal for explaining technical ideas."
+    },
+    "dora-run": {
+      "name": "Dora",
+      "description": "AI-powered no-code website builder with 3D scenes, scroll animations, and cinematic interactions — no coding needed."
+    },
+    "meshy-ai": {
+      "name": "Meshy",
+      "description": "Generate and texture 3D models from text prompts or images with AI — export glTF, OBJ, FBX for web and game use."
+    },
+    "krea-ai": {
+      "name": "Krea AI",
+      "description": "Real-time AI image generation and creative asset creation — generate, enhance, and iterate on visuals instantly."
+    },
+    "autodraw": {
+      "name": "AutoDraw",
+      "description": "Google's AI drawing tool — sketch anything rough and it guesses what you meant, turning doodles into clean icons instantly."
+    },
+    "klingai": {
+      "name": "Kling AI",
+      "description": "State-of-the-art AI video generation — create cinematic clips from text or image prompts with realistic motion and physics."
+    },
+    "imagine-explainers": {
+      "name": "Imagine Explainers",
+      "description": "AI-powered explainer video creation — turn concepts, scripts, or prompts into animated explainer videos for any topic."
+    },
+    "recraft": {
+      "name": "Recraft",
+      "description": "AI design tool specialized in vectors, icons, and brand illustrations — generate consistent visual styles across an entire project."
+    },
+    "faces-app": {
+      "name": "Faces.app",
+      "description": "AI-powered face and avatar generator — create realistic portraits, age progressions, and stylized faces for any creative project."
     },
     "reactbits": {
       "name": "ReactBits",
@@ -58,6 +177,34 @@
     "webcode-tools": {
       "name": "WebCode.tools",
       "description": "Collection of handy web code generators. Quickly create CSS gradients, shadows, flexbox layouts, meta tags, and more."
+    },
+    "tooooools": {
+      "name": "Tooooools",
+      "description": "Curated collection of micro web tools for developers and designers — quick generators, converters, and utilities."
+    },
+    "10015": {
+      "name": "10015.io",
+      "description": "All-in-one tools hub with 100+ web utilities — text processing, code formatters, image tools, color pickers, and more."
+    },
+    "seostudio": {
+      "name": "SEO Studio",
+      "description": "Free SEO audit and analysis toolkit — meta tag generators, keyword tools, and page-speed insights in one place."
+    },
+    "formia": {
+      "name": "Formia",
+      "description": "Beautiful, interactive form builder with conversational flow, animations, and embeddable forms — no backend needed."
+    },
+    "astro": {
+      "name": "Astro",
+      "description": "The web framework for content-driven websites — ship zero JavaScript by default, use any UI framework, and get blazing-fast performance."
+    },
+    "vite": {
+      "name": "Vite",
+      "description": "Lightning-fast frontend build tool — instant server start, HMR, and optimized production builds for any modern JS framework."
+    },
+    "meta-ai": {
+      "name": "Meta AI",
+      "description": "Meta's AI research and product hub — access Llama models, image generation, and the latest open-source AI tools from Meta."
     }
   }
 }
