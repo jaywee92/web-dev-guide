@@ -66,6 +66,7 @@
     "react-state":               "State",
     "react-useeffect":           "useEffect",
     "react-router":              "Router",
+    "react-context":             "Context & useReducer",
     "webapi-fetch":              "Fetch API",
     "webapi-dom":                "DOM API",
     "webapi-events":             "Events",
