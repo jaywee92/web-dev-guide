@@ -144,7 +144,7 @@ export const CATEGORIES: Category[] = [
     description: 'Component-based UI',
     color: '#f472b6',
     icon: 'Layers',
-    topicIds: ['react-components', 'react-state', 'react-useeffect', 'react-router', 'react-context'],
+    topicIds: ['react-intro', 'react-components', 'react-state', 'react-useeffect', 'react-router', 'react-context'],
     cardLabel: 'Basics',
     cardEmoji: '📖',
   },
