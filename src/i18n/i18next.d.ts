@@ -8,6 +8,7 @@ import type enTopicsHtml from './locales/en/topics-html.json'
 import type enTopicsCss from './locales/en/topics-css.json'
 import type enTopicsJs from './locales/en/topics-js.json'
 import type enTopicsOther from './locales/en/topics-other.json'
+import type enGuestbook from './locales/en/guestbook.json'
 
 declare module 'i18next' {
   interface CustomTypeOptions {
@@ -23,6 +24,7 @@ declare module 'i18next' {
       'topics-css': typeof enTopicsCss
       'topics-js': typeof enTopicsJs
       'topics-other': typeof enTopicsOther
+      guestbook: typeof enGuestbook
     }
   }
 }
