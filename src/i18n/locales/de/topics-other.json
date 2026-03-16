@@ -865,5 +865,52 @@
         "Stashes verlieren — git stash drop entfernt einen Stash dauerhaft; vor dem Löschen mit git stash list bestätigen"
       ]
     }
+  },
+  "react-router-advanced": {
+    "title": "React Router als Framework",
+    "description": "Über die Bibliothek hinaus — React Router v7 im Framework-Modus mit Route-Modulen, Loadern und Actions",
+    "steps": [
+      { "animationStep": 0, "heading": "Bibliothek vs. Framework-Modus", "text": "React Router begann als clientseitige Routing-Bibliothek. In v7 kann es auch als vollständiges Framework betrieben werden — mit dateibasiertem Routing, serverseitigem Rendering und integriertem Datenladen. Im Bibliotheksmodus konfigurierst du BrowserRouter selbst; im Framework-Modus übernimmt React Router den Einstiegspunkt." },
+      { "animationStep": 1, "heading": "routes.js Konfiguration", "text": "Der Framework-Modus verwendet eine routes.js-Datei zur Deklaration der Route-Struktur. Der index()-Helfer deklariert die Index-Route; route() deklariert benannte Routen mit URL-Muster und Dateipfad zum Route-Modul." },
+      { "animationStep": 2, "heading": "Route-Module", "text": "Ein Route-Modul exportiert benannte Funktionen, die React Router kennt: default (die Komponente), loader/clientLoader (Datenabruf), action/clientAction (Mutationen) und ErrorBoundary (Fehler-UI). React Router verbindet diese automatisch." },
+      { "animationStep": 3, "heading": "clientLoader — CSR-Datenladen", "text": "clientLoader lädt Daten im Browser, bevor die Komponente rendert. Er empfängt { params } für URL-Parameter. Exportiere HydrateFallback, um eine Lade-UI beim ersten Besuch anzuzeigen." },
+      { "animationStep": 4, "heading": "loader — SSR-Datenladen", "text": "loader wird auf dem Server ausgeführt — bevor HTML an den Browser gesendet wird. Er kann sicher auf Datenbanken oder serverseitige APIs zugreifen, ohne diese im Client-Bundle zu exponieren. Die Komponente empfängt dieselbe loaderData-Prop." },
+      { "animationStep": 5, "heading": "Form & Actions", "text": "clientAction und action verarbeiten Formularmutationen. Die Form-Komponente von React Router serialisiert das Formular und ruft die passende Action auf. Nach der Action werden Loader automatisch neu validiert." },
+      { "animationStep": 6, "heading": "Rendering-Strategien", "text": "React Router v7 unterstützt drei Rendering-Strategien in react-router.config.js. CSR rendert alles im Browser; SSR rendert HTML bei jeder Anfrage auf dem Server; SSG rendert Seiten zur Build-Zeit vor." }
+    ]
+  },
+  "react-data-fetching": {
+    "title": "Datenabruf-Strategien",
+    "description": "Das Fetch-on-Render-Wasserfall-Problem verstehen und wie Render-as-you-Fetch mit Suspense es löst",
+    "steps": [
+      { "animationStep": 0, "heading": "Das Wasserfall-Problem", "text": "Wenn eine Elternkomponente Daten lädt und das Kind erst nach dem Datenabruf rendert, entsteht ein Wasserfall — jede Anfrage wartet auf die vorherige. Die Gesamtwartezeit ist die Summe aller Anfragen, nicht die längste." },
+      { "animationStep": 1, "heading": "Fetch-on-Render (useEffect-Muster)", "text": "Das klassische Muster platziert den Datenabruf in useEffect. Die Komponente rendert zuerst mit einem Spinner, dann wird der Effekt ausgeführt. Es erzwingt sequentielles Rendering: ein Kind kann erst laden, wenn das Elternteil fertig gerendert hat." },
+      { "animationStep": 2, "heading": "Render-as-you-Fetch", "text": "Render-as-you-Fetch startet alle Abrufe vor dem Rendern des Komponentenbaums. Abrufe laufen parallel, daher ist die Gesamtzeit gleich der langsamsten Anfrage — nicht der Summe." },
+      { "animationStep": 3, "heading": "Suspense + use()", "text": "Reacts use()-Hook löst ein Promise in einer Komponente auf. Ist das Promise noch nicht erfüllt, wird die Komponente suspendiert und React zeigt den nächsten Suspense-Fallback. ErrorBoundary fängt abgelehnte Promises ab." },
+      { "animationStep": 4, "heading": "Loader als Lösung", "text": "Die sauberste Implementierung delegiert den Datenabruf an den Router. Der React-Router-Loader wird beim Start einer Navigation ausgeführt — bevor Komponenten rendern. Kein useEffect, keine manuelle Promise-Verwaltung." }
+    ]
+  },
+  "react-mutations": {
+    "title": "Datenmutationen",
+    "description": "Daten an den Server senden — vom klassischen onSubmit-Muster zu React 19 Formular-Actions und useFormStatus",
+    "steps": [
+      { "animationStep": 0, "heading": "onSubmit + preventDefault", "text": "Das klassische React-Formularmuster fängt das Submit-Event ab, ruft preventDefault() auf und sendet die Daten manuell mit fetch. Lade-, Fehler- und Erfolgszustand werden manuell mit useState verwaltet." },
+      { "animationStep": 1, "heading": "Formular-Actions (React 19)", "text": "React 19 führt die action-Prop für Formularelemente ein. Übergib eine async-Funktion direkt — React ruft sie mit einem FormData-Objekt auf. Kein onSubmit, kein preventDefault nötig." },
+      { "animationStep": 2, "heading": "FormData", "text": "FormData ist die integrierte Browser-Methode zum Sammeln von Formularfeldern. Das name-Attribut eines Inputs wird zum Schlüssel. formData.get() gibt einen einzelnen Wert zurück; formData.getAll() gibt mehrere Werte für Checkboxen zurück." },
+      { "animationStep": 3, "heading": "useFormStatus — Ladezustand", "text": "useFormStatus() aus react-dom liest den Ausstehend-Zustand der nächsten übergeordneten Formular-Action. Es muss in einer Kindkomponente innerhalb des Formulars aufgerufen werden — es liest Kontext, keine Props." },
+      { "animationStep": 4, "heading": "ErrorBoundary für Formulare", "text": "Wenn eine Formular-Action einen Fehler wirft, fängt ein ErrorBoundary ihn ab und zeigt eine Fallback-UI. Die Fallback-Komponente erhält resetErrorBoundary für einen Wiederholungsversuch. Geeignet für unerwartete Serverfehler." },
+      { "animationStep": 5, "heading": "useActionState", "text": "useActionState(action, initialState) umhüllt eine Formular-Action und gibt das letzte Ergebnis als State zurück — ideal für feldweise Validierungsfehler. Die Action erhält (previousState, formData) und gibt den neuen State zurück." }
+    ]
+  },
+  "react-tanstack-query": {
+    "title": "TanStack Query",
+    "description": "Intelligentes clientseitiges Caching für React-Apps — Stale-while-Revalidate, Hintergrund-Refetch und Mutationen ohne Boilerplate",
+    "steps": [
+      { "animationStep": 0, "heading": "Das Caching-Problem", "text": "Jedes Mal wenn ein Nutzer zu einer Route zurücknavigiert, wird ein useEffect-Fetch erneut ausgelöst — auch ohne Datenänderung. Clientseitiges Caching speichert Abrufergebnisse nach Schlüssel, sodass Folgebesuche sofort angezeigt werden." },
+      { "animationStep": 1, "heading": "Stale vs. Fresh-Daten", "text": "TanStack Query verfolgt, ob gecachte Daten frisch (kürzlich abgerufen) oder veraltet (alt genug für einen Hintergrund-Refetch) sind. staleTime steuert das Zeitfenster — 0 bedeutet immer veraltet, Infinity bedeutet kein automatischer Refetch. Standard ist 0." },
+      { "animationStep": 2, "heading": "useQuery", "text": "useQuery nimmt einen queryKey und eine queryFn. Der queryKey ist ein Array, das die Abfrage eindeutig identifiziert — alle Variablen einschließen, die den Abruf beeinflussen. queryFn ist die async-Funktion. Gibt data, isLoading, isError und error zurück." },
+      { "animationStep": 3, "heading": "Hintergrund-Refetch", "text": "Wenn eine veraltete Abfrage erneut gemountet wird, zeigt TanStack Query sofort die gecachten Daten und führt im Hintergrund einen Refetch durch. Nutzer sehen Inhalte sofort — kein Spinner bei Rückkehr." },
+      { "animationStep": 4, "heading": "useMutation", "text": "useMutation verarbeitet Schreiboperationen. Rufe mutate mit deinen Variablen auf. Verwende onSuccess, um verwandte Queries zu invalidieren — so bleibt der Cache nach Erstell-, Aktualisierungs- oder Löschoperationen synchron." }
+    ]
   }
 }
