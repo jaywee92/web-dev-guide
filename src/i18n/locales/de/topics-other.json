@@ -275,7 +275,8 @@
       { "animationStep": 1, "heading": "TypeScript macht Typen explizit", "text": "TypeScript fügt Typ-Annotationen mit einem Doppelpunkt nach dem Variablennamen hinzu. Das teilt dem Compiler genau mit, welcher Typ erwartet wird." },
       { "animationStep": 2, "heading": "Typfehler werden zur Kompilierzeit erkannt", "text": "Wenn du versuchst, den falschen Typ zuzuweisen, markiert TypeScript es sofort — bevor der Code jemals ausgeführt wird." },
       { "animationStep": 3, "heading": "Interfaces definieren Objektformen", "text": "Ein Interface beschreibt, welche Eigenschaften ein Objekt haben muss. TypeScript gibt einen Fehler aus, wenn eine erforderliche Eigenschaft fehlt oder den falschen Typ hat." },
-      { "animationStep": 4, "heading": "Generics — wiederverwendbare typisierte Funktionen", "text": "Generics ermöglichen es Funktionen und Klassen, mit beliebigen Typen zu arbeiten und dabei Typsicherheit zu gewährleisten. T ist ein Platzhalter, der zur Aufrufzeit ausgefüllt wird." }
+      { "animationStep": 4, "heading": "Generics — wiederverwendbare typisierte Funktionen", "text": "Generics ermöglichen es Funktionen und Klassen, mit beliebigen Typen zu arbeiten und dabei Typsicherheit zu gewährleisten. T ist ein Platzhalter, der zur Aufrufzeit ausgefüllt wird." },
+      { "animationStep": 5, "heading": "Warum TypeScript? Eine praktische Geschichte", "text": "JavaScript schlägt nur zur Laufzeit fehl — oft in der Produktion. TypeScript verlagert Fehler in die Entwicklungszeit: Der Compiler blockiert den Build und hebt jeden fehlerhaften Aufruf in deinem Editor hervor. Benenne ein Feld um, ändere eine Funktionssignatur, übergib den falschen Typ — TypeScript meldet es sofort, statt um 2 Uhr nachts." }
     ],
     "cheatSheet": {
       "syntax": [
@@ -294,7 +295,8 @@
       "commonMistakes": [
         "any übermäßig verwenden — es unterdrückt alle TypeScript-Fehler, verfehlt aber den Zweck; bevorzuge unknown, einen Union-Typ oder ein passendes Interface",
         "Variablen annotieren, die TypeScript bereits ableiten kann — let name: string = \"Alice\" ist überflüssig; schreibe einfach let name = \"Alice\"",
-        "type und interface verwechseln — beide können Objektformen beschreiben; Interfaces sind mit extends erweiterbar und werden für öffentliche API-Formen bevorzugt"
+        "type und interface verwechseln — beide können Objektformen beschreiben; Interfaces sind mit extends erweiterbar und werden für öffentliche API-Formen bevorzugt",
+        "TypeScript meiden, weil es ausführlich wirkt — die Typ-Annotationen sparen weit mehr Zeit, als sie kosten, wenn ein Refactoring oder ein Fehler sonst in die Produktion schlüpfen würde"
       ]
     }
   },
@@ -683,6 +685,125 @@
       { "animationStep": 1, "heading": "Pick und Omit", "text": "Pick<T, K> behält nur die aufgelisteten Schlüssel. Omit<T, K> entfernt die aufgelisteten Schlüssel. Beide erstellen einen Teilmengen-Typ." },
       { "animationStep": 2, "heading": "Record, Readonly und ReturnType", "text": "Record<K, V> erstellt einen Objekttyp mit Schlüsseln K und Werten V. Readonly<T> verhindert Mutation. ReturnType<F> extrahiert den Rückgabetyp einer Funktion." }
     ]
+  },
+  "ts-react": {
+    "title": "TypeScript in React",
+    "description": "Props, State und Hooks in React-Komponenten typisieren für sichereren, selbstdokumentierenden Code",
+    "steps": [
+      { "animationStep": 0, "heading": "Props typisieren", "text": "Definiere einen Typ-Alias für die Props deiner Komponente. TypeScript meldet einen Fehler, wenn erforderliche Props fehlen oder den falschen Typ haben. Markiere optionale Props mit ?. Verwende React.ReactNode für children. Union-Typen schränken erlaubte Werte ein — ideal für Status- oder Variant-Props." },
+      { "animationStep": 1, "heading": "State typisieren", "text": "useState akzeptiert einen Generic: useState<T>(initial). Wenn der initiale State null oder undefined ist, kann TypeScript den vollständigen Typ nicht ableiten — annotiere immer explizit. Für komplexe Objekte definiere einen Typ-Alias und übergebe ihn als Generic. TypeScript verhindert dann, dass du State mit der falschen Form setzt." },
+      { "animationStep": 2, "heading": "useRef & useReducer typisieren", "text": "useRef benötigt einen expliziten Element-Typ — TypeScript kann nicht erraten, ob er auf ein Input, ein Div oder ein Canvas zeigt. Übergib den HTML-Element-Typ als Generic und null als Initialwert. useReducer profitiert am meisten von TypeScript: Definiere State und eine diskriminierte Union für Action, und der erschöpfende Default-Zweig fängt fehlende Fälle zur Compile-Zeit ab." },
+      { "animationStep": 3, "heading": "useCallback & useMemo", "text": "useCallback cached eine Funktion, damit ihre Referenz über Renders hinweg stabil bleibt — übergib die typisierte Funktion direkt. useMemo cached einen berechneten Wert und berechnet ihn nur neu, wenn sich Abhängigkeiten ändern. TypeScript leitet den Rückgabetyp von useMemo aus dem Callback ab. Beide sind am wertvollsten, wenn sie als Props an Kind-Komponenten übergeben oder als useEffect-Abhängigkeiten verwendet werden." },
+      { "animationStep": 4, "heading": "API-Antworten typisieren", "text": "Definiere einen Typ für deine API-Antwort und übergib ihn als Generic an useState und Fetch-Wrapper. Ein generisches Fetch-Hilfsprogramm fetchData<T>() ruft eine URL ab und behauptet, dass das JSON T entspricht — was dir volle Typsicherheit nachgelagert gibt. Verwende Partial<T> für PATCH-Operationen, bei denen nur einige Felder gesendet werden." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Props-Typ", "note": "Verwende Typ-Alias (nicht interface) für Props — kein versehentliches Merging" },
+        { "label": "useState mit Generic", "note": "Erforderlich, wenn Initialwert null/undefined ist" },
+        { "label": "useRef", "note": "Immer den HTML-Element-Typ angeben; optionale Verkettung verwenden" },
+        { "label": "useReducer Action-Union", "note": "Diskriminierte Union — erschöpfendes Switch fängt fehlende Fälle ab" },
+        { "label": "children-Prop", "note": "ReactNode deckt alle gültigen JSX-Child-Typen ab" },
+        { "label": "Generisches Fetch", "note": "Antwortyp behaupten — T fließt zu Aufrufern" }
+      ],
+      "patterns": [
+        { "title": "Komponente mit typisierten Props" },
+        { "title": "Typisierte Datenabruf-Komponente" }
+      ],
+      "whenToUse": "Definiere immer einen Typ-Alias für Komponenten-Props — auch für einfache Komponenten. Annotiere useState, wenn der Initialwert null, undefined oder ein leeres Array ist (TypeScript kann die vollständige Form nicht ableiten). Verwende Generics für wiederverwendbare Fetch-Hilfsprogramme und Hooks.",
+      "commonMistakes": [
+        "Interface für Props verwenden — Interface-Deklarationen können im gleichen Scope versehentlich mergen; Typ-Aliase nicht",
+        "useState von null ableiten lassen — useState(null) ergibt den Typ null, nicht string | null; immer den Generic übergeben",
+        "Typen für useRef weglassen — untypierte Refs liefern any; immer den HTML-Element-Typ angeben",
+        "any verwenden, um Fehler zu unterdrücken — any deaktiviert alle Prüfungen nachgelagert; bevorzuge unknown und verenge den Typ"
+      ]
+    }
+  },
+  "testing-basics": {
+    "title": "Testing-Grundlagen & Vitest",
+    "description": "Warum Tests wichtig sind, die Test-Pyramide und deine ersten Unit-Tests mit Vitest schreiben",
+    "steps": [
+      { "animationStep": 0, "heading": "Warum testen?", "text": "Tests sind automatisierte Überprüfungen, die sicherstellen, dass dein Code korrekt funktioniert. Ohne sie riskiert jede Änderung, etwas still zu brechen. Eine gute Test-Suite gibt dir Vertrauen beim Refactoring, fängt Regressionen ab, bevor sie in die Produktion gelangen, und dient als ausführbare Dokumentation, die zeigt, wie der Code gemeint ist." },
+      { "animationStep": 1, "heading": "Die Test-Pyramide", "text": "Gruppiere Tests nach Umfang und Kosten. Unit-Tests (Basis) isolieren eine einzelne Funktion — schnell, günstig, viele schreiben. Integrationstests prüfen die Zusammenarbeit zwischen Modulen (z.B. React + API). End-to-End-Tests (Spitze) klicken durch einen echten Browser — langsam und fragil, wenige behalten. Die breitere Basis bedeutet: viele günstige Unit-Tests, weniger Integrationstests, sehr wenige E2E-Tests." },
+      { "animationStep": 2, "heading": "Vitest-Einrichtung", "text": "Vitest ist ein Vite-nativer Test-Runner — er nutzt deine vite.config.ts wieder, sodass Aliases und Plugins auch in Tests funktionieren. Installiere es als Dev-Abhängigkeit, füge ein Test-Skript hinzu, und Vitest entdeckt automatisch alle *.test.ts- oder *.spec.ts-Dateien. Füge vitest run deinem Build-Skript hinzu, damit Tests den Produktions-Build bei Fehler blockieren." },
+      { "animationStep": 3, "heading": "Test-Anatomie", "text": "describe() gruppiert verwandte Tests. test() (Alias: it()) definiert einen einzelnen Fall. expect() erstellt eine Assertion — es vergleicht das tatsächliche Ergebnis mit dem erwarteten Wert. Ein Test besteht, wenn alle Assertions bestehen, und schlägt fehl, wenn eine wirft. Benenne Tests auf einfachem Englisch: Was macht er, unter welcher Bedingung." },
+      { "animationStep": 4, "heading": "Häufige Matcher", "text": "Vitest kommt mit Jest-kompatiblen Matchern. toBe verwendet Object.is (streng) — verwende es für Primitive. toEqual macht tiefe Gleichheit — verwende es für Objekte und Arrays. toContain prüft Array-Mitgliedschaft. resolves/rejects behandeln asynchrone Assertions. .not invertiert jeden Matcher." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "describe + test", "note": "it() ist ein Alias für test()" },
+        { "label": "Häufige Matcher", "note": "Präfix .not zum Invertieren" },
+        { "label": "Async-Matcher", "note": "Async-Assertions immer awaiten" },
+        { "label": "Setup & Teardown", "note": "beforeEach für Test-Isolation verwenden" }
+      ],
+      "patterns": [
+        { "title": "TDD: Rot → Grün → Refactor" }
+      ],
+      "whenToUse": "Schreibe Unit-Tests für jede reine Funktion und jedes Hilfsprogramm. Führe Tests im Watch-Modus während der Entwicklung aus. Füge vitest run deinem Build-Skript hinzu, damit fehlerhafte Tests die Bereitstellung blockieren.",
+      "commonMistakes": [
+        "toBe für Objekte verwenden — toBe verwendet Object.is (Referenzgleichheit); verwende toEqual für tiefen Vergleich",
+        "await bei asynchronen Assertions vergessen — ohne await löst die Assertion auf, nachdem der Test bestanden hat",
+        "Tests erst nachträglich schreiben — Tests zuerst zu schreiben (TDD) zwingt dich, über die API nachzudenken, bevor die Implementierung kommt",
+        "Implementierungsdetails testen — teste Verhalten (Eingaben → Ausgaben), nicht interne Details (private Variablen, Hook-Logik)"
+      ]
+    }
+  },
+  "testing-react": {
+    "title": "React Testing Library",
+    "description": "React-Komponenten so testen, wie Benutzer mit ihnen interagieren — nach Rolle, Text und Label, nicht Implementierung",
+    "steps": [
+      { "animationStep": 0, "heading": "React Testing Library Philosophie", "text": "RTLs Leitprinzip: \"Je mehr deine Tests ähneln, wie deine Software verwendet wird, desto mehr Vertrauen geben sie dir.\" Frage das DOM so ab, wie ein echter Benutzer es tun würde — nach zugänglicher Rolle, Label-Text oder sichtbarem Inhalt — nicht nach Klassennamen oder Komponenten-Interna. Das macht Tests widerstandsfähig gegen Refactors, die das Verhalten unverändert lassen." },
+      { "animationStep": 1, "heading": "Abfragen: Elemente finden", "text": "RTL bietet drei Abfragefamilien. getBy* wirft, wenn nicht gefunden (für Elemente, die existieren müssen). queryBy* gibt null zurück (zum Behaupten der Abwesenheit). findBy* ist asynchron — wartet auf das Erscheinen des Elements. Die bevorzugte Abfrage ist ByRole — sie verwendet ARIA-Rollen und spiegelt wider, wie Screenreader navigieren. ByLabelText und ByText sind in der Priorität als nächstes." },
+      { "animationStep": 2, "heading": "Events auslösen & Benutzerinteraktionen", "text": "Verwende fireEvent für einfache, synchrone DOM-Events. Für realistischere Benutzerinteraktionen (Tippen, Klicken, Tabben), bevorzuge @testing-library/user-event — es feuert dieselbe Abfolge von Events wie ein echter Browser. Warte immer auf userEvent-Aktionen. Teste, was Benutzer tun können, nicht wie das DOM strukturiert ist." },
+      { "animationStep": 3, "heading": "Mocks & Spies", "text": "vi.fn() erstellt einen Spy — eine Funktion, die Aufrufe aufzeichnet. Verwende es, um Abhängigkeiten (fetch, Callbacks, Module) durch kontrollierte Stellvertreter zu ersetzen. vi.stubGlobal() ersetzt Globals wie fetch. beforeEach richtet den Mock frisch für jeden Test ein; afterEach mit vi.restoreAllMocks() räumt auf. Prüfe Aufrufe mit toHaveBeenCalledWith." },
+      { "animationStep": 4, "heading": "Integrationstests", "text": "Integrationstests rendern eine Komponente zusammen mit ihren echten Abhängigkeiten (Hooks, Context, Router) und testen End-to-End-Flows. Wrape die Komponente in alle Provider, die sie benötigt. Verwende waitFor(), um auf asynchrone State-Updates zu warten. Teste die vollständige Benutzerreise — Formular ausfüllen → Absenden → Erfolgsmeldung — nicht isolierte Teile." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "render + screen", "note": "screen durchsucht das vollständig gerenderte DOM" },
+        { "label": "Abfragepriorität", "note": "getBy wirft; queryBy gibt null zurück; findBy ist asynchron" },
+        { "label": "Async-Assertions", "note": "findBy/waitFor für State-Updates verwenden" },
+        { "label": "fetch mocken", "note": "Mocks immer nach jedem Test wiederherstellen" },
+        { "label": "jest-dom-Matcher", "note": "Erfordert @testing-library/jest-dom-Einrichtung" }
+      ],
+      "patterns": [
+        { "title": "Komponententest mit Provider-Wrapper" }
+      ],
+      "whenToUse": "Teste jedes benutzerorientierte Verhalten: Was erscheint nach einem Klick, was zeigt sich beim Laden, was wird beim Fehler gerendert. Teste keine Implementierungsdetails wie State-Variablen oder interne Komponentenmethoden.",
+      "commonMistakes": [
+        "Nach Klassenname oder Test-ID abfragen — bevorzuge ByRole und ByLabelText; sie testen, was Benutzer tatsächlich sehen",
+        "findBy oder waitFor nicht awaiten — asynchrone State-Updates passieren nach der Assertion ohne await, was zu falschen Erfolgen führt",
+        "Mocks nicht wiederherstellen — übrig gebliebene Stubs bluten in spätere Tests und verursachen flockige Fehler",
+        "Ohne Provider rendern — wenn eine Komponente Context oder Router verwendet, wrape sie in dieselben Provider wie deine echte App"
+      ]
+    }
+  },
+  "testing-ci": {
+    "title": "Abdeckung & CI mit GitHub Actions",
+    "description": "Abdeckungsberichte lesen, Schwellenwerte setzen und Tests bei jedem Push mit einer GitHub Actions-Pipeline automatisieren",
+    "steps": [
+      { "animationStep": 0, "heading": "Abdeckungsberichte", "text": "Abdeckung misst, welche Zeilen, Zweige und Funktionen deine Tests tatsächlich ausführen. Vitest verwendet v8 oder istanbul zum Erfassen. Führe mit --coverage aus, um einen Bericht zu sehen. Eine hohe Zahl garantiert keine Korrektheit — du brauchst immer noch bedeutungsvolle Assertions — aber sie hebt ungetestete Pfade hervor, die Fehler verbergen können." },
+      { "animationStep": 1, "heading": "Einen Abdeckungsbericht lesen", "text": "Der Textbericht zeigt vier Metriken pro Datei. Stmts: Prozentsatz der ausgeführten Anweisungen. Branch: Prozentsatz der genommenen if/else-Pfade (am wichtigsten — offenbart tote bedingte Zweige). Funcs: Prozentsatz der aufgerufenen Funktionen. Lines: Prozentsatz der getroffenen Quellzeilen. Nicht abgedeckte Zeilen werden in der äußersten rechten Spalte angezeigt — fang dort an." },
+      { "animationStep": 2, "heading": "CI/CD mit GitHub Actions", "text": "Continuous Integration führt deine Test-Suite automatisch bei jedem Push oder Pull-Request aus. GitHub Actions liest eine YAML-Workflow-Datei aus .github/workflows/. Definiere den Trigger (on:), die Umgebung (runs-on:) und die Schritte (installieren → testen → bauen → deployen). Ein fehlgeschlagener Testschritt bricht den Rest der Pipeline ab." },
+      { "animationStep": 3, "heading": "Auf GitHub Pages deployen", "text": "Füge einen Deploy-Schritt hinzu, um den Vite-Produktions-Build automatisch auf GitHub Pages zu veröffentlichen, nachdem Tests bestanden haben. Setze base in vite.config.ts auf deinen Repo-Namen. Die actions/deploy-pages-Aktion übernimmt das Hochladen des dist/-Ordners. Nach dem Mergen in main ist deine Seite innerhalb von Minuten live — keine manuellen Schritte." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Mit Abdeckung ausführen", "note": "Erfordert @vitest/coverage-v8 installiert" },
+        { "label": "Abdeckungsschwellenwerte", "note": "Pipeline schlägt fehl, wenn Abdeckung unter Schwellenwert fällt" },
+        { "label": "GitHub Actions-Trigger", "note": "Läuft bei jedem Push und PR zu main" },
+        { "label": "Workflow-Schritte", "note": "Jeder fehlgeschlagene Schritt bricht den Rest ab" }
+      ],
+      "patterns": [
+        { "title": "Vollständige CI-Pipeline" }
+      ],
+      "whenToUse": "Richte CI vom ersten Tag an in jedem Projekt ein. Strebe 70–80% Abdeckung für Geschäftslogik an. 100% Abdeckung ist nicht das Ziel — bedeutungsvolle Tests auf kritischen Pfaden sind es.",
+      "commonMistakes": [
+        "100% Abdeckung anstreben — Abdeckung misst Ausführung, nicht Korrektheit; 100% mit schlechten Assertions ist bedeutungslos",
+        "npm install statt npm ci in CI verwenden — npm ci ist schneller und garantiert reproduzierbare Installationen aus der Lockfile",
+        "node_modules nicht cachen — füge cache: npm zu setup-node hinzu, um das erneute Herunterladen von Abhängigkeiten bei jedem Run zu vermeiden",
+        "Tests ohne --coverage-Flag ausführen — ohne es wird kein Bericht generiert und Schwellenwerte werden nicht überprüft"
+      ]
+    }
   },
   "git-intro": {
     "title": "Was ist Git?",

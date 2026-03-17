@@ -134,7 +134,7 @@ export const CATEGORIES: Category[] = [
     description: 'JavaScript with types',
     color: '#818cf8',
     icon: 'Shield',
-    topicIds: ['ts-basics', 'ts-interfaces', 'ts-generics', 'ts-narrowing', 'ts-utility-types'],
+    topicIds: ['ts-basics', 'ts-interfaces', 'ts-generics', 'ts-narrowing', 'ts-utility-types', 'ts-react'],
     cardLabel: 'Basics',
     cardEmoji: '📖',
   },
@@ -218,6 +218,16 @@ export const CATEGORIES: Category[] = [
     cardLabel: 'Teamwork',
     cardEmoji: '🤝',
   },
+  {
+    id: 'testing',
+    title: 'Testing',
+    description: 'Unit tests, React Testing Library, and CI/CD pipelines',
+    color: '#34d399',
+    icon: 'Shield',
+    topicIds: ['testing-basics', 'testing-react', 'testing-ci'],
+    cardLabel: 'Basics',
+    cardEmoji: '🧪',
+  },
 ]
 
 export const CATEGORY_GROUPS: CategoryGroup[] = [
@@ -239,7 +249,7 @@ export const CATEGORY_GROUPS: CategoryGroup[] = [
   {
     key: 'tools',
     label: 'TOOLS',
-    categoryIds: ['git', 'git-collab'],
+    categoryIds: ['git', 'git-collab', 'testing'],
   },
 ]
 
@@ -265,6 +275,7 @@ export const TECH_SECTION_META: Record<string, TechSectionMeta> = {
   postgresql:  { title: 'PostgreSQL', subtitle: 'Relational Database',        color: '#60a5fa' },
   git:         { title: 'Git',        subtitle: 'Version Control System',     color: '#2dd4bf' },
   'git-collab': { title: 'Git',       subtitle: 'Version Control System',     color: '#2dd4bf' },
+  testing:     { title: 'Testing',   subtitle: 'Unit · Integration · CI/CD',  color: '#34d399' },
 }
 
 /** Returns the tech grouping key for a category.
@@ -336,6 +347,10 @@ export const TOPIC_ICONS: Record<string, string> = {
   'ts-generics':               'Shuffle',
   'ts-narrowing':              'Filter',
   'ts-utility-types':          'Wrench',
+  'ts-react':                  'Component',
+  'testing-basics':            'FlaskConical',
+  'testing-react':             'TestTube',
+  'testing-ci':                'GitBranch',
   'react-components':          'Component',
   'react-state':               'RefreshCw',
   'react-useeffect':           'Cpu',
@@ -413,6 +428,10 @@ export const TOPIC_LABELS: Record<string, string> = {
   'ts-generics':                 'Generics',
   'ts-narrowing':                'Type Narrowing',
   'ts-utility-types':            'Utility Types',
+  'ts-react':                    'TypeScript in React',
+  'testing-basics':              'Vitest Basics',
+  'testing-react':               'React Testing Library',
+  'testing-ci':                  'Coverage & CI',
   'react-components':            'Components',
   'react-state':                 'State',
   'react-useeffect':             'useEffect',

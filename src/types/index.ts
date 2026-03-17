@@ -3,7 +3,7 @@ export type ThemeMode = 'dark' | 'light'
 export type CategoryId = 'html-core' | 'html-structure' | 'html-interactive'
   | 'css-basics' | 'css-layout' | 'css-modern' | 'css-frameworks'
   | 'javascript' | 'javascript-oop' | 'javascript-async' | 'typescript' | 'react' | 'react-ecosystem' | 'webapis' | 'http' | 'postgresql' | 'nextjs'
-  | 'git' | 'git-collab'
+  | 'git' | 'git-collab' | 'testing'
 
 export interface Category {
   id: CategoryId

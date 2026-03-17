@@ -26,6 +26,10 @@
     "description": "Fullstack React mit App Router & RSC",
     "cardLabel": "Grundlagen"
   },
+  "testing": {
+    "title": "Testing",
+    "description": "Unit-Tests, React Testing Library und CI/CD-Pipelines"
+  },
   "topicLabels": {
     "html-basics":               "Elemente & Attribute",
     "html-text":                 "Text & Überschriften",
@@ -72,6 +76,10 @@
     "ts-generics":               "Generics",
     "ts-narrowing":              "Typverengung",
     "ts-utility-types":          "Hilfstypen",
+    "ts-react":                  "TypeScript in React",
+    "testing-basics":            "Vitest Grundlagen",
+    "testing-react":             "React Testing Library",
+    "testing-ci":                "Abdeckung & CI",
     "react-intro":               "Überblick",
     "react-components":          "Komponenten",
     "react-state":               "State",
@@ -118,6 +126,7 @@
     "http":             { "title": "HTTP",       "subtitle": "Hypertext Transfer Protocol" },
     "postgresql":       { "title": "PostgreSQL", "subtitle": "Relationale Datenbank"       },
     "git":              { "title": "Git",        "subtitle": "Versionskontrollsystem"      },
-    "git-collab":       { "title": "Git",        "subtitle": "Versionskontrollsystem"      }
+    "git-collab":       { "title": "Git",        "subtitle": "Versionskontrollsystem"      },
+    "testing":          { "title": "Testing",    "subtitle": "Unit · Integration · CI/CD"  }
   }
 }

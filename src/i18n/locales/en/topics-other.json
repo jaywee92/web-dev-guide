@@ -283,7 +283,8 @@
       { "animationStep": 1, "heading": "TypeScript makes types explicit", "text": "TypeScript adds type annotations using a colon after the variable name. This tells the compiler exactly what type is expected." },
       { "animationStep": 2, "heading": "Type errors caught at compile time", "text": "If you try to assign the wrong type, TypeScript flags it immediately — before the code ever runs." },
       { "animationStep": 3, "heading": "Interfaces define object shapes", "text": "An interface describes what properties an object must have. TypeScript will error if a required property is missing or has the wrong type." },
-      { "animationStep": 4, "heading": "Generics — reusable typed functions", "text": "Generics allow functions and classes to work with any type while still enforcing type safety. T is a placeholder that is filled in at call time." }
+      { "animationStep": 4, "heading": "Generics — reusable typed functions", "text": "Generics allow functions and classes to work with any type while still enforcing type safety. T is a placeholder that is filled in at call time." },
+      { "animationStep": 5, "heading": "Why TypeScript? A practical story", "text": "JavaScript only fails at runtime — often in production. TypeScript moves mistakes to development time: the compiler blocks the build and highlights every broken call in your editor. Rename a field, change a function signature, pass the wrong type — TypeScript flags it instantly instead of at 2 AM." }
     ],
     "cheatSheet": {
       "syntax": [
@@ -302,7 +303,8 @@
       "commonMistakes": [
         "Overusing any — it silences all TypeScript errors but defeats the purpose; prefer unknown, a union type, or a proper interface",
         "Annotating variables that TypeScript can already infer — let name: string = \"Alice\" is redundant; just write let name = \"Alice\"",
-        "Confusing type and interface — both can describe object shapes; interfaces are extensible with extends and are preferred for public APIs"
+        "Confusing type and interface — both can describe object shapes; interfaces are extensible with extends and are preferred for public APIs",
+        "Avoiding TypeScript because it feels verbose — the upfront type annotations save far more time than they cost when a refactor or bug would otherwise slip to production"
       ]
     }
   },
@@ -679,6 +681,125 @@
       { "animationStep": 1, "heading": "Pick and Omit", "text": "Pick<T, K> keeps only the listed keys. Omit<T, K> removes the listed keys. Both create a subset type." },
       { "animationStep": 2, "heading": "Record, Readonly, and ReturnType", "text": "Record<K, V> creates an object type with keys K and values V. Readonly<T> prevents mutation. ReturnType<F> extracts a function's return type." }
     ]
+  },
+  "ts-react": {
+    "title": "TypeScript in React",
+    "description": "Type props, state, and hooks in React components for safer, self-documenting code",
+    "steps": [
+      { "animationStep": 0, "heading": "Typing Props", "text": "Define a type alias for your component's props. TypeScript will error if required props are missing or have the wrong type. Mark optional props with ?. Use React.ReactNode for children. Union types constrain allowed values — great for status/variant props." },
+      { "animationStep": 1, "heading": "Typing State", "text": "useState accepts a generic: useState<T>(initial). When initial state is null or undefined, TypeScript cannot infer the full type — always annotate explicitly. For complex objects, define a type alias and pass it as the generic. TypeScript then prevents you from setting state with the wrong shape." },
+      { "animationStep": 2, "heading": "Typing useRef & useReducer", "text": "useRef needs an explicit element type — TypeScript cannot guess whether it points to an input, a div, or a canvas. Pass the HTML element type as a generic and null as the initial value. useReducer benefits most from TypeScript: define State and a discriminated union for Action, and the exhaustive default branch catches missing cases at compile time." },
+      { "animationStep": 3, "heading": "useCallback & useMemo", "text": "useCallback caches a function so its reference stays stable across renders — pass the typed function directly. useMemo caches a computed value and only recomputes when dependencies change. TypeScript infers the return type of useMemo from the callback. Both are most valuable when passed to child components via props or used as useEffect dependencies." },
+      { "animationStep": 4, "heading": "Typing API responses", "text": "Define a type for your API response and pass it as the generic to useState and fetch wrappers. A generic fetch utility fetchData<T>() fetches a URL and asserts the JSON matches T — giving you full type safety downstream. Use Partial<T> for PATCH operations where only some fields are sent." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Props type", "note": "Use type alias (not interface) for props — no accidental merging" },
+        { "label": "useState with generic", "note": "Required when initial value is null/undefined" },
+        { "label": "useRef", "note": "Always type the HTML element; use optional chaining" },
+        { "label": "useReducer action union", "note": "Discriminated union — exhaustive switch catches missing cases" },
+        { "label": "children prop", "note": "ReactNode covers all valid JSX child types" },
+        { "label": "Generic fetch", "note": "Assert the response type — T flows to callers" }
+      ],
+      "patterns": [
+        { "title": "Component with typed props" },
+        { "title": "Typed data-fetch component" }
+      ],
+      "whenToUse": "Always define a type alias for component props — even for simple components. Annotate useState when the initial value is null, undefined, or an empty array (TypeScript cannot infer the full shape). Use generics for reusable fetch utilities and hooks.",
+      "commonMistakes": [
+        "Using interface for props — interface declarations can accidentally merge in the same scope; type aliases cannot",
+        "Letting useState infer from null — useState(null) gives type null, not string | null; always pass the generic",
+        "Skipping types on useRef — untyped refs produce any; always pass the HTML element type",
+        "Using any to silence errors — any disables all checking downstream; prefer unknown and narrow the type"
+      ]
+    }
+  },
+  "testing-basics": {
+    "title": "Testing Basics & Vitest",
+    "description": "Why tests matter, the testing pyramid, and writing your first unit tests with Vitest",
+    "steps": [
+      { "animationStep": 0, "heading": "Why test?", "text": "Tests are automated checks that verify your code behaves correctly. Without them, every change risks breaking something silently. A good test suite gives you confidence to refactor, catches regressions before they reach production, and acts as executable documentation showing how the code is meant to be used." },
+      { "animationStep": 1, "heading": "The Testing Pyramid", "text": "Group tests by scope and cost. Unit tests (base) isolate a single function — fast, cheap, write many. Integration tests exercise collaboration between modules (e.g. React + API). End-to-End tests (top) click through a real browser — slow and brittle, keep few. The wider base means: write many cheap unit tests, fewer integration tests, very few E2E tests." },
+      { "animationStep": 2, "heading": "Vitest setup", "text": "Vitest is a Vite-native test runner — it reuses your vite.config.ts so aliases and plugins work in tests too. Install it as a dev dependency, add a test script, and Vitest will auto-discover any *.test.ts or *.spec.ts files. Add vitest run to your build script so tests block the production build on failure." },
+      { "animationStep": 3, "heading": "Test anatomy", "text": "describe() groups related tests. test() (alias: it()) defines a single case. expect() creates an assertion — it compares the actual result against the expected value. A test passes when all assertions pass and fails when any throws. Name tests with plain English: what does it do, under what condition." },
+      { "animationStep": 4, "heading": "Common matchers", "text": "Vitest ships with Jest-compatible matchers. toBe uses Object.is (strict) — use it for primitives. toEqual does deep equality — use it for objects and arrays. toContain checks array membership. resolves/rejects handle async assertions. .not inverts any matcher." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "describe + test", "note": "it() is an alias for test()" },
+        { "label": "Common matchers", "note": "Prefix .not to invert" },
+        { "label": "Async matchers", "note": "Always await async assertions" },
+        { "label": "Setup & teardown", "note": "Use beforeEach for per-test isolation" }
+      ],
+      "patterns": [
+        { "title": "TDD: Red → Green → Refactor" }
+      ],
+      "whenToUse": "Write unit tests for every pure function and utility. Run tests in watch mode during development. Add vitest run to your build script so broken tests block deployment.",
+      "commonMistakes": [
+        "Using toBe for objects — toBe uses Object.is (reference equality); use toEqual for deep comparison",
+        "Forgetting await on async assertions — without await, the assertion resolves after the test passes",
+        "Writing tests after the fact only — writing tests first (TDD) forces you to think about the API before implementation",
+        "Testing implementation details — test behaviour (inputs → outputs), not internals (private variables, hooks logic)"
+      ]
+    }
+  },
+  "testing-react": {
+    "title": "React Testing Library",
+    "description": "Test React components the way users interact with them — by role, text, and label, not implementation",
+    "steps": [
+      { "animationStep": 0, "heading": "React Testing Library philosophy", "text": "RTL's guiding principle: \"The more your tests resemble how your software is used, the more confidence they give you.\" Query the DOM the way a real user would — by accessible role, label text, or visible content — not by class names or component internals. This makes tests resilient to refactors that leave behaviour unchanged." },
+      { "animationStep": 1, "heading": "Queries: finding elements", "text": "RTL provides three query families. getBy* throws if not found (use for elements that must exist). queryBy* returns null (use to assert absence). findBy* is async — awaits element appearance. The preferred query is ByRole — it uses ARIA roles and mirrors how screen readers navigate. ByLabelText and ByText are next in priority." },
+      { "animationStep": 2, "heading": "Firing events & user interactions", "text": "Use fireEvent for simple, synchronous DOM events. For more realistic user interactions (typing, clicking, tabbing), prefer @testing-library/user-event — it fires the same sequence of events a real browser would. Always await userEvent actions. Test what users can do, not how the DOM is structured." },
+      { "animationStep": 3, "heading": "Mocks & spies", "text": "vi.fn() creates a spy — a function that records calls. Use it to replace dependencies (fetch, callbacks, modules) with controlled stand-ins. vi.stubGlobal() replaces globals like fetch. beforeEach sets up the mock fresh for each test; afterEach with vi.restoreAllMocks() cleans up. Check calls with toHaveBeenCalledWith." },
+      { "animationStep": 4, "heading": "Integration testing", "text": "Integration tests render a component together with its real dependencies (hooks, context, router) and test end-to-end flows. Wrap the component in any providers it needs. Use waitFor() to wait for async state updates. Test the full user journey — form fill → submit → success message — not isolated pieces." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "render + screen", "note": "screen searches the full rendered DOM" },
+        { "label": "Query priority", "note": "getBy throws; queryBy returns null; findBy is async" },
+        { "label": "Async assertions", "note": "Use findBy/waitFor for state updates" },
+        { "label": "Mocking fetch", "note": "Always restore mocks after each test" },
+        { "label": "jest-dom matchers", "note": "Requires @testing-library/jest-dom setup" }
+      ],
+      "patterns": [
+        { "title": "Component test with provider wrapper" }
+      ],
+      "whenToUse": "Test every user-facing behaviour: what appears after a click, what shows during loading, what renders on error. Do not test implementation details like state variables or internal component methods.",
+      "commonMistakes": [
+        "Querying by class name or test-id — prefer ByRole and ByLabelText; they test what users actually see",
+        "Not awaiting findBy or waitFor — async state updates happen after the assertion without await, causing false passes",
+        "Forgetting to restore mocks — leftover stubs bleed into later tests and cause flaky failures",
+        "Rendering without providers — if a component uses Context or Router, wrap it in the same providers as your real app"
+      ]
+    }
+  },
+  "testing-ci": {
+    "title": "Coverage & CI with GitHub Actions",
+    "description": "Read coverage reports, set thresholds, and automate testing on every push with a GitHub Actions pipeline",
+    "steps": [
+      { "animationStep": 0, "heading": "Coverage reports", "text": "Coverage measures which lines, branches, and functions your tests actually execute. Vitest uses v8 or istanbul to collect it. Run with --coverage to see a report. A high number does not guarantee correctness — you still need meaningful assertions — but it highlights untested paths that may hide bugs." },
+      { "animationStep": 1, "heading": "Reading a coverage report", "text": "The text report shows four metrics per file. Stmts: percentage of statements executed. Branch: percentage of if/else paths taken (most important — reveals dead conditional branches). Funcs: percentage of functions called. Lines: percentage of source lines hit. Uncovered lines are shown in the rightmost column — start there." },
+      { "animationStep": 2, "heading": "CI/CD with GitHub Actions", "text": "Continuous Integration runs your test suite automatically on every push or pull request. GitHub Actions reads a YAML workflow file from .github/workflows/. Define the trigger (on:), the environment (runs-on:), and the steps (install → test → build → deploy). A failed test step aborts the rest of the pipeline." },
+      { "animationStep": 3, "heading": "Deploy to GitHub Pages", "text": "Add a deploy step to publish the Vite production build to GitHub Pages automatically after tests pass. Set base in vite.config.ts to your repo name. The actions/deploy-pages action handles uploading the dist/ folder. After merging to main, your site is live within minutes — zero manual steps." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Run with coverage", "note": "Requires @vitest/coverage-v8 installed" },
+        { "label": "Coverage thresholds", "note": "Pipeline fails if coverage drops below threshold" },
+        { "label": "GitHub Actions trigger", "note": "Runs on every push and PR to main" },
+        { "label": "Workflow steps", "note": "Any failed step aborts the rest" }
+      ],
+      "patterns": [
+        { "title": "Full CI pipeline" }
+      ],
+      "whenToUse": "Set up CI from day one on any project. Aim for 70–80% coverage on business logic. 100% coverage is not the goal — meaningful tests on critical paths are.",
+      "commonMistakes": [
+        "Chasing 100% coverage — coverage measures execution, not correctness; 100% with bad assertions is meaningless",
+        "Using npm install in CI instead of npm ci — npm ci is faster and guarantees reproducible installs from the lockfile",
+        "Not caching node_modules — add cache: npm to setup-node to avoid re-downloading dependencies on every run",
+        "Running tests without --coverage flag — without it, no report is generated and thresholds are not checked"
+      ]
+    }
   },
   "git-intro": {
     "title": "What is Git?",
