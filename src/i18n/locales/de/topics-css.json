@@ -894,8 +894,8 @@
       },
       {
         "animationStep": 1,
-        "heading": "Responsive Präfixe",
-        "text": "Tailwind ist Mobile-First. Unpräfixierte Klassen gelten für alle Bildschirmgrößen. Responsive Präfixe (sm:, md:, lg:, xl:) wenden die Klasse nur ab diesem Breakpoint und darüber an. Stapeln für vollständig responsive Layouts ohne Media-Query-Boilerplate."
+        "heading": "Zustands-Varianten",
+        "text": "Jede Utility kann mit einer Zustands-Variante kombiniert werden. hover:, focus:, active: reagieren auf Maus-/Tastaturinteraktionen. disabled: und checked: gelten für Formularelemente. focus-visible: wird nur bei Tastaturfokus aktiviert — ideal für barrierefreie Outlines ohne Mausring. Varianten können gestapelt werden: hover:disabled:opacity-50."
       },
       {
         "animationStep": 2,
@@ -931,6 +931,21 @@
         "animationStep": 8,
         "heading": "@layer & @apply",
         "text": "@layer teilt dein CSS in drei Ebenen auf: base (globale Resets), components (wiederverwendbare UI-Muster) und utilities (benutzerdefinierte Single-Purpose-Klassen). @apply ermöglicht es, Tailwind-Utilities in einer eigenen Klasse zusammenzufassen — nützlich, wenn sich ein Muster häufig wiederholt, aber die Design-Tokens erhalten bleiben sollen."
+      },
+      {
+        "animationStep": 9,
+        "heading": "group & peer — Eltern-/Geschwister-Zustand",
+        "text": "Ein Elternelement mit group markieren, um Kind-Elemente basierend auf dem Eltern-Zustand zu stylen. Ein Geschwisterelement mit peer markieren, um nachfolgende Geschwister zu stylen. Beide unterstützen benannte Varianten (group/item, peer/draft) für verschachtelte Muster. has: lässt ein Elternelement auf seine Nachkommen reagieren."
+      },
+      {
+        "animationStep": 10,
+        "heading": "@theme — Eigene Design-Tokens (v4)",
+        "text": "Tailwind v4 ersetzt tailwind.config.js durch einen CSS-First-Ansatz. Eigene Design-Tokens werden in @theme definiert — Tailwind generiert automatisch passende Utility-Klassen für Farben, Abstände, Schriftarten und mehr. --color-* für Farben, --font-* für Schriftarten, --breakpoint-* für responsive Varianten. Mit --color-*: initial eine ganze Namespace-Gruppe zurücksetzen."
+      },
+      {
+        "animationStep": 11,
+        "heading": "Container Queries",
+        "text": "Container Queries lassen eine Komponente auf die Größe ihres eigenen Containers reagieren — nicht auf den Viewport. Das Elternelement mit @container markieren, dann Kind-Klassen mit @sm:, @md:, @lg: präfigieren. So entstehen wirklich wiederverwendbare Komponenten, die sich unabhängig von ihrer Position auf der Seite anpassen."
       }
     ],
     "cheatSheet": {
@@ -938,18 +953,25 @@
         { "label": "Padding / Margin" },
         { "label": "Flex-Layout" },
         { "label": "Responsive Präfix" },
-        { "label": "Hover-Zustand" },
-        { "label": "Text & Farbe" }
+        { "label": "Zustands-Varianten" },
+        { "label": "group (Eltern → Kind)" },
+        { "label": "peer (Geschwister)" },
+        { "label": "@theme (v4)" },
+        { "label": "Container Query" }
       ],
       "patterns": [
-        { "title": "Button" },
-        { "title": "Karte" }
+        { "title": "Interaktiver Button" },
+        { "title": "Karte" },
+        { "title": "Hover-Karte mit group" },
+        { "title": "Eigenes Theme (v4)" }
       ],
-      "whenToUse": "Tailwind verwenden, wenn schnelle Iteration ohne Wechsel zwischen HTML- und CSS-Dateien gewünscht ist. Ideal für komponentenbasierte Projekte.",
+      "whenToUse": "Tailwind verwenden, wenn schnelle Iteration ohne Wechsel zwischen HTML- und CSS-Dateien gewünscht ist. Besonders praktisch in komponentenbasierten Frameworks (React, Vue, Svelte), wo Klassen direkt neben der Komponentenlogik stehen.",
       "commonMistakes": [
-        "Versuchen, dynamische Klassen-Strings zu schreiben, die Tailwind beim Build nicht erkennen kann — safelist für dynamische Werte verwenden.",
-        "Die Reihenfolge der Responsive-Präfixe vergessen — Mobile-First bedeutet, dass Basisstile für alle Größen gelten.",
-        "Beliebige Werte zu oft verwenden (`w-[347px]`) — Abstands-Skalierungswerte für Konsistenz bevorzugen."
+        "Dynamische Klassen-Strings schreiben (z.B. \"bg-\" + color) — Tailwind scannt nach vollständigen Klassennamen; vollständige Strings oder safelist verwenden.",
+        "Die Reihenfolge der Responsive-Präfixe vergessen — Mobile-First bedeutet, dass Klassen ohne Präfix für alle Größen gelten, Präfixe gelten aufwärts.",
+        "Beliebige Werte zu oft verwenden (`w-[347px]`) — Abstands-Skalierungswerte für Konsistenz bevorzugen.",
+        "group/peer ohne Markierung des Eltern-/Geschwisterelements verwenden — die group/peer-Klasse muss auf dem Vorfahren/vorherigen Element stehen, nicht auf dem gestylten Kind.",
+        "tailwind.config.js in v4 verwenden — Tailwind v4 ist CSS-First; stattdessen @theme in der CSS-Datei verwenden."
       ]
     }
   }

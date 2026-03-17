@@ -5937,10 +5937,31 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
-            icon: '📱',
-            heading: 'Responsive Prefixes',
-            text: 'Tailwind is mobile-first. Unprefixed classes apply to all screen sizes. Responsive prefixes (sm:, md:, lg:, xl:) apply the class only at that breakpoint and above. Stack them to build fully responsive layouts without media query boilerplate.',
-            codeExample: `<!-- 1 column on mobile, 2 on md+, 3 on lg+ -->\n<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">\n  <div class="p-4 bg-white rounded">Card 1</div>\n  <div class="p-4 bg-white rounded">Card 2</div>\n  <div class="p-4 bg-white rounded">Card 3</div>\n</div>`,
+            icon: '🖱️',
+            heading: 'State Variants',
+            text: 'Prefix any utility with a state variant to apply it conditionally. hover:, focus:, active: cover mouse/keyboard interactions. disabled: and checked: target form states. focus-visible: only activates on keyboard focus — great for accessible outlines without mouse rings. Variants can be stacked: hover:disabled:opacity-50.',
+            codeExample: `<!-- Hover + focus + active states -->
+<button class="
+  bg-violet-500
+  hover:bg-violet-600
+  active:bg-violet-700
+  focus-visible:outline-2
+  focus-visible:outline-violet-500
+  disabled:opacity-50
+  disabled:cursor-not-allowed
+">
+  Save changes
+</button>
+
+<!-- Form states -->
+<input
+  type="checkbox"
+  class="checked:bg-blue-500 checked:border-blue-500"
+/>
+<input
+  type="email"
+  class="border invalid:border-red-500 focus:invalid:border-red-500"
+/>`,
             language: 'html',
           },
           {
@@ -5999,6 +6020,98 @@ export const TOPICS: Topic[] = [
             codeExample: `/* In your main CSS file */\n@layer base {\n  h1 { @apply text-3xl font-bold text-gray-900; }\n  a  { @apply text-blue-600 hover:underline; }\n}\n\n@layer components {\n  .btn-primary {\n    @apply flex items-center gap-2 px-4 py-2\n           rounded-lg bg-blue-500 text-white\n           hover:bg-blue-600 transition-colors;\n  }\n}\n\n@layer utilities {\n  .scrollbar-hidden { scrollbar-width: none; }\n}`,
             language: 'css',
           },
+          {
+            animationStep: 9,
+            icon: '👥',
+            heading: 'group & peer — parent/sibling state',
+            text: 'Mark a parent with group to style children based on the parent\'s state. Mark a sibling with peer to style subsequent siblings. Both support named variants (group/item, peer/draft) for nested patterns. has: lets a parent react to its own descendants — e.g. "highlight a label when its checkbox is checked".',
+            codeExample: `<!-- group: children react to parent hover -->
+<a href="#" class="group rounded-lg p-4 hover:bg-indigo-50">
+  <h3 class="font-semibold text-gray-900 group-hover:text-indigo-600">
+    New project
+  </h3>
+  <p class="text-gray-500 group-hover:text-indigo-500">
+    Create a new project from a template.
+  </p>
+  <span class="opacity-0 group-hover:opacity-100 transition">→</span>
+</a>
+
+<!-- peer: sibling reacts to input state -->
+<label class="block">
+  <input type="email" class="peer border rounded px-3 py-2" />
+  <p class="invisible peer-invalid:visible text-sm text-red-500">
+    Please enter a valid email address.
+  </p>
+</label>
+
+<!-- has: parent reacts to checked child -->
+<label class="has-checked:bg-indigo-50 has-checked:ring-2 ring-indigo-500 rounded p-4">
+  <input type="radio" class="checked:accent-indigo-500" />
+  Google Pay
+</label>`,
+            language: 'html',
+          },
+          {
+            animationStep: 10,
+            icon: '🎨',
+            heading: '@theme — Custom Design Tokens (v4)',
+            text: 'Tailwind v4 replaces tailwind.config.js with a CSS-first approach. Define custom design tokens in @theme — Tailwind automatically generates matching utility classes for colors, spacing, fonts, and more. Use --color-* for colors, --font-* for fonts, --breakpoint-* for responsive variants. Reset a namespace with --color-*: initial to replace all defaults.',
+            codeExample: `/* app.css — Tailwind v4 CSS-first config */
+@import "tailwindcss";
+
+@theme {
+  /* Custom brand colors → generates bg-brand-*, text-brand-*, etc. */
+  --color-brand-400: oklch(0.72 0.20 250);
+  --color-brand-500: oklch(0.60 0.22 250);
+  --color-brand-600: oklch(0.50 0.22 250);
+
+  /* Custom font family → font-display class */
+  --font-display: "Satoshi", "Inter", sans-serif;
+
+  /* Custom breakpoint → 3xl: prefix */
+  --breakpoint-3xl: 120rem;
+
+  /* Custom animation */
+  --animate-fade-in: fade-in 0.3s ease-out;
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* Usage in HTML: */
+/* <h1 class="font-display text-brand-500 3xl:text-7xl animate-fade-in"> */`,
+            language: 'css',
+          },
+          {
+            animationStep: 11,
+            icon: '📦',
+            heading: 'Container Queries',
+            text: 'Container queries let a component respond to its own container\'s size — not the viewport. Mark a parent with @container, then prefix child classes with @sm:, @md:, @lg: etc. This makes truly reusable components that adapt regardless of where they are placed on the page.',
+            codeExample: `<!-- @container marks the resizable parent -->
+<div class="@container rounded-xl border p-4">
+
+  <!-- Child adapts to the container — not the viewport -->
+  <div class="flex flex-col @md:flex-row gap-4">
+    <img
+      class="w-full @md:w-32 rounded-lg object-cover"
+      src="/avatar.png"
+      alt="User"
+    />
+    <div>
+      <h3 class="text-sm @md:text-base font-semibold">Jane Doe</h3>
+      <p class="text-xs @md:text-sm text-gray-500">Product Designer</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Named containers for nested @container elements -->
+<div class="@container/sidebar">
+  <div class="@md/sidebar:hidden">Collapsed content</div>
+</div>`,
+            language: 'html',
+          },
         ],
       },
       { id: 'playground', type: 'playground', steps: [] },
@@ -6008,18 +6121,25 @@ export const TOPICS: Topic[] = [
         { label: 'Padding / Margin', code: 'p-4  px-2  py-3  m-auto  mt-6' },
         { label: 'Flex layout', code: 'flex items-center justify-between gap-4' },
         { label: 'Responsive prefix', code: 'text-sm md:text-base lg:text-lg' },
-        { label: 'Hover state', code: 'hover:bg-blue-600 hover:text-white' },
-        { label: 'Text & Color', code: 'text-gray-700 font-semibold bg-indigo-500' },
+        { label: 'State variants', code: 'hover:bg-blue-600  focus-visible:outline-2  disabled:opacity-50  checked:bg-blue-500' },
+        { label: 'group (parent → child)', code: '<a class="group">\n  <span class="group-hover:text-blue-500">Link text</span>\n</a>' },
+        { label: 'peer (sibling)', code: '<input class="peer" />\n<p class="invisible peer-invalid:visible text-red-500">Error</p>' },
+        { label: '@theme (v4)', code: '@theme {\n  --color-brand: oklch(0.60 0.22 250);\n  --font-display: "Satoshi", sans-serif;\n}', note: 'CSS-first config — replaces tailwind.config.js' },
+        { label: 'Container query', code: '<div class="@container">\n  <div class="flex-col @md:flex-row">...</div>\n</div>' },
       ],
       patterns: [
-        { title: 'Button', code: 'class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"', language: 'html' },
-        { title: 'Card', code: 'class="rounded-xl shadow p-6 bg-white max-w-md"', language: 'html' },
+        { title: 'Interactive button', code: '<button class="px-4 py-2 bg-blue-500 text-white rounded\n  hover:bg-blue-600 active:bg-blue-700\n  focus-visible:outline-2 focus-visible:outline-blue-500\n  disabled:opacity-50 disabled:cursor-not-allowed\n  transition-colors">\n  Save\n</button>', language: 'html' },
+        { title: 'Card', code: '<div class="rounded-xl shadow p-6 bg-white max-w-md">\n  ...\n</div>', language: 'html' },
+        { title: 'Hover card with group', code: '<a href="#" class="group block rounded-lg p-4 hover:bg-indigo-50">\n  <h3 class="font-semibold group-hover:text-indigo-600">Title</h3>\n  <p class="text-gray-500 group-hover:text-indigo-500">Description</p>\n</a>', language: 'html' },
+        { title: 'Custom theme (v4)', code: '@theme {\n  --color-brand-500: oklch(0.60 0.22 250);\n  --font-display: "Satoshi", sans-serif;\n  --breakpoint-3xl: 120rem;\n}', language: 'css' },
       ],
-      whenToUse: 'Use Tailwind when you want fast iteration without switching between HTML and CSS files. Great for component-based projects.',
+      whenToUse: 'Use Tailwind when you want fast iteration without switching between HTML and CSS files. Especially powerful in component-based frameworks (React, Vue, Svelte) where class lists live next to component logic.',
       commonMistakes: [
-        'Trying to write dynamic class strings that Tailwind cannot detect at build time — use safelist for dynamic values.',
-        'Forgetting the responsive prefix order — mobile-first means base styles apply to all sizes.',
-        'Using arbitrary values too often (`w-[347px]`) — prefer spacing scale values for consistency.',
+        'Trying to write dynamic class strings that Tailwind cannot detect at build time (e.g. `"bg-" + color`) — Tailwind scans for full class names; use full strings or a safelist.',
+        'Forgetting the responsive prefix order — mobile-first means unprefixed classes apply to all sizes, prefixed ones apply upward.',
+        'Using arbitrary values too often (`w-[347px]`) — prefer spacing scale values for consistency across the design system.',
+        'Using group/peer without marking the parent/sibling — the group/peer class must be on the ancestor/preceding element, not the styled child.',
+        'Using tailwind.config.js in v4 — Tailwind v4 is CSS-first; use @theme in your CSS file instead of a JS config.',
       ],
     },
   },

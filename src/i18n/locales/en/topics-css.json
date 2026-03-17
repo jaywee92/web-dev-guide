@@ -894,8 +894,8 @@
       },
       {
         "animationStep": 1,
-        "heading": "Responsive Prefixes",
-        "text": "Tailwind is mobile-first. Unprefixed classes apply to all screen sizes. Responsive prefixes (sm:, md:, lg:, xl:) apply the class only at that breakpoint and above. Stack them to build fully responsive layouts without media query boilerplate."
+        "heading": "State Variants",
+        "text": "Prefix any utility with a state variant to apply it conditionally. hover:, focus:, active: cover mouse/keyboard interactions. disabled: and checked: target form states. focus-visible: only activates on keyboard focus — great for accessible outlines without mouse rings. Variants can be stacked: hover:disabled:opacity-50."
       },
       {
         "animationStep": 2,
@@ -931,6 +931,21 @@
         "animationStep": 8,
         "heading": "@layer & @apply",
         "text": "@layer organises your CSS into three buckets: base (global resets), components (reusable UI patterns), utilities (single-purpose custom classes). @apply lets you compose Tailwind utilities into a custom class — useful when a pattern repeats across many elements but you still want Tailwind's design tokens."
+      },
+      {
+        "animationStep": 9,
+        "heading": "group & peer — parent/sibling state",
+        "text": "Mark a parent with group to style children based on the parent's state. Mark a sibling with peer to style subsequent siblings. Both support named variants (group/item, peer/draft) for nested patterns. has: lets a parent react to its own descendants — e.g. highlight a label when its checkbox is checked."
+      },
+      {
+        "animationStep": 10,
+        "heading": "@theme — Custom Design Tokens (v4)",
+        "text": "Tailwind v4 replaces tailwind.config.js with a CSS-first approach. Define custom design tokens in @theme — Tailwind automatically generates matching utility classes for colors, spacing, fonts, and more. Use --color-* for colors, --font-* for fonts, --breakpoint-* for responsive variants. Reset a namespace with --color-*: initial to replace all defaults."
+      },
+      {
+        "animationStep": 11,
+        "heading": "Container Queries",
+        "text": "Container queries let a component respond to its own container's size — not the viewport. Mark a parent with @container, then prefix child classes with @sm:, @md:, @lg: etc. This makes truly reusable components that adapt regardless of where they are placed on the page."
       }
     ],
     "cheatSheet": {
@@ -938,18 +953,25 @@
         { "label": "Padding / Margin" },
         { "label": "Flex layout" },
         { "label": "Responsive prefix" },
-        { "label": "Hover state" },
-        { "label": "Text & Color" }
+        { "label": "State variants" },
+        { "label": "group (parent → child)" },
+        { "label": "peer (sibling)" },
+        { "label": "@theme (v4)" },
+        { "label": "Container query" }
       ],
       "patterns": [
-        { "title": "Button" },
-        { "title": "Card" }
+        { "title": "Interactive button" },
+        { "title": "Card" },
+        { "title": "Hover card with group" },
+        { "title": "Custom theme (v4)" }
       ],
-      "whenToUse": "Use Tailwind when you want fast iteration without switching between HTML and CSS files. Great for component-based projects.",
+      "whenToUse": "Use Tailwind when you want fast iteration without switching between HTML and CSS files. Especially powerful in component-based frameworks (React, Vue, Svelte) where class lists live next to component logic.",
       "commonMistakes": [
-        "Trying to write dynamic class strings that Tailwind cannot detect at build time — use safelist for dynamic values.",
-        "Forgetting the responsive prefix order — mobile-first means base styles apply to all sizes.",
-        "Using arbitrary values too often (`w-[347px]`) — prefer spacing scale values for consistency."
+        "Trying to write dynamic class strings that Tailwind cannot detect at build time (e.g. \"bg-\" + color) — Tailwind scans for full class names; use full strings or a safelist.",
+        "Forgetting the responsive prefix order — mobile-first means unprefixed classes apply to all sizes, prefixed ones apply upward.",
+        "Using arbitrary values too often (`w-[347px]`) — prefer spacing scale values for consistency across the design system.",
+        "Using group/peer without marking the parent/sibling — the group/peer class must be on the ancestor/preceding element, not the styled child.",
+        "Using tailwind.config.js in v4 — Tailwind v4 is CSS-first; use @theme in your CSS file instead of a JS config."
       ]
     }
   }
