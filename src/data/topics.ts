@@ -2061,6 +2061,15 @@ export const TOPICS: Topic[] = [
             text: 'Object-Oriented Programming organizes code around objects that combine state (properties) and behavior (methods). The four pillars are: encapsulation (hiding internal details), abstraction (exposing only what is needed), inheritance (extending existing types), and polymorphism (same interface, different behavior).',
             codeExample: `// Objects bundle data + behavior\nconst car = {\n  make: 'Toyota',\n  speed: 0,\n  accelerate(amount) { this.speed += amount; },\n};\ncar.accelerate(30);\nconsole.log(car.speed); // 30`,
             language: 'javascript',
+            analogy: {
+              icon: '🏠',
+              title: 'Step 1 — Blueprint vs Building',
+              text: [
+                'OOP is like architecture. The blueprint (class) describes the layout — how many rooms, where the kitchen goes, what features each room has.',
+                'The actual building (object/instance) is constructed from that blueprint. You can build a hundred houses from the same blueprint, and each house is independent: painting one does not repaint the others.',
+                'The four pillars map naturally: encapsulation = locked rooms; abstraction = using a light switch without knowing the wiring; inheritance = a beach house extends a basic house blueprint; polymorphism = every house has a "door" but each opens differently.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -2069,6 +2078,15 @@ export const TOPICS: Topic[] = [
             text: 'A class is a blueprint for creating objects. The constructor method runs when you call new ClassName(). Properties set with this inside the constructor belong to each instance. Methods defined in the class body are shared via the prototype.',
             codeExample: `class Person {\n  constructor(name, age) {\n    this.name = name;\n    this.age = age;\n  }\n  greet() {\n    return \`Hi, I'm \${this.name}, \${this.age} years old.\`;\n  }\n}\nconst alice = new Person('Alice', 28);\nconsole.log(alice.greet());`,
             language: 'javascript',
+            analogy: {
+              icon: '🍪',
+              title: 'Step 2 — Cookie Cutter',
+              text: [
+                'A class is a cookie cutter, not a cookie. The cutter defines the shape — star, heart, gingerbread man — but it produces no actual cookie until you press it into dough.',
+                'Calling new Person("Alice", 28) is pressing the cutter into dough: a fresh cookie (instance) is stamped out, with its own name and age properties filled in.',
+                'All cookies share the same shape logic (methods on the prototype), but each has its own filling (instance properties). Changing one cookie\'s name does not affect any other.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -2077,6 +2095,15 @@ export const TOPICS: Topic[] = [
             text: 'A subclass extends a parent class and inherits all its methods. Call super() in the subclass constructor to invoke the parent constructor. You can override parent methods by redefining them in the subclass.',
             codeExample: `class Animal {\n  constructor(name) { this.name = name; }\n  speak() { return \`\${this.name} makes a sound.\`; }\n}\nclass Dog extends Animal {\n  speak() { return \`\${this.name} barks!\`; }\n}\nconst dog = new Dog('Rex');\nconsole.log(dog.speak()); // Rex barks!`,
             language: 'javascript',
+            analogy: {
+              icon: '🧬',
+              title: 'Step 3 — Parent–Child DNA',
+              text: [
+                'Inheritance is like biological genetics. A child inherits traits from both parents by default, but can also develop its own distinct characteristics.',
+                'Dog extends Animal: every Dog automatically gets the name property and can speak() from the Animal parent. Dog just overrides speak() to say "barks" instead of "makes a sound".',
+                'super() is like calling your parent\'s constructor to set up the shared traits first — you must do this before adding your own child-specific properties.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -2085,6 +2112,15 @@ export const TOPICS: Topic[] = [
             text: 'Every JavaScript object has a hidden [[Prototype]] link. When you access a property, JS looks on the object itself first, then walks up the prototype chain until it finds the property or reaches null. Class methods live on the prototype, not on each instance.',
             codeExample: `class Cat {}\nconst c = new Cat();\n\n// Method lives on the prototype, not the instance\nconsole.log(c.hasOwnProperty('constructor')); // false\nconsole.log(Object.getPrototypeOf(c) === Cat.prototype); // true`,
             language: 'javascript',
+            analogy: {
+              icon: '📖',
+              title: 'Step 4 — Fallback Phonebook',
+              text: [
+                'Imagine each object has a personal address book. When you look up a property, JavaScript checks the object\'s own book first.',
+                'If the property is not there, it opens a fallback phonebook — the prototype. Not found there? It opens the fallback\'s fallback, all the way up until it reaches null.',
+                'Class methods are stored in the shared prototype phonebook, not in every individual object\'s personal book. This saves memory and is why all instances automatically share the same method implementations.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -2093,6 +2129,15 @@ export const TOPICS: Topic[] = [
             text: '`this` refers to the object a method was called on. In a class method it points to the instance. In a standalone function it depends on how the function is called. Arrow functions inherit `this` from their outer scope instead of defining their own.',
             codeExample: `class Counter {\n  constructor() { this.count = 0; }\n  increment() { this.count++; }\n}\nconst c = new Counter();\nc.increment();\nconsole.log(c.count); // 1\n\n// this is lost when method is detached:\nconst inc = c.increment;\n// inc(); // TypeError — this is undefined in strict mode`,
             language: 'javascript',
+            analogy: {
+              icon: '🏷️',
+              title: 'Step 5 — The this Keyword',
+              text: [
+                'this is a name tag that says "I am currently working for ___". When you call c.increment(), the tag is filled in with the Counter instance c.',
+                'If you detach the method (const inc = c.increment) and call it without a receiver, nobody fills in the tag — this becomes undefined or the global object.',
+                'Arrow functions borrow the tag from whoever created them, so they always know which object they belong to regardless of how they are called later.',
+              ],
+            },
           },
         ],
       },
@@ -2117,6 +2162,60 @@ export const TOPICS: Topic[] = [
         'Mutating inherited prototype properties directly instead of using instance properties.',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Forgetting the new keyword',
+        why: 'Classes must be called with new. Without it JavaScript throws a TypeError instead of creating an instance, because the class constructor uses this to set up properties and this is undefined without new.',
+        fixLabel: 'Fix — always use new when instantiating a class',
+        fixCode: '// ❌ Wrong — TypeError: Class constructor Person cannot be invoked without new\nconst alice = Person("Alice", 28);\n\n// ✅ Right\nconst alice = new Person("Alice", 28);\nconsole.log(alice.name); // "Alice"',
+      },
+      {
+        title: 'Not calling super() before using this in a subclass',
+        why: 'In a subclass constructor, this is not available until super() has been called. Accessing this.anything before super() throws a ReferenceError because the parent class has not set up the object yet.',
+        fixLabel: 'Fix — call super() as the first statement in the subclass constructor',
+        fixCode: '// ❌ Wrong — ReferenceError: Must call super before accessing this\nclass Admin extends User {\n  constructor(name) {\n    this.role = "admin"; // ❌ too early\n    super(name);\n  }\n}\n\n// ✅ Right — super() first\nclass Admin extends User {\n  constructor(name) {\n    super(name);       // ✅ sets up User\n    this.role = "admin";\n  }\n}',
+      },
+      {
+        title: 'Accidentally mutating a shared prototype property',
+        why: 'If a property is defined on the prototype (not via this in the constructor), all instances share the same reference. Mutating an object or array stored on the prototype affects every instance.',
+        fixLabel: 'Fix — initialise mutable properties inside the constructor with this',
+        fixCode: '// ❌ Wrong — all instances share the same tags array\nclass Post {\n  tags = []  // defined as class field — shared reference!\n}\nconst a = new Post();\nconst b = new Post();\na.tags.push("js");\nconsole.log(b.tags); // ["js"] — oops!\n\n// ✅ Right — each instance gets its own array\nclass Post {\n  constructor() {\n    this.tags = []; // fresh array per instance\n  }\n}\nconst a = new Post();\nconst b = new Post();\na.tags.push("js");\nconsole.log(b.tags); // [] — independent',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'React class component',
+        description: 'React class components extend React.Component. The constructor receives props, calls super(props), and sets up initial state. The render method returns JSX.',
+        code: 'class WelcomeBanner extends React.Component {\n  constructor(props) {\n    super(props);\n    this.state = { clicked: false };\n  }\n  handleClick = () => {\n    this.setState({ clicked: true });\n  };\n  render() {\n    return (\n      <div onClick={this.handleClick}>\n        {this.state.clicked ? "Thanks!" : `Hello, ${this.props.name}`}\n      </div>\n    );\n  }\n}',
+      },
+      {
+        context: 'Data Structures',
+        heading: 'Linked list node',
+        description: 'A LinkedListNode class represents a node in a singly linked list. Each node stores a value and a reference to the next node — a clean use of class instances as reusable building blocks.',
+        code: 'class ListNode {\n  constructor(value, next = null) {\n    this.value = value;\n    this.next = next;\n  }\n}\n\n// Build: 1 → 2 → 3\nconst head = new ListNode(1,\n  new ListNode(2,\n    new ListNode(3)\n  )\n);\n\n// Traverse\nlet node = head;\nwhile (node) {\n  console.log(node.value); // 1, 2, 3\n  node = node.next;\n}',
+      },
+      {
+        context: 'Error Handling',
+        heading: 'Custom error class',
+        description: 'Extending the built-in Error class lets you create domain-specific errors with extra properties, making catch blocks able to distinguish error types with instanceof.',
+        code: 'class HttpError extends Error {\n  constructor(status, message) {\n    super(message);\n    this.name = "HttpError";\n    this.status = status;\n  }\n}\n\nasync function fetchUser(id) {\n  const res = await fetch(`/api/users/${id}`);\n  if (!res.ok) throw new HttpError(res.status, "Not found");\n  return res.json();\n}\n\ntry {\n  await fetchUser(999);\n} catch (err) {\n  if (err instanceof HttpError && err.status === 404) {\n    showNotFound();\n  }\n}',
+      },
+    ],
+    playgroundExamples: [
+      {
+        label: 'Classes & new',
+        code: '// 🎯 Classes and the new Keyword\n// Build a simple class, instantiate it, and observe\n// that each instance has its own independent state.\n\nclass BankAccount {\n  constructor(owner, initialBalance = 0) {\n    this.owner = owner;\n    this.balance = initialBalance;\n    this.transactions = [];\n  }\n\n  deposit(amount) {\n    this.balance += amount;\n    this.transactions.push(`+${amount}`);\n  }\n\n  withdraw(amount) {\n    if (amount > this.balance) {\n      console.log("Insufficient funds!");\n      return;\n    }\n    this.balance -= amount;\n    this.transactions.push(`-${amount}`);\n  }\n\n  summary() {\n    return `${this.owner}: $${this.balance} | ${this.transactions.join(", ")}`;\n  }\n}\n\nconst alice = new BankAccount("Alice", 100);\nconst bob   = new BankAccount("Bob",   50);\n\nalice.deposit(200);\nalice.withdraw(30);\nbob.deposit(75);\n\nconsole.log(alice.summary()); // Alice: $270 | +200, -30\nconsole.log(bob.summary());   // Bob: $125 | +75',
+      },
+      {
+        label: 'Inheritance',
+        code: '// 🎯 Inheritance with extends and super()\n// Subclasses inherit methods from the parent and\n// can override them with specialised behaviour.\n\nclass Shape {\n  constructor(color = "black") {\n    this.color = color;\n  }\n  area() { return 0; }\n  describe() {\n    return `${this.color} ${this.constructor.name} — area: ${this.area().toFixed(2)}`;\n  }\n}\n\nclass Circle extends Shape {\n  constructor(radius, color) {\n    super(color);\n    this.radius = radius;\n  }\n  area() { return Math.PI * this.radius ** 2; }\n}\n\nclass Rectangle extends Shape {\n  constructor(w, h, color) {\n    super(color);\n    this.w = w; this.h = h;\n  }\n  area() { return this.w * this.h; }\n}\n\nconst shapes = [\n  new Circle(5, "red"),\n  new Rectangle(4, 6, "blue"),\n];\nshapes.forEach(s => console.log(s.describe()));',
+      },
+      {
+        label: 'Prototype Chain',
+        code: '// 🎯 Exploring the Prototype Chain\n// Methods live on the prototype, not on each instance.\n// JavaScript walks the chain to find them.\n\nclass Vehicle {\n  constructor(make) { this.make = make; }\n  type() { return "vehicle"; }\n}\n\nclass Car extends Vehicle {\n  constructor(make, model) {\n    super(make);\n    this.model = model;\n  }\n  type() { return "car"; }\n}\n\nconst c = new Car("Toyota", "Corolla");\n\n// Own properties (set in constructor)\nconsole.log("Own make?",  c.hasOwnProperty("make"));  // true\nconsole.log("Own type?",  c.hasOwnProperty("type"));  // false — on prototype\n\n// Prototype chain\nconsole.log("Car.prototype:",    Object.getPrototypeOf(c) === Car.prototype);     // true\nconsole.log("Vehicle.prototype:", Object.getPrototypeOf(Car.prototype) === Vehicle.prototype); // true\n\n// instanceof walks the chain\nconsole.log(c instanceof Car);     // true\nconsole.log(c instanceof Vehicle); // true',
+      },
+    ],
   },
   {
     id: 'js-timers',
