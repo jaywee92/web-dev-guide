@@ -11,6 +11,8 @@ export default function AnalogyPanel({ analogy, color: _color }: Props) {
   return (
     <div style={{
       marginTop: 12,
+      flexShrink: 0,
+      overflow: 'hidden',
       background: 'var(--surface)',
       border: '1px solid rgba(251,191,36,0.22)',
       borderRadius: 'var(--radius)',

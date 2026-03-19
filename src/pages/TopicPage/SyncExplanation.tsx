@@ -30,7 +30,14 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
 
         <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 44fr) minmax(0, 56fr)', gap: 40, alignItems: 'start' }}>
           {/* Left: Sticky animation */}
-          <div style={{ position: 'sticky', top: 80 }}>
+          <div style={{
+            position: 'sticky',
+            top: 80,
+            display: 'flex',
+            flexDirection: 'column',
+            height: 'calc(100dvh - 96px)',
+            minHeight: 480,
+          }}>
             {/* Animation panel — click to advance */}
             <div
               onClick={ctrl.next}
@@ -39,7 +46,8 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
                 border: '1px solid var(--border)',
                 borderRadius: 'var(--radius)',
                 padding: '24px',
-                height: 460,
+                flex: 1,
+                minHeight: 200,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
