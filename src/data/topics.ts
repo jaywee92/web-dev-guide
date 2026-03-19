@@ -2480,6 +2480,15 @@ export const TOPICS: Topic[] = [
             text: 'var is function-scoped and hoisted, which causes unexpected bugs. Modern JavaScript avoids it.',
             codeExample: 'var x = 1\nif (true) {\n  var x = 2  // same variable!\n}\nconsole.log(x) // 2 — surprising!',
             language: 'javascript',
+            analogy: {
+              icon: '🏚️',
+              title: 'Step 1 — var: the leaky bucket',
+              text: [
+                'Imagine var as a bucket with holes. You place it inside a room (an if block), but the water leaks all the way out to the hallway (the whole function).',
+                'No matter where you put the bucket, any part of the floor gets wet. That is why two var x declarations in the same function silently share one variable.',
+                'This "leaking" is called function-scope hoisting — the declaration is automatically moved to the top of the surrounding function by the JavaScript engine.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -2488,6 +2497,15 @@ export const TOPICS: Topic[] = [
             text: 'let creates a variable that lives only in the block where it is declared. You can reassign it.',
             codeExample: 'let count = 0\ncount = count + 1  // OK\n\nif (true) {\n  let inner = 42  // only exists here\n}',
             language: 'javascript',
+            analogy: {
+              icon: '🚪',
+              title: 'Step 2 — let: the sealed room',
+              text: [
+                'let is like a sealed room with its own lock. Whatever you put inside the room stays inside — it cannot leak into the corridor.',
+                'You can rearrange the furniture (reassign the value) as many times as you like, but the room itself stays contained to its block.',
+                'This is why let inside a for loop gives each iteration its own separate copy of the variable.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -2496,6 +2514,15 @@ export const TOPICS: Topic[] = [
             text: 'const bindings cannot be reassigned after creation. For objects and arrays, the contents can still change.',
             codeExample: 'const PI = 3.14159\nPI = 3  // TypeError!\n\nconst user = { name: "Alice" }\nuser.name = "Bob"  // OK — object contents can change',
             language: 'javascript',
+            analogy: {
+              icon: '🪧',
+              title: 'Step 3 — const: the name tag, not the contents',
+              text: [
+                'const is like a name tag glued to a box. You cannot move the tag to a different box (no reassignment).',
+                'But you can absolutely reach inside the box and rearrange what is in it — that is why object properties and array elements can still change.',
+                'Think of const as protecting the pointer, not the data it points to.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -2504,6 +2531,15 @@ export const TOPICS: Topic[] = [
             text: 'JavaScript has six primitive types. They are immutable values — not objects.',
             codeExample: 'let name = "Alice"      // string\nlet age = 25           // number\nlet active = true      // boolean\nlet nothing = null     // null\nlet missing            // undefined\nlet id = Symbol()      // symbol',
             language: 'javascript',
+            analogy: {
+              icon: '🎲',
+              title: 'Step 4 — Primitives: the atoms of data',
+              text: [
+                'Primitives are like dice faces — each one is a plain, indivisible value. When you write "Alice", you get that exact value, nothing more.',
+                'Unlike objects, primitives cannot have properties attached. You cannot say 42.colour = "red" and have it stick.',
+                'There are six dice in JavaScript\'s set: string, number, boolean, null, undefined, and symbol.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -2512,6 +2548,14 @@ export const TOPICS: Topic[] = [
             text: 'The typeof operator returns a string describing the type. Watch out: typeof null returns "object" — a known JavaScript quirk.',
             codeExample: 'typeof "hello"     // "string"\ntypeof 42          // "number"\ntypeof true        // "boolean"\ntypeof undefined   // "undefined"\ntypeof null        // "object" ⚠️ quirk!',
             language: 'javascript',
+            analogy: {
+              icon: '🏷️',
+              title: 'Step 5 — typeof: reading the shipping label',
+              text: [
+                'typeof is like reading the label on a package without opening it. It tells you the broad category of what is inside.',
+                'The famous quirk — typeof null === "object" — is a 30-year-old bug frozen into the language for backwards compatibility. Always check for null explicitly with === null.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -2520,6 +2564,15 @@ export const TOPICS: Topic[] = [
             text: 'JavaScript supports the standard arithmetic operators: + (add), - (subtract), * (multiply), / (divide), % (modulo), and ** (exponentiation). The modulo operator is especially useful for checking if a number is even or odd.',
             codeExample: `const a = 10, b = 3;\nconsole.log(a + b);   // 13\nconsole.log(a % b);   // 1 (remainder)\nconsole.log(a ** b);  // 1000 (10 to the power 3)`,
             language: 'javascript',
+            analogy: {
+              icon: '🧮',
+              title: 'Step 6 — Arithmetic: the calculator buttons',
+              text: [
+                'Arithmetic operators are just calculator buttons. +, -, *, / work exactly as you expect from school maths.',
+                'The modulo % operator is the "remainder after division" button — 10 % 3 gives 1, because 3 goes into 10 three times with 1 left over.',
+                'A handy trick: any number % 2 equals 0 for even numbers and 1 for odd numbers.',
+              ],
+            },
           },
           {
             animationStep: 6,
@@ -2528,6 +2581,15 @@ export const TOPICS: Topic[] = [
             text: 'Comparison operators (===, !==, >, <, >=, <=) return true or false. Always prefer === (strict equality) over == to avoid type coercion surprises. Logical operators && (AND), || (OR), and ! (NOT) combine boolean expressions.',
             codeExample: `console.log(5 === '5');  // false (strict)\nconsole.log(5 == '5');   // true (loose — avoid)\nconsole.log(true && false); // false\nconsole.log(false || true); // true\nconsole.log(!true);         // false`,
             language: 'javascript',
+            analogy: {
+              icon: '⚖️',
+              title: 'Step 7 — Comparison: the courtroom scale',
+              text: [
+                '=== is a strict judge who checks both the value AND the type. "5" and 5 are different witnesses to her — one is text, one is a number.',
+                '== is a lenient judge who silently converts types before comparing. This leniency causes surprising verdicts, which is why most style guides ban it.',
+                '&& (AND) needs every juror to agree; || (OR) only needs one. ! flips the verdict.',
+              ],
+            },
           },
           {
             animationStep: 7,
@@ -2536,6 +2598,14 @@ export const TOPICS: Topic[] = [
             text: 'Wrap risky code in a try block. If an error is thrown, execution jumps to the catch block where you can handle it gracefully. The optional finally block always runs, regardless of whether an error occurred.',
             codeExample: `try {\n  const result = JSON.parse('invalid json');\n  console.log(result);\n} catch (error) {\n  console.error('Parse failed:', error.message);\n} finally {\n  console.log('Always runs');\n}`,
             language: 'javascript',
+            analogy: {
+              icon: '🛡️',
+              title: 'Step 8 — try/catch: the safety net',
+              text: [
+                'Imagine try as an acrobat routine performed over a trampoline (catch). If anything goes wrong mid-air, the trampoline catches you so the show does not stop entirely.',
+                'finally is the curtain call — it happens whether the trick succeeded or the acrobat fell. Use it for cleanup like closing a file or hiding a loading spinner.',
+              ],
+            },
           },
         ],
       },
@@ -2560,6 +2630,60 @@ export const TOPICS: Topic[] = [
         'Assuming const prevents mutation of objects — const only prevents reassignment of the binding; object properties can still change freely',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Using var inside a for loop — value leaks out',
+        why: 'var is function-scoped, so the loop counter exists outside the loop block. Referencing it after the loop gives the final value, not the per-iteration value.',
+        fixLabel: 'Fix — use let for block-scoped loop variables',
+        fixCode: '// ❌ Wrong\nfor (var i = 0; i < 3; i++) {}\nconsole.log(i) // 3 — leaked!\n\n// ✅ Right\nfor (let i = 0; i < 3; i++) {}\nconsole.log(i) // ReferenceError — safely contained',
+      },
+      {
+        title: 'Checking for null with typeof',
+        why: 'typeof null returns "object" due to a historical JavaScript bug. Checking typeof val === "object" does not reliably detect null — it passes for null and fails to distinguish it from a real object.',
+        fixLabel: 'Fix — use strict equality for null checks',
+        fixCode: '// ❌ Wrong\nconst val = null\nif (typeof val === "object") {\n  console.log("it\'s an object") // runs — misleading!\n}\n\n// ✅ Right\nif (val === null) {\n  console.log("it\'s null") // correct\n}',
+      },
+      {
+        title: 'Reassigning a const binding',
+        why: 'const prevents the variable name from pointing to a different value. Trying to reassign it throws a TypeError at runtime.',
+        fixLabel: 'Fix — use let when you need to reassign',
+        fixCode: '// ❌ Wrong\nconst score = 0\nscore = 10 // TypeError: Assignment to constant variable\n\n// ✅ Right\nlet score = 0\nscore = 10 // OK',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React Component',
+        heading: 'const for props and state',
+        description: 'In React components, const is used everywhere because you never reassign the props object or the state variables directly — you call setState instead.',
+        code: 'function UserCard({ name, age }) {\n  const [liked, setLiked] = React.useState(false)\n  const label = liked ? "Liked!" : "Like"\n\n  return (\n    <div>\n      <p>{name}, {age}</p>\n      <button onClick={() => setLiked(true)}>{label}</button>\n    </div>\n  )\n}',
+      },
+      {
+        context: 'Configuration Object',
+        heading: 'const for app config',
+        description: 'Application configuration is a classic use-case for const — the binding never changes, even though the object properties may be read throughout the app.',
+        code: 'const CONFIG = {\n  apiUrl: "https://api.example.com",\n  timeout: 5000,\n  maxRetries: 3,\n}\n\n// Consumed everywhere — CONFIG never reassigned\nfetch(CONFIG.apiUrl + "/users")',
+      },
+      {
+        context: 'DOM Manipulation',
+        heading: 'typeof guard before usage',
+        description: 'When writing code that may run in both Node and the browser, typeof is used to detect globals like window without throwing a ReferenceError.',
+        code: 'if (typeof window !== "undefined") {\n  // Safe to use browser APIs\n  const width = window.innerWidth\n  console.log("Browser width:", width)\n} else {\n  console.log("Running in Node")\n}',
+      },
+    ],
+    playgroundExamples: [
+      {
+        label: 'var vs let vs const',
+        code: '// 🎯 Spot the difference between var, let, and const\n\n// 1. var leaks out of blocks\nvar animal = "cat"\nif (true) {\n  var animal = "dog" // overwrites outer animal!\n}\nconsole.log("var animal:", animal) // "dog" — surprising\n\n// 2. let stays in its block\nlet fruit = "apple"\nif (true) {\n  let fruit = "banana" // new variable, local to this block\n  console.log("inner let:", fruit) // "banana"\n}\nconsole.log("outer let:", fruit) // "apple" — unchanged\n\n// 3. const prevents reassignment\nconst PI = 3.14159\n// PI = 3  // ← uncommenting this throws TypeError\n\n// But object contents CAN change\nconst user = { name: "Alice" }\nuser.name = "Bob" // OK!\nconsole.log("user:", user.name) // "Bob"',
+      },
+      {
+        label: 'Primitive Types',
+        code: '// 🎯 Explore JavaScript\'s six primitive types\n\nconst name    = "Alice"      // string\nconst age     = 25           // number\nconst active  = true         // boolean\nconst nothing = null         // null\nlet  missing                  // undefined (no value assigned)\nconst id      = Symbol("id") // symbol — always unique\n\nconsole.log(typeof name)    // "string"\nconsole.log(typeof age)     // "number"\nconsole.log(typeof active)  // "boolean"\nconsole.log(typeof nothing) // "object" ⚠️ quirk!\nconsole.log(typeof missing) // "undefined"\nconsole.log(typeof id)      // "symbol"\n\n// Safe null check:\nif (nothing === null) {\n  console.log("nothing is definitely null")\n}\n\n// Template literal using multiple types:\nconsole.log(`${name} is ${age} years old. Active: ${active}`)',
+      },
+      {
+        label: 'Operators Playground',
+        code: '// 🎯 Arithmetic, comparison, and logical operators\n\nconst a = 17, b = 5\n\n// Arithmetic\nconsole.log("a + b =", a + b)   // 22\nconsole.log("a - b =", a - b)   // 12\nconsole.log("a * b =", a * b)   // 85\nconsole.log("a / b =", a / b)   // 3.4\nconsole.log("a % b =", a % b)   // 2 (remainder)\nconsole.log("a ** b =", a ** b)  // 17^5\n\n// Is a even or odd?\nconsole.log(a % 2 === 0 ? "even" : "odd") // "odd"\n\n// Strict vs loose equality\nconsole.log(5 === "5")  // false (different types)\nconsole.log(5 == "5")   // true  (type coerced — avoid!)\n\n// Logical operators\nconst isAdult = age => age >= 18\nconsole.log(isAdult(20) && isAdult(17))  // false (AND)\nconsole.log(isAdult(20) || isAdult(17))  // true  (OR)\nconsole.log(!isAdult(17))                // true  (NOT)',
+      },
+    ],
   },
   {
     id: 'js-control-flow',
