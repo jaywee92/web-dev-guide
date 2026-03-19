@@ -4201,6 +4201,15 @@ scheduleUpdate(() => updateCounter(2))
             text: 'npm is both a command-line tool and a registry of 2M+ open-source packages. npm install downloads the package into node_modules and records it in package.json. Use -D for devDependencies (build tools, test runners). Evaluate packages by weekly downloads, last publish date, bundle size, and security audits.',
             codeExample: `# Install a runtime dependency\nnpm install date-fns\n\n# Install a dev-only dependency\nnpm install -D vite\n\n# Remove a package\nnpm uninstall lodash\n\n# Run a script defined in package.json\nnpm run build`,
             language: 'bash',
+            analogy: {
+              icon: '📚',
+              title: 'Step 1 — The world\'s largest code library',
+              text: [
+                'Think of npm as the world\'s largest public library, but for code building blocks. Instead of borrowing books, you borrow reusable packages written by developers worldwide.',
+                'When you run npm install date-fns, you walk up to the librarian (npm CLI), request the "date-fns" book, and the librarian fetches and shelves it in your local reading room (node_modules).',
+                'The registry holds over 2 million packages. Checking weekly downloads and last publish dates is like checking how popular and recently updated a book is before borrowing it.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -4209,6 +4218,15 @@ scheduleUpdate(() => updateCounter(2))
             text: 'package.json is the project manifest: it lists scripts, dependencies, and devDependencies. package-lock.json records exact resolved versions for reproducible installs — always commit it. node_modules is generated from the lockfile and must never be committed.',
             codeExample: `{\n  "name": "my-app",\n  "scripts": {\n    "dev": "vite",\n    "build": "vite build"\n  },\n  "dependencies": {\n    "date-fns": "^3.6.0"\n  },\n  "devDependencies": {\n    "vite": "^5.0.0"\n  }\n}`,
             language: 'javascript',
+            analogy: {
+              icon: '🍽️📋',
+              title: 'Step 2 — Ingredients list + exact recipe card',
+              text: [
+                'package.json is your ingredients list — it says "I need date-fns version 3-ish and vite". It describes roughly what is needed.',
+                'package-lock.json is the exact recipe card — it pins each ingredient to the precise jar and batch number used last time, so every developer\'s kitchen (machine) produces the same dish.',
+                'node_modules is the actual pantry shelf. You never check it into git because anyone can recreate it from the lockfile — shipping the whole pantry would be like emailing someone a suitcase of groceries instead of the recipe.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -4217,6 +4235,15 @@ scheduleUpdate(() => updateCounter(2))
             text: 'A bundler resolves your import graph starting from the entry file, combines all modules, eliminates dead code (tree-shaking), and produces optimized browser output. It also handles CSS imports, image assets, TypeScript compilation, and code-splitting.',
             codeExample: `// app.js — entry point\nimport { format } from 'date-fns'; // from node_modules\nimport './styles.css';              // bundler handles CSS\nimport logo from './logo.png';     // bundler handles assets\n\n// Bundler traces all imports → outputs:\n// dist/index.html\n// dist/assets/app-[hash].js   (minified)\n// dist/assets/app-[hash].css`,
             language: 'javascript',
+            analogy: {
+              icon: '📦🏭',
+              title: 'Step 3 — The packaging machine',
+              text: [
+                'A bundler is like a compiler that takes dozens of raw ingredient files (JS modules, CSS, images) from your factory floor and feeds them through a packaging machine.',
+                'The machine traces every dependency, cuts out unused parts (tree-shaking = trimming excess material), compresses everything tightly (minification), and outputs a single neat delivery box (dist/).',
+                'The browser does not need to understand your import statements or TypeScript — it just receives the optimized output box.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -4225,6 +4252,15 @@ scheduleUpdate(() => updateCounter(2))
             text: 'Webpack is the most mature and configurable, but complex. Rollup excels for libraries with superior tree-shaking. Parcel is zero-config and great for beginners. Vite uses native ESM for instant dev server startup and Rollup for production — the modern default for new projects.',
             codeExample: `# Webpack — explicit config needed\nnpx webpack --config webpack.config.js\n\n# Rollup — ideal for publishing libraries\nnpx rollup -c rollup.config.js\n\n# Parcel — zero config\nnpx parcel index.html\n\n# Vite — instant HMR + Rollup production\nnpm create vite@latest my-app -- --template vanilla`,
             language: 'bash',
+            analogy: {
+              icon: '🏭⚖️',
+              title: 'Step 4 — Different brands of packaging machine',
+              text: [
+                'Webpack is the industrial workhorse — enormously powerful, handles every edge case, but requires a manual to operate. It has been the industry standard for a decade.',
+                'Rollup is the specialist precision cutter — best for publishing libraries where every kilobyte matters. Vite uses it under the hood for production.',
+                'Parcel is the plug-and-play appliance — zero config, great for beginners and small projects. Vite is the modern smart factory: near-instant startup in dev mode (serves raw ESM) and full Rollup optimization for production.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -4233,6 +4269,15 @@ scheduleUpdate(() => updateCounter(2))
             text: 'Vite\'s dev server serves files as native ESM — no bundling step, so startup is near-instant. Hot Module Replacement (HMR) pushes only the changed module to the browser without a full reload, preserving application state. Production builds use Rollup for full optimization.',
             codeExample: `# Start dev server (instant, ESM-native)\nnpm run dev\n# → http://localhost:5173  (HMR enabled)\n\n# Build for production (Rollup, optimized)\nnpm run build\n# → dist/\n#   index.html\n#   assets/index-abc123.js   (minified + tree-shaken)\n#   assets/index-abc123.css`,
             language: 'bash',
+            analogy: {
+              icon: '🪞',
+              title: 'Step 5 — The live preview room',
+              text: [
+                'The dev server is like a live preview room with a two-way mirror. You make a change in the studio, and the preview room instantly reflects it — no need to rebuild the whole set.',
+                'HMR (Hot Module Replacement) is what makes this instant. Instead of reloading the entire page, only the one changed module is swapped in — like replacing a single picture on a wall without repainting the whole room.',
+                'The state of the app (what you typed, where you scrolled) is preserved because the rest of the page was not touched.',
+              ],
+            },
           },
         ],
       },
@@ -4257,6 +4302,116 @@ scheduleUpdate(() => updateCounter(2))
         'Installing devDependencies without -D — they end up in the production bundle.',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Committing node_modules to git',
+        why: 'node_modules can contain tens of thousands of files and hundreds of megabytes. Committing it bloats the repository, causes merge conflicts, and is unnecessary — it is fully reproducible from package-lock.json.',
+        fixLabel: 'Fix — add node_modules to .gitignore',
+        fixCode: `// ❌ Wrong — no .gitignore entry for node_modules
+git add .
+git commit -m "add project" // commits 80,000 files
+
+// ✅ Right — add to .gitignore before first commit
+// .gitignore
+node_modules/
+dist/
+.env
+
+// Then restore cleanly on any machine:
+npm ci  // installs exact versions from lockfile`,
+      },
+      {
+        title: 'Version mismatch after manually editing package.json',
+        why: 'Manually changing a version number in package.json does not update package-lock.json. Running npm install after a manual edit can silently install a different version than teammates have, breaking reproducibility.',
+        fixLabel: 'Fix — always use npm install to update versions',
+        fixCode: `// ❌ Wrong — edit package.json manually then run npm install
+// package.json: "react": "^18.0.0" → "^19.0.0" (hand-edited)
+npm install  // lockfile may not update as expected
+
+// ✅ Right — let npm manage the version bump
+npm install react@19
+// Updates both package.json AND package-lock.json atomically
+
+// In CI, always use npm ci (reads lockfile exactly, never modifies it)
+npm ci`,
+      },
+      {
+        title: 'Import path differences between dev and prod builds',
+        why: 'In dev mode Vite serves files as native ESM and resolves bare imports (import x from \'lib\') via node_modules. In production the bundled output uses hashed asset paths. Code that hard-codes relative paths or assumes a specific file structure can work in dev but break in prod.',
+        fixLabel: 'Fix — use bare imports and Vite\'s alias config',
+        fixCode: `// ❌ Wrong — fragile relative path that breaks after bundling
+import utils from '../../../utils/format.js'
+
+// ✅ Right — configure a path alias in vite.config.js
+// vite.config.js
+import { defineConfig } from 'vite'
+export default defineConfig({
+  resolve: {
+    alias: { '@': '/src' }
+  }
+})
+
+// Then use the alias everywhere
+import utils from '@/utils/format'  // works in dev AND prod`,
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Project Scaffolding',
+        heading: 'Bootstrapping a Vite + React project',
+        description: 'The fastest way to start a modern React app is npm create vite@latest. It sets up package.json, installs dependencies, and gives you a working dev server with HMR in under a minute.',
+        code: `# Scaffold a new React + TypeScript project
+npm create vite@latest my-app -- --template react-ts
+cd my-app
+npm install
+npm run dev
+# → http://localhost:5173 with HMR enabled
+
+# Build for production
+npm run build
+# → dist/ ready to deploy`,
+      },
+      {
+        context: 'CI/CD Pipeline',
+        heading: 'Reproducible installs in GitHub Actions with npm ci',
+        description: 'In CI pipelines, npm ci installs exact versions from package-lock.json and fails loudly if the lockfile is out of sync — guaranteeing every build uses the same dependency tree.',
+        code: `# .github/workflows/build.yml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'        # caches node_modules between runs
+      - run: npm ci           # reads lockfile exactly, never modifies it
+      - run: npm run build
+      - run: npm test`,
+      },
+      {
+        context: 'Bundle Optimization',
+        heading: 'Analyzing bundle size with rollup-plugin-visualizer',
+        description: 'Before shipping, it is worth inspecting what is inside your production bundle. rollup-plugin-visualizer generates an interactive treemap so you can spot oversized dependencies and optimize imports.',
+        code: `// vite.config.ts
+import { defineConfig } from 'vite'
+import { visualizer } from 'rollup-plugin-visualizer'
+
+export default defineConfig({
+  plugins: [
+    visualizer({
+      filename: 'dist/stats.html', // open after build
+      open: true,                  // auto-open in browser
+      gzipSize: true,
+    }),
+  ],
+})
+
+// npm run build  → opens dist/stats.html
+// Look for unexpectedly large packages (e.g. moment.js)
+// Replace with smaller alternatives (e.g. date-fns)`,
+      },
+    ],
   },
   {
     id: 'http-request-cycle',
