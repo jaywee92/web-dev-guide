@@ -16,13 +16,18 @@ if __name__ == '__main__':
     app.run(debug=True)`,
 }
 
-interface Props { topicId: string }
+interface Props {
+  topicId: string
+  starterCode?: string   // overrides defaultCode lookup when provided
+  language?: string      // Monaco language; defaults to 'javascript'
+  storageKey?: string    // usePlayground key; defaults to `monaco-${topicId}`
+}
 
-export default function MonacoPlayground({ topicId }: Props) {
+export default function MonacoPlayground({ topicId, starterCode, language = 'javascript', storageKey }: Props) {
   const { theme } = useAppStore()
   const [code, setCode] = usePlayground<string>(
-    defaultCode[topicId] ?? '// Write your code here',
-    `monaco-${topicId}`
+    starterCode ?? defaultCode[topicId] ?? '// Write your code here',
+    storageKey ?? `monaco-${topicId}`
   )
 
   return (
@@ -43,7 +48,7 @@ export default function MonacoPlayground({ topicId }: Props) {
       </div>
       <Editor
         height="380px"
-        language="python"
+        language={language}
         value={code}
         onChange={v => setCode(v ?? '')}
         theme={theme === 'dark' ? 'vs-dark' : 'light'}
