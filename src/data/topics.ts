@@ -2709,6 +2709,15 @@ export const TOPICS: Topic[] = [
             text: 'The if statement runs a block only when its condition is truthy. else if chains additional conditions. else is the fallback when no condition matches. Conditions are coerced to boolean — any value can be used, not just true/false.',
             codeExample: `const temp = 22;\nif (temp > 30) {\n  console.log('Hot');\n} else if (temp > 20) {\n  console.log('Warm'); // runs\n} else {\n  console.log('Cool');\n}`,
             language: 'javascript',
+            analogy: {
+              icon: '🚦',
+              title: 'Step 1 — if/else: the traffic light',
+              text: [
+                'Think of if/else as a traffic light on a road. The car (execution) checks the light: if it is green, go; else if it is yellow, slow down; else stop.',
+                'Only one path is taken on each trip — the first condition that is true wins and the rest are skipped entirely.',
+                'The else at the end is the catch-all for everything the earlier conditions missed, just like a red light catches everything that is not green or yellow.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -2717,6 +2726,15 @@ export const TOPICS: Topic[] = [
             text: 'switch compares a value against a list of cases using strict equality. Each case needs a break to prevent fall-through into the next case. The default case is the fallback, similar to else.',
             codeExample: `const day = 'Mon';\nswitch (day) {\n  case 'Sat':\n  case 'Sun':\n    console.log('Weekend');\n    break;\n  case 'Mon':\n    console.log('Monday'); // runs\n    break;\n  default:\n    console.log('Weekday');\n}`,
             language: 'javascript',
+            analogy: {
+              icon: '📬',
+              title: 'Step 2 — switch: the post office sorter',
+              text: [
+                'Imagine a postal sorter with labelled slots (cases). A letter (your value) slides along the rail until it matches a label, then drops into that slot.',
+                'Without a break, the letter keeps sliding and falls into every subsequent slot too — this is called fall-through, and it is usually a bug.',
+                'The default slot at the end catches anything that did not match a labelled slot, just like the "miscellaneous" bin at a post office.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -2725,6 +2743,15 @@ export const TOPICS: Topic[] = [
             text: 'The classic for loop has three parts: initialization (let i = 0), condition (i < 10), and update (i++). It is ideal when you know how many iterations you need, especially for arrays.',
             codeExample: `const fruits = ['apple', 'banana', 'cherry'];\nfor (let i = 0; i < fruits.length; i++) {\n  console.log(i, fruits[i]);\n}\n// 0 apple / 1 banana / 2 cherry`,
             language: 'javascript',
+            analogy: {
+              icon: '🏃',
+              title: 'Step 3 — for loop: the lap counter',
+              text: [
+                'A for loop is like a runner on a track. The three parts of the loop header are the starting line (i = 0), the finish condition (i < 10), and the step size (i++) that moves the runner forward after each lap.',
+                'You use a for loop when you already know exactly how many laps need to be run — such as once for every item in an array.',
+                'Without the update step (i++), the runner never moves forward and the loop runs forever — an infinite loop.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -2733,6 +2760,15 @@ export const TOPICS: Topic[] = [
             text: 'while repeats as long as its condition is truthy — the condition is checked before each iteration. do-while always runs the body at least once because the check comes after. Use these when the number of iterations is unknown.',
             codeExample: `let attempts = 0;\nwhile (attempts < 3) {\n  console.log('Attempt', attempts + 1);\n  attempts++;\n}\n\n// do-while: body always runs at least once\nlet n = 5;\ndo {\n  console.log(n--);\n} while (n > 0);`,
             language: 'javascript',
+            analogy: {
+              icon: '🔔',
+              title: 'Step 4 — while/do-while: the alarm clock',
+              text: [
+                'while is like checking your phone before getting out of bed: if the alarm condition is not met, you stay in bed (skip the body). If it is met, you wake up (run the body) and check again.',
+                'do-while is the snooze version: you get out of bed first, do something, then check whether you need to go back. The body always runs at least once, no matter what.',
+                'Use while and do-while when you do not know in advance how many times the loop will run — for example, reading user input until it is valid.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -2741,6 +2777,15 @@ export const TOPICS: Topic[] = [
             text: 'break exits the nearest enclosing loop immediately. continue skips the rest of the current iteration and moves to the next. Both make loops more expressive without needing extra boolean flags.',
             codeExample: `for (let i = 0; i < 10; i++) {\n  if (i === 3) continue; // skip 3\n  if (i === 7) break;    // stop at 7\n  console.log(i);\n}\n// Output: 0 1 2 4 5 6`,
             language: 'javascript',
+            analogy: {
+              icon: '🛑',
+              title: 'Step 5 — break/continue: the conveyor belt controls',
+              text: [
+                'Imagine a factory conveyor belt (the loop). Each item on the belt gets inspected.',
+                'continue is the "skip" button — when you press it, that item is pushed aside and the belt moves on to the next one without processing it.',
+                'break is the emergency stop — the entire belt halts immediately. No more items are processed, regardless of how many are left.',
+              ],
+            },
           },
         ],
       },
@@ -2765,6 +2810,60 @@ export const TOPICS: Topic[] = [
         'Infinite loop: forgetting to update the loop variable so the condition never becomes false.',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Missing break in switch — unintended fall-through',
+        why: 'Without a break, execution slides into the next case automatically. This is rarely what you want and is a very common source of bugs.',
+        fixLabel: 'Fix — add break at the end of each case',
+        fixCode: "// ❌ Wrong — fall-through prints both lines\nconst grade = 'B'\nswitch (grade) {\n  case 'A':\n    console.log('Excellent')\n  case 'B':\n    console.log('Good') // runs\n  case 'C':\n    console.log('Average') // also runs!\n}\n\n// ✅ Right\nswitch (grade) {\n  case 'A':\n    console.log('Excellent')\n    break\n  case 'B':\n    console.log('Good') // only this runs\n    break\n  case 'C':\n    console.log('Average')\n    break\n}",
+      },
+      {
+        title: 'Assignment instead of comparison in if condition',
+        why: 'Using = inside an if condition assigns the value and then evaluates it as a boolean. Non-zero/non-empty values are truthy, so the condition always passes — a silent logic bug.',
+        fixLabel: 'Fix — use === for comparison',
+        fixCode: '// ❌ Wrong — = assigns, not compares\nlet x = 5\nif (x = 10) {\n  console.log("always runs!") // x is now 10\n}\n\n// ✅ Right\nif (x === 10) {\n  console.log("only if x is 10")\n}',
+      },
+      {
+        title: 'Infinite loop — forgetting to update the counter',
+        why: 'If the loop variable never changes, the exit condition is never met and the loop runs forever, freezing the browser tab or crashing Node.',
+        fixLabel: 'Fix — ensure the loop variable changes each iteration',
+        fixCode: '// ❌ Wrong — i never changes\nlet i = 0\nwhile (i < 5) {\n  console.log(i) // runs forever!\n  // i++ is missing\n}\n\n// ✅ Right\nlet i = 0\nwhile (i < 5) {\n  console.log(i)\n  i++ // loop can now terminate\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Form Validation',
+        heading: 'if/else for input checks',
+        description: 'Form validation is one of the most common uses of if/else — checking each field and building an error message before allowing submission.',
+        code: 'function validateForm(email, password) {\n  if (!email.includes("@")) {\n    return "Invalid email address"\n  } else if (password.length < 8) {\n    return "Password must be at least 8 characters"\n  } else {\n    return null // no errors\n  }\n}\n\nconst error = validateForm("alice@example.com", "secret123")\nif (error) console.error(error)',
+      },
+      {
+        context: 'Data Processing',
+        heading: 'for loop over an API response',
+        description: 'When an API returns an array of records, a for loop (or for...of) processes each one — computing totals, filtering, or formatting.',
+        code: 'const orders = [\n  { id: 1, total: 49.99, status: "paid" },\n  { id: 2, total: 19.99, status: "pending" },\n  { id: 3, total: 89.00, status: "paid" },\n]\n\nlet revenue = 0\nfor (const order of orders) {\n  if (order.status === "paid") {\n    revenue += order.total\n  }\n}\nconsole.log("Total revenue:", revenue) // 138.99',
+      },
+      {
+        context: 'Retry Logic',
+        heading: 'while loop for retries',
+        description: 'Network requests sometimes fail. A while loop with a retry counter keeps trying until success or a maximum attempt count is reached.',
+        code: 'async function fetchWithRetry(url, maxAttempts = 3) {\n  let attempt = 0\n  while (attempt < maxAttempts) {\n    try {\n      const res = await fetch(url)\n      if (res.ok) return await res.json()\n    } catch (err) {\n      console.warn(`Attempt ${attempt + 1} failed`)\n    }\n    attempt++\n  }\n  throw new Error("All attempts failed")\n}',
+      },
+    ],
+    playgroundExamples: [
+      {
+        label: 'if / else Chains',
+        code: '// 🎯 Control flow with if / else if / else\n// Change the score and watch which branch runs.\n\nconst score = 73\n\nlet grade\nif (score >= 90) {\n  grade = "A"\n} else if (score >= 80) {\n  grade = "B"\n} else if (score >= 70) {\n  grade = "C"\n} else if (score >= 60) {\n  grade = "D"\n} else {\n  grade = "F"\n}\n\nconsole.log(`Score: ${score} → Grade: ${grade}`)\n\n// Ternary shorthand for a single true/false branch:\nconst passing = score >= 60 ? "Pass" : "Fail"\nconsole.log(`Result: ${passing}`)',
+      },
+      {
+        label: 'for Loop Patterns',
+        code: '// 🎯 Common for loop patterns\n\nconst nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\n\n// 1. Classic indexed loop\nconsole.log("--- Indexed ---")\nfor (let i = 0; i < nums.length; i++) {\n  if (nums[i] % 2 === 0) {\n    process.stdout.write(nums[i] + " ")\n  }\n}\nconsole.log()\n\n// 2. for...of — cleaner when index not needed\nconsole.log("--- for...of ---")\nconst evens = []\nfor (const n of nums) {\n  if (n % 2 === 0) evens.push(n)\n}\nconsole.log("Evens:", evens)\n\n// 3. break and continue\nconsole.log("--- break/continue ---")\nfor (const n of nums) {\n  if (n === 5) continue // skip 5\n  if (n === 8) break    // stop at 8\n  console.log(n)\n}',
+      },
+      {
+        label: 'switch Statement',
+        code: '// 🎯 switch vs if/else — when to use which\n\n// switch is ideal for discrete known values\nfunction getDayType(day) {\n  switch (day) {\n    case "Saturday":\n    case "Sunday":\n      return "Weekend"\n    case "Monday":\n    case "Tuesday":\n    case "Wednesday":\n    case "Thursday":\n    case "Friday":\n      return "Weekday"\n    default:\n      return "Unknown day"\n  }\n}\n\nconst days = ["Monday", "Saturday", "Wednesday", "Sunday"]\nfor (const d of days) {\n  console.log(`${d}: ${getDayType(d)}`)\n}\n\n// Try removing a `break` and observe the fall-through!',
+      },
+    ],
   },
   {
     id: 'js-arrays',
