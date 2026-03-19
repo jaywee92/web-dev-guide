@@ -28,7 +28,7 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
           {t('howItWorks')}
         </h2>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 42fr) minmax(0, 58fr)', gap: 40, alignItems: 'start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 44fr) minmax(0, 56fr)', gap: 40, alignItems: 'start' }}>
           {/* Left: Sticky animation */}
           <div style={{ position: 'sticky', top: 80 }}>
             {/* Animation panel — click to advance */}
@@ -202,7 +202,7 @@ function StepBlock({ step, index, active, onActivate, color }: {
 
       {/* Body */}
       <div style={{ padding: '13px 18px 15px 21px' }}>
-        <p style={{ fontSize: 14, color: 'var(--text)', lineHeight: 1.8, margin: 0, marginBottom: step.codeExample ? 14 : 0 }}>
+        <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.75, margin: 0, marginBottom: step.codeExample ? 12 : 0 }}>
           {step.text}
         </p>
         {step.codeExample && (
