@@ -3203,6 +3203,15 @@ export const TOPICS: Topic[] = [
             text: 'Functions can be declared with the function keyword or assigned as expressions. Declarations are hoisted; expressions are not.',
             codeExample: '// Declaration — hoisted\nfunction greet(name: string) {\n  return `Hello, ${name}`\n}\n\n// Expression — not hoisted\nconst greet = (name: string) => `Hello, ${name}`',
             language: 'typescript',
+            analogy: {
+              icon: '📋',
+              title: 'Step 1 — Declaration vs Expression',
+              text: [
+                'A function declaration is like a laminated recipe card pinned to the kitchen wall. No matter when you walk in, the recipe is already there — hoisting means the JS engine registers it before any code runs.',
+                'A function expression is like writing the recipe on a sticky note at runtime. The sticky note only exists after you write it, so you cannot use it before that line.',
+                'Practical rule: use declarations for functions you want to call anywhere in a module; use expressions (especially arrow functions) for callbacks and one-off helpers.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -3210,6 +3219,15 @@ export const TOPICS: Topic[] = [
             text: 'Each function creates a new scope. Inner functions can access variables from outer scopes — this chain of scopes is called the scope chain.',
             codeExample: 'const outer = "I am outer"\n\nfunction inner() {\n  console.log(outer) // accessible via scope chain\n}\n\ninner() // "I am outer"',
             language: 'javascript',
+            analogy: {
+              icon: '🪆',
+              title: 'Step 2 — Scope Chain',
+              text: [
+                'Think of scopes as Russian nesting dolls. The innermost doll (your function) can see everything inside itself, then peeks into the next doll out, and so on all the way to the global doll.',
+                'Variables are looked up from the inside out — the engine checks the current scope first, then walks outward until it finds the name or runs out of dolls.',
+                'This is why an inner function can read a variable declared in an outer function, but the outer function cannot see variables declared inside the inner one.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -3217,6 +3235,15 @@ export const TOPICS: Topic[] = [
             text: 'Functions are first-class values in JavaScript. A higher-order function takes a function as argument or returns one.',
             codeExample: 'const double = (n: number) => n * 2\n\n// map is a higher-order function\nconst result = [1, 2, 3].map(double)\n// [2, 4, 6]',
             language: 'javascript',
+            analogy: {
+              icon: '🏭',
+              title: 'Step 3 — Higher-Order Functions',
+              text: [
+                'An assembly line manager (higher-order function) does not do the physical work herself — she hands a task card (callback) to each worker on the line.',
+                'map, filter, and reduce are managers: they iterate the conveyor belt and call your function for each item, freeing you from writing the loop yourself.',
+                'You can also have managers that produce other managers — a function that returns a function is a factory, the foundation of patterns like debounce and memoize.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -3225,6 +3252,15 @@ export const TOPICS: Topic[] = [
             text: 'Arrow functions are a compact alternative to function expressions. When the body is a single expression, you can omit the curly braces and return keyword — the value is returned implicitly.',
             codeExample: `// Traditional\nconst double = function(n) { return n * 2; };\n\n// Arrow — explicit return\nconst double2 = (n) => { return n * 2; };\n\n// Arrow — implicit return\nconst double3 = n => n * 2;\n\nconsole.log(double3(5)); // 10`,
             language: 'javascript',
+            analogy: {
+              icon: '✏️',
+              title: 'Step 4 — Arrow Function Syntax',
+              text: [
+                'Arrow functions are shorthand notation — like the difference between writing out "and therefore" versus just writing "∴" in math.',
+                'When the whole function is a single calculation, you drop the curly braces and the return keyword. The result of the expression is returned automatically.',
+                'The trade-off: more concise, but no own this binding — which is either a feature or a limitation depending on context.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -3233,6 +3269,15 @@ export const TOPICS: Topic[] = [
             text: "Arrow functions do not have their own `this`. They inherit `this` from the enclosing scope where they were defined. This makes them ideal for callbacks inside methods, but unsuitable for defining object methods themselves.",
             codeExample: `class Timer {\n  constructor() { this.seconds = 0; }\n  start() {\n    // Arrow keeps 'this' from the class instance\n    setInterval(() => {\n      this.seconds++;\n      console.log(this.seconds);\n    }, 1000);\n  }\n}`,
             language: 'javascript',
+            analogy: {
+              icon: '🪪',
+              title: 'Step 5 — Lexical this',
+              text: [
+                'Think of this as an ID badge. Regular functions get issued a new badge when called — the badge shows whoever called them. Arrow functions never get their own badge; they inherit the badge of the person who hired them.',
+                'Inside a class method, the badge says "Timer instance". An arrow function callback used inside that method keeps that same inherited badge — so this.seconds correctly refers to the Timer.',
+                'A regular function passed as a callback would get a new (often empty) badge from the caller, causing this to be undefined or the wrong object.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -3241,8 +3286,91 @@ export const TOPICS: Topic[] = [
             text: 'Default parameters provide a fallback value when an argument is omitted or undefined. Rest parameters collect all remaining arguments into an array — they must be last in the parameter list.',
             codeExample: `// Default parameter — fallback when arg is omitted\nfunction greet(name = 'World') {\n  return \`Hello, \${name}!\`;\n}\ngreet();        // "Hello, World!"\ngreet('Alice'); // "Hello, Alice!"\n\n// Rest parameters — collect remaining args as array\nfunction sum(...nums) {\n  return nums.reduce((total, n) => total + n, 0);\n}\nsum(1, 2, 3, 4); // 10`,
             language: 'javascript',
+            analogy: {
+              icon: '📝',
+              title: 'Step 6 — Default & Rest Parameters',
+              text: [
+                'Imagine an order form at a restaurant. Some fields have pre-filled defaults ("Medium" size, "No extras") — if you leave them blank the kitchen uses the default. That is a default parameter.',
+                'The last field on the form is "Additional toppings: ___" where you can write any number of items. That catch-all field is a rest parameter — it collects everything you pass that did not match an earlier slot.',
+                'The rule that rest must be last mirrors the form design: you cannot have a catch-all field in the middle.',
+              ],
+            },
           },
         ],
+      },
+      { id: 'playground', type: 'playground', steps: [] },
+    ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Function declaration', code: 'function greet(name) {\n  return `Hello, ${name}`;\n}', note: 'Hoisted — can be called before the line it appears on' },
+        { label: 'Arrow function', code: 'const double = n => n * 2;', note: 'No own this; implicit return for single expressions' },
+        { label: 'Default parameter', code: "function greet(name = 'World') { return `Hi ${name}`; }", note: 'Fallback used when argument is omitted or undefined' },
+        { label: 'Rest parameter', code: 'function sum(...nums) { return nums.reduce((a, n) => a + n, 0); }', note: 'Must be the last parameter; collects remaining args into an array' },
+        { label: 'Higher-order function', code: 'const doubled = [1,2,3].map(n => n * 2); // [2,4,6]', note: 'map / filter / reduce take a callback function as argument' },
+      ],
+      patterns: [
+        { title: 'Debounce factory', code: 'function debounce(fn, ms) {\n  let timer;\n  return (...args) => {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn(...args), ms);\n  };\n}', language: 'javascript' },
+        { title: 'Lexical this in class', code: 'class Timer {\n  constructor() { this.n = 0; }\n  start() {\n    setInterval(() => { this.n++; }, 1000);\n  }\n}', language: 'javascript' },
+      ],
+      whenToUse: 'Use function declarations for top-level utilities you want hoisted. Use arrow functions for callbacks and inline expressions. Prefer rest params over the arguments object.',
+      commonMistakes: [
+        'Calling a function expression before its declaration — unlike function declarations, const/let assignments are not hoisted.',
+        'Using an arrow function as an object method — it will capture the wrong this (the outer scope, not the object).',
+        'Placing a rest parameter before other parameters — rest must always be the last parameter.',
+      ],
+    },
+    commonErrors: [
+      {
+        title: 'Calling a function expression before it is defined',
+        why: 'const and let bindings are not hoisted to a usable value. Only function declarations are fully hoisted, so calling a const arrow function above its definition throws a ReferenceError.',
+        fixLabel: 'Fix — move the call below the definition, or use a declaration',
+        fixCode: '// ❌ Wrong\nconsole.log(add(2, 3)); // ReferenceError\nconst add = (a, b) => a + b;\n\n// ✅ Right (expression — call after definition)\nconst add = (a, b) => a + b;\nconsole.log(add(2, 3)); // 5\n\n// ✅ Also right (declaration — hoisted)\nconsole.log(add(2, 3)); // 5\nfunction add(a, b) { return a + b; }',
+      },
+      {
+        title: 'this is undefined inside a regular callback',
+        why: 'When you pass a regular (non-arrow) method as a callback, it loses its object binding. The function is called without a receiver, so this becomes undefined in strict mode.',
+        fixLabel: 'Fix — use an arrow function wrapper or .bind()',
+        fixCode: '// ❌ Wrong\nclass Timer {\n  constructor() { this.count = 0; }\n  start() {\n    setInterval(function() {\n      this.count++; // TypeError: this is undefined\n    }, 1000);\n  }\n}\n\n// ✅ Right — arrow function inherits this\nclass Timer {\n  constructor() { this.count = 0; }\n  start() {\n    setInterval(() => {\n      this.count++; // works!\n    }, 1000);\n  }\n}',
+      },
+      {
+        title: 'Rest parameter is not the last parameter',
+        why: 'JavaScript requires the rest parameter (...args) to be the final parameter. Putting it before other parameters is a SyntaxError because the engine cannot know where the "rest" ends.',
+        fixLabel: 'Fix — move rest to the last position',
+        fixCode: '// ❌ Wrong — SyntaxError\nfunction log(...messages, level) {\n  console.log(level, messages);\n}\n\n// ✅ Right — rest is last\nfunction log(level, ...messages) {\n  console.log(level, messages);\n}\nlog("info", "hello", "world"); // "info" ["hello","world"]',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Event handler with arrow function',
+        description: 'React component methods are often arrow functions so they keep the correct this binding when passed as JSX event handlers, avoiding the need for .bind() in the constructor.',
+        code: 'class LoginForm extends React.Component {\n  constructor(props) {\n    super(props);\n    this.state = { email: \'\' };\n  }\n  // Arrow keeps `this` bound to the instance\n  handleChange = (e) => {\n    this.setState({ email: e.target.value });\n  };\n  render() {\n    return <input onChange={this.handleChange} />;\n  }\n}',
+      },
+      {
+        context: 'Array Processing',
+        heading: 'Named function passed to .map()',
+        description: 'Extracting the callback into a named function makes the .map() call self-documenting and makes the transformer easy to test in isolation.',
+        code: 'function formatUser(user) {\n  return {\n    id: user.id,\n    label: `${user.firstName} ${user.lastName}`,\n    avatar: user.avatarUrl ?? \'/default.png\',\n  };\n}\n\nconst formatted = rawUsers.map(formatUser);\n// Each element is now { id, label, avatar }',
+      },
+      {
+        context: 'Utility Library',
+        heading: 'Debounce higher-order function',
+        description: 'debounce is a classic higher-order function: it takes a function and a delay, and returns a new function that postpones calling the original until the user stops typing.',
+        code: 'function debounce(fn, delayMs) {\n  let timerId;\n  return function(...args) {\n    clearTimeout(timerId);\n    timerId = setTimeout(() => fn(...args), delayMs);\n  };\n}\n\nconst onSearch = debounce((query) => {\n  fetchResults(query);\n}, 300);\n\nsearchInput.addEventListener(\'input\', e => onSearch(e.target.value));',
+      },
+    ],
+    playgroundExamples: [
+      {
+        label: 'Hoisting Demo',
+        code: '// 🎯 Hoisting: Declaration vs Expression\n// Declarations are available before their line;\n// expressions throw ReferenceError if called too early.\n\n// ✅ Declaration — hoisted, works fine\nconsole.log("greet:", greet("World")); // Hello, World!\n\nfunction greet(name = "World") {\n  return `Hello, ${name}!`;\n}\n\n// ❌ Expression — NOT hoisted\n// Uncommenting the next line would throw ReferenceError:\n// console.log(double(5));\n\nconst double = n => n * 2;\nconsole.log("double:", double(5)); // 10\n\n// Rest parameters collect extra args as an array\nfunction sum(first, ...rest) {\n  return rest.reduce((total, n) => total + n, first);\n}\nconsole.log("sum:", sum(1, 2, 3, 4)); // 10',
+      },
+      {
+        label: 'Higher-Order Functions',
+        code: '// 🎯 Higher-Order Functions with map, filter, reduce\n// Functions are first-class — pass them like any value.\n\nconst products = [\n  { name: "Laptop", price: 999, inStock: true },\n  { name: "Mouse",  price: 29,  inStock: true },\n  { name: "Desk",   price: 450, inStock: false },\n  { name: "Chair",  price: 300, inStock: true },\n];\n\n// 1. filter — keep only in-stock items\nconst available = products.filter(p => p.inStock);\nconsole.log("In stock:", available.map(p => p.name));\n\n// 2. map — extract prices of available items\nconst prices = available.map(p => p.price);\nconsole.log("Prices:", prices);\n\n// 3. reduce — total cost\nconst total = prices.reduce((sum, price) => sum + price, 0);\nconsole.log("Total:", total); // 1328',
+      },
+      {
+        label: 'Lexical this',
+        code: '// 🎯 Lexical this in Arrow Functions\n// Arrow functions capture `this` from where they are\n// defined, not where they are called.\n\nfunction Stopwatch() {\n  this.seconds = 0;\n\n  // Arrow: inherits `this` from Stopwatch constructor\n  this.tick = () => {\n    this.seconds++;\n    console.log("Elapsed:", this.seconds, "s");\n  };\n\n  // Regular function: `this` is undefined when detached\n  this.tickBroken = function() {\n    // Uncommenting would throw TypeError in strict mode:\n    // this.seconds++;\n    console.log("Regular function — this:", typeof this);\n  };\n}\n\nconst sw = new Stopwatch();\nsw.tick();        // Elapsed: 1 s\nsw.tick();        // Elapsed: 2 s\n\nconst detached = sw.tick; // pass to setTimeout, etc.\ndetached();               // Elapsed: 3 s — still works!',
       },
     ],
   },
