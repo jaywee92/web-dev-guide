@@ -3,21 +3,55 @@
     "title": "HTTP-Request-Zyklus",
     "description": "Was passiert zwischen der Eingabe einer URL und dem Erscheinen einer Webseite",
     "steps": [
-      { "animationStep": 0, "heading": "Der Client sendet eine Anfrage", "text": "Dein Browser (der Client) sendet eine HTTP-Anfrage an einen Server. Sie enthält die Methode (GET, POST), die URL und Header." },
-      { "animationStep": 1, "heading": "DNS-Auflösung", "text": "Der Domainname wird von einem DNS-Server in eine IP-Adresse aufgelöst. Wie eine Telefonbuchsuche." },
-      { "animationStep": 2, "heading": "Der Server verarbeitet", "text": "Der Server empfängt die Anfrage, führt deinen Anwendungscode aus (Flask, Node.js) und kann eine Datenbank abfragen." },
-      { "animationStep": 3, "heading": "Datenbankabfrage", "text": "Die App fragt die Datenbank (PostgreSQL, SQLite) ab und wartet auf Ergebnisse." },
-      { "animationStep": 4, "heading": "Antwort zurückgesendet", "text": "Der Server sendet eine HTTP-Antwort: Statuscode (200 OK, 404 Not Found), Header und den Body (HTML, JSON)." }
+      {
+        "animationStep": 0,
+        "heading": "Der Client sendet eine Anfrage",
+        "text": "Dein Browser (der Client) sendet eine HTTP-Anfrage an einen Server. Sie enthält die Methode (GET, POST), die URL und Header."
+      },
+      {
+        "animationStep": 1,
+        "heading": "DNS-Auflösung",
+        "text": "Der Domainname wird von einem DNS-Server in eine IP-Adresse aufgelöst. Wie eine Telefonbuchsuche."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Der Server verarbeitet",
+        "text": "Der Server empfängt die Anfrage, führt deinen Anwendungscode aus (Flask, Node.js) und kann eine Datenbank abfragen."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Datenbankabfrage",
+        "text": "Die App fragt die Datenbank (PostgreSQL, SQLite) ab und wartet auf Ergebnisse."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Antwort zurückgesendet",
+        "text": "Der Server sendet eine HTTP-Antwort: Statuscode (200 OK, 404 Not Found), Header und den Body (HTML, JSON)."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Anfrage-Struktur", "note": "Methode + Pfad + Header" },
-        { "label": "Anfrage mit Body", "note": "Body wird bei POST/PUT/PATCH gesendet" },
-        { "label": "Antwort-Struktur", "note": "Status + Header + Body" },
-        { "label": "Häufige Anfrage-Header", "note": "Header beschreiben die Anfrage" }
+        {
+          "label": "Anfrage-Struktur",
+          "note": "Methode + Pfad + Header"
+        },
+        {
+          "label": "Anfrage mit Body",
+          "note": "Body wird bei POST/PUT/PATCH gesendet"
+        },
+        {
+          "label": "Antwort-Struktur",
+          "note": "Status + Header + Body"
+        },
+        {
+          "label": "Häufige Anfrage-Header",
+          "note": "Header beschreiben die Anfrage"
+        }
       ],
       "patterns": [
-        { "title": "Vollständiger Anfrage-/Antwortzyklus" }
+        {
+          "title": "Vollständiger Anfrage-/Antwortzyklus"
+        }
       ],
       "whenToUse": "Das Verständnis des HTTP-Request-Zyklus hilft dir, Netzwerkprobleme zu debuggen, Server-Logs zu lesen und APIs zu entwerfen. Jeder fetch()-Aufruf in JavaScript folgt diesem Zyklus.",
       "commonMistakes": [
@@ -31,22 +65,59 @@
     "title": "REST & HTTP-Methoden",
     "description": "GET, POST, PUT, DELETE — die Verben des Webs",
     "steps": [
-      { "animationStep": 0, "heading": "REST — Ressourcen als URLs", "text": "REST (Representational State Transfer) ist eine Konvention für das Entwerfen von APIs. Ressourcen werden als URLs dargestellt, und HTTP-Methoden drücken die Aktion aus." },
-      { "animationStep": 1, "heading": "GET — Daten abrufen", "text": "GET fragt Daten vom Server ab. GET-Anfragen sollten sicher (keine Seiteneffekte) und idempotent (gleiches Ergebnis jedes Mal) sein. Kein Anfrage-Body." },
-      { "animationStep": 2, "heading": "POST — eine Ressource erstellen", "text": "POST sendet Daten, um eine neue Ressource zu erstellen. Der Server gibt die erstellte Ressource mit Status 201 Created zurück." },
-      { "animationStep": 3, "heading": "PUT und PATCH", "text": "PUT ersetzt die gesamte Ressource. PATCH aktualisiert nur die angegebenen Felder. Beide zielen auf eine bestimmte Ressource per ID in der URL ab." },
-      { "animationStep": 4, "heading": "DELETE — eine Ressource entfernen", "text": "DELETE entfernt die angegebene Ressource. Ein erfolgreicher Löschvorgang gibt typischerweise 204 No Content zurück." }
+      {
+        "animationStep": 0,
+        "heading": "REST — Ressourcen als URLs",
+        "text": "REST (Representational State Transfer) ist eine Konvention für das Entwerfen von APIs. Ressourcen werden als URLs dargestellt, und HTTP-Methoden drücken die Aktion aus."
+      },
+      {
+        "animationStep": 1,
+        "heading": "GET — Daten abrufen",
+        "text": "GET fragt Daten vom Server ab. GET-Anfragen sollten sicher (keine Seiteneffekte) und idempotent (gleiches Ergebnis jedes Mal) sein. Kein Anfrage-Body."
+      },
+      {
+        "animationStep": 2,
+        "heading": "POST — eine Ressource erstellen",
+        "text": "POST sendet Daten, um eine neue Ressource zu erstellen. Der Server gibt die erstellte Ressource mit Status 201 Created zurück."
+      },
+      {
+        "animationStep": 3,
+        "heading": "PUT und PATCH",
+        "text": "PUT ersetzt die gesamte Ressource. PATCH aktualisiert nur die angegebenen Felder. Beide zielen auf eine bestimmte Ressource per ID in der URL ab."
+      },
+      {
+        "animationStep": 4,
+        "heading": "DELETE — eine Ressource entfernen",
+        "text": "DELETE entfernt die angegebene Ressource. Ein erfolgreicher Löschvorgang gibt typischerweise 204 No Content zurück."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "GET — auflisten / lesen", "note": "Kein Body, sicher & idempotent" },
-        { "label": "POST — erstellen", "note": "Gibt erstellte Ressource zurück" },
-        { "label": "PUT — ersetzen", "note": "Idempotenter vollständiger Ersatz" },
-        { "label": "PATCH — teilweise aktualisieren", "note": "Nur geänderte Felder senden" },
-        { "label": "DELETE — entfernen", "note": "Kein Antwort-Body bei Erfolg" }
+        {
+          "label": "GET — auflisten / lesen",
+          "note": "Kein Body, sicher & idempotent"
+        },
+        {
+          "label": "POST — erstellen",
+          "note": "Gibt erstellte Ressource zurück"
+        },
+        {
+          "label": "PUT — ersetzen",
+          "note": "Idempotenter vollständiger Ersatz"
+        },
+        {
+          "label": "PATCH — teilweise aktualisieren",
+          "note": "Nur geänderte Felder senden"
+        },
+        {
+          "label": "DELETE — entfernen",
+          "note": "Kein Antwort-Body bei Erfolg"
+        }
       ],
       "patterns": [
-        { "title": "RESTful Endpunkt-Design" }
+        {
+          "title": "RESTful Endpunkt-Design"
+        }
       ],
       "whenToUse": "Verwende REST-Konventionen beim Erstellen oder Konsumieren von HTTP-APIs. Konsistente Methoden- und URL-Konventionen machen APIs intuitiv und selbst-dokumentierend.",
       "commonMistakes": [
@@ -60,21 +131,55 @@
     "title": "Statuscodes",
     "description": "Was 200, 404 und 500 bedeuten — und warum sie wichtig sind",
     "steps": [
-      { "animationStep": 0, "heading": "Jede Antwort hat einen Statuscode", "text": "HTTP-Statuscodes sind dreistellige Zahlen, die nach Kategorien gruppiert sind. Die erste Ziffer zeigt Erfolg, Weiterleitung oder Fehler an." },
-      { "animationStep": 1, "heading": "2xx — Erfolg", "text": "200 OK ist die Standard-Erfolgsantwort. 201 Created wird nach einem erfolgreichen POST zurückgegeben. 204 No Content bedeutet Erfolg ohne Body." },
-      { "animationStep": 2, "heading": "3xx — Weiterleitung", "text": "301 Moved Permanently teilt dem Client mit, dass die Ressource eine neue URL hat. 302 Found ist eine temporäre Weiterleitung." },
-      { "animationStep": 3, "heading": "4xx — Client-Fehler", "text": "4xx-Fehler bedeuten, dass der Client einen Fehler gemacht hat. 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found." },
-      { "animationStep": 4, "heading": "5xx — Server-Fehler", "text": "5xx-Fehler bedeuten, dass auf der Serverseite etwas schief gelaufen ist — nicht der Fehler des Clients." }
+      {
+        "animationStep": 0,
+        "heading": "Jede Antwort hat einen Statuscode",
+        "text": "HTTP-Statuscodes sind dreistellige Zahlen, die nach Kategorien gruppiert sind. Die erste Ziffer zeigt Erfolg, Weiterleitung oder Fehler an."
+      },
+      {
+        "animationStep": 1,
+        "heading": "2xx — Erfolg",
+        "text": "200 OK ist die Standard-Erfolgsantwort. 201 Created wird nach einem erfolgreichen POST zurückgegeben. 204 No Content bedeutet Erfolg ohne Body."
+      },
+      {
+        "animationStep": 2,
+        "heading": "3xx — Weiterleitung",
+        "text": "301 Moved Permanently teilt dem Client mit, dass die Ressource eine neue URL hat. 302 Found ist eine temporäre Weiterleitung."
+      },
+      {
+        "animationStep": 3,
+        "heading": "4xx — Client-Fehler",
+        "text": "4xx-Fehler bedeuten, dass der Client einen Fehler gemacht hat. 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found."
+      },
+      {
+        "animationStep": 4,
+        "heading": "5xx — Server-Fehler",
+        "text": "5xx-Fehler bedeuten, dass auf der Serverseite etwas schief gelaufen ist — nicht der Fehler des Clients."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "2xx — Erfolg", "note": "Alles hat geklappt" },
-        { "label": "3xx — Weiterleitung", "note": "Client soll woanders hingehen" },
-        { "label": "4xx — Client-Fehler", "note": "Fehler des Clients" },
-        { "label": "5xx — Server-Fehler", "note": "Fehler des Servers" }
+        {
+          "label": "2xx — Erfolg",
+          "note": "Alles hat geklappt"
+        },
+        {
+          "label": "3xx — Weiterleitung",
+          "note": "Client soll woanders hingehen"
+        },
+        {
+          "label": "4xx — Client-Fehler",
+          "note": "Fehler des Clients"
+        },
+        {
+          "label": "5xx — Server-Fehler",
+          "note": "Fehler des Servers"
+        }
       ],
       "patterns": [
-        { "title": "Fehlerbehandlung nach Statusbereich" }
+        {
+          "title": "Fehlerbehandlung nach Statusbereich"
+        }
       ],
       "whenToUse": "Lies Statuscodes, um zu verstehen, was bei einem API-Aufruf passiert ist. Gib den korrekten Status von deinen eigenen APIs zurück, um die Absicht klar zu kommunizieren.",
       "commonMistakes": [
@@ -111,12 +216,23 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "SSR", "note": "Schneller First Paint, gutes SEO" },
-        { "label": "CSR", "note": "Schnelle Navigation, langsames erstes Laden" },
-        { "label": "SSG", "note": "Am schnellsten, kein Server nötig" }
+        {
+          "label": "SSR",
+          "note": "Schneller First Paint, gutes SEO"
+        },
+        {
+          "label": "CSR",
+          "note": "Schnelle Navigation, langsames erstes Laden"
+        },
+        {
+          "label": "SSG",
+          "note": "Am schnellsten, kein Server nötig"
+        }
       ],
       "patterns": [
-        { "title": "Pro Route wählen (Next.js)" }
+        {
+          "title": "Pro Route wählen (Next.js)"
+        }
       ],
       "whenToUse": "Verwende SSR für inhaltlich aktuelle, SEO-kritische Seiten (Produktseiten, Nachrichten). CSR für Dashboards und App-UIs hinter einem Login. SSG für Marketing-Seiten, Dokumentationen und Blogs.",
       "commonMistakes": [
@@ -158,12 +274,23 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "CREATE TABLE", "note": "Schema mit Typen und Constraints definieren" },
-        { "label": "Häufige Datentypen", "note": "Meist verwendete PostgreSQL-Typen" },
-        { "label": "Constraints", "note": "Datenintegrität erzwingen" }
+        {
+          "label": "CREATE TABLE",
+          "note": "Schema mit Typen und Constraints definieren"
+        },
+        {
+          "label": "Häufige Datentypen",
+          "note": "Meist verwendete PostgreSQL-Typen"
+        },
+        {
+          "label": "Constraints",
+          "note": "Datenintegrität erzwingen"
+        }
       ],
       "patterns": [
-        { "title": "Tabelle mit FK" }
+        {
+          "title": "Tabelle mit FK"
+        }
       ],
       "whenToUse": "Verwende eine relationale Datenbank (PostgreSQL), wenn deine Daten Beziehungen haben, ACID-Garantien benötigt werden oder komplexe Abfragen erforderlich sind. Füge einen Key-Value-Store (Redis) für Caching oder Sessions hinzu.",
       "commonMistakes": [
@@ -177,27 +304,83 @@
     "title": "SQL-Abfragen",
     "description": "SELECT, WHERE, ORDER BY — Daten aus PostgreSQL lesen",
     "steps": [
-      { "animationStep": 0, "heading": "Tabellen speichern Datenzeilen", "text": "Eine Datenbanktabelle ist wie eine Tabellenkalkulation — Zeilen sind Datensätze, Spalten sind Felder. Jede Tabelle hat ein definiertes Schema." },
-      { "animationStep": 1, "heading": "SELECT", "text": "SELECT ruft Daten ab. * bedeutet alle Spalten. Du kannst Spaltennamen angeben, um nur das zurückzugeben, was du benötigst." },
-      { "animationStep": 2, "heading": "WHERE — Zeilen filtern", "text": "WHERE fügt Bedingungen hinzu, um zu filtern, welche Zeilen zurückgegeben werden. Verwende AND und OR für mehrere Bedingungen." },
-      { "animationStep": 3, "heading": "ORDER BY — Ergebnisse sortieren", "text": "ORDER BY sortiert das Ergebnis. ASC ist aufsteigend (Standard), DESC ist absteigend. Nach mehreren Spalten sortieren möglich." },
-      { "animationStep": 4, "heading": "LIMIT — Ergebnisanzahl steuern", "text": "LIMIT begrenzt die Anzahl der zurückgegebenen Zeilen. In Kombination mit OFFSET implementiert es Paginierung." },
-      { "animationStep": 5, "heading": "SELECT mit WHERE und ORDER BY", "text": "WHERE filtert Zeilen, die eine Bedingung erfüllen. Du kannst mehrere Bedingungen mit AND und OR kombinieren. ORDER BY sortiert Ergebnisse — ASC (Standard) für aufsteigend, DESC für absteigend. Alias immer mehrdeutige Spalten in Multi-Tabellen-Abfragen." },
-      { "animationStep": 6, "heading": "Aggregatfunktionen: COUNT, SUM, AVG", "text": "Aggregatfunktionen berechnen ein einzelnes Ergebnis aus einer Menge von Zeilen. COUNT(*) zählt Zeilen, SUM addiert numerische Werte, AVG berechnet den Durchschnitt, MIN/MAX finden Extremwerte. Sie werden typischerweise mit GROUP BY kombiniert." },
-      { "animationStep": 7, "heading": "GROUP BY und HAVING", "text": "GROUP BY fasst Zeilen, die denselben Wert in einer Spalte teilen, zu einer einzelnen Zeile zusammen, sodass Aggregate pro Gruppe operieren. HAVING filtert Gruppen nach der Aggregation — wie WHERE, aber für Gruppen." },
-      { "animationStep": 8, "heading": "HAVING vs. WHERE", "text": "WHERE filtert einzelne Zeilen, bevor GROUP BY ausgeführt wird. HAVING filtert Gruppen nach GROUP BY — es kann auf Aggregatfunktionen verweisen. Faustregel: Wenn deine Bedingung COUNT, SUM oder AVG verwendet, nutze HAVING; andernfalls WHERE. Beide können in derselben Abfrage vorkommen." },
-      { "animationStep": 9, "heading": "Subqueries", "text": "Eine Subquery ist ein SELECT, das innerhalb einer anderen Abfrage verschachtelt ist. Die innere Abfrage wird zuerst ausgeführt; ihr Ergebnis wird von der äußeren Abfrage verwendet. Skalare Subqueries geben einen einzelnen Wert zurück (verwendbar in WHERE). IN-Subqueries geben eine Werteliste zurück. Korrelierte Subqueries referenzieren Spalten der äußeren Abfrage — mächtig, aber sie laufen einmal pro äußerer Zeile; bevorzuge JOINs für große Datensätze." }
+      {
+        "animationStep": 0,
+        "heading": "Tabellen speichern Datenzeilen",
+        "text": "Eine Datenbanktabelle ist wie eine Tabellenkalkulation — Zeilen sind Datensätze, Spalten sind Felder. Jede Tabelle hat ein definiertes Schema."
+      },
+      {
+        "animationStep": 1,
+        "heading": "SELECT",
+        "text": "SELECT ruft Daten ab. * bedeutet alle Spalten. Du kannst Spaltennamen angeben, um nur das zurückzugeben, was du benötigst."
+      },
+      {
+        "animationStep": 2,
+        "heading": "WHERE — Zeilen filtern",
+        "text": "WHERE fügt Bedingungen hinzu, um zu filtern, welche Zeilen zurückgegeben werden. Verwende AND und OR für mehrere Bedingungen."
+      },
+      {
+        "animationStep": 3,
+        "heading": "ORDER BY — Ergebnisse sortieren",
+        "text": "ORDER BY sortiert das Ergebnis. ASC ist aufsteigend (Standard), DESC ist absteigend. Nach mehreren Spalten sortieren möglich."
+      },
+      {
+        "animationStep": 4,
+        "heading": "LIMIT — Ergebnisanzahl steuern",
+        "text": "LIMIT begrenzt die Anzahl der zurückgegebenen Zeilen. In Kombination mit OFFSET implementiert es Paginierung."
+      },
+      {
+        "animationStep": 5,
+        "heading": "SELECT mit WHERE und ORDER BY",
+        "text": "WHERE filtert Zeilen, die eine Bedingung erfüllen. Du kannst mehrere Bedingungen mit AND und OR kombinieren. ORDER BY sortiert Ergebnisse — ASC (Standard) für aufsteigend, DESC für absteigend. Alias immer mehrdeutige Spalten in Multi-Tabellen-Abfragen."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Aggregatfunktionen: COUNT, SUM, AVG",
+        "text": "Aggregatfunktionen berechnen ein einzelnes Ergebnis aus einer Menge von Zeilen. COUNT(*) zählt Zeilen, SUM addiert numerische Werte, AVG berechnet den Durchschnitt, MIN/MAX finden Extremwerte. Sie werden typischerweise mit GROUP BY kombiniert."
+      },
+      {
+        "animationStep": 7,
+        "heading": "GROUP BY und HAVING",
+        "text": "GROUP BY fasst Zeilen, die denselben Wert in einer Spalte teilen, zu einer einzelnen Zeile zusammen, sodass Aggregate pro Gruppe operieren. HAVING filtert Gruppen nach der Aggregation — wie WHERE, aber für Gruppen."
+      },
+      {
+        "animationStep": 8,
+        "heading": "HAVING vs. WHERE",
+        "text": "WHERE filtert einzelne Zeilen, bevor GROUP BY ausgeführt wird. HAVING filtert Gruppen nach GROUP BY — es kann auf Aggregatfunktionen verweisen. Faustregel: Wenn deine Bedingung COUNT, SUM oder AVG verwendet, nutze HAVING; andernfalls WHERE. Beide können in derselben Abfrage vorkommen."
+      },
+      {
+        "animationStep": 9,
+        "heading": "Subqueries",
+        "text": "Eine Subquery ist ein SELECT, das innerhalb einer anderen Abfrage verschachtelt ist. Die innere Abfrage wird zuerst ausgeführt; ihr Ergebnis wird von der äußeren Abfrage verwendet. Skalare Subqueries geben einen einzelnen Wert zurück (verwendbar in WHERE). IN-Subqueries geben eine Werteliste zurück. Korrelierte Subqueries referenzieren Spalten der äußeren Abfrage — mächtig, aber sie laufen einmal pro äußerer Zeile; bevorzuge JOINs für große Datensätze."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "SELECT mit WHERE", "note": "Zeilen mit Bedingungen filtern" },
-        { "label": "ORDER BY + LIMIT", "note": "Sortieren + paginieren" },
-        { "label": "COUNT / AVG mit GROUP BY", "note": "Aggregat pro Gruppe" },
-        { "label": "Parametrisierte Abfrage", "note": "Immer $1-Parameter verwenden — niemals String-Interpolation" }
+        {
+          "label": "SELECT mit WHERE",
+          "note": "Zeilen mit Bedingungen filtern"
+        },
+        {
+          "label": "ORDER BY + LIMIT",
+          "note": "Sortieren + paginieren"
+        },
+        {
+          "label": "COUNT / AVG mit GROUP BY",
+          "note": "Aggregat pro Gruppe"
+        },
+        {
+          "label": "Parametrisierte Abfrage",
+          "note": "Immer $1-Parameter verwenden — niemals String-Interpolation"
+        }
       ],
       "patterns": [
-        { "title": "Filtern + sortieren + paginieren" },
-        { "title": "Aggregat mit HAVING" }
+        {
+          "title": "Filtern + sortieren + paginieren"
+        },
+        {
+          "title": "Aggregat mit HAVING"
+        }
       ],
       "whenToUse": "Verwende SELECT-Abfragen, wann immer du Daten aus PostgreSQL lesen musst. Füge WHERE zum Filtern, ORDER BY zum Sortieren, LIMIT/OFFSET zur Paginierung und GROUP BY für Aggregate hinzu.",
       "commonMistakes": [
@@ -211,22 +394,58 @@
     "title": "JOINs",
     "description": "Daten aus mehreren Tabellen mit INNER und LEFT JOIN kombinieren",
     "steps": [
-      { "animationStep": 0, "heading": "Daten leben in separaten Tabellen", "text": "In einer relationalen Datenbank sind Daten auf Tabellen verteilt, um Duplikate zu vermeiden. Eine users-Tabelle und eine posts-Tabelle sind durch einen Fremdschlüssel verknüpft." },
-      { "animationStep": 1, "heading": "Fremdschlüssel verknüpfen Tabellen", "text": "Der Fremdschlüssel ist eine Spalte, die auf den Primärschlüssel einer anderen Tabelle verweist. So werden Beziehungen definiert." },
-      { "animationStep": 2, "heading": "INNER JOIN", "text": "INNER JOIN gibt Zeilen zurück, bei denen in beiden Tabellen eine Übereinstimmung vorliegt. Wenn ein Benutzer keine Beiträge hat, erscheint er nicht im Ergebnis." },
-      { "animationStep": 3, "heading": "LEFT JOIN", "text": "LEFT JOIN gibt alle Zeilen aus der linken Tabelle zurück, mit NULL für fehlende Übereinstimmungen. Verwende dies, wenn du Ergebnisse möchtest, auch wenn keine Übereinstimmung existiert." },
-      { "animationStep": 4, "heading": "Aliase und mehrere Joins", "text": "Verwende Aliase, um Tabellennamen zu kürzen. Du kannst mehrere JOINs verketten, um drei oder mehr Tabellen zu kombinieren." }
+      {
+        "animationStep": 0,
+        "heading": "Daten leben in separaten Tabellen",
+        "text": "In einer relationalen Datenbank sind Daten auf Tabellen verteilt, um Duplikate zu vermeiden. Eine users-Tabelle und eine posts-Tabelle sind durch einen Fremdschlüssel verknüpft."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Fremdschlüssel verknüpfen Tabellen",
+        "text": "Der Fremdschlüssel ist eine Spalte, die auf den Primärschlüssel einer anderen Tabelle verweist. So werden Beziehungen definiert."
+      },
+      {
+        "animationStep": 2,
+        "heading": "INNER JOIN",
+        "text": "INNER JOIN gibt Zeilen zurück, bei denen in beiden Tabellen eine Übereinstimmung vorliegt. Wenn ein Benutzer keine Beiträge hat, erscheint er nicht im Ergebnis."
+      },
+      {
+        "animationStep": 3,
+        "heading": "LEFT JOIN",
+        "text": "LEFT JOIN gibt alle Zeilen aus der linken Tabelle zurück, mit NULL für fehlende Übereinstimmungen. Verwende dies, wenn du Ergebnisse möchtest, auch wenn keine Übereinstimmung existiert."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Aliase und mehrere Joins",
+        "text": "Verwende Aliase, um Tabellennamen zu kürzen. Du kannst mehrere JOINs verketten, um drei oder mehr Tabellen zu kombinieren."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "INNER JOIN", "note": "Nur Zeilen mit Übereinstimmungen in beiden Tabellen" },
-        { "label": "LEFT JOIN", "note": "Alle linken Zeilen, NULL für fehlende rechte" },
-        { "label": "Tabellenaliase", "note": "Alias mit kurzem Namen für Lesbarkeit" },
-        { "label": "Mehrfache JOIN-Kette", "note": "Joins für drei oder mehr Tabellen verketten" }
+        {
+          "label": "INNER JOIN",
+          "note": "Nur Zeilen mit Übereinstimmungen in beiden Tabellen"
+        },
+        {
+          "label": "LEFT JOIN",
+          "note": "Alle linken Zeilen, NULL für fehlende rechte"
+        },
+        {
+          "label": "Tabellenaliase",
+          "note": "Alias mit kurzem Namen für Lesbarkeit"
+        },
+        {
+          "label": "Mehrfache JOIN-Kette",
+          "note": "Joins für drei oder mehr Tabellen verketten"
+        }
       ],
       "patterns": [
-        { "title": "Benutzer + Bestellungen mit LEFT JOIN" },
-        { "title": "Drei-Tabellen-Join" }
+        {
+          "title": "Benutzer + Bestellungen mit LEFT JOIN"
+        },
+        {
+          "title": "Drei-Tabellen-Join"
+        }
       ],
       "whenToUse": "Verwende JOINs, wenn die benötigten Daten in mehreren durch Fremdschlüssel verknüpften Tabellen liegen. Verwende INNER JOIN, wenn beide Seiten existieren müssen; verwende LEFT JOIN, wenn du Ergebnisse auch ohne die rechte Seite möchtest.",
       "commonMistakes": [
@@ -240,24 +459,66 @@
     "title": "Schema & CRUD",
     "description": "Tabellen erstellen, Zeilen einfügen, aktualisieren und löschen",
     "steps": [
-      { "animationStep": 0, "heading": "CREATE TABLE", "text": "CREATE TABLE definiert die Struktur (Schema) einer Tabelle: Spaltennamen, Typen und Constraints." },
-      { "animationStep": 1, "heading": "INSERT — Zeilen hinzufügen", "text": "INSERT INTO fügt neue Zeilen hinzu. Du kannst eine oder mehrere Zeilen in einer einzigen Anweisung einfügen." },
-      { "animationStep": 2, "heading": "UPDATE — Zeilen ändern", "text": "UPDATE ändert bestehende Zeilen. Verwende immer WHERE — ohne es wird jede Zeile in der Tabelle aktualisiert." },
-      { "animationStep": 3, "heading": "DELETE — Zeilen entfernen", "text": "DELETE entfernt Zeilen. Verwende immer WHERE — ohne es werden alle Zeilen gelöscht." },
-      { "animationStep": 4, "heading": "Constraints schützen Daten", "text": "Constraints erzwingen Regeln auf Datenbankebene. PRIMARY KEY, NOT NULL, UNIQUE und FOREIGN KEY verhindern, dass ungültige Daten gespeichert werden." }
+      {
+        "animationStep": 0,
+        "heading": "CREATE TABLE",
+        "text": "CREATE TABLE definiert die Struktur (Schema) einer Tabelle: Spaltennamen, Typen und Constraints."
+      },
+      {
+        "animationStep": 1,
+        "heading": "INSERT — Zeilen hinzufügen",
+        "text": "INSERT INTO fügt neue Zeilen hinzu. Du kannst eine oder mehrere Zeilen in einer einzigen Anweisung einfügen."
+      },
+      {
+        "animationStep": 2,
+        "heading": "UPDATE — Zeilen ändern",
+        "text": "UPDATE ändert bestehende Zeilen. Verwende immer WHERE — ohne es wird jede Zeile in der Tabelle aktualisiert."
+      },
+      {
+        "animationStep": 3,
+        "heading": "DELETE — Zeilen entfernen",
+        "text": "DELETE entfernt Zeilen. Verwende immer WHERE — ohne es werden alle Zeilen gelöscht."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Constraints schützen Daten",
+        "text": "Constraints erzwingen Regeln auf Datenbankebene. PRIMARY KEY, NOT NULL, UNIQUE und FOREIGN KEY verhindern, dass ungültige Daten gespeichert werden."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "CREATE TABLE", "note": "SERIAL = Auto-Inkrement-Integer" },
-        { "label": "INSERT mit RETURNING", "note": "RETURNING gibt die eingefügte Zeile zurück" },
-        { "label": "UPDATE mit WHERE", "note": "Immer WHERE — sonst wird jede Zeile aktualisiert" },
-        { "label": "DELETE mit WHERE", "note": "Immer WHERE — sonst wird jede Zeile gelöscht" },
-        { "label": "Häufige PG-Typen", "note": "Häufige PostgreSQL-Spaltentypen" },
-        { "label": "ON CONFLICT (Upsert)", "note": "Einfügen oder aktualisieren bei doppeltem Schlüssel" }
+        {
+          "label": "CREATE TABLE",
+          "note": "SERIAL = Auto-Inkrement-Integer"
+        },
+        {
+          "label": "INSERT mit RETURNING",
+          "note": "RETURNING gibt die eingefügte Zeile zurück"
+        },
+        {
+          "label": "UPDATE mit WHERE",
+          "note": "Immer WHERE — sonst wird jede Zeile aktualisiert"
+        },
+        {
+          "label": "DELETE mit WHERE",
+          "note": "Immer WHERE — sonst wird jede Zeile gelöscht"
+        },
+        {
+          "label": "Häufige PG-Typen",
+          "note": "Häufige PostgreSQL-Spaltentypen"
+        },
+        {
+          "label": "ON CONFLICT (Upsert)",
+          "note": "Einfügen oder aktualisieren bei doppeltem Schlüssel"
+        }
       ],
       "patterns": [
-        { "title": "Vollständiges CRUD für eine users-Tabelle" },
-        { "title": "Upsert-Pattern" }
+        {
+          "title": "Vollständiges CRUD für eine users-Tabelle"
+        },
+        {
+          "title": "Upsert-Pattern"
+        }
       ],
       "whenToUse": "Verwende diese Patterns für jede Tabelle, die du erstellst, und für jede CRUD-Operation in deiner App. Verwende immer RETURNING, um die betroffene Zeile zurückzuerhalten und eine zweite Abfrage zu vermeiden.",
       "commonMistakes": [
@@ -268,28 +529,74 @@
     }
   },
   "ts-basics": {
-    "title": "TypeScript-Grundlagen",
+    "title": "Grundlagen",
     "description": "Statische Typen, die Fehler abfangen, bevor dein Code ausgeführt wird",
     "steps": [
-      { "animationStep": 0, "heading": "JavaScript-Typen sind implizit", "text": "In JavaScript haben Variablen zur Laufzeit Typen, aber du deklarierst sie nie. Der Typ wird aus dem Wert abgeleitet." },
-      { "animationStep": 1, "heading": "TypeScript macht Typen explizit", "text": "TypeScript fügt Typ-Annotationen mit einem Doppelpunkt nach dem Variablennamen hinzu. Das teilt dem Compiler genau mit, welcher Typ erwartet wird." },
-      { "animationStep": 2, "heading": "Typfehler werden zur Kompilierzeit erkannt", "text": "Wenn du versuchst, den falschen Typ zuzuweisen, markiert TypeScript es sofort — bevor der Code jemals ausgeführt wird." },
-      { "animationStep": 3, "heading": "Interfaces definieren Objektformen", "text": "Ein Interface beschreibt, welche Eigenschaften ein Objekt haben muss. TypeScript gibt einen Fehler aus, wenn eine erforderliche Eigenschaft fehlt oder den falschen Typ hat." },
-      { "animationStep": 4, "heading": "Generics — wiederverwendbare typisierte Funktionen", "text": "Generics ermöglichen es Funktionen und Klassen, mit beliebigen Typen zu arbeiten und dabei Typsicherheit zu gewährleisten. T ist ein Platzhalter, der zur Aufrufzeit ausgefüllt wird." },
-      { "animationStep": 5, "heading": "Warum TypeScript? Eine praktische Geschichte", "text": "JavaScript schlägt nur zur Laufzeit fehl — oft in der Produktion. TypeScript verlagert Fehler in die Entwicklungszeit: Der Compiler blockiert den Build und hebt jeden fehlerhaften Aufruf in deinem Editor hervor. Benenne ein Feld um, ändere eine Funktionssignatur, übergib den falschen Typ — TypeScript meldet es sofort, statt um 2 Uhr nachts." }
+      {
+        "animationStep": 0,
+        "heading": "JavaScript-Typen sind implizit",
+        "text": "In JavaScript haben Variablen zur Laufzeit Typen, aber du deklarierst sie nie. Der Typ wird aus dem Wert abgeleitet."
+      },
+      {
+        "animationStep": 1,
+        "heading": "TypeScript macht Typen explizit",
+        "text": "TypeScript fügt Typ-Annotationen mit einem Doppelpunkt nach dem Variablennamen hinzu. Das teilt dem Compiler genau mit, welcher Typ erwartet wird."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Typfehler werden zur Kompilierzeit erkannt",
+        "text": "Wenn du versuchst, den falschen Typ zuzuweisen, markiert TypeScript es sofort — bevor der Code jemals ausgeführt wird."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Interfaces definieren Objektformen",
+        "text": "Ein Interface beschreibt, welche Eigenschaften ein Objekt haben muss. TypeScript gibt einen Fehler aus, wenn eine erforderliche Eigenschaft fehlt oder den falschen Typ hat."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Generics — wiederverwendbare typisierte Funktionen",
+        "text": "Generics ermöglichen es Funktionen und Klassen, mit beliebigen Typen zu arbeiten und dabei Typsicherheit zu gewährleisten. T ist ein Platzhalter, der zur Aufrufzeit ausgefüllt wird."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Warum TypeScript? Eine praktische Geschichte",
+        "text": "JavaScript schlägt nur zur Laufzeit fehl — oft in der Produktion. TypeScript verlagert Fehler in die Entwicklungszeit: Der Compiler blockiert den Build und hebt jeden fehlerhaften Aufruf in deinem Editor hervor. Benenne ein Feld um, ändere eine Funktionssignatur, übergib den falschen Typ — TypeScript meldet es sofort, statt um 2 Uhr nachts."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Primitive Annotationen", "note": "any deaktiviert Prüfungen; unknown zwingt zuerst zur Einengung" },
-        { "label": "Array-Typ", "note": "Beide Syntaxen sind gleichwertig; T[] ist gebräuchlicher" },
-        { "label": "Union-Typ", "note": "Variable kann jeden der aufgeführten Typen enthalten" },
-        { "label": "Typ-Alias", "note": "Wiederverwendbaren Typen oder Literal-Unions einen Namen geben" },
-        { "label": "Funktionssignatur", "note": "Parameter und Rückgabetyp separat annotieren" },
-        { "label": "void", "note": "void für Funktionen verwenden, die keinen Wert zurückgeben" }
+        {
+          "label": "Primitive Annotationen",
+          "note": "any deaktiviert Prüfungen; unknown zwingt zuerst zur Einengung"
+        },
+        {
+          "label": "Array-Typ",
+          "note": "Beide Syntaxen sind gleichwertig; T[] ist gebräuchlicher"
+        },
+        {
+          "label": "Union-Typ",
+          "note": "Variable kann jeden der aufgeführten Typen enthalten"
+        },
+        {
+          "label": "Typ-Alias",
+          "note": "Wiederverwendbaren Typen oder Literal-Unions einen Namen geben"
+        },
+        {
+          "label": "Funktionssignatur",
+          "note": "Parameter und Rückgabetyp separat annotieren"
+        },
+        {
+          "label": "void",
+          "note": "void für Funktionen verwenden, die keinen Wert zurückgeben"
+        }
       ],
       "patterns": [
-        { "title": "Typisierte Funktion" },
-        { "title": "Union-Typ-Einengung" }
+        {
+          "title": "Typisierte Funktion"
+        },
+        {
+          "title": "Union-Typ-Einengung"
+        }
       ],
       "whenToUse": "Füge TypeScript zu jedem Projekt hinzu, das über wenige Dateien hinauswächst, im Team bearbeitet wird oder langfristig gewartet werden muss. Starte mit strict: true in tsconfig, um die meisten Fehler zu finden. Verwende unknown statt any, wann immer ein Wert aus einer externen Quelle kommt.",
       "commonMistakes": [
@@ -304,10 +611,26 @@
     "title": "DOM API",
     "description": "Das Document Object Model repräsentiert dein HTML als Baum von Knoten. JavaScript kann Elemente traversieren, auswählen, erstellen und ändern.",
     "steps": [
-      { "animationStep": 0, "heading": "DOM-Baumstruktur", "text": "Das DOM repräsentiert dein HTML als Baum von Knoten. Das document-Objekt ist die Wurzel. HTML-Elemente sind Element-Knoten; Text darin sind Text-Knoten. JavaScript kann diesen Baum über Eltern-, Kind- und Geschwisterbeziehungen traversieren." },
-      { "animationStep": 1, "heading": "Elemente auswählen", "text": "querySelector gibt das erste Element zurück, das einem CSS-Selektor entspricht. querySelectorAll gibt eine NodeList aller Übereinstimmungen zurück. getElementById und getElementsByClassName sind ältere Alternativen — querySelector ist flexibler und wird bevorzugt." },
-      { "animationStep": 2, "heading": "Elemente erstellen und einfügen", "text": "createElement(tag) erstellt ein losgelöstes Element. Setze seine Eigenschaften (textContent, className usw.) und füge es dann mit appendChild, prepend oder insertBefore in das DOM ein. Das Element erscheint auf der Seite erst nach dem Einfügen." },
-      { "animationStep": 3, "heading": "Element-Eigenschaften lesen und ändern", "text": "Verwende textContent, um Text sicher zu lesen oder zu setzen. classList bietet add, remove, toggle und contains für das CSS-Klassen-Management. setAttribute / getAttribute lesen und schreiben HTML-Attribute. style ermöglicht das direkte Setzen von Inline-CSS." },
+      {
+        "animationStep": 0,
+        "heading": "DOM-Baumstruktur",
+        "text": "Das DOM repräsentiert dein HTML als Baum von Knoten. Das document-Objekt ist die Wurzel. HTML-Elemente sind Element-Knoten; Text darin sind Text-Knoten. JavaScript kann diesen Baum über Eltern-, Kind- und Geschwisterbeziehungen traversieren."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Elemente auswählen",
+        "text": "querySelector gibt das erste Element zurück, das einem CSS-Selektor entspricht. querySelectorAll gibt eine NodeList aller Übereinstimmungen zurück. getElementById und getElementsByClassName sind ältere Alternativen — querySelector ist flexibler und wird bevorzugt."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Elemente erstellen und einfügen",
+        "text": "createElement(tag) erstellt ein losgelöstes Element. Setze seine Eigenschaften (textContent, className usw.) und füge es dann mit appendChild, prepend oder insertBefore in das DOM ein. Das Element erscheint auf der Seite erst nach dem Einfügen."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Element-Eigenschaften lesen und ändern",
+        "text": "Verwende textContent, um Text sicher zu lesen oder zu setzen. classList bietet add, remove, toggle und contains für das CSS-Klassen-Management. setAttribute / getAttribute lesen und schreiben HTML-Attribute. style ermöglicht das direkte Setzen von Inline-CSS."
+      },
       {
         "animationStep": 4,
         "heading": "DOM-Interfaces",
@@ -326,15 +649,29 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "querySelector" },
-        { "label": "querySelectorAll" },
-        { "label": "createElement" },
-        { "label": "appendChild" },
-        { "label": "textContent" }
+        {
+          "label": "querySelector"
+        },
+        {
+          "label": "querySelectorAll"
+        },
+        {
+          "label": "createElement"
+        },
+        {
+          "label": "appendChild"
+        },
+        {
+          "label": "textContent"
+        }
       ],
       "patterns": [
-        { "title": "Erstellen und einfügen" },
-        { "title": "Element entfernen" }
+        {
+          "title": "Erstellen und einfügen"
+        },
+        {
+          "title": "Element entfernen"
+        }
       ],
       "whenToUse": "Verwende die DOM API, um Seiteninhalt aus JavaScript zu lesen, zu erstellen und zu ändern — ohne Framework.",
       "commonMistakes": [
@@ -348,25 +685,73 @@
     "title": "Fetch API",
     "description": "HTTP-Anfragen aus JavaScript mit Promises und async/await stellen",
     "steps": [
-      { "animationStep": 0, "heading": "Die Fetch API", "text": "fetch() ist die moderne Browser-API für HTTP-Anfragen. Sie ersetzt XMLHttpRequest und gibt ein Promise zurück." },
-      { "animationStep": 1, "heading": "fetch() gibt ein Promise zurück", "text": "Die Anfrage wird sofort gesendet, aber die Antwort kommt später. fetch() gibt ein Promise zurück, das aufgelöst wird, wenn der Server antwortet." },
-      { "animationStep": 2, "heading": "Das Response-Objekt", "text": "Der aufgelöste Wert ist eine Response. Sie enthält Status, Header und den Body — der Body muss jedoch explizit geparst werden." },
-      { "animationStep": 3, "heading": "Den Antwort-Body parsen", "text": "response.json() parst den Body als JSON und gibt ein weiteres Promise zurück. response.text() gibt rohen Text zurück." },
-      { "animationStep": 4, "heading": "async/await-Syntax", "text": "async/await lässt fetch-Code wie synchronen Code aussehen. Immer in try/catch einwickeln für Fehlerbehandlung." },
-      { "animationStep": 5, "heading": "GET — Eine Antwort lesen", "text": "fetch() gibt ein Promise zurück, das zu einem Response-Objekt aufgelöst wird. Rufe response.json() auf, um den Body als JSON zu parsen (auch async). Prüfe immer response.ok oder response.status, bevor du den Daten vertraust." },
-      { "animationStep": 6, "heading": "POST / PUT / DELETE mit Body", "text": "Um Daten zu senden, übergib ein Options-Objekt als zweites Argument an fetch. Setze die Methode, einen Content-Type-Header und serialisiere den Body zu JSON mit JSON.stringify." },
-      { "animationStep": 7, "heading": "RESTful API-Prinzipien", "text": "REST verwendet HTTP-Methoden semantisch: GET liest, POST erstellt, PUT/PATCH aktualisiert, DELETE entfernt. Jeder Endpunkt repräsentiert eine Ressource (z. B. /posts, /posts/1). Antworten tragen HTTP-Statuscodes — 2xx für Erfolg, 4xx für Client-Fehler, 5xx für Server-Fehler." }
+      {
+        "animationStep": 0,
+        "heading": "Die Fetch API",
+        "text": "fetch() ist die moderne Browser-API für HTTP-Anfragen. Sie ersetzt XMLHttpRequest und gibt ein Promise zurück."
+      },
+      {
+        "animationStep": 1,
+        "heading": "fetch() gibt ein Promise zurück",
+        "text": "Die Anfrage wird sofort gesendet, aber die Antwort kommt später. fetch() gibt ein Promise zurück, das aufgelöst wird, wenn der Server antwortet."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Das Response-Objekt",
+        "text": "Der aufgelöste Wert ist eine Response. Sie enthält Status, Header und den Body — der Body muss jedoch explizit geparst werden."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Den Antwort-Body parsen",
+        "text": "response.json() parst den Body als JSON und gibt ein weiteres Promise zurück. response.text() gibt rohen Text zurück."
+      },
+      {
+        "animationStep": 4,
+        "heading": "async/await-Syntax",
+        "text": "async/await lässt fetch-Code wie synchronen Code aussehen. Immer in try/catch einwickeln für Fehlerbehandlung."
+      },
+      {
+        "animationStep": 5,
+        "heading": "GET — Eine Antwort lesen",
+        "text": "fetch() gibt ein Promise zurück, das zu einem Response-Objekt aufgelöst wird. Rufe response.json() auf, um den Body als JSON zu parsen (auch async). Prüfe immer response.ok oder response.status, bevor du den Daten vertraust."
+      },
+      {
+        "animationStep": 6,
+        "heading": "POST / PUT / DELETE mit Body",
+        "text": "Um Daten zu senden, übergib ein Options-Objekt als zweites Argument an fetch. Setze die Methode, einen Content-Type-Header und serialisiere den Body zu JSON mit JSON.stringify."
+      },
+      {
+        "animationStep": 7,
+        "heading": "RESTful API-Prinzipien",
+        "text": "REST verwendet HTTP-Methoden semantisch: GET liest, POST erstellt, PUT/PATCH aktualisiert, DELETE entfernt. Jeder Endpunkt repräsentiert eine Ressource (z. B. /posts, /posts/1). Antworten tragen HTTP-Statuscodes — 2xx für Erfolg, 4xx für Client-Fehler, 5xx für Server-Fehler."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "GET fetch", "note": "Standardmethode ist GET" },
-        { "label": "POST mit Body + Header", "note": "Immer Content-Type für JSON-Bodies setzen" },
-        { "label": "res.ok prüfen", "note": "res.ok ist true für 200-299" },
-        { "label": "Antwort-Body-Methoden", "note": "Body kann nur einmal konsumiert werden" }
+        {
+          "label": "GET fetch",
+          "note": "Standardmethode ist GET"
+        },
+        {
+          "label": "POST mit Body + Header",
+          "note": "Immer Content-Type für JSON-Bodies setzen"
+        },
+        {
+          "label": "res.ok prüfen",
+          "note": "res.ok ist true für 200-299"
+        },
+        {
+          "label": "Antwort-Body-Methoden",
+          "note": "Body kann nur einmal konsumiert werden"
+        }
       ],
       "patterns": [
-        { "title": "async/await GET mit Fehlerbehandlung" },
-        { "title": "POST JSON" }
+        {
+          "title": "async/await GET mit Fehlerbehandlung"
+        },
+        {
+          "title": "POST JSON"
+        }
       ],
       "whenToUse": "Verwende fetch(), um aus dem Browser mit Backend-APIs zu kommunizieren. Bevorzuge async/await gegenüber .then()-Ketten für bessere Lesbarkeit.",
       "commonMistakes": [
@@ -380,24 +765,68 @@
     "title": "DOM Events",
     "description": "Auf Benutzerinteraktionen mit Event-Listenern reagieren",
     "steps": [
-      { "animationStep": 0, "heading": "Events sind Benutzeraktionen", "text": "Der Browser löst Events aus, wenn Benutzer interagieren — klicken, tippen, scrollen, hovern. JavaScript kann zuhören und reagieren." },
-      { "animationStep": 1, "heading": "addEventListener", "text": "addEventListener hängt eine Callback-Funktion an ein Element. Der Callback wird jedes Mal ausgeführt, wenn das Event ausgelöst wird." },
-      { "animationStep": 2, "heading": "Das Event-Objekt", "text": "Der Callback erhält ein Event-Objekt mit Informationen über das Geschehene: das Zielelement, Mausposition, gedrückte Taste und mehr." },
-      { "animationStep": 3, "heading": "Event-Bubbling", "text": "Events blubbern standardmäßig den DOM-Baum hinauf. Ein Klick auf ein inneres Element löst auch auf allen Vorfahren aus — außer er wird gestoppt." },
-      { "animationStep": 4, "heading": "stopPropagation und preventDefault", "text": "stopPropagation() stoppt das Bubbling des Events. preventDefault() bricht die Standard-Browseraktion ab (z. B. einem Link folgen, ein Formular absenden)." },
-      { "animationStep": 5, "heading": "EventTarget und addEventListener", "text": "Jedes DOM-Element implementiert das EventTarget-Interface und gibt ihm addEventListener(type, handler, options). Du kannst mehrere Listener für denselben Event-Typ anhängen. Verwende immer addEventListener statt Inline-Handlern für eine bessere Trennung von Belangen." },
-      { "animationStep": 6, "heading": "Event-Propagation: Bubbling und Capturing", "text": "Events wandern zuerst den DOM-Baum von der Wurzel zum Ziel hinunter (Capture-Phase), dann blubbern sie vom Ziel zur Wurzel hinauf (Bubble-Phase). Standardmäßig laufen Listener in der Bubble-Phase. Rufe event.stopPropagation() auf, um das Event am Weiterreisen zu hindern." }
+      {
+        "animationStep": 0,
+        "heading": "Events sind Benutzeraktionen",
+        "text": "Der Browser löst Events aus, wenn Benutzer interagieren — klicken, tippen, scrollen, hovern. JavaScript kann zuhören und reagieren."
+      },
+      {
+        "animationStep": 1,
+        "heading": "addEventListener",
+        "text": "addEventListener hängt eine Callback-Funktion an ein Element. Der Callback wird jedes Mal ausgeführt, wenn das Event ausgelöst wird."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Das Event-Objekt",
+        "text": "Der Callback erhält ein Event-Objekt mit Informationen über das Geschehene: das Zielelement, Mausposition, gedrückte Taste und mehr."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Event-Bubbling",
+        "text": "Events blubbern standardmäßig den DOM-Baum hinauf. Ein Klick auf ein inneres Element löst auch auf allen Vorfahren aus — außer er wird gestoppt."
+      },
+      {
+        "animationStep": 4,
+        "heading": "stopPropagation und preventDefault",
+        "text": "stopPropagation() stoppt das Bubbling des Events. preventDefault() bricht die Standard-Browseraktion ab (z. B. einem Link folgen, ein Formular absenden)."
+      },
+      {
+        "animationStep": 5,
+        "heading": "EventTarget und addEventListener",
+        "text": "Jedes DOM-Element implementiert das EventTarget-Interface und gibt ihm addEventListener(type, handler, options). Du kannst mehrere Listener für denselben Event-Typ anhängen. Verwende immer addEventListener statt Inline-Handlern für eine bessere Trennung von Belangen."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Event-Propagation: Bubbling und Capturing",
+        "text": "Events wandern zuerst den DOM-Baum von der Wurzel zum Ziel hinunter (Capture-Phase), dann blubbern sie vom Ziel zur Wurzel hinauf (Bubble-Phase). Standardmäßig laufen Listener in der Bubble-Phase. Rufe event.stopPropagation() auf, um das Event am Weiterreisen zu hindern."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "addEventListener", "note": "Einen Listener an ein Element hängen" },
-        { "label": "removeEventListener", "note": "Inline-Arrow-Functions können nicht entfernt werden" },
-        { "label": "Event-Objekt-Eigenschaften", "note": "Auf jedem Event-Objekt verfügbar" },
-        { "label": "Häufige Event-Namen", "note": "Vollständige Liste in der MDN-Event-Referenz" }
+        {
+          "label": "addEventListener",
+          "note": "Einen Listener an ein Element hängen"
+        },
+        {
+          "label": "removeEventListener",
+          "note": "Inline-Arrow-Functions können nicht entfernt werden"
+        },
+        {
+          "label": "Event-Objekt-Eigenschaften",
+          "note": "Auf jedem Event-Objekt verfügbar"
+        },
+        {
+          "label": "Häufige Event-Namen",
+          "note": "Vollständige Liste in der MDN-Event-Referenz"
+        }
       ],
       "patterns": [
-        { "title": "Event-Delegation" },
-        { "title": "Bereinigung beim Unmount (React)" }
+        {
+          "title": "Event-Delegation"
+        },
+        {
+          "title": "Bereinigung beim Unmount (React)"
+        }
       ],
       "whenToUse": "Verwende DOM-Events, um auf Benutzerinteraktionen zu reagieren: Klicks, Formulareingaben, Tastenkombinationen und Scroll. In React verwende stattdessen synthetische Events auf JSX-Elementen anstelle von addEventListener direkt.",
       "commonMistakes": [
@@ -411,25 +840,72 @@
     "title": "localStorage",
     "description": "Daten im Browser ohne Server persistieren",
     "steps": [
-      { "animationStep": 0, "heading": "Browser-Speicher", "text": "Browser bieten eingebauten Schlüssel-Wert-Speicher, der ohne Server funktioniert. Nützlich für Einstellungen, gecachte Daten und Offline-Zustand." },
-      { "animationStep": 1, "heading": "setItem", "text": "setItem(key, value) speichert einen String-Wert. Nicht-String-Werte müssen mit JSON.stringify serialisiert werden." },
-      { "animationStep": 2, "heading": "getItem", "text": "getItem(key) ruft den gespeicherten Wert ab. Gibt null zurück, wenn der Schlüssel nicht existiert. JSON-Werte mit JSON.parse parsen." },
-      { "animationStep": 3, "heading": "localStorage ist persistent", "text": "Daten in localStorage überleben Seitenaktualisierungen, Tab-Schließungen und Browser-Neustarts. Sie bleiben bestehen, bis sie explizit gelöscht werden." },
-      { "animationStep": 4, "heading": "sessionStorage — Tab-scoped", "text": "sessionStorage hat dieselbe API wie localStorage, wird aber gelöscht, wenn der Tab oder das Fenster geschlossen wird." },
-      { "animationStep": 5, "heading": "localStorage vs. sessionStorage", "text": "Beide speichern Schlüssel-Wert-String-Paare im Browser, aber localStorage bleibt über Browser-Sitzungen hinweg bestehen, während sessionStorage beim Schließen des Tabs gelöscht wird. Keines sollte sensible Daten speichern — sie sind für alle Skripte auf der Seite zugänglich." },
-      { "animationStep": 6, "heading": "setItem / getItem / removeItem / clear", "text": "Die Web Storage API ist ein einfacher Schlüssel-Wert-Speicher. Alle Werte werden als Strings gespeichert — verwende JSON.stringify und JSON.parse, um Objekte zu speichern und abzurufen." }
+      {
+        "animationStep": 0,
+        "heading": "Browser-Speicher",
+        "text": "Browser bieten eingebauten Schlüssel-Wert-Speicher, der ohne Server funktioniert. Nützlich für Einstellungen, gecachte Daten und Offline-Zustand."
+      },
+      {
+        "animationStep": 1,
+        "heading": "setItem",
+        "text": "setItem(key, value) speichert einen String-Wert. Nicht-String-Werte müssen mit JSON.stringify serialisiert werden."
+      },
+      {
+        "animationStep": 2,
+        "heading": "getItem",
+        "text": "getItem(key) ruft den gespeicherten Wert ab. Gibt null zurück, wenn der Schlüssel nicht existiert. JSON-Werte mit JSON.parse parsen."
+      },
+      {
+        "animationStep": 3,
+        "heading": "localStorage ist persistent",
+        "text": "Daten in localStorage überleben Seitenaktualisierungen, Tab-Schließungen und Browser-Neustarts. Sie bleiben bestehen, bis sie explizit gelöscht werden."
+      },
+      {
+        "animationStep": 4,
+        "heading": "sessionStorage — Tab-scoped",
+        "text": "sessionStorage hat dieselbe API wie localStorage, wird aber gelöscht, wenn der Tab oder das Fenster geschlossen wird."
+      },
+      {
+        "animationStep": 5,
+        "heading": "localStorage vs. sessionStorage",
+        "text": "Beide speichern Schlüssel-Wert-String-Paare im Browser, aber localStorage bleibt über Browser-Sitzungen hinweg bestehen, während sessionStorage beim Schließen des Tabs gelöscht wird. Keines sollte sensible Daten speichern — sie sind für alle Skripte auf der Seite zugänglich."
+      },
+      {
+        "animationStep": 6,
+        "heading": "setItem / getItem / removeItem / clear",
+        "text": "Die Web Storage API ist ein einfacher Schlüssel-Wert-Speicher. Alle Werte werden als Strings gespeichert — verwende JSON.stringify und JSON.parse, um Objekte zu speichern und abzurufen."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "setItem / getItem", "note": "Werte sind immer Strings" },
-        { "label": "removeItem / clear", "note": "clear() löscht alles im Origin" },
-        { "label": "JSON.stringify / parse", "note": "Objekte müssen zu String serialisiert werden" },
-        { "label": "sessionStorage", "note": "Tab-scoped, nicht persistent" },
-        { "label": "Null-Prüfung bei getItem", "note": "getItem gibt null zurück, wenn Schlüssel fehlt" }
+        {
+          "label": "setItem / getItem",
+          "note": "Werte sind immer Strings"
+        },
+        {
+          "label": "removeItem / clear",
+          "note": "clear() löscht alles im Origin"
+        },
+        {
+          "label": "JSON.stringify / parse",
+          "note": "Objekte müssen zu String serialisiert werden"
+        },
+        {
+          "label": "sessionStorage",
+          "note": "Tab-scoped, nicht persistent"
+        },
+        {
+          "label": "Null-Prüfung bei getItem",
+          "note": "getItem gibt null zurück, wenn Schlüssel fehlt"
+        }
       ],
       "patterns": [
-        { "title": "Sicheres JSON-Lesen mit Fallback" },
-        { "title": "Benutzerdefinierter usePersist-Hook" }
+        {
+          "title": "Sicheres JSON-Lesen mit Fallback"
+        },
+        {
+          "title": "Benutzerdefinierter usePersist-Hook"
+        }
       ],
       "whenToUse": "Verwende localStorage für Benutzereinstellungen, gecachte Daten oder Zustand, der Seitenaktualisierungen überleben soll. Verwende sessionStorage für temporären Zustand innerhalb einer einzelnen Sitzung. Speichere niemals sensible Daten wie Passwörter oder Tokens.",
       "commonMistakes": [
@@ -439,30 +915,143 @@
       ]
     }
   },
+  "react-intro": {
+    "title": "React — Das große Bild",
+    "description": "Woher React stammt, wie es sich entwickelt hat, und wie man heute ein modernes React-Projekt startet",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "2013 — JSX & die Komponenten-Idee",
+        "text": "React wurde 2013 von Facebook als Open Source veröffentlicht. Die Kernidee: Benutzeroberflächen aus kleinen, wiederverwendbaren Bausteinen namens Komponenten aufbauen. JSX — eine HTML-ähnliche Syntax in JavaScript — wurde gleichzeitig entwickelt. React konnte von Anfang an auf einem Server laufen, wurde aber hauptsächlich für interaktive SPAs im Browser genutzt."
+      },
+      {
+        "animationStep": 1,
+        "heading": "2015 — React überall",
+        "text": "React Native wurde 2015 veröffentlicht und brachte dasselbe Komponentenmodell auf iOS- und Android-Native-Apps. Große Unternehmen — Netflix, Airbnb, Dropbox — adoptierten React. ES6-Klassensyntax wurde der Standard für zustandsbehaftete Komponenten mit Lifecycle-Methoden (componentDidMount, componentDidUpdate, componentWillUnmount)."
+      },
+      {
+        "animationStep": 2,
+        "heading": "2019 — Hooks verändern alles",
+        "text": "React 16.8 führte Hooks ein — useState, useEffect und weitere. Hooks ermöglichen es Funktionskomponenten, State und Seiteneffekte ohne Klassensyntax zu verwalten. Sie wurden schnell zum de-facto-Standard. Code wurde kürzer, einfacher zu kombinieren und leichter zu testen. Klassenkomponenten funktionieren noch, werden aber in neuen Projekten kaum noch geschrieben."
+      },
+      {
+        "animationStep": 3,
+        "heading": "2024 — Zurück zum Server",
+        "text": "React 19 führte Server Components ein. Komponenten können nun auf dem Server laufen, Daten direkt aus einer Datenbank abrufen und HTML + JSON an den Client streamen. Nur \"Client Components\" (mit \"use client\" markiert) senden JavaScript an den Browser. Frameworks wie Next.js 15 und Remix/React Router v7 sind heute der primäre Weg, Server Components zu nutzen."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Heute ein React-Projekt starten",
+        "text": "Zwei Strategien: ein Meta-Framework nutzen (empfohlen für Produktion) oder eigenes Tooling zusammenstellen.\n\nMeta-Frameworks übernehmen Routing, Datenabruf, Bundling und Rendering-Strategie:\n• Next.js 15 — Full-Stack-Web-Apps, dateisystembasiertes Routing, Server Components\n• Remix / React Router v7 — verschachtelte Routen, Server-Mutationen, Progressive Enhancement\n• Expo SDK 52+ — iOS/Android-Native-Apps mit React Native\n\nEigenes Tooling gibt dir volle Kontrolle und vermittelt Grundlagen:\n• Vite (in diesem Kurs verwendet) — sofortiger Dev-Server, Rollup-basierte Builds\n• Parcel — Zero-Config-Bundler\n• Rsbuild + Rspack — Rust-basiert, 5–10× schneller als Webpack"
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        {
+          "label": "Vite + React Scaffold",
+          "note": "In diesem Kurs verwendet — schnell, minimal, Rollup-basiert"
+        },
+        {
+          "label": "Next.js Scaffold",
+          "note": "Full-Stack, dateisystembasiertes Routing, Server Components"
+        },
+        {
+          "label": "Server Component (Next.js)",
+          "note": "Kein \"use client\" = läuft standardmäßig auf dem Server"
+        },
+        {
+          "label": "Client Component",
+          "note": "\"use client\" macht sie interaktiv, sendet JS an den Browser"
+        }
+      ],
+      "patterns": [
+        {
+          "title": "Framework-Entscheidungsbaum"
+        }
+      ],
+      "whenToUse": "Verwende Vite, wenn du React-Kern-APIs lernst oder SPAs baust. Greife auf Next.js zurück, wenn du Server-Rendering, API-Routen oder Full-Stack-Fähigkeiten benötigst. Verwende Expo für Mobile.",
+      "commonMistakes": [
+        "Mit einem Meta-Framework beginnen, bevor man React-Grundlagen versteht — du verwechselst dann Reacts eigene APIs mit Framework-Magie",
+        "Create React App (CRA) verwenden — es ist veraltet und nicht mehr gewartet; verwende stattdessen Vite",
+        "Klassenkomponenten in neuen Projekten schreiben — Hooks sind der moderne Standard; Klassenkomponenten werden nur noch für Error Boundaries benötigt"
+      ]
+    }
+  },
   "react-components": {
     "title": "Komponenten & JSX",
     "description": "Benutzeroberflächen aus wiederverwendbaren, kombinierbaren Funktionskomponenten aufbauen",
     "steps": [
-      { "animationStep": 0, "heading": "HTML ist statisches Markup", "text": "Einfaches HTML definiert die Struktur einmalig. Um einen Button wiederzuverwenden, kopierst du das Markup — was schnell schwer zu warten wird." },
-      { "animationStep": 1, "heading": "JSX — HTML in JavaScript", "text": "JSX ermöglicht das Schreiben von HTML-ähnlicher Syntax innerhalb von JavaScript. Es sieht wie HTML aus, wird aber von Babel in JavaScript-Funktionsaufrufe umgewandelt." },
-      { "animationStep": 2, "heading": "Eine Komponente ist eine Funktion", "text": "Eine React-Komponente ist eine Funktion, die Props akzeptiert und JSX zurückgibt. Der Funktionsname muss mit einem Großbuchstaben beginnen." },
-      { "animationStep": 3, "heading": "Komponenten kombinieren", "text": "Du baust komplexe UIs durch das Verschachteln von Komponenten. Jede Komponente kann andere Komponenten enthalten — und bildet so einen Baum." },
-      { "animationStep": 4, "heading": "Props — Daten fließen nach unten", "text": "Props sind Argumente, die an Komponenten übergeben werden. Sie fließen nur vom Elternteil zum Kind — niemals umgekehrt." },
-      { "animationStep": 5, "heading": "Events", "text": "React verwendet camelCase-Event-Props (onClick, onChange, onSubmit). Du übergibst eine Funktionsreferenz – keinen Aufruf. React kapselt das native Event in ein SyntheticEvent, das in allen Browsern gleich funktioniert." },
-      { "animationStep": 6, "heading": "Conditional Rendering", "text": "Verwende einfaches JavaScript innerhalb von JSX, um UI bedingt anzuzeigen. Ternary für entweder/oder, && für zeigen-oder-nichts, Early Return für komplexe Verzweigungen." },
-      { "animationStep": 7, "heading": "Listen rendern", "text": "Verwende .map(), um ein Array in JSX-Elemente umzuwandeln. Jedes Element in einer Liste benötigt eine stabile key-Prop – React nutzt sie, um Änderungen zu verfolgen. Verwende eine eindeutige ID aus deinen Daten, nie den Array-Index." }
+      {
+        "animationStep": 0,
+        "heading": "HTML ist statisches Markup",
+        "text": "Einfaches HTML definiert die Struktur einmalig. Um einen Button wiederzuverwenden, kopierst du das Markup — was schnell schwer zu warten wird."
+      },
+      {
+        "animationStep": 1,
+        "heading": "JSX — HTML in JavaScript",
+        "text": "JSX ermöglicht das Schreiben von HTML-ähnlicher Syntax innerhalb von JavaScript. Es sieht wie HTML aus, wird aber von Babel in JavaScript-Funktionsaufrufe umgewandelt."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Eine Komponente ist eine Funktion",
+        "text": "Eine React-Komponente ist eine Funktion, die Props akzeptiert und JSX zurückgibt. Der Funktionsname muss mit einem Großbuchstaben beginnen."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Komponenten kombinieren",
+        "text": "Du baust komplexe UIs durch das Verschachteln von Komponenten. Jede Komponente kann andere Komponenten enthalten — und bildet so einen Baum."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Props — Daten fließen nach unten",
+        "text": "Props sind Argumente, die an Komponenten übergeben werden. Sie fließen nur vom Elternteil zum Kind — niemals umgekehrt."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Events",
+        "text": "React verwendet camelCase-Event-Props (onClick, onChange, onSubmit). Du übergibst eine Funktionsreferenz – keinen Aufruf. React kapselt das native Event in ein SyntheticEvent, das in allen Browsern gleich funktioniert."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Conditional Rendering",
+        "text": "Verwende einfaches JavaScript innerhalb von JSX, um UI bedingt anzuzeigen. Ternary für entweder/oder, && für zeigen-oder-nichts, Early Return für komplexe Verzweigungen."
+      },
+      {
+        "animationStep": 7,
+        "heading": "Listen rendern",
+        "text": "Verwende .map(), um ein Array in JSX-Elemente umzuwandeln. Jedes Element in einer Liste benötigt eine stabile key-Prop – React nutzt sie, um Änderungen zu verfolgen. Verwende eine eindeutige ID aus deinen Daten, nie den Array-Index."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Funktionskomponente", "note": "Komponentenname muss großgeschrieben sein" },
-        { "label": "Props mit TS-Interface", "note": "Interface dokumentiert den Prop-Vertrag" },
-        { "label": "JSX-Bedingung (&& , ternär)", "note": "&& rendert nichts bei false; ternär für Entweder-Oder" },
-        { "label": ".map mit key", "note": "key muss stabil und unter Geschwistern eindeutig sein" },
-        { "label": "children-Prop", "note": "children ist alles, was zwischen den Tags steht" }
+        {
+          "label": "Funktionskomponente",
+          "note": "Komponentenname muss großgeschrieben sein"
+        },
+        {
+          "label": "Props mit TS-Interface",
+          "note": "Interface dokumentiert den Prop-Vertrag"
+        },
+        {
+          "label": "JSX-Bedingung (&& , ternär)",
+          "note": "&& rendert nichts bei false; ternär für Entweder-Oder"
+        },
+        {
+          "label": ".map mit key",
+          "note": "key muss stabil und unter Geschwistern eindeutig sein"
+        },
+        {
+          "label": "children-Prop",
+          "note": "children ist alles, was zwischen den Tags steht"
+        }
       ],
       "patterns": [
-        { "title": "Typisierte Props-Komponente" },
-        { "title": "Listen-Rendering" }
+        {
+          "title": "Typisierte Props-Komponente"
+        },
+        {
+          "title": "Listen-Rendering"
+        }
       ],
       "whenToUse": "Verwende Funktionskomponenten für allen neuen React-Code. Definiere ein TypeScript-Interface für Props, wenn eine Komponente mehr als ein oder zwei Props akzeptiert.",
       "commonMistakes": [
@@ -476,25 +1065,73 @@
     "title": "State & Hooks",
     "description": "Dynamische Daten mit useState verwalten und Re-Renders verstehen",
     "steps": [
-      { "animationStep": 0, "heading": "State sind dynamische Daten", "text": "State sind Daten, die sich im Laufe der Zeit ändern können und bei Änderungen ein Re-Render der Komponente verursachen. Props kommen von außen; State lebt innen." },
-      { "animationStep": 1, "heading": "useState", "text": "useState ist ein Hook, der den aktuellen Wert und eine Setter-Funktion zurückgibt. React verfolgt den Wert zwischen Renders." },
-      { "animationStep": 2, "heading": "Den Setter aufrufen löst Re-Render aus", "text": "Wenn du setCount aufrufst, plant React ein Re-Render. Die Komponentenfunktion wird erneut mit dem neuen State-Wert ausgeführt." },
-      { "animationStep": 3, "heading": "State ist lokal für jede Instanz", "text": "Wenn du zwei <Counter />-Komponenten renderst, hat jede ihren eigenen unabhängigen count. State wird nicht geteilt, außer du hebst ihn hoch." },
-      { "animationStep": 4, "heading": "Regeln der Hooks", "text": "Hooks müssen immer auf der obersten Ebene einer Komponente aufgerufen werden — niemals innerhalb von Bedingungen, Schleifen oder verschachtelten Funktionen." },
-      { "animationStep": 5, "heading": "Updater-Funktionen", "text": "Wenn der neue State vom vorherigen Wert abhängt, übergib dem Setter eine Funktion statt eines Wertes. React ruft sie mit dem aktuellsten State auf – selbst wenn mehrere Updates gebatcht wurden." },
-      { "animationStep": 6, "heading": "State mit Objekten & Arrays", "text": "State niemals direkt mutieren – React erkennt die Änderung nicht. Erstelle immer ein neues Objekt oder Array mit dem Spread-Operator. Für Objekte: spreaden und überschreiben. Für Arrays: map, filter oder spread verwenden." },
-      { "animationStep": 7, "heading": "State hochheben", "text": "Geschwisterkomponenten können State nicht direkt teilen. Hebe den State zum nächsten gemeinsamen Elternteil hoch. Der Elternteil besitzt den State und gibt ihn über Props weiter – zusammen mit dem Setter, damit Kinder Updates auslösen können." }
+      {
+        "animationStep": 0,
+        "heading": "State sind dynamische Daten",
+        "text": "State sind Daten, die sich im Laufe der Zeit ändern können und bei Änderungen ein Re-Render der Komponente verursachen. Props kommen von außen; State lebt innen."
+      },
+      {
+        "animationStep": 1,
+        "heading": "useState",
+        "text": "useState ist ein Hook, der den aktuellen Wert und eine Setter-Funktion zurückgibt. React verfolgt den Wert zwischen Renders."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Den Setter aufrufen löst Re-Render aus",
+        "text": "Wenn du setCount aufrufst, plant React ein Re-Render. Die Komponentenfunktion wird erneut mit dem neuen State-Wert ausgeführt."
+      },
+      {
+        "animationStep": 3,
+        "heading": "State ist lokal für jede Instanz",
+        "text": "Wenn du zwei <Counter />-Komponenten renderst, hat jede ihren eigenen unabhängigen count. State wird nicht geteilt, außer du hebst ihn hoch."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Regeln der Hooks",
+        "text": "Hooks müssen immer auf der obersten Ebene einer Komponente aufgerufen werden — niemals innerhalb von Bedingungen, Schleifen oder verschachtelten Funktionen."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Updater-Funktionen",
+        "text": "Wenn der neue State vom vorherigen Wert abhängt, übergib dem Setter eine Funktion statt eines Wertes. React ruft sie mit dem aktuellsten State auf – selbst wenn mehrere Updates gebatcht wurden."
+      },
+      {
+        "animationStep": 6,
+        "heading": "State mit Objekten & Arrays",
+        "text": "State niemals direkt mutieren – React erkennt die Änderung nicht. Erstelle immer ein neues Objekt oder Array mit dem Spread-Operator. Für Objekte: spreaden und überschreiben. Für Arrays: map, filter oder spread verwenden."
+      },
+      {
+        "animationStep": 7,
+        "heading": "State hochheben",
+        "text": "Geschwisterkomponenten können State nicht direkt teilen. Hebe den State zum nächsten gemeinsamen Elternteil hoch. Der Elternteil besitzt den State und gibt ihn über Props weiter – zusammen mit dem Setter, damit Kinder Updates auslösen können."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "useState-Deklaration", "note": "Anfangswert setzt den Typ" },
-        { "label": "Funktionaler Updater", "note": "prev => verwenden, wenn neuer State von altem abhängt" },
-        { "label": "Objekt-State-Spread-Update", "note": "Das State-Objekt niemals direkt mutieren" },
-        { "label": "Array-State unveränderliches Hinzufügen", "note": "Immer ein neues Array zurückgeben" }
+        {
+          "label": "useState-Deklaration",
+          "note": "Anfangswert setzt den Typ"
+        },
+        {
+          "label": "Funktionaler Updater",
+          "note": "prev => verwenden, wenn neuer State von altem abhängt"
+        },
+        {
+          "label": "Objekt-State-Spread-Update",
+          "note": "Das State-Objekt niemals direkt mutieren"
+        },
+        {
+          "label": "Array-State unveränderliches Hinzufügen",
+          "note": "Immer ein neues Array zurückgeben"
+        }
       ],
       "patterns": [
-        { "title": "Boolean umschalten" },
-        { "title": "Unveränderliches Array-Hinzufügen" }
+        {
+          "title": "Boolean umschalten"
+        },
+        {
+          "title": "Unveränderliches Array-Hinzufügen"
+        }
       ],
       "whenToUse": "Verwende useState für jeden Wert, der sich im Laufe der Zeit ändert und ein Re-Render auslösen soll: Formulareingaben, Toggle-Zustand, geladene Daten, Zähler.",
       "commonMistakes": [
@@ -508,24 +1145,68 @@
     "title": "useEffect & Seiteneffekte",
     "description": "Code nach dem Render ausführen — Daten fetchen, abonnieren, mit dem DOM synchronisieren",
     "steps": [
-      { "animationStep": 0, "heading": "Seiteneffekte passieren nach dem Render", "text": "Ein Seiteneffekt ist jede Arbeit, die etwas außerhalb der Komponente beeinflusst: Netzwerkanfragen, Timer, DOM-Manipulation. useEffect führt diese nach dem Render aus." },
-      { "animationStep": 1, "heading": "Leere deps — einmalig ausführen", "text": "Ein leeres Array [] als zweites Argument zu übergeben teilt React mit, den Effect nur einmal auszuführen — wenn die Komponente zum ersten Mal mountet." },
-      { "animationStep": 2, "heading": "Deps-Array — bei Änderung erneut ausführen", "text": "Liste die Werte auf, von denen der Effect abhängt. React führt den Effect neu aus, wenn sich einer dieser Werte ändert." },
-      { "animationStep": 3, "heading": "Cleanup-Funktion", "text": "Gib eine Funktion von useEffect zurück, um vor dem nächsten Ausführen oder beim Unmount aufzuräumen. Unerlässlich für Timer, Abonnements und Event-Listener." },
-      { "animationStep": 4, "heading": "Häufige Anwendungsfälle", "text": "useEffect ist für alles, was außerhalb des Render-Zyklus passieren muss: Daten fetchen, Abonnements, DOM-Manipulation, Analytics." },
-      { "animationStep": 5, "heading": "Fetching & Race Conditions", "text": "Beim Fetching innerhalb von useEffect kann eine schnelle zweite Anfrage vor einer langsamen ersten abgeschlossen werden – und veraltete Daten gewinnen. Lösung: Setze ein ignore-Flag in der Cleanup-Funktion, damit nur die neueste Anfrage den State aktualisiert." },
-      { "animationStep": 6, "heading": "Wann useEffect NICHT verwendet werden sollte", "text": "useEffect ist zum Synchronisieren mit externen Systemen gedacht. Vermeide es für: (1) abgeleitete Werte – berechne sie stattdessen beim Rendern; (2) event-gesteuerte Seiteneffekte – platziere sie im Handler; (3) verkettete State-Updates – sie verursachen doppelte Renders." }
+      {
+        "animationStep": 0,
+        "heading": "Seiteneffekte passieren nach dem Render",
+        "text": "Ein Seiteneffekt ist jede Arbeit, die etwas außerhalb der Komponente beeinflusst: Netzwerkanfragen, Timer, DOM-Manipulation. useEffect führt diese nach dem Render aus."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Leere deps — einmalig ausführen",
+        "text": "Ein leeres Array [] als zweites Argument zu übergeben teilt React mit, den Effect nur einmal auszuführen — wenn die Komponente zum ersten Mal mountet."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Deps-Array — bei Änderung erneut ausführen",
+        "text": "Liste die Werte auf, von denen der Effect abhängt. React führt den Effect neu aus, wenn sich einer dieser Werte ändert."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Cleanup-Funktion",
+        "text": "Gib eine Funktion von useEffect zurück, um vor dem nächsten Ausführen oder beim Unmount aufzuräumen. Unerlässlich für Timer, Abonnements und Event-Listener."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Häufige Anwendungsfälle",
+        "text": "useEffect ist für alles, was außerhalb des Render-Zyklus passieren muss: Daten fetchen, Abonnements, DOM-Manipulation, Analytics."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Fetching & Race Conditions",
+        "text": "Beim Fetching innerhalb von useEffect kann eine schnelle zweite Anfrage vor einer langsamen ersten abgeschlossen werden – und veraltete Daten gewinnen. Lösung: Setze ein ignore-Flag in der Cleanup-Funktion, damit nur die neueste Anfrage den State aktualisiert."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Wann useEffect NICHT verwendet werden sollte",
+        "text": "useEffect ist zum Synchronisieren mit externen Systemen gedacht. Vermeide es für: (1) abgeleitete Werte – berechne sie stattdessen beim Rendern; (2) event-gesteuerte Seiteneffekte – platziere sie im Handler; (3) verkettete State-Updates – sie verursachen doppelte Renders."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Einmalig beim Mount ausführen ([])", "note": "Leeres Array = nur beim Mounten" },
-        { "label": "Bei Dep-Änderung ausführen ([dep])", "note": "Alle Werte auflisten, die der Effect liest" },
-        { "label": "Cleanup-Rückgabe", "note": "Zurückgegebene Funktion läuft vor dem nächsten Effect + beim Unmount" },
-        { "label": "Bei jedem Render ausführen (kein Array)", "note": "Zweites Argument weglassen, um nach jedem Render auszuführen" }
+        {
+          "label": "Einmalig beim Mount ausführen ([])",
+          "note": "Leeres Array = nur beim Mounten"
+        },
+        {
+          "label": "Bei Dep-Änderung ausführen ([dep])",
+          "note": "Alle Werte auflisten, die der Effect liest"
+        },
+        {
+          "label": "Cleanup-Rückgabe",
+          "note": "Zurückgegebene Funktion läuft vor dem nächsten Effect + beim Unmount"
+        },
+        {
+          "label": "Bei jedem Render ausführen (kein Array)",
+          "note": "Zweites Argument weglassen, um nach jedem Render auszuführen"
+        }
       ],
       "patterns": [
-        { "title": "Fetch beim Mount" },
-        { "title": "Abonnieren + abbestellen" }
+        {
+          "title": "Fetch beim Mount"
+        },
+        {
+          "title": "Abonnieren + abbestellen"
+        }
       ],
       "whenToUse": "Verwende useEffect für Seiteneffekte, die nach dem Render passieren müssen: Daten fetchen, Abonnements, Timer und DOM-Manipulation. Wenn der Effect State oder Props liest, liste sie im deps-Array auf.",
       "commonMistakes": [
@@ -539,26 +1220,76 @@
     "title": "React Router",
     "description": "Client-seitige Navigation hinzufügen — Seiten, Links und URL-Parameter",
     "steps": [
-      { "animationStep": 0, "heading": "Client-seitiges Routing", "text": "Traditionelle Websites laden bei jeder Navigation eine neue HTML-Seite. React Router fängt die URL-Änderung ab und tauscht Komponenten aus — kein vollständiger Seitenneuladen." },
-      { "animationStep": 1, "heading": "BrowserRouter umhüllt deine App", "text": "BrowserRouter stellt Routing-Kontext für die gesamte App bereit. Es verwendet die HTML5-History-API, um die URL mit der UI synchron zu halten." },
-      { "animationStep": 2, "heading": "Routes und Route", "text": "Routes wählt die erste passende Route aus und rendert ihr Element. Jede Route ordnet einem URL-Pfad eine Komponente zu." },
-      { "animationStep": 3, "heading": "Link — ohne Neuladen navigieren", "text": "Verwende Link statt <a href>. Link aktualisiert die URL und rendert die passende Komponente ohne vollständiges Seitenneuladen." },
-      { "animationStep": 4, "heading": "useParams — dynamische Segmente", "text": "URL-Segmente mit : als Präfix sind dynamisch. useParams gibt ein Objekt mit den gematchten Werten zurück." },
-      { "animationStep": 5, "heading": "Layout-Routen & Outlet", "text": "Verschachtle Kind-Routen innerhalb einer Eltern-Route, die gemeinsame UI rendert (Navbar, Sidebar). Die Elternkomponente verwendet <Outlet /> als Platzhalter – React Router rendert die passende Kind-Route dort." },
-      { "animationStep": 6, "heading": "Index-Routen & useNavigate", "text": "Eine Index-Route ist das Standard-Kind – sie rendert, wenn der Elternpfad genau übereinstimmt. useNavigate ermöglicht programmatische Navigation: nach dem Absenden eines Formulars, Login oder anderen Events." }
+      {
+        "animationStep": 0,
+        "heading": "Client-seitiges Routing",
+        "text": "Traditionelle Websites laden bei jeder Navigation eine neue HTML-Seite. React Router fängt die URL-Änderung ab und tauscht Komponenten aus — kein vollständiger Seitenneuladen."
+      },
+      {
+        "animationStep": 1,
+        "heading": "BrowserRouter umhüllt deine App",
+        "text": "BrowserRouter stellt Routing-Kontext für die gesamte App bereit. Es verwendet die HTML5-History-API, um die URL mit der UI synchron zu halten."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Routes und Route",
+        "text": "Routes wählt die erste passende Route aus und rendert ihr Element. Jede Route ordnet einem URL-Pfad eine Komponente zu."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Link — ohne Neuladen navigieren",
+        "text": "Verwende Link statt <a href>. Link aktualisiert die URL und rendert die passende Komponente ohne vollständiges Seitenneuladen."
+      },
+      {
+        "animationStep": 4,
+        "heading": "useParams — dynamische Segmente",
+        "text": "URL-Segmente mit : als Präfix sind dynamisch. useParams gibt ein Objekt mit den gematchten Werten zurück."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Layout-Routen & Outlet",
+        "text": "Verschachtle Kind-Routen innerhalb einer Eltern-Route, die gemeinsame UI rendert (Navbar, Sidebar). Die Elternkomponente verwendet <Outlet /> als Platzhalter – React Router rendert die passende Kind-Route dort."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Index-Routen & useNavigate",
+        "text": "Eine Index-Route ist das Standard-Kind – sie rendert, wenn der Elternpfad genau übereinstimmt. useNavigate ermöglicht programmatische Navigation: nach dem Absenden eines Formulars, Login oder anderen Events."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "BrowserRouter / Routes / Route Setup", "note": "* fängt nicht gematchte Routen auf (404-Seite)" },
-        { "label": "Link", "note": "Link statt <a> verwenden, um vollständiges Neuladen zu vermeiden" },
-        { "label": "useNavigate", "note": "Programmatische Navigation" },
-        { "label": "useParams", "note": "Alle Params sind Strings" },
-        { "label": "useSearchParams", "note": "Query-String-Params lesen/schreiben" },
-        { "label": "Outlet (verschachtelte Routen)", "note": "Outlet ist, wo Kind-Routen gerendert werden" }
+        {
+          "label": "BrowserRouter / Routes / Route Setup",
+          "note": "* fängt nicht gematchte Routen auf (404-Seite)"
+        },
+        {
+          "label": "Link",
+          "note": "Link statt <a> verwenden, um vollständiges Neuladen zu vermeiden"
+        },
+        {
+          "label": "useNavigate",
+          "note": "Programmatische Navigation"
+        },
+        {
+          "label": "useParams",
+          "note": "Alle Params sind Strings"
+        },
+        {
+          "label": "useSearchParams",
+          "note": "Query-String-Params lesen/schreiben"
+        },
+        {
+          "label": "Outlet (verschachtelte Routen)",
+          "note": "Outlet ist, wo Kind-Routen gerendert werden"
+        }
       ],
       "patterns": [
-        { "title": "Geschützte Route" },
-        { "title": "Programmatisch navigieren" }
+        {
+          "title": "Geschützte Route"
+        },
+        {
+          "title": "Programmatisch navigieren"
+        }
       ],
       "whenToUse": "Verwende React Router, wenn deine App mehrere Ansichten hat, die verschiedenen URLs entsprechen. Verwende Link für die Navigation in der UI und useNavigate für programmatische Navigation nach Ereignissen wie dem Absenden eines Formulars.",
       "commonMistakes": [
@@ -569,6 +1300,8 @@
     }
   },
   "react-context": {
+    "title": "Context & useReducer",
+    "description": "State ohne Prop Drilling im Komponentenbaum teilen – und komplexen State mit useReducer verwalten",
     "steps": [
       {
         "animationStep": 0,
@@ -608,27 +1341,69 @@
     ]
   },
   "ts-interfaces": {
-    "title": "TypeScript-Interfaces",
+    "title": "Interfaces",
     "description": "Objektverträge definieren — optionale Props, readonly-Felder, Erweiterung und Implementierung",
     "steps": [
-      { "animationStep": 0, "heading": "Interfaces beschreiben Objektformen", "text": "Ein Interface definiert einen Vertrag: Jedes Objekt, dem dieser Typ zugewiesen wird, muss genau diese Eigenschaften mit diesen Typen haben. Es dokumentiert die Absicht und lässt TypeScript sie durchsetzen." },
-      { "animationStep": 1, "heading": "Optionale und readonly-Eigenschaften", "text": "Markiere eine Eigenschaft mit ?, um sie optional zu machen. Markiere sie mit readonly, um Mutation nach der Erstellung zu verhindern." },
-      { "animationStep": 2, "heading": "Interfaces erweitern", "text": "Verwende extends, um auf einem bestehenden Interface aufzubauen. Das Kind-Interface erbt alle Eltern-Eigenschaften und fügt eigene hinzu." },
-      { "animationStep": 3, "heading": "Ein Interface implementieren", "text": "Eine Klasse kann ein Interface implementieren und verspricht dabei, alle erforderlichen Eigenschaften und Methoden bereitzustellen. TypeScript gibt einen Fehler aus, wenn etwas fehlt." },
-      { "animationStep": 4, "heading": "Index-Signaturen für dynamische Schlüssel", "text": "Wenn du nicht alle Eigenschaftsnamen im Voraus kennst, verwende eine Index-Signatur, um beliebige String-Schlüssel mit einem spezifischen Werttyp zu erlauben." }
+      {
+        "animationStep": 0,
+        "heading": "Interfaces beschreiben Objektformen",
+        "text": "Ein Interface definiert einen Vertrag: Jedes Objekt, dem dieser Typ zugewiesen wird, muss genau diese Eigenschaften mit diesen Typen haben. Es dokumentiert die Absicht und lässt TypeScript sie durchsetzen."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Optionale und readonly-Eigenschaften",
+        "text": "Markiere eine Eigenschaft mit ?, um sie optional zu machen. Markiere sie mit readonly, um Mutation nach der Erstellung zu verhindern."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Interfaces erweitern",
+        "text": "Verwende extends, um auf einem bestehenden Interface aufzubauen. Das Kind-Interface erbt alle Eltern-Eigenschaften und fügt eigene hinzu."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Ein Interface implementieren",
+        "text": "Eine Klasse kann ein Interface implementieren und verspricht dabei, alle erforderlichen Eigenschaften und Methoden bereitzustellen. TypeScript gibt einen Fehler aus, wenn etwas fehlt."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Index-Signaturen für dynamische Schlüssel",
+        "text": "Wenn du nicht alle Eigenschaftsnamen im Voraus kennst, verwende eine Index-Signatur, um beliebige String-Schlüssel mit einem spezifischen Werttyp zu erlauben."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Interface-Deklaration", "note": "Definiert die erforderliche Form; jede zusätzliche Eigenschaft ist ein Fehler" },
-        { "label": "Optionale Eigenschaft (?)", "note": "Fehlende optionale Props sind in Ordnung; vorhandene werden typgeprüft" },
-        { "label": "readonly", "note": "Kann nach der Objekterstellung nicht zugewiesen werden" },
-        { "label": "extends", "note": "Kind erbt alle Eltern-Eigenschaften" },
-        { "label": "implements", "note": "Klasse muss jedes Interface-Mitglied bereitstellen" },
-        { "label": "Index-Signatur", "note": "Erlaubt beliebigen String-Schlüssel mit typisiertem Wert" }
+        {
+          "label": "Interface-Deklaration",
+          "note": "Definiert die erforderliche Form; jede zusätzliche Eigenschaft ist ein Fehler"
+        },
+        {
+          "label": "Optionale Eigenschaft (?)",
+          "note": "Fehlende optionale Props sind in Ordnung; vorhandene werden typgeprüft"
+        },
+        {
+          "label": "readonly",
+          "note": "Kann nach der Objekterstellung nicht zugewiesen werden"
+        },
+        {
+          "label": "extends",
+          "note": "Kind erbt alle Eltern-Eigenschaften"
+        },
+        {
+          "label": "implements",
+          "note": "Klasse muss jedes Interface-Mitglied bereitstellen"
+        },
+        {
+          "label": "Index-Signatur",
+          "note": "Erlaubt beliebigen String-Schlüssel mit typisiertem Wert"
+        }
       ],
       "patterns": [
-        { "title": "Ein Basis-Interface erweitern" },
-        { "title": "Klasse implementiert Interface" }
+        {
+          "title": "Ein Basis-Interface erweitern"
+        },
+        {
+          "title": "Klasse implementiert Interface"
+        }
       ],
       "whenToUse": "Verwende Interfaces, um Verträge für Objekte und Klassen zu definieren, insbesondere für öffentliche API-Formen und Funktionsparameter. Bevorzuge Interfaces gegenüber Typ-Aliases für Objektformen, da sie extends unterstützen und klarere Fehlermeldungen erzeugen.",
       "commonMistakes": [
@@ -639,26 +1414,65 @@
     }
   },
   "ts-generics": {
-    "title": "TypeScript-Generics",
+    "title": "Generics",
     "description": "Wiederverwendbare, typsichere Funktionen und Interfaces schreiben, die mit beliebigen Typen arbeiten",
     "steps": [
-      { "animationStep": 0, "heading": "Das Problem: starre Typen", "text": "Ohne Generics benötigst du für jeden Typ eine separate Funktion — firstNumber, firstString, firstBoolean. Das verletzt das DRY-Prinzip." },
-      { "animationStep": 1, "heading": "Generische Funktionen mit <T>", "text": "Ein Typparameter <T> ist ein Platzhalter, der zur Aufrufzeit durch einen echten Typ ersetzt wird. Eine Funktion funktioniert für alle Typen." },
-      { "animationStep": 2, "heading": "TypeScript leitet T automatisch ab", "text": "Du musst das Typargument selten explizit schreiben — TypeScript leitet es aus dem ab, was du übergibst." },
-      { "animationStep": 3, "heading": "Generische Interfaces", "text": "Interfaces können auch Typparameter haben. Der Typ wird bei der Verwendung des Interfaces angegeben." },
-      { "animationStep": 4, "heading": "Einschränkungen mit extends", "text": "Verwende extends, um einzuschränken, welche Typen T sein kann. So kannst du sicher auf Eigenschaften zugreifen, die garantiert existieren." }
+      {
+        "animationStep": 0,
+        "heading": "Das Problem: starre Typen",
+        "text": "Ohne Generics benötigst du für jeden Typ eine separate Funktion — firstNumber, firstString, firstBoolean. Das verletzt das DRY-Prinzip."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Generische Funktionen mit <T>",
+        "text": "Ein Typparameter <T> ist ein Platzhalter, der zur Aufrufzeit durch einen echten Typ ersetzt wird. Eine Funktion funktioniert für alle Typen."
+      },
+      {
+        "animationStep": 2,
+        "heading": "TypeScript leitet T automatisch ab",
+        "text": "Du musst das Typargument selten explizit schreiben — TypeScript leitet es aus dem ab, was du übergibst."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Generische Interfaces",
+        "text": "Interfaces können auch Typparameter haben. Der Typ wird bei der Verwendung des Interfaces angegeben."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Einschränkungen mit extends",
+        "text": "Verwende extends, um einzuschränken, welche Typen T sein kann. So kannst du sicher auf Eigenschaften zugreifen, die garantiert existieren."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Generische Funktion <T>", "note": "T ist ein Platzhalter, der zur Aufrufzeit ersetzt wird" },
-        { "label": "Inferenz an der Aufrufstelle", "note": "TypeScript leitet T ab; explizite Annotation ist selten nötig" },
-        { "label": "Generisches Interface", "note": "Form parametrisieren; Aufrufer gibt T an" },
-        { "label": "Einschränkung mit extends", "note": "Schränkt T auf Typen ein, die eine length-Eigenschaft haben" },
-        { "label": "Utility-Typen", "note": "Eingebaute mapped types; kein Import nötig" }
+        {
+          "label": "Generische Funktion <T>",
+          "note": "T ist ein Platzhalter, der zur Aufrufzeit ersetzt wird"
+        },
+        {
+          "label": "Inferenz an der Aufrufstelle",
+          "note": "TypeScript leitet T ab; explizite Annotation ist selten nötig"
+        },
+        {
+          "label": "Generisches Interface",
+          "note": "Form parametrisieren; Aufrufer gibt T an"
+        },
+        {
+          "label": "Einschränkung mit extends",
+          "note": "Schränkt T auf Typen ein, die eine length-Eigenschaft haben"
+        },
+        {
+          "label": "Utility-Typen",
+          "note": "Eingebaute mapped types; kein Import nötig"
+        }
       ],
       "patterns": [
-        { "title": "Identitätsfunktion" },
-        { "title": "Eingeschränktes Generic" }
+        {
+          "title": "Identitätsfunktion"
+        },
+        {
+          "title": "Eingeschränktes Generic"
+        }
       ],
       "whenToUse": "Verwende Generics, wenn du dieselbe Funktion oder dasselbe Interface mehrmals für verschiedene Typen schreibst. Sie sind das Hauptwerkzeug für wiederverwendbare, typsichere Utilities — Array-Helfer, API-Wrapper, Datencontainer und benutzerdefinierte Hooks.",
       "commonMistakes": [
@@ -672,42 +1486,467 @@
     "title": "Typeinengung",
     "description": "Breite Typen mit Typ-Guards und Kontrollflussanalyse auf spezifische einengen",
     "steps": [
-      { "animationStep": 0, "heading": "typeof- und instanceof-Guards", "text": "TypeScript engt Typen innerhalb von Bedingungsblöcken ein. Nach einer typeof-Prüfung wird der Typ automatisch verfeinert." },
-      { "animationStep": 1, "heading": "Discriminated Unions", "text": "Eine Discriminated Union verwendet eine gemeinsame Literal-Eigenschaft, um zwischen Typen zu unterscheiden. TypeScript engt anhand dieses Feldes ein." },
-      { "animationStep": 2, "heading": "Benutzerdefinierte Typ-Guards", "text": "Eine Typprädikats-Funktion (x is T) teilt TypeScript den genauen eingeengten Typ mit, wenn die Funktion true zurückgibt." }
-    ]
+      {
+        "animationStep": 0,
+        "heading": "typeof- und instanceof-Guards",
+        "text": "TypeScript engt Typen innerhalb von Bedingungsblöcken ein. Nach einer typeof-Prüfung wird der Typ automatisch verfeinert."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Discriminated Unions",
+        "text": "Eine Discriminated Union verwendet eine gemeinsame Literal-Eigenschaft, um zwischen Typen zu unterscheiden. TypeScript engt anhand dieses Feldes ein."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Benutzerdefinierte Typ-Guards",
+        "text": "Eine Typprädikats-Funktion (x is T) teilt TypeScript den genauen eingeengten Typ mit, wenn die Funktion true zurückgibt."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Gleichheitseinengung",
+        "text": "TypeScript engt den Typ ein, wenn du mit === oder !== vergleichst. Wenn beide Seiten auf Gleichheit geprüft werden, eliminiert TypeScript unmögliche Typen."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Der \"in\"-Operator",
+        "text": "Der in-Operator prüft, ob eine Eigenschaft auf einem Objekt existiert. TypeScript engt den Typ basierend darauf ein, in welchen Zweig verzweigt wird — nützlich zur Unterscheidung von Typen, die einige, aber nicht alle Eigenschaften teilen."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Benutzerdefinierte Typprädikate",
+        "text": "Ein benutzerdefinierter Typ-Guard ist eine Funktion, deren Rückgabetyp ein Typprädikat ist (param is Type). Wenn er true zurückgibt, engt TypeScript das Argument überall dort, wo der Guard verwendet wird, auf diesen Typ ein."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        {
+          "label": "typeof-Guard",
+          "note": "Funktioniert für: string, number, boolean, bigint, symbol, undefined, object, function"
+        },
+        {
+          "label": "instanceof-Guard",
+          "note": "Engt Klasseninstanzen ein"
+        },
+        {
+          "label": "in-Operator",
+          "note": "Prüft Eigenschaftsexistenz — engt Union-Mitglieder ein"
+        },
+        {
+          "label": "Gleichheitseinengung",
+          "note": "Strikte Gleichheit eliminiert unmögliche Typen"
+        },
+        {
+          "label": "Typprädikat",
+          "note": "Rückgabetyp \"v is T\" engt an der Aufrufstelle ein"
+        },
+        {
+          "label": "Discriminated Union",
+          "note": "Gemeinsame Literal-Eigenschaft engt die Union ein"
+        }
+      ],
+      "whenToUse": "Verwende typeof für Primitive, instanceof für Klasseninstanzen, den in-Operator zur Unterscheidung von Objektformen und benutzerdefinierte Prädikate, wenn du eine Prüfung wiederverwenden möchtest oder TypeScript sie nicht automatisch ableiten kann.",
+      "commonMistakes": [
+        "Vergessen, dass typeof null === \"object\" — prüfe immer explizit auf null, bevor du typeof für Objekte überprüfst",
+        "as (Typassertion) statt eines echten Typ-Guards verwenden — Assertionen umgehen das Typsystem; Guards beweisen den Typ zur Laufzeit",
+        "Ein Prädikat schreiben, das immer true zurückgibt — das Prädikat muss den Laufzeitwert tatsächlich testen, nicht nur behaupten"
+      ]
+    }
   },
   "ts-utility-types": {
     "title": "Utility-Typen",
     "description": "Eingebaute TypeScript-Typen, die neue Typen aus bestehenden transformieren und ableiten",
     "steps": [
-      { "animationStep": 0, "heading": "Partial und Required", "text": "Partial<T> macht alle Eigenschaften optional. Required<T> macht alle Eigenschaften erforderlich. Beide leiten einen neuen Typ aus einem bestehenden Interface ab." },
-      { "animationStep": 1, "heading": "Pick und Omit", "text": "Pick<T, K> behält nur die aufgelisteten Schlüssel. Omit<T, K> entfernt die aufgelisteten Schlüssel. Beide erstellen einen Teilmengen-Typ." },
-      { "animationStep": 2, "heading": "Record, Readonly und ReturnType", "text": "Record<K, V> erstellt einen Objekttyp mit Schlüsseln K und Werten V. Readonly<T> verhindert Mutation. ReturnType<F> extrahiert den Rückgabetyp einer Funktion." }
-    ]
+      {
+        "animationStep": 0,
+        "heading": "Partial und Required",
+        "text": "Partial<T> macht alle Eigenschaften optional. Required<T> macht alle Eigenschaften erforderlich. Beide leiten einen neuen Typ aus einem bestehenden Interface ab."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Pick und Omit",
+        "text": "Pick<T, K> behält nur die aufgelisteten Schlüssel. Omit<T, K> entfernt die aufgelisteten Schlüssel. Beide erstellen einen Teilmengen-Typ."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Record, Readonly und ReturnType",
+        "text": "Record<K, V> erstellt einen Objekttyp mit Schlüsseln K und Werten V. Readonly<T> verhindert Mutation. ReturnType<F> extrahiert den Rückgabetyp einer Funktion."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Exclude, Extract und NonNullable",
+        "text": "Exclude<T, U> entfernt aus T alle Typen, die U zuweisbar sind. Extract<T, U> behält nur Typen, die U zuweisbar sind. NonNullable<T> entfernt null und undefined — nützlich für validierte Werte."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        {
+          "label": "Partial<T>",
+          "note": "Für Update-/Patch-Payloads verwenden"
+        },
+        {
+          "label": "Required<T>",
+          "note": "Macht jede optionale Eigenschaft erforderlich"
+        },
+        {
+          "label": "Pick<T, K>",
+          "note": "Nur aufgelistete Schlüssel behalten"
+        },
+        {
+          "label": "Omit<T, K>",
+          "note": "Aufgelistete Schlüssel entfernen"
+        },
+        {
+          "label": "Record<K, V>",
+          "note": "Schlüssel-Wert-Map-Typ"
+        },
+        {
+          "label": "Exclude / Extract",
+          "note": "Union-Typen filtern"
+        },
+        {
+          "label": "NonNullable<T>",
+          "note": "null + undefined aus der Union entfernen"
+        },
+        {
+          "label": "ReturnType<F>",
+          "note": "Ableiten, was eine Funktion zurückgibt"
+        }
+      ],
+      "patterns": [
+        {
+          "title": "Patch-Payload (Partial)"
+        },
+        {
+          "title": "Konfigurations-Builder"
+        }
+      ],
+      "whenToUse": "Verwende Utility-Typen anstatt Interface-Definitionen zu duplizieren. Partial und Omit sind unverzichtbar für API-Update-Payloads. Pick erstellt fokussierte View-Models. Record erstellt Dictionaries.",
+      "commonMistakes": [
+        "Ein separates \"optionales\" Interface von Hand definieren — verwende stattdessen Partial<T> oder Pick<T, K>; sie bleiben synchron, wenn sich der Basistyp ändert",
+        "Exclude und Omit verwechseln — Omit entfernt Schlüssel aus einem Objekttyp; Exclude filtert Mitglieder aus einem Union-Typ",
+        "NonNullable nach der Validierung nicht verwenden — wenn du überprüft hast, dass ein Wert nicht null ist, kommuniziert NonNullable das TypeScript"
+      ]
+    }
+  },
+  "ts-arrays": {
+    "title": "Arrays & Tupel",
+    "description": "Typisierte Arrays mit Push-Erzwingung und fest strukturierten Tupeln für positionelle Daten",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Typisierte Arrays",
+        "text": "TypeScript ermöglicht es dir, festzulegen, dass ein Array nur Elemente eines bestimmten Typs enthalten soll. Verwende die T[]-Syntax oder die generische Array<T>-Form — beide sind äquivalent."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Arrays von Objekten",
+        "text": "Du kannst Arrays von benutzerdefinierten Objektformen typisieren. TypeScript prüft jedes Element gegen den Typ und gibt dir Autovervollständigung für alle Eigenschaften beim Iterieren."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Tupel — Arrays fester Länge",
+        "text": "Ein Tupel ist ein typisiertes Array mit einer festen Anzahl von Elementen, wobei jede Position ihren eigenen Typ hat. Tupel sind nützlich für positionelle Daten wie Koordinaten, Schlüssel-Wert-Paare oder Funktionsrückgabewerte."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Beschriftete Tupel",
+        "text": "TypeScript unterstützt beschriftete Tupel-Elemente für bessere Lesbarkeit. Beschriftungen ändern den Typ nicht — sie erscheinen nur in Editor-Tooltips — aber sie machen die Absicht viel klarer als unbenannte positionelle Slots."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        {
+          "label": "Typisiertes Array (T[])",
+          "note": "Häufigste Syntax; T[] und Array<T> sind äquivalent"
+        },
+        {
+          "label": "Generisches Array (Array<T>)",
+          "note": "Lesbarer für komplexe verschachtelte Typen"
+        },
+        {
+          "label": "Readonly-Array",
+          "note": "Verhindert Mutation — gut für Konfigurationen"
+        },
+        {
+          "label": "Tupel",
+          "note": "Feste Länge; jeder Index hat seinen eigenen Typ"
+        },
+        {
+          "label": "Tupel mit optionalem Element",
+          "note": "Abschließendes ? macht das Element optional"
+        }
+      ],
+      "patterns": [
+        {
+          "title": "Array von Objekten"
+        },
+        {
+          "title": "Funktion, die ein Tupel zurückgibt"
+        }
+      ],
+      "whenToUse": "Verwende T[] für jede homogene Sammlung. Verwende Tupel, wenn du eine feste Menge positioneller Werte mit verschiedenen Typen hast — besonders für Funktionsrückgabewerte, die zusammengehörige Daten bündeln, ohne ein vollständiges Objekt zu benötigen.",
+      "commonMistakes": [
+        "any[] verwenden — dies hebelt die Typprüfung für Array-Inhalte aus; verwende stattdessen den spezifischen Elementtyp",
+        "Tupellänge überschreiten — TypeScript erlaubt push auf nicht-readonly-Tupeln, was positionelle Annahmen korrumpieren kann; verwende readonly-Tupel, wenn Unveränderlichkeit wichtig ist",
+        "Tupel mit Union-Arrays verwechseln — [string, number] ist ein zweiteiliges Tupel; (string | number)[] ist ein Array beliebiger Länge mit gemischten Typen"
+      ]
+    }
+  },
+  "ts-classes": {
+    "title": "Klassen & Vererbung",
+    "description": "TypeScript-Klassen mit typisierten Eigenschaften, Zugriffsmodifikatoren und abstrakten Basisklassen",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Klassensyntax mit Typen",
+        "text": "TypeScript-Klassen funktionieren wie JavaScript-Klassen, aber mit Typ-Annotierungen. Deklariere Eigenschaftstypen oben im Klassenrumpf vor dem Konstruktor. TypeScript erzwingt, dass der Konstruktor jede nicht-optionale Eigenschaft initialisiert."
+      },
+      {
+        "animationStep": 1,
+        "heading": "readonly- und optionale Eigenschaften",
+        "text": "Markiere eine Eigenschaft als readonly, um Mutation nach der Konstruktion zu verhindern. Markiere sie mit ? als optional, wenn sie nicht immer bereitgestellt wird. TypeScript prüft beides zur Compile-Zeit."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Zugriffsmodifikatoren",
+        "text": "TypeScript fügt drei Zugriffsmodifikatoren hinzu: public (Standard — überall zugänglich), private (nur innerhalb der Klasse) und protected (innerhalb der Klasse und Unterklassen). Das #-Präfix ist JavaScripts natives privates Feld — zur Laufzeit erzwungen, nicht nur zur Compile-Zeit."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Vererbung mit extends",
+        "text": "Eine Klasse kann eine andere Klasse erweitern, um ihre öffentlichen und geschützten Mitglieder zu erben. Die Unterklasse muss super() aufrufen, bevor sie auf this zugreift. Überschreibe Methoden, um spezialisiertes Verhalten bereitzustellen."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Abstrakte Klassen",
+        "text": "Eine abstrakte Klasse kann nicht direkt instanziiert werden — sie existiert, um erweitert zu werden. Abstrakte Methoden haben keine Implementierung in der Basisklasse; jede konkrete Unterklasse muss sie implementieren."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        {
+          "label": "Klasse mit typisierten Eigenschaften",
+          "note": "Eigenschaftstypen vor dem Konstruktor deklarieren"
+        },
+        {
+          "label": "readonly",
+          "note": "Kann nur im Konstruktor gesetzt werden"
+        },
+        {
+          "label": "Zugriffsmodifikatoren",
+          "note": "private ist Compile-Zeit; # ist zur Laufzeit erzwungen"
+        },
+        {
+          "label": "extends",
+          "note": "Erbt öffentliche + geschützte Mitglieder"
+        },
+        {
+          "label": "abstrakte Klasse",
+          "note": "Kann nicht instanziiert werden — muss abgeleitet werden"
+        },
+        {
+          "label": "implements",
+          "note": "Klasse muss alle Interface-Mitglieder bereitstellen"
+        }
+      ],
+      "patterns": [
+        {
+          "title": "Abstrakte Basisklasse"
+        },
+        {
+          "title": "Parameter-Kurzschreibweise"
+        }
+      ],
+      "whenToUse": "Verwende Klassen, wenn du Kapselung, Vererbung oder gemeinsames Verhalten über Instanzen hinweg benötigst. Bevorzuge abstrakte Klassen gegenüber Interfaces, wenn du auch konkrete Methodenimplementierungen teilen möchtest. Für einfache Datenbehälter bevorzuge Interfaces oder Typ-Aliase.",
+      "commonMistakes": [
+        "super() in Unterklassen-Konstruktoren vergessen — TypeScript meldet Fehler, wenn du vor dem Aufruf von super() auf this zugreifst",
+        "private verwenden, wenn du protected benötigst — private Mitglieder sind in Unterklassen unzugänglich; verwende protected, wenn Unterklassen sie benötigen",
+        "Klassen-basiertes OOP in React übermäßig verwenden — React-Komponenten sind am besten als Funktionen; greife nur auf Klassen zurück, wenn du Domänen-Entitäten mit Verhalten modellierst"
+      ]
+    }
+  },
+  "ts-enums": {
+    "title": "Enums",
+    "description": "Benannte Konstanten mit numerischen oder String-Werten — und erschöpfende Switch-Prüfungen",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Numerische Enums",
+        "text": "Ein Enum deklariert eine Menge benannter Konstanten. Standardmäßig sind die Werte auto-inkrementierte Zahlen, die bei 0 beginnen. Du kannst den Startwert überschreiben oder explizite Werte für beliebige Mitglieder setzen."
+      },
+      {
+        "animationStep": 1,
+        "heading": "String-Enums",
+        "text": "String-Enums erfordern explizite String-Werte für jedes Mitglied. Sie sind in Logs und beim Debuggen besser lesbar, weil der Wert selbst bedeutungsvoll ist — im Gegensatz zu numerischen Enums, wo man nur eine Zahl sieht."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Erschöpfendes Switch mit never",
+        "text": "Wenn jeder Enum-Wert in einem Switch behandelt wird, weiß TypeScript, dass der Default-Zweig unerreichbar ist. Eine Zuweisung zu never im Default fängt fehlende Fälle zur Compile-Zeit ab."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Praxisbeispiel: RBAC-Rollen",
+        "text": "String-Enums eignen sich gut für Rollen, Status und Konfigurationskonstanten, die in Logs, APIs und Datenbanken erscheinen — der String-Wert ist selbstdokumentierend."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        {
+          "label": "Numerisches Enum",
+          "note": "Ab 0 nummeriert; unterstützt Rückwärtssuche"
+        },
+        {
+          "label": "String-Enum",
+          "note": "Werte sind lesbare Strings — für APIs/Logs bevorzugt"
+        },
+        {
+          "label": "Const Enum",
+          "note": "Schneller, aber zur Laufzeit nicht iterierbar"
+        },
+        {
+          "label": "Enum als Typ",
+          "note": "Nur Enum-Mitglieder bestehen die Typprüfung"
+        }
+      ],
+      "patterns": [
+        {
+          "title": "Erschöpfendes Switch"
+        }
+      ],
+      "whenToUse": "Verwende String-Enums für Status-Werte, Rollen und Konfigurationsschlüssel, die in APIs, Logs und Datenbanken erscheinen — der String-Wert ist selbstdokumentierend. Verwende const enum für Compile-Zeit-Konstanten, die nie iteriert werden. Bevorzuge String-Unions (\"draft\" | \"published\") gegenüber Enums in React-Props — sie sind einfacher und erfordern keinen Import.",
+      "commonMistakes": [
+        "Numerische Enums verwenden, wenn der Wert in Logs oder APIs erscheint — die Zahl hat keine Bedeutung; verwende stattdessen String-Enums",
+        "Vergessen, dass TypeScript numerische Enums bidirektional sind — Direction[0] gibt \"Up\" zurück, was zu unerwartetem Verhalten führen kann",
+        "Enums in React-Komponenten-Props verwenden — bevorzuge String-Literal-Unions, die leichtgewichtiger sind und keinen Import erfordern"
+      ]
+    }
+  },
+  "ts-type-assertion": {
+    "title": "Typ-Assertion",
+    "description": "Den von TypeScript abgeleiteten Typ mit as überschreiben — und wann es sicher zu verwenden ist",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Das as-Schlüsselwort",
+        "text": "Typ-Assertion teilt TypeScript mit: \"Vertrau mir, ich kenne den Typ besser als du.\" Verwende das as-Schlüsselwort (keine spitzen Klammern — sie kollidieren mit JSX). Die Assertion beeinflusst nur den Compiler, niemals den Laufzeitwert."
+      },
+      {
+        "animationStep": 1,
+        "heading": "JSON und API-Antworten",
+        "text": "Wenn du JSON parsest oder Daten von einer API erhältst, leitet TypeScript den Typ als any oder unknown ab. Das sofortige Behaupten eines spezifischen Typs nach dem Parsen gibt dir volle Typsicherheit nachgelagert — aber du bist für die Korrektheit der Assertion verantwortlich."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Einschränkungen und Non-Null-Assertion",
+        "text": "Typ-Assertion kann keine vollständig inkompatiblen Typen konvertieren. Der Non-Null-Assertion-Operator ! behauptet, dass ein Wert weder null noch undefined ist. Verwende ihn sparsam: Wenn der Wert tatsächlich null zur Laufzeit sein kann, schützt die Assertion dich nicht."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        {
+          "label": "as-Assertion",
+          "note": "as gegenüber spitzen Klammern bevorzugen — kompatibel mit JSX"
+        },
+        {
+          "label": "Non-Null-Assertion (!)",
+          "note": "Nur verwenden, wenn du sicher bist, dass der Wert existiert"
+        },
+        {
+          "label": "Doppelte Assertion",
+          "note": "Letzter Ausweg — signalisiert, dass etwas mit den Typen nicht stimmt"
+        },
+        {
+          "label": "as const",
+          "note": "Engt auf Literal-Typen ein und macht das Objekt readonly"
+        }
+      ],
+      "patterns": [
+        {
+          "title": "DOM-Element-Casting"
+        }
+      ],
+      "whenToUse": "Verwende Typ-Assertion, wenn TypeScript den korrekten Typ nicht aus dem Kontext ableiten kann — typischerweise beim Auswählen von DOM-Elementen, beim Parsen von JSON oder beim Arbeiten mit schwach typisierten Drittanbieter-Bibliotheken. Bevorzuge immer einen Laufzeit-Typ-Guard gegenüber einer bloßen Assertion, wenn der Wert aus einer externen Quelle kommt.",
+      "commonMistakes": [
+        "as verwenden, um Typfehler zu unterdrücken, anstatt das zugrunde liegende Problem zu beheben — Assertionen umgehen das Typsystem; behebe stattdessen die Ursache",
+        "Non-Null-Assertion (!) übermäßig verwenden — jedes ! ist ein Versprechen an TypeScript, das zur Laufzeit abstürzen kann, wenn der Wert tatsächlich null ist",
+        "Doppelte Assertionen (as unknown as T) — immer ein Design-Geruch; verwende stattdessen richtige Generics oder Typ-Guards"
+      ]
+    }
   },
   "ts-react": {
     "title": "TypeScript in React",
     "description": "Props, State und Hooks in React-Komponenten typisieren für sichereren, selbstdokumentierenden Code",
     "steps": [
-      { "animationStep": 0, "heading": "Props typisieren", "text": "Definiere einen Typ-Alias für die Props deiner Komponente. TypeScript meldet einen Fehler, wenn erforderliche Props fehlen oder den falschen Typ haben. Markiere optionale Props mit ?. Verwende React.ReactNode für children. Union-Typen schränken erlaubte Werte ein — ideal für Status- oder Variant-Props." },
-      { "animationStep": 1, "heading": "State typisieren", "text": "useState akzeptiert einen Generic: useState<T>(initial). Wenn der initiale State null oder undefined ist, kann TypeScript den vollständigen Typ nicht ableiten — annotiere immer explizit. Für komplexe Objekte definiere einen Typ-Alias und übergebe ihn als Generic. TypeScript verhindert dann, dass du State mit der falschen Form setzt." },
-      { "animationStep": 2, "heading": "useRef & useReducer typisieren", "text": "useRef benötigt einen expliziten Element-Typ — TypeScript kann nicht erraten, ob er auf ein Input, ein Div oder ein Canvas zeigt. Übergib den HTML-Element-Typ als Generic und null als Initialwert. useReducer profitiert am meisten von TypeScript: Definiere State und eine diskriminierte Union für Action, und der erschöpfende Default-Zweig fängt fehlende Fälle zur Compile-Zeit ab." },
-      { "animationStep": 3, "heading": "useCallback & useMemo", "text": "useCallback cached eine Funktion, damit ihre Referenz über Renders hinweg stabil bleibt — übergib die typisierte Funktion direkt. useMemo cached einen berechneten Wert und berechnet ihn nur neu, wenn sich Abhängigkeiten ändern. TypeScript leitet den Rückgabetyp von useMemo aus dem Callback ab. Beide sind am wertvollsten, wenn sie als Props an Kind-Komponenten übergeben oder als useEffect-Abhängigkeiten verwendet werden." },
-      { "animationStep": 4, "heading": "API-Antworten typisieren", "text": "Definiere einen Typ für deine API-Antwort und übergib ihn als Generic an useState und Fetch-Wrapper. Ein generisches Fetch-Hilfsprogramm fetchData<T>() ruft eine URL ab und behauptet, dass das JSON T entspricht — was dir volle Typsicherheit nachgelagert gibt. Verwende Partial<T> für PATCH-Operationen, bei denen nur einige Felder gesendet werden." }
+      {
+        "animationStep": 0,
+        "heading": "Props typisieren",
+        "text": "Definiere einen Typ-Alias für die Props deiner Komponente. TypeScript meldet einen Fehler, wenn erforderliche Props fehlen oder den falschen Typ haben. Markiere optionale Props mit ?. Verwende React.ReactNode für children. Union-Typen schränken erlaubte Werte ein — ideal für Status- oder Variant-Props."
+      },
+      {
+        "animationStep": 1,
+        "heading": "State typisieren",
+        "text": "useState akzeptiert einen Generic: useState<T>(initial). Wenn der initiale State null oder undefined ist, kann TypeScript den vollständigen Typ nicht ableiten — annotiere immer explizit. Für komplexe Objekte definiere einen Typ-Alias und übergebe ihn als Generic. TypeScript verhindert dann, dass du State mit der falschen Form setzt."
+      },
+      {
+        "animationStep": 2,
+        "heading": "useRef & useReducer typisieren",
+        "text": "useRef benötigt einen expliziten Element-Typ — TypeScript kann nicht erraten, ob er auf ein Input, ein Div oder ein Canvas zeigt. Übergib den HTML-Element-Typ als Generic und null als Initialwert. useReducer profitiert am meisten von TypeScript: Definiere State und eine diskriminierte Union für Action, und der erschöpfende Default-Zweig fängt fehlende Fälle zur Compile-Zeit ab."
+      },
+      {
+        "animationStep": 3,
+        "heading": "useCallback & useMemo",
+        "text": "useCallback cached eine Funktion, damit ihre Referenz über Renders hinweg stabil bleibt — übergib die typisierte Funktion direkt. useMemo cached einen berechneten Wert und berechnet ihn nur neu, wenn sich Abhängigkeiten ändern. TypeScript leitet den Rückgabetyp von useMemo aus dem Callback ab. Beide sind am wertvollsten, wenn sie als Props an Kind-Komponenten übergeben oder als useEffect-Abhängigkeiten verwendet werden."
+      },
+      {
+        "animationStep": 4,
+        "heading": "API-Antworten typisieren",
+        "text": "Definiere einen Typ für deine API-Antwort und übergib ihn als Generic an useState und Fetch-Wrapper. Ein generisches Fetch-Hilfsprogramm fetchData<T>() ruft eine URL ab und behauptet, dass das JSON T entspricht — was dir volle Typsicherheit nachgelagert gibt. Verwende Partial<T> für PATCH-Operationen, bei denen nur einige Felder gesendet werden."
+      },
+      {
+        "animationStep": 5,
+        "heading": "DOM-Events typisieren",
+        "text": "React stellt spezifische Event-Handler-Typen für jedes HTML-Element bereit. Verwende MouseEventHandler<Element>, ChangeEventHandler<Element> und FormEventHandler<Element>, damit TypeScript weiß, welche Eigenschaften auf dem Event-Objekt verfügbar sind."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Props-Typ", "note": "Verwende Typ-Alias (nicht interface) für Props — kein versehentliches Merging" },
-        { "label": "useState mit Generic", "note": "Erforderlich, wenn Initialwert null/undefined ist" },
-        { "label": "useRef", "note": "Immer den HTML-Element-Typ angeben; optionale Verkettung verwenden" },
-        { "label": "useReducer Action-Union", "note": "Diskriminierte Union — erschöpfendes Switch fängt fehlende Fälle ab" },
-        { "label": "children-Prop", "note": "ReactNode deckt alle gültigen JSX-Child-Typen ab" },
-        { "label": "Generisches Fetch", "note": "Antwortyp behaupten — T fließt zu Aufrufern" }
+        {
+          "label": "Props-Typ",
+          "note": "Verwende Typ-Alias (nicht interface) für Props — kein versehentliches Merging"
+        },
+        {
+          "label": "useState mit Generic",
+          "note": "Erforderlich, wenn Initialwert null/undefined ist"
+        },
+        {
+          "label": "useRef",
+          "note": "Immer den HTML-Element-Typ angeben; optionale Verkettung verwenden"
+        },
+        {
+          "label": "useReducer Action-Union",
+          "note": "Diskriminierte Union — erschöpfendes Switch fängt fehlende Fälle ab"
+        },
+        {
+          "label": "children-Prop",
+          "note": "ReactNode deckt alle gültigen JSX-Child-Typen ab"
+        },
+        {
+          "label": "Generisches Fetch",
+          "note": "Antwortyp behaupten — T fließt zu Aufrufern"
+        },
+        {
+          "label": "Event-Handler-Typen",
+          "note": "Spezifische Handler-Typen geben genaues event.target"
+        }
       ],
       "patterns": [
-        { "title": "Komponente mit typisierten Props" },
-        { "title": "Typisierte Datenabruf-Komponente" }
+        {
+          "title": "Komponente mit typisierten Props"
+        },
+        {
+          "title": "Typisierte Datenabruf-Komponente"
+        }
       ],
       "whenToUse": "Definiere immer einen Typ-Alias für Komponenten-Props — auch für einfache Komponenten. Annotiere useState, wenn der Initialwert null, undefined oder ein leeres Array ist (TypeScript kann die vollständige Form nicht ableiten). Verwende Generics für wiederverwendbare Fetch-Hilfsprogramme und Hooks.",
       "commonMistakes": [
@@ -718,25 +1957,131 @@
       ]
     }
   },
+  "ts-zod": {
+    "title": "Zod-Laufzeitvalidierung",
+    "description": "Schemata für Laufzeit-Validierung definieren und Typen mit z.infer ableiten",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Der blinde Fleck von TypeScript",
+        "text": "TypeScript prüft Typen nur zur Kompilierzeit — zur Laufzeit verschwinden alle Typen. Wenn API-Daten, Formulareingaben oder localStorage-Werte ankommen, kann TypeScript nicht garantieren, dass sie der erwarteten Form entsprechen. Ein cast mit 'as User' sagt TypeScript, es soll dir vertrauen — aber wenn die API eine andere Form liefert, erhältst du stille Fehler. Zod löst dies, indem echte Laufzeitprüfungen durchgeführt werden, die exakt den TypeScript-Typen entsprechen."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Zod-Schemata",
+        "text": "Definiere Schemata mit Zod-Konstruktoren: z.string(), z.number(), z.boolean(), z.array(), z.object(). Schemata sind kompositionsfähig — man kann sie mit .optional(), .nullable(), .default() erweitern und aus kleineren Schemata größere zusammensetzen. Einmal definiert, kann jedes Schema zur Laufzeit beliebige Daten validieren und aus dem Schema selbst den entsprechenden TypeScript-Typ ableiten."
+      },
+      {
+        "animationStep": 2,
+        "heading": "safeParse und parse",
+        "text": "schema.parse(data) wirft einen ZodError, wenn die Validierung scheitert — nützlich für kritische Pfade. schema.safeParse(data) wirft nie — es gibt { success: true, data } oder { success: false, error } zurück. Bevorzuge safeParse in API-Handlern und Formularvalidierung, damit unerwartete Daten nicht ganze Request-Handler zum Absturz bringen. Das error-Objekt enthält ein issues-Array mit menschenlesbaren Nachrichten."
+      },
+      {
+        "animationStep": 3,
+        "heading": "z.infer — ein Schema, ein Typ",
+        "text": "z.infer<typeof Schema> leitet automatisch den TypeScript-Typ aus einem Zod-Schema ab. Das bedeutet: du pflegst nur eine einzige Definition — das Schema. Der Typ folgt immer automatisch. Dies eliminiert die häufige Quelle von Drift, bei der ein TypeScript-Interface und die Validierungslogik auseinanderlaufen. Exportiere abgeleitete Typen neben deinen Schemata für volle Typsicherheit im gesamten Codebase."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        {
+          "label": "Primitives",
+          "note": "string, number, boolean, undefined, null — alle direkt aus z.*"
+        },
+        {
+          "label": "String-Einschränkungen",
+          "note": "min, max, email, url, regex — für detailliertere Validierung"
+        },
+        {
+          "label": "Objekt-Schema",
+          "note": "z.object({}) — beschreibt die Felder; strip entfernt unbekannte Schlüssel automatisch"
+        },
+        {
+          "label": "Arrays & Enums",
+          "note": "z.array(schema) — jedes Element wird validiert; z.enum(['a','b']) — exakte Werte"
+        },
+        {
+          "label": "safeParse",
+          "note": "Gibt { success, data } oder { success, error } zurück — kein throw"
+        },
+        {
+          "label": "parse",
+          "note": "Gibt validierte Daten zurück oder wirft ZodError — für Einmalverarbeitung"
+        },
+        {
+          "label": "z.infer",
+          "note": "Leitet den TypeScript-Typ aus dem Schema ab — Single Source of Truth"
+        }
+      ],
+      "patterns": [
+        {
+          "title": "API-Antwort validieren"
+        },
+        {
+          "title": "Formular mit Zod validieren"
+        }
+      ],
+      "whenToUse": "Verwende Zod immer dann, wenn Daten die Systemgrenzen überqueren: API-Antworten, Formularübermittlungen, localStorage, URL-Parameter oder Umgebungsvariablen. Für interne Daten, die den TypeScript-Compiler bereits durchlaufen haben, ist Zod unnötig — spare es für den Rand deiner Applikation auf.",
+      "commonMistakes": [
+        "as User statt Parsing mit Zod verwenden — Type Assertions umgehen die Laufzeitvalidierung; Daten aus externen Quellen immer mit safeParse() validieren",
+        "parse() statt safeParse() in benutzergerichteten Funktionen — parse() wirft einen ZodError der Komponenten zum Absturz bringt; safeParse() gibt success/error zurück für graceful Handling",
+        "Den Typ mit z.infer nicht ableiten — bei separat gepflegten TypeScript-Typen können diese vom Schema abweichen; immer z.infer als Single Source of Truth nutzen"
+      ]
+    }
+  },
   "testing-basics": {
     "title": "Testing-Grundlagen & Vitest",
     "description": "Warum Tests wichtig sind, die Test-Pyramide und deine ersten Unit-Tests mit Vitest schreiben",
     "steps": [
-      { "animationStep": 0, "heading": "Warum testen?", "text": "Tests sind automatisierte Überprüfungen, die sicherstellen, dass dein Code korrekt funktioniert. Ohne sie riskiert jede Änderung, etwas still zu brechen. Eine gute Test-Suite gibt dir Vertrauen beim Refactoring, fängt Regressionen ab, bevor sie in die Produktion gelangen, und dient als ausführbare Dokumentation, die zeigt, wie der Code gemeint ist." },
-      { "animationStep": 1, "heading": "Die Test-Pyramide", "text": "Gruppiere Tests nach Umfang und Kosten. Unit-Tests (Basis) isolieren eine einzelne Funktion — schnell, günstig, viele schreiben. Integrationstests prüfen die Zusammenarbeit zwischen Modulen (z.B. React + API). End-to-End-Tests (Spitze) klicken durch einen echten Browser — langsam und fragil, wenige behalten. Die breitere Basis bedeutet: viele günstige Unit-Tests, weniger Integrationstests, sehr wenige E2E-Tests." },
-      { "animationStep": 2, "heading": "Vitest-Einrichtung", "text": "Vitest ist ein Vite-nativer Test-Runner — er nutzt deine vite.config.ts wieder, sodass Aliases und Plugins auch in Tests funktionieren. Installiere es als Dev-Abhängigkeit, füge ein Test-Skript hinzu, und Vitest entdeckt automatisch alle *.test.ts- oder *.spec.ts-Dateien. Füge vitest run deinem Build-Skript hinzu, damit Tests den Produktions-Build bei Fehler blockieren." },
-      { "animationStep": 3, "heading": "Test-Anatomie", "text": "describe() gruppiert verwandte Tests. test() (Alias: it()) definiert einen einzelnen Fall. expect() erstellt eine Assertion — es vergleicht das tatsächliche Ergebnis mit dem erwarteten Wert. Ein Test besteht, wenn alle Assertions bestehen, und schlägt fehl, wenn eine wirft. Benenne Tests auf einfachem Englisch: Was macht er, unter welcher Bedingung." },
-      { "animationStep": 4, "heading": "Häufige Matcher", "text": "Vitest kommt mit Jest-kompatiblen Matchern. toBe verwendet Object.is (streng) — verwende es für Primitive. toEqual macht tiefe Gleichheit — verwende es für Objekte und Arrays. toContain prüft Array-Mitgliedschaft. resolves/rejects behandeln asynchrone Assertions. .not invertiert jeden Matcher." }
+      {
+        "animationStep": 0,
+        "heading": "Warum testen?",
+        "text": "Tests sind automatisierte Überprüfungen, die sicherstellen, dass dein Code korrekt funktioniert. Ohne sie riskiert jede Änderung, etwas still zu brechen. Eine gute Test-Suite gibt dir Vertrauen beim Refactoring, fängt Regressionen ab, bevor sie in die Produktion gelangen, und dient als ausführbare Dokumentation, die zeigt, wie der Code gemeint ist."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Die Test-Pyramide",
+        "text": "Gruppiere Tests nach Umfang und Kosten. Unit-Tests (Basis) isolieren eine einzelne Funktion — schnell, günstig, viele schreiben. Integrationstests prüfen die Zusammenarbeit zwischen Modulen (z.B. React + API). End-to-End-Tests (Spitze) klicken durch einen echten Browser — langsam und fragil, wenige behalten. Die breitere Basis bedeutet: viele günstige Unit-Tests, weniger Integrationstests, sehr wenige E2E-Tests."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Vitest-Einrichtung",
+        "text": "Vitest ist ein Vite-nativer Test-Runner — er nutzt deine vite.config.ts wieder, sodass Aliases und Plugins auch in Tests funktionieren. Installiere es als Dev-Abhängigkeit, füge ein Test-Skript hinzu, und Vitest entdeckt automatisch alle *.test.ts- oder *.spec.ts-Dateien. Füge vitest run deinem Build-Skript hinzu, damit Tests den Produktions-Build bei Fehler blockieren."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Test-Anatomie",
+        "text": "describe() gruppiert verwandte Tests. test() (Alias: it()) definiert einen einzelnen Fall. expect() erstellt eine Assertion — es vergleicht das tatsächliche Ergebnis mit dem erwarteten Wert. Ein Test besteht, wenn alle Assertions bestehen, und schlägt fehl, wenn eine wirft. Benenne Tests auf einfachem Englisch: Was macht er, unter welcher Bedingung."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Häufige Matcher",
+        "text": "Vitest kommt mit Jest-kompatiblen Matchern. toBe verwendet Object.is (streng) — verwende es für Primitive. toEqual macht tiefe Gleichheit — verwende es für Objekte und Arrays. toContain prüft Array-Mitgliedschaft. resolves/rejects behandeln asynchrone Assertions. .not invertiert jeden Matcher."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "describe + test", "note": "it() ist ein Alias für test()" },
-        { "label": "Häufige Matcher", "note": "Präfix .not zum Invertieren" },
-        { "label": "Async-Matcher", "note": "Async-Assertions immer awaiten" },
-        { "label": "Setup & Teardown", "note": "beforeEach für Test-Isolation verwenden" }
+        {
+          "label": "describe + test",
+          "note": "it() ist ein Alias für test()"
+        },
+        {
+          "label": "Häufige Matcher",
+          "note": "Präfix .not zum Invertieren"
+        },
+        {
+          "label": "Async-Matcher",
+          "note": "Async-Assertions immer awaiten"
+        },
+        {
+          "label": "Setup & Teardown",
+          "note": "beforeEach für Test-Isolation verwenden"
+        }
       ],
       "patterns": [
-        { "title": "TDD: Rot → Grün → Refactor" }
+        {
+          "title": "TDD: Rot → Grün → Refactor"
+        }
       ],
       "whenToUse": "Schreibe Unit-Tests für jede reine Funktion und jedes Hilfsprogramm. Führe Tests im Watch-Modus während der Entwicklung aus. Füge vitest run deinem Build-Skript hinzu, damit fehlerhafte Tests die Bereitstellung blockieren.",
       "commonMistakes": [
@@ -751,22 +2096,59 @@
     "title": "React Testing Library",
     "description": "React-Komponenten so testen, wie Benutzer mit ihnen interagieren — nach Rolle, Text und Label, nicht Implementierung",
     "steps": [
-      { "animationStep": 0, "heading": "React Testing Library Philosophie", "text": "RTLs Leitprinzip: \"Je mehr deine Tests ähneln, wie deine Software verwendet wird, desto mehr Vertrauen geben sie dir.\" Frage das DOM so ab, wie ein echter Benutzer es tun würde — nach zugänglicher Rolle, Label-Text oder sichtbarem Inhalt — nicht nach Klassennamen oder Komponenten-Interna. Das macht Tests widerstandsfähig gegen Refactors, die das Verhalten unverändert lassen." },
-      { "animationStep": 1, "heading": "Abfragen: Elemente finden", "text": "RTL bietet drei Abfragefamilien. getBy* wirft, wenn nicht gefunden (für Elemente, die existieren müssen). queryBy* gibt null zurück (zum Behaupten der Abwesenheit). findBy* ist asynchron — wartet auf das Erscheinen des Elements. Die bevorzugte Abfrage ist ByRole — sie verwendet ARIA-Rollen und spiegelt wider, wie Screenreader navigieren. ByLabelText und ByText sind in der Priorität als nächstes." },
-      { "animationStep": 2, "heading": "Events auslösen & Benutzerinteraktionen", "text": "Verwende fireEvent für einfache, synchrone DOM-Events. Für realistischere Benutzerinteraktionen (Tippen, Klicken, Tabben), bevorzuge @testing-library/user-event — es feuert dieselbe Abfolge von Events wie ein echter Browser. Warte immer auf userEvent-Aktionen. Teste, was Benutzer tun können, nicht wie das DOM strukturiert ist." },
-      { "animationStep": 3, "heading": "Mocks & Spies", "text": "vi.fn() erstellt einen Spy — eine Funktion, die Aufrufe aufzeichnet. Verwende es, um Abhängigkeiten (fetch, Callbacks, Module) durch kontrollierte Stellvertreter zu ersetzen. vi.stubGlobal() ersetzt Globals wie fetch. beforeEach richtet den Mock frisch für jeden Test ein; afterEach mit vi.restoreAllMocks() räumt auf. Prüfe Aufrufe mit toHaveBeenCalledWith." },
-      { "animationStep": 4, "heading": "Integrationstests", "text": "Integrationstests rendern eine Komponente zusammen mit ihren echten Abhängigkeiten (Hooks, Context, Router) und testen End-to-End-Flows. Wrape die Komponente in alle Provider, die sie benötigt. Verwende waitFor(), um auf asynchrone State-Updates zu warten. Teste die vollständige Benutzerreise — Formular ausfüllen → Absenden → Erfolgsmeldung — nicht isolierte Teile." }
+      {
+        "animationStep": 0,
+        "heading": "React Testing Library Philosophie",
+        "text": "RTLs Leitprinzip: \"Je mehr deine Tests ähneln, wie deine Software verwendet wird, desto mehr Vertrauen geben sie dir.\" Frage das DOM so ab, wie ein echter Benutzer es tun würde — nach zugänglicher Rolle, Label-Text oder sichtbarem Inhalt — nicht nach Klassennamen oder Komponenten-Interna. Das macht Tests widerstandsfähig gegen Refactors, die das Verhalten unverändert lassen."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Abfragen: Elemente finden",
+        "text": "RTL bietet drei Abfragefamilien. getBy* wirft, wenn nicht gefunden (für Elemente, die existieren müssen). queryBy* gibt null zurück (zum Behaupten der Abwesenheit). findBy* ist asynchron — wartet auf das Erscheinen des Elements. Die bevorzugte Abfrage ist ByRole — sie verwendet ARIA-Rollen und spiegelt wider, wie Screenreader navigieren. ByLabelText und ByText sind in der Priorität als nächstes."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Events auslösen & Benutzerinteraktionen",
+        "text": "Verwende fireEvent für einfache, synchrone DOM-Events. Für realistischere Benutzerinteraktionen (Tippen, Klicken, Tabben), bevorzuge @testing-library/user-event — es feuert dieselbe Abfolge von Events wie ein echter Browser. Warte immer auf userEvent-Aktionen. Teste, was Benutzer tun können, nicht wie das DOM strukturiert ist."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Mocks & Spies",
+        "text": "vi.fn() erstellt einen Spy — eine Funktion, die Aufrufe aufzeichnet. Verwende es, um Abhängigkeiten (fetch, Callbacks, Module) durch kontrollierte Stellvertreter zu ersetzen. vi.stubGlobal() ersetzt Globals wie fetch. beforeEach richtet den Mock frisch für jeden Test ein; afterEach mit vi.restoreAllMocks() räumt auf. Prüfe Aufrufe mit toHaveBeenCalledWith."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Integrationstests",
+        "text": "Integrationstests rendern eine Komponente zusammen mit ihren echten Abhängigkeiten (Hooks, Context, Router) und testen End-to-End-Flows. Wrape die Komponente in alle Provider, die sie benötigt. Verwende waitFor(), um auf asynchrone State-Updates zu warten. Teste die vollständige Benutzerreise — Formular ausfüllen → Absenden → Erfolgsmeldung — nicht isolierte Teile."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "render + screen", "note": "screen durchsucht das vollständig gerenderte DOM" },
-        { "label": "Abfragepriorität", "note": "getBy wirft; queryBy gibt null zurück; findBy ist asynchron" },
-        { "label": "Async-Assertions", "note": "findBy/waitFor für State-Updates verwenden" },
-        { "label": "fetch mocken", "note": "Mocks immer nach jedem Test wiederherstellen" },
-        { "label": "jest-dom-Matcher", "note": "Erfordert @testing-library/jest-dom-Einrichtung" }
+        {
+          "label": "render + screen",
+          "note": "screen durchsucht das vollständig gerenderte DOM"
+        },
+        {
+          "label": "Abfragepriorität",
+          "note": "getBy wirft; queryBy gibt null zurück; findBy ist asynchron"
+        },
+        {
+          "label": "Async-Assertions",
+          "note": "findBy/waitFor für State-Updates verwenden"
+        },
+        {
+          "label": "fetch mocken",
+          "note": "Mocks immer nach jedem Test wiederherstellen"
+        },
+        {
+          "label": "jest-dom-Matcher",
+          "note": "Erfordert @testing-library/jest-dom-Einrichtung"
+        }
       ],
       "patterns": [
-        { "title": "Komponententest mit Provider-Wrapper" }
+        {
+          "title": "Komponententest mit Provider-Wrapper"
+        }
       ],
       "whenToUse": "Teste jedes benutzerorientierte Verhalten: Was erscheint nach einem Klick, was zeigt sich beim Laden, was wird beim Fehler gerendert. Teste keine Implementierungsdetails wie State-Variablen oder interne Komponentenmethoden.",
       "commonMistakes": [
@@ -781,20 +2163,50 @@
     "title": "Abdeckung & CI mit GitHub Actions",
     "description": "Abdeckungsberichte lesen, Schwellenwerte setzen und Tests bei jedem Push mit einer GitHub Actions-Pipeline automatisieren",
     "steps": [
-      { "animationStep": 0, "heading": "Abdeckungsberichte", "text": "Abdeckung misst, welche Zeilen, Zweige und Funktionen deine Tests tatsächlich ausführen. Vitest verwendet v8 oder istanbul zum Erfassen. Führe mit --coverage aus, um einen Bericht zu sehen. Eine hohe Zahl garantiert keine Korrektheit — du brauchst immer noch bedeutungsvolle Assertions — aber sie hebt ungetestete Pfade hervor, die Fehler verbergen können." },
-      { "animationStep": 1, "heading": "Einen Abdeckungsbericht lesen", "text": "Der Textbericht zeigt vier Metriken pro Datei. Stmts: Prozentsatz der ausgeführten Anweisungen. Branch: Prozentsatz der genommenen if/else-Pfade (am wichtigsten — offenbart tote bedingte Zweige). Funcs: Prozentsatz der aufgerufenen Funktionen. Lines: Prozentsatz der getroffenen Quellzeilen. Nicht abgedeckte Zeilen werden in der äußersten rechten Spalte angezeigt — fang dort an." },
-      { "animationStep": 2, "heading": "CI/CD mit GitHub Actions", "text": "Continuous Integration führt deine Test-Suite automatisch bei jedem Push oder Pull-Request aus. GitHub Actions liest eine YAML-Workflow-Datei aus .github/workflows/. Definiere den Trigger (on:), die Umgebung (runs-on:) und die Schritte (installieren → testen → bauen → deployen). Ein fehlgeschlagener Testschritt bricht den Rest der Pipeline ab." },
-      { "animationStep": 3, "heading": "Auf GitHub Pages deployen", "text": "Füge einen Deploy-Schritt hinzu, um den Vite-Produktions-Build automatisch auf GitHub Pages zu veröffentlichen, nachdem Tests bestanden haben. Setze base in vite.config.ts auf deinen Repo-Namen. Die actions/deploy-pages-Aktion übernimmt das Hochladen des dist/-Ordners. Nach dem Mergen in main ist deine Seite innerhalb von Minuten live — keine manuellen Schritte." }
+      {
+        "animationStep": 0,
+        "heading": "Abdeckungsberichte",
+        "text": "Abdeckung misst, welche Zeilen, Zweige und Funktionen deine Tests tatsächlich ausführen. Vitest verwendet v8 oder istanbul zum Erfassen. Führe mit --coverage aus, um einen Bericht zu sehen. Eine hohe Zahl garantiert keine Korrektheit — du brauchst immer noch bedeutungsvolle Assertions — aber sie hebt ungetestete Pfade hervor, die Fehler verbergen können."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Einen Abdeckungsbericht lesen",
+        "text": "Der Textbericht zeigt vier Metriken pro Datei. Stmts: Prozentsatz der ausgeführten Anweisungen. Branch: Prozentsatz der genommenen if/else-Pfade (am wichtigsten — offenbart tote bedingte Zweige). Funcs: Prozentsatz der aufgerufenen Funktionen. Lines: Prozentsatz der getroffenen Quellzeilen. Nicht abgedeckte Zeilen werden in der äußersten rechten Spalte angezeigt — fang dort an."
+      },
+      {
+        "animationStep": 2,
+        "heading": "CI/CD mit GitHub Actions",
+        "text": "Continuous Integration führt deine Test-Suite automatisch bei jedem Push oder Pull-Request aus. GitHub Actions liest eine YAML-Workflow-Datei aus .github/workflows/. Definiere den Trigger (on:), die Umgebung (runs-on:) und die Schritte (installieren → testen → bauen → deployen). Ein fehlgeschlagener Testschritt bricht den Rest der Pipeline ab."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Auf GitHub Pages deployen",
+        "text": "Füge einen Deploy-Schritt hinzu, um den Vite-Produktions-Build automatisch auf GitHub Pages zu veröffentlichen, nachdem Tests bestanden haben. Setze base in vite.config.ts auf deinen Repo-Namen. Die actions/deploy-pages-Aktion übernimmt das Hochladen des dist/-Ordners. Nach dem Mergen in main ist deine Seite innerhalb von Minuten live — keine manuellen Schritte."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Mit Abdeckung ausführen", "note": "Erfordert @vitest/coverage-v8 installiert" },
-        { "label": "Abdeckungsschwellenwerte", "note": "Pipeline schlägt fehl, wenn Abdeckung unter Schwellenwert fällt" },
-        { "label": "GitHub Actions-Trigger", "note": "Läuft bei jedem Push und PR zu main" },
-        { "label": "Workflow-Schritte", "note": "Jeder fehlgeschlagene Schritt bricht den Rest ab" }
+        {
+          "label": "Mit Abdeckung ausführen",
+          "note": "Erfordert @vitest/coverage-v8 installiert"
+        },
+        {
+          "label": "Abdeckungsschwellenwerte",
+          "note": "Pipeline schlägt fehl, wenn Abdeckung unter Schwellenwert fällt"
+        },
+        {
+          "label": "GitHub Actions-Trigger",
+          "note": "Läuft bei jedem Push und PR zu main"
+        },
+        {
+          "label": "Workflow-Schritte",
+          "note": "Jeder fehlgeschlagene Schritt bricht den Rest ab"
+        }
       ],
       "patterns": [
-        { "title": "Vollständige CI-Pipeline" }
+        {
+          "title": "Vollständige CI-Pipeline"
+        }
       ],
       "whenToUse": "Richte CI vom ersten Tag an in jedem Projekt ein. Strebe 70–80% Abdeckung für Geschäftslogik an. 100% Abdeckung ist nicht das Ziel — bedeutungsvolle Tests auf kritischen Pfaden sind es.",
       "commonMistakes": [
@@ -809,20 +2221,58 @@
     "title": "Was ist Git?",
     "description": "Verteilte Versionskontrolle — warum sie existiert, wie sie funktioniert, und die 4 Schlüsselbereiche, die jeder Entwickler täglich nutzt",
     "steps": [
-      { "animationStep": 0, "heading": "Das Problem: Wer hat die neueste Version?", "text": "Wenn mehrere Entwickler am selben Projekt arbeiten, werden Dateien per E-Mail versendet, überschrieben oder verloren. Versionskontrolle löst das, indem jeder Änderung eine Geschichte gegeben wird — sodass du immer weißt, was sich geändert hat, wann und warum." },
-      { "animationStep": 1, "heading": "Arbeitsverzeichnis", "text": "Deine lokalen Dateien auf der Festplatte. Hier schreibst und bearbeitest du Code. Git beobachtet diesen Ordner, speichert aber nicht automatisch — du entscheidest, was verfolgt wird." },
-      { "animationStep": 2, "heading": "Staging-Bereich", "text": "Ein Wartungsbereich für Änderungen, die du im nächsten Snapshot einbeziehen möchtest. Verwende git add, um Dateien hierher zu verschieben. Du kannst manche Dateien stagen und andere weglassen — das gibt dir genaue Kontrolle über das, was du commitest." },
-      { "animationStep": 3, "heading": "Lokales Repository", "text": "Der .git-Ordner auf deinem Rechner speichert die vollständige Projektgeschichte. Jeder Commit ist ein permanenter Schnappschuss. Du kannst jederzeit zu einem früheren Zustand zurückkehren — nichts geht wirklich verloren." },
-      { "animationStep": 4, "heading": "Alle 4 Bereiche zusammen", "text": "Der vollständige Git-Fluss: Arbeitsverzeichnis → Staging-Bereich → Lokales Repo → Remote-Repo. Änderungen bewegen sich vorwärts durch diese Bereiche und können zurückfließen (checkout, pull), wenn nötig." }
+      {
+        "animationStep": 0,
+        "heading": "Das Problem: Wer hat die neueste Version?",
+        "text": "Wenn mehrere Entwickler am selben Projekt arbeiten, werden Dateien per E-Mail versendet, überschrieben oder verloren. Versionskontrolle löst das, indem jeder Änderung eine Geschichte gegeben wird — sodass du immer weißt, was sich geändert hat, wann und warum."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Arbeitsverzeichnis",
+        "text": "Deine lokalen Dateien auf der Festplatte. Hier schreibst und bearbeitest du Code. Git beobachtet diesen Ordner, speichert aber nicht automatisch — du entscheidest, was verfolgt wird."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Staging-Bereich",
+        "text": "Ein Wartungsbereich für Änderungen, die du im nächsten Snapshot einbeziehen möchtest. Verwende git add, um Dateien hierher zu verschieben. Du kannst manche Dateien stagen und andere weglassen — das gibt dir genaue Kontrolle über das, was du commitest."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Lokales Repository",
+        "text": "Der .git-Ordner auf deinem Rechner speichert die vollständige Projektgeschichte. Jeder Commit ist ein permanenter Schnappschuss. Du kannst jederzeit zu einem früheren Zustand zurückkehren — nichts geht wirklich verloren."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Alle 4 Bereiche zusammen",
+        "text": "Der vollständige Git-Fluss: Arbeitsverzeichnis → Staging-Bereich → Lokales Repo → Remote-Repo. Änderungen bewegen sich vorwärts durch diese Bereiche und können zurückfließen (checkout, pull), wenn nötig."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Neues Repo initialisieren", "note": "erstellt .git-Ordner im aktuellen Verzeichnis" },
-        { "label": "Bestehendes Repo klonen", "note": "lädt vollständige Geschichte herunter" },
-        { "label": "Aktuellen Status prüfen", "note": "zeigt geänderte, gestagete und unverfolgte Dateien" },
-        { "label": "Dateien stagen", "note": "bestimmte Datei oder alles hinzufügen" },
-        { "label": "Gestagete Änderungen committen", "note": "speichert einen permanenten Schnappschuss" },
-        { "label": "Commit-Verlauf anzeigen", "note": "--oneline gibt kompakte Ansicht" }
+        {
+          "label": "Neues Repo initialisieren",
+          "note": "erstellt .git-Ordner im aktuellen Verzeichnis"
+        },
+        {
+          "label": "Bestehendes Repo klonen",
+          "note": "lädt vollständige Geschichte herunter"
+        },
+        {
+          "label": "Aktuellen Status prüfen",
+          "note": "zeigt geänderte, gestagete und unverfolgte Dateien"
+        },
+        {
+          "label": "Dateien stagen",
+          "note": "bestimmte Datei oder alles hinzufügen"
+        },
+        {
+          "label": "Gestagete Änderungen committen",
+          "note": "speichert einen permanenten Schnappschuss"
+        },
+        {
+          "label": "Commit-Verlauf anzeigen",
+          "note": "--oneline gibt kompakte Ansicht"
+        }
       ],
       "whenToUse": "Verwende git init für neue Projekte, git clone für bestehende. Führe immer git status vor dem Committen aus, um zu sehen, was sich geändert hat.",
       "commonMistakes": [
@@ -836,21 +2286,62 @@
     "title": "Git-Workflow",
     "description": "Die tägliche Entwicklungsschleife — Branching, Staging, Committen und Pushen von Änderungen",
     "steps": [
-      { "animationStep": 0, "heading": "Die tägliche Git-Schleife", "text": "Jeder Tag in einem Entwicklungsteam folgt demselben Muster: aktuellsten Code holen, Branch erstellen, Änderungen machen, stagen, committen, dann pushen, um mit dem Team zu teilen." },
-      { "animationStep": 1, "heading": "Start: init oder clone", "text": "Für ein brandneues Projekt verwende git init. Um an einem bestehenden Projekt zu arbeiten, lädt git clone die vollständige Geschichte herunter. Das machst du nur einmal pro Projekt." },
-      { "animationStep": 2, "heading": "Einen Branch erstellen", "text": "Arbeite immer in einem Branch — niemals direkt auf main. Ein Branch ist eine isolierte Kopie der Codebasis. Deine Änderungen bleiben eingedämmt, bis du sie zurückmergen möchtest." },
-      { "animationStep": 3, "heading": "Stagen und committen", "text": "Änderungen machen, die relevanten Dateien stagen, dann mit einer beschreibenden Nachricht committen. Oft committen — kleine Commits sind einfacher zu reviewen, zu verstehen und rückgängig zu machen, wenn etwas schief geht." },
-      { "animationStep": 4, "heading": "Zum Remote pushen", "text": "Deinen Branch in das Remote-Repository pushen, damit Teammitglieder ihn sehen können. Das Flag -u setzt den Upstream, sodass zukünftige Pushes nur git push benötigen." }
+      {
+        "animationStep": 0,
+        "heading": "Die tägliche Git-Schleife",
+        "text": "Jeder Tag in einem Entwicklungsteam folgt demselben Muster: aktuellsten Code holen, Branch erstellen, Änderungen machen, stagen, committen, dann pushen, um mit dem Team zu teilen."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Start: init oder clone",
+        "text": "Für ein brandneues Projekt verwende git init. Um an einem bestehenden Projekt zu arbeiten, lädt git clone die vollständige Geschichte herunter. Das machst du nur einmal pro Projekt."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Einen Branch erstellen",
+        "text": "Arbeite immer in einem Branch — niemals direkt auf main. Ein Branch ist eine isolierte Kopie der Codebasis. Deine Änderungen bleiben eingedämmt, bis du sie zurückmergen möchtest."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Stagen und committen",
+        "text": "Änderungen machen, die relevanten Dateien stagen, dann mit einer beschreibenden Nachricht committen. Oft committen — kleine Commits sind einfacher zu reviewen, zu verstehen und rückgängig zu machen, wenn etwas schief geht."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Zum Remote pushen",
+        "text": "Deinen Branch in das Remote-Repository pushen, damit Teammitglieder ihn sehen können. Das Flag -u setzt den Upstream, sodass zukünftige Pushes nur git push benötigen."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Branch erstellen + wechseln", "note": "Kurzform für git branch + git checkout" },
-        { "label": "Branch wechseln", "note": "oder: git switch <branch-name>" },
-        { "label": "Alle Änderungen stagen", "note": "staged alle geänderten und neuen Dateien" },
-        { "label": "Committen", "note": "gestagete Änderungen als Schnappschuss speichern" },
-        { "label": "Branch zum Remote pushen", "note": "-u setzt Upstream für zukünftige Pushes" },
-        { "label": "Aktuellstes vom Remote pullen", "note": "fetch + merge Remote-Änderungen in aktuellen Branch" },
-        { "label": "Branch in aktuellen mergen", "note": "Geschichte eines anderen Branches integrieren" }
+        {
+          "label": "Branch erstellen + wechseln",
+          "note": "Kurzform für git branch + git checkout"
+        },
+        {
+          "label": "Branch wechseln",
+          "note": "oder: git switch <branch-name>"
+        },
+        {
+          "label": "Alle Änderungen stagen",
+          "note": "staged alle geänderten und neuen Dateien"
+        },
+        {
+          "label": "Committen",
+          "note": "gestagete Änderungen als Schnappschuss speichern"
+        },
+        {
+          "label": "Branch zum Remote pushen",
+          "note": "-u setzt Upstream für zukünftige Pushes"
+        },
+        {
+          "label": "Aktuellstes vom Remote pullen",
+          "note": "fetch + merge Remote-Änderungen in aktuellen Branch"
+        },
+        {
+          "label": "Branch in aktuellen mergen",
+          "note": "Geschichte eines anderen Branches integrieren"
+        }
       ],
       "commonMistakes": [
         "Direkt auf main arbeiten — erstelle immer einen Feature-Branch, damit deine Änderungen die stabile Codebasis nicht stören",
@@ -863,19 +2354,53 @@
     "title": ".gitignore",
     "description": "Git mitteilen, welche Dateien niemals verfolgt werden sollen — Geheimnisse, Abhängigkeiten und Build-Ausgaben bleiben aus deinem Repo",
     "steps": [
-      { "animationStep": 0, "heading": "Ohne .gitignore — alles wird committet", "text": "git add . ohne .gitignore ausführen und du commitest versehentlich node_modules (200MB+), deine .env-Geheimnisse und Build-Ausgaben. Einmal in der Git-Geschichte sind sie schwer vollständig zu entfernen." },
-      { "animationStep": 1, "heading": "Eine .gitignore-Datei erstellen", "text": "Füge eine Datei namens .gitignore im Root deines Projekts hinzu. Liste auf, was ignoriert werden soll — Git staged oder committet diese Dateien nie. Committe die .gitignore selbst, damit Teammitglieder dieselben Regeln erhalten." },
-      { "animationStep": 2, "heading": "Muster-Syntax", "text": "Jede Zeile ist ein Muster. Verwende / für Verzeichnisse, * als Wildcard, ! um etwas gezielt nicht zu ignorieren. Muster werden vom Projekt-Root aus gematcht." },
-      { "animationStep": 3, "heading": "Mit .gitignore — nur dein Code wird verfolgt", "text": "Nach dem Hinzufügen von .gitignore stagt git add . nur deine eigentlichen Quelldateien. Geheimnisse bleiben lokal, node_modules bleibt von GitHub fern, und dein Repo bleibt schlank und sauber." }
+      {
+        "animationStep": 0,
+        "heading": "Ohne .gitignore — alles wird committet",
+        "text": "git add . ohne .gitignore ausführen und du commitest versehentlich node_modules (200MB+), deine .env-Geheimnisse und Build-Ausgaben. Einmal in der Git-Geschichte sind sie schwer vollständig zu entfernen."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Eine .gitignore-Datei erstellen",
+        "text": "Füge eine Datei namens .gitignore im Root deines Projekts hinzu. Liste auf, was ignoriert werden soll — Git staged oder committet diese Dateien nie. Committe die .gitignore selbst, damit Teammitglieder dieselben Regeln erhalten."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Muster-Syntax",
+        "text": "Jede Zeile ist ein Muster. Verwende / für Verzeichnisse, * als Wildcard, ! um etwas gezielt nicht zu ignorieren. Muster werden vom Projekt-Root aus gematcht."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Mit .gitignore — nur dein Code wird verfolgt",
+        "text": "Nach dem Hinzufügen von .gitignore stagt git add . nur deine eigentlichen Quelldateien. Geheimnisse bleiben lokal, node_modules bleibt von GitHub fern, und dein Repo bleibt schlank und sauber."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Einen Ordner ignorieren", "note": "abschließendes / bedeutet Verzeichnis" },
-        { "label": "Eine Datei ignorieren", "note": "exakter Dateiname" },
-        { "label": "Wildcard-Muster", "note": "* matcht beliebige Zeichen" },
-        { "label": "Ausnahme nicht ignorieren", "note": "! negiert das Muster" },
-        { "label": "Prüfen, ob Datei ignoriert wird", "note": "zeigt, welche Regel greift" },
-        { "label": "Bereits verfolgten Datei entfernen", "note": "Verfolgung beenden ohne Löschen" }
+        {
+          "label": "Einen Ordner ignorieren",
+          "note": "abschließendes / bedeutet Verzeichnis"
+        },
+        {
+          "label": "Eine Datei ignorieren",
+          "note": "exakter Dateiname"
+        },
+        {
+          "label": "Wildcard-Muster",
+          "note": "* matcht beliebige Zeichen"
+        },
+        {
+          "label": "Ausnahme nicht ignorieren",
+          "note": "! negiert das Muster"
+        },
+        {
+          "label": "Prüfen, ob Datei ignoriert wird",
+          "note": "zeigt, welche Regel greift"
+        },
+        {
+          "label": "Bereits verfolgten Datei entfernen",
+          "note": "Verfolgung beenden ohne Löschen"
+        }
       ],
       "whenToUse": "Erstelle eine .gitignore als allerersten Schritt in jedem neuen Projekt, vor dem ersten Commit. Verwende gitignore.io oder GitHubs Vorlagen für deinen Tech-Stack.",
       "commonMistakes": [
@@ -889,18 +2414,49 @@
     "title": "GitHub",
     "description": "GitHub ist nicht Git — es ist eine Plattform, die Repos online hostet und Kollaborationsfunktionen wie Pull Requests hinzufügt",
     "steps": [
-      { "animationStep": 0, "heading": "Git ≠ GitHub", "text": "Git ist ein Kommandozeilen-Tool, das auf deinem Rechner läuft. GitHub ist eine Website, die Git-Repositories online hostet. Du kannst Git ohne GitHub verwenden, aber GitHub braucht Git. Denke an Git als den Motor und GitHub als die Garage." },
-      { "animationStep": 1, "heading": "Remote-Repository", "text": "GitHub speichert eine Kopie deines Repositorys in der Cloud. Jedes Teammitglied klont es einmal, verwendet dann git pull, um die neuesten Änderungen zu erhalten, und git push, um seine Arbeit zu teilen. Das Remote ist die einzige Quelle der Wahrheit." },
-      { "animationStep": 2, "heading": "Pull Requests", "text": "Ein Pull Request (PR) ist ein GitHub-Feature, das es ermöglicht, das Mergen eines Branches in main vorzuschlagen. Vor dem Mergen können Teammitglieder den Code reviewen, Kommentare hinterlassen, Änderungen anfordern und genehmigen. Das hält den main-Branch sauber und reviewt." },
-      { "animationStep": 3, "heading": "Forking & Open Source", "text": "Fork erstellt deine eigene Kopie des Repositorys einer anderen Person. Du kannst Änderungen frei vornehmen und dann einen PR zurück zum Original öffnen. So tragen Millionen von Entwicklern zu Open-Source-Projekten bei, ohne direkten Zugang zu benötigen." }
+      {
+        "animationStep": 0,
+        "heading": "Git ≠ GitHub",
+        "text": "Git ist ein Kommandozeilen-Tool, das auf deinem Rechner läuft. GitHub ist eine Website, die Git-Repositories online hostet. Du kannst Git ohne GitHub verwenden, aber GitHub braucht Git. Denke an Git als den Motor und GitHub als die Garage."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Remote-Repository",
+        "text": "GitHub speichert eine Kopie deines Repositorys in der Cloud. Jedes Teammitglied klont es einmal, verwendet dann git pull, um die neuesten Änderungen zu erhalten, und git push, um seine Arbeit zu teilen. Das Remote ist die einzige Quelle der Wahrheit."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Pull Requests",
+        "text": "Ein Pull Request (PR) ist ein GitHub-Feature, das es ermöglicht, das Mergen eines Branches in main vorzuschlagen. Vor dem Mergen können Teammitglieder den Code reviewen, Kommentare hinterlassen, Änderungen anfordern und genehmigen. Das hält den main-Branch sauber und reviewt."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Forking & Open Source",
+        "text": "Fork erstellt deine eigene Kopie des Repositorys einer anderen Person. Du kannst Änderungen frei vornehmen und dann einen PR zurück zum Original öffnen. So tragen Millionen von Entwicklern zu Open-Source-Projekten bei, ohne direkten Zugang zu benötigen."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Remote hinzufügen", "note": "\"origin\" ist der konventionelle Name für das Haupt-Remote" },
-        { "label": "Branch pushen + Upstream setzen", "note": "-u verknüpft lokalen Branch mit Remote" },
-        { "label": "Remote-Änderungen pullen", "note": "fetch + merge in aktuellen Branch" },
-        { "label": "Remotes auflisten", "note": "zeigt fetch- und push-URLs" },
-        { "label": "PR erstellen", "note": "gh CLI-Tool für GitHub" }
+        {
+          "label": "Remote hinzufügen",
+          "note": "\"origin\" ist der konventionelle Name für das Haupt-Remote"
+        },
+        {
+          "label": "Branch pushen + Upstream setzen",
+          "note": "-u verknüpft lokalen Branch mit Remote"
+        },
+        {
+          "label": "Remote-Änderungen pullen",
+          "note": "fetch + merge in aktuellen Branch"
+        },
+        {
+          "label": "Remotes auflisten",
+          "note": "zeigt fetch- und push-URLs"
+        },
+        {
+          "label": "PR erstellen",
+          "note": "gh CLI-Tool für GitHub"
+        }
       ],
       "whenToUse": "Verwende GitHub (oder GitLab/Bitbucket) bei der Zusammenarbeit mit anderen oder zur Sicherung deiner Arbeit. Verwende immer Pull Requests für Code, auf den andere angewiesen sind — pushe niemals direkt auf main in gemeinsamen Projekten.",
       "commonMistakes": [
@@ -914,19 +2470,53 @@
     "title": "Team-Kollaborations-Setup",
     "description": "Wie man ein gemeinsames GitHub-Repo einrichtet, Mitarbeiter einlädt, main schützt und den Team-PR-Workflow ausführt",
     "steps": [
-      { "animationStep": 0, "heading": "Ein Repo erstellen und dein Team einladen", "text": "Auf GitHub beginnen: neues Repository erstellen, dann zu Settings → Collaborators → Add people gehen. Teammitglieder erhalten eine E-Mail-Einladung — sie müssen sie akzeptieren, bevor sie pushen können. Für Organisationen Teams verwenden, um Zugang in großem Maßstab zu verwalten." },
-      { "animationStep": 1, "heading": "Alle klonen dasselbe Remote", "text": "Jedes Teammitglied führt git clone einmal aus. Damit wird die vollständige Geschichte heruntergeladen und origin automatisch als Remote-Name gesetzt. Von da an verwenden sie git pull zum Synchronisieren und git push zum Teilen." },
-      { "animationStep": 2, "heading": "main schützen — Pull-Request-Reviews verlangen", "text": "Zu Settings → Branches → Add branch protection rule für main gehen. \"Require a pull request before merging\" und \"Require approvals\" aktivieren. Das verhindert, dass jemand direkt auf main pusht — alle Änderungen müssen durch einen reviewten PR." },
-      { "animationStep": 3, "heading": "Die tägliche Team-Schleife", "text": "Jedes Feature oder jede Fehlerbehebung folgt demselben Zyklus: aktuellsten main pullen, Branch erstellen, Arbeit committen, Branch pushen, PR öffnen, Review erhalten, dann mergen. Kleine, fokussierte PRs sind einfacher zu reviewen und weniger konfliktsanfällig." }
+      {
+        "animationStep": 0,
+        "heading": "Ein Repo erstellen und dein Team einladen",
+        "text": "Auf GitHub beginnen: neues Repository erstellen, dann zu Settings → Collaborators → Add people gehen. Teammitglieder erhalten eine E-Mail-Einladung — sie müssen sie akzeptieren, bevor sie pushen können. Für Organisationen Teams verwenden, um Zugang in großem Maßstab zu verwalten."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Alle klonen dasselbe Remote",
+        "text": "Jedes Teammitglied führt git clone einmal aus. Damit wird die vollständige Geschichte heruntergeladen und origin automatisch als Remote-Name gesetzt. Von da an verwenden sie git pull zum Synchronisieren und git push zum Teilen."
+      },
+      {
+        "animationStep": 2,
+        "heading": "main schützen — Pull-Request-Reviews verlangen",
+        "text": "Zu Settings → Branches → Add branch protection rule für main gehen. \"Require a pull request before merging\" und \"Require approvals\" aktivieren. Das verhindert, dass jemand direkt auf main pusht — alle Änderungen müssen durch einen reviewten PR."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Die tägliche Team-Schleife",
+        "text": "Jedes Feature oder jede Fehlerbehebung folgt demselben Zyklus: aktuellsten main pullen, Branch erstellen, Arbeit committen, Branch pushen, PR öffnen, Review erhalten, dann mergen. Kleine, fokussierte PRs sind einfacher zu reviewen und weniger konfliktsanfällig."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Geteiltes Repo klonen", "note": "einmalig pro Rechner" },
-        { "label": "Mit Remote-Main synchronisieren", "note": "das vor neuer Arbeit tun" },
-        { "label": "Feature-Branch pushen", "note": "niemals direkt auf main pushen" },
-        { "label": "PR via CLI erstellen", "note": "benötigt gh CLI-Tool" },
-        { "label": "Offene PRs auflisten", "note": "zeigt alle offenen Pull Requests" },
-        { "label": "PR lokal auschecken", "note": "Branch eines Teammitglieds lokal reviewen" }
+        {
+          "label": "Geteiltes Repo klonen",
+          "note": "einmalig pro Rechner"
+        },
+        {
+          "label": "Mit Remote-Main synchronisieren",
+          "note": "das vor neuer Arbeit tun"
+        },
+        {
+          "label": "Feature-Branch pushen",
+          "note": "niemals direkt auf main pushen"
+        },
+        {
+          "label": "PR via CLI erstellen",
+          "note": "benötigt gh CLI-Tool"
+        },
+        {
+          "label": "Offene PRs auflisten",
+          "note": "zeigt alle offenen Pull Requests"
+        },
+        {
+          "label": "PR lokal auschecken",
+          "note": "Branch eines Teammitglieds lokal reviewen"
+        }
       ],
       "whenToUse": "Verwende Branch-Schutz auf jedem geteilten Repo von Anfang an. Jedes Teammitglied arbeitet in Branches — niemals direkt in main. Verwende PRs für alle Änderungen, auch kleine, damit Änderungen sichtbar und reviewt werden.",
       "commonMistakes": [
@@ -940,18 +2530,49 @@
     "title": "Merge-Konflikte",
     "description": "Was passiert, wenn zwei Branches dieselbe Zeile bearbeiten — und wie man es Schritt für Schritt auflöst",
     "steps": [
-      { "animationStep": 0, "heading": "Konflikte entstehen, wenn zwei Branches dieselbe Zeile bearbeiten", "text": "Wenn du einen Branch mergst und beide Seiten denselben Teil einer Datei geändert haben, kann Git nicht automatisch entscheiden, welche Version behalten wird. Es pausiert den Merge und bittet dich, ihn manuell aufzulösen." },
-      { "animationStep": 1, "heading": "Git fügt Konflikt-Marker in die Datei ein", "text": "Git markiert den Konflikt direkt in der Datei mit <<<<<<< (dein Branch), ======= (Trennzeichen) und >>>>>>> (der eingehende Branch). Alles zwischen den Markern ist der konfliktbetroffene Inhalt." },
-      { "animationStep": 2, "heading": "Die Datei bearbeiten, um aufzulösen", "text": "Öffne die Datei in deinem Editor. Entscheide, was behalten werden soll — deine Version, ihre Version oder eine Kombination. Lösche alle drei Marker-Zeilen vollständig. Die meisten Editoren (VS Code) zeigen einen visuellen Konfliktlöser mit Ein-Klick-Optionen." },
-      { "animationStep": 3, "heading": "Als aufgelöst markieren und Merge abschließen", "text": "Nachdem alle Konfliktdateien bearbeitet wurden, stage sie, um Git mitzuteilen, dass sie aufgelöst sind, und führe dann git commit aus. Git erstellt den Merge-Commit automatisch mit einer Standard-Nachricht." }
+      {
+        "animationStep": 0,
+        "heading": "Konflikte entstehen, wenn zwei Branches dieselbe Zeile bearbeiten",
+        "text": "Wenn du einen Branch mergst und beide Seiten denselben Teil einer Datei geändert haben, kann Git nicht automatisch entscheiden, welche Version behalten wird. Es pausiert den Merge und bittet dich, ihn manuell aufzulösen."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Git fügt Konflikt-Marker in die Datei ein",
+        "text": "Git markiert den Konflikt direkt in der Datei mit <<<<<<< (dein Branch), ======= (Trennzeichen) und >>>>>>> (der eingehende Branch). Alles zwischen den Markern ist der konfliktbetroffene Inhalt."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Die Datei bearbeiten, um aufzulösen",
+        "text": "Öffne die Datei in deinem Editor. Entscheide, was behalten werden soll — deine Version, ihre Version oder eine Kombination. Lösche alle drei Marker-Zeilen vollständig. Die meisten Editoren (VS Code) zeigen einen visuellen Konfliktlöser mit Ein-Klick-Optionen."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Als aufgelöst markieren und Merge abschließen",
+        "text": "Nachdem alle Konfliktdateien bearbeitet wurden, stage sie, um Git mitzuteilen, dass sie aufgelöst sind, und führe dann git commit aus. Git erstellt den Merge-Commit automatisch mit einer Standard-Nachricht."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Prüfen, was Konflikte hat", "note": "\"both modified\" = Konfliktdateien" },
-        { "label": "Konflikttool öffnen", "note": "verwendet deinen konfigurierten Editor" },
-        { "label": "Aufgelöste Datei stagen", "note": "markiert den Konflikt als aufgelöst" },
-        { "label": "Merge abschließen", "note": "Git stellt die Merge-Commit-Nachricht bereit" },
-        { "label": "Merge abbrechen", "note": "abbrechen und zum Zustand vor dem Merge zurückkehren" }
+        {
+          "label": "Prüfen, was Konflikte hat",
+          "note": "\"both modified\" = Konfliktdateien"
+        },
+        {
+          "label": "Konflikttool öffnen",
+          "note": "verwendet deinen konfigurierten Editor"
+        },
+        {
+          "label": "Aufgelöste Datei stagen",
+          "note": "markiert den Konflikt als aufgelöst"
+        },
+        {
+          "label": "Merge abschließen",
+          "note": "Git stellt die Merge-Commit-Nachricht bereit"
+        },
+        {
+          "label": "Merge abbrechen",
+          "note": "abbrechen und zum Zustand vor dem Merge zurückkehren"
+        }
       ],
       "commonMistakes": [
         "Marker-Zeilen (<<<, ===, >>>) in der Datei lassen — entferne immer ALLE Marker; der Code funktioniert sonst nicht",
@@ -964,20 +2585,57 @@
     "title": "Rückgängig machen & Stash",
     "description": "Drei Ebenen des Rückgängigmachens in Git — Änderungen verwerfen, Commits rückgängig machen oder sicher auf geteilten Branches rückgängig machen",
     "steps": [
-      { "animationStep": 0, "heading": "3 Tools zum Rückgängigmachen in Git", "text": "Git bietet verschiedene Undo-Tools je nach Stelle im Workflow. git restore verwirft uncommittete Bearbeitungen, git reset verschiebt den HEAD-Zeiger zurück, und git revert ist die sichere Option für geteilte Branches." },
-      { "animationStep": 1, "heading": "git restore — Arbeitsverzeichnis-Änderungen verwerfen", "text": "Wirft alle Bearbeitungen an einer Datei weg und stellt sie auf ihren zuletzt committeten Zustand zurück. Verwende --staged, um den Staging-Bereich zu leeren ohne Änderungen zu verwerfen. Warnung: Das kann nicht rückgängig gemacht werden." },
-      { "animationStep": 2, "heading": "git stash — Arbeit vorübergehend ablegen", "text": "Stash speichert deine uncommitteten Änderungen auf einem Stack und gibt dir ein sauberes Arbeitsverzeichnis. Perfekt, wenn du mitten in der Arbeit den Branch wechseln musst, ohne etwas zu verlieren." },
-      { "animationStep": 3, "heading": "git revert — sicheres Rückgängigmachen auf geteilten Branches", "text": "git revert erstellt einen neuen Commit, der einen vorherigen Commit rückgängig macht. Es überschreibt niemals die Geschichte, daher ist es sicher auf main oder jedem Branch, auf dem andere arbeiten." }
+      {
+        "animationStep": 0,
+        "heading": "3 Tools zum Rückgängigmachen in Git",
+        "text": "Git bietet verschiedene Undo-Tools je nach Stelle im Workflow. git restore verwirft uncommittete Bearbeitungen, git reset verschiebt den HEAD-Zeiger zurück, und git revert ist die sichere Option für geteilte Branches."
+      },
+      {
+        "animationStep": 1,
+        "heading": "git restore — Arbeitsverzeichnis-Änderungen verwerfen",
+        "text": "Wirft alle Bearbeitungen an einer Datei weg und stellt sie auf ihren zuletzt committeten Zustand zurück. Verwende --staged, um den Staging-Bereich zu leeren ohne Änderungen zu verwerfen. Warnung: Das kann nicht rückgängig gemacht werden."
+      },
+      {
+        "animationStep": 2,
+        "heading": "git stash — Arbeit vorübergehend ablegen",
+        "text": "Stash speichert deine uncommitteten Änderungen auf einem Stack und gibt dir ein sauberes Arbeitsverzeichnis. Perfekt, wenn du mitten in der Arbeit den Branch wechseln musst, ohne etwas zu verlieren."
+      },
+      {
+        "animationStep": 3,
+        "heading": "git revert — sicheres Rückgängigmachen auf geteilten Branches",
+        "text": "git revert erstellt einen neuen Commit, der einen vorherigen Commit rückgängig macht. Es überschreibt niemals die Geschichte, daher ist es sicher auf main oder jedem Branch, auf dem andere arbeiten."
+      }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Dateiänderungen verwerfen", "note": "nicht umkehrbar — verwirft Bearbeitungen dauerhaft" },
-        { "label": "Alle Änderungen verwerfen", "note": "löscht alle uncommitteten Änderungen" },
-        { "label": "Dateien un-stagen", "note": "entfernt aus dem Staging, behält Bearbeitungen" },
-        { "label": "Änderungen stashen", "note": "legt aktuelle WIP-Arbeit ab" },
-        { "label": "Stash wiederherstellen", "note": "wendet letzten Stash an und entfernt ihn" },
-        { "label": "Commit sicher rückgängig machen", "note": "erstellt neuen Undo-Commit — sicher für geteilte Branches" },
-        { "label": "Lokal uncommitten", "note": "verschiebt HEAD um 1 zurück — niemals auf gepushten Commits verwenden" }
+        {
+          "label": "Dateiänderungen verwerfen",
+          "note": "nicht umkehrbar — verwirft Bearbeitungen dauerhaft"
+        },
+        {
+          "label": "Alle Änderungen verwerfen",
+          "note": "löscht alle uncommitteten Änderungen"
+        },
+        {
+          "label": "Dateien un-stagen",
+          "note": "entfernt aus dem Staging, behält Bearbeitungen"
+        },
+        {
+          "label": "Änderungen stashen",
+          "note": "legt aktuelle WIP-Arbeit ab"
+        },
+        {
+          "label": "Stash wiederherstellen",
+          "note": "wendet letzten Stash an und entfernt ihn"
+        },
+        {
+          "label": "Commit sicher rückgängig machen",
+          "note": "erstellt neuen Undo-Commit — sicher für geteilte Branches"
+        },
+        {
+          "label": "Lokal uncommitten",
+          "note": "verschiebt HEAD um 1 zurück — niemals auf gepushten Commits verwenden"
+        }
       ],
       "whenToUse": "Verwende git restore für schnelles Verwerfen lokaler Bearbeitungen. Verwende git stash beim Kontextwechsel. Verwende git revert auf jedem Branch, von dem andere gepullt haben — niemals git reset auf öffentlicher Geschichte.",
       "commonMistakes": [
@@ -987,51 +2645,229 @@
       ]
     }
   },
+  "nextjs-basics": {
+    "title": "Next.js",
+    "description": "Fullstack-React-Apps mit dem App Router — Server-Komponenten, Datenabruf, Server-Funktionen und Fehlerbehandlung",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Was ist Next.js?",
+        "text": "Next.js ist ein React-Framework für Produktionsanwendungen mit integriertem Routing, Datenabruf, Code-Splitting und Deployment. Mit React 19 und React Server Components (RSC) verfolgt es ein Fullstack-Modell: Komponenten laufen dauerhaft auf dem Server, rufen Daten ohne useEffect ab und können Datenbanken direkt abfragen — im selben Komponentenbaum wie die clientseitige UI."
+      },
+      {
+        "animationStep": 1,
+        "heading": "App Router & Projektstruktur",
+        "text": "Erstelle ein Next.js-Projekt mit `npx create-next-app@latest`. Der App Router nutzt das Dateisystem für Routen: jeder Ordner unter `src/app/` wird ein URL-Segment. Spezielle Dateien steuern das Rendering — page.js ist die UI, layout.js wrappt sie mit gemeinsamem Chrome, loading.js zeigt einen Suspense-Fallback und error.js fängt nicht behandelte Ausnahmen ab."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Server- vs. Client-Komponenten",
+        "text": "Im App Router ist jede Komponente standardmäßig eine Server-Komponente — sie läuft auf dem Server, kann async sein und wird nie in das Client-Bundle ausgeliefert. Füge 'use client' am Anfang einer Datei ein, um eine Client-Komponente zu erstellen, wenn Interaktivität, State oder Browser-APIs benötigt werden. Regel: mit Server-Komponenten beginnen, Client-Komponenten nur bei Bedarf einsetzen."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Datenabruf & Streaming",
+        "text": "Server-Komponenten können fetch() oder einen Datenbank-Client direkt aufrufen — kein API-Layer nötig. Für langsame Daten ein Promise an eine Client-Komponente übergeben und use() mit Suspense nutzen, um Inhalte progressiv zu streamen. Eine loading.js-Datei ist die Abkürzung: Next.js umhüllt die Seite automatisch mit einer Suspense-Boundary."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Server-Funktionen & Mutationen",
+        "text": "Eine Server-Funktion ist eine async-Funktion, die mit 'use server' markiert ist — sie läuft ausschließlich auf dem Server, kann aber von jeder Komponente aufgerufen werden. Als form-action-Prop ermöglicht sie die Verarbeitung von Formulareingaben ohne separaten API-Endpunkt. Nach einer Mutation revalidatePath() oder revalidateTag() aufrufen, um den Cache zu leeren."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Fehlerbehandlung",
+        "text": "Next.js unterscheidet zwei Fehlerkategorien. Erwartete Fehler (Validierung, 404) explizit behandeln — strukturierten State aus Server-Funktionen mit useActionState zurückgeben, res.ok prüfen oder notFound() bei fehlenden Ressourcen aufrufen. Unerwartete Fehler fängt error.js ab — eine Client-Komponente mit der error-Prop und einer reset()-Funktion zum Wiederholen."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        {
+          "label": "Server Component",
+          "note": "async, kann DB abfragen, nie im Browser-Bundle"
+        },
+        {
+          "label": "Client Component",
+          "note": "'use client' muss die erste Zeile sein"
+        },
+        {
+          "label": "Server Function",
+          "note": "Als form-Action oder aus Client-Komponenten aufrufbar"
+        },
+        {
+          "label": "Suspense-Streaming",
+          "note": "Client-Komponente nutzt use(promise) zum Auflösen"
+        },
+        {
+          "label": "loading.js",
+          "note": "Umhüllt page.js automatisch mit einer Suspense-Boundary"
+        },
+        {
+          "label": "error.js",
+          "note": "Fängt nicht behandelte Ausnahmen in diesem Route-Segment ab"
+        },
+        {
+          "label": "notFound()",
+          "note": "Rendert die nächste not-found.js-Datei"
+        }
+      ],
+      "patterns": [
+        {
+          "title": "Server-Komponente mit fetch"
+        },
+        {
+          "title": "Server-Funktion als Formular-Action"
+        },
+        {
+          "title": "Streaming mit Suspense"
+        }
+      ],
+      "whenToUse": "Next.js verwenden, wenn ein produktionsreifes Fullstack-React-Setup mit integriertem Routing, serverseitigem Rendering und Deployment-Optimierungen benötigt wird. Für reine Client-SPAs ohne serverseitige Datenanforderungen ist React + Vite die einfachere Wahl.",
+      "commonMistakes": [
+        "useState oder useEffect in einer Server-Komponente verwenden — diese sind nur für Client-Komponenten; 'use client' hinzufügen oder die Logik in eine Kind-Client-Komponente auslagern",
+        "In einer Client-Komponente abrufen, wenn eine Server-Komponente ausreichen würde — jeder Client-Abruf bedeutet einen zusätzlichen Roundtrip; serverseitigen Datenzugriff bevorzugen",
+        "revalidatePath() nach einer Mutation vergessen — veraltete Cache-Daten zeigen alte Werte, bis Next.js zur Revalidierung aufgefordert wird",
+        "'use server' am Anfang einer Datei setzen, die auch eine Standardkomponente exportiert — jede Direktive gilt für die gesamte Datei; Server-Funktionen in separaten Action-Dateien halten"
+      ]
+    }
+  },
   "react-router-advanced": {
     "title": "React Router als Framework",
     "description": "Über die Bibliothek hinaus — React Router v7 im Framework-Modus mit Route-Modulen, Loadern und Actions",
     "steps": [
-      { "animationStep": 0, "heading": "Bibliothek vs. Framework-Modus", "text": "React Router begann als clientseitige Routing-Bibliothek. In v7 kann es auch als vollständiges Framework betrieben werden — mit dateibasiertem Routing, serverseitigem Rendering und integriertem Datenladen. Im Bibliotheksmodus konfigurierst du BrowserRouter selbst; im Framework-Modus übernimmt React Router den Einstiegspunkt." },
-      { "animationStep": 1, "heading": "routes.js Konfiguration", "text": "Der Framework-Modus verwendet eine routes.js-Datei zur Deklaration der Route-Struktur. Der index()-Helfer deklariert die Index-Route; route() deklariert benannte Routen mit URL-Muster und Dateipfad zum Route-Modul." },
-      { "animationStep": 2, "heading": "Route-Module", "text": "Ein Route-Modul exportiert benannte Funktionen, die React Router kennt: default (die Komponente), loader/clientLoader (Datenabruf), action/clientAction (Mutationen) und ErrorBoundary (Fehler-UI). React Router verbindet diese automatisch." },
-      { "animationStep": 3, "heading": "clientLoader — CSR-Datenladen", "text": "clientLoader lädt Daten im Browser, bevor die Komponente rendert. Er empfängt { params } für URL-Parameter. Exportiere HydrateFallback, um eine Lade-UI beim ersten Besuch anzuzeigen." },
-      { "animationStep": 4, "heading": "loader — SSR-Datenladen", "text": "loader wird auf dem Server ausgeführt — bevor HTML an den Browser gesendet wird. Er kann sicher auf Datenbanken oder serverseitige APIs zugreifen, ohne diese im Client-Bundle zu exponieren. Die Komponente empfängt dieselbe loaderData-Prop." },
-      { "animationStep": 5, "heading": "Form & Actions", "text": "clientAction und action verarbeiten Formularmutationen. Die Form-Komponente von React Router serialisiert das Formular und ruft die passende Action auf. Nach der Action werden Loader automatisch neu validiert." },
-      { "animationStep": 6, "heading": "Rendering-Strategien", "text": "React Router v7 unterstützt drei Rendering-Strategien in react-router.config.js. CSR rendert alles im Browser; SSR rendert HTML bei jeder Anfrage auf dem Server; SSG rendert Seiten zur Build-Zeit vor." }
+      {
+        "animationStep": 0,
+        "heading": "Bibliothek vs. Framework-Modus",
+        "text": "React Router begann als clientseitige Routing-Bibliothek. In v7 kann es auch als vollständiges Framework betrieben werden — mit dateibasiertem Routing, serverseitigem Rendering und integriertem Datenladen. Im Bibliotheksmodus konfigurierst du BrowserRouter selbst; im Framework-Modus übernimmt React Router den Einstiegspunkt."
+      },
+      {
+        "animationStep": 1,
+        "heading": "routes.js Konfiguration",
+        "text": "Der Framework-Modus verwendet eine routes.js-Datei zur Deklaration der Route-Struktur. Der index()-Helfer deklariert die Index-Route; route() deklariert benannte Routen mit URL-Muster und Dateipfad zum Route-Modul."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Route-Module",
+        "text": "Ein Route-Modul exportiert benannte Funktionen, die React Router kennt: default (die Komponente), loader/clientLoader (Datenabruf), action/clientAction (Mutationen) und ErrorBoundary (Fehler-UI). React Router verbindet diese automatisch."
+      },
+      {
+        "animationStep": 3,
+        "heading": "clientLoader — CSR-Datenladen",
+        "text": "clientLoader lädt Daten im Browser, bevor die Komponente rendert. Er empfängt { params } für URL-Parameter. Exportiere HydrateFallback, um eine Lade-UI beim ersten Besuch anzuzeigen."
+      },
+      {
+        "animationStep": 4,
+        "heading": "loader — SSR-Datenladen",
+        "text": "loader wird auf dem Server ausgeführt — bevor HTML an den Browser gesendet wird. Er kann sicher auf Datenbanken oder serverseitige APIs zugreifen, ohne diese im Client-Bundle zu exponieren. Die Komponente empfängt dieselbe loaderData-Prop."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Form & Actions",
+        "text": "clientAction und action verarbeiten Formularmutationen. Die Form-Komponente von React Router serialisiert das Formular und ruft die passende Action auf. Nach der Action werden Loader automatisch neu validiert."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Rendering-Strategien",
+        "text": "React Router v7 unterstützt drei Rendering-Strategien in react-router.config.js. CSR rendert alles im Browser; SSR rendert HTML bei jeder Anfrage auf dem Server; SSG rendert Seiten zur Build-Zeit vor."
+      }
     ]
   },
   "react-data-fetching": {
     "title": "Datenabruf-Strategien",
     "description": "Das Fetch-on-Render-Wasserfall-Problem verstehen und wie Render-as-you-Fetch mit Suspense es löst",
     "steps": [
-      { "animationStep": 0, "heading": "Das Wasserfall-Problem", "text": "Wenn eine Elternkomponente Daten lädt und das Kind erst nach dem Datenabruf rendert, entsteht ein Wasserfall — jede Anfrage wartet auf die vorherige. Die Gesamtwartezeit ist die Summe aller Anfragen, nicht die längste." },
-      { "animationStep": 1, "heading": "Fetch-on-Render (useEffect-Muster)", "text": "Das klassische Muster platziert den Datenabruf in useEffect. Die Komponente rendert zuerst mit einem Spinner, dann wird der Effekt ausgeführt. Es erzwingt sequentielles Rendering: ein Kind kann erst laden, wenn das Elternteil fertig gerendert hat." },
-      { "animationStep": 2, "heading": "Render-as-you-Fetch", "text": "Render-as-you-Fetch startet alle Abrufe vor dem Rendern des Komponentenbaums. Abrufe laufen parallel, daher ist die Gesamtzeit gleich der langsamsten Anfrage — nicht der Summe." },
-      { "animationStep": 3, "heading": "Suspense + use()", "text": "Reacts use()-Hook löst ein Promise in einer Komponente auf. Ist das Promise noch nicht erfüllt, wird die Komponente suspendiert und React zeigt den nächsten Suspense-Fallback. ErrorBoundary fängt abgelehnte Promises ab." },
-      { "animationStep": 4, "heading": "Loader als Lösung", "text": "Die sauberste Implementierung delegiert den Datenabruf an den Router. Der React-Router-Loader wird beim Start einer Navigation ausgeführt — bevor Komponenten rendern. Kein useEffect, keine manuelle Promise-Verwaltung." }
+      {
+        "animationStep": 0,
+        "heading": "Das Wasserfall-Problem",
+        "text": "Wenn eine Elternkomponente Daten lädt und das Kind erst nach dem Datenabruf rendert, entsteht ein Wasserfall — jede Anfrage wartet auf die vorherige. Die Gesamtwartezeit ist die Summe aller Anfragen, nicht die längste."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Fetch-on-Render (useEffect-Muster)",
+        "text": "Das klassische Muster platziert den Datenabruf in useEffect. Die Komponente rendert zuerst mit einem Spinner, dann wird der Effekt ausgeführt. Es erzwingt sequentielles Rendering: ein Kind kann erst laden, wenn das Elternteil fertig gerendert hat."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Render-as-you-Fetch",
+        "text": "Render-as-you-Fetch startet alle Abrufe vor dem Rendern des Komponentenbaums. Abrufe laufen parallel, daher ist die Gesamtzeit gleich der langsamsten Anfrage — nicht der Summe."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Suspense + use()",
+        "text": "Reacts use()-Hook löst ein Promise in einer Komponente auf. Ist das Promise noch nicht erfüllt, wird die Komponente suspendiert und React zeigt den nächsten Suspense-Fallback. ErrorBoundary fängt abgelehnte Promises ab."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Loader als Lösung",
+        "text": "Die sauberste Implementierung delegiert den Datenabruf an den Router. Der React-Router-Loader wird beim Start einer Navigation ausgeführt — bevor Komponenten rendern. Kein useEffect, keine manuelle Promise-Verwaltung."
+      }
     ]
   },
   "react-mutations": {
     "title": "Datenmutationen",
     "description": "Daten an den Server senden — vom klassischen onSubmit-Muster zu React 19 Formular-Actions und useFormStatus",
     "steps": [
-      { "animationStep": 0, "heading": "onSubmit + preventDefault", "text": "Das klassische React-Formularmuster fängt das Submit-Event ab, ruft preventDefault() auf und sendet die Daten manuell mit fetch. Lade-, Fehler- und Erfolgszustand werden manuell mit useState verwaltet." },
-      { "animationStep": 1, "heading": "Formular-Actions (React 19)", "text": "React 19 führt die action-Prop für Formularelemente ein. Übergib eine async-Funktion direkt — React ruft sie mit einem FormData-Objekt auf. Kein onSubmit, kein preventDefault nötig." },
-      { "animationStep": 2, "heading": "FormData", "text": "FormData ist die integrierte Browser-Methode zum Sammeln von Formularfeldern. Das name-Attribut eines Inputs wird zum Schlüssel. formData.get() gibt einen einzelnen Wert zurück; formData.getAll() gibt mehrere Werte für Checkboxen zurück." },
-      { "animationStep": 3, "heading": "useFormStatus — Ladezustand", "text": "useFormStatus() aus react-dom liest den Ausstehend-Zustand der nächsten übergeordneten Formular-Action. Es muss in einer Kindkomponente innerhalb des Formulars aufgerufen werden — es liest Kontext, keine Props." },
-      { "animationStep": 4, "heading": "ErrorBoundary für Formulare", "text": "Wenn eine Formular-Action einen Fehler wirft, fängt ein ErrorBoundary ihn ab und zeigt eine Fallback-UI. Die Fallback-Komponente erhält resetErrorBoundary für einen Wiederholungsversuch. Geeignet für unerwartete Serverfehler." },
-      { "animationStep": 5, "heading": "useActionState", "text": "useActionState(action, initialState) umhüllt eine Formular-Action und gibt das letzte Ergebnis als State zurück — ideal für feldweise Validierungsfehler. Die Action erhält (previousState, formData) und gibt den neuen State zurück." }
+      {
+        "animationStep": 0,
+        "heading": "onSubmit + preventDefault",
+        "text": "Das klassische React-Formularmuster fängt das Submit-Event ab, ruft preventDefault() auf und sendet die Daten manuell mit fetch. Lade-, Fehler- und Erfolgszustand werden manuell mit useState verwaltet."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Formular-Actions (React 19)",
+        "text": "React 19 führt die action-Prop für Formularelemente ein. Übergib eine async-Funktion direkt — React ruft sie mit einem FormData-Objekt auf. Kein onSubmit, kein preventDefault nötig."
+      },
+      {
+        "animationStep": 2,
+        "heading": "FormData",
+        "text": "FormData ist die integrierte Browser-Methode zum Sammeln von Formularfeldern. Das name-Attribut eines Inputs wird zum Schlüssel. formData.get() gibt einen einzelnen Wert zurück; formData.getAll() gibt mehrere Werte für Checkboxen zurück."
+      },
+      {
+        "animationStep": 3,
+        "heading": "useFormStatus — Ladezustand",
+        "text": "useFormStatus() aus react-dom liest den Ausstehend-Zustand der nächsten übergeordneten Formular-Action. Es muss in einer Kindkomponente innerhalb des Formulars aufgerufen werden — es liest Kontext, keine Props."
+      },
+      {
+        "animationStep": 4,
+        "heading": "ErrorBoundary für Formulare",
+        "text": "Wenn eine Formular-Action einen Fehler wirft, fängt ein ErrorBoundary ihn ab und zeigt eine Fallback-UI. Die Fallback-Komponente erhält resetErrorBoundary für einen Wiederholungsversuch. Geeignet für unerwartete Serverfehler."
+      },
+      {
+        "animationStep": 5,
+        "heading": "useActionState",
+        "text": "useActionState(action, initialState) umhüllt eine Formular-Action und gibt das letzte Ergebnis als State zurück — ideal für feldweise Validierungsfehler. Die Action erhält (previousState, formData) und gibt den neuen State zurück."
+      }
     ]
   },
   "react-tanstack-query": {
     "title": "TanStack Query",
     "description": "Intelligentes clientseitiges Caching für React-Apps — Stale-while-Revalidate, Hintergrund-Refetch und Mutationen ohne Boilerplate",
     "steps": [
-      { "animationStep": 0, "heading": "Das Caching-Problem", "text": "Jedes Mal wenn ein Nutzer zu einer Route zurücknavigiert, wird ein useEffect-Fetch erneut ausgelöst — auch ohne Datenänderung. Clientseitiges Caching speichert Abrufergebnisse nach Schlüssel, sodass Folgebesuche sofort angezeigt werden." },
-      { "animationStep": 1, "heading": "Stale vs. Fresh-Daten", "text": "TanStack Query verfolgt, ob gecachte Daten frisch (kürzlich abgerufen) oder veraltet (alt genug für einen Hintergrund-Refetch) sind. staleTime steuert das Zeitfenster — 0 bedeutet immer veraltet, Infinity bedeutet kein automatischer Refetch. Standard ist 0." },
-      { "animationStep": 2, "heading": "useQuery", "text": "useQuery nimmt einen queryKey und eine queryFn. Der queryKey ist ein Array, das die Abfrage eindeutig identifiziert — alle Variablen einschließen, die den Abruf beeinflussen. queryFn ist die async-Funktion. Gibt data, isLoading, isError und error zurück." },
-      { "animationStep": 3, "heading": "Hintergrund-Refetch", "text": "Wenn eine veraltete Abfrage erneut gemountet wird, zeigt TanStack Query sofort die gecachten Daten und führt im Hintergrund einen Refetch durch. Nutzer sehen Inhalte sofort — kein Spinner bei Rückkehr." },
-      { "animationStep": 4, "heading": "useMutation", "text": "useMutation verarbeitet Schreiboperationen. Rufe mutate mit deinen Variablen auf. Verwende onSuccess, um verwandte Queries zu invalidieren — so bleibt der Cache nach Erstell-, Aktualisierungs- oder Löschoperationen synchron." }
+      {
+        "animationStep": 0,
+        "heading": "Das Caching-Problem",
+        "text": "Jedes Mal wenn ein Nutzer zu einer Route zurücknavigiert, wird ein useEffect-Fetch erneut ausgelöst — auch ohne Datenänderung. Clientseitiges Caching speichert Abrufergebnisse nach Schlüssel, sodass Folgebesuche sofort angezeigt werden."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Stale vs. Fresh-Daten",
+        "text": "TanStack Query verfolgt, ob gecachte Daten frisch (kürzlich abgerufen) oder veraltet (alt genug für einen Hintergrund-Refetch) sind. staleTime steuert das Zeitfenster — 0 bedeutet immer veraltet, Infinity bedeutet kein automatischer Refetch. Standard ist 0."
+      },
+      {
+        "animationStep": 2,
+        "heading": "useQuery",
+        "text": "useQuery nimmt einen queryKey und eine queryFn. Der queryKey ist ein Array, das die Abfrage eindeutig identifiziert — alle Variablen einschließen, die den Abruf beeinflussen. queryFn ist die async-Funktion. Gibt data, isLoading, isError und error zurück."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Hintergrund-Refetch",
+        "text": "Wenn eine veraltete Abfrage erneut gemountet wird, zeigt TanStack Query sofort die gecachten Daten und führt im Hintergrund einen Refetch durch. Nutzer sehen Inhalte sofort — kein Spinner bei Rückkehr."
+      },
+      {
+        "animationStep": 4,
+        "heading": "useMutation",
+        "text": "useMutation verarbeitet Schreiboperationen. Rufe mutate mit deinen Variablen auf. Verwende onSuccess, um verwandte Queries zu invalidieren — so bleibt der Cache nach Erstell-, Aktualisierungs- oder Löschoperationen synchron."
+      }
     ]
   }
 }
