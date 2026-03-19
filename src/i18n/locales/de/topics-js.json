@@ -6,22 +6,49 @@
       {
         "animationStep": 0,
         "heading": "var — die alte Methode",
-        "text": "var ist funktionsscoped und wird gehoisted, was zu unerwarteten Fehlern führt. Modernes JavaScript vermeidet es."
+        "text": "var ist funktionsscoped und wird gehoisted, was zu unerwarteten Fehlern führt. Modernes JavaScript vermeidet es.",
+        "analogy": {
+          "title": "Der beschriftete Behälter",
+          "text": [
+            "Eine Variable ist wie ein beschrifteter Behälter im Kühlschrank. Der Name auf dem Etikett ist die Variable, der Inhalt ist der Wert.",
+            "let erlaubt, den Inhalt auszutauschen. const bedeutet: der Behälter ist versiegelt — du kannst ihn nicht durch einen neuen ersetzen."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "let — blockscoped",
-        "text": "let erstellt eine Variable, die nur im Block existiert, in dem sie deklariert wurde. Du kannst sie neu zuweisen."
+        "text": "let erstellt eine Variable, die nur im Block existiert, in dem sie deklariert wurde. Du kannst sie neu zuweisen.",
+        "analogy": {
+          "title": "Das unsichtbare Regal",
+          "text": [
+            "var lebt im übergeordneten Regal der Funktion — egal wo du es deklariert hast.",
+            "let und const leben nur im Regal des nächsten umschließenden Blocks { }."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "const — kann nicht neu zugewiesen werden",
-        "text": "const-Bindungen können nach der Erstellung nicht neu zugewiesen werden. Bei Objekten und Arrays kann der Inhalt jedoch weiterhin verändert werden."
+        "text": "const-Bindungen können nach der Erstellung nicht neu zugewiesen werden. Bei Objekten und Arrays kann der Inhalt jedoch weiterhin verändert werden.",
+        "analogy": {
+          "title": "Das eingefrorene Etikett",
+          "text": [
+            "const friert nur die Referenz ein, nicht den Inhalt. Ein const-Objekt kann trotzdem innen verändert werden — du kannst nur nicht das gesamte Objekt durch ein neues ersetzen."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Primitive Typen",
-        "text": "JavaScript hat sechs primitive Typen. Sie sind unveränderliche Werte — keine Objekte."
+        "text": "JavaScript hat sechs primitive Typen. Sie sind unveränderliche Werte — keine Objekte.",
+        "analogy": {
+          "title": "Die Lücke im Regal",
+          "text": [
+            "Bei var wird die Deklaration an den Anfang der Funktion gehoben (Hoisting), der Wert aber nicht. Das Regal existiert schon, aber das Fach ist noch leer (undefined).",
+            "let und const haben eine 'Temporal Dead Zone' — der Platz ist reserviert, aber du darfst nicht hineinschauen, bevor die Zeile der Deklaration erreicht ist."
+          ]
+        }
       },
       {
         "animationStep": 4,
@@ -68,8 +95,12 @@
         }
       ],
       "patterns": [
-        { "title": "Variablen tauschen" },
-        { "title": "Destructuring mit Standardwert" }
+        {
+          "title": "Variablen tauschen"
+        },
+        {
+          "title": "Destructuring mit Standardwert"
+        }
       ],
       "whenToUse": "Verwende standardmäßig const für jede Variable; wechsle nur dann zu let, wenn du neu zuweisen musst. Verwende Destructuring, um Werte sauber aus Objekten/Arrays zu extrahieren, und Template Literals für jeden String, der eine Variable einbettet.",
       "commonMistakes": [
@@ -77,7 +108,42 @@
         "typeof null === \"object\" mit einem echten Objekt verwechseln — null ist ein primitiver Wert; prüfe explizit mit val === null",
         "Annehmen, dass const die Mutation von Objekten verhindert — const verhindert nur die Neuzuweisung der Bindung; Objekteigenschaften können weiterhin frei verändert werden"
       ]
-    }
+    },
+    "commonErrors": [
+      {
+        "title": "var in Schleifen verwenden",
+        "why": "var ist funktions-scoped: alle Schleifeniterationen teilen dieselbe Variable. Am Ende der Schleife haben alle Event-Handler denselben (letzten) Wert gesehen."
+      },
+      {
+        "title": "const für primitive Werte, die sich ändern sollen",
+        "why": "const verhindert die Neuzuweisung. Du kannst einem const-Number nichts neu zuweisen — verwende let, wenn der Wert sich ändern soll."
+      },
+      {
+        "title": "Zugriff vor der Deklaration (Temporal Dead Zone)",
+        "why": "let und const haben eine Temporal Dead Zone: zwischen dem Anfang des Blocks und der Deklarationszeile. Jeder Zugriff in dieser Zone wirft einen ReferenceError."
+      }
+    ],
+    "realWorldExamples": [
+      {
+        "heading": "React State-Variablen",
+        "description": "useState gibt Konstanten zurück (const [count, setCount]) — du ersetzt nie die Variable selbst, sondern rufst den Setter auf, der einen Re-Render auslöst."
+      },
+      {
+        "heading": "API-Antworten verarbeiten",
+        "description": "const data = await response.json() ist Standard: du brauchst den Wert nie neu zuzuweisen — nur zu lesen und weiterzuverarbeiten."
+      }
+    ],
+    "playgroundExamples": [
+      {
+        "label": "let vs const vs var"
+      },
+      {
+        "label": "Hoisting"
+      },
+      {
+        "label": "Block-Scope"
+      }
+    ]
   },
   "js-arrays": {
     "title": "Arrays & Objekte",
@@ -86,22 +152,46 @@
       {
         "animationStep": 0,
         "heading": "Arrays — geordnete Listen",
-        "text": "Ein Array enthält geordnete Werte, die über einen numerischen Index ab 0 zugänglich sind."
+        "text": "Ein Array enthält geordnete Werte, die über einen numerischen Index ab 0 zugänglich sind.",
+        "analogy": {
+          "title": "Die nummerierte Einkaufsliste",
+          "text": [
+            "Ein Array ist wie eine nummerierte Einkaufsliste. Jeder Punkt hat eine Position (Index, beginnend bei 0) — und du kannst gezielt auf Position 3 zugreifen oder die Liste komplett durchgehen."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "push und pop",
-        "text": "push() fügt am Ende hinzu; pop() entfernt vom Ende. Es gibt auch unshift/shift für den Anfang."
+        "text": "push() fügt am Ende hinzu; pop() entfernt vom Ende. Es gibt auch unshift/shift für den Anfang.",
+        "analogy": {
+          "title": "Das Fließband mit Qualitätsprüfung",
+          "text": [
+            "filter() ist ein Qualitätsprüfer am Fließband: er lässt nur die Elemente durch, die eine Bedingung erfüllen — der Rest wird aussortiert."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "map — jedes Element transformieren",
-        "text": "map() gibt ein neues Array zurück, bei dem jedes Element durch eine Callback-Funktion transformiert wurde. Das ursprüngliche Array wird nicht verändert."
+        "text": "map() gibt ein neues Array zurück, bei dem jedes Element durch eine Callback-Funktion transformiert wurde. Das ursprüngliche Array wird nicht verändert.",
+        "analogy": {
+          "title": "Der Übersetzer",
+          "text": [
+            "map() ist wie ein Übersetzer: er nimmt jedes Element der Originalliste und gibt eine neue Liste mit transformierten Werten zurück — die Länge bleibt gleich."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "filter — passende Elemente behalten",
-        "text": "filter() gibt ein neues Array zurück, das nur Elemente enthält, bei denen der Callback true zurückgibt."
+        "text": "filter() gibt ein neues Array zurück, das nur Elemente enthält, bei denen der Callback true zurückgibt.",
+        "analogy": {
+          "title": "Der Buchhalter",
+          "text": [
+            "reduce() summiert Werte wie ein Buchhalter: er geht die Liste von vorne nach hinten durch und akkumuliert ein einzelnes Ergebnis — Summe, Objekt, oder alles andere."
+          ]
+        }
       },
       {
         "animationStep": 4,
@@ -185,8 +275,12 @@
         }
       ],
       "patterns": [
-        { "title": "map + filter verketten" },
-        { "title": "Unveränderliches push (React-sicher)" }
+        {
+          "title": "map + filter verketten"
+        },
+        {
+          "title": "Unveränderliches push (React-sicher)"
+        }
       ],
       "whenToUse": "Bevorzuge map/filter/reduce für Transformationen — sie sind deklarativ und verändern das Original nicht. Verwende push/pop nur wenn Mutation beabsichtigt und sicher ist (nicht im React-State). Greife auf flat/flatMap zurück, wenn du mit verschachtelten Arrays arbeitest.",
       "commonMistakes": [
@@ -194,7 +288,42 @@
         "State-Arrays direkt mit push verändern — React erkennt die Änderung nicht; erstelle immer ein neues Array mit Spread oder concat",
         "Den Startwert bei reduce vergessen — ohne ihn verwendet reduce das erste Element als Akkumulator und überspringt es, was bei leeren Arrays zu falschen Ergebnissen führen kann"
       ]
-    }
+    },
+    "commonErrors": [
+      {
+        "title": "find() mit filter() verwechseln",
+        "why": "find() gibt das erste passende Element zurück (oder undefined). filter() gibt immer ein Array zurück — auch wenn es leer ist. Für 'genau ein Element' ist find() die richtige Wahl."
+      },
+      {
+        "title": "Das Original-Array bei map/filter nicht unverändert lassen",
+        "why": "map(), filter() und slice() geben neue Arrays zurück — sie verändern das Original nicht. splice() und sort() hingegen verändern das Original direkt (mutierend)."
+      },
+      {
+        "title": "indexOf() statt includes() für Existenzprüfung",
+        "why": "arr.indexOf(x) !== -1 funktioniert, ist aber weniger lesbar. arr.includes(x) ist der moderne Standard. indexOf() findet außerdem NaN nicht korrekt — includes() schon."
+      }
+    ],
+    "realWorldExamples": [
+      {
+        "heading": "Daten für die Anzeige transformieren",
+        "description": "API-Antworten enthalten oft mehr Felder als nötig. map() erstellt eine neue Liste mit nur den Feldern, die das UI braucht — klar, unveränderlich, testbar."
+      },
+      {
+        "heading": "Warenkorb-Logik",
+        "description": "filter() entfernt Artikel (gibt eine neue Liste ohne das Element zurück), map() aktualisiert Mengen, reduce() berechnet den Gesamtpreis — kein Mutieren der ursprünglichen Daten nötig."
+      }
+    ],
+    "playgroundExamples": [
+      {
+        "label": "map, filter, reduce"
+      },
+      {
+        "label": "find & includes"
+      },
+      {
+        "label": "Spread & Destructuring"
+      }
+    ]
   },
   "js-functions": {
     "title": "Funktionen & Scope",
@@ -203,22 +332,46 @@
       {
         "animationStep": 0,
         "heading": "Funktionsdeklarationen vs. Ausdrücke",
-        "text": "Funktionen können mit dem Schlüsselwort function deklariert oder als Ausdrücke zugewiesen werden. Deklarationen werden gehoisted; Ausdrücke nicht."
+        "text": "Funktionen können mit dem Schlüsselwort function deklariert oder als Ausdrücke zugewiesen werden. Deklarationen werden gehoisted; Ausdrücke nicht.",
+        "analogy": {
+          "title": "Das Rezept",
+          "text": [
+            "Eine Funktion ist wie ein Rezept: du beschreibst einmalig die Schritte, und rufst es beliebig oft auf — jedes Mal mit anderen Zutaten (Argumenten)."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Scope und die Scope-Kette",
-        "text": "Jede Funktion erstellt einen neuen Scope. Innere Funktionen können auf Variablen aus äußeren Scopes zugreifen — diese Kette von Scopes wird Scope-Kette genannt."
+        "text": "Jede Funktion erstellt einen neuen Scope. Innere Funktionen können auf Variablen aus äußeren Scopes zugreifen — diese Kette von Scopes wird Scope-Kette genannt.",
+        "analogy": {
+          "title": "Der Roboter mit Standardeinstellungen",
+          "text": [
+            "Default-Parameter sind wie Voreinstellungen eines Roboters. Wenn du keinen Wert angibst, verwendet er seinen Standardwert — gibst du einen an, überschreibt dieser die Voreinstellung."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Higher-Order Functions",
-        "text": "Funktionen sind erstklassige Werte in JavaScript. Eine Higher-Order Function nimmt eine Funktion als Argument entgegen oder gibt eine zurück."
+        "text": "Funktionen sind erstklassige Werte in JavaScript. Eine Higher-Order Function nimmt eine Funktion als Argument entgegen oder gibt eine zurück.",
+        "analogy": {
+          "title": "Das Schweizer Taschenmesser",
+          "text": [
+            "Rest-Parameter (...args) sind wie ein Schweizer Taschenmesser: du weißt nicht vorher, wie viele Werkzeuge du brauchst — du packst einfach alle in ein Array."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Arrow-Function-Syntax",
-        "text": "Arrow Functions sind eine kompakte Alternative zu Funktionsausdrücken. Wenn der Rumpf ein einzelner Ausdruck ist, kannst du die geschweiften Klammern und das return-Schlüsselwort weglassen — der Wert wird implizit zurückgegeben."
+        "text": "Arrow Functions sind eine kompakte Alternative zu Funktionsausdrücken. Wenn der Rumpf ein einzelner Ausdruck ist, kannst du die geschweiften Klammern und das return-Schlüsselwort weglassen — der Wert wird implizit zurückgegeben.",
+        "analogy": {
+          "title": "Der Übersetzer in Echtzeit",
+          "text": [
+            "Arrow Functions sind wie ein schneller Inline-Übersetzer: kurze Syntax, kein eigenes this — perfekt für Callbacks und einzeilige Transformationen."
+          ]
+        }
       },
       {
         "animationStep": 4,
@@ -230,6 +383,41 @@
         "heading": "Standard- & Rest-Parameter",
         "text": "Standardparameter bieten einen Fallback-Wert, wenn ein Argument fehlt oder undefined ist. Rest-Parameter sammeln alle verbleibenden Argumente in einem Array — sie müssen immer am Ende der Parameterliste stehen."
       }
+    ],
+    "commonErrors": [
+      {
+        "title": "Aufruf vor der Deklaration bei Arrow Functions",
+        "why": "Function-Deklarationen werden gehoisted — du kannst sie vor ihrer Definition aufrufen. Arrow Functions (const fn = () => {}) werden nicht gehoisted; ein Aufruf davor wirft einen ReferenceError."
+      },
+      {
+        "title": "this in normalen Funktionen innerhalb von Klassen",
+        "why": "Normale Funktionen binden this dynamisch — in einem Callback kann this undefined sein oder auf ein anderes Objekt zeigen. Arrow Functions erben this aus dem umschließenden Scope."
+      },
+      {
+        "title": "Fehlende return-Anweisung",
+        "why": "Ohne explizites return gibt eine Funktion undefined zurück. Bei Arrow Functions ohne geschweifte Klammern (x => x * 2) ist der Ausdruck implizit der Rückgabewert — mit {} braucht es return."
+      }
+    ],
+    "realWorldExamples": [
+      {
+        "heading": "Event-Handler",
+        "description": "Funktionen als Event-Handler übergeben ist fundamental in JavaScript. Arrow Functions sind dabei beliebt, weil sie this aus dem umschließenden Kontext erben — kein .bind(this) nötig."
+      },
+      {
+        "heading": "Array-Methoden mit Callbacks",
+        "description": "map(), filter(), reduce() erwarten Callback-Funktionen. Kurze Arrow Functions machen den Code direkt lesbar: users.filter(u => u.active).map(u => u.name)."
+      }
+    ],
+    "playgroundExamples": [
+      {
+        "label": "Deklaration vs. Ausdruck"
+      },
+      {
+        "label": "Arrow Functions"
+      },
+      {
+        "label": "Default & Rest"
+      }
     ]
   },
   "js-destructuring": {
@@ -239,22 +427,75 @@
       {
         "animationStep": 0,
         "heading": "Array-Destructuring",
-        "text": "Extrahiere Werte aus einem Array nach Position. Verwende _ oder überspringe Kommas, um Elemente zu überspringen."
+        "text": "Extrahiere Werte aus einem Array nach Position. Verwende _ oder überspringe Kommas, um Elemente zu überspringen.",
+        "analogy": {
+          "title": "Das Auspacken",
+          "text": [
+            "Destructuring ist wie das Auspacken eines Pakets: statt das ganze Paket zu tragen, nimmst du direkt die Dinge heraus, die du brauchst — und gibst ihnen gleich eigene Namen."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Objekt-Destructuring",
-        "text": "Extrahiere Eigenschaften aus einem Objekt nach Name. Du kannst beim Destructuring umbenennen und Standardwerte setzen."
+        "text": "Extrahiere Eigenschaften aus einem Objekt nach Name. Du kannst beim Destructuring umbenennen und Standardwerte setzen.",
+        "analogy": {
+          "title": "Die Etiketten-Tausch",
+          "text": [
+            "Mit Destructuring kannst du zwei Variablen in einer Zeile tauschen: [a, b] = [b, a] — kein temporäre Variable nötig, klar und ausdrucksstark."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Spread und Rest",
-        "text": "Der Spread-Operator (...) expandiert Iterables. Die Rest-Syntax sammelt verbleibende Elemente in einem Array."
+        "text": "Der Spread-Operator (...) expandiert Iterables. Die Rest-Syntax sammelt verbleibende Elemente in einem Array.",
+        "analogy": {
+          "title": "Der Standardwert-Aufkleber",
+          "text": [
+            "Falls ein Wert fehlt (undefined), greift der Default-Wert automatisch — wie ein Aufkleber mit 'Standardinhalt', der überklebt wird, wenn echter Inhalt da ist."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Eingebaute Objekte: Math, Date, String",
         "text": "JavaScript wird mit eingebauten globalen Objekten geliefert. Math bietet statische Methoden für mathematische Operationen. Date erstellt Datums-/Uhrzeitobjekte. String-Methoden wie split, trim und includes operieren auf String-Primitiven via Auto-Boxing."
+      }
+    ],
+    "commonErrors": [
+      {
+        "title": "Destructuring von null oder undefined",
+        "why": "null und undefined haben keine Eigenschaften — Destructuring wirft dann einen TypeError. Stelle sicher, dass der Wert existiert, oder verwende einen Default-Wert auf der rechten Seite."
+      },
+      {
+        "title": "Verwechslung zwischen Array- und Objekt-Destructuring",
+        "why": "Array-Destructuring verwendet [] und nimmt Werte per Position. Objekt-Destructuring verwendet {} und nimmt Werte per Name. Verwechslung führt zu undefined-Werten."
+      },
+      {
+        "title": "Tiefes Verschachteln ohne Safety-Checks",
+        "why": "const { a: { b } } = obj schlägt mit TypeError fehl, wenn obj.a undefined ist. Verwende optionales Chaining im Destructuring: const { a: { b } = {} } = obj."
+      }
+    ],
+    "realWorldExamples": [
+      {
+        "heading": "React Props auspacken",
+        "description": "function Button({ label, onClick, variant = 'primary' }) — Destructuring in der Parameterliste ist der Standard für React-Komponenten. Klar, kurz, und mit Default-Werten kombinierbar."
+      },
+      {
+        "heading": "API-Antworten verarbeiten",
+        "description": "const { data, status, headers } = await axios.get(url) — Destructuring extrahiert genau die benötigten Felder aus der Antwort, ohne einen temporären Variablennamen zu vergeben."
+      }
+    ],
+    "playgroundExamples": [
+      {
+        "label": "Objekt-Destructuring"
+      },
+      {
+        "label": "Array-Destructuring"
+      },
+      {
+        "label": "Verschachtelt & Defaults"
       }
     ]
   },
@@ -265,22 +506,47 @@
       {
         "animationStep": 0,
         "heading": "if / else if / else",
-        "text": "Die if-Anweisung führt einen Block nur aus, wenn seine Bedingung truthy ist. else if verkettet weitere Bedingungen. else ist der Fallback, wenn keine Bedingung zutrifft. Bedingungen werden zu boolean konvertiert — jeder Wert kann verwendet werden, nicht nur true/false."
+        "text": "Die if-Anweisung führt einen Block nur aus, wenn seine Bedingung truthy ist. else if verkettet weitere Bedingungen. else ist der Fallback, wenn keine Bedingung zutrifft. Bedingungen werden zu boolean konvertiert — jeder Wert kann verwendet werden, nicht nur true/false.",
+        "analogy": {
+          "title": "Die Weggabelung",
+          "text": [
+            "Bedingungen funktionieren wie eine Weggabelung im Wald. if/else prüft, welchen Pfad du nimmst — und du folgst genau einem davon."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "switch-Anweisung",
-        "text": "switch vergleicht einen Wert mit einer Liste von Fällen mittels strikter Gleichheit. Jeder Fall benötigt ein break, um das Durchfallen in den nächsten Fall zu verhindern. Der default-Fall ist der Fallback, ähnlich wie else."
+        "text": "switch vergleicht einen Wert mit einer Liste von Fällen mittels strikter Gleichheit. Jeder Fall benötigt ein break, um das Durchfallen in den nächsten Fall zu verhindern. Der default-Fall ist der Fallback, ähnlich wie else.",
+        "analogy": {
+          "title": "Das Menü im Restaurant",
+          "text": [
+            "Ein switch ist wie eine Speisekarte: du wählst eines von mehreren genau definierten Gerichten. Passt keines, greift der default-Fall."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "for-Schleife",
-        "text": "Die klassische for-Schleife hat drei Teile: Initialisierung (let i = 0), Bedingung (i < 10) und Aktualisierung (i++). Sie ist ideal, wenn du weißt, wie viele Iterationen du benötigst, besonders für Arrays."
+        "text": "Die klassische for-Schleife hat drei Teile: Initialisierung (let i = 0), Bedingung (i < 10) und Aktualisierung (i++). Sie ist ideal, wenn du weißt, wie viele Iterationen du benötigst, besonders für Arrays.",
+        "analogy": {
+          "title": "Das Förderband",
+          "text": [
+            "Eine Schleife ist ein Förderband in einer Fabrik. Jedes Element kommt nacheinander an — du bearbeitest es und gibst grünes Licht für das nächste."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "while und do-while",
-        "text": "while wiederholt, solange die Bedingung truthy ist — die Bedingung wird vor jeder Iteration geprüft. do-while führt den Rumpf immer mindestens einmal aus, da die Prüfung danach kommt. Verwende diese, wenn die Anzahl der Iterationen unbekannt ist."
+        "text": "while wiederholt, solange die Bedingung truthy ist — die Bedingung wird vor jeder Iteration geprüft. do-while führt den Rumpf immer mindestens einmal aus, da die Prüfung danach kommt. Verwende diese, wenn die Anzahl der Iterationen unbekannt ist.",
+        "analogy": {
+          "title": "Das Sieb",
+          "text": [
+            "for...of iteriert über jeden Wert direkt — wie ein Sieb, das Element für Element durchlässt.",
+            "for...in iteriert über die Schlüssel eines Objekts — du bekommst die Etiketten, nicht den Inhalt."
+          ]
+        }
       },
       {
         "animationStep": 4,
@@ -290,15 +556,29 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "if / else if / else" },
-        { "label": "switch" },
-        { "label": "for-Schleife" },
-        { "label": "while-Schleife" },
-        { "label": "break / continue" }
+        {
+          "label": "if / else if / else"
+        },
+        {
+          "label": "switch"
+        },
+        {
+          "label": "for-Schleife"
+        },
+        {
+          "label": "while-Schleife"
+        },
+        {
+          "label": "break / continue"
+        }
       ],
       "patterns": [
-        { "title": "Early-Return-Guard" },
-        { "title": "Schleife mit Index" }
+        {
+          "title": "Early-Return-Guard"
+        },
+        {
+          "title": "Schleife mit Index"
+        }
       ],
       "whenToUse": "Verwende if/else für binäre Entscheidungen, switch für viele diskrete Werte, for-Schleifen für gezählte Iterationen und while für bedingungsgesteuerte Schleifen.",
       "commonMistakes": [
@@ -306,7 +586,42 @@
         "`=` (Zuweisung) statt `===` (Vergleich) innerhalb einer if-Bedingung verwenden.",
         "Endlosschleife: Die Schleifenvariable nicht aktualisieren, sodass die Bedingung nie false wird."
       ]
-    }
+    },
+    "commonErrors": [
+      {
+        "title": "Zuweisung statt Vergleich in if-Bedingungen",
+        "why": "if (x = 5) weist 5 zu (und ist immer true), statt zu prüfen. Verwende immer === für Vergleiche."
+      },
+      {
+        "title": "Vergessenes break in switch-Fällen",
+        "why": "Ohne break fällt JavaScript zum nächsten case durch (fall-through). Das ist meistens ein Fehler und führt zu unerwartetem Verhalten."
+      },
+      {
+        "title": "for...in auf Arrays verwenden",
+        "why": "for...in iteriert über alle enumerable Eigenschaften — auch geerbte. Bei Arrays bekommst du String-Indizes, keine Zahlen. Verwende for...of oder forEach."
+      }
+    ],
+    "realWorldExamples": [
+      {
+        "heading": "Formulareingaben validieren",
+        "description": "Komplexe Validierungslogik verwendet oft verschachtelte if/else oder switch, um je nach Feldtyp verschiedene Prüfungen durchzuführen."
+      },
+      {
+        "heading": "Listen rendern in React",
+        "description": "Array.map() in JSX ist eine funktionale Schleife: für jedes Element wird JSX zurückgegeben — der React-Standard für Listen-Rendering."
+      }
+    ],
+    "playgroundExamples": [
+      {
+        "label": "if / else if / else"
+      },
+      {
+        "label": "switch-Anweisung"
+      },
+      {
+        "label": "Schleifen vergleichen"
+      }
+    ]
   },
   "js-oop": {
     "title": "Objekte & Klassen",
@@ -315,17 +630,35 @@
       {
         "animationStep": 0,
         "heading": "OOP-Konzepte",
-        "text": "Objektorientierte Programmierung organisiert Code um Objekte, die Zustand (Eigenschaften) und Verhalten (Methoden) kombinieren. Die vier Säulen sind: Kapselung (interne Details verbergen), Abstraktion (nur das Notwendige exponieren), Vererbung (bestehende Typen erweitern) und Polymorphismus (gleiche Schnittstelle, unterschiedliches Verhalten)."
+        "text": "Objektorientierte Programmierung organisiert Code um Objekte, die Zustand (Eigenschaften) und Verhalten (Methoden) kombinieren. Die vier Säulen sind: Kapselung (interne Details verbergen), Abstraktion (nur das Notwendige exponieren), Vererbung (bestehende Typen erweitern) und Polymorphismus (gleiche Schnittstelle, unterschiedliches Verhalten).",
+        "analogy": {
+          "title": "Der Bauplan und das Haus",
+          "text": [
+            "Eine Klasse ist der Bauplan, ein Objekt ist das fertige Haus. Mit new baust du ein Haus nach dem Plan — jedes Haus ist unabhängig, auch wenn alle denselben Plan teilen."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Klassen und Konstruktoren",
-        "text": "Eine Klasse ist ein Bauplan für die Erstellung von Objekten. Die Methode constructor läuft, wenn du new ClassName() aufrufst. Eigenschaften, die mit this im Konstruktor gesetzt werden, gehören jeder Instanz. Im Klassenkörper definierte Methoden werden über den Prototype geteilt."
+        "text": "Eine Klasse ist ein Bauplan für die Erstellung von Objekten. Die Methode constructor läuft, wenn du new ClassName() aufrufst. Eigenschaften, die mit this im Konstruktor gesetzt werden, gehören jeder Instanz. Im Klassenkörper definierte Methoden werden über den Prototype geteilt.",
+        "analogy": {
+          "title": "Die Erbschaft",
+          "text": [
+            "Vererbung ist wie eine Erbschaft: eine Unterklasse übernimmt alle Methoden und Eigenschaften der Elternklasse und kann neue hinzufügen oder bestehende überschreiben."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Vererbung mit extends",
-        "text": "Eine Unterklasse erweitert eine Elternklasse und erbt alle ihre Methoden. Rufe super() im Konstruktor der Unterklasse auf, um den Elternkonstruktor aufzurufen. Du kannst Elternmethoden überschreiben, indem du sie in der Unterklasse neu definierst."
+        "text": "Eine Unterklasse erweitert eine Elternklasse und erbt alle ihre Methoden. Rufe super() im Konstruktor der Unterklasse auf, um den Elternkonstruktor aufzurufen. Du kannst Elternmethoden überschreiben, indem du sie in der Unterklasse neu definierst.",
+        "analogy": {
+          "title": "Das unsichtbare Skelett",
+          "text": [
+            "Die Prototypenkette ist das unsichtbare Skelett. Methoden leben nicht auf jeder Instanz — sie liegen auf dem Prototypen. JavaScript 'klettert' die Kette hoch, bis es die Methode findet."
+          ]
+        }
       },
       {
         "animationStep": 3,
@@ -340,15 +673,29 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Klassendefinition" },
-        { "label": "Instanziierung" },
-        { "label": "Vererbung" },
-        { "label": "Statische Methode" },
-        { "label": "Prototype-Kette" }
+        {
+          "label": "Klassendefinition"
+        },
+        {
+          "label": "Instanziierung"
+        },
+        {
+          "label": "Vererbung"
+        },
+        {
+          "label": "Statische Methode"
+        },
+        {
+          "label": "Prototype-Kette"
+        }
       ],
       "patterns": [
-        { "title": "Factory-Pattern via Klasse" },
-        { "title": "super()-Aufruf" }
+        {
+          "title": "Factory-Pattern via Klasse"
+        },
+        {
+          "title": "super()-Aufruf"
+        }
       ],
       "whenToUse": "Verwende Klassen, wenn du mehrere Instanzen benötigst, die Verhalten teilen, und Vererbung, wenn ein Typ einen anderen erweitert.",
       "commonMistakes": [
@@ -356,7 +703,46 @@
         "Auf `this` vor `super()` in einem Unterklassenkonstruktor zugreifen.",
         "Vererbte Prototype-Eigenschaften direkt mutieren, statt Instanzeigenschaften zu verwenden."
       ]
-    }
+    },
+    "commonErrors": [
+      {
+        "title": "Vergessenes new beim Klassenaufruf",
+        "why": "Klassen müssen mit new aufgerufen werden. Ohne new wirft JavaScript einen TypeError, weil der Konstruktor this erwartet — und this ist ohne new nicht korrekt gesetzt."
+      },
+      {
+        "title": "super() nicht vor this in Unterklassen aufrufen",
+        "why": "Im Konstruktor einer Unterklasse ist this erst verfügbar, nachdem super() aufgerufen wurde. Ein Zugriff vorher wirft einen ReferenceError."
+      },
+      {
+        "title": "Methoden direkt auf der Instanz statt auf dem Prototyp definieren",
+        "why": "Methoden im Konstruktor (this.method = function(){}) erzeugen für jede Instanz eine neue Funktionskopie. Methoden in der Klassen-Syntax landen auf dem Prototyp — eine Kopie, geteilt von allen Instanzen."
+      }
+    ],
+    "realWorldExamples": [
+      {
+        "heading": "React Klassenkomponenten",
+        "description": "Ältere React-Code-Basen verwenden class Component extends React.Component. Der Konstruktor initialisiert den State mit super(props) — ein klassisches OOP-Muster."
+      },
+      {
+        "heading": "Benutzerdefinierte Fehlerklassen",
+        "description": "class HttpError extends Error erlaubt es, Fehlertypen mit instanceof zu unterscheiden und domänenspezifische Eigenschaften (status-Code) hinzuzufügen."
+      },
+      {
+        "heading": "Datenstruktur: Verkettete Liste",
+        "description": "Ein Node in einer verketteten Liste ist eine Klasse mit value und next — ein sauberes OOP-Muster für wiederverwendbare Datenstrukturen."
+      }
+    ],
+    "playgroundExamples": [
+      {
+        "label": "Klassen & new"
+      },
+      {
+        "label": "Vererbung"
+      },
+      {
+        "label": "Prototypenkette"
+      }
+    ]
   },
   "js-timers": {
     "title": "Timer & asynchrone Globals",
@@ -365,30 +751,62 @@
       {
         "animationStep": 0,
         "heading": "setTimeout — Einmalig nach einer Verzögerung ausführen",
-        "text": "setTimeout(callback, delayMs) plant, dass callback nach mindestens delayMs Millisekunden ausgeführt wird. Es gibt eine Timer-ID zurück. Die tatsächliche Verzögerung kann etwas länger sein, da der Callback in die Macrotask-Queue eingereiht wird und warten muss, bis der Call Stack leer ist."
+        "text": "setTimeout(callback, delayMs) plant, dass callback nach mindestens delayMs Millisekunden ausgeführt wird. Es gibt eine Timer-ID zurück. Die tatsächliche Verzögerung kann etwas länger sein, da der Callback in die Macrotask-Queue eingereiht wird und warten muss, bis der Call Stack leer ist.",
+        "analogy": {
+          "title": "Der Wecker",
+          "text": [
+            "setTimeout ist ein Wecker: du stellst ihn ein, und nach der angegebenen Zeit klingelt er genau einmal — danach ist er inaktiv."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "setInterval — Wiederholend nach Plan ausführen",
-        "text": "setInterval(callback, intervalMs) ruft callback wiederholt alle intervalMs Millisekunden auf. Es gibt eine ID zurück, die du mit clearInterval verwenden musst, um es abzubrechen. Breche Intervalle immer ab, wenn sie nicht mehr benötigt werden, um Memory Leaks zu vermeiden."
+        "text": "setInterval(callback, intervalMs) ruft callback wiederholt alle intervalMs Millisekunden auf. Es gibt eine ID zurück, die du mit clearInterval verwenden musst, um es abzubrechen. Breche Intervalle immer ab, wenn sie nicht mehr benötigt werden, um Memory Leaks zu vermeiden.",
+        "analogy": {
+          "title": "Der Takt-Geber",
+          "text": [
+            "setInterval ist ein Metronom: es tickt gleichmäßig im gewählten Rhythmus, bis du es stoppst. Ohne clearInterval läuft es für immer."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "clearTimeout und clearInterval",
-        "text": "Übergib die von setTimeout oder setInterval zurückgegebene Timer-ID an die entsprechende clear-Funktion, um die ausstehende Ausführung abzubrechen. Das ist unerlässlich in Komponenten, die mounten/unmounten — räume Timer beim Teardown immer auf."
+        "text": "Übergib die von setTimeout oder setInterval zurückgegebene Timer-ID an die entsprechende clear-Funktion, um die ausstehende Ausführung abzubrechen. Das ist unerlässlich in Komponenten, die mounten/unmounten — räume Timer beim Teardown immer auf.",
+        "analogy": {
+          "title": "Das Vorfahrtsrecht",
+          "text": [
+            "Promises und async/await haben gegenüber Timern 'Vorfahrt' in der Mikrotask-Queue. setTimeout-Callbacks warten, bis alle Promises abgearbeitet sind — selbst wenn das Timeout 0ms beträgt."
+          ]
+        }
       }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "setTimeout" },
-        { "label": "clearTimeout" },
-        { "label": "setInterval" },
-        { "label": "clearInterval" },
-        { "label": "Verschachteltes setTimeout (Polling)" }
+        {
+          "label": "setTimeout"
+        },
+        {
+          "label": "clearTimeout"
+        },
+        {
+          "label": "setInterval"
+        },
+        {
+          "label": "clearInterval"
+        },
+        {
+          "label": "Verschachteltes setTimeout (Polling)"
+        }
       ],
       "patterns": [
-        { "title": "Debounce-Pattern" },
-        { "title": "Selbstlöschendes Intervall" }
+        {
+          "title": "Debounce-Pattern"
+        },
+        {
+          "title": "Selbstlöschendes Intervall"
+        }
       ],
       "whenToUse": "Verwende setTimeout für einmalige Verzögerungen, setInterval für Wiederholungen, und speichere immer die ID, damit du mit clearTimeout/clearInterval abbrechen kannst.",
       "commonMistakes": [
@@ -396,7 +814,46 @@
         "Einen String statt einer Funktion an setTimeout übergeben: setTimeout(\"doSomething()\", 500) — das vermeiden.",
         "Exaktes Timing erwarten — Timer-Callbacks werden in die Queue eingereiht; die tatsächliche Verzögerung kann länger als angegeben sein."
       ]
-    }
+    },
+    "commonErrors": [
+      {
+        "title": "String statt Funktion an setTimeout übergeben",
+        "why": "setTimeout akzeptiert eine Funktion als erstes Argument. Ein String wird eval'd — langsam, fehleranfällig und in modernen CSP-Richtlinien verboten."
+      },
+      {
+        "title": "Vergessen, clearInterval aufzurufen — Memory Leak",
+        "why": "setInterval läuft unbegrenzt weiter, bis es explizit gestoppt wird. In Single-Page-Apps hält ein laufendes Intervall Referenzen auf Komponenten, die längst nicht mehr sichtbar sind."
+      },
+      {
+        "title": "Annahme, setTimeout(fn, 0) wird sofort ausgeführt",
+        "why": "setTimeout(fn, 0) fügt den Callback ans Ende der Makrotask-Queue. Alle synchronen Operationen und alle Promises werden zuerst abgearbeitet — 0ms bedeutet nicht 'sofort'."
+      }
+    ],
+    "realWorldExamples": [
+      {
+        "heading": "Debounce für Sucheingaben",
+        "description": "Ein Debounce verzögert die API-Anfrage, bis der Nutzer aufgehört hat zu tippen. Dazu wird bei jedem Tastendruck der vorherige setTimeout gecleart und neu gestartet."
+      },
+      {
+        "heading": "Polling für Echtzeit-Updates",
+        "description": "Wenn WebSockets nicht verfügbar sind, werden mit setInterval regelmäßige API-Anfragen gestellt — zum Beispiel alle 30 Sekunden für einen Live-Status."
+      },
+      {
+        "heading": "UI-Feedback nach Aktionen",
+        "description": "setTimeout verzögert das Verstecken einer Erfolgsmeldung: 'Gespeichert!' verschwindet nach 3 Sekunden — ohne dass der Nutzer manuell schließen muss."
+      }
+    ],
+    "playgroundExamples": [
+      {
+        "label": "setTimeout"
+      },
+      {
+        "label": "setInterval & clear"
+      },
+      {
+        "label": "Timer-Reihenfolge"
+      }
+    ]
   },
   "js-event-loop": {
     "title": "Die Event Loop",
@@ -405,17 +862,35 @@
       {
         "animationStep": 0,
         "heading": "JavaScript ist single-threaded",
-        "text": "JavaScript läuft in einem einzigen Thread — eine Operation nach der anderen. Der Call Stack verfolgt, was gerade ausgeführt wird."
+        "text": "JavaScript läuft in einem einzigen Thread — eine Operation nach der anderen. Der Call Stack verfolgt, was gerade ausgeführt wird.",
+        "analogy": {
+          "title": "Der Kellner mit Bestellblock",
+          "text": [
+            "JavaScript ist wie ein einziger Kellner, der alle Bestellungen selbst bearbeitet. Er kann nur eine Sache gleichzeitig tun — aber er notiert neue Aufgaben im Bestellblock (Queue) und arbeitet sie der Reihe nach ab."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Synchroner Code wird sofort ausgeführt",
-        "text": "Reguläre Funktionsaufrufe werden auf den Call Stack geschoben. Wenn sie zurückkehren, werden sie herausgenommen."
+        "text": "Reguläre Funktionsaufrufe werden auf den Call Stack geschoben. Wenn sie zurückkehren, werden sie herausgenommen.",
+        "analogy": {
+          "title": "Das Förderband im Lager",
+          "text": [
+            "Der Call Stack ist ein Förderband: Funktionen werden oben aufgelegt und nach der Ausführung entfernt. Erst wenn das Band leer ist, kann der Event Loop die nächste Aufgabe aus der Queue nehmen."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Asynchroner Code geht zu Web APIs",
-        "text": "setTimeout, fetch und Event-Listener werden von Web APIs verarbeitet — außerhalb der JS-Engine. Der Callback wartet in der Task-Queue."
+        "text": "setTimeout, fetch und Event-Listener werden von Web APIs verarbeitet — außerhalb der JS-Engine. Der Callback wartet in der Task-Queue.",
+        "analogy": {
+          "title": "Die Dringlichkeitsstufen",
+          "text": [
+            "Mikrotasks (Promises) haben Vorfahrt vor Makrotasks (setTimeout). Nach jeder Makrotask werden alle Mikrotasks abgearbeitet — erst dann kommt die nächste Makrotask an die Reihe."
+          ]
+        }
       },
       {
         "animationStep": 3,
@@ -463,8 +938,12 @@
         }
       ],
       "patterns": [
-        { "title": "async/await mit Fehlerbehandlung" },
-        { "title": "Promise.all — parallele Anfragen" }
+        {
+          "title": "async/await mit Fehlerbehandlung"
+        },
+        {
+          "title": "Promise.all — parallele Anfragen"
+        }
       ],
       "whenToUse": "Verstehe die Event Loop, wenn sich Code bei asynchronen Operationen unerwartet verhält — sie erklärt, warum setTimeout(fn, 0) noch nach .then()-Callbacks läuft und warum das Blockieren des Main Threads die UI einfriert.",
       "commonMistakes": [
@@ -472,7 +951,27 @@
         "Vergessen, dass await nur die aktuelle async-Funktion pausiert, nicht das gesamte Programm — anderer Code läuft weiter",
         "Abgelehnte Promises nicht behandeln — unbehandelte Rejections verursachen Laufzeitwarnungen und können Node.js-Prozesse zum Absturz bringen"
       ]
-    }
+    },
+    "commonErrors": [
+      {
+        "title": "Den Event Loop mit schwerer synchroner Arbeit blockieren",
+        "why": "Lange synchrone Operationen (z.B. Sortieren eines riesigen Arrays) besetzen den Call Stack vollständig. Der Event Loop kann keine Callbacks ausführen — die UI friert ein, Timer feuern zu spät."
+      },
+      {
+        "title": "Reihenfolge von setTimeout(fn, 0) falsch einschätzen",
+        "why": "setTimeout(fn, 0) legt den Callback ans Ende der Makrotask-Queue. Alle synchronen Operationen und alle Promises werden zuerst abgearbeitet — 0ms bedeutet nicht 'sofort'."
+      }
+    ],
+    "realWorldExamples": [
+      {
+        "heading": "Scroll- und Resize-Handler optimieren",
+        "description": "Scroll-Events feuern sehr häufig. Debounce mit setTimeout bündelt die Aufrufe: erst wenn der Nutzer aufhört zu scrollen, wird der Handler ausgeführt — der Event Loop bleibt frei."
+      },
+      {
+        "heading": "Web Workers für CPU-intensive Aufgaben",
+        "description": "Schwere Berechnungen (Bildverarbeitung, Kryptografie) werden in einen Web Worker ausgelagert. Dieser läuft in einem eigenen Thread — der Haupt-Event-Loop bleibt reaktionsfähig."
+      }
+    ]
   },
   "js-closures": {
     "title": "Closures",
@@ -481,27 +980,61 @@
       {
         "animationStep": 0,
         "heading": "Eine Funktion mit lokalem Zustand",
-        "text": "Wenn eine Funktion ausgeführt wird, erstellt sie einen lokalen Scope. Variablen in diesem Scope verschwinden normalerweise, wenn die Funktion zurückkehrt."
+        "text": "Wenn eine Funktion ausgeführt wird, erstellt sie einen lokalen Scope. Variablen in diesem Scope verschwinden normalerweise, wenn die Funktion zurückkehrt.",
+        "analogy": {
+          "title": "Das unsichtbare Notizbuch",
+          "text": [
+            "Stell dir vor, eine Funktion ist ein Kellner im Restaurant. Wenn der Kellner deinen Tisch verlässt, nimmt er ein kleines Notizbuch mit — darin stehen deine Bestellung und alle bisherigen Wünsche.",
+            "Closure ist dieses Notizbuch: es bleibt auch dann erhalten, wenn der Kellner längst woanders ist."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Eine innere Funktion zurückgeben",
-        "text": "Wenn wir eine Funktion innerhalb von makeCounter definieren und zurückgeben, kann diese innere Funktion count sehen — sie befindet sich in ihrer Scope-Kette."
+        "text": "Wenn wir eine Funktion innerhalb von makeCounter definieren und zurückgeben, kann diese innere Funktion count sehen — sie befindet sich in ihrer Scope-Kette.",
+        "analogy": {
+          "title": "Der persönliche Tresor",
+          "text": [
+            "Jede Funktion, die innerhalb einer anderen erstellt wird, bekommt ihren eigenen kleinen Tresor mit einem Schnappschuss aller Variablen, die zum Zeitpunkt der Erstellung existierten.",
+            "Nur diese Funktion kennt die Kombination — niemand von außen kann direkt hineinschauen."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Die äußere Funktion kehrt zurück",
-        "text": "makeCounter() beendet die Ausführung, aber count wird NICHT garbage collected. Die zurückgegebene Funktion hält noch eine Referenz darauf — das ist die Closure."
+        "text": "makeCounter() beendet die Ausführung, aber count wird NICHT garbage collected. Die zurückgegebene Funktion hält noch eine Referenz darauf — das ist die Closure.",
+        "analogy": {
+          "title": "Der Zählerstand im Gedächtnis",
+          "text": [
+            "Ein Wasserzähler erinnert sich an seinen letzten Stand, egal wann du hineinschaust. Genau so erinnert sich eine Closure an den aktuellen Wert ihrer äußeren Variable — der Zähler geht nicht nach jedem Aufruf auf null zurück."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Die Closure in Aktion",
-        "text": "increment() aufzurufen greift auf count zu und verändert es — obwohl wir uns außerhalb von makeCounter befinden. Die Closure merkt sich den ursprünglichen Scope."
+        "text": "increment() aufzurufen greift auf count zu und verändert es — obwohl wir uns außerhalb von makeCounter befinden. Die Closure merkt sich den ursprünglichen Scope.",
+        "analogy": {
+          "title": "Eigene Schublade für jede Fabrik",
+          "text": [
+            "Eine Fabrik produziert Maschinen. Jede Maschine hat ihre eigene, unabhängige Schublade mit Werkzeug.",
+            "Wenn du zwei Zähler aus derselben Fabrikfunktion erzeugst, teilen sie niemals ihren Zustand — jeder hat seine eigene private Schublade."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "Unabhängige Closures",
-        "text": "Jeder Aufruf von makeCounter() erstellt einen neuen Scope mit einem eigenen count. Zwei Zähler teilen keinen Zustand."
+        "text": "Jeder Aufruf von makeCounter() erstellt einen neuen Scope mit einem eigenen count. Zwei Zähler teilen keinen Zustand.",
+        "analogy": {
+          "title": "Die versiegelte Kapsel",
+          "text": [
+            "Module funktionieren wie eine versiegelte Zeitkapsel: Alle internen Variablen sind für immer darin eingeschlossen.",
+            "Nur die Funktionen, die du bewusst nach außen gibst (return), können die Kapsel öffnen — alles andere bleibt privat."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -520,8 +1053,12 @@
         }
       ],
       "patterns": [
-        { "title": "Factory-Funktion mit privatem Zustand" },
-        { "title": "Module-Pattern mit IIFE" }
+        {
+          "title": "Factory-Funktion mit privatem Zustand"
+        },
+        {
+          "title": "Module-Pattern mit IIFE"
+        }
       ],
       "whenToUse": "Verwende Closures, um privaten Zustand zu kapseln, Factory-Funktionen zu erstellen, die konfigurierte Callbacks erzeugen, und das Module-Pattern zu implementieren. Sie sind die Grundlage vieler React Hooks wie useState.",
       "commonMistakes": [
@@ -529,7 +1066,46 @@
         "Unbeabsichtigte Memory Leaks erstellen — Closures halten ihren umschließenden Scope am Leben; vermeide es, große Objekte in langlebigen Closures zu halten",
         "Erwarten, dass separate Aufrufe von makeX() denselben Zustand teilen — jeder Aufruf erstellt eine neue Closure mit eigenen unabhängigen Variablen"
       ]
-    }
+    },
+    "commonErrors": [
+      {
+        "title": "var in Schleifen — alle Handler teilen denselben Wert",
+        "why": "var ist funktions-scoped, nicht block-scoped. In einer Schleife gibt es nur eine Variable i — alle Closures teilen dieselbe Referenz und sehen am Ende denselben Wert."
+      },
+      {
+        "title": "Unbeabsichtigtes Festhalten von Variablen im Speicher",
+        "why": "Wenn eine Closure eine große Variable referenziert (z.B. ein DOM-Element oder ein großes Array), bleibt diese Variable im Speicher — solange die Closure selbst erreichbar ist. Der Garbage Collector kann sie nicht freigeben."
+      },
+      {
+        "title": "Vergessen, dass jeder Schleifendurchlauf eine neue Closure erzeugt",
+        "why": "Bei let und const (block-scoped) erstellt jede Schleifeniteration eine neue Binding. Mit var teilen sich alle Closures dasselbe Binding — deshalb sehen sie alle denselben finalen Wert."
+      }
+    ],
+    "realWorldExamples": [
+      {
+        "heading": "Zustandsverwaltung in React Hooks",
+        "description": "useState und useCallback in React basieren auf Closures. Der aktuelle Zustand wird in der Closure des Hooks eingeschlossen und bleibt zwischen Re-Renders erhalten — ganz ohne globale Variablen."
+      },
+      {
+        "heading": "Event-Handler mit privatem Kontext",
+        "description": "DOM-Event-Handler schließen oft über Variablen wie Element-IDs oder API-Endpunkte. Ohne Closures müsste man diese Werte als HTML-Attribute speichern oder global ablegen."
+      },
+      {
+        "heading": "Memoization und Caching",
+        "description": "Eine Memoize-Funktion schließt über ein privates Cache-Objekt. Jeder Aufruf prüft zuerst den Cache — das Ergebnis bleibt gespeichert, ohne dass eine externe Variable nötig ist."
+      }
+    ],
+    "playgroundExamples": [
+      {
+        "label": "Einfacher Zähler"
+      },
+      {
+        "label": "Private Daten"
+      },
+      {
+        "label": "Schleife mit let"
+      }
+    ]
   },
   "js-promises": {
     "title": "Promises & Async/Await",
@@ -538,27 +1114,90 @@
       {
         "animationStep": 0,
         "heading": "Was ist ein Promise?",
-        "text": "Ein Promise repräsentiert einen Wert, der in der Zukunft verfügbar sein wird. Er kann pending (ausstehend), fulfilled (erfüllt) oder rejected (abgelehnt) sein."
+        "text": "Ein Promise repräsentiert einen Wert, der in der Zukunft verfügbar sein wird. Er kann pending (ausstehend), fulfilled (erfüllt) oder rejected (abgelehnt) sein.",
+        "analogy": {
+          "title": "Der Bestellzettel",
+          "text": [
+            "Eine Promise ist wie ein Bestellzettel im Restaurant: du bekommst ihn sofort, aber das Essen kommt später. Du kannst in der Zwischenzeit andere Dinge tun — statt am Tresen zu warten."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Verkettung mit .then()",
-        "text": "Promises können verkettet werden: Jedes .then() erhält das vorherige Ergebnis und gibt ein neues Promise zurück."
+        "text": "Promises können verkettet werden: Jedes .then() erhält das vorherige Ergebnis und gibt ein neues Promise zurück.",
+        "analogy": {
+          "title": "Die Kettenbriefe",
+          "text": [
+            ".then() verkettet Schritte wie Kettenbriefe: das Ergebnis jedes Schritts fließt automatisch in den nächsten. Wenn einer scheitert, springt die Kette direkt zum .catch()."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "async/await-Syntax",
-        "text": "async/await ist syntaktischer Zucker über Promises. Eine async-Funktion gibt immer ein Promise zurück; await pausiert die Ausführung, bis das Promise aufgelöst wird."
+        "text": "async/await ist syntaktischer Zucker über Promises. Eine async-Funktion gibt immer ein Promise zurück; await pausiert die Ausführung, bis das Promise aufgelöst wird.",
+        "analogy": {
+          "title": "Die Synchronisierung im Orchester",
+          "text": [
+            "Promise.all() ist wie ein Orchesterdirigent: er wartet, bis alle Musiker fertig gestimmt haben — erst dann beginnt das Konzert. Scheitert ein Musiker, wird abgebrochen."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "async / await Syntax",
-        "text": "async/await ist syntaktischer Zucker über Promises. Markiere eine Funktion als async und verwende await, um die Ausführung zu pausieren, bis ein Promise aufgelöst wird. Das Ergebnis wird wie ein normaler Wert zugewiesen — keine .then()-Ketten nötig."
+        "text": "async/await ist syntaktischer Zucker über Promises. Markiere eine Funktion als async und verwende await, um die Ausführung zu pausieren, bis ein Promise aufgelöst wird. Das Ergebnis wird wie ein normaler Wert zugewiesen — keine .then()-Ketten nötig.",
+        "analogy": {
+          "title": "Der Dolmetscher",
+          "text": [
+            "async/await ist syntaktischer Zucker für Promises. Der Compiler 'übersetzt' es intern in Promise-Ketten — async macht eine Funktion zur Promise-Fabrik, await 'pausiert' die Ausführung der Funktion."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "Fehlerbehandlung in async-Funktionen",
         "text": "Verwende try/catch innerhalb von async-Funktionen, um sowohl Netzwerkfehler als auch Nicht-2xx-Antworten zu behandeln. Prüfe response.ok, bevor du den Body parsest — fetch lehnt nur bei Netzwerkfehlern ab, nicht bei 404- oder 500-Statuscodes."
+      }
+    ],
+    "commonErrors": [
+      {
+        "title": "Vergessen, auf Fehler zu reagieren (.catch fehlt)",
+        "why": "Eine nicht abgefangene Promise-Ablehnung führt zu 'UnhandledPromiseRejection' — in Node.js bricht das den Prozess ab, im Browser erscheint eine Warnung."
+      },
+      {
+        "title": "Verschachtelte Promises statt Ketten",
+        "why": "return in .then() gibt eine neue Promise zurück, die automatisch in die Kette eingebunden wird. Ohne return entstehen verschachtelte, schwer lesbare Strukturen — 'Promise Hell'."
+      },
+      {
+        "title": "await ohne async",
+        "why": "await kann nur innerhalb einer async-Funktion verwendet werden. In normalem Code oder auf der obersten Ebene (ohne top-level await) wirft es einen Syntaxfehler."
+      }
+    ],
+    "realWorldExamples": [
+      {
+        "heading": "API-Daten laden",
+        "description": "fetch() gibt eine Promise zurück. Mit async/await lässt sich das Laden von Daten sequenziell und lesbar schreiben — als wäre es synchroner Code."
+      },
+      {
+        "heading": "Parallele Anfragen mit Promise.all()",
+        "description": "Wenn mehrere unabhängige API-Endpunkte abgefragt werden müssen, startet Promise.all() alle gleichzeitig und wartet, bis alle fertig sind — deutlich schneller als sequenzielles await."
+      },
+      {
+        "heading": "Formular-Submit mit Lade-Zustand",
+        "description": "async-Funktionen als Event-Handler ermöglichen es, UI-Zustände (isLoading, error) direkt um await herum zu verwalten — ohne verschachtelte Callbacks."
+      }
+    ],
+    "playgroundExamples": [
+      {
+        "label": "Promise basics"
+      },
+      {
+        "label": "async / await"
+      },
+      {
+        "label": "Promise.all()"
       }
     ]
   },
@@ -569,12 +1208,24 @@
       {
         "animationStep": 0,
         "heading": "CommonJS vs. ES Modules",
-        "text": "Älterer Node.js-Code verwendet CommonJS: require() zum Importieren und module.exports zum Exportieren. Modernes JavaScript verwendet ES Modules (ESM): import- und export-Anweisungen. ESM ist statisch analysierbar (besseres Tree-Shaking) und ist jetzt der Standard für Browser und Node.js."
+        "text": "Älterer Node.js-Code verwendet CommonJS: require() zum Importieren und module.exports zum Exportieren. Modernes JavaScript verwendet ES Modules (ESM): import- und export-Anweisungen. ESM ist statisch analysierbar (besseres Tree-Shaking) und ist jetzt der Standard für Browser und Node.js.",
+        "analogy": {
+          "title": "Das Werkzeugkasten-Regal",
+          "text": [
+            "Module sind wie beschriftete Werkzeugkästen: jeder Kasten enthält Werkzeuge für eine bestimmte Aufgabe. Mit import holst du genau das Werkzeug, das du brauchst — ohne den ganzen Kasten zu schleppen."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Benannte und Standard-Exports",
-        "text": "Eine Datei kann mehrere benannte Werte und einen Standardwert exportieren. Benannte Importe müssen den exakten exportierten Namen verwenden (oder aliasiert werden). Standard-Importe können jeden Namen verwenden. Bevorzuge benannte Exports für besseres Refactoring und IDE-Unterstützung."
+        "text": "Eine Datei kann mehrere benannte Werte und einen Standardwert exportieren. Benannte Importe müssen den exakten exportierten Namen verwenden (oder aliasiert werden). Standard-Importe können jeden Namen verwenden. Bevorzuge benannte Exports für besseres Refactoring und IDE-Unterstützung.",
+        "analogy": {
+          "title": "Das Fenster",
+          "text": [
+            "export default ist wie ein Hauptfenster in einem Gebäude: es gibt genau eines — das wichtigste Element. Named exports sind wie nummerierte Nebentüren: mehrere, je nach Bedarf importierbar."
+          ]
+        }
       },
       {
         "animationStep": 2,
@@ -589,15 +1240,29 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Benannter Export" },
-        { "label": "Standard-Export" },
-        { "label": "Benannter Import" },
-        { "label": "Standard-Import" },
-        { "label": "npm install" }
+        {
+          "label": "Benannter Export"
+        },
+        {
+          "label": "Standard-Export"
+        },
+        {
+          "label": "Benannter Import"
+        },
+        {
+          "label": "Standard-Import"
+        },
+        {
+          "label": "npm install"
+        }
       ],
       "patterns": [
-        { "title": "Re-Export-Barrel" },
-        { "title": "Dynamischer Import" }
+        {
+          "title": "Re-Export-Barrel"
+        },
+        {
+          "title": "Dynamischer Import"
+        }
       ],
       "whenToUse": "Verwende ESM (import/export) für alle neuen Projekte. Verwende npm, um Pakete zu installieren, und importiere sie dann auf dieselbe Weise.",
       "commonMistakes": [
@@ -605,19 +1270,64 @@
         "Die Dateiendung in Importpfaden weglassen — Browser benötigen den vollständigen Pfad einschließlich `.js`.",
         "Zirkuläre Importe — Modul A importiert aus B, das aus A importiert, was zu undefined-Referenzen führt."
       ]
-    }
+    },
+    "commonErrors": [
+      {
+        "title": "CommonJS (require) und ES Modules (import) mischen",
+        "why": "Node.js-Pakete verwenden oft require(), Browser-Code verwendet import. Das Mischen führt zu Fehlern. Entscheide dich für ein System — in modernen Projekten sind ES Modules Standard."
+      },
+      {
+        "title": "Fehlende Dateiendungen beim Importieren",
+        "why": "Browser-native ES Modules benötigen vollständige Pfade mit .js-Endung. Bundler (Vite, Webpack) lösen das automatisch auf — aber ohne Bundler schlägt der Import fehl."
+      }
+    ],
+    "realWorldExamples": [
+      {
+        "heading": "Utility-Funktionen auslagern",
+        "description": "Hilfsfunktionen wie formatDate oder calculateTotal werden in eigene Dateien ausgelagert und mit named exports bereitgestellt. So bleiben sie wiederverwendbar und testbar."
+      },
+      {
+        "heading": "Komponenten-Bibliothek",
+        "description": "React-Komponenten sind fast immer default exports. Named exports werden für Typen, Konstanten oder Hilfsfunktionen verwendet, die aus derselben Datei stammen."
+      }
+    ],
+    "playgroundExamples": [
+      {
+        "label": "Named exports"
+      },
+      {
+        "label": "Default export"
+      },
+      {
+        "label": "Re-exports"
+      }
+    ]
   },
   "js-npm-bundlers": {
+    "title": "npm & Bundler",
+    "description": "Die npm-Registry, package.json und wie Bundler wie Vite deine Quelldateien in optimierten Browser-Output transformieren.",
     "steps": [
       {
         "animationStep": 0,
         "heading": "Die npm-Registry",
-        "text": "npm ist sowohl ein Kommandozeilentool als auch eine Registry mit über 2 Millionen Open-Source-Paketen. npm install lädt das Paket in node_modules herunter und trägt es in package.json ein. Verwende -D für devDependencies (Build-Tools, Test-Runner). Bewerte Pakete anhand von wöchentlichen Downloads, letztem Veröffentlichungsdatum, Bundle-Größe und Sicherheits-Audits."
+        "text": "npm ist sowohl ein Kommandozeilentool als auch eine Registry mit über 2 Millionen Open-Source-Paketen. npm install lädt das Paket in node_modules herunter und trägt es in package.json ein. Verwende -D für devDependencies (Build-Tools, Test-Runner). Bewerte Pakete anhand von wöchentlichen Downloads, letztem Veröffentlichungsdatum, Bundle-Größe und Sicherheits-Audits.",
+        "analogy": {
+          "title": "Der Paketdienst",
+          "text": [
+            "npm ist wie ein Paketdienst: du bestellst Pakete (Bibliotheken) aus einem riesigen Katalog (Registry). package.json ist dein Bestellbuch — es listet alles auf, was dein Projekt braucht."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "package.json & Lockfile",
-        "text": "package.json ist das Projektmanifest: Es listet Skripte, dependencies und devDependencies auf. package-lock.json speichert exakt aufgelöste Versionen für reproduzierbare Installationen — immer committen. node_modules wird aus dem Lockfile erzeugt und darf niemals committet werden."
+        "text": "package.json ist das Projektmanifest: Es listet Skripte, dependencies und devDependencies auf. package-lock.json speichert exakt aufgelöste Versionen für reproduzierbare Installationen — immer committen. node_modules wird aus dem Lockfile erzeugt und darf niemals committet werden.",
+        "analogy": {
+          "title": "Das Zusammenschnüren",
+          "text": [
+            "Ein Bundler ist wie eine Packstation: er nimmt hunderte einzelne JS-Dateien, schnürt sie zu wenigen optimierten Paketen zusammen und sorgt dafür, dass Browser sie schnell laden können."
+          ]
+        }
       },
       {
         "animationStep": 2,
@@ -637,15 +1347,29 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Abhängigkeit installieren" },
-        { "label": "Dev-Abhängigkeit installieren" },
-        { "label": "Skript ausführen" },
-        { "label": "Saubere Installation (CI)" },
-        { "label": "Pakete prüfen" }
+        {
+          "label": "Abhängigkeit installieren"
+        },
+        {
+          "label": "Dev-Abhängigkeit installieren"
+        },
+        {
+          "label": "Skript ausführen"
+        },
+        {
+          "label": "Saubere Installation (CI)"
+        },
+        {
+          "label": "Pakete prüfen"
+        }
       ],
       "patterns": [
-        { "title": "Vite-Projekt aufsetzen" },
-        { "title": "package.json-Skripte" }
+        {
+          "title": "Vite-Projekt aufsetzen"
+        },
+        {
+          "title": "package.json-Skripte"
+        }
       ],
       "whenToUse": "Verwende npm zur Paketverwaltung und Vite für neue Projekte. package-lock.json committen, node_modules niemals committen.",
       "commonMistakes": [
@@ -653,6 +1377,18 @@
         "package-lock.json nicht committen — Teammitglieder erhalten dann unterschiedliche aufgelöste Versionen.",
         "devDependencies ohne -D installieren — sie landen dann im Production-Bundle."
       ]
-    }
+    },
+    "commonErrors": [
+      {
+        "title": "Abhängigkeiten als devDependencies statt dependencies installieren (oder umgekehrt)",
+        "why": "dependencies sind Laufzeit-Pakete (react, axios). devDependencies sind nur für die Entwicklung (vite, eslint). In Produktions-Builds werden devDependencies normalerweise nicht mitgeliefert."
+      }
+    ],
+    "realWorldExamples": [
+      {
+        "heading": "Vite als Entwicklungsserver",
+        "description": "npx create vite@latest my-app erstellt ein vollständiges React-Projekt mit sofort startbarem Entwicklungsserver (npm run dev) — kein manuelles Konfigurieren nötig."
+      }
+    ]
   }
 }

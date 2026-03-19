@@ -60,18 +60,29 @@ function topicsNSFor(id: string): TopicsNS {
   return 'topics-other'
 }
 
-interface StepTranslation { animationStep: number; heading: string; text: string }
+interface StepTranslation {
+  animationStep: number
+  heading: string
+  text: string
+  analogy?: { title: string; text: string[] }
+}
 interface CheatSheetTranslation {
   syntax?:         Array<{ label: string; note?: string }>
   patterns?:       Array<{ title: string }>
   whenToUse?:      string
   commonMistakes?: string[]
 }
+interface CommonErrorTx   { title: string; why: string }
+interface RealWorldExTx   { heading: string; description: string }
+interface PlaygroundExTx  { label: string }
 interface TopicTranslation {
-  title:       string
-  description: string
-  steps:       StepTranslation[]
-  cheatSheet?: CheatSheetTranslation
+  title:               string
+  description:         string
+  steps:               StepTranslation[]
+  cheatSheet?:         CheatSheetTranslation
+  commonErrors?:       CommonErrorTx[]
+  realWorldExamples?:  RealWorldExTx[]
+  playgroundExamples?: PlaygroundExTx[]
 }
 
 function mergeCheatSheet(
@@ -100,7 +111,8 @@ export function useTopic(id: string): Topic | undefined {
   const base = TOPICS.find(tp => tp.id === id)
   if (!base) return undefined
 
-  const tx = t(id as never, { returnObjects: true }) as TopicTranslation
+  const tx = t(id as never, { returnObjects: true }) as TopicTranslation | string
+  if (typeof tx === 'string') return base
 
   return {
     ...base,
@@ -110,16 +122,37 @@ export function useTopic(id: string): Topic | undefined {
       if (section.type !== 'explanation') return section
       return {
         ...section,
-        steps: section.steps.map((step, i) => ({
-          ...step,
-          heading: tx.steps[i]?.heading ?? step.heading,
-          text:    tx.steps[i]?.text    ?? step.text,
-        })),
+        steps: section.steps.map((step, i) => {
+          const txStep = tx.steps[i]
+          const txAnalogy = txStep?.analogy
+          return {
+            ...step,
+            heading: txStep?.heading ?? step.heading,
+            text:    txStep?.text    ?? step.text,
+            analogy: step.analogy && txAnalogy
+              ? { ...step.analogy, title: txAnalogy.title, text: txAnalogy.text }
+              : step.analogy,
+          }
+        }),
       }
     }),
     cheatSheet: base.cheatSheet && tx.cheatSheet
       ? mergeCheatSheet(base.cheatSheet, tx.cheatSheet)
       : base.cheatSheet,
+    commonErrors: base.commonErrors?.map((err, i) => ({
+      ...err,
+      title: tx.commonErrors?.[i]?.title ?? err.title,
+      why:   tx.commonErrors?.[i]?.why   ?? err.why,
+    })),
+    realWorldExamples: base.realWorldExamples?.map((ex, i) => ({
+      ...ex,
+      heading:     tx.realWorldExamples?.[i]?.heading     ?? ex.heading,
+      description: tx.realWorldExamples?.[i]?.description ?? ex.description,
+    })),
+    playgroundExamples: base.playgroundExamples?.map((ex, i) => ({
+      ...ex,
+      label: tx.playgroundExamples?.[i]?.label ?? ex.label,
+    })),
   }
 }
 
@@ -152,16 +185,37 @@ export function useTopics(): Topic[] {
         if (section.type !== 'explanation') return section
         return {
           ...section,
-          steps: section.steps.map((step, i) => ({
-            ...step,
-            heading: tx.steps[i]?.heading ?? step.heading,
-            text:    tx.steps[i]?.text    ?? step.text,
-          })),
+          steps: section.steps.map((step, i) => {
+            const txStep = tx.steps[i]
+            const txAnalogy = txStep?.analogy
+            return {
+              ...step,
+              heading: txStep?.heading ?? step.heading,
+              text:    txStep?.text    ?? step.text,
+              analogy: step.analogy && txAnalogy
+                ? { ...step.analogy, title: txAnalogy.title, text: txAnalogy.text }
+                : step.analogy,
+            }
+          }),
         }
       }),
       cheatSheet: base.cheatSheet && tx.cheatSheet
         ? mergeCheatSheet(base.cheatSheet, tx.cheatSheet)
         : base.cheatSheet,
+      commonErrors: base.commonErrors?.map((err, i) => ({
+        ...err,
+        title: tx.commonErrors?.[i]?.title ?? err.title,
+        why:   tx.commonErrors?.[i]?.why   ?? err.why,
+      })),
+      realWorldExamples: base.realWorldExamples?.map((ex, i) => ({
+        ...ex,
+        heading:     tx.realWorldExamples?.[i]?.heading     ?? ex.heading,
+        description: tx.realWorldExamples?.[i]?.description ?? ex.description,
+      })),
+      playgroundExamples: base.playgroundExamples?.map((ex, i) => ({
+        ...ex,
+        label: tx.playgroundExamples?.[i]?.label ?? ex.label,
+      })),
     }
   })
 }
