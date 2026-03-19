@@ -4,7 +4,7 @@ import CodeBlock from '@/components/ui/CodeBlock'
 
 interface Props {
   errors: CommonError[]
-  color: string
+  color?: string
 }
 
 export default function CommonErrorsPanel({ errors, color: _color }: Props) {

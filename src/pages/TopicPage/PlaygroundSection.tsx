@@ -12,10 +12,10 @@ const LOADING = <div style={{ color: 'var(--text-muted)', fontSize: 14 }}>Loadin
 interface Props { topic: Topic }
 
 export default function PlaygroundSection({ topic }: Props) {
-  if (topic.playgroundType === 'none') return null
-
   const examples = topic.playgroundExamples ?? []
   const [activeIdx, setActiveIdx] = useState(0)
+
+  if (topic.playgroundType === 'none') return null
 
   const selectedCode = examples.length > 0 ? examples[activeIdx]?.code : undefined
 
