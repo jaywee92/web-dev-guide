@@ -5170,6 +5170,20 @@ export default defineConfig({
         'Avoiding TypeScript because it feels verbose — the upfront type annotations save far more time than they cost when a refactor or bug would otherwise slip to production',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Primitive types',
+        code: '// 🎯 TypeScript Primitive Annotations\n// Add types to variables and function parameters.\n\nlet age: number = 25\nlet username: string = "Alice"\nlet active: boolean = true\nlet id: string | number = 42   // union type\n\nfunction greet(user: string, years: number): string {\n  return `Hello ${user}, you are ${years} years old.`\n}\n\nconsole.log(greet("Alice", 25))\n// Try: greet(25, "Alice") — TypeScript flags this!',
+      },
+      {
+        label: 'Type aliases',
+        code: '// 🎯 Type Aliases and Object Types\n// Give names to complex types so they can be reused.\n\ntype Status = "active" | "inactive" | "pending"\ntype UserId = string | number\n\ntype User = {\n  id: UserId\n  name: string\n  status: Status\n  email?: string   // optional property\n}\n\nfunction printUser(user: User): void {\n  console.log(`[${user.status}] ${user.name} — ${user.email ?? "no email"}`)\n}\n\nconst alice: User = { id: 1, name: "Alice", status: "active", email: "alice@example.com" }\nconst bob: User   = { id: "u-99", name: "Bob", status: "pending" }\n\nprintUser(alice)\nprintUser(bob)',
+      },
+      {
+        label: 'Function types',
+        code: '// 🎯 Typed Functions and Callbacks\n\nfunction add(a: number, b: number): number {\n  return a + b\n}\n\nconst multiply = (a: number, b: number): number => a * b\n\nfunction log(msg: string): void {\n  console.log("[LOG]", msg)\n}\n\nfunction runWithLogging(fn: (x: number) => number, value: number): number {\n  log(`calling fn with ${value}`)\n  const result = fn(value)\n  log(`result: ${result}`)\n  return result\n}\n\nconsole.log(add(3, 4))\nconsole.log(runWithLogging(x => x * x, 5))',
+      },
+    ],
   },
   {
     id: 'webapi-dom',
@@ -5267,6 +5281,20 @@ export default defineConfig({
         'querySelectorAll returns a NodeList, not an Array — use Array.from() to use array methods on it.',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Select & modify',
+        code: '// 🎯 Selecting and Modifying DOM Elements\n// In a real browser these would update the page.\n// Here we simulate by logging what would happen.\n\n// querySelector returns first match or null\n// const btn = document.querySelector("#submit-btn")\n// const items = document.querySelectorAll(".list-item")\n\n// Simulating DOM-style operations:\nconst elements = ["item-1", "item-2", "item-3"]\nelements.forEach((id, i) => {\n  console.log(`[${id}] textContent set to: Item ${i + 1}`)\n  console.log(`[${id}] classList.add("active")`)\n})\n\nconsole.log("querySelector(\'#title\').textContent = \'Hello DOM\'")',
+      },
+      {
+        label: 'Create & append',
+        code: '// 🎯 Creating and Appending Elements\n// createElement + appendChild is the core DOM build pattern.\n\n// In real browser:\n// const ul = document.createElement("ul")\n// const li = document.createElement("li")\n// li.textContent = "New item"\n// ul.appendChild(li)\n// document.body.appendChild(ul)\n\n// Simulate the logic:\nconst fruits = ["Apple", "Banana", "Cherry"]\nconst listHTML = fruits.map(f => `<li>${f}</li>`).join("\\n")\nconsole.log("<ul>")\nconsole.log(listHTML)\nconsole.log("</ul>")\nconsole.log("→ appended to document.body")',
+      },
+      {
+        label: 'Event listeners',
+        code: '// 🎯 Event Listeners\n// addEventListener attaches a handler to any DOM event.\n\n// Simulating event handling:\nfunction handleClick(event) {\n  console.log(`Clicked: ${event.target}`)\n  console.log(`Type: ${event.type}`)\n}\n\n// In browser: button.addEventListener("click", handleClick)\n// removeEventListener uses the same reference to clean up.\n\n// Simulate dispatching:\nconst fakeEvent = { target: "#submit-btn", type: "click" }\nhandleClick(fakeEvent)\n\n// Event delegation — attach ONE listener to parent:\n// document.querySelector(".list").addEventListener("click", e => {\n//   if (e.target.matches("li")) console.log("Item clicked:", e.target.textContent)\n// })',
+      },
+    ],
   },
   {
     id: 'webapi-fetch',
@@ -5371,6 +5399,20 @@ export default defineConfig({
         'Not setting Content-Type: application/json when posting JSON — the server may not parse the body correctly without this header',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Basic fetch',
+        code: '// 🎯 Fetching Data with async/await\n// fetch() returns a Promise. Always await twice:\n// once for the network, once for the body parse.\n\nasync function getUser(id) {\n  const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`)\n\n  if (!res.ok) {\n    throw new Error(`HTTP ${res.status}: ${res.statusText}`)\n  }\n\n  const user = await res.json()\n  return user\n}\n\ngetUser(1)\n  .then(u => console.log(`${u.name} — ${u.email}`))\n  .catch(err => console.error("Error:", err.message))',
+      },
+      {
+        label: 'POST request',
+        code: '// 🎯 POST with JSON body\n// Always set Content-Type and JSON.stringify the body.\n\nasync function createPost(title, body, userId) {\n  const res = await fetch("https://jsonplaceholder.typicode.com/posts", {\n    method: "POST",\n    headers: { "Content-Type": "application/json" },\n    body: JSON.stringify({ title, body, userId }),\n  })\n\n  const data = await res.json()\n  console.log("Created:", data)\n  return data\n}\n\ncreatePost("Hello World", "This is a test post.", 1)',
+      },
+      {
+        label: 'Error handling',
+        code: '// 🎯 Robust Error Handling\n// fetch() only rejects on network failure, NOT on 4xx/5xx.\n// Always check res.ok manually.\n\nasync function safeFetch(url) {\n  try {\n    const res = await fetch(url)\n    if (!res.ok) throw new Error(`Server error: ${res.status}`)\n    return await res.json()\n  } catch (err) {\n    if (err instanceof TypeError) {\n      console.error("Network error:", err.message)\n    } else {\n      console.error("Request failed:", err.message)\n    }\n    return null\n  }\n}\n\nsafeFetch("https://jsonplaceholder.typicode.com/todos/1")\n  .then(data => console.log(data))',
+      },
+    ],
   },
   {
     id: 'webapi-events',
@@ -5467,6 +5509,20 @@ export default defineConfig({
         'Not cleaning up event listeners on unmount — listeners on window or document persist after the component unmounts, causing memory leaks and duplicate handlers',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'addEventListener',
+        code: '// 🎯 addEventListener Basics\n// Every DOM element can listen for any event.\n\n// Simulating event handling (no real DOM here):\nfunction makeHandler(label) {\n  return function(event) {\n    console.log(`[${label}] event:`, event.type, "target:", event.detail ?? "—")\n  }\n}\n\nconst clickHandler = makeHandler("button")\nconst inputHandler = makeHandler("input")\n\n// Simulate dispatching:\n[\n  { type: "click", detail: null },\n  { type: "input", detail: "hello" },\n  { type: "keydown", detail: "Enter" },\n].forEach(ev => {\n  if (ev.type === "click") clickHandler(ev)\n  else inputHandler(ev)\n})',
+      },
+      {
+        label: 'Event delegation',
+        code: '// 🎯 Event Delegation\n// One listener on a parent handles clicks for all children.\n// Much cheaper than one listener per child.\n\n// In browser:\n// document.querySelector(".todo-list").addEventListener("click", e => {\n//   const li = e.target.closest("li")\n//   if (!li) return\n//   if (e.target.matches(".delete")) li.remove()\n//   if (e.target.matches(".toggle")) li.classList.toggle("done")\n// })\n\n// Simulate:\nconst events = [\n  { target: ".delete", text: "Buy milk" },\n  { target: ".toggle", text: "Walk dog" },\n]\nevents.forEach(({ target, text }) => {\n  if (target === ".delete") console.log(`Removed: "${text}"`)\n  if (target === ".toggle") console.log(`Toggled done: "${text}"`)\n})',
+      },
+      {
+        label: 'Custom events',
+        code: '// 🎯 Custom Events with CustomEvent\n// Dispatch your own named events to decouple components.\n\n// Create and dispatch:\n// const event = new CustomEvent("cart:updated", {\n//   bubbles: true,\n//   detail: { itemCount: 3, total: 49.99 }\n// })\n// document.dispatchEvent(event)\n\n// Listen anywhere:\n// document.addEventListener("cart:updated", e => {\n//   console.log("Cart has", e.detail.itemCount, "items")\n//   console.log("Total:", e.detail.total)\n// })\n\n// Simulate:\nfunction dispatchCustom(name, detail) {\n  console.log(`[custom event: ${name}]`, detail)\n}\ndispatchCustom("cart:updated", { itemCount: 3, total: 49.99 })\ndispatchCustom("user:login",   { userId: 42, role: "admin" })',
+      },
+    ],
   },
   {
     id: 'webapi-storage',
@@ -5563,6 +5619,20 @@ export default defineConfig({
         'Storing auth tokens in localStorage — it is accessible via JavaScript and vulnerable to XSS; use HttpOnly cookies for sensitive tokens instead',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'localStorage basics',
+        code: '// 🎯 localStorage — Persist Data Across Sessions\n// Values are always strings. Use JSON for objects.\n\n// Store primitives\nlocalStorage.setItem("theme", "dark")\nlocalStorage.setItem("fontSize", "16")\n\nconsole.log(localStorage.getItem("theme"))    // "dark"\nconsole.log(localStorage.getItem("fontSize")) // "16" (string!)\nconsole.log(localStorage.getItem("missing"))  // null\n\n// Store objects\nconst prefs = { lang: "en", notifications: true }\nlocalStorage.setItem("prefs", JSON.stringify(prefs))\nconst loaded = JSON.parse(localStorage.getItem("prefs") ?? "null")\nconsole.log(loaded)',
+      },
+      {
+        label: 'Safe read helper',
+        code: '// 🎯 Safe Read with Fallback\n// getItem returns null when the key is missing.\n// JSON.parse(null) returns null — use ?? to provide a fallback.\n\nfunction readStorage(key, fallback) {\n  try {\n    const raw = localStorage.getItem(key)\n    return raw !== null ? JSON.parse(raw) : fallback\n  } catch {\n    return fallback\n  }\n}\n\n// Usage:\nconst theme   = readStorage("theme", "light")\nconst counter = readStorage("counter", 0)\nconst user    = readStorage("user", null)\n\nconsole.log("theme:",   theme)\nconsole.log("counter:", counter)\nconsole.log("user:",    user)',
+      },
+      {
+        label: 'sessionStorage',
+        code: '// 🎯 sessionStorage — Tab-Scoped Storage\n// Same API as localStorage, but cleared when the tab closes.\n// Useful for single-session wizard state.\n\nsessionStorage.setItem("step", "2")\nsessionStorage.setItem("formData", JSON.stringify({ name: "Alice", email: "alice@example.com" }))\n\nconsole.log("Current step:", sessionStorage.getItem("step"))\nconsole.log("Form data:", JSON.parse(sessionStorage.getItem("formData")))\n\n// Clear single key vs all keys\n// sessionStorage.removeItem("step")   // one key\n// sessionStorage.clear()              // all keys\n\nconsole.log("sessionStorage.length:", sessionStorage.length)',
+      },
+    ],
   },
   {
     id: 'react-intro',
@@ -5746,6 +5816,20 @@ export default defineConfig({
         'Calling a component as a plain function — always render as JSX (<MyComp />) not as a function call (MyComp()), otherwise React cannot track its lifecycle',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Component & props',
+        code: '// 🎯 Function Components and Props\n// A component is just a function that returns JSX.\n// Props are the component\'s inputs — always read-only.\n\nfunction Badge({ text, color = "blue" }) {\n  // In JSX: <span style={{ background: color }}>{text}</span>\n  return `<span style="background:${color}">${text}</span>`\n}\n\nfunction UserCard({ name, role, verified }) {\n  const badge = verified ? Badge({ text: "Verified", color: "green" }) : ""\n  return [\n    `<div class="card">`,\n    `  <h2>${name} ${badge}</h2>`,\n    `  <p>${role}</p>`,\n    `</div>`,\n  ].join("\\n")\n}\n\nconsole.log(UserCard({ name: "Alice", role: "Admin", verified: true }))\nconsole.log(UserCard({ name: "Bob",   role: "User",  verified: false }))',
+      },
+      {
+        label: 'Conditional rendering',
+        code: '// 🎯 Conditional Rendering Patterns\n// React has three common ways to conditionally show elements.\n\nconst isLoggedIn = true\nconst count = 3\nconst items = ["Apple", "Banana", "Cherry"]\n\n// 1. Ternary for either/or\nconst authStatus = isLoggedIn ? "<Dashboard />" : "<LoginForm />"\nconsole.log("Auth:", authStatus)\n\n// 2. && for show/hide\nconst badge = count > 0 && `<span class="badge">${count}</span>`\nconsole.log("Badge:", badge)\n\n// 3. Map for lists\nconst list = items.map((item, i) => `<li key=${i}>${item}</li>`)\nconsole.log("List items:", list)',
+      },
+      {
+        label: 'Children & composition',
+        code: '// 🎯 Children Prop and Composition\n// Pass JSX children to wrap components.\n\nfunction Card({ title, children }) {\n  return [\n    `<div class="card">`,\n    `  <h3>${title}</h3>`,\n    `  <div class="body">${children}</div>`,\n    `</div>`,\n  ].join("\\n")\n}\n\nfunction Button({ onClick, variant = "primary", children }) {\n  return `<button class="btn btn-${variant}" onClick="${onClick}">${children}</button>`\n}\n\n// Usage (simulated):\nconsole.log(Card({\n  title: "User Profile",\n  children: [\n    Button({ onClick: "handleEdit", children: "Edit" }),\n    Button({ onClick: "handleDelete", variant: "danger", children: "Delete" }),\n  ].join(" ")\n}))',
+      },
+    ],
   },
   {
     id: 'react-state',
@@ -5850,6 +5934,20 @@ export default defineConfig({
         'Storing derived values in state — if a value can be computed from existing state or props, compute it during render instead of keeping a separate useState',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'useState basics',
+        code: '// 🎯 useState — Local Component State\n// useState returns [currentValue, setterFunction].\n// Calling the setter triggers a re-render.\n\n// Simulating state behavior (React would re-render):\nfunction makeCounter(initial = 0) {\n  let count = initial\n  const getCount = () => count\n  const increment = () => { count += 1; console.log("count:", count) }\n  const decrement = () => { count -= 1; console.log("count:", count) }\n  const reset     = () => { count = 0;  console.log("count:", count) }\n  return { getCount, increment, decrement, reset }\n}\n\nconst counter = makeCounter(0)\ncounter.increment() // 1\ncounter.increment() // 2\ncounter.decrement() // 1\ncounter.reset()     // 0',
+      },
+      {
+        label: 'Object state',
+        code: '// 🎯 State with Objects\n// Always spread to preserve unchanged fields.\n// Never mutate state directly.\n\nfunction makeFormState(initial) {\n  let form = { ...initial }\n\n  function update(field, value) {\n    // Correct: spread + update one field\n    form = { ...form, [field]: value }\n    console.log("form:", form)\n  }\n\n  function reset() {\n    form = { ...initial }\n    console.log("reset:", form)\n  }\n\n  return { update, reset, get: () => form }\n}\n\nconst loginForm = makeFormState({ email: "", password: "" })\nloginForm.update("email", "alice@example.com")\nloginForm.update("password", "secret123")\nloginForm.reset()',
+      },
+      {
+        label: 'Derived state',
+        code: '// 🎯 Derived Values — Don\'t Store What You Can Compute\n// If a value can be calculated from existing state, don\'t add useState.\n// Compute it during render instead.\n\nfunction CartModel(items) {\n  // ❌ Bad: storing derived values in state\n  // const [total, setTotal] = useState(0)\n  // const [count, setCount] = useState(0)\n\n  // ✅ Good: compute from source of truth\n  const total    = items.reduce((sum, item) => sum + item.price * item.qty, 0)\n  const count    = items.reduce((sum, item) => sum + item.qty, 0)\n  const isEmpty  = items.length === 0\n  const hasDiscount = total > 100\n\n  return { total, count, isEmpty, hasDiscount }\n}\n\nconst cart = CartModel([\n  { name: "Book", price: 20, qty: 2 },\n  { name: "Pen",  price: 3,  qty: 5 },\n])\nconsole.log(cart)',
+      },
+    ],
   },
   {
     id: 'react-useeffect',
@@ -5946,6 +6044,20 @@ export default defineConfig({
         'Putting an async function directly in useEffect — useEffect cannot return a Promise; wrap async code in an inner async function and call it',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'useEffect basics',
+        code: '// 🎯 useEffect — Side Effects in Function Components\n// useEffect runs after every render (no dep array),\n// once on mount ([]), or when deps change ([dep]).\n\n// Simulating useEffect lifecycle:\nfunction simulateEffect(deps, effectFn) {\n  console.log("mount — running effect")\n  const cleanup = effectFn()\n  console.log("deps:", deps)\n\n  // Simulate dep change:\n  console.log("\\ndep changed — cleanup + re-run")\n  if (cleanup) cleanup()\n  effectFn()\n\n  // Simulate unmount:\n  console.log("\\nunmount — final cleanup")\n  if (cleanup) cleanup()\n}\n\nsimulateEffect(["userId"], () => {\n  console.log("  subscribe to user stream")\n  return () => console.log("  unsubscribe from user stream")\n})',
+      },
+      {
+        label: 'Async in useEffect',
+        code: '// 🎯 Async Data Fetching in useEffect\n// useEffect CANNOT be async itself — wrap fetch in inner fn.\n\n// ❌ Wrong:\n// useEffect(async () => {\n//   const data = await fetchUser(id)  // returns Promise, not cleanup fn!\n// }, [id])\n\n// ✅ Correct pattern:\nasync function fetchUser(id) {\n  const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`)\n  return res.json()\n}\n\n// Inside useEffect:\n// useEffect(() => {\n//   let cancelled = false\n//   async function load() {\n//     const data = await fetchUser(userId)\n//     if (!cancelled) setUser(data)\n//   }\n//   load()\n//   return () => { cancelled = true }  // cleanup to avoid stale setState\n// }, [userId])\n\nfetchUser(1).then(u => console.log("Fetched:", u.name, u.email))',
+      },
+      {
+        label: 'Cleanup pattern',
+        code: '// 🎯 The Cleanup Return Function\n// Return a function from useEffect to clean up.\n// Called before next effect and on unmount.\n\n// Timer cleanup:\n// useEffect(() => {\n//   const id = setInterval(() => setTick(t => t + 1), 1000)\n//   return () => clearInterval(id)   // cleanup: stop the timer\n// }, [])\n\n// Event listener cleanup:\n// useEffect(() => {\n//   const handler = e => setKey(e.key)\n//   window.addEventListener("keydown", handler)\n//   return () => window.removeEventListener("keydown", handler)\n// }, [])\n\n// Simulate the cleanup timing:\nconst cleanups = []\nfunction addEffect(name, cleanup) {\n  console.log(`mount: ${name} started`)\n  cleanups.push({ name, cleanup })\n}\nfunction unmount() {\n  cleanups.forEach(({ name, cleanup }) => {\n    cleanup()\n    console.log(`unmount: ${name} cleaned up`)\n  })\n}\naddEffect("timer",    () => console.log("  clearInterval"))\naddEffect("listener", () => console.log("  removeEventListener"))\nunmount()',
+      },
+    ],
   },
   {
     id: 'ts-interfaces',
@@ -6028,6 +6140,20 @@ export default defineConfig({
         'Forgetting that implements does not inherit implementation — a class implementing an interface must still provide its own method bodies',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Interface basics',
+        code: '// 🎯 Interface Definitions\n// Interfaces describe the shape of objects.\n// They exist only at compile time — no runtime cost.\n\ninterface Point {\n  x: number\n  y: number\n}\n\ninterface User {\n  id: number\n  name: string\n  email?: string          // optional\n  readonly createdAt: Date // cannot be changed after creation\n}\n\nfunction distance(a: Point, b: Point): number {\n  return Math.sqrt((b.x - a.x) ** 2 + (b.y - a.y) ** 2)\n}\n\nconst p1: Point = { x: 0, y: 0 }\nconst p2: Point = { x: 3, y: 4 }\nconsole.log(distance(p1, p2)) // 5\n\nconst alice: User = { id: 1, name: "Alice", createdAt: new Date() }\nconsole.log(alice.name)',
+      },
+      {
+        label: 'Extending interfaces',
+        code: '// 🎯 Interface Extension\n// Interfaces can extend other interfaces with extends.\n\ninterface Animal {\n  name: string\n  sound(): string\n}\n\ninterface Pet extends Animal {\n  owner: string\n  tricks: string[]\n}\n\ninterface ServiceAnimal extends Pet {\n  certified: boolean\n  serviceType: "guide" | "therapy" | "search"\n}\n\nconst guide: ServiceAnimal = {\n  name: "Rex",\n  owner: "Alice",\n  tricks: ["sit", "stay"],\n  certified: true,\n  serviceType: "guide",\n  sound() { return "Woof" },\n}\n\nconsole.log(`${guide.name} (${guide.serviceType}): ${guide.sound()}`)\nconsole.log("Tricks:", guide.tricks)',
+      },
+      {
+        label: 'implements',
+        code: '// 🎯 Class implementing an Interface\n// implements is a compile-time contract.\n// The class MUST provide all interface members.\n\ninterface Logger {\n  log(msg: string): void\n  error(msg: string): void\n  warn(msg: string): void\n}\n\nclass ConsoleLogger implements Logger {\n  log(msg: string)   { console.log("[LOG]",   msg) }\n  error(msg: string) { console.log("[ERROR]", msg) }\n  warn(msg: string)  { console.log("[WARN]",  msg) }\n}\n\nclass SilentLogger implements Logger {\n  log(_: string)   {}\n  error(_: string) {}\n  warn(_: string)  {}\n}\n\nfunction runJob(logger: Logger) {\n  logger.log("Job started")\n  logger.warn("Disk space low")\n  logger.log("Job finished")\n}\n\nrunJob(new ConsoleLogger())',
+      },
+    ],
   },
   {
     id: 'ts-generics',
@@ -6109,6 +6235,20 @@ export default defineConfig({
         'Confusing Partial<T> with optional properties — Partial makes all properties optional at once; use it for update/patch payloads, not as a replacement for designing interfaces correctly',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Generic functions',
+        code: '// 🎯 Generic Functions\n// <T> lets a function work with any type\n// while preserving type safety.\n\nfunction identity<T>(value: T): T {\n  return value\n}\n\nfunction first<T>(arr: T[]): T | undefined {\n  return arr[0]\n}\n\nfunction pair<A, B>(a: A, b: B): [A, B] {\n  return [a, b]\n}\n\nconsole.log(identity(42))           // number\nconsole.log(identity("hello"))      // string\nconsole.log(first([10, 20, 30]))    // 10\nconsole.log(first(["a", "b"]))      // "a"\nconsole.log(pair("name", 42))       // ["name", 42]',
+      },
+      {
+        label: 'Generic constraints',
+        code: '// 🎯 Constraints with extends\n// Restrict T to types that have specific properties.\n\nfunction getLength<T extends { length: number }>(item: T): number {\n  return item.length\n}\n\nconsole.log(getLength("hello"))      // 5\nconsole.log(getLength([1, 2, 3]))    // 3\nconsole.log(getLength({ length: 7 })) // 7\n// getLength(42) — Error: number has no .length\n\nfunction getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {\n  return obj[key]\n}\n\nconst user = { name: "Alice", age: 30, active: true }\nconsole.log(getProperty(user, "name"))   // "Alice"\nconsole.log(getProperty(user, "age"))    // 30\n// getProperty(user, "missing") — Error!',
+      },
+      {
+        label: 'Generic interfaces',
+        code: '// 🎯 Generic Interfaces and Types\n\ninterface ApiResponse<T> {\n  data: T\n  status: number\n  ok: boolean\n  error?: string\n}\n\ninterface Paginated<T> {\n  items: T[]\n  total: number\n  page: number\n  pageSize: number\n  hasNext: boolean\n}\n\ntype User = { id: number; name: string }\n\nconst usersResponse: ApiResponse<Paginated<User>> = {\n  data: {\n    items: [{ id: 1, name: "Alice" }, { id: 2, name: "Bob" }],\n    total: 2, page: 1, pageSize: 10, hasNext: false,\n  },\n  status: 200,\n  ok: true,\n}\n\nconsole.log(usersResponse.data.items.map(u => u.name))',
+      },
+    ],
   },
   {
     id: 'ts-narrowing',
@@ -6191,6 +6331,20 @@ export default defineConfig({
         'Writing a predicate that always returns true — the predicate must actually test the runtime value, not just assert',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'typeof narrowing',
+        code: '// 🎯 typeof Narrowing\n// TypeScript understands typeof checks and narrows the type.\n\nfunction format(value: string | number | boolean): string {\n  if (typeof value === "number") {\n    return value.toFixed(2)      // TS: value is number here\n  }\n  if (typeof value === "boolean") {\n    return value ? "yes" : "no"  // TS: value is boolean here\n  }\n  return value.toUpperCase()     // TS: value is string here\n}\n\nconsole.log(format(3.14159))    // "3.14"\nconsole.log(format(true))       // "yes"\nconsole.log(format("hello"))    // "HELLO"',
+      },
+      {
+        label: 'instanceof & in',
+        code: '// 🎯 instanceof and in Narrowing\n\nclass Cat { meow() { return "Meow!" } }\nclass Dog { bark() { return "Woof!" } }\n\nfunction speak(animal: Cat | Dog): string {\n  if (animal instanceof Cat) return animal.meow()\n  return animal.bark()\n}\nconsole.log(speak(new Cat())) // "Meow!"\nconsole.log(speak(new Dog())) // "Woof!"\n\n// "in" checks for a property at runtime\ntype Circle = { kind: "circle"; radius: number }\ntype Rect   = { kind: "rect";   width: number; height: number }\n\nfunction area(shape: Circle | Rect): number {\n  if ("radius" in shape) return Math.PI * shape.radius ** 2\n  return shape.width * shape.height\n}\nconsole.log(area({ kind: "circle", radius: 5 }).toFixed(2))\nconsole.log(area({ kind: "rect", width: 4, height: 6 }))',
+      },
+      {
+        label: 'Type guards',
+        code: '// 🎯 Custom Type Guard Functions\n// A function that returns "value is Type" is a type guard.\n// TypeScript trusts it to narrow inside the if block.\n\ninterface Cat { kind: "cat"; meow: () => string }\ninterface Dog { kind: "dog"; bark: () => string }\ntype Animal = Cat | Dog\n\nfunction isCat(a: Animal): a is Cat {\n  return a.kind === "cat"\n}\n\nfunction makeSound(animal: Animal) {\n  if (isCat(animal)) {\n    console.log("Cat says:", animal.meow())   // TS knows it\'s Cat\n  } else {\n    console.log("Dog says:", animal.bark())   // TS knows it\'s Dog\n  }\n}\n\nmakeSound({ kind: "cat", meow: () => "Purrrr" })\nmakeSound({ kind: "dog", bark: () => "Woof!"  })',
+      },
+    ],
   },
   {
     id: 'ts-utility-types',
@@ -6263,6 +6417,20 @@ export default defineConfig({
         'Not using NonNullable after validation — if you have checked that a value is not null, NonNullable communicates that to TypeScript',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Partial & Required',
+        code: '// 🎯 Partial<T> and Required<T>\ntype User = {\n  id: number\n  name: string\n  email: string\n  avatar?: string\n}\n\n// Partial — all fields optional (useful for updates/patches)\nfunction updateUser(id: number, patch: Partial<User>): User {\n  const existing: User = { id, name: "Alice", email: "alice@example.com" }\n  return { ...existing, ...patch }\n}\nconsole.log(updateUser(1, { name: "Alicia" }))\n\n// Required — all fields mandatory (removes optionality)\ntype FullUser = Required<User>\n// FullUser.avatar is now string, not string | undefined\n\n// Readonly — prevents reassignment\nconst frozenUser: Readonly<User> = { id: 1, name: "Alice", email: "a@b.com" }\n// frozenUser.name = "Bob"  // Error: readonly!\nconsole.log(frozenUser.name)',
+      },
+      {
+        label: 'Pick & Omit',
+        code: '// 🎯 Pick<T, K> and Omit<T, K>\ntype User = {\n  id: number\n  name: string\n  email: string\n  password: string\n  createdAt: Date\n}\n\n// Pick: keep only listed keys\ntype UserPreview = Pick<User, "id" | "name">\nconst preview: UserPreview = { id: 1, name: "Alice" }\nconsole.log(preview)\n\n// Omit: remove listed keys\ntype SafeUser = Omit<User, "password">\nconst safe: SafeUser = {\n  id: 1, name: "Alice", email: "a@b.com", createdAt: new Date()\n}\nconsole.log(safe)\n\n// Record: map keys to a value type\ntype Role = "admin" | "user" | "guest"\nconst permissions: Record<Role, string[]> = {\n  admin: ["read", "write", "delete"],\n  user:  ["read", "write"],\n  guest: ["read"],\n}\nconsole.log(permissions)',
+      },
+      {
+        label: 'Exclude & Extract',
+        code: '// 🎯 Exclude and Extract on Union Types\ntype Status = "active" | "inactive" | "pending" | "banned"\n\n// Exclude: remove members from a union\ntype ActiveStatus = Exclude<Status, "banned" | "inactive">\n// → "active" | "pending"\n\n// Extract: keep only matching members\ntype BlockedStatus = Extract<Status, "inactive" | "banned">\n// → "inactive" | "banned"\n\n// ReturnType: extract a function\'s return type\nfunction getUser() {\n  return { id: 1, name: "Alice", role: "admin" as const }\n}\ntype UserResult = ReturnType<typeof getUser>\n// → { id: number; name: string; role: "admin" }\n\nconst u: UserResult = { id: 2, name: "Bob", role: "admin" }\nconsole.log(u)',
+      },
+    ],
   },
   {
     id: 'ts-arrays',
@@ -6336,6 +6504,20 @@ export default defineConfig({
         'Confusing tuples with union arrays — [string, number] is a two-element tuple; (string | number)[] is an array of any length with mixed types',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Typed arrays',
+        code: '// 🎯 Typed Arrays in TypeScript\n// Two equivalent syntaxes: T[] and Array<T>\n\nconst scores: number[] = [95, 87, 72]\nconst names: Array<string> = ["Alice", "Bob"]\n\n// TypeScript knows the element type:\nconst doubled = scores.map(s => s * 2)   // number[]\nconst upper   = names.map(n => n.toUpperCase()) // string[]\n\nconsole.log(doubled) // [190, 174, 144]\nconsole.log(upper)   // ["ALICE", "BOB"]\n\n// Readonly arrays — no push/pop/splice\nconst DAYS: readonly string[] = ["Mon", "Tue", "Wed", "Thu", "Fri"]\nconsole.log(DAYS[0])\n// DAYS.push("Sat")  // Error: readonly!',
+      },
+      {
+        label: 'Tuples',
+        code: '// 🎯 Tuple Types — Fixed-Length, Typed Positions\n// A tuple is an array where each index has a specific type.\n\ntype Point = [number, number]\ntype Entry = [string, number]\n\nconst origin: Point = [0, 0]\nconst score: Entry  = ["Alice", 42]\n\nconsole.log(origin)\nconsole.log(`${score[0]}: ${score[1]}`)\n\n// Named tuples (TypeScript 4+)\ntype RGB = [red: number, green: number, blue: number]\nconst red: RGB = [255, 0, 0]\nconsole.log("RGB:", red)\n\n// Destructuring tuples\nconst [x, y] = origin\nconsole.log(`x=${x}, y=${y}`)\n\n// useState returns a tuple!\nfunction useState<T>(init: T): [T, (v: T) => void] {\n  let val = init\n  return [val, (v) => { val = v; console.log("set:", v) }]\n}\nconst [count, setCount] = useState(0)\nsetCount(5)',
+      },
+      {
+        label: 'Array methods',
+        code: '// 🎯 Array Methods with TypeScript\ntype Product = { name: string; price: number; inStock: boolean }\n\nconst products: Product[] = [\n  { name: "Laptop",  price: 999,  inStock: true  },\n  { name: "Mouse",   price: 29,   inStock: true  },\n  { name: "Monitor", price: 399,  inStock: false },\n  { name: "Desk",    price: 249,  inStock: true  },\n]\n\n// filter → Product[]\nconst available = products.filter(p => p.inStock)\nconsole.log("In stock:", available.map(p => p.name))\n\n// find → Product | undefined\nconst laptop = products.find(p => p.name === "Laptop")\nconsole.log("Found:", laptop?.name, laptop?.price)\n\n// reduce → number\nconst total = available.reduce((sum, p) => sum + p.price, 0)\nconsole.log("Total:", total)',
+      },
+    ],
   },
   {
     id: 'ts-classes',
@@ -6418,6 +6600,20 @@ export default defineConfig({
         'Overusing class-based OOP in React — React components are best as functions; only reach for classes when modeling domain entities with behavior',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Class basics',
+        code: '// 🎯 TypeScript Classes\nclass BankAccount {\n  readonly owner: string\n  private balance: number\n  private transactions: string[] = []\n\n  constructor(owner: string, initial: number = 0) {\n    this.owner = owner\n    this.balance = initial\n  }\n\n  deposit(amount: number): void {\n    this.balance += amount\n    this.transactions.push(`+${amount}`)\n  }\n\n  withdraw(amount: number): boolean {\n    if (amount > this.balance) return false\n    this.balance -= amount\n    this.transactions.push(`-${amount}`)\n    return true\n  }\n\n  summary(): string {\n    return `${this.owner}: $${this.balance}`\n  }\n}\n\nconst acc = new BankAccount("Alice", 100)\nacc.deposit(200)\nacc.withdraw(50)\nconsole.log(acc.summary())\n// acc.balance  // Error: private!',
+      },
+      {
+        label: 'Inheritance & abstract',
+        code: '// 🎯 Inheritance and Abstract Classes\nabstract class Shape {\n  constructor(protected color: string) {}\n  abstract area(): number\n  describe(): string {\n    return `${this.color} ${this.constructor.name}: area = ${this.area().toFixed(2)}`\n  }\n}\n\nclass Circle extends Shape {\n  constructor(private radius: number, color: string) { super(color) }\n  area(): number { return Math.PI * this.radius ** 2 }\n}\n\nclass Rectangle extends Shape {\n  constructor(private w: number, private h: number, color: string) { super(color) }\n  area(): number { return this.w * this.h }\n}\n\nconst shapes: Shape[] = [\n  new Circle(5, "red"),\n  new Rectangle(4, 6, "blue"),\n]\nshapes.forEach(s => console.log(s.describe()))',
+      },
+      {
+        label: 'Accessors',
+        code: '// 🎯 TypeScript Getters and Setters\nclass Temperature {\n  private _celsius: number\n\n  constructor(celsius: number) {\n    this._celsius = celsius\n  }\n\n  get celsius(): number { return this._celsius }\n  set celsius(value: number) {\n    if (value < -273.15) throw new Error("Below absolute zero!")\n    this._celsius = value\n  }\n\n  get fahrenheit(): number { return this._celsius * 9/5 + 32 }\n  get kelvin():     number { return this._celsius + 273.15 }\n}\n\nconst t = new Temperature(100)\nconsole.log(`${t.celsius}°C = ${t.fahrenheit}°F = ${t.kelvin}K`)\nt.celsius = 0\nconsole.log(`${t.celsius}°C = ${t.fahrenheit}°F`)\n// t.celsius = -300  // throws!',
+      },
+    ],
   },
   {
     id: 'ts-enums',
@@ -6489,6 +6685,20 @@ export default defineConfig({
         'Using enums in React component props — prefer string literal unions which are lighter and require no import',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Numeric enums',
+        code: '// 🎯 Numeric Enums\nenum Direction { Up, Down, Left, Right }\n// Auto-assigned: Up=0, Down=1, Left=2, Right=3\n\nfunction move(dir: Direction): string {\n  switch (dir) {\n    case Direction.Up:    return "Moving up"\n    case Direction.Down:  return "Moving down"\n    case Direction.Left:  return "Moving left"\n    case Direction.Right: return "Moving right"\n  }\n}\nconsole.log(move(Direction.Up))    // "Moving up"\nconsole.log(move(Direction.Right)) // "Moving right"\n\n// Two-way mapping (be careful!)\nconsole.log(Direction[0])          // "Up"\nconsole.log(Direction["Up"])       // 0',
+      },
+      {
+        label: 'String enums',
+        code: '// 🎯 String Enums — Preferred for Readability\nenum Status {\n  Active   = "ACTIVE",\n  Inactive = "INACTIVE",\n  Pending  = "PENDING",\n  Banned   = "BANNED",\n}\n\nfunction describeUser(status: Status): string {\n  if (status === Status.Banned)   return "User is banned"\n  if (status === Status.Pending)  return "Awaiting verification"\n  if (status === Status.Active)   return "User is active"\n  return "User is inactive"\n}\n\nconsole.log(describeUser(Status.Active))   // "User is active"\nconsole.log(describeUser(Status.Banned))   // "User is banned"\n\n// No reverse mapping for string enums\nconsole.log(Status.Active)  // "ACTIVE" (the string value)\n\n// Alternative: const object (often preferred in modern TS)\nconst Roles = { Admin: "admin", User: "user", Guest: "guest" } as const\ntype Role = typeof Roles[keyof typeof Roles]  // "admin" | "user" | "guest"',
+      },
+      {
+        label: 'const enums',
+        code: '// 🎯 const enum — Zero Runtime Cost\n// const enum is inlined at compile time — no object is generated.\n\nconst enum HttpStatus {\n  OK         = 200,\n  Created    = 201,\n  BadRequest = 400,\n  NotFound   = 404,\n  ServerError = 500,\n}\n\nfunction handleResponse(status: HttpStatus): void {\n  if (status === HttpStatus.OK || status === HttpStatus.Created) {\n    console.log("Success:", status)\n  } else if (status >= HttpStatus.BadRequest) {\n    console.log("Error:", status)\n  }\n}\n\nhandleResponse(HttpStatus.OK)\nhandleResponse(HttpStatus.NotFound)\nhandleResponse(HttpStatus.ServerError)',
+      },
+    ],
   },
   {
     id: 'ts-type-assertion',
@@ -6552,6 +6762,20 @@ export default defineConfig({
         'Double assertions (as unknown as T) — always a design smell; use proper generics or type guards instead',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Type assertion (as)',
+        code: '// 🎯 Type Assertion with as\n// Use when YOU know the type better than TypeScript.\n// Does NOT convert values — only tells TS what type to use.\n\nconst canvas = document.getElementById("canvas") as HTMLCanvasElement\n// Without assertion: HTMLElement | null\n// With assertion: HTMLCanvasElement (we know it exists and its type)\n\n// JSON from external source\nconst rawData = JSON.parse(\`{"id":1,"name":"Alice"}\`) as { id: number; name: string }\nconsole.log(rawData.name)\n\n// Literal type assertion\nconst direction = "left" as "left" | "right" | "up" | "down"\nconsole.log(direction)\n\n// const assertion — makes value deeply readonly with literal types\nconst config = { host: "localhost", port: 3000 } as const\n// config.port is 3000 (literal), not number\nconsole.log(config.host, config.port)',
+      },
+      {
+        label: 'Non-null assertion',
+        code: '// 🎯 Non-null Assertion Operator (!)\n// Tells TypeScript "I guarantee this is not null/undefined"\n// Use only after you have verified it is not null.\n\n// Without !: button could be null\n// const button = document.querySelector("button")\n// button.click()  // Error: Object is possibly null\n\n// With !: you assert it exists\n// const button = document.querySelector("button")!\n// button.click()  // OK — you guaranteed it\n\n// Simulate with optional chaining vs non-null:\nfunction getUser(id: number): { name: string } | null {\n  return id === 1 ? { name: "Alice" } : null\n}\n\nconst user = getUser(1)\n// Safe: optional chaining\nconsole.log(user?.name ?? "unknown")\n\n// Assertive: when you KNOW it\'s not null\nconst definiteUser = getUser(1)!\nconsole.log(definiteUser.name)',
+      },
+      {
+        label: 'satisfies operator',
+        code: '// 🎯 satisfies — Validate Without Widening\n// satisfies checks a type constraint but preserves the literal type.\n// Introduced in TypeScript 4.9.\n\ntype Color = string | [number, number, number]\n\nconst palette = {\n  red:   [255, 0, 0],\n  green: [0, 255, 0],\n  blue:  "blue",        // string is also valid\n} satisfies Record<string, Color>\n\n// Without satisfies: palette.red is Color (wide)\n// With satisfies: palette.red is [number, number, number] (narrow)\nconsole.log(palette.red[0])   // TS knows it\'s an array\nconsole.log(palette.blue.toUpperCase()) // TS knows it\'s a string\n\n// palette.invalid = "oops"  // Error: not in Record<string, Color>',
+      },
+    ],
   },
   {
     id: 'ts-react',
@@ -6644,6 +6868,20 @@ export default defineConfig({
         'Using any to silence errors — any disables all checking downstream; prefer unknown and narrow the type',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Component props',
+        code: '// 🎯 Typing React Component Props\n\ntype ButtonProps = {\n  label: string\n  onClick: () => void\n  variant?: "primary" | "secondary" | "danger"\n  disabled?: boolean\n}\n\n// Simulating typed usage:\nconst buttonConfig: ButtonProps = {\n  label: "Submit",\n  onClick: () => console.log("clicked!"),\n  variant: "primary",\n}\nconsole.log(buttonConfig)\n\ntype CardProps = {\n  title: string\n  children: string  // React.ReactNode in real JSX\n  className?: string\n}\nconst card: CardProps = { title: "User Profile", children: "<p>Alice</p>" }\nconsole.log(card)',
+      },
+      {
+        label: 'useState & events',
+        code: '// 🎯 Typing useState and Event Handlers\n\n// useState infers type from initial value:\n// const [count, setCount] = useState(0)         // number\n// const [name, setName]   = useState("")        // string\n// const [user, setUser]   = useState<User | null>(null) // explicit\n\n// Event handler types:\n// const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {\n//   setName(e.target.value)\n// }\n// const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {\n//   e.preventDefault()\n// }\n\n// Simulate typed handler:\ntype InputEvent = { target: { value: string } }\nfunction handleChange(e: InputEvent): void {\n  console.log("Input value:", e.target.value)\n}\nhandleChange({ target: { value: "Hello TypeScript" } })',
+      },
+      {
+        label: 'useRef & children',
+        code: '// 🎯 useRef and ReactNode Types\n\n// useRef for DOM elements:\n// const inputRef = useRef<HTMLInputElement>(null)\n// inputRef.current?.focus()\n\n// useRef for mutable value (no re-render):\n// const timerRef = useRef<ReturnType<typeof setInterval>>(undefined)\n// timerRef.current = setInterval(tick, 1000)\n// return () => clearInterval(timerRef.current)\n\n// Children type:\ntype LayoutProps = {\n  children: string  // React.ReactNode in real code\n  className?: string\n}\n\nfunction layout({ children, className = "" }: LayoutProps) {\n  console.log(`<div class="${className}">${children}</div>`)\n}\nlayout({ children: "<p>Hello World</p>", className: "container" })',
+      },
+    ],
   },
   // ─── Zod ──────────────────────────────────────────────────────────────────
   {
@@ -6795,6 +7033,20 @@ function validate(data: unknown) {
         'Forgetting to derive the type with z.infer — if you write a separate TypeScript type, it can drift out of sync with the schema; always use z.infer as the single source of truth',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Schema basics',
+        code: '// 🎯 Zod Schema Basics\n// Define a schema → parse → get a validated, typed value.\n// (Install: npm install zod)\n// import { z } from "zod"\n\n// Simulating Zod-like validation logic:\nfunction schema(rules) {\n  return {\n    parse(data) {\n      for (const [key, rule] of Object.entries(rules)) {\n        if (!rule(data[key])) throw new Error(`Invalid field: ${key}`)\n      }\n      return data\n    },\n    safeParse(data) {\n      try { return { success: true, data: this.parse(data) } }\n      catch (e) { return { success: false, error: e.message } }\n    }\n  }\n}\n\nconst UserSchema = schema({\n  name:  v => typeof v === "string" && v.length > 0,\n  email: v => typeof v === "string" && v.includes("@"),\n  age:   v => typeof v === "number" && v >= 18,\n})\n\nconsole.log(UserSchema.safeParse({ name: "Alice", email: "a@b.com", age: 25 }))\nconsole.log(UserSchema.safeParse({ name: "", email: "bad", age: 16 }))',
+      },
+      {
+        label: 'safeParse pattern',
+        code: '// 🎯 safeParse — Graceful Error Handling\n// parse() throws on failure.\n// safeParse() returns { success, data } or { success, error }.\n\n// import { z } from "zod"\n// const LoginSchema = z.object({\n//   email:    z.string().email(),\n//   password: z.string().min(8),\n// })\n\n// function handleLogin(formData: unknown) {\n//   const result = LoginSchema.safeParse(formData)\n//   if (!result.success) {\n//     const errors = result.error.flatten().fieldErrors\n//     return { ok: false, errors }\n//   }\n//   const { email, password } = result.data  // typed!\n//   return login(email, password)\n// }\n\n// Simulate the pattern:\nfunction safeParse(schema, data) {\n  const errors = {}\n  if (!data.email?.includes("@")) errors.email = ["Invalid email"]\n  if (!data.password || data.password.length < 8) errors.password = ["Min 8 chars"]\n  if (Object.keys(errors).length) return { success: false, errors }\n  return { success: true, data }\n}\n\nconsole.log(safeParse({}, { email: "alice@example.com", password: "secret123" }))\nconsole.log(safeParse({}, { email: "bad", password: "123" }))',
+      },
+      {
+        label: 'z.infer pattern',
+        code: '// 🎯 Derive TypeScript Types from Zod Schemas\n// z.infer keeps your TS type in sync with the schema automatically.\n\n// import { z } from "zod"\n// const ProductSchema = z.object({\n//   id:       z.number().int().positive(),\n//   name:     z.string().min(1).max(100),\n//   price:    z.number().positive(),\n//   category: z.enum(["electronics", "clothing", "food"]),\n//   tags:     z.array(z.string()).optional(),\n// })\n// type Product = z.infer<typeof ProductSchema>\n// ↑ Always in sync — change the schema, type updates automatically\n\n// ❌ Bad: maintain types manually (can drift)\n// type Product = { id: number; name: string; ... }\n\n// Simulating z.infer behavior:\nconst ProductSchema = {\n  fields: { id: "number", name: "string", price: "number", category: "string" },\n  inferredType: "Product"\n}\nconsole.log("Schema fields:", ProductSchema.fields)\nconsole.log("Inferred type:", ProductSchema.inferredType, "← always in sync")',
+      },
+    ],
   },
   {
     id: 'react-router',
@@ -6893,6 +7145,20 @@ function validate(data: unknown) {
         'Assuming useParams values are numbers — URL params are always strings; parse with parseInt or Number() before using as a numeric ID',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Link & navigation',
+        code: '// 🎯 React Router v6 — Link and Navigation\n// <Link> renders an <a> with no page reload.\n// useNavigate for programmatic navigation.\n\n// import { Link, useNavigate } from "react-router-dom"\n\n// function Navbar() {\n//   return (\n//     <nav>\n//       <Link to="/">Home</Link>\n//       <Link to="/about">About</Link>\n//       <Link to="/users/42">User 42</Link>\n//     </nav>\n//   )\n// }\n\n// function LoginPage() {\n//   const navigate = useNavigate()\n//   async function handleSubmit(e) {\n//     e.preventDefault()\n//     await login(email, password)\n//     navigate("/dashboard", { replace: true })\n//   }\n// }\n\nfunction route(path) {\n  const routes = { "/": "Home", "/about": "About", "/users/42": "User #42" }\n  console.log(`Navigate to ${path}: ${routes[path] ?? "404"}`)\n}\nroute("/")\nroute("/about")\nroute("/users/42")',
+      },
+      {
+        label: 'useParams',
+        code: '// 🎯 useParams — Read URL Parameters\n// import { useParams } from "react-router-dom"\n\n// Route: <Route path="/users/:userId/posts/:postId" element={<PostDetail />} />\n\n// function PostDetail() {\n//   const { userId, postId } = useParams()\n//   // ⚠️ params are ALWAYS strings — parse before using as numbers:\n//   const uid = parseInt(userId!, 10)\n//   const pid = parseInt(postId!, 10)\n// }\n\n// Simulate param extraction:\nfunction parseParams(pattern, url) {\n  const keys = [...pattern.matchAll(/:([a-z]+)/gi)].map(m => m[1])\n  const parts = url.split("/")\n  const patternParts = pattern.split("/")\n  return Object.fromEntries(keys.map((k) => {\n    const idx = patternParts.indexOf(`:${k}`)\n    return [k, parts[idx]]\n  }))\n}\nconst params = parseParams("/users/:userId/posts/:postId", "/users/42/posts/7")\nconsole.log(params)          // { userId: "42", postId: "7" } — strings!\nconsole.log(+params.userId)  // 42 (parsed)',
+      },
+      {
+        label: 'Protected routes',
+        code: '// 🎯 Protected Routes Pattern\n// import { Navigate, Outlet } from "react-router-dom"\n\n// function RequireAuth() {\n//   const { user } = useAuth()\n//   if (!user) return <Navigate to="/login" replace />\n//   return <Outlet />  // renders matched child route\n// }\n\n// Route config:\n// <Route element={<RequireAuth />}>\n//   <Route path="/dashboard" element={<Dashboard />} />\n//   <Route path="/settings"  element={<Settings />} />\n// </Route>\n// <Route path="/login" element={<Login />} />\n\nfunction requireAuth(user, component) {\n  if (!user) {\n    console.log("Not authenticated → redirect to /login")\n    return null\n  }\n  console.log(`Authenticated as ${user.name} → render ${component}`)\n  return component\n}\nrequireAuth(null, "Dashboard")\nrequireAuth({ name: "Alice" }, "Dashboard")',
+      },
+    ],
   },
   // ─── React Context ────────────────────────────────────────────────────────
   {
@@ -6991,6 +7257,20 @@ function validate(data: unknown) {
         'Using one giant context for unrelated state — split into focused contexts (CartContext, AuthContext, ThemeContext) so unrelated updates don\'t trigger unnecessary re-renders',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'createContext & useContext',
+        code: '// 🎯 Context API Basics\n// import { createContext, useContext, useState } from "react"\n\n// 1. Create the context\n// const ThemeContext = createContext<"light" | "dark">("light")\n\n// 2. Provide it at the top\n// function App() {\n//   const [theme, setTheme] = useState<"light" | "dark">("light")\n//   return (\n//     <ThemeContext.Provider value={theme}>\n//       <button onClick={() => setTheme(t => t === "light" ? "dark" : "light")}>Toggle</button>\n//       <Page />\n//     </ThemeContext.Provider>\n//   )\n// }\n\n// 3. Consume anywhere without prop drilling\n// function Page() {\n//   const theme = useContext(ThemeContext)\n//   return <div className={theme}>Content</div>\n// }\n\nconst context = { theme: "dark", user: { name: "Alice" } }\nfunction DeepChild(ctx) {\n  console.log("Theme:", ctx.theme)    // no prop drilling\n  console.log("User:", ctx.user.name)\n}\nDeepChild(context)',
+      },
+      {
+        label: 'Custom context hook',
+        code: '// 🎯 Custom Hook wrapping useContext\n// Wrap in a hook for better DX and null safety.\n\n// const AuthContext = createContext<AuthContextType | null>(null)\n\n// export function AuthProvider({ children }) {\n//   const [user, setUser] = useState<User | null>(null)\n//   const login  = async (email, pass) => setUser(await api.login(email, pass))\n//   const logout = () => setUser(null)\n//   return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>\n// }\n\n// export function useAuth() {\n//   const ctx = useContext(AuthContext)\n//   if (!ctx) throw new Error("useAuth must be inside AuthProvider")\n//   return ctx\n// }\n\nfunction simulateAuth() {\n  let user = null\n  return {\n    login:   (name) => { user = { name }; console.log("Logged in:", user) },\n    logout:  () => { user = null; console.log("Logged out") },\n    getUser: () => user,\n  }\n}\nconst auth = simulateAuth()\nauth.login("Alice")\nconsole.log(auth.getUser())\nauth.logout()',
+      },
+      {
+        label: 'Context + reducer',
+        code: '// 🎯 Context + useReducer — Scalable State Pattern\nconst initial = { items: [], total: 0 }\n\nfunction reducer(state, action) {\n  switch (action.type) {\n    case "ADD": {\n      const items = [...state.items, action.item]\n      return { items, total: items.reduce((s, i) => s + i.price, 0) }\n    }\n    case "REMOVE": {\n      const items = state.items.filter(i => i.id !== action.id)\n      return { items, total: items.reduce((s, i) => s + i.price, 0) }\n    }\n    case "CLEAR": return initial\n    default: return state\n  }\n}\n\nlet cart = initial\nfunction dispatch(action) {\n  cart = reducer(cart, action)\n  console.log(action.type, "→", JSON.stringify(cart))\n}\n\ndispatch({ type: "ADD",    item: { id: 1, name: "Book", price: 20 } })\ndispatch({ type: "ADD",    item: { id: 2, name: "Pen",  price: 5  } })\ndispatch({ type: "REMOVE", id: 1 })\ndispatch({ type: "CLEAR" })',
+      },
+    ],
   },
   // ─── React Ecosystem ──────────────────────────────────────────────────────
   {
@@ -7090,6 +7370,20 @@ function validate(data: unknown) {
         'Forgetting that after an action runs, loaders automatically revalidate — do not manually refetch',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Loader data',
+        code: '// 🎯 React Router v6 Loaders\n// Loaders run before a route renders and provide data via useLoaderData.\n\n// import { useLoaderData, LoaderFunctionArgs } from "react-router-dom"\n\n// export async function loader({ params }: LoaderFunctionArgs) {\n//   const res = await fetch(`/api/users/${params.id}`)\n//   if (!res.ok) throw new Response("Not Found", { status: 404 })\n//   return res.json()\n// }\n\n// export default function UserPage() {\n//   const user = useLoaderData() as User\n//   return <h1>{user.name}</h1>\n// }\n\n// Route definition:\n// <Route path="/users/:id" element={<UserPage />} loader={loader} />\n\n// Simulate loader execution:\nasync function loader(params) {\n  const data = { 1: { name: "Alice" }, 2: { name: "Bob" } }\n  const user = data[params.id]\n  if (!user) throw new Error("Not Found")\n  return user\n}\nloader({ id: 1 }).then(u => console.log("Loaded user:", u.name))\nloader({ id: 9 }).catch(e => console.error("Error:", e.message))',
+      },
+      {
+        label: 'Form actions',
+        code: '// 🎯 React Router v6 Form Actions\n// Actions handle form submission server-side.\n// After an action, loaders auto-revalidate.\n\n// import { Form, redirect, ActionFunctionArgs } from "react-router-dom"\n\n// export async function action({ request }: ActionFunctionArgs) {\n//   const data = await request.formData()\n//   const name  = data.get("name") as string\n//   const email = data.get("email") as string\n//   await api.createUser({ name, email })\n//   return redirect("/users")   // loaders revalidate automatically\n// }\n\n// function NewUserForm() {\n//   return (\n//     <Form method="post">\n//       <input name="name"  placeholder="Name" />\n//       <input name="email" placeholder="Email" />\n//       <button type="submit">Create</button>\n//     </Form>\n//   )\n// }\n\n// Simulate:\nasync function action(formData) {\n  const { name, email } = formData\n  console.log("Creating user:", { name, email })\n  console.log("→ redirect to /users")\n  console.log("→ loaders revalidate automatically")\n}\naction({ name: "Alice", email: "alice@example.com" })',
+      },
+      {
+        label: 'Error boundaries',
+        code: '// 🎯 Route Error Handling with errorElement\n// Loaders and actions that throw are caught by errorElement.\n\n// import { useRouteError, isRouteErrorResponse } from "react-router-dom"\n\n// function ErrorPage() {\n//   const error = useRouteError()\n//   if (isRouteErrorResponse(error)) {\n//     return (\n//       <div>\n//         <h1>{error.status} {error.statusText}</h1>\n//         <p>{error.data}</p>\n//       </div>\n//     )\n//   }\n//   return <div>Unexpected error</div>\n// }\n\n// <Route path="/" element={<Root />} errorElement={<ErrorPage />}>\n//   <Route path="users/:id" element={<User />} loader={loader} />\n// </Route>\n\n// Simulate error scenarios:\nfunction handleRouteError(error) {\n  if (error.status) {\n    console.log(`HTTP ${error.status}: ${error.statusText}`)\n  } else {\n    console.log("Unexpected error:", error.message)\n  }\n}\nhandleRouteError({ status: 404, statusText: "Not Found" })\nhandleRouteError(new Error("Database connection failed"))',
+      },
+    ],
   },
   {
     id: 'react-data-fetching',
@@ -7168,6 +7462,20 @@ function validate(data: unknown) {
         'One Suspense boundary for independent data slices — one slow request blocks all; use separate boundaries per slice',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'useEffect fetch',
+        code: '// 🎯 Data Fetching with useEffect + useState\n// The classic pattern: fetch on mount, manage loading/error state.\n\n// function UserProfile({ userId }: { userId: number }) {\n//   const [user, setUser]       = useState<User | null>(null)\n//   const [loading, setLoading] = useState(true)\n//   const [error, setError]     = useState<string | null>(null)\n\n//   useEffect(() => {\n//     let cancelled = false\n//     setLoading(true)\n//     fetch(`/api/users/${userId}`)\n//       .then(r => r.ok ? r.json() : Promise.reject(r.status))\n//       .then(data => { if (!cancelled) setUser(data) })\n//       .catch(err => { if (!cancelled) setError(String(err)) })\n//       .finally(() => { if (!cancelled) setLoading(false) })\n//     return () => { cancelled = true }\n//   }, [userId])\n// }\n\n// Simulate:\nasync function fetchUser(id) {\n  const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`)\n  if (!res.ok) throw new Error(`HTTP ${res.status}`)\n  return res.json()\n}\nfetchUser(1).then(u => console.log("Fetched:", u.name, u.email))',
+      },
+      {
+        label: 'Loading & error states',
+        code: '// 🎯 Loading, Error, and Empty States\n// Every async operation has three states to handle.\n\n// function DataView({ data, loading, error }) {\n//   if (loading) return <Spinner />\n//   if (error)   return <ErrorMessage message={error} />\n//   if (!data || data.length === 0) return <EmptyState />\n//   return <ul>{data.map(item => <li key={item.id}>{item.name}</li>)}</ul>\n// }\n\n// Generic fetch hook pattern:\n// function useFetch<T>(url: string) {\n//   const [data, setData]       = useState<T | null>(null)\n//   const [loading, setLoading] = useState(true)\n//   const [error, setError]     = useState<string | null>(null)\n//   useEffect(() => {\n//     fetch(url).then(r => r.json()).then(setData).catch(e => setError(e.message))\n//       .finally(() => setLoading(false))\n//   }, [url])\n//   return { data, loading, error }\n// }\n\n// Simulate state machine:\nconst states = [\n  { loading: true,  error: null,   data: null },\n  { loading: false, error: "404", data: null },\n  { loading: false, error: null,   data: [{ id: 1, name: "Alice" }] },\n]\nstates.forEach(s => {\n  if (s.loading)       console.log("→ <Spinner />")\n  else if (s.error)    console.log("→ <Error>", s.error)\n  else if (!s.data?.length) console.log("→ <EmptyState />")\n  else console.log("→ <DataList>", s.data.map(d => d.name))\n})',
+      },
+      {
+        label: 'Suspense pattern',
+        code: '// 🎯 React Suspense for Data Fetching\n// Suspense lets components "wait" for data before rendering.\n// The component must "throw" a promise — libraries like SWR/TanStack do this.\n\n// import { Suspense } from "react"\n\n// function App() {\n//   return (\n//     <Suspense fallback={<Spinner />}>\n//       <UserProfile userId={1} />\n//     </Suspense>\n//   )\n// }\n\n// Use separate boundaries for independent data:\n// function Dashboard() {\n//   return (\n//     <div>\n//       <Suspense fallback={<Skeleton />}><UserStats /></Suspense>\n//       <Suspense fallback={<Skeleton />}><RecentOrders /></Suspense>\n//       <Suspense fallback={<Skeleton />}><Notifications /></Suspense>\n//     </div>\n//   )\n// }\n// ↑ Each slice loads independently — one slow request doesn\'t block others.\n\nconsole.log("Dashboard renders 3 Suspense boundaries:")\n["UserStats", "RecentOrders", "Notifications"].forEach(name => {\n  console.log(`  <Suspense fallback={<Skeleton />}><${name} /></Suspense>`)\n})',
+      },
+    ],
   },
   {
     id: 'react-mutations',
@@ -7256,6 +7564,20 @@ function validate(data: unknown) {
         'Using ErrorBoundary for expected validation errors — use useActionState for per-field feedback and ErrorBoundary only for unexpected failures',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'useTransition',
+        code: '// 🎯 useTransition — Non-Blocking State Updates\n// Marks an update as low-priority so the UI stays responsive.\n\n// import { useTransition, useState } from "react"\n\n// function SearchPage() {\n//   const [query, setQuery]     = useState("")\n//   const [results, setResults] = useState([])\n//   const [isPending, startTransition] = useTransition()\n\n//   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {\n//     setQuery(e.target.value)             // high priority — update input immediately\n//     startTransition(() => {\n//       setResults(searchDatabase(e.target.value))  // low priority — can be interrupted\n//     })\n//   }\n\n//   return (\n//     <>\n//       <input value={query} onChange={handleSearch} />\n//       {isPending ? <Spinner /> : <ResultsList results={results} />}\n//     </>\n//   )\n// }\n\n// Simulate:\nfunction simulateTransition(update) {\n  console.log("UI stays responsive (high priority update)")\n  console.log("isPending: true")\n  update()\n  console.log("isPending: false → results rendered")\n}\nsimulateTransition(() => console.log("Expensive search computed in background"))',
+      },
+      {
+        label: 'useOptimistic',
+        code: '// 🎯 useOptimistic — Instant Feedback Before Server Confirms\n// Show the expected result immediately, revert if the server fails.\n\n// import { useOptimistic, useState } from "react"\n\n// function LikeButton({ postId, initialLikes }: { postId: number, initialLikes: number }) {\n//   const [likes, setLikes]                    = useState(initialLikes)\n//   const [optimisticLikes, addOptimisticLike] = useOptimistic(likes, (current, delta) => current + delta)\n\n//   async function handleLike() {\n//     addOptimisticLike(+1)       // instant UI update\n//     try {\n//       const newLikes = await api.likePost(postId)\n//       setLikes(newLikes)        // confirm with server value\n//     } catch {\n//       // addOptimisticLike auto-reverts on error\n//     }\n//   }\n//   return <button onClick={handleLike}>{optimisticLikes} ❤️</button>\n// }\n\n// Simulate optimistic update:\nfunction simulateOptimistic(current) {\n  console.log("Current likes:", current)\n  console.log("Optimistic update → likes:", current + 1)\n  console.log("Server call in progress...")\n  console.log("Server confirmed → likes:", current + 1)\n}\nsimulateOptimistic(42)',
+      },
+      {
+        label: 'useActionState',
+        code: '// 🎯 useActionState — Form Actions with State\n// Connects a form action to component state for validation feedback.\n\n// import { useActionState } from "react"\n\n// type FormState = { errors?: Record<string, string[]>; success?: boolean }\n\n// async function submitAction(prevState: FormState, formData: FormData): Promise<FormState> {\n//   const name  = formData.get("name") as string\n//   const email = formData.get("email") as string\n//   const errors: Record<string, string[]> = {}\n//   if (!name)           errors.name  = ["Name is required"]\n//   if (!email.includes("@")) errors.email = ["Invalid email"]\n//   if (Object.keys(errors).length) return { errors }\n//   await api.save({ name, email })\n//   return { success: true }\n// }\n\n// function ContactForm() {\n//   const [state, formAction, isPending] = useActionState(submitAction, {})\n//   return (\n//     <form action={formAction}>\n//       <input name="name" />{state.errors?.name && <p>{state.errors.name[0]}</p>}\n//       <input name="email" />{state.errors?.email && <p>{state.errors.email[0]}</p>}\n//       <button disabled={isPending}>Submit</button>\n//     </form>\n//   )\n// }\n\n// Simulate:\nasync function submitAction(formData) {\n  const errors = {}\n  if (!formData.name)              errors.name  = ["Name required"]\n  if (!formData.email?.includes("@")) errors.email = ["Invalid email"]\n  if (Object.keys(errors).length) return { errors }\n  return { success: true }\n}\nsubmitAction({ name: "", email: "bad" }).then(r => console.log("Errors:", r))\nsubmitAction({ name: "Alice", email: "a@b.com" }).then(r => console.log("Success:", r))',
+      },
+    ],
   },
   {
     id: 'react-tanstack-query',
@@ -7344,6 +7666,20 @@ function validate(data: unknown) {
         'Setting staleTime: Infinity globally and then wondering why data never updates when it changes on the server',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'useQuery basics',
+        code: '// 🎯 TanStack Query — useQuery\n// import { useQuery } from "@tanstack/react-query"\n\n// function UserProfile({ userId }: { userId: number }) {\n//   const { data, isLoading, isError, error } = useQuery({\n//     queryKey: ["users", userId],   // cache key — change triggers refetch\n//     queryFn: () => fetchUser(userId),\n//     staleTime: 1000 * 60 * 5,     // 5 minutes fresh window\n//   })\n//   if (isLoading) return <Spinner />\n//   if (isError)   return <p>Error: {error.message}</p>\n//   return <div>{data.name}</div>\n// }\n\nasync function fetchUser(id) {\n  const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`)\n  return res.json()\n}\nfetchUser(1).then(user => {\n  console.log("queryKey: [\'users\', 1]")\n  console.log("data:", user.name, user.email)\n  console.log("isLoading: false, isError: false")\n})',
+      },
+      {
+        label: 'useMutation',
+        code: '// 🎯 TanStack Query — useMutation\n// import { useMutation, useQueryClient } from "@tanstack/react-query"\n\n// function DeleteButton({ userId }: { userId: number }) {\n//   const qc = useQueryClient()\n//   const { mutate, isPending } = useMutation({\n//     mutationFn: (id: number) => fetch(`/api/users/${id}`, { method: "DELETE" }),\n//     onSuccess: () => {\n//       qc.invalidateQueries({ queryKey: ["users"] })  // refetch the list\n//     },\n//     onError: (err) => console.error("Delete failed:", err),\n//   })\n//   return <button onClick={() => mutate(userId)} disabled={isPending}>Delete</button>\n// }\n\nasync function deleteUser(id) {\n  console.log(`DELETE /api/users/${id}`)\n  console.log("onSuccess → invalidateQueries([\'users\']) → refetch list")\n}\ndeleteUser(42)',
+      },
+      {
+        label: 'Query invalidation',
+        code: '// 🎯 Cache Keys and Invalidation Strategy\n\n// queryKey hierarchy:\n// ["users"]           → all user queries\n// ["users", 42]       → user #42 only\n// ["users", 42, "posts"] → user #42\'s posts\n\n// Invalidate patterns:\n// qc.invalidateQueries({ queryKey: ["users"] })      // all users\n// qc.invalidateQueries({ queryKey: ["users", 42] })  // user #42 only\n// qc.setQueryData(["users", 42], newData)            // manual update\n\n// Optimistic update skeleton:\n// const { mutate } = useMutation({\n//   mutationFn: updateUser,\n//   onMutate: async (newUser) => {\n//     await qc.cancelQueries({ queryKey: ["users", newUser.id] })\n//     const prev = qc.getQueryData(["users", newUser.id])\n//     qc.setQueryData(["users", newUser.id], newUser)  // optimistic\n//     return { prev }\n//   },\n//   onError: (_, newUser, ctx) => qc.setQueryData(["users", newUser.id], ctx.prev),\n//   onSettled: (_, __, u) => qc.invalidateQueries({ queryKey: ["users", u.id] }),\n// })\n\nconsole.log("Invalidation scope:")\nconsole.log("  [\'users\']      → 3 queries refetched")\nconsole.log("  [\'users\', 42] → 1 query refetched")\nconsole.log("  setQueryData  → instant UI, no network")',
+      },
+    ],
   },
   // ─── Next.js ──────────────────────────────────────────────────────────────
   {
@@ -7438,6 +7774,20 @@ function validate(data: unknown) {
         "Placing 'use server' in a Client Component file — Server Functions must live in separate files or in Server Components",
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Server Component',
+        code: '// 🎯 Next.js Server Components\n// Server Components run on the server — no JS sent to browser.\n// They can fetch data directly without useEffect.\n\n// app/users/page.tsx\n// async function UsersPage() {\n//   const res = await fetch("/api/users", { next: { revalidate: 60 } })\n//   const users = await res.json()\n//   return (\n//     <ul>\n//       {users.map((u) => <li key={u.id}>{u.name}</li>)}\n//     </ul>\n//   )\n// }\n\n// Simulate the data-fetch-to-render flow:\nasync function fetchUsers() {\n  const res = await fetch("https://jsonplaceholder.typicode.com/users")\n  return res.json()\n}\nfetchUsers().then(users => {\n  users.slice(0, 3).forEach(u => console.log(`${u.name} — ${u.email}`))\n  console.log("→ Rendered as HTML on server, no JS shipped")\n})',
+      },
+      {
+        label: 'Client Component',
+        code: '// 🎯 "use client" — Interactive Client Component\n// Only Client Components can use useState, useEffect, event handlers.\n\n// "use client"\n// import { useState } from "react"\n\n// export function Counter() {\n//   const [count, setCount] = useState(0)\n//   return (\n//     <div>\n//       <p>Count: {count}</p>\n//       <button onClick={() => setCount(c => c + 1)}>+1</button>\n//     </div>\n//   )\n// }\n\n// Server Component imports Client Components freely:\n// async function Page() {\n//   const data = await fetchData()    // server: async data fetch\n//   return <div><h1>{data.title}</h1><Counter /></div>\n// }\n\nfunction simulateCounter() {\n  let count = 0\n  return {\n    increment: () => { count++; console.log("count:", count) },\n    get: () => count\n  }\n}\nconst c = simulateCounter()\nc.increment(); c.increment()\nconsole.log("Final:", c.get())',
+      },
+      {
+        label: 'Server Functions',
+        code: '// 🎯 Server Functions (Server Actions)\n// "use server" functions run on the server, called from client.\n\n// app/actions.ts\n// "use server"\n// import { revalidatePath } from "next/cache"\n\n// export async function createPost(formData: FormData) {\n//   const title = formData.get("title") as string\n//   await db.posts.create({ data: { title } })\n//   revalidatePath("/posts")  // invalidate cached page\n// }\n\n// Client Component uses it like a regular async function:\n// function NewPostForm() {\n//   return (\n//     <form action={createPost}>\n//       <input name="title" />\n//       <button>Create</button>\n//     </form>\n//   )\n// }\n\nconsole.log("Server Function lifecycle:")\nconsole.log("1. Form submit in browser")\nconsole.log("2. createPost() runs on server")\nconsole.log("3. DB write + revalidatePath(\'posts\')")\nconsole.log("4. Next.js regenerates cached route")\nconsole.log("5. UI shows fresh data")',
+      },
+    ],
   },
   // ─── Git ──────────────────────────────────────────────────────────────────
   {
@@ -7995,6 +8345,20 @@ function validate(data: unknown) {
         'Confusing Tailwind\'s spacing scale — p-4 is 1rem (16px), not 4px. Each step is 4px.',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Utility classes',
+        code: '<!-- 🎯 Tailwind Utility Classes\n     Each class = one CSS declaration. Compose them freely. -->\n\n<!-- Typography --><h1 class="text-3xl font-bold text-gray-900">Hello Tailwind</h1><p class="text-base text-gray-600 leading-relaxed">Readable paragraph.</p>\n\n<!-- Spacing + bg --><div class="p-6 m-4 bg-white rounded-xl shadow-md">Card</div>\n\n<!-- Flexbox --><div class="flex items-center justify-between gap-4"><span>Left</span><span>Right</span></div>\n\n<!-- Info box --><div class="border border-blue-200 bg-blue-50 text-blue-900 rounded-lg p-4">Info</div>\n\n<!-- Button --><button class="px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors">Save</button>',
+      },
+      {
+        label: 'Responsive',
+        code: '<!-- 🎯 Mobile-First Responsive Breakpoints\n     No prefix = all sizes. Prefix = from that width up. -->\n\n<!-- Grid: 1 col → 2 → 3 --><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><div class="bg-white rounded p-4">Card 1</div><div class="bg-white rounded p-4">Card 2</div><div class="bg-white rounded p-4">Card 3</div></div>\n\n<!-- Responsive text size --><h2 class="text-xl md:text-3xl lg:text-5xl font-bold">Grows with screen</h2>\n\n<!-- Show/hide --><div class="block md:hidden">Mobile only</div><div class="hidden md:block">Desktop only</div>\n\n<!-- Sidebar layout --><div class="flex flex-col md:flex-row gap-4"><aside class="w-full md:w-64 bg-gray-100 p-4">Sidebar</aside><main class="flex-1 bg-white p-4">Content</main></div>',
+      },
+      {
+        label: 'Hover & states',
+        code: '<!-- 🎯 State Variants: hover, focus, active, disabled -->\n\n<!-- Hover button --><button class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded transition-colors duration-200">Hover me</button>\n\n<!-- Focus ring --><input class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Type here" />\n\n<!-- Disabled --><button class="bg-gray-300 text-gray-500 px-4 py-2 rounded cursor-not-allowed opacity-50" disabled>Disabled</button>\n\n<!-- Group hover --><div class="group flex items-center gap-3 p-3 rounded hover:bg-gray-100 cursor-pointer"><span class="text-gray-700 group-hover:text-blue-600 font-medium">Menu item</span><span class="opacity-0 group-hover:opacity-100 transition-opacity">→</span></div>',
+      },
+    ],
   },
   {
     id: 'css-tailwind-layout',
@@ -8072,6 +8436,20 @@ function validate(data: unknown) {
         'Missing shrink-0 on fixed-width sidebars — without it, the sidebar can shrink below its set width when space is tight.',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Flexbox layout',
+        code: '<!-- 🎯 Flexbox with Tailwind -->\n\n<!-- Horizontal nav bar --><nav class="flex items-center justify-between px-6 py-4 bg-white shadow"><span class="font-bold text-lg">Logo</span><div class="flex gap-6"><a class="text-gray-600 hover:text-gray-900">Home</a><a class="text-gray-600 hover:text-gray-900">About</a></div></nav>\n\n<!-- Centered content --><div class="flex items-center justify-center min-h-screen bg-gray-50"><div class="bg-white p-8 rounded-xl shadow max-w-md w-full">Centered card</div></div>\n\n<!-- Sidebar + main --><div class="flex gap-6"><aside class="w-64 shrink-0 bg-gray-100 p-4 rounded">Sidebar (fixed width)</aside><main class="flex-1 bg-white p-4 rounded">Main content (grows)</main></div>',
+      },
+      {
+        label: 'Grid layout',
+        code: '<!-- 🎯 CSS Grid with Tailwind -->\n\n<!-- Responsive card grid --><div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"><div class="bg-white rounded-xl shadow p-6">Card 1</div><div class="bg-white rounded-xl shadow p-6">Card 2</div><div class="bg-white rounded-xl shadow p-6">Card 3</div></div>\n\n<!-- Spanning columns --><div class="grid grid-cols-3 gap-4"><div class="col-span-2 bg-blue-100 p-4 rounded">Wide (2 cols)</div><div class="bg-gray-100 p-4 rounded">Narrow</div><div class="col-span-3 bg-indigo-100 p-4 rounded">Full width (3 cols)</div></div>\n\n<!-- Holy Grail layout --><div class="grid grid-rows-[auto_1fr_auto] min-h-screen"><header class="bg-gray-900 text-white p-4">Header</header><main class="p-8">Main</main><footer class="bg-gray-800 text-white p-4">Footer</footer></div>',
+      },
+      {
+        label: 'Spacing & sizing',
+        code: '<!-- 🎯 Spacing System — Based on 4px Steps (1 unit = 4px) -->\n\n<!-- p-1=4px, p-2=8px, p-4=16px, p-6=24px, p-8=32px -->\n\n<!-- Consistent card spacing --><div class="p-6 mb-4 rounded-xl bg-white shadow"><h3 class="text-lg font-semibold mb-2">Card title</h3><p class="text-gray-600 mb-4">Description text</p><button class="px-4 py-2 bg-blue-600 text-white rounded">Action</button></div>\n\n<!-- Max-width containers --><div class="max-w-sm">Small (384px)</div><div class="max-w-2xl mx-auto">Centered medium (672px)</div><div class="max-w-7xl mx-auto px-4">Full page wrapper</div>\n\n<!-- Viewport-based heights --><div class="h-screen">Full viewport height</div><div class="h-64">Fixed h-64 = 256px</div><div class="min-h-0 flex-1">Fills remaining flex space</div>',
+      },
+    ],
   },
   {
     id: 'css-tailwind-states',
@@ -8184,6 +8562,20 @@ function validate(data: unknown) {
         'Using tailwind.config.js darkMode setting in Tailwind v4 — v4 uses media queries by default; override with @variant dark in CSS.',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Hover & focus',
+        code: '<!-- 🎯 State Variants: hover, focus, active, disabled -->\n\n<!-- Hover button --><button class="bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white px-6 py-2 rounded-lg font-semibold transition-colors">Click me</button>\n\n<!-- Focus ring (accessibility) --><input class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Focused input" />\n\n<!-- Disabled state --><button class="bg-gray-200 text-gray-400 px-4 py-2 rounded cursor-not-allowed opacity-60" disabled>Disabled</button>\n\n<!-- Link with underline on hover --><a class="text-blue-600 no-underline hover:underline font-medium">Hover for underline</a>',
+      },
+      {
+        label: 'Dark mode',
+        code: '<!-- 🎯 Dark Mode with Tailwind\n     Tailwind v3: darkMode: "class" in config → toggle .dark on <html>\n     Tailwind v4: use @variant dark in CSS -->\n\n<!-- Background and text flip in dark mode --><div class="bg-white dark:bg-gray-900 min-h-screen p-8"><h1 class="text-gray-900 dark:text-white text-3xl font-bold">Hello</h1><p class="text-gray-600 dark:text-gray-400">Subtitle</p></div>\n\n<!-- Card dark mode --><div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6"><h3 class="text-gray-900 dark:text-white font-semibold">Card</h3><p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Description</p></div>\n\n<!-- Toggle dark mode (JS) --><button onclick="document.documentElement.classList.toggle(\'dark\')">Toggle Dark</button>',
+      },
+      {
+        label: 'group & peer',
+        code: '<!-- 🎯 group / peer — Parent and Sibling State -->\n\n<!-- group: style children based on parent hover --><div class="group flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors"><div class="w-10 h-10 rounded-full bg-blue-500 group-hover:scale-110 transition-transform"></div><div><p class="font-medium text-gray-900 group-hover:text-blue-600">Alice Johnson</p><p class="text-sm text-gray-500">alice@example.com</p></div></div>\n\n<!-- peer: style next sibling based on a peer\'s state --><input type="checkbox" class="peer hidden" id="toggle" /><label for="toggle" class="cursor-pointer px-4 py-2 rounded border border-gray-300 peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600">Toggle</label>\n\n<!-- has: parent reacts to descendant state --><div class="border-2 border-gray-200 rounded-lg p-4 has-[:checked]:border-blue-500"><input type="checkbox" class="mr-2" /><span>Check to highlight parent</span></div>',
+      },
+    ],
   },
   {
     id: 'css-tailwind-advanced',
@@ -8304,6 +8696,20 @@ function validate(data: unknown) {
         'Mixing viewport-responsive (md:) and container-responsive (@md:) prefixes — they target different things; container queries ignore the viewport entirely.',
       ],
     },
+    playgroundExamples: [
+      {
+        label: 'Arbitrary values',
+        code: '<!-- 🎯 Arbitrary Values with Square Bracket Syntax\n     Use [value] when no built-in utility covers your exact need. -->\n\n<!-- Exact pixel values --><div class="w-[327px] h-[420px] bg-white rounded">Exact size</div>\n\n<!-- Custom colors --><button class="bg-[#ff6b6b] hover:bg-[#ee5a5a] text-white px-4 py-2 rounded">Brand color</button>\n\n<!-- Custom grid --><div class="grid grid-cols-[1fr_2fr_1fr] gap-4"><div class="bg-gray-100 p-3">1fr</div><div class="bg-gray-200 p-3">2fr (wider)</div><div class="bg-gray-100 p-3">1fr</div></div>\n\n<!-- Complex expressions --><div class="top-[calc(100vh-4rem)] w-[min(90vw,600px)]">Computed positioning</div>\n\n<!-- Custom animation --><div class="animate-[spin_3s_linear_infinite]">Custom spin speed</div>',
+      },
+      {
+        label: '@layer & @apply',
+        code: '/* 🎯 @layer and @apply — Reusable Component Classes */\n\n/* Define reusable classes using Tailwind utilities */\n@layer components {\n  .btn {\n    @apply inline-flex items-center px-4 py-2 rounded-lg font-semibold\n           transition-colors duration-200 focus:outline-none\n           focus:ring-2 focus:ring-offset-2;\n  }\n  .btn-primary {\n    @apply btn bg-blue-600 text-white hover:bg-blue-700\n           focus:ring-blue-500;\n  }\n  .btn-secondary {\n    @apply btn bg-white text-gray-700 border border-gray-300\n           hover:bg-gray-50 focus:ring-gray-500;\n  }\n  .card {\n    @apply bg-white rounded-xl shadow-sm border border-gray-100\n           overflow-hidden;\n  }\n}\n\n/* Usage in HTML: */\n/* <button class="btn-primary">Save</button> */\n/* <div class="card p-6">Content</div> */',
+      },
+      {
+        label: '@theme (v4)',
+        code: '/* 🎯 Tailwind v4 — @theme CSS-First Config */\n\n@import "tailwindcss";\n\n@theme {\n  /* Custom colors → auto-generates bg-brand-*, text-brand-*, etc. */\n  --color-brand-400: oklch(0.72 0.20 250);\n  --color-brand-500: oklch(0.60 0.22 250);\n  --color-brand-600: oklch(0.50 0.22 250);\n\n  /* Custom font → font-display class */\n  --font-display: "Satoshi", "Inter", sans-serif;\n\n  /* Custom spacing → p-18, m-18, etc. */\n  --spacing-18: 4.5rem;\n\n  /* Custom breakpoint → 3xl: prefix */\n  --breakpoint-3xl: 120rem;\n}\n\n/* Usage: */\n/* <h1 class="font-display text-brand-500">Brand heading</h1> */\n/* <div class="p-18 3xl:max-w-screen-3xl">Wide layout</div> */',
+      },
+    ],
   },
   {
     id: 'testing-basics',
