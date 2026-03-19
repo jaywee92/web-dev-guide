@@ -2,7 +2,7 @@ export type PlaygroundType = 'visual-controls' | 'monaco' | 'none' | 'gradient' 
 export type ThemeMode = 'dark' | 'light'
 export type CategoryId = 'html-core' | 'html-structure' | 'html-interactive'
   | 'css-basics' | 'css-layout' | 'css-modern' | 'css-frameworks'
-  | 'javascript' | 'javascript-oop' | 'javascript-async' | 'typescript' | 'react' | 'react-ecosystem' | 'webapis' | 'http' | 'postgresql' | 'nextjs'
+  | 'javascript' | 'javascript-oop' | 'javascript-async' | 'typescript' | 'typescript-oop' | 'typescript-advanced' | 'react' | 'react-ecosystem' | 'webapis' | 'http' | 'postgresql' | 'nextjs'
   | 'git' | 'git-collab' | 'testing'
 
 export interface Category {
@@ -50,6 +50,9 @@ export interface Topic {
   nextTopicId?: string
   sections: Section[]
   cheatSheet?: CheatSheet
+  commonErrors?: CommonError[]
+  realWorldExamples?: RealWorldExample[]
+  playgroundExamples?: PlaygroundExample[]
 }
 
 export interface Section {
@@ -65,6 +68,30 @@ export interface ExplanationStep {
   icon?: string        // emoji shown in the story card visual header
   codeExample?: string
   language?: string
+  analogy?: {
+    icon: string     // emoji, e.g. "🎒"
+    title: string    // shown in analogy panel header
+    text: string[]   // 2–3 paragraphs of plain text
+  }
+}
+
+export interface CommonError {
+  title: string      // short error description
+  why: string        // 1–2 sentences explaining root cause
+  fixLabel: string   // e.g. "Fix — use let instead of var"
+  fixCode: string    // corrected code snippet
+}
+
+export interface RealWorldExample {
+  context: string    // e.g. "React Hooks"
+  heading: string    // e.g. "useState internals"
+  description: string
+  code: string
+}
+
+export interface PlaygroundExample {
+  label: string      // tab label, e.g. "Counter Factory"
+  code: string       // pre-filled starter code
 }
 
 export interface SearchResult {
@@ -78,6 +105,7 @@ export interface ReferenceEntry {
   example: string
   link: string
   tags?: string[]
+  previewHtml?: string   // full HTML doc for live preview (CSS entries); HTML entries auto-generate it
 }
 
 export interface ReferenceCategory {
