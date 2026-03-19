@@ -2310,6 +2310,15 @@ export const TOPICS: Topic[] = [
             text: 'When a function runs, it creates a local scope. Variables inside that scope normally disappear when the function returns.',
             codeExample: 'function makeCounter() {\n  let count = 0 // local variable\n}',
             language: 'javascript',
+            analogy: {
+              icon: '🏠',
+              title: 'Step 1 — Local state',
+              text: [
+                'Think of a function as a room. Everything created inside belongs to that room.',
+                'When you leave the room and the door closes, things inside normally vanish.',
+                'That\'s count — it would normally disappear when makeCounter() finishes.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -2317,6 +2326,14 @@ export const TOPICS: Topic[] = [
             text: 'If we define and return a function inside makeCounter, that inner function can see count — it is in its scope chain.',
             codeExample: 'function makeCounter() {\n  let count = 0\n  return function increment() {\n    count++\n    return count\n  }\n}',
             language: 'javascript',
+            analogy: {
+              icon: '🔑',
+              title: 'Step 2 — Returning an inner function',
+              text: [
+                'The inner function is like someone who takes a key when leaving the room.',
+                'With that key, it can return and access things inside at any time — even after the door is closed.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -2324,6 +2341,14 @@ export const TOPICS: Topic[] = [
             text: 'makeCounter() finishes executing, but count is NOT garbage collected. The returned function still holds a reference to it — this is the closure.',
             codeExample: 'const increment = makeCounter()\n// makeCounter is done...\n// but count still exists!',
             language: 'javascript',
+            analogy: {
+              icon: '🎒',
+              title: 'Step 3 — Outer function returns',
+              text: [
+                'makeCounter() finishes and "leaves the room". But increment() packed count into a backpack and took it along.',
+                'The backpack stays alive — as long as increment() exists, so does count.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -2331,6 +2356,14 @@ export const TOPICS: Topic[] = [
             text: 'Calling increment() accesses and modifies count — even though we are outside makeCounter. The closure remembers the original scope.',
             codeExample: 'increment() // returns 1\nincrement() // returns 2\nincrement() // returns 3',
             language: 'javascript',
+            analogy: {
+              icon: '🎒✋',
+              title: 'Step 4 — Closure in action',
+              text: [
+                'Every time you call increment(), you open the backpack, take out count, increment it, and put it back.',
+                'This happens outside the original room — but the backpack remembers everything.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -2338,6 +2371,14 @@ export const TOPICS: Topic[] = [
             text: 'Each call to makeCounter() creates a fresh scope with its own count. Two counters do not share state.',
             codeExample: 'const a = makeCounter()\nconst b = makeCounter()\na() // 1\na() // 2\nb() // 1 — independent!',
             language: 'javascript',
+            analogy: {
+              icon: '🎒🎒',
+              title: 'Step 5 — Independent closures',
+              text: [
+                'Every call to makeCounter() packs its own brand-new backpack with its own count.',
+                'Counter a and counter b carry different backpacks. Completely independent.',
+              ],
+            },
           },
         ],
       },
@@ -2360,6 +2401,60 @@ export const TOPICS: Topic[] = [
         'Expecting separate calls to makeX() to share state — each invocation creates a fresh closure with its own independent variables',
       ],
     },
+    commonErrors: [
+      {
+        title: 'var in Loops — all handlers share the same value',
+        why: 'var is function-scoped, not block-scoped. In a loop there is only one variable i — all closures share the same reference and see the final value.',
+        fixLabel: 'Fix — use let instead of var',
+        fixCode: '// ❌ Wrong\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100) // 3 3 3\n}\n\n// ✅ Right\nfor (let i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100) // 0 1 2\n}',
+      },
+      {
+        title: 'Stale Closure — outdated value in async callback',
+        why: 'An async callback "sees" a variable\'s value at creation time, not call time. In React this causes bugs in useEffect callbacks with empty dependency arrays.',
+        fixLabel: 'Fix — use an updater function',
+        fixCode: '// ❌ stale\nsetInterval(() => setCount(count + 1), 1000)\n\n// ✅ Right\nsetInterval(() => setCount(prev => prev + 1), 1000)',
+      },
+      {
+        title: 'Memory Leak — closure keeps DOM node alive',
+        why: 'When a closure holds a reference to a large object or DOM node, the garbage collector cannot free it — even after it is removed from the DOM.',
+        fixLabel: 'Fix — set reference to null',
+        fixCode: 'let elem = document.getElementById(\'huge\')\nelem.addEventListener(\'click\', handler)\ndocument.body.removeChild(elem)\nelem = null // ✅ release reference',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React Hooks',
+        heading: 'useState internals',
+        description: 'React\'s useState uses a closure so each component instance remembers its own state value — isolated from all other components.',
+        code: '// Simplified — React internals\nfunction useState(init) {\n  let state = init\n  const setState = val => {\n    state = val // closure!\n    rerender()\n  }\n  return [state, setState]\n}',
+      },
+      {
+        context: 'Event Handlers',
+        heading: 'Button with index',
+        description: 'When rendering a list, each click handler closes over its own index — the classic DOM closure use-case.',
+        code: 'items.forEach((item, i) => {\n  btn.addEventListener(\'click\', () => {\n    // i is in the closure\n    console.log(`Item ${i}`)\n  })\n})',
+      },
+      {
+        context: 'Module Pattern',
+        heading: 'Private data',
+        description: 'Before ES Modules, closures were used to simulate private variables — the Revealing Module Pattern.',
+        code: 'const counter = (function() {\n  let n = 0 // private\n  return {\n    inc: () => ++n,\n    get: () => n\n  }\n})()',
+      },
+    ],
+    playgroundExamples: [
+      {
+        label: 'Counter Factory',
+        code: '// 🎯 Closure as a Counter Factory\n// Create multiple independent counters and observe\n// that each keeps its own state.\n\nfunction makeCounter(startValue = 0) {\n  let count = startValue\n  return {\n    inc:   () => ++count,\n    dec:   () => --count,\n    reset: () => { count = startValue },\n    value: () => count,\n  }\n}\n\nconst a = makeCounter()\nconst b = makeCounter(10) // starts at 10\n\na.inc(); a.inc(); a.inc()\nb.dec()\n\nconsole.log(\'a:\', a.value()) // 3\nconsole.log(\'b:\', b.value()) // 9 — independent!\n\n// Try it: add a multiply() method',
+      },
+      {
+        label: 'Memoization',
+        code: '// 🎯 Memoization via Closure\n// The function remembers previously computed results —\n// the closure keeps the cache alive.\n\nfunction memoize(fn) {\n  const cache = new Map()\n  return (...args) => {\n    const key = JSON.stringify(args)\n    if (cache.has(key)) {\n      console.log(`Cache hit: ${key}`)\n      return cache.get(key)\n    }\n    const result = fn(...args)\n    cache.set(key, result)\n    return result\n  }\n}\n\nconst fastSquare = memoize(n => n * n)\nconsole.log(fastSquare(5))  // 25 (computed)\nconsole.log(fastSquare(5))  // Cache hit!\nconsole.log(fastSquare(5))  // 25 (from cache)',
+      },
+      {
+        label: 'Private State',
+        code: '// 🎯 Private State via Closure\n// Simulate private fields without classes —\n// the Revealing Module Pattern.\n\nfunction createBankAccount(initial) {\n  let balance = initial // private!\n  return {\n    deposit:    n => { balance += n },\n    withdraw:   n => { balance -= n },\n    getBalance: () => balance,\n  }\n}\n\nconst acc = createBankAccount(100)\nacc.deposit(50)\nacc.withdraw(30)\nconsole.log(acc.getBalance()) // 120',
+      },
+    ],
   },
   {
     id: 'js-variables',
@@ -3692,7 +3787,7 @@ export const TOPICS: Topic[] = [
   {
     id: 'ts-basics',
     nextTopicId: 'ts-interfaces',
-    title: 'TypeScript Basics',
+    title: 'Basics',
     description: 'Static types that catch errors before your code runs',
     category: 'typescript',
     color: '#a78bfa',
@@ -4559,7 +4654,7 @@ export const TOPICS: Topic[] = [
   {
     id: 'ts-interfaces',
     nextTopicId: 'ts-generics',
-    title: 'TypeScript Interfaces',
+    title: 'Interfaces',
     description: 'Define object contracts — optional props, readonly fields, extension, and implementation',
     category: 'typescript',
     color: '#a78bfa',
@@ -4641,9 +4736,9 @@ export const TOPICS: Topic[] = [
   {
     id: 'ts-generics',
     nextTopicId: 'ts-narrowing',
-    title: 'TypeScript Generics',
+    title: 'Generics',
     description: 'Write reusable, type-safe functions and interfaces that work with any type',
-    category: 'typescript',
+    category: 'typescript-advanced',
     color: '#a78bfa',
     estimatedMinutes: 12,
     animationComponent: 'GenericsViz',
@@ -4757,16 +4852,56 @@ export const TOPICS: Topic[] = [
             codeExample: 'function isString(val: unknown): val is string {\n  return typeof val === "string"\n}\n\nif (isString(input)) {\n  console.log(input.length) // string here\n}',
             language: 'typescript',
           },
+          {
+            animationStep: 3,
+            icon: '⚖️',
+            heading: 'Equality narrowing',
+            text: 'TypeScript narrows the type when you compare with === or !==. When both sides are checked for equality, TypeScript eliminates impossible types.',
+            codeExample: 'function padLeft(value: string, padding: string | number) {\n  if (padding === 0) {\n    return value  // padding is 0 here, not just number\n  }\n  if (typeof padding === "number") {\n    return " ".repeat(padding) + value\n  }\n  return padding + value  // string here\n}',
+            language: 'typescript',
+          },
+          {
+            animationStep: 4,
+            icon: '🔑',
+            heading: 'The "in" operator',
+            text: 'The in operator checks whether a property exists on an object. TypeScript narrows the type based on which branch is entered — useful for discriminating between types that share some but not all properties.',
+            codeExample: 'type Car  = { drive(): void; fuel: string }\ntype Boat = { sail(): void; fuel: string }\n\nfunction move(vehicle: Car | Boat) {\n  if ("drive" in vehicle) {\n    vehicle.drive()  // TypeScript knows it is Car here\n  } else {\n    vehicle.sail()   // Boat here\n  }\n}',
+            language: 'typescript',
+          },
+          {
+            animationStep: 5,
+            icon: '🏷️',
+            heading: 'Custom type predicates',
+            text: 'A user-defined type guard is a function whose return type is a type predicate (param is Type). When it returns true, TypeScript narrows the argument to that type everywhere the guard is used.',
+            codeExample: 'type Fish = { swim(): void }\ntype Bird = { fly(): void }\n\nfunction isFish(pet: Fish | Bird): pet is Fish {\n  return (pet as Fish).swim !== undefined\n}\n\nconst pet: Fish | Bird = getRandomPet()\nif (isFish(pet)) {\n  pet.swim()  // TypeScript knows pet is Fish\n} else {\n  pet.fly()   // Bird here\n}',
+            language: 'typescript',
+          },
         ],
       },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'typeof guard', code: 'if (typeof val === "string") { val.toUpperCase() }', note: 'Works for: string, number, boolean, bigint, symbol, undefined, object, function' },
+        { label: 'instanceof guard', code: 'if (err instanceof Error) { console.log(err.message) }', note: 'Narrows class instances' },
+        { label: 'in operator', code: 'if ("swim" in animal) { animal.swim() }', note: 'Checks property existence — narrows union members' },
+        { label: 'Equality narrowing', code: 'if (x === null) { /* x is null */ }\nif (x !== undefined) { /* x is defined */ }', note: 'Strict equality eliminates impossible types' },
+        { label: 'Type predicate', code: 'function isString(v: unknown): v is string {\n  return typeof v === "string"\n}', note: 'Return type "v is T" narrows at call site' },
+        { label: 'Discriminated union', code: 'type Shape = { kind: "circle"; r: number } | { kind: "rect"; w: number }\nswitch (s.kind) { case "circle": ... }', note: 'Shared literal property narrows the union' },
+      ],
+      whenToUse: 'Use typeof for primitives, instanceof for class instances, the in operator to distinguish object shapes, and custom predicates when you need to reuse a check or when TypeScript cannot infer it automatically.',
+      commonMistakes: [
+        'Forgetting that typeof null === "object" — always check for null explicitly before checking typeof for objects',
+        'Using as (type assertion) instead of a proper type guard — assertions bypass the type system; guards prove the type at runtime',
+        'Writing a predicate that always returns true — the predicate must actually test the runtime value, not just assert',
+      ],
+    },
   },
   {
     id: 'ts-utility-types',
-    nextTopicId: 'ts-react',
+    nextTopicId: 'ts-arrays',
     title: 'Utility Types',
     description: 'Built-in TypeScript types that transform and derive new types from existing ones',
-    category: 'typescript',
+    category: 'typescript-advanced',
     color: '#a78bfa',
     estimatedMinutes: 10,
     animationComponent: 'ClosureViz',
@@ -4799,16 +4934,335 @@ export const TOPICS: Topic[] = [
             codeExample: 'type Scores = Record<string, number>\n// { [key: string]: number }\n\nconst config: Readonly<User> = { id: 1, name: "Alice", email: "a@b.com" }\n// config.id = 2 // Error: readonly\n\nfunction getUser() { return { id: 1, name: "Alice" } }\ntype User2 = ReturnType<typeof getUser>\n// { id: number; name: string }',
             language: 'typescript',
           },
+          {
+            animationStep: 3,
+            icon: '🔍',
+            heading: 'Exclude, Extract, and NonNullable',
+            text: 'Exclude<T, U> removes from T all types that are assignable to U. Extract<T, U> keeps only types assignable to U. NonNullable<T> removes null and undefined — useful for values that have been validated.',
+            codeExample: 'type Status = "draft" | "published" | "archived"\n\ntype Active   = Exclude<Status, "archived">\n// "draft" | "published"\n\ntype Pub      = Extract<Status, "published" | "removed">\n// "published"  (only shared with Status)\n\ntype ID = string | number | null | undefined\ntype ValidID = NonNullable<ID>\n// string | number',
+            language: 'typescript',
+          },
         ],
       },
     ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Partial<T>', code: 'type Draft = Partial<User>  // all props optional', note: 'Use for update/patch payloads' },
+        { label: 'Required<T>', code: 'type Complete = Required<Config>', note: 'Makes every optional prop required' },
+        { label: 'Pick<T, K>', code: 'type Preview = Pick<User, "id" | "name">', note: 'Keep only listed keys' },
+        { label: 'Omit<T, K>', code: 'type PublicUser = Omit<User, "password">', note: 'Remove listed keys' },
+        { label: 'Record<K, V>', code: 'type ScoreMap = Record<string, number>', note: 'Key-value map type' },
+        { label: 'Exclude / Extract', code: 'type NoNull = Exclude<string | null, null>\ntype OnlyStr = Extract<string | number, string>', note: 'Filter union types' },
+        { label: 'NonNullable<T>', code: 'type SafeId = NonNullable<string | null | undefined>', note: 'Remove null + undefined from union' },
+        { label: 'ReturnType<F>', code: 'type Result = ReturnType<typeof getUser>', note: 'Infer what a function returns' },
+      ],
+      patterns: [
+        { title: 'Patch payload (Partial)', code: 'interface User { id: number; name: string; email: string }\n\nasync function patchUser(id: number, patch: Partial<Omit<User, "id">>) {\n  return fetch(`/api/users/${id}`, {\n    method: "PATCH",\n    body: JSON.stringify(patch),\n  })\n}', language: 'typescript' },
+        { title: 'Config builder', code: 'interface Config {\n  host: string\n  port?: number\n  ssl?: boolean\n}\n\ntype RequiredConfig = Required<Config>\n// { host: string; port: number; ssl: boolean }', language: 'typescript' },
+      ],
+      whenToUse: 'Use utility types instead of duplicating interface definitions. Partial and Omit are essential for API update payloads. Pick creates focused view-models. Record builds dictionaries.',
+      commonMistakes: [
+        'Defining a separate "optional" interface by hand — use Partial<T> or Pick<T, K> instead; they stay in sync when the base type changes',
+        'Confusing Exclude and Omit — Omit removes keys from an object type; Exclude filters members from a union type',
+        'Not using NonNullable after validation — if you have checked that a value is not null, NonNullable communicates that to TypeScript',
+      ],
+    },
+  },
+  {
+    id: 'ts-arrays',
+    nextTopicId: 'ts-classes',
+    title: 'Arrays & Tuples',
+    description: 'Typed arrays with push enforcement and fixed-length tuples for positional data',
+    category: 'typescript',
+    color: '#a78bfa',
+    estimatedMinutes: 8,
+    animationComponent: undefined,
+    bannerComponent: undefined,
+    playgroundType: 'monaco' as const,
+    sections: [
+      { id: 'intro', type: 'intro' as const, steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation' as const,
+        steps: [
+          {
+            animationStep: 0,
+            icon: '📋',
+            heading: 'Typed arrays',
+            text: 'TypeScript allows you to specify that an array should only contain elements of a particular type. Use the T[] syntax or the generic Array<T> form — both are equivalent.',
+            codeExample: 'const scores: number[] = [10, 20, 30]\nconst names: string[] = ["Alice", "Bob"]\nconst flags: Array<boolean> = [true, false]\n\n// TypeScript enforces the element type:\nscores.push(40)    // OK\nscores.push("oops") // Error: string not assignable to number',
+            language: 'typescript',
+          },
+          {
+            animationStep: 1,
+            icon: '🏗️',
+            heading: 'Arrays of objects',
+            text: 'You can type arrays of custom object shapes. TypeScript checks each element against the type, and gives you autocomplete for all properties when you iterate.',
+            codeExample: 'type User = {\n  id: number\n  name: string\n}\n\nconst users: User[] = [\n  { id: 1, name: "Alice" },\n  { id: 2, name: "Bob" },\n]\n\nusers.forEach(user => {\n  console.log(user.name.toUpperCase())  // autocomplete works!\n})',
+            language: 'typescript',
+          },
+          {
+            animationStep: 2,
+            icon: '📌',
+            heading: 'Tuples — fixed-length arrays',
+            text: 'A tuple is a typed array with a fixed number of elements where each position has its own type. Tuples are useful for positional data like coordinates, key-value pairs, or function return values.',
+            codeExample: 'type Coordinate = [number, number]\n\nconst point: Coordinate = [10, 20]\n\n// Each position is separately typed:\nconst x = point[0]  // number\nconst y = point[1]  // number\n\n// Destructuring works naturally:\nconst [lat, lng] = point',
+            language: 'typescript',
+          },
+          {
+            animationStep: 3,
+            icon: '🏷️',
+            heading: 'Labeled tuples',
+            text: 'TypeScript supports labeled tuple elements for better readability. Labels do not change the type — they only appear in editor tooltips — but they make the intent much clearer than unnamed positional slots.',
+            codeExample: 'type Range = [start: number, end: number]\ntype KeyValue = [key: string, value: unknown]\n\nfunction getRange(): Range {\n  return [0, 100]\n}\n\nconst [start, end] = getRange()\nconsole.log(start, end)  // 0, 100\n\n// React useState is implemented as a tuple:\nconst [count, setCount] = useState(0)',
+            language: 'typescript',
+          },
+        ],
+      },
+      { id: 'playground', type: 'playground' as const, steps: [] },
+    ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Typed array (T[])', code: 'const scores: number[] = []\nconst names: string[] = ["Alice"]', note: 'Most common syntax; T[] and Array<T> are equivalent' },
+        { label: 'Generic array (Array<T>)', code: 'const items: Array<string> = []\nconst matrix: Array<number[]> = [[1,2],[3,4]]', note: 'More readable for complex nested types' },
+        { label: 'Readonly array', code: 'const config: readonly string[] = ["a", "b"]\n// config.push("c")  // Error: push does not exist on readonly', note: 'Prevents mutation — good for configuration' },
+        { label: 'Tuple', code: 'type Point = [x: number, y: number]\nconst p: Point = [10, 20]', note: 'Fixed-length; each index has its own type' },
+        { label: 'Tuple with optional element', code: 'type HttpHeader = [name: string, value: string, optional?: boolean]', note: 'Trailing ? makes the element optional' },
+      ],
+      patterns: [
+        { title: 'Array of objects', code: 'type Product = { id: number; name: string; price: number }\n\nconst cart: Product[] = []\n\nfunction addToCart(item: Product): void {\n  cart.push(item)\n}\n\nconst total = cart.reduce((sum, p) => sum + p.price, 0)', language: 'typescript' },
+        { title: 'Function returning tuple', code: 'function minMax(arr: number[]): [min: number, max: number] {\n  return [Math.min(...arr), Math.max(...arr)]\n}\n\nconst [min, max] = minMax([3, 1, 4, 1, 5, 9])', language: 'typescript' },
+      ],
+      whenToUse: 'Use T[] for any homogeneous collection. Use tuples when you have a fixed set of positional values with different types — especially for function return values that bundle related data without needing a full object.',
+      commonMistakes: [
+        'Using any[] — this defeats type checking on array contents; use the specific element type instead',
+        'Exceeding tuple length — TypeScript allows push on non-readonly tuples, which can corrupt positional assumptions; use readonly tuples when immutability matters',
+        'Confusing tuples with union arrays — [string, number] is a two-element tuple; (string | number)[] is an array of any length with mixed types',
+      ],
+    },
+  },
+  {
+    id: 'ts-classes',
+    nextTopicId: 'ts-enums',
+    title: 'Classes & Inheritance',
+    description: 'TypeScript classes with typed properties, access modifiers, and abstract base classes',
+    category: 'typescript-oop',
+    color: '#a78bfa',
+    estimatedMinutes: 12,
+    animationComponent: undefined,
+    bannerComponent: undefined,
+    playgroundType: 'monaco' as const,
+    sections: [
+      { id: 'intro', type: 'intro' as const, steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation' as const,
+        steps: [
+          {
+            animationStep: 0,
+            icon: '🏗️',
+            heading: 'Class syntax with types',
+            text: 'TypeScript classes work like JavaScript classes but with type annotations. Declare property types at the top of the class body before the constructor. TypeScript enforces that the constructor initializes every non-optional property.',
+            codeExample: 'class Animal {\n  name: string\n  age: number\n\n  constructor(name: string, age: number) {\n    this.name = name\n    this.age = age\n  }\n\n  speak(): string {\n    return `${this.name} says hello`\n  }\n}\n\nconst dog = new Animal("Rex", 3)\nconsole.log(dog.speak())  // Rex says hello',
+            language: 'typescript',
+          },
+          {
+            animationStep: 1,
+            icon: '🔒',
+            heading: 'readonly and optional properties',
+            text: 'Mark a property readonly to prevent mutation after construction. Mark it optional with ? when it may not always be provided. TypeScript checks both at compile time.',
+            codeExample: 'class User {\n  readonly id: number      // set once, never changed\n  name: string\n  email?: string           // may be absent\n\n  constructor(id: number, name: string, email?: string) {\n    this.id   = id\n    this.name = name\n    this.email = email\n  }\n}\n\nconst user = new User(1, "Alice")\n// user.id = 2  // Error: cannot assign to readonly property',
+            language: 'typescript',
+          },
+          {
+            animationStep: 2,
+            icon: '🛡️',
+            heading: 'Access modifiers',
+            text: 'TypeScript adds three access modifiers: public (default — accessible everywhere), private (only within the class), and protected (within the class and subclasses). The # prefix is JavaScript\'s native private field — enforced at runtime, not just compile time.',
+            codeExample: 'class BankAccount {\n  public  owner: string        // accessible anywhere\n  private balance: number      // compile-time private\n  #secret: string              // runtime-enforced private\n\n  constructor(owner: string, balance: number) {\n    this.owner   = owner\n    this.balance = balance\n    this.#secret = "shh"\n  }\n\n  deposit(amount: number) {\n    this.balance += amount     // OK — same class\n  }\n}\n\nconst acc = new BankAccount("Alice", 1000)\n// acc.balance   // Error: private\n// acc.#secret   // Error: private field',
+            language: 'typescript',
+          },
+          {
+            animationStep: 3,
+            icon: '🧬',
+            heading: 'Inheritance with extends',
+            text: 'A class can extend another class to inherit its public and protected members. The subclass must call super() before accessing this. Override methods to provide specialized behavior. Use protected members when subclasses need access but the outside world should not.',
+            codeExample: 'class Animal {\n  protected name: string\n\n  constructor(name: string) {\n    this.name = name\n  }\n\n  move(): string {\n    return `${this.name} moves`\n  }\n}\n\nclass Dog extends Animal {\n  breed: string\n\n  constructor(name: string, breed: string) {\n    super(name)         // required before this\n    this.breed = breed\n  }\n\n  bark(): string {\n    return `${this.name} barks!`  // protected — accessible in subclass\n  }\n}',
+            language: 'typescript',
+          },
+          {
+            animationStep: 4,
+            icon: '🎭',
+            heading: 'Abstract classes',
+            text: 'An abstract class cannot be instantiated directly — it exists to be extended. Abstract methods have no implementation in the base class; every concrete subclass must implement them. Use abstract classes when you want a shared base with a required contract.',
+            codeExample: 'abstract class Shape {\n  abstract area(): number      // no body — must be implemented\n\n  describe(): string {         // concrete method — inherited as-is\n    return `Area: ${this.area().toFixed(2)}`\n  }\n}\n\nclass Circle extends Shape {\n  constructor(private radius: number) { super() }\n\n  area(): number {\n    return Math.PI * this.radius ** 2\n  }\n}\n\nclass Rectangle extends Shape {\n  constructor(private w: number, private h: number) { super() }\n\n  area(): number { return this.w * this.h }\n}\n\n// new Shape()  // Error: cannot create abstract class',
+            language: 'typescript',
+          },
+        ],
+      },
+      { id: 'playground', type: 'playground' as const, steps: [] },
+    ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Class with typed props', code: 'class Point {\n  x: number\n  y: number\n  constructor(x: number, y: number) {\n    this.x = x; this.y = y\n  }\n}', note: 'Declare property types before constructor' },
+        { label: 'readonly', code: 'class User {\n  readonly id: number\n  constructor(id: number) { this.id = id }\n}', note: 'Can be set in constructor only' },
+        { label: 'Access modifiers', code: 'class Example {\n  public name: string     // anywhere\n  private secret: string  // this class only (compile-time)\n  protected base: string  // this + subclasses\n  #runtime: string        // truly private (runtime)\n}', note: 'private is compile-time; # is runtime-enforced' },
+        { label: 'extends', code: 'class Dog extends Animal {\n  constructor(name: string) {\n    super(name)  // must call before this\n  }\n}', note: 'Inherits public + protected members' },
+        { label: 'abstract class', code: 'abstract class Shape {\n  abstract area(): number\n  describe() { return `Area: ${this.area()}` }\n}', note: 'Cannot instantiate — must be subclassed' },
+        { label: 'implements', code: 'interface Serializable { serialize(): string }\nclass Model implements Serializable {\n  serialize() { return JSON.stringify(this) }\n}', note: 'Class must provide all interface members' },
+      ],
+      patterns: [
+        { title: 'Abstract base class', code: 'abstract class Logger {\n  abstract log(msg: string): void\n\n  info(msg: string)  { this.log(`[INFO]  ${msg}`) }\n  error(msg: string) { this.log(`[ERROR] ${msg}`) }\n}\n\nclass ConsoleLogger extends Logger {\n  log(msg: string) { console.log(msg) }\n}\n\nclass FileLogger extends Logger {\n  log(msg: string) { fs.appendFileSync("app.log", msg) }\n}', language: 'typescript' },
+        { title: 'Parameter shorthand', code: '// Constructor shorthand — no need to declare properties separately:\nclass Point {\n  constructor(\n    public readonly x: number,\n    public readonly y: number\n  ) {}\n\n  distanceTo(other: Point): number {\n    return Math.hypot(this.x - other.x, this.y - other.y)\n  }\n}', language: 'typescript' },
+      ],
+      whenToUse: 'Use classes when you need encapsulation, inheritance, or shared behavior across instances. Prefer abstract classes over interfaces when you also want to share concrete method implementations. For simple data containers, prefer interfaces or type aliases.',
+      commonMistakes: [
+        'Forgetting super() in subclass constructors — TypeScript errors if you access this before calling super()',
+        'Using private when you need protected — private members are inaccessible in subclasses; use protected when subclasses need them',
+        'Overusing class-based OOP in React — React components are best as functions; only reach for classes when modeling domain entities with behavior',
+      ],
+    },
+  },
+  {
+    id: 'ts-enums',
+    nextTopicId: 'ts-type-assertion',
+    title: 'Enums',
+    description: 'Named constants with numeric or string values — and exhaustive switch checks',
+    category: 'typescript-oop',
+    color: '#a78bfa',
+    estimatedMinutes: 8,
+    animationComponent: undefined,
+    bannerComponent: undefined,
+    playgroundType: 'monaco' as const,
+    sections: [
+      { id: 'intro', type: 'intro' as const, steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation' as const,
+        steps: [
+          {
+            animationStep: 0,
+            icon: '🔢',
+            heading: 'Numeric enums',
+            text: 'An enum declares a set of named constants. By default, values are auto-incremented numbers starting at 0. You can override the start value or set explicit values for any member.',
+            codeExample: 'enum Direction {\n  Up,    // 0\n  Down,  // 1\n  Left,  // 2\n  Right, // 3\n}\n\nconst move = Direction.Up\nconsole.log(move)          // 0\nconsole.log(Direction[0])  // "Up" (reverse lookup)',
+            language: 'typescript',
+          },
+          {
+            animationStep: 1,
+            icon: '🔤',
+            heading: 'String enums',
+            text: 'String enums require explicit string values for every member. They are more readable in logs and debugging because the value itself is meaningful — unlike numeric enums where you only see a number.',
+            codeExample: 'enum Status {\n  Draft     = "draft",\n  Published = "published",\n  Archived  = "archived",\n}\n\nfunction getLabel(status: Status): string {\n  return status.charAt(0).toUpperCase() + status.slice(1)\n}\n\nconsole.log(getLabel(Status.Published))  // "Published"',
+            language: 'typescript',
+          },
+          {
+            animationStep: 2,
+            icon: '✅',
+            heading: 'Exhaustive switch with never',
+            text: 'When every enum value is handled in a switch, TypeScript knows the default branch is unreachable. Assigning to never in the default catches missing cases at compile time — if you add a new enum member later, TypeScript errors immediately.',
+            codeExample: 'enum Color { Red, Green, Blue }\n\nfunction paint(color: Color): string {\n  switch (color) {\n    case Color.Red:   return "#ff0000"\n    case Color.Green: return "#00ff00"\n    case Color.Blue:  return "#0000ff"\n    default: {\n      const _exhaustive: never = color\n      // Add Color.Purple and this line will error!\n      throw new Error(`Unhandled color: ${color}`)\n    }\n  }\n}',
+            language: 'typescript',
+          },
+          {
+            animationStep: 3,
+            icon: '🔐',
+            heading: 'Real-world use: RBAC roles',
+            text: 'String enums are well-suited for roles, statuses, and configuration constants that appear in logs, APIs, and databases — the string value is self-documenting.',
+            codeExample: 'enum Role {\n  Admin   = "admin",\n  Editor  = "editor",\n  Viewer  = "viewer",\n}\n\nfunction canEdit(role: Role): boolean {\n  return role === Role.Admin || role === Role.Editor\n}\n\ncanEdit(Role.Admin)   // true\ncanEdit(Role.Viewer)  // false\n// canEdit("admin")   // Error: string not assignable to Role',
+            language: 'typescript',
+          },
+        ],
+      },
+      { id: 'playground', type: 'playground' as const, steps: [] },
+    ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Numeric enum', code: 'enum Direction { Up, Down, Left, Right }', note: 'Auto-numbered from 0; supports reverse lookup' },
+        { label: 'String enum', code: 'enum Status { Active = "active", Inactive = "inactive" }', note: 'Values are readable strings — preferred for APIs/logs' },
+        { label: 'Const enum', code: 'const enum Direction { Up, Down }\n// Inlined at compile time — no JS object emitted', note: 'Faster but cannot be iterated at runtime' },
+        { label: 'Enum as type', code: 'function move(dir: Direction): void { ... }\nmove(Direction.Up)  // OK\n// move(0)           // Error (with string enums)', note: 'Only enum members pass the type check' },
+      ],
+      patterns: [
+        { title: 'Exhaustive switch', code: 'enum Shape { Circle, Square, Triangle }\n\nfunction area(s: Shape, size: number): number {\n  switch (s) {\n    case Shape.Circle:   return Math.PI * size ** 2\n    case Shape.Square:   return size ** 2\n    case Shape.Triangle: return (Math.sqrt(3) / 4) * size ** 2\n    default: {\n      const _: never = s\n      throw new Error("Unhandled shape")\n    }\n  }\n}', language: 'typescript' },
+      ],
+      whenToUse: 'Use string enums for status values, roles, and configuration keys that appear in APIs, logs, and databases — the string value is self-documenting. Use const enum for compile-time constants that are never iterated. Prefer string unions ("draft" | "published") over enums in React props — they are simpler and require no import.',
+      commonMistakes: [
+        'Using numeric enums where the value appears in logs or APIs — the number has no meaning; use string enums instead',
+        'Forgetting that TypeScript numeric enums are two-way — Direction[0] gives "Up", which can cause unexpected behavior',
+        'Using enums in React component props — prefer string literal unions which are lighter and require no import',
+      ],
+    },
+  },
+  {
+    id: 'ts-type-assertion',
+    nextTopicId: 'ts-react',
+    title: 'Type Assertion',
+    description: 'Override TypeScript\'s inferred type with as — and when to use it safely',
+    category: 'typescript-oop',
+    color: '#a78bfa',
+    estimatedMinutes: 6,
+    animationComponent: undefined,
+    bannerComponent: undefined,
+    playgroundType: 'monaco' as const,
+    sections: [
+      { id: 'intro', type: 'intro' as const, steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation' as const,
+        steps: [
+          {
+            animationStep: 0,
+            icon: '🎯',
+            heading: 'The as keyword',
+            text: 'Type assertion tells TypeScript "trust me, I know the type better than you do." Use the as keyword (not angle brackets — they conflict with JSX). The assertion only affects the compiler, never the runtime value.',
+            codeExample: 'const input = document.getElementById("search")\n// TypeScript: HTMLElement | null\n\n// Assert the specific element type:\nconst searchInput = input as HTMLInputElement\nsearchInput.value  // now accessible — no error\n\n// Old angle-bracket syntax (avoid in .tsx files):\nconst old = <HTMLInputElement>input  // same effect, conflicts with JSX',
+            language: 'typescript',
+          },
+          {
+            animationStep: 1,
+            icon: '🌐',
+            heading: 'JSON and API responses',
+            text: 'When you parse JSON or receive data from an API, TypeScript infers the type as any or unknown. Asserting a specific type immediately after parsing gives you full type safety downstream — but you are responsible for the correctness of the assertion.',
+            codeExample: 'type User = { id: number; name: string; email: string }\n\nasync function fetchUser(id: number): Promise<User> {\n  const res  = await fetch(`/api/users/${id}`)\n  const data = await res.json()  // type: any\n  return data as User            // assert the shape\n}\n\n// Better: validate with a type guard before asserting\nfunction isUser(val: unknown): val is User {\n  return typeof val === "object" && val !== null && "id" in val\n}',
+            language: 'typescript',
+          },
+          {
+            animationStep: 2,
+            icon: '⚠️',
+            heading: 'Limitations and non-null assertion',
+            text: 'Type assertion cannot convert completely incompatible types — you can only assert to a type that TypeScript considers overlapping. The non-null assertion operator ! asserts that a value is neither null nor undefined. Use it sparingly: if the value really can be null at runtime, the assertion will not protect you.',
+            codeExample: '// Non-null assertion operator (!)\nconst canvas = document.getElementById("canvas")!\n// Type: HTMLElement (not HTMLElement | null)\n\n// Combine with as for specific element:\nconst ctx = (document.getElementById("canvas")! as HTMLCanvasElement)\n  .getContext("2d")\n\n// Incompatible assertion requires double assertion:\nconst num = "hello" as unknown as number  // dangerous!\n// Only use double assertion as a last resort',
+            language: 'typescript',
+          },
+        ],
+      },
+      { id: 'playground', type: 'playground' as const, steps: [] },
+    ],
+    cheatSheet: {
+      syntax: [
+        { label: 'as assertion', code: 'const el = document.querySelector(".btn") as HTMLButtonElement', note: 'Prefer as over angle brackets — compatible with JSX' },
+        { label: 'Non-null assertion (!)', code: 'const el = document.getElementById("app")!\n// Tells TS the value is not null or undefined', note: 'Use only when you are certain the value exists' },
+        { label: 'Double assertion', code: 'const x = someValue as unknown as TargetType', note: 'Last resort — signals something is wrong with the types' },
+        { label: 'as const', code: 'const config = { theme: "dark", lang: "en" } as const\n// type: { readonly theme: "dark"; readonly lang: "en" }', note: 'Narrows to literal types and makes object readonly' },
+      ],
+      patterns: [
+        { title: 'DOM element casting', code: 'const form  = document.querySelector("form")   as HTMLFormElement\nconst input = document.querySelector("#email") as HTMLInputElement\nconst btn   = document.querySelector("#submit") as HTMLButtonElement\n\nform.addEventListener("submit", (e) => {\n  e.preventDefault()\n  console.log(input.value)\n  btn.disabled = true\n})', language: 'typescript' },
+      ],
+      whenToUse: 'Use type assertion when TypeScript cannot infer the correct type from context — typically when selecting DOM elements, parsing JSON, or working with weakly-typed third-party libraries. Always prefer a runtime type guard over a bare assertion when the value comes from an external source.',
+      commonMistakes: [
+        'Using as to silence type errors instead of fixing the underlying issue — assertions bypass the type system; fix the root cause instead',
+        'Overusing non-null assertion (!) — each ! is a promise to TypeScript that can crash at runtime if the value is actually null',
+        'Double assertions (as unknown as T) — always a design smell; use proper generics or type guards instead',
+      ],
+    },
   },
   {
     id: 'ts-react',
-    nextTopicId: undefined,
+    nextTopicId: 'ts-zod',
     title: 'TypeScript in React',
     description: 'Type props, state, and hooks in React components for safer, self-documenting code',
-    category: 'typescript',
+    category: 'typescript-advanced',
     color: '#a78bfa',
     estimatedMinutes: 14,
     animationComponent: undefined,
@@ -4860,6 +5314,14 @@ export const TOPICS: Topic[] = [
             codeExample: `type User = {\n  id: number\n  name: string\n  email: string\n}\n\n// Generic fetch utility — reusable across any endpoint\nasync function fetchData<T>(url: string): Promise<T> {\n  const res = await fetch(url)\n  if (!res.ok) throw new Error('Fetch failed')\n  return res.json() as T\n}\n\n// Usage — TypeScript knows users is User[]\nconst users = await fetchData<User[]>('/api/users')\nconsole.log(users[0].name)  // autocomplete works!\n\n// Partial for PATCH — only send changed fields\nasync function updateUser(id: number, patch: Partial<User>) {\n  return fetchData<User>(\`/api/users/\${id}\`)\n}`,
             language: 'typescript',
           },
+          {
+            animationStep: 5,
+            icon: '🖱️',
+            heading: 'Typing DOM Events',
+            text: 'React provides specific event handler types for each HTML element. Use MouseEventHandler<Element>, ChangeEventHandler<Element>, and FormEventHandler<Element> so TypeScript knows which properties are available on the event object.',
+            codeExample: `import { MouseEventHandler, ChangeEventHandler, FormEventHandler } from 'react'\n\ntype ButtonProps = {\n  onClick: MouseEventHandler<HTMLButtonElement>\n}\n\nfunction SearchForm() {\n  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {\n    console.log(e.target.value)  // string — TypeScript knows the type\n  }\n\n  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {\n    e.preventDefault()           // FormEvent has preventDefault\n    const data = new FormData(e.currentTarget)\n    console.log(data.get('query'))\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <input name="query" onChange={handleChange} />\n      <button type="submit">Search</button>\n    </form>\n  )\n}`,
+            language: 'tsx',
+          },
         ],
       },
       { id: 'playground', type: 'playground' as const, steps: [] },
@@ -4872,6 +5334,7 @@ export const TOPICS: Topic[] = [
         { label: 'useReducer action union', code: 'type Action = { type: "inc" } | { type: "set"; value: number }', note: 'Discriminated union — exhaustive switch catches missing cases' },
         { label: 'children prop', code: 'type Props = { children: React.ReactNode }', note: 'ReactNode covers all valid JSX child types' },
         { label: 'Generic fetch', code: 'async function get<T>(url: string): Promise<T> {\n  return fetch(url).then(r => r.json())\n}', note: 'Assert the response type — T flows to callers' },
+        { label: 'Event handler types', code: 'type BtnProps = {\n  onClick: MouseEventHandler<HTMLButtonElement>\n  onChange: ChangeEventHandler<HTMLInputElement>\n  onSubmit: FormEventHandler<HTMLFormElement>\n}', note: 'Specific handler types give accurate event.target' },
       ],
       patterns: [
         { title: 'Component with typed props', code: 'type CardProps = {\n  title: string\n  subtitle?: string\n  variant: "primary" | "secondary"\n  children: React.ReactNode\n}\n\nfunction Card({ title, subtitle, variant, children }: CardProps) {\n  return (\n    <div className={`card card--${variant}`}>\n      <h2>{title}</h2>\n      {subtitle && <p>{subtitle}</p>}\n      {children}\n    </div>\n  )\n}', language: 'tsx' },
@@ -4883,6 +5346,157 @@ export const TOPICS: Topic[] = [
         'Letting useState infer from null — useState(null) gives type null, not string | null; always pass the generic',
         'Skipping types on useRef — untyped refs produce any; always pass the HTML element type',
         'Using any to silence errors — any disables all checking downstream; prefer unknown and narrow the type',
+      ],
+    },
+  },
+  // ─── Zod ──────────────────────────────────────────────────────────────────
+  {
+    id: 'ts-zod',
+    nextTopicId: undefined,
+    title: 'Zod — Runtime Validation',
+    description: 'Validate external data at runtime and infer TypeScript types from schemas — one source of truth',
+    category: 'typescript-advanced',
+    color: '#c4b5fd',
+    estimatedMinutes: 10,
+    animationComponent: undefined,
+    bannerComponent: undefined,
+    playgroundType: 'monaco' as const,
+    sections: [
+      { id: 'intro', type: 'intro' as const, steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation' as const,
+        steps: [
+          {
+            animationStep: 0,
+            icon: '🕳️',
+            heading: "TypeScript's blind spot",
+            text: "TypeScript types only exist during development. When compiled to JavaScript, every interface and type is erased. Data arriving at runtime — from APIs, forms, or localStorage — is never checked by TypeScript. You can assert a type with `as`, but that's a promise to the compiler, not a real check. If the API changes shape, your app crashes silently.",
+            codeExample: `// TypeScript trusts you — but doesn't verify at runtime:
+const res  = await fetch('/api/user')
+const user = await res.json() as User  // ← no actual check!
+
+// If the API returns { id: "abc" } instead of { id: 42 },
+// TypeScript won't warn you — the bug surfaces at runtime.`,
+            language: 'typescript',
+          },
+          {
+            animationStep: 1,
+            icon: '🛡️',
+            heading: 'Define schemas with Zod',
+            text: 'Zod is a TypeScript-first schema validation library. You define a schema using Zod primitives — z.string(), z.number(), z.boolean(), z.object(). The schema is a real JavaScript object that exists at runtime and can validate incoming data.',
+            codeExample: `import { z } from 'zod'
+
+const UserSchema = z.object({
+  id:      z.number(),
+  name:    z.string().min(2),
+  email:   z.string().email(),
+  isAdmin: z.boolean().default(false),
+})
+
+// Zod also handles arrays, unions, enums:
+const PostSchema = z.object({
+  id:     z.number(),
+  title:  z.string().min(1),
+  status: z.enum(['draft', 'published', 'archived']),
+  tags:   z.array(z.string()),
+})`,
+            language: 'typescript',
+          },
+          {
+            animationStep: 2,
+            icon: '✅',
+            heading: 'safeParse — validate without throwing',
+            text: 'Call safeParse() with the raw data. It returns { success, data, error } — never throws. Check success before accessing data. If validation fails, error contains detailed information about every field that did not match.',
+            codeExample: `const raw = await fetch('/api/user').then(r => r.json())
+
+const result = UserSchema.safeParse(raw)
+
+if (!result.success) {
+  console.error(result.error.format())
+  // { name: { _errors: ['String must contain at least 2 characters'] } }
+  throw new Error('Invalid API response')
+}
+
+// result.data is fully typed as User — safe to use
+console.log(result.data.name.toUpperCase())`,
+            language: 'typescript',
+          },
+          {
+            animationStep: 3,
+            icon: '🔗',
+            heading: 'z.infer — one source of truth',
+            text: "Instead of writing a TypeScript type AND a Zod schema for the same thing, derive the type directly from the schema using z.infer. The schema becomes the single source of truth: change the schema, and the type updates automatically.",
+            codeExample: `import { z } from 'zod'
+
+const UserSchema = z.object({
+  id:    z.number(),
+  name:  z.string(),
+  email: z.string().email(),
+})
+
+// Derive the TypeScript type from the schema — no duplication:
+type User = z.infer<typeof UserSchema>
+// { id: number; name: string; email: string }
+
+// Reusable validated fetch utility:
+async function fetchUser(id: number): Promise<User> {
+  const raw = await fetch(\`/api/users/\${id}\`).then(r => r.json())
+  return UserSchema.parse(raw)  // throws if invalid
+}`,
+            language: 'typescript',
+          },
+        ],
+      },
+      { id: 'playground', type: 'playground' as const, steps: [] },
+    ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Primitives', code: 'z.string()   z.number()   z.boolean()\nz.date()     z.undefined() z.null()', note: 'Building blocks for all schemas' },
+        { label: 'String refinements', code: 'z.string().min(2).max(50)\nz.string().email()\nz.string().url()\nz.string().regex(/^[a-z]+$/)', note: 'Chain methods to add constraints' },
+        { label: 'Object schema', code: 'const Schema = z.object({\n  id:   z.number(),\n  name: z.string(),\n  age:  z.number().optional(),\n})', note: 'optional() makes a field nullable/undefined' },
+        { label: 'Arrays & enums', code: 'z.array(z.string())\nz.enum(["draft", "published"])', note: 'Composable — use inside z.object()' },
+        { label: 'safeParse', code: 'const { success, data, error } = Schema.safeParse(raw)\nif (!success) throw new Error(error.message)', note: 'Never throws — always check success first' },
+        { label: 'parse', code: 'const user = Schema.parse(raw)  // throws ZodError if invalid', note: 'Use when you want to throw on invalid input' },
+        { label: 'z.infer', code: 'type User = z.infer<typeof UserSchema>', note: 'Derive TypeScript type from schema — single source of truth' },
+      ],
+      patterns: [
+        { title: 'Validated fetch utility', code: `import { z } from 'zod'
+
+const PostSchema = z.object({
+  id:    z.number(),
+  title: z.string(),
+  body:  z.string(),
+})
+
+type Post = z.infer<typeof PostSchema>
+
+async function fetchPost(id: number): Promise<Post> {
+  const res = await fetch(\`/api/posts/\${id}\`)
+  if (!res.ok) throw new Error(\`HTTP \${res.status}\`)
+  const raw = await res.json()
+  return PostSchema.parse(raw)  // throws if shape is wrong
+}`, language: 'typescript' },
+        { title: 'Form validation', code: `const LoginSchema = z.object({
+  email:    z.string().email('Invalid email'),
+  password: z.string().min(8, 'At least 8 characters'),
+})
+
+type LoginForm = z.infer<typeof LoginSchema>
+
+function validate(data: unknown) {
+  const result = LoginSchema.safeParse(data)
+  if (!result.success) {
+    return result.error.format()  // per-field errors
+  }
+  return result.data  // typed LoginForm
+}`, language: 'typescript' },
+      ],
+      whenToUse: 'Use Zod whenever data crosses a boundary you do not control: API responses, form submissions, URL parameters, localStorage values. Define the schema once and derive the TypeScript type from it with z.infer — never maintain a separate type and validator for the same shape.',
+      commonMistakes: [
+        'Using as User instead of parsing with Zod — type assertions are promises to the compiler, not runtime checks; the assertion silently passes even if the data has the wrong shape',
+        'Calling parse() instead of safeParse() in user-facing code — parse() throws a ZodError that can crash a component; safeParse() returns success/error so you can handle it gracefully',
+        'Forgetting to derive the type with z.infer — if you write a separate TypeScript type, it can drift out of sync with the schema; always use z.infer as the single source of truth',
       ],
     },
   },
@@ -6008,11 +6622,11 @@ export const TOPICS: Topic[] = [
     category: 'css-frameworks',
     animationComponent: 'CSSBasicsViz',
     bannerComponent: 'TailwindBanner',
-    nextTopicId: undefined,
+    nextTopicId: 'css-tailwind-layout',
     title: 'Tailwind CSS',
     description: 'Tailwind CSS is a utility-first framework: apply small single-purpose classes like `flex`, `p-4`, or `text-blue-500` directly on elements.',
     color: '#38bdf8',
-    estimatedMinutes: 10,
+    estimatedMinutes: 8,
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -6030,6 +6644,158 @@ export const TOPICS: Topic[] = [
           },
           {
             animationStep: 1,
+            icon: '🏗️',
+            heading: 'Why CSS Frameworks?',
+            text: 'Raw CSS has pain points: repetitive rules, naming conventions (BEM), and maintaining media queries across a large codebase. Utility-first frameworks solve this by applying single-purpose classes directly in HTML — no naming decisions, no context switching between files.',
+            codeExample: `<!-- BEM approach: lots of CSS context switching -->\n<div class="card card--featured">\n  <h2 class="card__title card__title--large">Title</h2>\n</div>\n\n<!-- Tailwind approach: everything in HTML -->\n<div class="rounded-xl shadow-lg border border-gray-100 p-6">\n  <h2 class="text-2xl font-bold text-gray-900">Title</h2>\n</div>`,
+            language: 'html',
+          },
+          {
+            animationStep: 2,
+            icon: '⚙️',
+            heading: 'Setup: CDN and npm',
+            text: 'For quick prototyping, add the CDN Play script to your HTML. For production, install via npm and use a PostCSS plugin or the Vite/CLI integration — this enables purging unused styles and customizing the design system via tailwind.config.js.',
+            codeExample: `<!-- CDN (prototyping only) -->\n<!-- Add script src from cdn.tailwindcss.com to your HTML -->\n\n<!-- npm setup -->\n<!-- npm install -D tailwindcss -->\n<!-- npx tailwindcss init -->\n<!-- Add @tailwind directives to CSS:\n  @tailwind base;\n  @tailwind components;\n  @tailwind utilities;\n-->`,
+            language: 'html',
+          },
+          {
+            animationStep: 3,
+            icon: '🎨',
+            heading: 'Common Utility Classes',
+            text: 'Tailwind covers spacing (p-, m-), sizing (w-, h-), typography (text-, font-), colors (bg-, text-, border-), flexbox/grid (flex, grid, items-, justify-), borders (rounded-, border-), and effects (shadow-, opacity-). The full list is in the official docs.',
+            codeExample: `<button class="\n  px-6 py-3\n  bg-indigo-600 text-white\n  font-semibold text-sm\n  rounded-lg shadow\n  hover:bg-indigo-700\n  transition-colors duration-200\n">\n  Save changes\n</button>`,
+            language: 'html',
+          },
+          {
+            animationStep: 4,
+            icon: '📏',
+            heading: 'Responsive Breakpoints',
+            text: 'Tailwind is mobile-first. Unprefixed classes apply to all screen sizes; breakpoint prefixes apply from that width upward. Breakpoints: sm: 640px · md: 768px · lg: 1024px · xl: 1280px · 2xl: 1536px. Stack prefixes to build fully responsive layouts without writing a single media query.',
+            codeExample: `<!-- 1 col on mobile, 2 on md, 3 on lg -->\n<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">\n  <div class="p-4 bg-white rounded">Card</div>\n</div>\n\n<!-- Text grows at each breakpoint -->\n<p class="text-sm md:text-base lg:text-xl font-medium text-gray-700">\n  Responsive text\n</p>`,
+            language: 'html',
+          },
+        ],
+      },
+      { id: 'playground', type: 'playground', steps: [] },
+    ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Padding / Margin', code: 'p-4  px-2  py-3  m-auto  mt-6' },
+        { label: 'Flex layout', code: 'flex items-center justify-between gap-4' },
+        { label: 'Grid layout', code: 'grid grid-cols-3 gap-4' },
+        { label: 'Responsive prefix', code: 'text-sm md:text-base lg:text-lg' },
+        { label: 'Colors & backgrounds', code: 'bg-indigo-600 text-white border-gray-200' },
+        { label: 'Typography', code: 'text-xl font-bold tracking-tight leading-snug' },
+      ],
+      patterns: [
+        { title: 'Button', code: '<button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">\n  Save\n</button>', language: 'html' },
+        { title: 'Card', code: '<div class="rounded-xl shadow p-6 bg-white max-w-md">\n  <h2 class="text-xl font-bold mb-2">Title</h2>\n  <p class="text-gray-500">Description text here.</p>\n</div>', language: 'html' },
+        { title: 'Responsive grid', code: '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">\n  <div class="p-4 bg-white rounded shadow">Card 1</div>\n  <div class="p-4 bg-white rounded shadow">Card 2</div>\n</div>', language: 'html' },
+      ],
+      whenToUse: 'Use Tailwind when you want fast iteration without switching between HTML and CSS files. Especially powerful in component-based frameworks (React, Vue, Svelte) where class lists live next to component logic.',
+      commonMistakes: [
+        'Trying to write dynamic class strings that Tailwind cannot detect at build time (e.g. `"bg-" + color`) — Tailwind scans for full class names; use full strings or a safelist.',
+        'Forgetting the responsive prefix order — mobile-first means unprefixed classes apply to all sizes, prefixed ones apply upward.',
+        'Confusing Tailwind\'s spacing scale — p-4 is 1rem (16px), not 4px. Each step is 4px.',
+      ],
+    },
+  },
+  {
+    id: 'css-tailwind-layout',
+    category: 'css-frameworks',
+    animationComponent: 'CSSBasicsViz',
+    bannerComponent: 'TailwindBanner',
+    nextTopicId: 'css-tailwind-states',
+    title: 'Tailwind: Layout & Spacing',
+    description: 'Master Tailwind\'s spacing scale, sizing utilities, and layout primitives — flex and grid without writing a single line of custom CSS.',
+    color: '#38bdf8',
+    estimatedMinutes: 8,
+    playgroundType: 'monaco',
+    sections: [
+      { id: 'intro', type: 'intro', steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation',
+        steps: [
+          {
+            animationStep: 0,
+            icon: '📐',
+            heading: 'The Spacing Scale',
+            text: 'Tailwind uses a consistent 4px base unit. p-1 = 4px, p-2 = 8px, p-4 = 16px, p-8 = 32px. All padding, margin, gap, and sizing utilities follow the same scale, so everything aligns naturally. Use px-* / py-* for horizontal/vertical padding, mx-* / my-* for margins. space-x-* and space-y-* add gap between children without touching the parent.',
+            codeExample: `<!-- Consistent spacing scale -->\n<div class="p-4">16px padding all sides</div>\n<div class="px-6 py-3">24px horizontal, 12px vertical</div>\n<div class="mt-8 mb-4">32px top, 16px bottom margin</div>\n\n<!-- Gap between children -->\n<div class="flex space-x-4">\n  <span>A</span>\n  <span>B</span>  <!-- 16px gap between each -->\n  <span>C</span>\n</div>`,
+            language: 'html',
+          },
+          {
+            animationStep: 1,
+            icon: '📦',
+            heading: 'Sizing & Centering',
+            text: 'w-full makes an element 100% wide, w-1/2 is 50%, w-64 is 256px. Use max-w-* to cap width: max-w-sm (384px), max-w-md (448px), max-w-xl (576px), max-w-screen-lg (1024px). The classic centering pattern is max-w-* + mx-auto. Heights: h-screen fills the viewport, h-full fills the parent.',
+            codeExample: `<!-- Centered container pattern -->\n<div class="max-w-2xl mx-auto px-4">\n  Page content centered and capped at 672px\n</div>\n\n<!-- Fixed & percentage widths -->\n<div class="w-full">Full width</div>\n<div class="w-1/2">Half width</div>\n<div class="w-64">256px fixed</div>\n\n<!-- Min/max constraints -->\n<div class="min-h-screen flex flex-col">\n  Full-height page layout\n</div>`,
+            language: 'html',
+          },
+          {
+            animationStep: 2,
+            icon: '↔️',
+            heading: 'Flexbox in Tailwind',
+            text: 'Add flex to activate flexbox. items-center aligns children vertically, justify-between spreads them apart, gap-* controls spacing. flex-wrap lets children wrap to the next line. flex-1 makes an item grow to fill available space — useful for sidebars and main content areas.',
+            codeExample: `<!-- Navbar pattern -->\n<nav class="flex items-center justify-between px-6 py-4">\n  <span class="font-bold">Logo</span>\n  <div class="flex items-center gap-4">\n    <a href="#">Home</a>\n    <a href="#">About</a>\n    <button class="px-4 py-2 bg-blue-600 text-white rounded">Sign in</button>\n  </div>\n</nav>\n\n<!-- Sidebar + main -->\n<div class="flex h-screen">\n  <aside class="w-64 shrink-0">Sidebar</aside>\n  <main class="flex-1 overflow-auto">Content</main>\n</div>`,
+            language: 'html',
+          },
+          {
+            animationStep: 3,
+            icon: '▦',
+            heading: 'Grid in Tailwind',
+            text: 'grid + grid-cols-* creates column layouts. grid-cols-3 = three equal columns. col-span-2 stretches an item across two columns. gap-* controls both row and column gap. Combine with responsive prefixes for layouts that adapt: grid-cols-1 md:grid-cols-2 lg:grid-cols-3.',
+            codeExample: `<!-- Responsive card grid -->\n<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">\n  <div class="rounded-xl bg-white shadow p-6">Card</div>\n  <div class="rounded-xl bg-white shadow p-6">Card</div>\n  <div class="rounded-xl bg-white shadow p-6">Card</div>\n</div>\n\n<!-- Featured item spanning columns -->\n<div class="grid grid-cols-3 gap-4">\n  <div class="col-span-2 bg-blue-100 p-4">Wide item</div>\n  <div class="bg-gray-100 p-4">Narrow item</div>\n</div>`,
+            language: 'html',
+          },
+        ],
+      },
+      { id: 'playground', type: 'playground', steps: [] },
+    ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Padding', code: 'p-4  px-6  py-2  pt-8  pb-0' },
+        { label: 'Margin', code: 'm-4  mx-auto  mt-8  -mt-4 (negative)' },
+        { label: 'Child spacing', code: 'space-x-4  space-y-2' },
+        { label: 'Width / Height', code: 'w-full  w-1/2  w-64  h-screen  h-full' },
+        { label: 'Max width', code: 'max-w-sm  max-w-2xl  max-w-screen-lg' },
+        { label: 'Flexbox', code: 'flex  items-center  justify-between  gap-4  flex-1  flex-wrap' },
+        { label: 'Grid', code: 'grid  grid-cols-3  col-span-2  gap-6' },
+      ],
+      patterns: [
+        { title: 'Centered container', code: '<div class="max-w-4xl mx-auto px-4 py-8">\n  Centered content\n</div>', language: 'html' },
+        { title: 'Card grid', code: '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">\n  <div class="rounded-xl bg-white shadow p-6">Card</div>\n</div>', language: 'html' },
+        { title: 'Sidebar layout', code: '<div class="flex h-screen">\n  <aside class="w-64 shrink-0 border-r">Sidebar</aside>\n  <main class="flex-1 overflow-auto p-6">Main</main>\n</div>', language: 'html' },
+      ],
+      whenToUse: 'Use the spacing scale utilities (p-*, m-*, gap-*) everywhere for consistent rhythm. Use max-w-* + mx-auto for page containers. Choose flex for one-dimensional layouts (rows/columns of items), grid for two-dimensional layouts (cards, dashboards, page structure).',
+      commonMistakes: [
+        'Forgetting that p-4 = 16px (not 4px) — Tailwind\'s scale uses 4px increments: p-1=4px, p-2=8px, p-4=16px.',
+        'Using margin between flex/grid children instead of gap — gap is cleaner and avoids collapsing margin edge cases.',
+        'Setting w-full on a flex child when flex-1 is more appropriate — flex-1 fills remaining space, w-full always takes 100%.',
+        'Missing shrink-0 on fixed-width sidebars — without it, the sidebar can shrink below its set width when space is tight.',
+      ],
+    },
+  },
+  {
+    id: 'css-tailwind-states',
+    category: 'css-frameworks',
+    animationComponent: 'CSSBasicsViz',
+    bannerComponent: 'TailwindBanner',
+    nextTopicId: 'css-tailwind-advanced',
+    title: 'Tailwind: States & Interactivity',
+    description: 'Style elements based on hover, focus, and form states. Use group and peer to react to parent/sibling state without JavaScript.',
+    color: '#38bdf8',
+    estimatedMinutes: 7,
+    playgroundType: 'monaco',
+    sections: [
+      { id: 'intro', type: 'intro', steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation',
+        steps: [
+          {
+            animationStep: 0,
             icon: '🖱️',
             heading: 'State Variants',
             text: 'Prefix any utility with a state variant to apply it conditionally. hover:, focus:, active: cover mouse/keyboard interactions. disabled: and checked: target form states. focus-visible: only activates on keyboard focus — great for accessible outlines without mouse rings. Variants can be stacked: hover:disabled:opacity-50.',
@@ -6058,39 +6824,7 @@ export const TOPICS: Topic[] = [
             language: 'html',
           },
           {
-            animationStep: 2,
-            icon: '🎨',
-            heading: 'Common Utility Classes',
-            text: 'Tailwind covers spacing (p-, m-), sizing (w-, h-), typography (text-, font-), colors (bg-, text-, border-), flexbox/grid (flex, grid, items-, justify-), borders (rounded-, border-), and effects (shadow-, opacity-). The full list is in the official docs.',
-            codeExample: `<button class="\n  px-6 py-3\n  bg-indigo-600 text-white\n  font-semibold text-sm\n  rounded-lg shadow\n  hover:bg-indigo-700\n  transition-colors duration-200\n">\n  Save changes\n</button>`,
-            language: 'html',
-          },
-          {
-            animationStep: 3,
-            icon: '⚙️',
-            heading: 'Setup: CDN and npm',
-            text: 'For quick prototyping, add the CDN Play script to your HTML. For production, install via npm and use a PostCSS plugin or the Vite/CLI integration — this enables purging unused styles and customizing the design system via tailwind.config.js.',
-            codeExample: `<!-- CDN (prototyping only) -->\n<!-- Add script src from cdn.tailwindcss.com to your HTML -->\n\n<!-- npm setup -->\n<!-- npm install -D tailwindcss -->\n<!-- npx tailwindcss init -->\n<!-- Add @tailwind directives to CSS:\n  @tailwind base;\n  @tailwind components;\n  @tailwind utilities;\n-->`,
-            language: 'html',
-          },
-          {
-            animationStep: 4,
-            icon: '🏗️',
-            heading: 'Why CSS Frameworks?',
-            text: 'Raw CSS has pain points: repetitive rules, naming conventions (BEM), and maintaining media queries across a large codebase. Utility-first frameworks solve this by applying single-purpose classes directly in HTML — no naming decisions, no context switching between files.',
-            codeExample: `<!-- BEM approach: lots of CSS context switching -->\n<div class="card card--featured">\n  <h2 class="card__title card__title--large">Title</h2>\n</div>\n\n<!-- Tailwind approach: everything in HTML -->\n<div class="rounded-xl shadow-lg border border-gray-100 p-6">\n  <h2 class="text-2xl font-bold text-gray-900">Title</h2>\n</div>`,
-            language: 'html',
-          },
-          {
-            animationStep: 5,
-            icon: '📏',
-            heading: 'Responsive Breakpoints',
-            text: 'Tailwind is mobile-first. Unprefixed classes apply to all screen sizes; breakpoint prefixes apply from that width upward. Breakpoints: sm: 640px · md: 768px · lg: 1024px · xl: 1280px · 2xl: 1536px. Stack prefixes to build fully responsive layouts without writing a single media query.',
-            codeExample: `<!-- 1 col on mobile, 2 on md, 3 on lg -->\n<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">\n  <div class="p-4 bg-white rounded">Card</div>\n</div>\n\n<!-- Text grows at each breakpoint -->\n<p class="text-sm md:text-base lg:text-xl font-medium text-gray-700">\n  Responsive text\n</p>`,
-            language: 'html',
-          },
-          {
-            animationStep: 6,
+            animationStep: 1,
             icon: '🌙',
             heading: 'Dark Mode',
             text: 'Enable dark mode by adding `darkMode: \'class\'` to tailwind.config.js. Then toggle the `dark` class on the `<html>` element (via JavaScript). Any class prefixed with `dark:` activates only when the dark class is present on a parent — letting you theme your entire app with a single toggle.',
@@ -6098,23 +6832,7 @@ export const TOPICS: Topic[] = [
             language: 'html',
           },
           {
-            animationStep: 7,
-            icon: '🎯',
-            heading: 'Arbitrary Values',
-            text: 'When you need an exact value outside the design system, use square bracket syntax. Works on any utility property: widths, colors, spacing, grid templates, even CSS calc() expressions. Use sparingly — prefer design tokens for consistency across the project.',
-            codeExample: `<!-- Arbitrary pixel value -->\n<div class="w-[347px] h-[200px]">\n\n<!-- Arbitrary hex color -->\n<div class="bg-[#1da1f2] text-[#ffffff]">\n\n<!-- Arbitrary calc -->\n<div class="mt-[calc(100vh-4rem)]">\n\n<!-- Arbitrary grid template -->\n<div class="grid grid-cols-[1fr_2fr_1fr]">`,
-            language: 'html',
-          },
-          {
-            animationStep: 8,
-            icon: '🔧',
-            heading: '@layer & @apply',
-            text: '@layer organises your CSS into three buckets: base (global resets), components (reusable UI patterns), utilities (single-purpose custom classes). @apply lets you compose Tailwind utilities into a custom class — useful when a pattern repeats across many elements but you still want Tailwind\'s design tokens.',
-            codeExample: `/* In your main CSS file */\n@layer base {\n  h1 { @apply text-3xl font-bold text-gray-900; }\n  a  { @apply text-blue-600 hover:underline; }\n}\n\n@layer components {\n  .btn-primary {\n    @apply flex items-center gap-2 px-4 py-2\n           rounded-lg bg-blue-500 text-white\n           hover:bg-blue-600 transition-colors;\n  }\n}\n\n@layer utilities {\n  .scrollbar-hidden { scrollbar-width: none; }\n}`,
-            language: 'css',
-          },
-          {
-            animationStep: 9,
+            animationStep: 2,
             icon: '👥',
             heading: 'group & peer — parent/sibling state',
             text: 'Mark a parent with group to style children based on the parent\'s state. Mark a sibling with peer to style subsequent siblings. Both support named variants (group/item, peer/draft) for nested patterns. has: lets a parent react to its own descendants — e.g. "highlight a label when its checkbox is checked".',
@@ -6144,8 +6862,68 @@ export const TOPICS: Topic[] = [
 </label>`,
             language: 'html',
           },
+        ],
+      },
+      { id: 'playground', type: 'playground', steps: [] },
+    ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Hover / active', code: 'hover:bg-blue-600  active:bg-blue-700' },
+        { label: 'Focus (keyboard-safe)', code: 'focus-visible:outline-2 focus-visible:outline-blue-500' },
+        { label: 'Disabled state', code: 'disabled:opacity-50 disabled:cursor-not-allowed' },
+        { label: 'Form states', code: 'checked:bg-blue-500  invalid:border-red-500' },
+        { label: 'Dark mode', code: 'bg-white dark:bg-gray-900  text-black dark:text-white' },
+        { label: 'group (parent → child)', code: '<a class="group">\n  <span class="group-hover:text-blue-500">Link text</span>\n</a>' },
+        { label: 'peer (sibling)', code: '<input class="peer" />\n<p class="invisible peer-invalid:visible text-red-500">Error</p>' },
+      ],
+      patterns: [
+        { title: 'Interactive button', code: '<button class="px-4 py-2 bg-blue-500 text-white rounded\n  hover:bg-blue-600 active:bg-blue-700\n  focus-visible:outline-2 focus-visible:outline-blue-500\n  disabled:opacity-50 disabled:cursor-not-allowed\n  transition-colors">\n  Save\n</button>', language: 'html' },
+        { title: 'Hover card with group', code: '<a href="#" class="group block rounded-lg p-4 hover:bg-indigo-50">\n  <h3 class="font-semibold group-hover:text-indigo-600">Title</h3>\n  <p class="text-gray-500 group-hover:text-indigo-500">Description</p>\n</a>', language: 'html' },
+        { title: 'Peer validation', code: '<label class="block">\n  <input type="email" class="peer border rounded px-3 py-2 w-full" />\n  <p class="invisible peer-invalid:visible text-sm text-red-500 mt-1">\n    Enter a valid email.\n  </p>\n</label>', language: 'html' },
+      ],
+      whenToUse: 'Use state variants for all interactive styling instead of writing custom CSS hover/focus rules. Use group and peer to create compound interactive patterns that react to parent or sibling state without JavaScript.',
+      commonMistakes: [
+        'Using group/peer without marking the parent/sibling element — the group or peer class must be on the ancestor/preceding element, not the child being styled.',
+        'Using focus: instead of focus-visible: for outlines — focus-visible: skips mouse clicks and only shows on keyboard navigation, which is better for accessibility.',
+        'Using tailwind.config.js darkMode setting in Tailwind v4 — v4 uses media queries by default; override with @variant dark in CSS.',
+      ],
+    },
+  },
+  {
+    id: 'css-tailwind-advanced',
+    category: 'css-frameworks',
+    animationComponent: 'CSSBasicsViz',
+    bannerComponent: 'TailwindBanner',
+    nextTopicId: undefined,
+    title: 'Tailwind: Advanced & v4',
+    description: 'Escape the design system with arbitrary values, organise styles with @layer, define custom tokens with @theme (v4), and build container-aware components.',
+    color: '#38bdf8',
+    estimatedMinutes: 8,
+    playgroundType: 'monaco',
+    sections: [
+      { id: 'intro', type: 'intro', steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation',
+        steps: [
           {
-            animationStep: 10,
+            animationStep: 0,
+            icon: '🎯',
+            heading: 'Arbitrary Values',
+            text: 'When you need an exact value outside the design system, use square bracket syntax. Works on any utility property: widths, colors, spacing, grid templates, even CSS calc() expressions. Use sparingly — prefer design tokens for consistency across the project.',
+            codeExample: `<!-- Arbitrary pixel value -->\n<div class="w-[347px] h-[200px]">\n\n<!-- Arbitrary hex color -->\n<div class="bg-[#1da1f2] text-[#ffffff]">\n\n<!-- Arbitrary calc -->\n<div class="mt-[calc(100vh-4rem)]">\n\n<!-- Arbitrary grid template -->\n<div class="grid grid-cols-[1fr_2fr_1fr]">`,
+            language: 'html',
+          },
+          {
+            animationStep: 1,
+            icon: '🔧',
+            heading: '@layer & @apply',
+            text: '@layer organises your CSS into three buckets: base (global resets), components (reusable UI patterns), utilities (single-purpose custom classes). @apply lets you compose Tailwind utilities into a custom class — useful when a pattern repeats across many elements but you still want Tailwind\'s design tokens.',
+            codeExample: `/* In your main CSS file */\n@layer base {\n  h1 { @apply text-3xl font-bold text-gray-900; }\n  a  { @apply text-blue-600 hover:underline; }\n}\n\n@layer components {\n  .btn-primary {\n    @apply flex items-center gap-2 px-4 py-2\n           rounded-lg bg-blue-500 text-white\n           hover:bg-blue-600 transition-colors;\n  }\n}\n\n@layer utilities {\n  .scrollbar-hidden { scrollbar-width: none; }\n}`,
+            language: 'css',
+          },
+          {
+            animationStep: 2,
             icon: '🎨',
             heading: '@theme — Custom Design Tokens (v4)',
             text: 'Tailwind v4 replaces tailwind.config.js with a CSS-first approach. Define custom design tokens in @theme — Tailwind automatically generates matching utility classes for colors, spacing, fonts, and more. Use --color-* for colors, --font-* for fonts, --breakpoint-* for responsive variants. Reset a namespace with --color-*: initial to replace all defaults.',
@@ -6177,7 +6955,7 @@ export const TOPICS: Topic[] = [
             language: 'css',
           },
           {
-            animationStep: 11,
+            animationStep: 3,
             icon: '📦',
             heading: 'Container Queries',
             text: 'Container queries let a component respond to its own container\'s size — not the viewport. Mark a parent with @container, then prefix child classes with @sm:, @md:, @lg: etc. This makes truly reusable components that adapt regardless of where they are placed on the page.',
@@ -6211,28 +6989,23 @@ export const TOPICS: Topic[] = [
     ],
     cheatSheet: {
       syntax: [
-        { label: 'Padding / Margin', code: 'p-4  px-2  py-3  m-auto  mt-6' },
-        { label: 'Flex layout', code: 'flex items-center justify-between gap-4' },
-        { label: 'Responsive prefix', code: 'text-sm md:text-base lg:text-lg' },
-        { label: 'State variants', code: 'hover:bg-blue-600  focus-visible:outline-2  disabled:opacity-50  checked:bg-blue-500' },
-        { label: 'group (parent → child)', code: '<a class="group">\n  <span class="group-hover:text-blue-500">Link text</span>\n</a>' },
-        { label: 'peer (sibling)', code: '<input class="peer" />\n<p class="invisible peer-invalid:visible text-red-500">Error</p>' },
+        { label: 'Arbitrary value', code: 'w-[347px]  bg-[#1da1f2]  mt-[calc(100vh-4rem)]' },
+        { label: '@layer base', code: '@layer base {\n  h1 { @apply text-3xl font-bold; }\n}' },
+        { label: '@layer components', code: '@layer components {\n  .btn { @apply px-4 py-2 rounded bg-blue-500 text-white; }\n}' },
         { label: '@theme (v4)', code: '@theme {\n  --color-brand: oklch(0.60 0.22 250);\n  --font-display: "Satoshi", sans-serif;\n}', note: 'CSS-first config — replaces tailwind.config.js' },
         { label: 'Container query', code: '<div class="@container">\n  <div class="flex-col @md:flex-row">...</div>\n</div>' },
       ],
       patterns: [
-        { title: 'Interactive button', code: '<button class="px-4 py-2 bg-blue-500 text-white rounded\n  hover:bg-blue-600 active:bg-blue-700\n  focus-visible:outline-2 focus-visible:outline-blue-500\n  disabled:opacity-50 disabled:cursor-not-allowed\n  transition-colors">\n  Save\n</button>', language: 'html' },
-        { title: 'Card', code: '<div class="rounded-xl shadow p-6 bg-white max-w-md">\n  ...\n</div>', language: 'html' },
-        { title: 'Hover card with group', code: '<a href="#" class="group block rounded-lg p-4 hover:bg-indigo-50">\n  <h3 class="font-semibold group-hover:text-indigo-600">Title</h3>\n  <p class="text-gray-500 group-hover:text-indigo-500">Description</p>\n</a>', language: 'html' },
         { title: 'Custom theme (v4)', code: '@theme {\n  --color-brand-500: oklch(0.60 0.22 250);\n  --font-display: "Satoshi", sans-serif;\n  --breakpoint-3xl: 120rem;\n}', language: 'css' },
+        { title: 'Component class with @apply', code: '@layer components {\n  .card {\n    @apply rounded-xl shadow p-6 bg-white;\n  }\n  .btn-primary {\n    @apply px-4 py-2 rounded-lg bg-blue-500 text-white\n           hover:bg-blue-600 transition-colors;\n  }\n}', language: 'css' },
+        { title: 'Container-aware card', code: '<div class="@container">\n  <div class="flex flex-col @md:flex-row gap-4 p-4">\n    <img class="w-full @md:w-24 rounded" src="/img.jpg" alt="" />\n    <div>\n      <h3 class="text-sm @md:text-base font-semibold">Name</h3>\n      <p class="text-xs @md:text-sm text-gray-500">Role</p>\n    </div>\n  </div>\n</div>', language: 'html' },
       ],
-      whenToUse: 'Use Tailwind when you want fast iteration without switching between HTML and CSS files. Especially powerful in component-based frameworks (React, Vue, Svelte) where class lists live next to component logic.',
+      whenToUse: 'Use arbitrary values for truly one-off design needs. Use @layer and @apply when the same utility pattern repeats across 5+ elements. Use @theme in v4 projects to define brand tokens that generate utility classes automatically. Use container queries for reusable components that must adapt to their placement context.',
       commonMistakes: [
-        'Trying to write dynamic class strings that Tailwind cannot detect at build time (e.g. `"bg-" + color`) — Tailwind scans for full class names; use full strings or a safelist.',
-        'Forgetting the responsive prefix order — mobile-first means unprefixed classes apply to all sizes, prefixed ones apply upward.',
-        'Using arbitrary values too often (`w-[347px]`) — prefer spacing scale values for consistency across the design system.',
-        'Using group/peer without marking the parent/sibling — the group/peer class must be on the ancestor/preceding element, not the styled child.',
+        'Using arbitrary values too often (`w-[347px]`) — prefer the spacing/sizing scale for consistency across the design system.',
+        'Using @apply everywhere — it recreates the same abstraction problem as regular CSS. Reserve it for truly repeated patterns.',
         'Using tailwind.config.js in v4 — Tailwind v4 is CSS-first; use @theme in your CSS file instead of a JS config.',
+        'Mixing viewport-responsive (md:) and container-responsive (@md:) prefixes — they target different things; container queries ignore the viewport entirely.',
       ],
     },
   },
@@ -6245,7 +7018,7 @@ export const TOPICS: Topic[] = [
     color: '#34d399',
     estimatedMinutes: 12,
     animationComponent: undefined,
-    bannerComponent: undefined,
+    bannerComponent: 'VitestBanner',
     playgroundType: 'none' as const,
     sections: [
       { id: 'intro', type: 'intro' as const, steps: [] },
@@ -6324,7 +7097,7 @@ export const TOPICS: Topic[] = [
     color: '#34d399',
     estimatedMinutes: 14,
     animationComponent: undefined,
-    bannerComponent: undefined,
+    bannerComponent: 'ReactTestingBanner',
     playgroundType: 'none' as const,
     sections: [
       { id: 'intro', type: 'intro' as const, steps: [] },
@@ -6404,7 +7177,7 @@ export const TOPICS: Topic[] = [
     color: '#34d399',
     estimatedMinutes: 10,
     animationComponent: undefined,
-    bannerComponent: undefined,
+    bannerComponent: 'CoverageCIBanner',
     playgroundType: 'none' as const,
     sections: [
       { id: 'intro', type: 'intro' as const, steps: [] },
