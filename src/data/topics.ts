@@ -2387,6 +2387,15 @@ export const TOPICS: Topic[] = [
             text: 'JavaScript runs on a single thread — one operation at a time. The Call Stack tracks what is currently executing.',
             codeExample: '// One thread, one call stack\nconsole.log("start")\n// All code runs here',
             language: 'javascript',
+            analogy: {
+              icon: '👨‍🍳',
+              title: 'Step 1 — One chef in the kitchen',
+              text: [
+                'Imagine a restaurant with only one chef. That chef can only work on one dish at a time — no multitasking, no parallel cooking.',
+                'JavaScript works the same way. There is a single thread, and it runs one piece of code at a time. Everything else has to wait in line.',
+                'This sounds limiting, but clever scheduling (the event loop) means the chef rarely sits idle.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -2395,6 +2404,14 @@ export const TOPICS: Topic[] = [
             text: 'Regular function calls push onto the Call Stack. When they return, they pop off.',
             codeExample: 'function greet() {\n  console.log("Hello")\n}\ngreet() // pushed → executed → popped',
             language: 'javascript',
+            analogy: {
+              icon: '📝',
+              title: 'Step 2 — Reading a note immediately',
+              text: [
+                'Synchronous code is like someone handing you a note. You stop, read it right now, act on it, and only then move on.',
+                'Every function call in synchronous code is handled the moment it is encountered — no deferral, no waiting.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -2403,6 +2420,15 @@ export const TOPICS: Topic[] = [
             text: 'setTimeout, fetch, and event listeners are handled by Web APIs — outside the JS engine. The callback waits in the Task Queue.',
             codeExample: 'setTimeout(() => {\n  console.log("later")\n}, 0) // goes to Web APIs',
             language: 'javascript',
+            analogy: {
+              icon: '🍽️',
+              title: 'Step 3 — Ordering from a waiter',
+              text: [
+                'When the chef gets an order for something that takes time — like a steak — they hand it off to a specialist (the grill station / Web APIs) and keep working on other things.',
+                'The callback is like a ticket stub. Once the steak is done (the timer fires, fetch returns), the ticket goes into the pickup window (the Task Queue).',
+                'The chef only picks up the ticket when they have a free moment — when they finish whatever they are currently working on.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -2411,6 +2437,15 @@ export const TOPICS: Topic[] = [
             text: 'Even with a 0ms timeout, the callback waits. The Call Stack must finish all synchronous work before the Event Loop picks up queued tasks.',
             codeExample: 'console.log("start")\nsetTimeout(() => console.log("async"), 0)\nconsole.log("end")\n// Logs: start → end → async',
             language: 'javascript',
+            analogy: {
+              icon: '🏃',
+              title: 'Step 4 — Waiter only delivers when you are free',
+              text: [
+                'Even if a dish is ready instantly (0 ms timeout), the waiter waits until you finish your current conversation before bringing it to the table.',
+                'The Call Stack must be completely empty before any queued callback runs. No interruptions allowed.',
+                'This is why setTimeout(fn, 0) still runs after the current synchronous block — the stack must clear first.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -2419,6 +2454,15 @@ export const TOPICS: Topic[] = [
             text: 'The Event Loop continuously checks: is the Call Stack empty? If yes, it moves the next task from the Queue to the Stack.',
             codeExample: '// Event Loop pseudocode:\nwhile (true) {\n  if (callStack.isEmpty()) {\n    if (taskQueue.hasTask()) {\n      callStack.push(taskQueue.pop())\n    }\n  }\n}',
             language: 'javascript',
+            analogy: {
+              icon: '🧹',
+              title: 'Step 5 — The rotating janitor',
+              text: [
+                'The Event Loop is like a janitor who walks a fixed route, checking one spot: the pickup window (Task Queue).',
+                'Every time the kitchen (Call Stack) is empty, the janitor grabs the next ticket from the window and hands it to the chef.',
+                'This cycle repeats forever — that is the "loop" in Event Loop. It never stops spinning.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -2427,6 +2471,15 @@ export const TOPICS: Topic[] = [
             text: 'JavaScript is single-threaded. All synchronous code runs on the call stack — a LIFO structure. When a function is called it is pushed onto the stack; when it returns it is popped off. Long-running code blocks the stack and freezes the UI.',
             codeExample: `function a() { b(); }\nfunction b() { c(); }\nfunction c() { console.log('deepest'); }\n\na();\n// Stack: a → b → c → (c returns) → (b returns) → (a returns)`,
             language: 'javascript',
+            analogy: {
+              icon: '🍽️📚',
+              title: 'Step 6 — A physical stack of plates',
+              text: [
+                'The Call Stack is literally a stack of plates. Each function call adds a plate on top; each return removes the top plate.',
+                'You can only ever work on the top plate. When it is removed, the one below becomes active.',
+                'Stack a heavy enough pile of recursive calls and you get a "stack overflow" — the plates tip over.',
+              ],
+            },
           },
           {
             animationStep: 6,
@@ -2435,6 +2488,15 @@ export const TOPICS: Topic[] = [
             text: 'Promise callbacks (.then, .catch, .finally) and queueMicrotask() callbacks go into the microtask queue — which is drained completely before the next macrotask (setTimeout, setInterval) runs. Microtasks always run before the next render.',
             codeExample: `console.log('1 - sync');\nsetTimeout(() => console.log('3 - macrotask'), 0);\nPromise.resolve().then(() => console.log('2 - microtask'));\n\n// Output order: 1 → 2 → 3`,
             language: 'javascript',
+            analogy: {
+              icon: '🎟️',
+              title: 'Step 7 — The VIP line',
+              text: [
+                'Promises go into a VIP line (microtask queue) in front of the regular queue (macrotask queue / setTimeout callbacks).',
+                'The VIP line is always fully served before the regular line moves even one step forward.',
+                'This is why a resolved Promise callback always runs before a setTimeout(fn, 0) callback — even if the setTimeout was scheduled first.',
+              ],
+            },
           },
           {
             animationStep: 7,
@@ -2443,6 +2505,15 @@ export const TOPICS: Topic[] = [
             text: 'The event loop picks one macrotask from the queue, runs it to completion on the call stack, then drains the microtask queue fully, then the browser may render, then the loop picks the next macrotask. This cycle is called a "tick".',
             codeExample: `// Each loop iteration (tick):\n// 1. Run one macrotask (e.g. a setTimeout callback)\n// 2. Drain all microtasks (Promises)\n// 3. Browser renders if needed\n// 4. Repeat\n\n// This is why heavy sync work freezes rendering`,
             language: 'javascript',
+            analogy: {
+              icon: '🎪',
+              title: 'Step 8 — Rotating stages at a festival',
+              text: [
+                'Imagine a festival with rotating stages. Each tick is one full rotation: one band plays on the main stage (macrotask), the VIP backstage acts all perform (microtasks fully drained), the stage crew resets the lighting (browser renders), and then the next band gets on.',
+                'No band on the main stage is ever interrupted mid-song. But the VIP acts always play their full set between main-stage performances.',
+                'Heavy synchronous code is like a band that never leaves the stage — the whole festival grinds to a halt.',
+              ],
+            },
           },
         ],
       },
@@ -2466,6 +2537,99 @@ export const TOPICS: Topic[] = [
         'Not handling rejected Promises — unhandled rejections cause runtime warnings and can crash Node.js processes',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Blocking the Event Loop with heavy synchronous computation',
+        why: 'A long-running synchronous operation (sorting a huge array, parsing a massive JSON) occupies the Call Stack the entire time. The Event Loop cannot run any callbacks — UI freezes, timers fire late, and the app becomes unresponsive.',
+        fixLabel: 'Fix — offload heavy work to a Web Worker',
+        fixCode: `// ❌ Wrong — blocks the main thread for hundreds of ms
+function crunchNumbers(data) {
+  return data.sort((a, b) => a - b).filter(n => n % 2 === 0)
+}
+crunchNumbers(hugeArray) // UI freezes here
+
+// ✅ Right — move heavy work off the main thread
+const worker = new Worker('crunch.worker.js')
+worker.postMessage(hugeArray)
+worker.onmessage = ({ data }) => console.log('Done:', data)`,
+      },
+      {
+        title: 'Expecting async results synchronously (reading before awaiting)',
+        why: 'async functions return a Promise immediately. Accessing the result without await or .then gives you a pending Promise object, not the resolved value.',
+        fixLabel: 'Fix — always await async calls',
+        fixCode: `// ❌ Wrong
+async function getUser() {
+  return await fetch('/api/user').then(r => r.json())
+}
+const user = getUser()
+console.log(user.name) // undefined — user is a Promise, not data
+
+// ✅ Right
+const user = await getUser()
+console.log(user.name) // "Alice"`,
+      },
+      {
+        title: 'Confusing microtask queue (Promises) vs macrotask queue (setTimeout)',
+        why: 'Developers assume setTimeout(fn, 0) runs before .then() because it was scheduled first. In reality the microtask queue (Promises) is always fully drained before the next macrotask runs.',
+        fixLabel: 'Fix — understand the execution order',
+        fixCode: `// ❌ Wrong assumption — expects: sync → timeout → promise
+console.log('sync')
+setTimeout(() => console.log('timeout'), 0)
+Promise.resolve().then(() => console.log('promise'))
+
+// ✅ Actual output order:
+// sync
+// promise   ← microtask queue runs first
+// timeout   ← macrotask runs after`,
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Smooth UI Animations',
+        heading: 'requestAnimationFrame for frame-perfect rendering',
+        description: 'requestAnimationFrame schedules a callback just before the browser paints the next frame — keeping animations smooth and in sync with the display refresh rate, without blocking the event loop.',
+        code: `function animate(timestamp) {
+  // Update position based on elapsed time
+  element.style.transform = \`translateX(\${timestamp * 0.1 % 300}px)\`
+  requestAnimationFrame(animate) // schedule next frame
+}
+requestAnimationFrame(animate) // start loop`,
+      },
+      {
+        context: 'CPU-Intensive Tasks',
+        heading: 'Web Worker for heavy computation off the main thread',
+        description: 'Moving expensive work to a Web Worker leaves the main thread free for UI updates and event handling — the event loop keeps spinning while the worker runs in parallel.',
+        code: `// main.js
+const worker = new Worker('sort.worker.js')
+worker.postMessage({ data: millionItems })
+worker.onmessage = ({ data }) => {
+  renderList(data.sorted) // back on main thread
+}
+
+// sort.worker.js
+self.onmessage = ({ data }) => {
+  const sorted = data.data.sort((a, b) => a - b)
+  self.postMessage({ sorted })
+}`,
+      },
+      {
+        context: 'Deferred Microtasks',
+        heading: 'queueMicrotask for work that runs before the next render',
+        description: 'queueMicrotask lets you schedule a callback in the microtask queue — it runs after the current synchronous block but before any macrotasks or rendering, useful for batching DOM mutations.',
+        code: `// Batch multiple state updates before the browser paints
+function scheduleUpdate(fn) {
+  queueMicrotask(() => {
+    fn()
+    // Runs after current sync code, before next setTimeout
+    // and before next browser render — perfect for batching
+  })
+}
+
+scheduleUpdate(() => updateCounter(1))
+scheduleUpdate(() => updateCounter(2))
+// Both updates happen before the browser repaints`,
+      },
+    ],
   },
   {
     id: 'js-closures',
