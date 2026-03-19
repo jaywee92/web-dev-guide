@@ -3874,6 +3874,15 @@ export const TOPICS: Topic[] = [
             text: 'Older Node.js code uses CommonJS: require() to import and module.exports to export. Modern JavaScript uses ES Modules (ESM): import and export statements. ESM is statically analyzable (better tree-shaking) and is now the standard for both browsers and Node.js.',
             codeExample: `// CommonJS (older)\nconst fs = require('fs');\nmodule.exports = { readFile: fs.readFile };\n\n// ESM (modern)\nimport { readFile } from 'fs/promises';\nexport { readFile };`,
             language: 'javascript',
+            analogy: {
+              icon: '📻',
+              title: 'Step 1 — CommonJS vs ES Modules',
+              text: [
+                'CommonJS is like a walkie-talkie conversation — synchronous, blocking, and real-time. You call require() and the runtime stops everything to go fetch and execute that file right now.',
+                'ES Modules are like sending an email. JavaScript reads all import statements before executing any code. It builds a complete picture of the dependency graph upfront, then loads everything in the right order.',
+                'Because ESM is analyzed statically (before running), bundlers can see exactly which exports are actually used and eliminate everything else — a process called tree-shaking that keeps your bundles small.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -3882,6 +3891,15 @@ export const TOPICS: Topic[] = [
             text: 'A file can export multiple named values and one default value. Named imports must use the exact exported name (or be aliased). Default imports can use any name. Prefer named exports for better refactoring and IDE support.',
             codeExample: `// utils.js\nexport const PI = 3.14159;\nexport function square(n) { return n * n; }\nexport default function main() { console.log('main'); }\n\n// app.js\nimport main, { PI, square } from './utils.js';\nimport { square as sq } from './utils.js'; // alias`,
             language: 'javascript',
+            analogy: {
+              icon: '🏪',
+              title: 'Step 2 — Named and Default Exports',
+              text: [
+                'Think of a module as a shop. Named exports are items on labelled shelves — you ask for the exact label ("give me the square function") and you get exactly that item.',
+                'A default export is the main product in the window display — the star of the shop. You can call it whatever you want when you import it, because there is only one.',
+                'Prefer named exports for large modules — they make it obvious which item you grabbed, and IDEs can auto-import them. Default exports shine for single-purpose files like a React component.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -3890,6 +3908,15 @@ export const TOPICS: Topic[] = [
             text: 'npm (Node Package Manager) is the registry for JavaScript packages. npm install saves the package to node_modules and lists it in package.json. Import the package the same way as your own modules — bundlers resolve node_modules automatically.',
             codeExample: `# Install a package\nnpm install date-fns\n\n# Import in your code\nimport { format } from 'date-fns';\nconsole.log(format(new Date(), 'yyyy-MM-dd')); // e.g. 2026-03-15`,
             language: 'javascript',
+            analogy: {
+              icon: '📱',
+              title: 'Step 3 — npm and Installing Packages',
+              text: [
+                'npm is the app store for JavaScript code. Instead of writing a date formatting library yourself, you search the store, tap install, and it lands in your project ready to use.',
+                'npm install downloads the package into node_modules and records the version in package.json — your app\'s shopping receipt. Anyone who clones your project can run npm install and get the exact same shelf of packages.',
+                'You import npm packages the same way as your own files. The bundler knows to look in node_modules automatically.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -3898,6 +3925,15 @@ export const TOPICS: Topic[] = [
             text: 'Bundlers take many ES Module files and produce optimized browser-ready output. Parcel is zero-config; Vite is fast with Hot Module Replacement for development. Both handle importing CSS, images, and npm packages out of the box.',
             codeExample: `# Vite project setup\nnpm create vite@latest my-app -- --template vanilla\ncd my-app\nnpm install\nnpm run dev   # dev server with HMR\nnpm run build # production bundle in dist/`,
             language: 'javascript',
+            analogy: {
+              icon: '🏭',
+              title: 'Step 4 — Bundlers',
+              text: [
+                'Imagine a packaging machine at a factory. You feed in hundreds of small parts (your JS files, CSS, images, npm packages). The machine compresses, optimises, and wraps everything into a few neat boxes that ship directly to the browser.',
+                'Parcel is the fully automatic machine — just point it at your entry file and it figures out everything else. Vite is the high-speed production line that serves raw parts during development (instant startup) but still packs them tightly for shipping.',
+                'Without a bundler, the browser would need to download each file separately — potentially hundreds of requests. The bundler collapses all of that into one or two optimised files.',
+              ],
+            },
           },
         ],
       },
@@ -3922,6 +3958,60 @@ export const TOPICS: Topic[] = [
         'Circular imports — module A imports from B which imports from A, causing undefined references.',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Mixing require() and import in the same file',
+        why: 'Node.js treats a file as either CommonJS or ESM based on the file extension or package.json "type" field. Mixing both in one file causes a SyntaxError.',
+        fixLabel: 'Fix — pick one system and stick with it',
+        fixCode: '// ❌ Wrong — mixing CJS and ESM\nconst path = require(\'path\') // CJS\nimport { format } from \'date-fns\' // ESM — SyntaxError!\n\n// ✅ Right — ESM only (recommended)\nimport path from \'path\'\nimport { format } from \'date-fns\'',
+      },
+      {
+        title: 'Forgetting to export — imported value is undefined',
+        why: 'If you import a name that was never exported from the source file, you silently get undefined. No error is thrown at import time in many bundler setups.',
+        fixLabel: 'Fix — add the export keyword',
+        fixCode: '// ❌ Wrong — utils.js\nfunction greet(name) { return `Hi ${name}` } // not exported!\n\n// app.js\nimport { greet } from \'./utils.js\'\nconsole.log(greet(\'Alice\')) // TypeError: greet is not a function\n\n// ✅ Right — utils.js\nexport function greet(name) { return `Hi ${name}` }',
+      },
+      {
+        title: 'Circular imports — module gets undefined at initialization',
+        why: 'When module A imports from B and B imports from A, one of them is not yet initialized when the other runs. The imported binding is undefined at that point.',
+        fixLabel: 'Fix — extract shared code to a third module',
+        fixCode: '// ❌ Wrong — a.js imports b.js, b.js imports a.js\n// a.js\nimport { fromB } from \'./b.js\'\nexport const fromA = \'A\'\n\n// b.js\nimport { fromA } from \'./a.js\' // undefined!\nexport const fromB = \'B\'\n\n// ✅ Right — shared.js breaks the cycle\n// shared.js\nexport const shared = \'shared\'\n// a.js and b.js both import from shared.js',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React App — Component Import',
+        heading: 'Importing React and your own components',
+        description: 'Every React project starts with ESM imports. The default React import and your own named component imports follow the same pattern.',
+        code: '// App.jsx\nimport React from \'react\'            // default import\nimport { BrowserRouter } from \'react-router-dom\' // named import\nimport Navbar from \'./components/Navbar\' // your own default export\nimport { Button, Card } from \'./components/ui\' // named exports\n\nexport default function App() {\n  return (\n    <BrowserRouter>\n      <Navbar />\n      <Card>\n        <Button label="Click me" />\n      </Card>\n    </BrowserRouter>\n  )\n}',
+      },
+      {
+        context: 'Utility Module — Named Exports',
+        heading: 'Creating a utility module with named exports',
+        description: 'Group related helpers in one file and export each by name. Consumers import only what they need — bundlers tree-shake the rest.',
+        code: '// src/utils/math.js\nexport function clamp(value, min, max) {\n  return Math.min(Math.max(value, min), max)\n}\n\nexport function lerp(a, b, t) {\n  return a + (b - a) * t\n}\n\nexport const TAU = Math.PI * 2\n\n// src/components/Slider.jsx — imports only clamp\nimport { clamp } from \'../utils/math.js\'\n\nfunction Slider({ value, onChange }) {\n  const safe = clamp(value, 0, 100)\n  return <input type="range" value={safe} onChange={onChange} />\n}',
+      },
+      {
+        context: 'Tree-shaking with Named Exports',
+        heading: 'Why named exports keep bundles small',
+        description: 'When you use named exports and only import what you need, the bundler can eliminate unused code. Default exports make this harder.',
+        code: '// icons.js — 500 icons as named exports\nexport { IconHome } from \'./IconHome.jsx\'\nexport { IconUser } from \'./IconUser.jsx\'\nexport { IconCart } from \'./IconCart.jsx\'\n// ... 497 more\n\n// App.jsx — only import 2\nimport { IconHome, IconUser } from \'./icons.js\'\n// Bundler tree-shakes: only IconHome + IconUser\n// end up in the production bundle — not all 500!\n\n// With a default export barrel this is much harder:\n// import Icons from \'./icons.js\'\n// const { IconHome } = Icons  // bundler can\'t tree-shake',
+      },
+    ],
+    playgroundExamples: [
+      {
+        label: 'Named vs Default',
+        code: '// 🎯 Named vs Default Exports (simulated in one file)\n// In a real project these would be separate files.\n// Here we simulate module exports and imports inline.\n\n// --- utils.js (simulated) ---\nconst PI = 3.14159\nfunction square(n) { return n * n }\nfunction cube(n) { return n * n * n }\nfunction main() { return \'I am the default export\' }\n\n// Named exports: use exact name on import\n// Default export: import with any name\n\n// --- Consuming the module ---\n// import main, { PI, square } from \'./utils.js\'\n\nconsole.log(\'PI:\', PI)\nconsole.log(\'square(5):\', square(5))\nconsole.log(\'cube(3):\', cube(3))\nconsole.log(\'main:\', main())\n\n// Aliasing: import { square as sq }\nconst sq = square\nconsole.log(\'sq(4):\', sq(4))',
+      },
+      {
+        label: 'Module Pattern',
+        code: '// 🎯 Module Pattern — Private State via Closures\n// Before native ESM, developers used IIFEs to create\n// modules with private state. ESM now handles this\n// automatically — each file has its own scope.\n\n// Simulating a "math utils" module\nconst MathUtils = (function() {\n  // Private — not accessible outside\n  function _validate(n) {\n    if (typeof n !== \'number\') throw new TypeError(\'Expected a number\')\n  }\n\n  // Public API\n  return {\n    square(n) { _validate(n); return n * n },\n    cube(n)   { _validate(n); return n * n * n },\n    clamp(v, min, max) { return Math.min(Math.max(v, min), max) },\n    lerp(a, b, t) { return a + (b - a) * t },\n  }\n})()\n\nconsole.log(MathUtils.square(5))        // 25\nconsole.log(MathUtils.clamp(150, 0, 100)) // 100\nconsole.log(MathUtils.lerp(0, 100, 0.25)) // 25',
+      },
+      {
+        label: 'Dynamic Import',
+        code: '// 🎯 Dynamic Import — Load Modules On Demand\n// import() returns a Promise, so you can load\n// modules lazily — only when they are actually needed.\n// This is the foundation of code-splitting in React.\n\nasync function loadFeature(featureName) {\n  // Simulating dynamic import with a factory\n  const modules = {\n    charts: () => Promise.resolve({ default: { render: () => \'ChartComponent rendered\' } }),\n    editor: () => Promise.resolve({ default: { render: () => \'EditorComponent rendered\' } }),\n  }\n\n  if (!modules[featureName]) {\n    throw new Error(`Unknown feature: ${featureName}`)\n  }\n\n  // In real code: const { default: mod } = await import(`./features/${featureName}.js`)\n  const { default: mod } = await modules[featureName]()\n  return mod\n}\n\n// Only loads "charts" when this code runs\nasync function main() {\n  console.log(\'Loading charts feature...\')\n  const charts = await loadFeature(\'charts\')\n  console.log(charts.render())\n\n  const editor = await loadFeature(\'editor\')\n  console.log(editor.render())\n}\n\nmain()',
+      },
+    ],
   },
   {
     id: 'js-npm-bundlers',
