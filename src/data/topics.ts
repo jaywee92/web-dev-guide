@@ -3577,6 +3577,15 @@ export const TOPICS: Topic[] = [
             text: 'A Promise represents a value that will be available in the future. It can be pending, fulfilled, or rejected.',
             codeExample: 'const p = new Promise<string>((resolve, reject) => {\n  setTimeout(() => resolve("done!"), 1000)\n})\n\np.then(val => console.log(val)) // "done!" after 1s',
             language: 'javascript',
+            analogy: {
+              icon: '🍽️',
+              title: 'Step 1 — What is a Promise?',
+              text: [
+                'Think of a Promise like the buzzer you get at a restaurant. You place your order (start an async task) and the host hands you a buzzer (the Promise object). You are free to wander around — the kitchen is working in the background.',
+                'The buzzer has three states: pending (waiting for food), fulfilled (food is ready — buzz!), or rejected (kitchen is out of ingredients).',
+                'You do not block the door waiting. You go sit down and react when the buzzer fires. That is how a Promise lets the rest of your program keep running.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -3584,6 +3593,15 @@ export const TOPICS: Topic[] = [
             text: 'Promises can be chained: each .then() receives the previous result and returns a new Promise.',
             codeExample: 'fetch("/api/user")\n  .then(res => res.json())\n  .then(user => console.log(user.name))\n  .catch(err => console.error(err))',
             language: 'javascript',
+            analogy: {
+              icon: '🏭',
+              title: 'Step 2 — Chaining with .then()',
+              text: [
+                'Imagine an assembly line conveyor belt. The raw material (the response) enters the first station (.then(res => res.json())) and comes out as JSON. That output moves to the next station (.then(user => ...)) as the input.',
+                'Each station transforms the item and passes the result forward. If anything breaks on the belt, .catch() is the safety bin at the end that catches the problem.',
+                'The beauty is that you define the whole pipeline upfront. JavaScript executes each step only when the previous one finishes.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -3591,6 +3609,15 @@ export const TOPICS: Topic[] = [
             text: 'async/await is syntactic sugar over Promises. An async function always returns a Promise; await pauses execution until the Promise settles.',
             codeExample: 'async function getUser(id: number) {\n  const res = await fetch(`/api/users/${id}`)\n  if (!res.ok) throw new Error("Not found")\n  return res.json()\n}\n\nconst user = await getUser(1)',
             language: 'typescript',
+            analogy: {
+              icon: '🚶',
+              title: 'Step 3 — async/await syntax',
+              text: [
+                'Waiting in a queue is the analogy here. Instead of doing acrobatics with .then() chains, you simply wait politely in line. await tells JavaScript: "pause this function here and come back when the Promise settles."',
+                'Your function pauses — but the rest of the program does not. Other code runs while you wait.',
+                'When the Promise resolves, execution resumes right where it left off, and the resolved value is assigned like a normal variable.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -3599,6 +3626,15 @@ export const TOPICS: Topic[] = [
             text: 'async/await is syntactic sugar over Promises. Mark a function async and use await to pause execution until a Promise resolves. The result is assigned like a regular value — no .then() chains needed.',
             codeExample: `async function getUser(id) {\n  const response = await fetch(\`/api/users/\${id}\`);\n  const user = await response.json();\n  return user;\n}\n\n// Call it — returns a Promise\ngetUser(1).then(u => console.log(u));`,
             language: 'javascript',
+            analogy: {
+              icon: '☕',
+              title: 'Step 4 — async/await in practice',
+              text: [
+                'Picture ordering a coffee. You say "I\'ll wait here" (await). The barista goes off and makes it. You stand at the counter — but the cafe stays open and serves others.',
+                'When your coffee is ready, the barista hands it to you (assigned to a variable) and you walk away. No callbacks, no .then() — just normal top-to-bottom reading.',
+                'The async keyword on the function is the label that tells JavaScript: "this function might need to wait, always wrap its return value in a Promise."',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -3607,8 +3643,71 @@ export const TOPICS: Topic[] = [
             text: 'Use try/catch inside async functions to handle both network errors and non-2xx responses. Check response.ok before parsing the body — fetch only rejects on network failure, not on 404 or 500 status codes.',
             codeExample: `async function fetchData(url) {\n  try {\n    const res = await fetch(url);\n    if (!res.ok) throw new Error(\`HTTP \${res.status}\`);\n    return await res.json();\n  } catch (err) {\n    console.error('Fetch failed:', err.message);\n    return null;\n  }\n}`,
             language: 'javascript',
+            analogy: {
+              icon: '🪢',
+              title: 'Step 5 — Error Handling',
+              text: [
+                'Think of try/catch as a safety net under a trapeze artist. The artist (your await calls) performs — but if anything goes wrong (network down, bad status, JSON parse error), the net catches them before they hit the ground.',
+                'Without a safety net, an unhandled rejection crashes your program (or silently disappears in some environments). Always wrap awaited calls in try/catch.',
+                'One important note: fetch() only rejects the Promise for network failures. A 404 or 500 response still resolves — that is why you must check res.ok before parsing.',
+              ],
+            },
           },
         ],
+      },
+    ],
+    commonErrors: [
+      {
+        title: 'Forgetting to return inside .then() — breaks the chain',
+        why: 'Each .then() must return a value (or another Promise) for the next .then() to receive it. Without a return, the next step gets undefined.',
+        fixLabel: 'Fix — always return from .then()',
+        fixCode: '// ❌ Wrong — next .then() gets undefined\nfetch(\'/api/user\')\n  .then(res => { res.json() }) // no return!\n  .then(user => console.log(user)) // user is undefined\n\n// ✅ Right\nfetch(\'/api/user\')\n  .then(res => res.json()) // implicit return\n  .then(user => console.log(user))',
+      },
+      {
+        title: 'Not awaiting a Promise — gets the Promise object, not the value',
+        why: 'Without await, you receive the raw Promise object. Logging it shows "Promise { <pending> }" instead of the resolved value.',
+        fixLabel: 'Fix — add await',
+        fixCode: '// ❌ Wrong\nasync function loadUser() {\n  const user = fetch(\'/api/user\') // Promise object!\n  console.log(user) // Promise { <pending> }\n}\n\n// ✅ Right\nasync function loadUser() {\n  const res = await fetch(\'/api/user\')\n  const user = await res.json()\n  console.log(user) // { id: 1, name: \'Alice\' }\n}',
+      },
+      {
+        title: 'Missing try/catch — unhandled Promise rejection',
+        why: 'An awaited Promise that rejects without a surrounding try/catch throws an unhandled rejection error, which crashes Node.js or logs a warning in browsers.',
+        fixLabel: 'Fix — wrap awaits in try/catch',
+        fixCode: '// ❌ Wrong — rejection unhandled\nasync function load() {\n  const data = await fetch(\'/bad-url\').then(r => r.json())\n  return data\n}\n\n// ✅ Right\nasync function load() {\n  try {\n    const res = await fetch(\'/api/data\')\n    if (!res.ok) throw new Error(`HTTP ${res.status}`)\n    return await res.json()\n  } catch (err) {\n    console.error(err.message)\n    return null\n  }\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Browser — Fetch API',
+        heading: 'Load JSON from a REST API',
+        description: 'The most common async pattern: fetch data from an endpoint, parse the JSON body, and handle errors gracefully.',
+        code: 'async function getPost(id) {\n  try {\n    const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)\n    if (!res.ok) throw new Error(`HTTP ${res.status}`)\n    const post = await res.json()\n    console.log(post.title)\n    return post\n  } catch (err) {\n    console.error(\'Failed to load post:\', err.message)\n    return null\n  }\n}\n\ngetPost(1)',
+      },
+      {
+        context: 'Parallel Requests',
+        heading: 'Promise.all for concurrent fetches',
+        description: 'When multiple requests are independent, use Promise.all to fire them simultaneously and wait for all to finish — much faster than sequential awaits.',
+        code: 'async function loadDashboard(userId) {\n  const [profile, posts, notifications] = await Promise.all([\n    fetch(`/api/users/${userId}`).then(r => r.json()),\n    fetch(`/api/users/${userId}/posts`).then(r => r.json()),\n    fetch(`/api/notifications`).then(r => r.json()),\n  ])\n  return { profile, posts, notifications }\n}\n\n// All 3 requests fire simultaneously\n// Total time ≈ slowest request (not sum of all)',
+      },
+      {
+        context: 'React — Data Loading',
+        heading: 'Async data fetch in useEffect',
+        description: 'In React components, fetch data inside useEffect with an async inner function, then update state when the data arrives.',
+        code: 'import { useState, useEffect } from \'react\'\n\nfunction UserProfile({ userId }) {\n  const [user, setUser] = useState(null)\n  const [error, setError] = useState(null)\n\n  useEffect(() => {\n    async function load() {\n      try {\n        const res = await fetch(`/api/users/${userId}`)\n        if (!res.ok) throw new Error(`HTTP ${res.status}`)\n        setUser(await res.json())\n      } catch (err) {\n        setError(err.message)\n      }\n    }\n    load()\n  }, [userId])\n\n  if (error) return <p>Error: {error}</p>\n  if (!user) return <p>Loading...</p>\n  return <h1>{user.name}</h1>\n}',
+      },
+    ],
+    playgroundExamples: [
+      {
+        label: 'Basic Promise',
+        code: '// 🎯 Building and consuming a Promise\n// Create a Promise that resolves after a delay,\n// then consume it with both .then() and async/await.\n\nfunction delay(ms) {\n  return new Promise(resolve => setTimeout(resolve, ms))\n}\n\nfunction fetchFakeUser(id) {\n  return new Promise((resolve, reject) => {\n    if (id <= 0) {\n      reject(new Error(\'ID must be positive\'))\n      return\n    }\n    setTimeout(() => resolve({ id, name: `User ${id}`, role: \'member\' }), 300)\n  })\n}\n\n// Consume with async/await\nasync function main() {\n  console.log(\'Fetching user...\')\n  await delay(100)\n\n  try {\n    const user = await fetchFakeUser(42)\n    console.log(\'Got user:\', user.name)\n\n    const bad = await fetchFakeUser(-1)\n  } catch (err) {\n    console.log(\'Error caught:\', err.message)\n  }\n}\n\nmain()',
+      },
+      {
+        label: 'Promise.all',
+        code: '// 🎯 Parallel requests with Promise.all\n// Fire multiple async operations at the same time\n// and wait for all to complete.\n\nfunction fakeGet(endpoint, delayMs) {\n  return new Promise(resolve =>\n    setTimeout(() => resolve({ endpoint, data: `data from ${endpoint}` }), delayMs)\n  )\n}\n\nasync function loadDashboard() {\n  console.log(\'Starting parallel fetches...\')\n  const start = Date.now()\n\n  const [profile, posts, settings] = await Promise.all([\n    fakeGet(\'/profile\', 300),\n    fakeGet(\'/posts\',   200),\n    fakeGet(\'/settings\', 100),\n  ])\n\n  const elapsed = Date.now() - start\n  console.log(`profile: ${profile.data}`)\n  console.log(`posts:   ${posts.data}`)\n  console.log(`settings:${settings.data}`)\n  console.log(`Total time: ~${elapsed}ms (not 600ms!)`)\n}\n\nloadDashboard()',
+      },
+      {
+        label: 'Error Handling',
+        code: '// 🎯 Robust error handling in async functions\n// Shows how to handle HTTP errors, network failures,\n// and the important res.ok check.\n\nasync function safeFetch(url) {\n  try {\n    const res = await fetch(url)\n    // fetch() only rejects on network failure,\n    // NOT on 404 or 500 — always check res.ok!\n    if (!res.ok) {\n      throw new Error(`HTTP ${res.status}: ${res.statusText}`)\n    }\n    const data = await res.json()\n    return { ok: true, data }\n  } catch (err) {\n    return { ok: false, error: err.message }\n  }\n}\n\nasync function main() {\n  // Valid request\n  const good = await safeFetch(\'https://jsonplaceholder.typicode.com/posts/1\')\n  if (good.ok) console.log(\'Title:\', good.data.title)\n\n  // 404 request\n  const missing = await safeFetch(\'https://jsonplaceholder.typicode.com/posts/9999\')\n  console.log(\'Missing:\', missing.error)\n}\n\nmain()',
       },
     ],
   },
