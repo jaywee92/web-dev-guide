@@ -2241,6 +2241,15 @@ export const TOPICS: Topic[] = [
             text: 'setTimeout(callback, delayMs) schedules callback to run after at least delayMs milliseconds. It returns a timer ID. The actual delay may be slightly longer because the callback enters the macrotask queue and must wait for the call stack to be clear.',
             codeExample: `console.log('start');\nconst id = setTimeout(() => {\n  console.log('runs after 1 second');\n}, 1000);\nconsole.log('end'); // prints before the timeout callback`,
             language: 'javascript',
+            analogy: {
+              icon: '⏰',
+              title: 'Step 1 — setTimeout: the One-Time Alarm',
+              text: [
+                'Think of setTimeout as setting a single alarm clock. You tell it "ring in 1000 milliseconds" and it goes off exactly once — after which it stays silent.',
+                'Crucially, setting the alarm does not pause you. You keep going about your day (the rest of the synchronous code runs) and the alarm rings later when the call stack is clear.',
+                'The timer ID it returns is like the alarm\'s serial number — keep it if you want to cancel the alarm before it rings.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -2249,6 +2258,15 @@ export const TOPICS: Topic[] = [
             text: 'setInterval(callback, intervalMs) calls callback repeatedly every intervalMs milliseconds. It returns an ID you must use to cancel it with clearInterval. Always cancel intervals when they are no longer needed to avoid memory leaks.',
             codeExample: `let tick = 0;\nconst id = setInterval(() => {\n  tick++;\n  console.log('tick', tick);\n  if (tick >= 5) clearInterval(id); // stop after 5\n}, 500);`,
             language: 'javascript',
+            analogy: {
+              icon: '🕰️',
+              title: 'Step 2 — setInterval: the Ticking Wall Clock',
+              text: [
+                'setInterval is a wall clock that ticks on a fixed schedule — every 500 ms, every second, every 30 seconds. Each tick fires the callback again and again.',
+                'Unlike an alarm clock, a wall clock never stops on its own. You must actively stop it with clearInterval, otherwise it will keep ticking forever — even after you navigate away from the page.',
+                'Always save the returned ID in a variable. Without it, the clock is running but you have no way to turn it off.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -2257,6 +2275,15 @@ export const TOPICS: Topic[] = [
             text: 'Pass the timer ID returned by setTimeout or setInterval to the corresponding clear function to cancel the pending execution. This is essential in components that mount/unmount — always clean up timers on teardown.',
             codeExample: `const id = setTimeout(() => console.log('never runs'), 5000);\nclearTimeout(id); // cancels before it fires\n\n// In frameworks, clean up on teardown:\n// const id = setInterval(() => ..., 1000);\n// onUnmount: clearInterval(id);`,
             language: 'javascript',
+            analogy: {
+              icon: '🔕',
+              title: 'Step 3 — clearTimeout / clearInterval: the Snooze Button',
+              text: [
+                'clearTimeout is hitting "cancel" on your alarm before it goes off. clearInterval is flipping the off switch on the ticking wall clock.',
+                'In a React component (or any component framework), mounting starts the clock and unmounting must stop it — otherwise the callback keeps firing on a component that no longer exists, causing errors and memory leaks.',
+                'The pattern is always the same: save the ID when you start the timer, and pass that ID to the clear function in your cleanup code.',
+              ],
+            },
           },
         ],
       },
@@ -2281,6 +2308,60 @@ export const TOPICS: Topic[] = [
         'Expecting exact timing — timer callbacks are queued; actual delay can be longer than specified.',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Passing a string instead of a function to setTimeout',
+        why: 'setTimeout accepts a function reference as its first argument. Passing a string causes it to be eval\'d — which is slow, error-prone, and disabled in strict CSP policies. Forgetting parentheses on a function call is a related mistake that passes the result instead of the function.',
+        fixLabel: 'Fix — always pass a function reference or arrow function',
+        fixCode: '// ❌ Wrong — string is eval\'d (avoid)\nsetTimeout("greet()", 1000);\n\n// ❌ Also wrong — calls greet immediately, passes its return value\nsetTimeout(greet(), 1000);\n\n// ✅ Right — pass the function reference\nsetTimeout(greet, 1000);\n\n// ✅ Right — or wrap in an arrow function\nsetTimeout(() => greet("Alice"), 1000);',
+      },
+      {
+        title: 'Forgetting to clearInterval — memory leak',
+        why: 'setInterval keeps running indefinitely until explicitly cleared. In single-page apps, navigating away from a page does not automatically stop intervals. The callback keeps firing, holding references to stale state and causing errors.',
+        fixLabel: 'Fix — always store the ID and clear it on teardown',
+        fixCode: '// ❌ Wrong — interval never stops\nfunction startPolling() {\n  setInterval(() => fetchStatus(), 5000);\n}\n\n// ✅ Right — store the ID and clean up\nfunction startPolling() {\n  const id = setInterval(() => fetchStatus(), 5000);\n  return () => clearInterval(id); // return a cleanup fn\n}\n\n// In React:\nuseEffect(() => {\n  const id = setInterval(() => fetchStatus(), 5000);\n  return () => clearInterval(id); // cleanup on unmount\n}, []);',
+      },
+      {
+        title: 'Assuming setTimeout(fn, 0) runs synchronously',
+        why: 'Even with a 0 ms delay, setTimeout schedules the callback as a macrotask. It will always run after the current synchronous code and all pending microtasks (Promises) — never during them.',
+        fixLabel: 'Fix — understand execution order: sync → microtasks → macrotasks',
+        fixCode: '// ❌ Wrong assumption\nconsole.log("before");\nsetTimeout(() => console.log("timeout"), 0);\nconsole.log("after");\n// Actual output:\n// before\n// after\n// timeout   ← NOT between "before" and "after"\n\n// ✅ Right mental model\n// setTimeout(fn, 0) means:\n// "run fn after the current call stack and all Promises settle"\n// It is a yield point, not synchronous execution.',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Search Input',
+        heading: 'Debounce with setTimeout',
+        description: 'A debounce wraps setTimeout to delay expensive work (like an API call) until the user stops typing. Each keystroke resets the timer, so the fetch only fires once after a pause.',
+        code: 'function debounce(fn, delayMs) {\n  let timerId;\n  return function(...args) {\n    clearTimeout(timerId);\n    timerId = setTimeout(() => fn(...args), delayMs);\n  };\n}\n\nconst searchInput = document.getElementById("search");\nconst doSearch = debounce((query) => {\n  fetch(`/api/search?q=${query}`)\n    .then(r => r.json())\n    .then(renderResults);\n}, 300);\n\nsearchInput.addEventListener("input", e => doSearch(e.target.value));',
+      },
+      {
+        context: 'Polling',
+        heading: 'Poll an API every 30 seconds',
+        description: 'setInterval is used to poll a status endpoint on a fixed schedule. The interval is cleared when the component unmounts to prevent stale callbacks.',
+        code: '// React hook — polls every 30 s, cleans up on unmount\nfunction useStatusPoller(url) {\n  const [status, setStatus] = React.useState(null);\n\n  React.useEffect(() => {\n    async function check() {\n      const res = await fetch(url);\n      const data = await res.json();\n      setStatus(data.status);\n    }\n\n    check(); // run immediately\n    const id = setInterval(check, 30_000);\n    return () => clearInterval(id); // cleanup\n  }, [url]);\n\n  return status;\n}',
+      },
+      {
+        context: 'UI Feedback',
+        heading: 'Auto-dismissing toast notification',
+        description: 'A toast is shown immediately, then setTimeout schedules it to disappear after 3 seconds. Storing the ID lets the user dismiss it early without the teardown callback throwing an error.',
+        code: 'function showToast(message, durationMs = 3000) {\n  const toast = document.createElement("div");\n  toast.className = "toast";\n  toast.textContent = message;\n  document.body.appendChild(toast);\n\n  const id = setTimeout(() => {\n    toast.classList.add("fade-out");\n    toast.addEventListener("transitionend", () => toast.remove());\n  }, durationMs);\n\n  // Optional: allow manual dismiss\n  toast.addEventListener("click", () => {\n    clearTimeout(id);\n    toast.remove();\n  });\n}\n\nshowToast("Saved successfully!");',
+      },
+    ],
+    playgroundExamples: [
+      {
+        label: 'setTimeout Once',
+        code: '// 🎯 setTimeout — Run Once After a Delay\n// Observe that synchronous code finishes before the\n// scheduled callback fires, even with a 0 ms delay.\n\nconsole.log("1 — sync start");\n\nconst id = setTimeout(() => {\n  console.log("3 — timeout fires (after sync code)");\n}, 500);\n\nconsole.log("2 — sync end");\n\n// Output order: 1 → 2 → 3\n\n// Bonus: cancel a timer before it fires\nconst cancelMe = setTimeout(() => {\n  console.log("this should never print");\n}, 2000);\nclearTimeout(cancelMe);\nconsole.log("4 — cancelMe cleared before it fired");',
+      },
+      {
+        label: 'setInterval Ticker',
+        code: '// 🎯 setInterval — Repeat on a Schedule\n// The callback fires every 400 ms until we clear it.\n// We auto-stop after 5 ticks to avoid infinite output.\n\nlet ticks = 0;\nconst MAX = 5;\n\nconst id = setInterval(() => {\n  ticks++;\n  console.log(`Tick ${ticks} / ${MAX}`);\n\n  if (ticks >= MAX) {\n    clearInterval(id);\n    console.log("Interval cleared — done!");\n  }\n}, 400);\n\nconsole.log("Interval started — waiting for first tick...");',
+      },
+      {
+        label: 'Debounce',
+        code: '// 🎯 Debounce via setTimeout\n// Each call resets the timer. The wrapped function only\n// executes once the calls stop for `delayMs`.\n\nfunction debounce(fn, delayMs) {\n  let timerId;\n  return function(...args) {\n    clearTimeout(timerId);\n    timerId = setTimeout(() => fn(...args), delayMs);\n  };\n}\n\nconst expensiveSearch = (query) => {\n  console.log(`Searching for: "${query}"`);\n};\n\nconst debouncedSearch = debounce(expensiveSearch, 300);\n\n// Simulate rapid keystrokes — only the last one fires\ndebouncedSearch("j");\ndebouncedSearch("ja");\ndebouncedSearch("jav");\ndebouncedSearch("java");\ndebouncedSearch("javascript");\n\n// Only "javascript" will be logged after 300 ms',
+      },
+    ],
   },
   {
     id: 'js-event-loop',
