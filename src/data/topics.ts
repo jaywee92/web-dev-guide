@@ -2889,6 +2889,15 @@ export const TOPICS: Topic[] = [
             text: 'An array holds ordered values accessible by numeric index starting at 0.',
             codeExample: 'const fruits = ["apple", "banana", "cherry"]\nfruits[0]  // "apple"\nfruits[2]  // "cherry"\nfruits.length  // 3',
             language: 'javascript',
+            analogy: {
+              icon: '🚂',
+              title: 'Step 1 — Arrays: the numbered train carriages',
+              text: [
+                'An array is like a train where every carriage has a number painted on the outside, starting from 0. To retrieve a passenger, you just walk to carriage [2] — no searching required.',
+                'The train can grow (add carriages) or shrink (remove carriages) dynamically. The length property always tells you how many carriages are currently coupled.',
+                'Order matters: carriage 0 is always the front, carriage length-1 is always the back.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -2897,6 +2906,15 @@ export const TOPICS: Topic[] = [
             text: 'push() adds to the end; pop() removes from the end. There is also unshift/shift for the beginning.',
             codeExample: 'const arr = [1, 2, 3]\narr.push(4)    // [1, 2, 3, 4]\narr.pop()      // [1, 2, 3]\narr.unshift(0) // [0, 1, 2, 3]',
             language: 'javascript',
+            analogy: {
+              icon: '📚',
+              title: 'Step 2 — push/pop: the stack of books',
+              text: [
+                'push and pop treat the array like a stack of books on a desk. push puts a new book on top; pop removes the top book and hands it back to you.',
+                'This last-in-first-out (LIFO) pattern is used in undo/redo history, browser back-stack, and recursive algorithms.',
+                'unshift and shift do the same thing from the front of the pile — they are slower because every other book must shuffle along to make room.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -2905,6 +2923,15 @@ export const TOPICS: Topic[] = [
             text: 'map() returns a new array with each element transformed by a callback. The original array is not modified.',
             codeExample: 'const nums = [1, 2, 3]\nconst doubled = nums.map(x => x * 2)\n// doubled = [2, 4, 6]\n// nums unchanged = [1, 2, 3]',
             language: 'javascript',
+            analogy: {
+              icon: '🏭',
+              title: 'Step 3 — map: the assembly line',
+              text: [
+                'map is like an assembly line. Each item from the input conveyor goes through a transformation machine and comes out on the output conveyor.',
+                'The original conveyor is never touched — map always produces a brand-new array.',
+                'The transformation machine (your callback) receives the current item and returns the transformed version. Whatever it returns ends up in the new array.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -2913,6 +2940,15 @@ export const TOPICS: Topic[] = [
             text: 'filter() returns a new array containing only elements where the callback returns true.',
             codeExample: 'const nums = [1, 2, 3, 4, 5]\nconst evens = nums.filter(x => x % 2 === 0)\n// evens = [2, 4]',
             language: 'javascript',
+            analogy: {
+              icon: '🔬',
+              title: 'Step 4 — filter: the quality inspector',
+              text: [
+                'filter is like a quality inspector at the end of the assembly line. Each item passes under the inspector\'s magnifying glass — items that pass the test go into the "good" box; the rest are discarded.',
+                'The original array is untouched; filter always returns a new (possibly shorter) array.',
+                'If no items pass the test, filter returns an empty array — never undefined.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -2921,6 +2957,15 @@ export const TOPICS: Topic[] = [
             text: 'Objects store named properties. Access them with dot notation or bracket notation.',
             codeExample: 'const user = {\n  name: "Alice",\n  age: 25,\n  active: true,\n}\n\nuser.name       // "Alice"\nuser["age"]     // 25\nuser.role = "admin"  // add property',
             language: 'javascript',
+            analogy: {
+              icon: '🗂️',
+              title: 'Step 5 — Objects: the labelled filing cabinet',
+              text: [
+                'An object is a filing cabinet where every drawer has a label (the key) and contains a document (the value). You look up documents by their label, not by position.',
+                'You can add a new drawer (user.role = "admin"), update an existing one, or remove one with the delete keyword.',
+                'Unlike arrays, object properties have no inherent order — use an array when order matters, an object when names matter.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -2929,6 +2974,15 @@ export const TOPICS: Topic[] = [
             text: 'These four methods mutate the array in place. push/pop work at the end; shift/unshift at the start. push and unshift return the new length; pop and shift return the removed element.',
             codeExample: `const arr = [1, 2, 3];\narr.push(4);        // [1,2,3,4]\narr.pop();          // [1,2,3]\narr.unshift(0);     // [0,1,2,3]\narr.shift();        // [1,2,3]`,
             language: 'javascript',
+            analogy: {
+              icon: '🎠',
+              title: 'Step 6 — push/pop/shift/unshift: the queue vs the stack',
+              text: [
+                'push + shift together form a queue (FIFO): push adds to the back, shift removes from the front — like a ticket queue at a cinema.',
+                'push + pop together form a stack (LIFO): push adds to the top, pop removes from the top — like a stack of trays in a cafeteria.',
+                'unshift is slower than push because it must renumber every existing index to make room at the front.',
+              ],
+            },
           },
           {
             animationStep: 6,
@@ -2937,6 +2991,14 @@ export const TOPICS: Topic[] = [
             text: 'slice(start, end) returns a new array from index start up to (but not including) end — the original is unchanged. join(separator) converts all elements to a string separated by the given character.',
             codeExample: `const fruits = ['apple', 'banana', 'cherry', 'date'];\nconst mid = fruits.slice(1, 3); // ['banana', 'cherry']\nconsole.log(fruits.join(', ')); // 'apple, banana, cherry, date'`,
             language: 'javascript',
+            analogy: {
+              icon: '🍞',
+              title: 'Step 7 — slice/join: the bread loaf',
+              text: [
+                'slice is like cutting a section out of a bread loaf. You say "from slice 1 to slice 3" and you get those slices out without touching the original loaf.',
+                'join is the reverse — it reassembles separate slices into one thing, gluing them together with a separator like a comma or a space.',
+              ],
+            },
           },
           {
             animationStep: 7,
@@ -2945,6 +3007,14 @@ export const TOPICS: Topic[] = [
             text: 'splice(start, deleteCount, ...items) mutates the array: removes deleteCount elements at start, then inserts any provided items. It returns the removed elements.',
             codeExample: `const colors = ['red', 'green', 'blue'];\nconst removed = colors.splice(1, 1, 'yellow', 'purple');\n// removed: ['green']\n// colors: ['red', 'yellow', 'purple', 'blue']`,
             language: 'javascript',
+            analogy: {
+              icon: '🧵',
+              title: 'Step 8 — splice: the seamstress',
+              text: [
+                'splice is like a seamstress cutting out a section of fabric and sewing in new pieces. She cuts at a given point, removes a number of stitches, and inserts replacements in their place.',
+                'Unlike slice, splice mutates the original array — the original fabric is permanently changed. Use the spread operator if you need to preserve the original.',
+              ],
+            },
           },
           {
             animationStep: 8,
@@ -2953,6 +3023,14 @@ export const TOPICS: Topic[] = [
             text: 'reverse() reverses the array in place and returns the same array (mutates the original). To reverse without mutation, spread into a new array first.',
             codeExample: `const nums = [1, 2, 3, 4];\nnums.reverse(); // [4, 3, 2, 1] — mutates original\n\n// Non-mutating version:\nconst reversed = [...nums].reverse();`,
             language: 'javascript',
+            analogy: {
+              icon: '🪞',
+              title: 'Step 9 — reverse: the mirror',
+              text: [
+                'reverse() flips the array like a mirror image — the last item becomes the first and the first becomes the last. But it happens in place, modifying the original.',
+                'To get a mirrored copy without touching the original, spread the array into a new one first: [...arr].reverse().',
+              ],
+            },
           },
           {
             animationStep: 9,
@@ -2961,6 +3039,15 @@ export const TOPICS: Topic[] = [
             text: 'forEach runs a function for every element — useful for side effects but returns nothing. map returns a new array of transformed values. Use map when you need the result; forEach when you just need to act.',
             codeExample: `const prices = [10, 20, 30];\nprices.forEach(p => console.log('$' + p));\n\nconst doubled = prices.map(p => p * 2);\n// [20, 40, 60]`,
             language: 'javascript',
+            analogy: {
+              icon: '📣',
+              title: 'Step 10 — forEach vs map: the announcer vs the translator',
+              text: [
+                'forEach is like an announcer reading out each item — it acts on every element for its side effect (logging, sending a request) but produces no result you can use.',
+                'map is like a translator — for every item in, a transformed item comes out. The result is a new list of the same length, ready to be used.',
+                'If you catch yourself writing forEach with a push inside, use map instead.',
+              ],
+            },
           },
           {
             animationStep: 10,
@@ -2969,6 +3056,14 @@ export const TOPICS: Topic[] = [
             text: 'find returns the first element that matches the predicate (or undefined). filter returns a new array of all matching elements. Both are non-mutating.',
             codeExample: `const users = [\n  { name: 'Alice', age: 25 },\n  { name: 'Bob',   age: 17 },\n  { name: 'Carol', age: 30 },\n];\nconst first = users.find(u => u.age >= 18);    // Alice\nconst adults = users.filter(u => u.age >= 18); // [Alice, Carol]`,
             language: 'javascript',
+            analogy: {
+              icon: '🕵️',
+              title: 'Step 11 — find vs filter: the detective',
+              text: [
+                'find is like a detective looking for one specific suspect. As soon as the first match is found, the search stops — it returns that single item (or undefined if none matched).',
+                'filter is like a census officer collecting everyone who meets a criterion. It keeps going through the entire list and hands back an array of all matches.',
+              ],
+            },
           },
           {
             animationStep: 11,
@@ -2977,6 +3072,15 @@ export const TOPICS: Topic[] = [
             text: 'reduce(callback, initialValue) processes every element sequentially, accumulating a single result. The callback receives the accumulator and current element. Great for sums, counts, and data transformations.',
             codeExample: `const nums = [1, 2, 3, 4, 5];\nconst sum = nums.reduce((acc, n) => acc + n, 0); // 15\n\nconst counts = ['a','b','a','c','b','a'].reduce((acc, letter) => {\n  acc[letter] = (acc[letter] || 0) + 1;\n  return acc;\n}, {});\n// { a: 3, b: 2, c: 1 }`,
             language: 'javascript',
+            analogy: {
+              icon: '🧾',
+              title: 'Step 12 — reduce: the running total',
+              text: [
+                'reduce is like a cashier adding up a shopping receipt. They start with a running total (the initial value, e.g. 0), then for each item on the list they add it to the total and hand the updated total to the next step.',
+                'After the last item, the cashier hands you the final total. That is your result — a single value distilled from the whole array.',
+                'The accumulator does not have to be a number — it can be an object, an array, or any other value, making reduce extremely versatile.',
+              ],
+            },
           },
           {
             animationStep: 12,
@@ -2985,6 +3089,15 @@ export const TOPICS: Topic[] = [
             text: 'some returns true if at least one element passes the test. every returns true only if all elements pass. Both short-circuit: they stop as soon as the result is determined.',
             codeExample: `const scores = [80, 55, 92, 70];\nconsole.log(scores.some(s => s >= 90));  // true (92 qualifies)\nconsole.log(scores.every(s => s >= 50)); // true (all pass)\nconsole.log(scores.every(s => s >= 80)); // false (55 fails)`,
             language: 'javascript',
+            analogy: {
+              icon: '🗳️',
+              title: 'Step 13 — some/every: the vote',
+              text: [
+                'some is like a motion that passes if at least one voter says yes. As soon as one "yes" is found, the vote is decided and counting stops.',
+                'every is like a unanimous decision — all voters must say yes. As soon as one "no" is found, the result is false and the count stops early too.',
+                'Both short-circuit for performance: they stop iterating the moment the outcome is certain.',
+              ],
+            },
           },
         ],
       },
@@ -3012,6 +3125,60 @@ export const TOPICS: Topic[] = [
         'Forgetting the initial value in reduce — without it, reduce uses the first element as the accumulator and skips it, which can produce wrong results on empty arrays',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Using forEach instead of map when you need the result',
+        why: 'forEach always returns undefined. Assigning its result to a variable gives you undefined, not a new array. If you need a transformed array, use map.',
+        fixLabel: 'Fix — use map to get a new array',
+        fixCode: '// ❌ Wrong\nconst doubled = [1, 2, 3].forEach(x => x * 2)\nconsole.log(doubled) // undefined!\n\n// ✅ Right\nconst doubled = [1, 2, 3].map(x => x * 2)\nconsole.log(doubled) // [2, 4, 6]',
+      },
+      {
+        title: 'Mutating a React state array with push',
+        why: 'push modifies the existing array reference. React uses reference equality to detect changes — mutating in place means the reference is the same, so React does not re-render.',
+        fixLabel: 'Fix — create a new array with spread',
+        fixCode: '// ❌ Wrong — React will not re-render\nconst [items, setItems] = React.useState([1, 2, 3])\nitems.push(4)\nsetItems(items) // same reference — no re-render!\n\n// ✅ Right — spread creates a new reference\nsetItems(prev => [...prev, 4])',
+      },
+      {
+        title: 'Forgetting the initial value in reduce',
+        why: 'Without an initial value, reduce uses the first element as the accumulator and starts iterating from the second. On an empty array this throws a TypeError.',
+        fixLabel: 'Fix — always provide an initial value',
+        fixCode: '// ❌ Wrong — throws on empty array\nconst sum = [].reduce((acc, n) => acc + n)\n// TypeError: Reduce of empty array with no initial value\n\n// ✅ Right\nconst sum = [].reduce((acc, n) => acc + n, 0)\nconsole.log(sum) // 0 — safe',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React UI List',
+        heading: 'Rendering a filtered list',
+        description: 'In React, filter and map are chained to show only matching items from state — no mutation, just a derived array passed to JSX.',
+        code: 'function UserList({ users, searchTerm }) {\n  const visible = users\n    .filter(u => u.name.toLowerCase().includes(searchTerm))\n    .map(u => <li key={u.id}>{u.name}</li>)\n\n  return <ul>{visible}</ul>\n}',
+      },
+      {
+        context: 'Shopping Cart',
+        heading: 'Calculating total with reduce',
+        description: 'A shopping cart is a classic reduce use-case: accumulate the total price from an array of line items, each with a price and quantity.',
+        code: 'const cartItems = [\n  { name: "T-shirt", price: 25, qty: 2 },\n  { name: "Jeans",   price: 60, qty: 1 },\n  { name: "Socks",   price: 8,  qty: 3 },\n]\n\nconst total = cartItems.reduce(\n  (acc, item) => acc + item.price * item.qty,\n  0\n)\nconsole.log("Total: $" + total) // Total: $134',
+      },
+      {
+        context: 'API Data Transformation',
+        heading: 'Normalising an API response',
+        description: 'APIs often return arrays of objects. reduce can transform them into a keyed object (lookup map) for O(1) access — a very common pattern in state management.',
+        code: 'const users = [\n  { id: 1, name: "Alice" },\n  { id: 2, name: "Bob" },\n  { id: 3, name: "Carol" },\n]\n\n// Build a lookup: { 1: { id:1, name:"Alice" }, ... }\nconst byId = users.reduce((acc, user) => {\n  acc[user.id] = user\n  return acc\n}, {})\n\nconsole.log(byId[2].name) // "Bob" — O(1) lookup',
+      },
+    ],
+    playgroundExamples: [
+      {
+        label: 'map / filter / reduce',
+        code: '// 🎯 The three power methods of arrays\n\nconst products = [\n  { name: "Laptop",  price: 999, inStock: true  },\n  { name: "Phone",   price: 699, inStock: false },\n  { name: "Tablet",  price: 499, inStock: true  },\n  { name: "Monitor", price: 349, inStock: true  },\n  { name: "Keyboard",price: 89,  inStock: false },\n]\n\n// 1. filter — keep only in-stock items\nconst available = products.filter(p => p.inStock)\nconsole.log("In stock:", available.map(p => p.name))\n\n// 2. map — extract just the names\nconst names = products.map(p => p.name)\nconsole.log("All products:", names)\n\n// 3. reduce — total value of in-stock items\nconst total = available.reduce((acc, p) => acc + p.price, 0)\nconsole.log("In-stock total: $" + total)\n\n// 4. Chained — names of in-stock items under $600\nconst affordable = products\n  .filter(p => p.inStock && p.price < 600)\n  .map(p => `${p.name} ($${p.price})`)\nconsole.log("Affordable:", affordable)',
+      },
+      {
+        label: 'Objects & Destructuring',
+        code: '// 🎯 Working with objects — create, read, update, spread\n\n// Create\nconst user = {\n  id: 42,\n  name: "Alice",\n  age: 28,\n  role: "admin",\n}\n\n// Read with dot and bracket notation\nconsole.log(user.name)       // "Alice"\nconsole.log(user["role"])    // "admin"\n\n// Destructuring — pull out specific keys\nconst { name, age } = user\nconsole.log(name, age)       // "Alice" 28\n\n// Rename during destructuring\nconst { name: fullName } = user\nconsole.log(fullName)        // "Alice"\n\n// Spread — create a new object with updates (immutable)\nconst updated = { ...user, age: 29, role: "superadmin" }\nconsole.log("original:", user.age)   // 28 — unchanged\nconsole.log("updated:", updated.age) // 29',
+      },
+      {
+        label: 'find / some / every',
+        code: '// 🎯 Searching and checking arrays\n\nconst team = [\n  { name: "Alice", score: 88, active: true  },\n  { name: "Bob",   score: 55, active: false },\n  { name: "Carol", score: 95, active: true  },\n  { name: "Dave",  score: 72, active: true  },\n]\n\n// find — first match only\nconst topScorer = team.find(m => m.score >= 90)\nconsole.log("Top scorer:", topScorer?.name) // "Carol"\n\n// findIndex — position of first match\nconst idx = team.findIndex(m => !m.active)\nconsole.log("First inactive index:", idx)   // 1\n\n// some — at least one match?\nconst anyOver80 = team.some(m => m.score > 80)\nconsole.log("Anyone over 80?", anyOver80)   // true\n\n// every — all match?\nconst allActive = team.every(m => m.active)\nconsole.log("All active?", allActive)       // false\n\n// includes — simple value check\nconst letters = ["a", "b", "c"]\nconsole.log(letters.includes("b")) // true',
+      },
+    ],
   },
   {
     id: 'js-functions',
