@@ -3733,6 +3733,15 @@ export const TOPICS: Topic[] = [
             text: 'Extract values from an array by position. Use _ or skip commas to skip elements.',
             codeExample: 'const [first, second, , fourth] = [1, 2, 3, 4]\nconsole.log(first)  // 1\nconsole.log(fourth) // 4\n\n// With default values\nconst [a = 10, b = 20] = [5]\nconsole.log(a) // 5\nconsole.log(b) // 20',
             language: 'javascript',
+            analogy: {
+              icon: '🧳',
+              title: 'Step 1 — Array destructuring',
+              text: [
+                'Imagine packing a suitcase for a trip. When you unpack, you pull things out in the order you packed them: shirt first, trousers second, shoes third.',
+                'Array destructuring works the same way. The position matters, not the name. You can also skip slots — leave a hanger empty — and JavaScript moves on to the next item.',
+                'Default values are your backup items: "If there is nothing in slot two, use my old belt." No more manually checking if an index exists.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -3740,6 +3749,15 @@ export const TOPICS: Topic[] = [
             text: 'Extract properties from an object by name. You can rename while destructuring and set defaults.',
             codeExample: 'const { name, age = 0, role: userRole } = { name: "Alice", role: "admin" }\nconsole.log(name)     // "Alice"\nconsole.log(age)      // 0 (default)\nconsole.log(userRole) // "admin"',
             language: 'javascript',
+            analogy: {
+              icon: '🛄',
+              title: 'Step 2 — Object destructuring',
+              text: [
+                'Think of airport baggage claim. Each bag has a label (the property name). You walk up and grab the bag that says "name", the bag that says "role" — order does not matter, only the label.',
+                'Renaming is like putting your own sticky note over the label: "I will call this bag userRole instead of role." Same bag, new name in your code.',
+                'Defaults are your fallback: "If there is no bag labelled age, I will assume zero." You never crash because the belt was empty.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -3747,6 +3765,15 @@ export const TOPICS: Topic[] = [
             text: 'The spread operator (...) expands iterables. Rest syntax collects remaining elements into an array.',
             codeExample: '// Spread: copy/merge arrays and objects\nconst a = [1, 2, 3]\nconst b = [...a, 4, 5] // [1, 2, 3, 4, 5]\n\n// Rest: collect remaining args\nfunction sum(first: number, ...rest: number[]) {\n  return rest.reduce((acc, n) => acc + n, first)\n}',
             language: 'typescript',
+            analogy: {
+              icon: '💧',
+              title: 'Step 3 — Spread and rest',
+              text: [
+                'Spread is like pouring water from one glass into a bigger container. All the individual drops (elements) are released and mixed in. ...a pours every item of array a into the new array.',
+                'Rest is the opposite — it is a collecting funnel. "Give me the first item, then pour everything else into this bucket." The ...rest parameter gathers the remaining arguments into one array.',
+                'Remember: the rest element must always be last. You cannot put a funnel in the middle of a pipe.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -3755,8 +3782,71 @@ export const TOPICS: Topic[] = [
             text: 'JavaScript ships with built-in global objects. Math provides static methods for math operations. Date creates date/time objects. String methods like split, trim, and includes operate on string primitives via auto-boxing.',
             codeExample: `// Math\nconsole.log(Math.round(4.6));  // 5\nconsole.log(Math.max(1,5,3));  // 5\nconsole.log(Math.random());    // 0–0.999...\n\n// Date\nconst now = new Date();\nconsole.log(now.getFullYear()); // e.g. 2026\n\n// String\nconst s = '  Hello World  ';\nconsole.log(s.trim().toLowerCase()); // 'hello world'\nconsole.log(s.includes('World'));    // true`,
             language: 'javascript',
+            analogy: {
+              icon: '🧰',
+              title: 'Step 4 — Built-in Objects',
+              text: [
+                'Think of Math, Date, and String as a toolbox that ships with every JavaScript environment. You did not have to buy the tools — they are just there, ready to use.',
+                'Math is the scientific calculator compartment: round, floor, max, random. Date is the calendar and clock. String is the text editor tray: trim whitespace, split on commas, search for substrings.',
+                'You never need to import them. They are global, always available, pre-built and reliable.',
+              ],
+            },
           },
         ],
+      },
+    ],
+    commonErrors: [
+      {
+        title: 'Default value syntax — { x = 0 } vs { x: 0 }',
+        why: '{ x: 0 } in a destructure pattern means "rename x to 0", which is a syntax error. Default values use = not :.',
+        fixLabel: 'Fix — use = for defaults, : for renaming',
+        fixCode: '// ❌ Wrong — this is a rename, not a default!\nconst { x: 0 } = obj // SyntaxError\n\n// ✅ Right — = sets a default value\nconst { x = 0 } = obj\n\n// ✅ Rename AND default together\nconst { x: myX = 0 } = obj',
+      },
+      {
+        title: 'Rest must be last — spreading in the middle',
+        why: 'The rest element (...rest) must appear at the end of a destructuring pattern. Anything after it is a syntax error.',
+        fixLabel: 'Fix — move rest to the end',
+        fixCode: '// ❌ Wrong — rest is not last\nconst { ...rest, name } = user // SyntaxError\n\n// ✅ Right — rest comes last\nconst { name, ...rest } = user\n\n// ❌ Wrong in array too\nconst [...items, last] = arr // SyntaxError\n\n// ✅ Right\nconst [first, ...items] = arr',
+      },
+      {
+        title: 'Destructuring undefined — crashes when API returns null',
+        why: 'If the source value is null or undefined, destructuring throws a TypeError. Always provide a fallback.',
+        fixLabel: 'Fix — use fallback with ?? or ||',
+        fixCode: '// ❌ Wrong — crashes if response.data is null\nconst { name, age } = response.data\n\n// ✅ Right — safe fallback to empty object\nconst { name, age } = response.data ?? {}\n\n// ✅ Also fine with default param\nfunction greet({ name = \'Guest\' } = {}) {\n  return `Hello, ${name}`\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React — Component Props',
+        heading: 'Destructuring props in a function component',
+        description: 'Every React component receives a props object. Destructure at the parameter level for clean, readable component signatures.',
+        code: '// Without destructuring\nfunction Button(props) {\n  return (\n    <button\n      onClick={props.onClick}\n      disabled={props.disabled}\n      className={props.variant === \'primary\' ? \'btn-primary\' : \'btn\'}\n    >\n      {props.label}\n    </button>\n  )\n}\n\n// With destructuring — cleaner!\nfunction Button({ label, onClick, disabled = false, variant = \'secondary\' }) {\n  return (\n    <button onClick={onClick} disabled={disabled}\n      className={variant === \'primary\' ? \'btn-primary\' : \'btn\'}>\n      {label}\n    </button>\n  )\n}',
+      },
+      {
+        context: 'React — useState hook',
+        heading: 'Array destructuring for useState',
+        description: 'useState returns a tuple [value, setter]. Array destructuring lets you name both parts whatever you like.',
+        code: 'import { useState } from \'react\'\n\nfunction Counter() {\n  // useState returns [currentValue, setterFunction]\n  // Array destructuring lets us name them freely\n  const [count, setCount] = useState(0)\n  const [isVisible, setIsVisible] = useState(true)\n\n  return (\n    <div>\n      <p>{count}</p>\n      <button onClick={() => setCount(c => c + 1)}>+</button>\n      <button onClick={() => setIsVisible(v => !v)}>Toggle</button>\n    </div>\n  )\n}',
+      },
+      {
+        context: 'API Response — Data Extraction',
+        heading: 'Pulling fields from a nested API response',
+        description: 'Combine destructuring with renaming and defaults to safely extract fields from a deeply nested API response.',
+        code: 'async function loadProfile(userId) {\n  const res = await fetch(`/api/users/${userId}`)\n  const json = await res.json()\n\n  // Nested destructuring with rename + default\n  const {\n    user: {\n      name = \'Anonymous\',\n      email,\n      address: { city = \'Unknown\', country = \'US\' } = {},\n    } = {},\n  } = json\n\n  return { name, email, city, country }\n}',
+      },
+    ],
+    playgroundExamples: [
+      {
+        label: 'Array & Object',
+        code: '// 🎯 Array and Object Destructuring Basics\n// Explore position-based (array) vs name-based (object)\n// destructuring, with defaults and renaming.\n\nconst rgb = [255, 128, 0]\nconst [red, green, blue] = rgb\nconsole.log(`R:${red} G:${green} B:${blue}`)\n\n// Skip elements\nconst [,, third] = [10, 20, 30]\nconsole.log(\'third:\', third) // 30\n\n// Default values\nconst [x = 0, y = 0, z = 0] = [5, 10]\nconsole.log(\'z (default):\', z) // 0\n\n// Object destructuring with rename + default\nconst user = { name: \'Alice\', role: \'admin\' }\nconst { name, role: userRole, age = 25 } = user\nconsole.log(name, userRole, age)\n\n// Nested\nconst { address: { city = \'Unknown\' } = {} } = user\nconsole.log(\'city:\', city)',
+      },
+      {
+        label: 'Spread & Rest',
+        code: '// 🎯 Spread and Rest in Practice\n// Spread expands items; rest collects them.\n// Both use ... but work in opposite directions.\n\n// Spread — merge arrays\nconst nums1 = [1, 2, 3]\nconst nums2 = [4, 5, 6]\nconst combined = [...nums1, ...nums2]\nconsole.log(\'combined:\', combined)\n\n// Spread — clone and extend object\nconst defaults = { theme: \'light\', lang: \'en\', fontSize: 14 }\nconst userPrefs = { ...defaults, theme: \'dark\', fontSize: 16 }\nconsole.log(\'prefs:\', userPrefs)\n\n// Rest in array destructuring\nconst [head, ...tail] = [10, 20, 30, 40]\nconsole.log(\'head:\', head, \'tail:\', tail)\n\n// Rest in function parameters\nfunction sum(first, ...rest) {\n  return rest.reduce((acc, n) => acc + n, first)\n}\nconsole.log(\'sum:\', sum(1, 2, 3, 4, 5)) // 15',
+      },
+      {
+        label: 'Built-in Objects',
+        code: '// 🎯 Built-in Objects: Math, Date, String\n// JavaScript ships these utilities — no import needed.\n\n// Math\nconsole.log(\'--- Math ---\')\nconsole.log(Math.round(4.6))      // 5\nconsole.log(Math.floor(4.9))      // 4\nconsole.log(Math.ceil(4.1))       // 5\nconsole.log(Math.max(3, 17, 9))   // 17\nconsole.log(Math.abs(-42))         // 42\nconst rand = Math.floor(Math.random() * 6) + 1\nconsole.log(\'dice roll:\', rand)\n\n// Date\nconsole.log(\'--- Date ---\')\nconst now = new Date()\nconsole.log(now.getFullYear())\nconsole.log(now.toLocaleDateString())\n\n// String\nconsole.log(\'--- String ---\')\nconst raw = \'  Hello, World!  \'\nconsole.log(raw.trim())\nconsole.log(raw.trim().toLowerCase())\nconsole.log(raw.includes(\'World\'))  // true\nconsole.log(raw.trim().split(\', \')) // [\'Hello\', \'World!\']\nconsole.log(\'repeat: \', \'ha\'.repeat(3))',
       },
     ],
   },
