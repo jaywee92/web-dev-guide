@@ -17,6 +17,8 @@ import { getCategoryForTopic } from '@/data/categories'
 import { preloadAnimation, getAnimationComponent, preloadBanner, getBannerComponent } from '@/topics/registry'
 import type { CategoryId } from '@/types'
 import TopicBanner from './TopicBanner'
+import CommonErrorsPanel from './CommonErrorsPanel'
+import RealWorldPanel from './RealWorldPanel'
 
 export default function TopicPage() {
   const { topicId } = useParams()
@@ -24,6 +26,8 @@ export default function TopicPage() {
   const { t } = useTranslation('common')
   const { t: tTopic } = useTranslation('topic')
   const topic = useTopic(topicId ?? '')
+
+  useEffect(() => { window.scrollTo(0, 0) }, [topicId])
   const [AnimComp, setAnimComp] = useState<ComponentType<{ step: number; compact?: boolean }> | null>(
     () => topic ? getAnimationComponent(topic.animationComponent) : null
   )
@@ -35,6 +39,11 @@ export default function TopicPage() {
 
   useEffect(() => {
     if (!topic) return
+    if (!topic.animationComponent) {
+      setAnimComp(null)
+      setAnimLoading(false)
+      return
+    }
     setAnimLoading(getAnimationComponent(topic.animationComponent) === null)
     preloadAnimation(topic.animationComponent).then(() => {
       setAnimComp(() => getAnimationComponent(topic.animationComponent))
@@ -47,7 +56,10 @@ export default function TopicPage() {
   )
 
   useEffect(() => {
-    if (!topic?.bannerComponent) return
+    if (!topic?.bannerComponent) {
+      setBannerComp(null)
+      return
+    }
     preloadBanner(topic.bannerComponent).then(() => {
       setBannerComp(() => getBannerComponent(topic.bannerComponent!))
     })
@@ -111,7 +123,7 @@ export default function TopicPage() {
           hasPlayground={hasPlayground}
           topicTitle={topic.title}
         />
-        <div style={{ flex: 1, minWidth: 0, padding: '40px 40px 80px', maxWidth: 860 }}>
+        <div style={{ flex: 1, minWidth: 0, padding: '40px 40px 80px', maxWidth: 1100 }}>
 
           {/* Navigation header */}
           <div id="intro">
@@ -191,11 +203,19 @@ export default function TopicPage() {
 
           {/* Phase 2: Explanation */}
           <div id="explanation" style={{ marginTop: 0 }}>
-            <SyncExplanation topic={topic} AnimComp={AnimComp} animLoading={animLoading} />
+            <SyncExplanation key={topic.id} topic={topic} AnimComp={AnimComp} animLoading={animLoading} />
           </div>
 
           {/* Key Takeaways */}
           <KeyTakeaways topic={topic} />
+
+          {topic.commonErrors && topic.commonErrors.length > 0 && (
+            <CommonErrorsPanel errors={topic.commonErrors} color={topic.color} />
+          )}
+
+          {topic.realWorldExamples && topic.realWorldExamples.length > 0 && (
+            <RealWorldPanel examples={topic.realWorldExamples} color={topic.color} />
+          )}
 
           {/* CheatSheet + Sliders + Playground as tabs */}
           {(hasCheatSheet || hasSliderConfig(topic.id) || hasPlayground) && (
