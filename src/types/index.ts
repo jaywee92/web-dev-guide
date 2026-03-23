@@ -44,6 +44,7 @@ export interface Topic {
   estimatedMinutes: number
   animationComponent?: string
   bannerComponent?: string
+  analogyComponent?: string
   playgroundType: PlaygroundType
   defaultCSS?: string      // pre-filled CSS for css-live playground
   previewHTML?: string     // fixed HTML template for css-live preview

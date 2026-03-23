@@ -2040,7 +2040,7 @@ export const TOPICS: Topic[] = [
   {
     id: 'js-oop',
     category: 'javascript-oop',
-    animationComponent: 'ClosureViz',
+    animationComponent: 'OOPViz',
     bannerComponent: 'OOPBanner',
     nextTopicId: 'js-timers',
     title: 'Objects & Classes',
@@ -2220,7 +2220,7 @@ export const TOPICS: Topic[] = [
   {
     id: 'js-timers',
     category: 'javascript-oop',
-    animationComponent: 'EventLoopViz',
+    animationComponent: 'TimersViz',
     bannerComponent: 'TimersBanner',
     nextTopicId: 'js-event-loop',
     title: 'Timers & Async Globals',
@@ -2810,6 +2810,7 @@ scheduleUpdate(() => updateCounter(2))
     estimatedMinutes: 8,
     animationComponent: 'VariablesViz',
     bannerComponent: 'VariablesBanner',
+    analogyComponent: 'VariablesAnalogyViz',
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -3032,7 +3033,7 @@ scheduleUpdate(() => updateCounter(2))
   {
     id: 'js-control-flow',
     category: 'javascript',
-    animationComponent: 'VariablesViz',
+    animationComponent: 'ControlFlowViz',
     bannerComponent: 'ControlFlowBanner',
     nextTopicId: 'js-arrays',
     title: 'Control Flow',
@@ -3531,7 +3532,7 @@ scheduleUpdate(() => updateCounter(2))
     category: 'javascript',
     color: '#fb923c',
     estimatedMinutes: 10,
-    animationComponent: 'ClosureViz',
+    animationComponent: 'FunctionsViz',
     bannerComponent: 'FunctionsBanner',
     playgroundType: 'monaco',
     nextTopicId: 'js-destructuring',
@@ -3725,7 +3726,7 @@ scheduleUpdate(() => updateCounter(2))
     category: 'javascript-async',
     color: '#4ade80',
     estimatedMinutes: 12,
-    animationComponent: 'EventLoopViz',
+    animationComponent: 'PromisesViz',
     bannerComponent: 'PromisesBanner',
     playgroundType: 'monaco',
     nextTopicId: 'js-modules',
@@ -3882,7 +3883,7 @@ scheduleUpdate(() => updateCounter(2))
     category: 'javascript',
     color: '#f472b6',
     estimatedMinutes: 8,
-    animationComponent: 'VariablesViz',
+    animationComponent: 'DestructuringViz',
     bannerComponent: 'DestructuringBanner',
     playgroundType: 'monaco',
     sections: [
@@ -4017,7 +4018,7 @@ scheduleUpdate(() => updateCounter(2))
   {
     id: 'js-modules',
     category: 'javascript-async',
-    animationComponent: 'VariablesViz',
+    animationComponent: 'ModulesViz',
     bannerComponent: 'ModulesBanner',
     nextTopicId: 'js-npm-bundlers',
     title: 'Modules & Bundlers',
@@ -4180,7 +4181,7 @@ scheduleUpdate(() => updateCounter(2))
   {
     id: 'js-npm-bundlers',
     category: 'javascript-async',
-    animationComponent: undefined,
+    animationComponent: 'NpmBundlersViz',
     bannerComponent: 'NpmBundlersBanner',
     nextTopicId: undefined,
     title: 'npm & Bundlers',
@@ -4410,6 +4411,334 @@ export default defineConfig({
 // npm run build  → opens dist/stats.html
 // Look for unexpectedly large packages (e.g. moment.js)
 // Replace with smaller alternatives (e.g. date-fns)`,
+      },
+    ],
+  },
+  {
+    id: 'js-vs-python',
+    category: 'javascript-async',
+    nextTopicId: undefined,
+    title: 'JavaScript vs Python',
+    description: 'Side-by-side syntax comparison: variables, functions, loops, dicts, async and more',
+    color: '#fbbf24',
+    estimatedMinutes: 10,
+    animationComponent: 'JsVsPythonViz',
+    bannerComponent: undefined,
+    playgroundType: 'monaco' as const,
+    sections: [
+      { id: 'intro', type: 'intro' as const, steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation' as const,
+        steps: [
+          {
+            animationStep: 0,
+            icon: '📦',
+            heading: 'Variables',
+            text: 'Python does not require a keyword — just write name = "Alice". JavaScript uses const for values that do not change and let for values that can be reassigned. Avoid var in modern JS.',
+            codeExample: `# Python
+name = "Alice"
+age  = 25
+
+// JavaScript
+const name = "Alice"  // fixed
+let   age  = 25       // mutable`,
+            language: 'python',
+          },
+          {
+            animationStep: 1,
+            icon: '🔧',
+            heading: 'Functions',
+            text: 'Python uses the def keyword followed by a colon. JavaScript uses the function keyword or the concise arrow function syntax (=>). Both languages support default parameters.',
+            codeExample: `# Python
+def greet(name="World"):
+    return f"Hello, {name}"
+
+// JavaScript
+function greet(name = "World") {
+  return \`Hello, \${name}\`
+}
+// Arrow shorthand
+const greet = (name = "World") => \`Hello, \${name}\``,
+            language: 'python',
+          },
+          {
+            animationStep: 2,
+            icon: '🔀',
+            heading: 'Control flow',
+            text: 'Python uses indentation to define code blocks — no braces. JavaScript uses curly braces {} to delimit blocks and requires parentheses around the condition. elif in Python becomes else if in JS.',
+            codeExample: `# Python — indentation defines the block
+if age >= 18:
+    print("adult")
+elif age >= 13:
+    print("teen")
+else:
+    print("child")
+
+// JavaScript — braces define the block
+if (age >= 18) {
+  console.log("adult")
+} else if (age >= 13) {
+  console.log("teen")
+} else {
+  console.log("child")
+}`,
+            language: 'python',
+          },
+          {
+            animationStep: 3,
+            icon: '🏷️',
+            heading: 'Data types',
+            text: 'Both languages have strings, numbers, booleans, and a "nothing" value. Key differences: Python capitalises True/False/None; JavaScript uses true/false/null. Python distinguishes int and float; JavaScript has a single number type.',
+            codeExample: `# Python
+None        # absence of value
+True/False  # capitalised!
+42          # int
+3.14        # float
+"hello"     # str
+
+// JavaScript
+null        // absence of value
+true/false  // lowercase!
+42          // number (always float internally)
+3.14        // number
+"hello"     // string`,
+            language: 'python',
+          },
+          {
+            animationStep: 4,
+            icon: '🔁',
+            heading: 'Loops',
+            text: 'Python\'s for loop iterates directly over items: for item in list. JavaScript uses for...of for the same pattern. JavaScript also has forEach() and the array methods .map(), .filter(), .reduce() which Python achieves via list comprehensions.',
+            codeExample: `# Python
+fruits = ["apple", "banana"]
+for fruit in fruits:
+    print(fruit)
+
+# List comprehension
+doubled = [x * 2 for x in [1,2,3]]
+
+// JavaScript
+const fruits = ["apple", "banana"]
+for (const fruit of fruits) {
+  console.log(fruit)
+}
+// Array method
+const doubled = [1,2,3].map(x => x * 2)`,
+            language: 'python',
+          },
+          {
+            animationStep: 5,
+            icon: '📚',
+            heading: 'Dicts vs Objects',
+            text: 'Python dicts and JavaScript objects both store key-value pairs. In Python keys must be quoted and accessed with bracket notation or .get(). In JavaScript keys can be unquoted and accessed with dot notation or bracket notation. JS also has optional chaining (?.) for safe access.',
+            codeExample: `# Python dict
+user = {
+    "name": "Alice",
+    "age": 25,
+}
+user["name"]        # bracket access
+user.get("missing", "default")
+
+// JavaScript object
+const user = {
+  name: "Alice",   // key can be unquoted
+  age: 25,
+}
+user.name           // dot access
+user?.address?.city // optional chaining`,
+            language: 'python',
+          },
+          {
+            animationStep: 6,
+            icon: '⏳',
+            heading: 'Async / await',
+            text: 'Both languages use the async/await syntax for asynchronous code. The keywords look almost identical. The main difference: Python requires asyncio to run async code and has the Global Interpreter Lock. JavaScript\'s async is built into the browser runtime and the Node.js event loop.',
+            codeExample: `# Python — needs asyncio
+import asyncio
+
+async def fetch_data(url):
+    data = await get_json(url)
+    return data
+
+asyncio.run(fetch_data(url))
+
+// JavaScript — built-in async
+async function fetchData(url) {
+  const res  = await fetch(url)
+  const data = await res.json()
+  return data
+}
+fetchData(url)`,
+            language: 'python',
+          },
+          {
+            animationStep: 7,
+            icon: '🔤',
+            heading: 'String methods',
+            text: 'Most string method names differ slightly between Python and JavaScript. Both languages treat strings as immutable — methods always return a new string. Python uses f-strings for interpolation; JavaScript uses template literals with backticks.',
+            codeExample: `# Python
+"hello".upper()        # "HELLO"
+"  hi  ".strip()       # "hi"
+"a,b".split(",")       # ["a", "b"]
+",".join(["a","b"])    # "a,b"
+f"Hi {name}"           # f-string
+
+// JavaScript
+"hello".toUpperCase()  // "HELLO"
+"  hi  ".trim()        // "hi"
+"a,b".split(",")       // ["a", "b"]
+["a","b"].join(",")    // "a,b"
+\`Hi \${name}\`           // template literal`,
+            language: 'python',
+          },
+          {
+            animationStep: 8,
+            icon: '📋',
+            heading: 'List / Array methods',
+            text: 'Python lists and JavaScript arrays have similar capabilities but different method names. Important behavior difference: Python\'s .sort() modifies the array in-place, while JavaScript\'s .sort() also mutates but requires a comparator function for numbers. JS methods like .map() and .filter() always return new arrays.',
+            codeExample: `# Python
+nums = [3, 1, 2]
+nums.append(4)      # mutates: [3,1,2,4]
+nums.pop()          # removes & returns last
+nums.sort()         # in-place, ascending
+len(nums)           # 3
+[x*2 for x in nums] # list comprehension
+
+// JavaScript
+const nums = [3, 1, 2]
+nums.push(4)        // mutates: [3,1,2,4]
+nums.pop()          // removes & returns last
+nums.sort((a,b)=>a-b) // needs comparator!
+nums.length         // 3
+nums.map(x => x*2)  // returns NEW array`,
+            language: 'python',
+          },
+          {
+            animationStep: 9,
+            icon: '🛡️',
+            heading: 'Error handling',
+            text: 'Both languages use try/except (Python) or try/catch (JS) with a finally block. Python has a unique else clause on try blocks — it runs only if no exception was raised. JavaScript has no equivalent; place that code after the catch block instead.',
+            codeExample: `# Python — has "else" clause
+try:
+    result = int("42")
+except ValueError as e:
+    print("Bad input:", e)
+else:
+    print("Parsed OK:", result)  # only if no error
+finally:
+    print("always runs")
+
+// JavaScript — no "else" clause
+try {
+  const result = parseInt("42")
+  console.log("Parsed OK:", result)  // inside try
+} catch (e) {
+  console.error("Bad input:", e)
+} finally {
+  console.log("always runs")
+}`,
+            language: 'python',
+          },
+        ],
+      },
+      { id: 'playground', type: 'playground' as const, steps: [] },
+    ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Variables', code: '# Python\nname = "Alice"\n\n// JS\nconst name = "Alice"\nlet count = 0', note: 'Python: no keyword. JS: const/let' },
+        { label: 'Functions', code: '# Python\ndef add(a, b):\n    return a + b\n\n// JS\nconst add = (a, b) => a + b', note: 'Python: def. JS: function or =>' },
+        { label: 'Loops', code: '# Python\nfor item in list:\n    print(item)\n\n// JS\nfor (const item of arr) {\n  console.log(item)\n}', note: 'Python: for-in. JS: for-of' },
+        { label: 'None / null', code: '# Python\nif value is None:\n\n// JS\nif (value === null):', note: 'Python: is None. JS: === null' },
+        { label: 'Boolean literals', code: '# Python\nTrue  False\n\n// JS\ntrue  false', note: 'Python capitalises, JS does not' },
+        { label: 'String methods', code: '# Python\n"hi".upper()  →  "HI"\n"hi".strip()  →  "hi" (removes whitespace)\n\n// JS\n"hi".toUpperCase()  →  "HI"\n"hi".trim()         →  "hi"', note: 'Immutable in both — always returns a new string' },
+        { label: 'List/Array methods', code: '# Python (in-place)\nnums.append(4)  # push\nnums.pop()      # remove last\nnums.sort()     # in-place!\n\n// JS (sort mutates, map/filter do not)\nnums.push(4)\nnums.pop()\nnums.sort((a,b)=>a-b)  // needs comparator\nnums.map(x=>x*2)       // new array', note: 'JS .sort() is lexicographic by default — always pass a comparator for numbers' },
+        { label: 'Error handling', code: '# Python\ntry:\n    ...\nexcept ValueError as e:\n    ...\nelse:       # only if no error\n    ...\nfinally:\n    ...\n\n// JS\ntry { ... }\ncatch (e) { ... }\nfinally { ... }  // no "else" in JS', note: 'Python has else on try; JS does not' },
+      ],
+      patterns: [
+        {
+          title: 'List/array comprehension vs map',
+          code: '# Python — list comprehension\nsquares = [x**2 for x in range(5)]\n\n// JavaScript — array method\nconst squares = [0,1,2,3,4].map(x => x**2)',
+          language: 'python',
+        },
+        {
+          title: 'Dict/object default access',
+          code: '# Python\nvalue = d.get("key", "default")\n\n// JavaScript\nconst value = obj?.key ?? "default"',
+          language: 'python',
+        },
+      ],
+      whenToUse: 'Use this reference when switching between Python and JavaScript — the semantics are similar but the syntax differs in important ways.',
+      commonMistakes: [
+        'Writing True/False (Python) instead of true/false in JavaScript — JS is case-sensitive',
+        'Using Python-style indentation for blocks in JS — JavaScript needs curly braces, indentation is only cosmetic',
+        'Forgetting parentheses around if-conditions in JS — if age > 18 is invalid, must be if (age > 18)',
+        'Using elif in JavaScript — JS uses else if (two words)',
+      ],
+    },
+    playgroundExamples: [
+      {
+        label: 'Variables & types',
+        code: `// 🎯 JavaScript vs Python — Variables & Types
+// In Python: name = "Alice" (no keyword)
+// In JS: const (fixed) or let (mutable)
+
+const name = "Alice"
+let   age  = 25
+let   active = true   // Python: True (capital)
+let   nothing = null  // Python: None
+
+console.log(typeof name)    // "string"
+console.log(typeof age)     // "number"  (Python: int/float)
+console.log(typeof nothing) // "object"  ⚠️ quirk! (Python: NoneType)
+
+// Python: no var needed
+// JS: always use const or let, never var`,
+      },
+      {
+        label: 'Functions & arrows',
+        code: `// 🎯 Functions — Python vs JavaScript
+
+// Python:
+// def greet(name, greeting="Hello"):
+//     return f"{greeting}, {name}!"
+
+// JavaScript equivalent:
+function greet(name, greeting = "Hello") {
+  return \`\${greeting}, \${name}!\`
+}
+console.log(greet("Alice"))          // Hello, Alice!
+console.log(greet("Bob", "Hi"))      // Hi, Bob!
+
+// Arrow function (JS-only shorthand):
+const double = x => x * 2
+console.log(double(5))   // 10
+
+// Python lambda (limited to one expression):
+// double = lambda x: x * 2`,
+      },
+      {
+        label: 'Loops & arrays',
+        code: `// 🎯 Loops — Python vs JavaScript
+
+const fruits = ["apple", "banana", "cherry"]
+
+// Python: for fruit in fruits: print(fruit)
+for (const fruit of fruits) {
+  console.log(fruit)
+}
+
+// Python: [x.upper() for x in fruits]
+const upper = fruits.map(f => f.toUpperCase())
+console.log(upper)
+
+// Python: [x for x in fruits if x.startsWith("b")]
+const b = fruits.filter(f => f.startsWith("b"))
+console.log(b)  // ["banana"]
+
+// Python: range(5) → for i in range(5)
+for (let i = 0; i < 5; i++) {
+  process.stdout.write(i + " ")
+}`,
       },
     ],
   },
