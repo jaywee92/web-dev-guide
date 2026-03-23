@@ -2822,7 +2822,7 @@ scheduleUpdate(() => updateCounter(2))
             animationStep: 0,
             icon: '📦',
             heading: 'var — the old way',
-            text: 'var is function-scoped and hoisted, which causes unexpected bugs. Modern JavaScript avoids it.',
+            text: '`var` is function-scoped and `hoisted`, which causes unexpected bugs. Modern JavaScript avoids it.',
             codeExample: 'var x = 1\nif (true) {\n  var x = 2  // same variable!\n}\nconsole.log(x) // 2 — surprising!',
             language: 'javascript',
             analogy: {
@@ -2839,7 +2839,7 @@ scheduleUpdate(() => updateCounter(2))
             animationStep: 1,
             icon: '🔭',
             heading: 'let — block-scoped',
-            text: 'let creates a variable that lives only in the block where it is declared. You can reassign it.',
+            text: '`let` creates a variable that lives only in the block where it is declared. You can reassign it.',
             codeExample: 'let count = 0\ncount = count + 1  // OK\n\nif (true) {\n  let inner = 42  // only exists here\n}',
             language: 'javascript',
             analogy: {
@@ -2856,7 +2856,7 @@ scheduleUpdate(() => updateCounter(2))
             animationStep: 2,
             icon: '🏗️',
             heading: 'const — cannot be reassigned',
-            text: 'const bindings cannot be reassigned after creation. For objects and arrays, the contents can still change.',
+            text: '`const` bindings cannot be reassigned after creation. For objects and arrays, the contents can still change.',
             codeExample: 'const PI = 3.14159\nPI = 3  // TypeError!\n\nconst user = { name: "Alice" }\nuser.name = "Bob"  // OK — object contents can change',
             language: 'javascript',
             analogy: {
@@ -2873,7 +2873,7 @@ scheduleUpdate(() => updateCounter(2))
             animationStep: 3,
             icon: '☠️',
             heading: 'Primitive types',
-            text: 'JavaScript has six primitive types. They are immutable values — not objects.',
+            text: 'JavaScript has six primitive types: `string`, `number`, `boolean`, `null`, `undefined`, and `symbol`. They are immutable values — not objects.',
             codeExample: 'let name = "Alice"      // string\nlet age = 25           // number\nlet active = true      // boolean\nlet nothing = null     // null\nlet missing            // undefined\nlet id = Symbol()      // symbol',
             language: 'javascript',
             analogy: {
@@ -2890,7 +2890,7 @@ scheduleUpdate(() => updateCounter(2))
             animationStep: 4,
             icon: '📦',
             heading: 'typeof operator',
-            text: 'The typeof operator returns a string describing the type. Watch out: typeof null returns "object" — a known JavaScript quirk.',
+            text: 'The `typeof` operator returns a string describing the type. Watch out: `typeof null` returns `"object"` — a known JavaScript quirk.',
             codeExample: 'typeof "hello"     // "string"\ntypeof 42          // "number"\ntypeof true        // "boolean"\ntypeof undefined   // "undefined"\ntypeof null        // "object" ⚠️ quirk!',
             language: 'javascript',
             analogy: {
@@ -2906,7 +2906,7 @@ scheduleUpdate(() => updateCounter(2))
             animationStep: 5,
             icon: '➕',
             heading: 'Arithmetic Operators',
-            text: 'JavaScript supports the standard arithmetic operators: + (add), - (subtract), * (multiply), / (divide), % (modulo), and ** (exponentiation). The modulo operator is especially useful for checking if a number is even or odd.',
+            text: 'JavaScript supports the standard arithmetic operators: `+` (add), `-` (subtract), `*` (multiply), `/` (divide), `%` (modulo), and `**` (exponentiation). The `%` operator is especially useful for checking if a number is even or odd.',
             codeExample: `const a = 10, b = 3;\nconsole.log(a + b);   // 13\nconsole.log(a % b);   // 1 (remainder)\nconsole.log(a ** b);  // 1000 (10 to the power 3)`,
             language: 'javascript',
             analogy: {
@@ -2923,7 +2923,7 @@ scheduleUpdate(() => updateCounter(2))
             animationStep: 6,
             icon: '⚖️',
             heading: 'Comparison & Logical Operators',
-            text: 'Comparison operators (===, !==, >, <, >=, <=) return true or false. Always prefer === (strict equality) over == to avoid type coercion surprises. Logical operators && (AND), || (OR), and ! (NOT) combine boolean expressions.',
+            text: 'Comparison operators (`===`, `!==`, `>`, `<`, `>=`, `<=`) return `true` or `false`. Always prefer `===` (strict equality) over `==` to avoid type coercion surprises. Logical operators `&&` (AND), `||` (OR), and `!` (NOT) combine boolean expressions.',
             codeExample: `console.log(5 === '5');  // false (strict)\nconsole.log(5 == '5');   // true (loose — avoid)\nconsole.log(true && false); // false\nconsole.log(false || true); // true\nconsole.log(!true);         // false`,
             language: 'javascript',
             analogy: {
@@ -2940,7 +2940,7 @@ scheduleUpdate(() => updateCounter(2))
             animationStep: 7,
             icon: '🛡️',
             heading: 'try / catch / finally',
-            text: 'Wrap risky code in a try block. If an error is thrown, execution jumps to the catch block where you can handle it gracefully. The optional finally block always runs, regardless of whether an error occurred.',
+            text: 'Wrap risky code in a `try` block. If an error is thrown, execution jumps to the `catch` block where you can handle it gracefully. The optional `finally` block always runs, regardless of whether an error occurred.',
             codeExample: `try {\n  const result = JSON.parse('invalid json');\n  console.log(result);\n} catch (error) {\n  console.error('Parse failed:', error.message);\n} finally {\n  console.log('Always runs');\n}`,
             language: 'javascript',
             analogy: {

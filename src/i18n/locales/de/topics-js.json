@@ -6,7 +6,7 @@
       {
         "animationStep": 0,
         "heading": "var — die alte Methode",
-        "text": "var ist funktionsscoped und wird gehoisted, was zu unerwarteten Fehlern führt. Modernes JavaScript vermeidet es.",
+        "text": "`var` ist funktionsscoped und wird `gehoisted`, was zu unerwarteten Fehlern führt. Modernes JavaScript vermeidet es.",
         "analogy": {
           "title": "Schritt 1 — var: der löchrige Eimer",
           "text": [
@@ -19,7 +19,7 @@
       {
         "animationStep": 1,
         "heading": "let — blockscoped",
-        "text": "let erstellt eine Variable, die nur im Block existiert, in dem sie deklariert wurde. Du kannst sie neu zuweisen.",
+        "text": "`let` erstellt eine Variable, die nur im Block existiert, in dem sie deklariert wurde. Du kannst sie neu zuweisen.",
         "analogy": {
           "title": "Schritt 2 — let: der versiegelte Raum",
           "text": [
@@ -32,7 +32,7 @@
       {
         "animationStep": 2,
         "heading": "const — kann nicht neu zugewiesen werden",
-        "text": "const-Bindungen können nach der Erstellung nicht neu zugewiesen werden. Bei Objekten und Arrays kann der Inhalt jedoch weiterhin verändert werden.",
+        "text": "`const`-Bindungen können nach der Erstellung nicht neu zugewiesen werden. Bei Objekten und Arrays kann der Inhalt jedoch weiterhin verändert werden.",
         "analogy": {
           "title": "Schritt 3 — const: das Namensschild, nicht der Inhalt",
           "text": [
@@ -45,7 +45,7 @@
       {
         "animationStep": 3,
         "heading": "Primitive Typen",
-        "text": "JavaScript hat sechs primitive Typen. Sie sind unveränderliche Werte — keine Objekte.",
+        "text": "JavaScript hat sechs primitive Typen: `string`, `number`, `boolean`, `null`, `undefined` und `symbol`. Sie sind unveränderliche Werte — keine Objekte.",
         "analogy": {
           "title": "Schritt 4 — Primitive: die Atome der Daten",
           "text": [
@@ -58,7 +58,7 @@
       {
         "animationStep": 4,
         "heading": "typeof-Operator",
-        "text": "Der typeof-Operator gibt einen String zurück, der den Typ beschreibt. Achtung: typeof null gibt \"object\" zurück — eine bekannte JavaScript-Eigenheit.",
+        "text": "Der `typeof`-Operator gibt einen String zurück, der den Typ beschreibt. Achtung: `typeof null` gibt `\"object\"` zurück — eine bekannte JavaScript-Eigenheit.",
         "analogy": {
           "title": "Schritt 5 — typeof: das Versandetikett lesen",
           "text": [
@@ -71,7 +71,7 @@
       {
         "animationStep": 5,
         "heading": "Arithmetische Operatoren",
-        "text": "JavaScript unterstützt die üblichen arithmetischen Operatoren: + (Addition), - (Subtraktion), * (Multiplikation), / (Division), % (Modulo) und ** (Potenzierung). Der Modulo-Operator ist besonders nützlich, um zu prüfen, ob eine Zahl gerade oder ungerade ist.",
+        "text": "JavaScript unterstützt: `+` (Addition), `-` (Subtraktion), `*` (Multiplikation), `/` (Division), `%` (Modulo) und `**` (Potenzierung). Der Modulo-Operator ist besonders nützlich, um gerade oder ungerade Zahlen zu prüfen.",
         "analogy": {
           "title": "Schritt 6 — Arithmetik: die Taschenrechner-Tasten",
           "text": [
@@ -84,7 +84,7 @@
       {
         "animationStep": 6,
         "heading": "Vergleichs- & Logikoperatoren",
-        "text": "Vergleichsoperatoren (===, !==, >, <, >=, <=) geben true oder false zurück. Verwende immer === (strikte Gleichheit) statt ==, um Überraschungen durch Typumwandlung zu vermeiden. Logische Operatoren && (UND), || (ODER) und ! (NICHT) kombinieren boolesche Ausdrücke.",
+        "text": "Vergleichsoperatoren (`===`, `!==`, `>`, `<`, `>=`, `<=`) geben `true` oder `false` zurück. Verwende immer `===` statt `==`, um Überraschungen durch Typumwandlung zu vermeiden. Logische Operatoren `&&`, `||` und `!` kombinieren boolesche Ausdrücke.",
         "analogy": {
           "title": "Schritt 7 — Vergleich: der strenge Richter",
           "text": [
@@ -97,7 +97,7 @@
       {
         "animationStep": 7,
         "heading": "try / catch / finally",
-        "text": "Riskanten Code in einen try-Block einwickeln. Wenn ein Fehler geworfen wird, springt die Ausführung zum catch-Block, wo du ihn elegant behandeln kannst. Der optionale finally-Block wird immer ausgeführt, unabhängig davon, ob ein Fehler aufgetreten ist.",
+        "text": "Riskanten Code in einen `try`-Block einwickeln. Wenn ein Fehler geworfen wird, springt die Ausführung zum `catch`-Block, wo du ihn elegant behandeln kannst. Der optionale `finally`-Block wird immer ausgeführt, unabhängig davon, ob ein Fehler aufgetreten ist.",
         "analogy": {
           "title": "Schritt 8 — try/catch: das Sicherheitsnetz",
           "text": [

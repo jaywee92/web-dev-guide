@@ -142,6 +142,28 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
   )
 }
 
+function renderInlineText(text: string, color: string): React.ReactNode {
+  const parts = text.split(/(`[^`]+`)/)
+  return parts.map((part, i) => {
+    if (part.startsWith('`') && part.endsWith('`')) {
+      const code = part.slice(1, -1)
+      return (
+        <code key={i} style={{
+          fontFamily: 'var(--font-mono)', fontSize: 11,
+          background: `${color}14`,
+          border: `1px solid ${color}33`,
+          borderRadius: 3,
+          padding: '1px 5px',
+          color,
+        }}>
+          {code}
+        </code>
+      )
+    }
+    return part
+  })
+}
+
 function StepBlock({ step, index, active, onActivate, color }: {
   step: ExplanationStep
   index: number
@@ -230,7 +252,7 @@ function StepBlock({ step, index, active, onActivate, color }: {
       {/* Body */}
       <div style={{ padding: '13px 18px 15px 21px' }}>
         <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.75, margin: 0, marginBottom: step.codeExample ? 12 : 0 }}>
-          {step.text}
+          {renderInlineText(step.text, color)}
         </p>
         {step.codeExample && (
           <CodeBlock code={step.codeExample} language={step.language} />
