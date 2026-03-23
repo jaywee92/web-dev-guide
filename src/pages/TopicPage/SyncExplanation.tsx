@@ -1,10 +1,13 @@
-import { useRef, useEffect, type ComponentType } from 'react'
+import { useState, useRef, useEffect, type ComponentType } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import type { Topic, ExplanationStep } from '@/types'
 import CodeBlock from '@/components/ui/CodeBlock'
 import { useAnimationStep } from '@/hooks/useAnimationStep'
 import AnalogyPanel from './AnalogyPanel'
+import {
+  getAnalogyComponent, preloadAnalogyAnimation,
+} from '@/topics/registry'
 
 interface Props {
   topic: Topic
@@ -17,6 +20,17 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
   const explanationSection = topic.sections.find(s => s.type === 'explanation')
   const steps = explanationSection?.steps ?? []
   const ctrl = useAnimationStep({ totalSteps: Math.max(steps.length, 1), autoPlay: false })
+
+  const [AnalogyComp, setAnalogyComp] = useState<ComponentType<{ step: number }> | null>(
+    () => topic ? getAnalogyComponent(topic.analogyComponent) : null
+  )
+
+  useEffect(() => {
+    if (!topic?.analogyComponent) return
+    preloadAnalogyAnimation(topic.analogyComponent).then(() => {
+      setAnalogyComp(() => getAnalogyComponent(topic.analogyComponent))
+    })
+  }, [topic?.analogyComponent])
 
   if (steps.length === 0) return null
 
@@ -99,7 +113,12 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
             </div>
 
             {/* NEW: Analogy panel */}
-            <AnalogyPanel analogy={steps[ctrl.step]?.analogy} color={topic.color} />
+            <AnalogyPanel
+              analogy={steps[ctrl.step]?.analogy}
+              color={topic.color}
+              AnalogyComp={AnalogyComp}
+              step={ctrl.step}
+            />
           </div>
 
           {/* Right: Scrollable steps */}
