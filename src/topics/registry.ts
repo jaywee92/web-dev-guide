@@ -39,6 +39,15 @@ const lazyRegistry: Record<string, () => Promise<{ default: AnimComp }>> = {
   ClosureViz: () => import('./javascript/ClosureViz'),
   VariablesViz: () => import('./javascript/VariablesViz'),
   ArraysViz: () => import('./javascript/ArraysViz'),
+  OOPViz: () => import('./javascript/OOPViz'),
+  FunctionsViz: () => import('./javascript/FunctionsViz'),
+  ControlFlowViz: () => import('./javascript/ControlFlowViz'),
+  DestructuringViz: () => import('./javascript/DestructuringViz'),
+  TimersViz: () => import('./javascript/TimersViz'),
+  PromisesViz: () => import('./javascript/PromisesViz'),
+  ModulesViz: () => import('./javascript/ModulesViz'),
+  NpmBundlersViz: () => import('./javascript/NpmBundlersViz'),
+  JsVsPythonViz:  () => import('./javascript/JsVsPythonViz'),
   TypeScriptViz: () => import('./typescript/TypeScriptViz'),
   InterfacesViz: () => import('./typescript/InterfacesViz'),
   GenericsViz: () => import('./typescript/GenericsViz'),
@@ -74,6 +83,27 @@ export async function preloadAnimation(name: string | undefined): Promise<void> 
   if (!name || loadedRegistry[name] || !lazyRegistry[name]) return
   const mod = await lazyRegistry[name]()
   loadedRegistry[name] = mod.default
+}
+
+// ─── Analogy registry ─────────────────────────────────────────────────────
+
+type AnalogyComp = ComponentType<{ step: number }>
+
+const analogyLazyRegistry: Record<string, () => Promise<{ default: AnalogyComp }>> = {
+  VariablesAnalogyViz: () => import('./javascript/VariablesAnalogyViz'),
+}
+
+const loadedAnalogyRegistry: Record<string, AnalogyComp> = {}
+
+export function getAnalogyComponent(name: string | undefined): AnalogyComp | null {
+  if (!name) return null
+  return loadedAnalogyRegistry[name] ?? null
+}
+
+export async function preloadAnalogyAnimation(name: string | undefined): Promise<void> {
+  if (!name || loadedAnalogyRegistry[name] || !analogyLazyRegistry[name]) return
+  const mod = await analogyLazyRegistry[name]()
+  loadedAnalogyRegistry[name] = mod.default
 }
 
 // ─── Banner registry ───────────────────────────────────────────────────────
@@ -157,6 +187,10 @@ const bannerLazyRegistry: Record<string, () => Promise<{ default: BannerComp }>>
   JoinsBanner:   () => import('./banners/postgresql/JoinsBanner'),
   CrudBanner:    () => import('./banners/postgresql/CrudBanner'),
   DbIntroBanner: () => import('./banners/postgresql/DbIntroBanner'),
+  // Testing
+  VitestBanner:         () => import('./banners/testing/VitestBanner'),
+  ReactTestingBanner:   () => import('./banners/testing/ReactTestingBanner'),
+  CoverageCIBanner:     () => import('./banners/testing/CoverageCIBanner'),
   // Git
   GitIntroBanner:       () => import('./banners/git/GitIntroBanner'),
   GitWorkflowBanner:    () => import('./banners/git/GitWorkflowBanner'),
