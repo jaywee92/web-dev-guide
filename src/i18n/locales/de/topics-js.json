@@ -8,10 +8,11 @@
         "heading": "var — die alte Methode",
         "text": "var ist funktionsscoped und wird gehoisted, was zu unerwarteten Fehlern führt. Modernes JavaScript vermeidet es.",
         "analogy": {
-          "title": "Der beschriftete Behälter",
+          "title": "Schritt 1 — var: der löchrige Eimer",
           "text": [
-            "Eine Variable ist wie ein beschrifteter Behälter im Kühlschrank. Der Name auf dem Etikett ist die Variable, der Inhalt ist der Wert.",
-            "let erlaubt, den Inhalt auszutauschen. const bedeutet: der Behälter ist versiegelt — du kannst ihn nicht durch einen neuen ersetzen."
+            "Stell dir var als Eimer mit Löchern vor. Du stellst ihn in einen Raum (einen if-Block), aber das Wasser läuft bis in den Flur (die gesamte Funktion).",
+            "Egal wo du den Eimer hinstellst — der Boden wird überall nass. Deshalb teilen sich zwei var-Deklarationen im selben Funktionsbereich stillschweigend eine Variable.",
+            "var leckt aus Blöcken heraus — das if-Scope wird ignoriert, der Funktionsbereich gewinnt."
           ]
         }
       },
@@ -20,10 +21,11 @@
         "heading": "let — blockscoped",
         "text": "let erstellt eine Variable, die nur im Block existiert, in dem sie deklariert wurde. Du kannst sie neu zuweisen.",
         "analogy": {
-          "title": "Das unsichtbare Regal",
+          "title": "Schritt 2 — let: der versiegelte Raum",
           "text": [
-            "var lebt im übergeordneten Regal der Funktion — egal wo du es deklariert hast.",
-            "let und const leben nur im Regal des nächsten umschließenden Blocks { }."
+            "let ist wie ein versiegelter Raum mit eigenem Schloss. Was du hineinsteckst, bleibt darin — es kann nicht in den Flur lecken.",
+            "Du kannst die Möbel darin umstellen (den Wert neu zuweisen), aber der Raum selbst bleibt in seinem Block.",
+            "let bleibt im Block — der Versuch, von außen darauf zuzugreifen, wirft einen ReferenceError."
           ]
         }
       },
@@ -32,9 +34,11 @@
         "heading": "const — kann nicht neu zugewiesen werden",
         "text": "const-Bindungen können nach der Erstellung nicht neu zugewiesen werden. Bei Objekten und Arrays kann der Inhalt jedoch weiterhin verändert werden.",
         "analogy": {
-          "title": "Das eingefrorene Etikett",
+          "title": "Schritt 3 — const: das Namensschild, nicht der Inhalt",
           "text": [
-            "const friert nur die Referenz ein, nicht den Inhalt. Ein const-Objekt kann trotzdem innen verändert werden — du kannst nur nicht das gesamte Objekt durch ein neues ersetzen."
+            "const ist wie ein festgeklebtes Namensschild auf einer Box. Du kannst das Schild nicht auf eine andere Box umkleben (keine Neuzuweisung).",
+            "Du kannst aber problemlos in die Box greifen und den Inhalt verändern — deshalb können Objekteigenschaften und Array-Elemente trotzdem geändert werden.",
+            "const schützt die Referenz, nicht den Inhalt — Objekteigenschaften können sich trotzdem ändern."
           ]
         }
       },
@@ -43,32 +47,65 @@
         "heading": "Primitive Typen",
         "text": "JavaScript hat sechs primitive Typen. Sie sind unveränderliche Werte — keine Objekte.",
         "analogy": {
-          "title": "Die Lücke im Regal",
+          "title": "Schritt 4 — Primitive: die Atome der Daten",
           "text": [
-            "Bei var wird die Deklaration an den Anfang der Funktion gehoben (Hoisting), der Wert aber nicht. Das Regal existiert schon, aber das Fach ist noch leer (undefined).",
-            "let und const haben eine 'Temporal Dead Zone' — der Platz ist reserviert, aber du darfst nicht hineinschauen, bevor die Zeile der Deklaration erreicht ist."
+            "Primitive sind wie Würfelseiten — jede ist ein einfacher, unteilbarer Wert. Wenn du \"Alice\" schreibst, bekommst du genau diesen Wert.",
+            "Im Gegensatz zu Objekten können Primitive keine Eigenschaften haben. 42.farbe = \"rot\" würde nicht funktionieren.",
+            "Es gibt sechs Primitive in JavaScript: string, number, boolean, null, undefined und symbol."
           ]
         }
       },
       {
         "animationStep": 4,
         "heading": "typeof-Operator",
-        "text": "Der typeof-Operator gibt einen String zurück, der den Typ beschreibt. Achtung: typeof null gibt \"object\" zurück — eine bekannte JavaScript-Eigenheit."
+        "text": "Der typeof-Operator gibt einen String zurück, der den Typ beschreibt. Achtung: typeof null gibt \"object\" zurück — eine bekannte JavaScript-Eigenheit.",
+        "analogy": {
+          "title": "Schritt 5 — typeof: das Versandetikett lesen",
+          "text": [
+            "typeof ist wie das Lesen des Etiketts auf einem Paket ohne es zu öffnen. Es verrät die grobe Kategorie des Inhalts.",
+            "Die bekannte Eigenheit — typeof null === \"object\" — ist ein 30 Jahre alter Bug, der aus Rückwärtskompatibilität eingefroren ist.",
+            "typeof null === \"object\" ist ein 30 Jahre alter Bug — prüfe null immer explizit mit === null."
+          ]
+        }
       },
       {
         "animationStep": 5,
         "heading": "Arithmetische Operatoren",
-        "text": "JavaScript unterstützt die üblichen arithmetischen Operatoren: + (Addition), - (Subtraktion), * (Multiplikation), / (Division), % (Modulo) und ** (Potenzierung). Der Modulo-Operator ist besonders nützlich, um zu prüfen, ob eine Zahl gerade oder ungerade ist."
+        "text": "JavaScript unterstützt die üblichen arithmetischen Operatoren: + (Addition), - (Subtraktion), * (Multiplikation), / (Division), % (Modulo) und ** (Potenzierung). Der Modulo-Operator ist besonders nützlich, um zu prüfen, ob eine Zahl gerade oder ungerade ist.",
+        "analogy": {
+          "title": "Schritt 6 — Arithmetik: die Taschenrechner-Tasten",
+          "text": [
+            "Arithmetische Operatoren sind einfach Taschenrechner-Tasten. +, -, *, / funktionieren genau wie in der Schulmathematik.",
+            "Der Modulo-Operator % gibt den Rest der Division zurück — 10 % 3 ergibt 1, weil 3 genau dreimal in 10 passt, mit 1 Rest.",
+            "% gibt den Rest der Division zurück — nützlich, um gerade/ungerade Zahlen zu prüfen."
+          ]
+        }
       },
       {
         "animationStep": 6,
         "heading": "Vergleichs- & Logikoperatoren",
-        "text": "Vergleichsoperatoren (===, !==, >, <, >=, <=) geben true oder false zurück. Verwende immer === (strikte Gleichheit) statt ==, um Überraschungen durch Typumwandlung zu vermeiden. Logische Operatoren && (UND), || (ODER) und ! (NICHT) kombinieren boolesche Ausdrücke."
+        "text": "Vergleichsoperatoren (===, !==, >, <, >=, <=) geben true oder false zurück. Verwende immer === (strikte Gleichheit) statt ==, um Überraschungen durch Typumwandlung zu vermeiden. Logische Operatoren && (UND), || (ODER) und ! (NICHT) kombinieren boolesche Ausdrücke.",
+        "analogy": {
+          "title": "Schritt 7 — Vergleich: der strenge Richter",
+          "text": [
+            "=== ist ein strenger Richter, der Wert UND Typ prüft. \"5\" und 5 sind für ihn unterschiedliche Zeugen — eines ist Text, das andere eine Zahl.",
+            "== ist ein nachsichtiger Richter, der Typen still umwandelt. Diese Nachsicht führt zu überraschenden Urteilen — deshalb verbieten Style Guides es.",
+            "=== prüft Wert UND Typ. == wandelt Typen still um — deshalb verbieten die meisten Style Guides es."
+          ]
+        }
       },
       {
         "animationStep": 7,
         "heading": "try / catch / finally",
-        "text": "Riskanten Code in einen try-Block einwickeln. Wenn ein Fehler geworfen wird, springt die Ausführung zum catch-Block, wo du ihn elegant behandeln kannst. Der optionale finally-Block wird immer ausgeführt, unabhängig davon, ob ein Fehler aufgetreten ist."
+        "text": "Riskanten Code in einen try-Block einwickeln. Wenn ein Fehler geworfen wird, springt die Ausführung zum catch-Block, wo du ihn elegant behandeln kannst. Der optionale finally-Block wird immer ausgeführt, unabhängig davon, ob ein Fehler aufgetreten ist.",
+        "analogy": {
+          "title": "Schritt 8 — try/catch: das Sicherheitsnetz",
+          "text": [
+            "Stell dir try als Akrobatik-Nummer über einem Trampolin (catch) vor. Wenn etwas schiefgeht, fängt das Trampolin auf, damit die Show nicht komplett stoppt.",
+            "finally ist der Schlussvorhang — er fällt immer, egal ob der Trick geklappt hat oder der Akrobat gestürzt ist.",
+            "finally ist der Vorhang — er läuft immer, egal ob der Trick geklappt hat oder nicht."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -112,15 +149,18 @@
     "commonErrors": [
       {
         "title": "var in Schleifen verwenden",
-        "why": "var ist funktions-scoped: alle Schleifeniterationen teilen dieselbe Variable. Am Ende der Schleife haben alle Event-Handler denselben (letzten) Wert gesehen."
+        "why": "var ist funktions-scoped: alle Schleifeniterationen teilen dieselbe Variable. Am Ende der Schleife haben alle Event-Handler denselben (letzten) Wert gesehen.",
+        "fixLabel": "Fix — let für block-scoped Schleifenvariablen verwenden"
       },
       {
         "title": "const für primitive Werte, die sich ändern sollen",
-        "why": "const verhindert die Neuzuweisung. Du kannst einem const-Number nichts neu zuweisen — verwende let, wenn der Wert sich ändern soll."
+        "why": "const verhindert die Neuzuweisung. Du kannst einem const-Number nichts neu zuweisen — verwende let, wenn der Wert sich ändern soll.",
+        "fixLabel": "Fix — strikte Gleichheit (===) für null-Prüfungen verwenden"
       },
       {
         "title": "Zugriff vor der Deklaration (Temporal Dead Zone)",
-        "why": "let und const haben eine Temporal Dead Zone: zwischen dem Anfang des Blocks und der Deklarationszeile. Jeder Zugriff in dieser Zone wirft einen ReferenceError."
+        "why": "let und const haben eine Temporal Dead Zone: zwischen dem Anfang des Blocks und der Deklarationszeile. Jeder Zugriff in dieser Zone wirft einen ReferenceError.",
+        "fixLabel": "Fix — let verwenden, wenn eine Neuzuweisung nötig ist"
       }
     ],
     "realWorldExamples": [
@@ -292,15 +332,18 @@
     "commonErrors": [
       {
         "title": "find() mit filter() verwechseln",
-        "why": "find() gibt das erste passende Element zurück (oder undefined). filter() gibt immer ein Array zurück — auch wenn es leer ist. Für 'genau ein Element' ist find() die richtige Wahl."
+        "why": "find() gibt das erste passende Element zurück (oder undefined). filter() gibt immer ein Array zurück — auch wenn es leer ist. Für 'genau ein Element' ist find() die richtige Wahl.",
+        "fixLabel": "Fix — map verwenden, um ein neues Array zu erhalten"
       },
       {
         "title": "Das Original-Array bei map/filter nicht unverändert lassen",
-        "why": "map(), filter() und slice() geben neue Arrays zurück — sie verändern das Original nicht. splice() und sort() hingegen verändern das Original direkt (mutierend)."
+        "why": "map(), filter() und slice() geben neue Arrays zurück — sie verändern das Original nicht. splice() und sort() hingegen verändern das Original direkt (mutierend).",
+        "fixLabel": "Fix — neues Array mit Spread-Operator erstellen"
       },
       {
         "title": "indexOf() statt includes() für Existenzprüfung",
-        "why": "arr.indexOf(x) !== -1 funktioniert, ist aber weniger lesbar. arr.includes(x) ist der moderne Standard. indexOf() findet außerdem NaN nicht korrekt — includes() schon."
+        "why": "arr.indexOf(x) !== -1 funktioniert, ist aber weniger lesbar. arr.includes(x) ist der moderne Standard. indexOf() findet außerdem NaN nicht korrekt — includes() schon.",
+        "fixLabel": "Fix — immer einen Startwert für reduce angeben"
       }
     ],
     "realWorldExamples": [
@@ -387,15 +430,18 @@
     "commonErrors": [
       {
         "title": "Aufruf vor der Deklaration bei Arrow Functions",
-        "why": "Function-Deklarationen werden gehoisted — du kannst sie vor ihrer Definition aufrufen. Arrow Functions (const fn = () => {}) werden nicht gehoisted; ein Aufruf davor wirft einen ReferenceError."
+        "why": "Function-Deklarationen werden gehoisted — du kannst sie vor ihrer Definition aufrufen. Arrow Functions (const fn = () => {}) werden nicht gehoisted; ein Aufruf davor wirft einen ReferenceError.",
+        "fixLabel": "Fix — Aufruf unter die Definition verschieben oder Funktionsdeklaration verwenden"
       },
       {
         "title": "this in normalen Funktionen innerhalb von Klassen",
-        "why": "Normale Funktionen binden this dynamisch — in einem Callback kann this undefined sein oder auf ein anderes Objekt zeigen. Arrow Functions erben this aus dem umschließenden Scope."
+        "why": "Normale Funktionen binden this dynamisch — in einem Callback kann this undefined sein oder auf ein anderes Objekt zeigen. Arrow Functions erben this aus dem umschließenden Scope.",
+        "fixLabel": "Fix — Arrow-Function-Wrapper oder .bind() verwenden"
       },
       {
         "title": "Fehlende return-Anweisung",
-        "why": "Ohne explizites return gibt eine Funktion undefined zurück. Bei Arrow Functions ohne geschweifte Klammern (x => x * 2) ist der Ausdruck implizit der Rückgabewert — mit {} braucht es return."
+        "why": "Ohne explizites return gibt eine Funktion undefined zurück. Bei Arrow Functions ohne geschweifte Klammern (x => x * 2) ist der Ausdruck implizit der Rückgabewert — mit {} braucht es return.",
+        "fixLabel": "Fix — Rest-Parameter ans Ende der Parameterliste verschieben"
       }
     ],
     "realWorldExamples": [
@@ -466,15 +512,18 @@
     "commonErrors": [
       {
         "title": "Destructuring von null oder undefined",
-        "why": "null und undefined haben keine Eigenschaften — Destructuring wirft dann einen TypeError. Stelle sicher, dass der Wert existiert, oder verwende einen Default-Wert auf der rechten Seite."
+        "why": "null und undefined haben keine Eigenschaften — Destructuring wirft dann einen TypeError. Stelle sicher, dass der Wert existiert, oder verwende einen Default-Wert auf der rechten Seite.",
+        "fixLabel": "Fix — = für Standardwerte, : für Umbenennung verwenden"
       },
       {
         "title": "Verwechslung zwischen Array- und Objekt-Destructuring",
-        "why": "Array-Destructuring verwendet [] und nimmt Werte per Position. Objekt-Destructuring verwendet {} und nimmt Werte per Name. Verwechslung führt zu undefined-Werten."
+        "why": "Array-Destructuring verwendet [] und nimmt Werte per Position. Objekt-Destructuring verwendet {} und nimmt Werte per Name. Verwechslung führt zu undefined-Werten.",
+        "fixLabel": "Fix — Rest-Element ans Ende verschieben"
       },
       {
         "title": "Tiefes Verschachteln ohne Safety-Checks",
-        "why": "const { a: { b } } = obj schlägt mit TypeError fehl, wenn obj.a undefined ist. Verwende optionales Chaining im Destructuring: const { a: { b } = {} } = obj."
+        "why": "const { a: { b } } = obj schlägt mit TypeError fehl, wenn obj.a undefined ist. Verwende optionales Chaining im Destructuring: const { a: { b } = {} } = obj.",
+        "fixLabel": "Fix — Fallback mit ?? oder || verwenden"
       }
     ],
     "realWorldExamples": [
@@ -590,15 +639,18 @@
     "commonErrors": [
       {
         "title": "Zuweisung statt Vergleich in if-Bedingungen",
-        "why": "if (x = 5) weist 5 zu (und ist immer true), statt zu prüfen. Verwende immer === für Vergleiche."
+        "why": "if (x = 5) weist 5 zu (und ist immer true), statt zu prüfen. Verwende immer === für Vergleiche.",
+        "fixLabel": "Fix — break am Ende jedes case hinzufügen"
       },
       {
         "title": "Vergessenes break in switch-Fällen",
-        "why": "Ohne break fällt JavaScript zum nächsten case durch (fall-through). Das ist meistens ein Fehler und führt zu unerwartetem Verhalten."
+        "why": "Ohne break fällt JavaScript zum nächsten case durch (fall-through). Das ist meistens ein Fehler und führt zu unerwartetem Verhalten.",
+        "fixLabel": "Fix — === für Vergleiche verwenden"
       },
       {
         "title": "for...in auf Arrays verwenden",
-        "why": "for...in iteriert über alle enumerable Eigenschaften — auch geerbte. Bei Arrays bekommst du String-Indizes, keine Zahlen. Verwende for...of oder forEach."
+        "why": "for...in iteriert über alle enumerable Eigenschaften — auch geerbte. Bei Arrays bekommst du String-Indizes, keine Zahlen. Verwende for...of oder forEach.",
+        "fixLabel": "Fix — sicherstellen, dass die Schleifenvariable sich jede Iteration ändert"
       }
     ],
     "realWorldExamples": [
@@ -707,15 +759,18 @@
     "commonErrors": [
       {
         "title": "Vergessenes new beim Klassenaufruf",
-        "why": "Klassen müssen mit new aufgerufen werden. Ohne new wirft JavaScript einen TypeError, weil der Konstruktor this erwartet — und this ist ohne new nicht korrekt gesetzt."
+        "why": "Klassen müssen mit new aufgerufen werden. Ohne new wirft JavaScript einen TypeError, weil der Konstruktor this erwartet — und this ist ohne new nicht korrekt gesetzt.",
+        "fixLabel": "Fix — new beim Instanziieren einer Klasse immer verwenden"
       },
       {
         "title": "super() nicht vor this in Unterklassen aufrufen",
-        "why": "Im Konstruktor einer Unterklasse ist this erst verfügbar, nachdem super() aufgerufen wurde. Ein Zugriff vorher wirft einen ReferenceError."
+        "why": "Im Konstruktor einer Unterklasse ist this erst verfügbar, nachdem super() aufgerufen wurde. Ein Zugriff vorher wirft einen ReferenceError.",
+        "fixLabel": "Fix — super() als erste Anweisung im Unterklassenkonstruktor aufrufen"
       },
       {
         "title": "Methoden direkt auf der Instanz statt auf dem Prototyp definieren",
-        "why": "Methoden im Konstruktor (this.method = function(){}) erzeugen für jede Instanz eine neue Funktionskopie. Methoden in der Klassen-Syntax landen auf dem Prototyp — eine Kopie, geteilt von allen Instanzen."
+        "why": "Methoden im Konstruktor (this.method = function(){}) erzeugen für jede Instanz eine neue Funktionskopie. Methoden in der Klassen-Syntax landen auf dem Prototyp — eine Kopie, geteilt von allen Instanzen.",
+        "fixLabel": "Fix — veränderliche Eigenschaften im Konstruktor mit this initialisieren"
       }
     ],
     "realWorldExamples": [
@@ -818,15 +873,18 @@
     "commonErrors": [
       {
         "title": "String statt Funktion an setTimeout übergeben",
-        "why": "setTimeout akzeptiert eine Funktion als erstes Argument. Ein String wird eval'd — langsam, fehleranfällig und in modernen CSP-Richtlinien verboten."
+        "why": "setTimeout akzeptiert eine Funktion als erstes Argument. Ein String wird eval'd — langsam, fehleranfällig und in modernen CSP-Richtlinien verboten.",
+        "fixLabel": "Fix — immer eine Funktionsreferenz oder Arrow Function übergeben"
       },
       {
         "title": "Vergessen, clearInterval aufzurufen — Memory Leak",
-        "why": "setInterval läuft unbegrenzt weiter, bis es explizit gestoppt wird. In Single-Page-Apps hält ein laufendes Intervall Referenzen auf Komponenten, die längst nicht mehr sichtbar sind."
+        "why": "setInterval läuft unbegrenzt weiter, bis es explizit gestoppt wird. In Single-Page-Apps hält ein laufendes Intervall Referenzen auf Komponenten, die längst nicht mehr sichtbar sind.",
+        "fixLabel": "Fix — Timer-ID speichern und beim Aufräumen löschen"
       },
       {
         "title": "Annahme, setTimeout(fn, 0) wird sofort ausgeführt",
-        "why": "setTimeout(fn, 0) fügt den Callback ans Ende der Makrotask-Queue. Alle synchronen Operationen und alle Promises werden zuerst abgearbeitet — 0ms bedeutet nicht 'sofort'."
+        "why": "setTimeout(fn, 0) fügt den Callback ans Ende der Makrotask-Queue. Alle synchronen Operationen und alle Promises werden zuerst abgearbeitet — 0ms bedeutet nicht 'sofort'.",
+        "fixLabel": "Fix — Ausführungsreihenfolge verstehen: sync → Microtasks → Macrotasks"
       }
     ],
     "realWorldExamples": [
@@ -955,11 +1013,13 @@
     "commonErrors": [
       {
         "title": "Den Event Loop mit schwerer synchroner Arbeit blockieren",
-        "why": "Lange synchrone Operationen (z.B. Sortieren eines riesigen Arrays) besetzen den Call Stack vollständig. Der Event Loop kann keine Callbacks ausführen — die UI friert ein, Timer feuern zu spät."
+        "why": "Lange synchrone Operationen (z.B. Sortieren eines riesigen Arrays) besetzen den Call Stack vollständig. Der Event Loop kann keine Callbacks ausführen — die UI friert ein, Timer feuern zu spät.",
+        "fixLabel": "Fix — rechenintensive Arbeit an einen Web Worker auslagern"
       },
       {
         "title": "Reihenfolge von setTimeout(fn, 0) falsch einschätzen",
-        "why": "setTimeout(fn, 0) legt den Callback ans Ende der Makrotask-Queue. Alle synchronen Operationen und alle Promises werden zuerst abgearbeitet — 0ms bedeutet nicht 'sofort'."
+        "why": "setTimeout(fn, 0) legt den Callback ans Ende der Makrotask-Queue. Alle synchronen Operationen und alle Promises werden zuerst abgearbeitet — 0ms bedeutet nicht 'sofort'.",
+        "fixLabel": "Fix — async-Aufrufe immer awaiten"
       }
     ],
     "realWorldExamples": [
@@ -1070,15 +1130,18 @@
     "commonErrors": [
       {
         "title": "var in Schleifen — alle Handler teilen denselben Wert",
-        "why": "var ist funktions-scoped, nicht block-scoped. In einer Schleife gibt es nur eine Variable i — alle Closures teilen dieselbe Referenz und sehen am Ende denselben Wert."
+        "why": "var ist funktions-scoped, nicht block-scoped. In einer Schleife gibt es nur eine Variable i — alle Closures teilen dieselbe Referenz und sehen am Ende denselben Wert.",
+        "fixLabel": "Fix — let statt var verwenden"
       },
       {
         "title": "Unbeabsichtigtes Festhalten von Variablen im Speicher",
-        "why": "Wenn eine Closure eine große Variable referenziert (z.B. ein DOM-Element oder ein großes Array), bleibt diese Variable im Speicher — solange die Closure selbst erreichbar ist. Der Garbage Collector kann sie nicht freigeben."
+        "why": "Wenn eine Closure eine große Variable referenziert (z.B. ein DOM-Element oder ein großes Array), bleibt diese Variable im Speicher — solange die Closure selbst erreichbar ist. Der Garbage Collector kann sie nicht freigeben.",
+        "fixLabel": "Fix — Updater-Funktion verwenden"
       },
       {
         "title": "Vergessen, dass jeder Schleifendurchlauf eine neue Closure erzeugt",
-        "why": "Bei let und const (block-scoped) erstellt jede Schleifeniteration eine neue Binding. Mit var teilen sich alle Closures dasselbe Binding — deshalb sehen sie alle denselben finalen Wert."
+        "why": "Bei let und const (block-scoped) erstellt jede Schleifeniteration eine neue Binding. Mit var teilen sich alle Closures dasselbe Binding — deshalb sehen sie alle denselben finalen Wert.",
+        "fixLabel": "Fix — Referenz auf null setzen"
       }
     ],
     "realWorldExamples": [
@@ -1164,15 +1227,18 @@
     "commonErrors": [
       {
         "title": "Vergessen, auf Fehler zu reagieren (.catch fehlt)",
-        "why": "Eine nicht abgefangene Promise-Ablehnung führt zu 'UnhandledPromiseRejection' — in Node.js bricht das den Prozess ab, im Browser erscheint eine Warnung."
+        "why": "Eine nicht abgefangene Promise-Ablehnung führt zu 'UnhandledPromiseRejection' — in Node.js bricht das den Prozess ab, im Browser erscheint eine Warnung.",
+        "fixLabel": "Fix — immer aus .then() zurückgeben"
       },
       {
         "title": "Verschachtelte Promises statt Ketten",
-        "why": "return in .then() gibt eine neue Promise zurück, die automatisch in die Kette eingebunden wird. Ohne return entstehen verschachtelte, schwer lesbare Strukturen — 'Promise Hell'."
+        "why": "return in .then() gibt eine neue Promise zurück, die automatisch in die Kette eingebunden wird. Ohne return entstehen verschachtelte, schwer lesbare Strukturen — 'Promise Hell'.",
+        "fixLabel": "Fix — await hinzufügen"
       },
       {
         "title": "await ohne async",
-        "why": "await kann nur innerhalb einer async-Funktion verwendet werden. In normalem Code oder auf der obersten Ebene (ohne top-level await) wirft es einen Syntaxfehler."
+        "why": "await kann nur innerhalb einer async-Funktion verwendet werden. In normalem Code oder auf der obersten Ebene (ohne top-level await) wirft es einen Syntaxfehler.",
+        "fixLabel": "Fix — await-Aufrufe in try/catch einwickeln"
       }
     ],
     "realWorldExamples": [
@@ -1274,11 +1340,13 @@
     "commonErrors": [
       {
         "title": "CommonJS (require) und ES Modules (import) mischen",
-        "why": "Node.js-Pakete verwenden oft require(), Browser-Code verwendet import. Das Mischen führt zu Fehlern. Entscheide dich für ein System — in modernen Projekten sind ES Modules Standard."
+        "why": "Node.js-Pakete verwenden oft require(), Browser-Code verwendet import. Das Mischen führt zu Fehlern. Entscheide dich für ein System — in modernen Projekten sind ES Modules Standard.",
+        "fixLabel": "Fix — ein Modulsystem wählen und dabei bleiben"
       },
       {
         "title": "Fehlende Dateiendungen beim Importieren",
-        "why": "Browser-native ES Modules benötigen vollständige Pfade mit .js-Endung. Bundler (Vite, Webpack) lösen das automatisch auf — aber ohne Bundler schlägt der Import fehl."
+        "why": "Browser-native ES Modules benötigen vollständige Pfade mit .js-Endung. Bundler (Vite, Webpack) lösen das automatisch auf — aber ohne Bundler schlägt der Import fehl.",
+        "fixLabel": "Fix — das export-Schlüsselwort hinzufügen"
       }
     ],
     "realWorldExamples": [
@@ -1381,7 +1449,8 @@
     "commonErrors": [
       {
         "title": "Abhängigkeiten als devDependencies statt dependencies installieren (oder umgekehrt)",
-        "why": "dependencies sind Laufzeit-Pakete (react, axios). devDependencies sind nur für die Entwicklung (vite, eslint). In Produktions-Builds werden devDependencies normalerweise nicht mitgeliefert."
+        "why": "dependencies sind Laufzeit-Pakete (react, axios). devDependencies sind nur für die Entwicklung (vite, eslint). In Produktions-Builds werden devDependencies normalerweise nicht mitgeliefert.",
+        "fixLabel": "Fix — node_modules zu .gitignore hinzufügen"
       }
     ],
     "realWorldExamples": [
@@ -1390,5 +1459,77 @@
         "description": "npx create vite@latest my-app erstellt ein vollständiges React-Projekt mit sofort startbarem Entwicklungsserver (npm run dev) — kein manuelles Konfigurieren nötig."
       }
     ]
+  },
+  "js-vs-python": {
+    "title": "JavaScript vs Python",
+    "description": "Syntax-Vergleich Seite an Seite: Variablen, Funktionen, Schleifen, Dicts, Async und mehr",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Variablen",
+        "text": "Python benötigt kein Schlüsselwort — einfach name = \"Alice\" schreiben. JavaScript verwendet const für unveränderliche Werte und let für veränderliche."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Funktionen",
+        "text": "Python verwendet das Schlüsselwort def gefolgt von einem Doppelpunkt. JavaScript nutzt das Schlüsselwort function oder die kompakte Pfeilsyntax (=>). Beide unterstützen Standardparameter."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Kontrollfluss",
+        "text": "Python definiert Blöcke durch Einrückung — keine geschweiften Klammern. JavaScript verwendet geschweifte Klammern {} und erfordert Klammern um die Bedingung."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Datentypen",
+        "text": "Beide Sprachen haben Strings, Zahlen, Booleans und einen 'Nichts'-Wert. Python schreibt True/False/None groß; JavaScript verwendet true/false/null."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Schleifen",
+        "text": "Pythons for-Schleife iteriert direkt über Elemente. JavaScript verwendet for...of für dasselbe Muster und Array-Methoden wie .map() und .filter() ersetzen List Comprehensions."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Dicts vs. Objekte",
+        "text": "Pythons Dicts und JavaScripts Objekte speichern beide Schlüssel-Wert-Paare. In JS können Schlüssel ohne Anführungszeichen geschrieben werden und mit Punktnotation oder Optional Chaining (?.) aufgerufen werden."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Async / await",
+        "text": "Beide Sprachen verwenden async/await für asynchronen Code. Python benötigt asyncio; JavaScripts async ist in Browser und Node.js-Eventloop eingebaut."
+      },
+      {
+        "animationStep": 7,
+        "heading": "String-Methoden",
+        "text": "Die meisten String-Methodennamen unterscheiden sich leicht. Beide Sprachen behandeln Strings als unveränderlich — Methoden geben immer einen neuen String zurück. Python nutzt f-Strings, JavaScript Template-Literale mit Backticks."
+      },
+      {
+        "animationStep": 8,
+        "heading": "Listen- / Array-Methoden",
+        "text": "Pythons .sort() verändert die Liste direkt (in-place). JavaScripts .sort() auch, braucht aber eine Vergleichsfunktion für Zahlen. Methoden wie .map() und .filter() geben neue Arrays zurück — statt List Comprehensions."
+      },
+      {
+        "animationStep": 9,
+        "heading": "Fehlerbehandlung",
+        "text": "Pythons try-Block hat eine einzigartige else-Klausel, die nur ausgeführt wird, wenn kein Fehler aufgetreten ist. JavaScript hat kein Äquivalent — diesen Code einfach am Ende des try-Blocks oder nach dem catch platzieren."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Variablen", "note": "Python: kein Schlüsselwort. JS: const/let" },
+        { "label": "Funktionen", "note": "Python: def. JS: function oder =>" },
+        { "label": "Schleifen", "note": "Python: for-in. JS: for-of" },
+        { "label": "None / null", "note": "Python: is None. JS: === null" },
+        { "label": "Boolean-Literale", "note": "Python schreibt groß, JS klein" }
+      ],
+      "whenToUse": "Nutze diese Referenz beim Wechsel zwischen Python und JavaScript — die Semantik ist ähnlich, die Syntax unterscheidet sich jedoch an wichtigen Stellen.",
+      "commonMistakes": [
+        "True/False in JavaScript schreiben — JS verwendet lowercase true/false",
+        "Python-Einrückung als Blöcke in JS verwenden — JavaScript benötigt geschweifte Klammern",
+        "Klammern um if-Bedingungen in JS vergessen — muss if (age > 18) sein",
+        "elif in JavaScript verwenden — JS nutzt else if (zwei Wörter)"
+      ]
+    }
   }
 }
