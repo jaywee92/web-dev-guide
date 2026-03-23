@@ -1,12 +1,17 @@
+import type { ComponentType } from 'react'
 import type { ExplanationStep } from '@/types'
 
 interface Props {
   analogy: ExplanationStep['analogy'] | undefined
-  color: string  // topic color — accepted for API consistency, not used visually (panel always uses amber)
+  color: string
+  AnalogyComp?: ComponentType<{ step: number }> | null
+  step?: number
 }
 
-export default function AnalogyPanel({ analogy, color: _color }: Props) {
-  if (!analogy) return null
+export default function AnalogyPanel({ analogy, color: _color, AnalogyComp, step = 0 }: Props) {
+  if (!analogy && !AnalogyComp) return null
+
+  const caption = analogy?.text[analogy.text.length - 1]
 
   return (
     <div style={{
@@ -39,29 +44,45 @@ export default function AnalogyPanel({ analogy, color: _color }: Props) {
         }}>
           Analogie
         </span>
-        <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)', lineHeight: 1.3 }}>
-          {analogy.title}
-        </span>
+        {analogy && (
+          <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)', lineHeight: 1.3 }}>
+            {analogy.title}
+          </span>
+        )}
       </div>
 
       {/* Body */}
-      <div style={{ display: 'flex', gap: 14, padding: '14px 14px 14px 17px', alignItems: 'flex-start' }}>
-        <span style={{ fontSize: 28, flexShrink: 0, lineHeight: 1, marginTop: 2 }}>
-          {analogy.icon}
-        </span>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-          {analogy.text.map((paragraph, i) => (
-            <p key={i} style={{
-              fontSize: 12.5, color: i === analogy.text.length - 1
-                ? 'rgba(139,144,168,0.55)'
-                : 'var(--text-muted)',
-              lineHeight: 1.65, margin: 0,
+      {AnalogyComp ? (
+        <div style={{ padding: '12px 14px 12px 17px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <AnalogyComp step={step} />
+          {caption && (
+            <p style={{
+              fontSize: 11, color: 'rgba(139,144,168,0.7)',
+              lineHeight: 1.6, margin: 0, fontStyle: 'italic',
             }}>
-              {paragraph}
+              {caption}
             </p>
-          ))}
+          )}
         </div>
-      </div>
+      ) : (
+        <div style={{ display: 'flex', gap: 14, padding: '14px 14px 14px 17px', alignItems: 'flex-start' }}>
+          <span style={{ fontSize: 28, flexShrink: 0, lineHeight: 1, marginTop: 2 }}>
+            {analogy!.icon}
+          </span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {analogy!.text.map((paragraph, i) => (
+              <p key={i} style={{
+                fontSize: 12.5, color: i === analogy!.text.length - 1
+                  ? 'rgba(139,144,168,0.55)'
+                  : 'var(--text-muted)',
+                lineHeight: 1.65, margin: 0,
+              }}>
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
