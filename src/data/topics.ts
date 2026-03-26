@@ -5538,6 +5538,14 @@ for (let i = 0; i < 5; i++) {
             text: 'The DOM represents your HTML as a tree of nodes. The document object is the root. HTML elements are Element nodes; text inside them are Text nodes. JavaScript can traverse this tree using parent, child, and sibling relationships.',
             codeExample: `// document is the root\nconsole.log(document.documentElement); // <html>\nconsole.log(document.body);            // <body>\n\n// Navigate the tree\nconst first = document.body.firstElementChild;\nconsole.log(first.tagName);           // e.g. 'HEADER'`,
             language: 'javascript',
+            analogy: {
+              icon: '🧱',
+              title: 'LEGO from instructions',
+              text: [
+                "HTML is the instruction booklet. The DOM is the finished LEGO model built from those instructions. You can take the model apart, add pieces, move them around — without touching the original booklet.",
+                "The DOM lives in memory. Changes to it update what you see instantly. Refreshing the page rebuilds the model from the HTML instructions.",
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -5546,6 +5554,14 @@ for (let i = 0; i < 5; i++) {
             text: 'querySelector returns the first element matching a CSS selector. querySelectorAll returns a NodeList of all matches. getElementById and getElementsByClassName are older alternatives — querySelector is more flexible and preferred.',
             codeExample: `// Single element\nconst title = document.querySelector('h1');\nconst btn   = document.querySelector('#submit');\n\n// All matching elements\nconst items = document.querySelectorAll('.menu-item');\nitems.forEach(item => console.log(item.textContent));`,
             language: 'javascript',
+            analogy: {
+              icon: '🔍',
+              title: 'Ctrl+F — but returns the object',
+              text: [
+                "querySelector works like Ctrl+F in your browser — you describe what you're looking for with a CSS selector, and it finds the first match. But instead of highlighting text, it hands you the actual element object.",
+                "querySelectorAll is like 'Find All' — it returns every match as a NodeList you can loop over.",
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -5554,6 +5570,14 @@ for (let i = 0; i < 5; i++) {
             text: 'createElement(tag) creates a detached element. Set its properties (textContent, className, etc.) then attach it to the DOM with appendChild, prepend, or insertBefore. The element appears in the page only after attachment.',
             codeExample: `const li = document.createElement('li');\nli.textContent = 'New item';\nli.className = 'menu-item';\n\nconst list = document.querySelector('ul');\nlist.appendChild(li); // adds at the end\n\n// Or insert before a specific node:\nlist.insertBefore(li, list.firstChild);`,
             language: 'javascript',
+            analogy: {
+              icon: '🧩',
+              title: 'LEGO bricks',
+              text: [
+                "createElement is like taking a new LEGO brick out of the box — it exists but isn't attached to anything yet. appendChild is snapping it into place. insertBefore places it above another piece.",
+                "The element must be inserted into the DOM to become visible. Just creating it is not enough.",
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -5562,6 +5586,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Use textContent to read or set text safely. classList provides add, remove, toggle, and contains for CSS class management. setAttribute / getAttribute read and write HTML attributes. style lets you set inline CSS directly.',
             codeExample: `const el = document.querySelector('.card');\n\nel.textContent = 'Updated text';\nel.classList.add('active');\nel.classList.toggle('hidden');\n\nel.setAttribute('data-id', '42');\nconsole.log(el.getAttribute('data-id')); // '42'\n\nel.style.color = 'red';`,
             language: 'javascript',
+            analogy: {
+              icon: '📝',
+              title: 'Editing a Word document',
+              text: [
+                "Changing textContent is like selecting all text and retyping it. classList operations are like applying bold, italic, or a heading style. style changes are inline formatting overrides.",
+                "All changes are live — the page updates instantly, no reload needed.",
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -5570,6 +5602,14 @@ for (let i = 0; i < 5; i++) {
             text: 'The DOM is structured as a hierarchy of interfaces. Document is the entry point. Node is the base for all DOM nodes (elements, text, comments). Element extends Node and adds HTML-specific methods. Understanding this hierarchy explains which methods are available on which objects.',
             codeExample: `// Document — entry point\ndocument.querySelector('#btn');    // Element | null\ndocument.createElement('div');     // HTMLElement\ndocument.createTextNode('hello'); // Text node\n\n// Node — base interface (on all nodes)\nel.parentNode;       // Node | null\nel.childNodes;       // NodeList (all child nodes)\nel.nodeType;         // 1=Element, 3=Text, 9=Document\nel.textContent;      // text of node + all descendants\n\n// Element — extends Node (on element nodes only)\nel.getAttribute('href');           // read attribute\nel.setAttribute('data-id', '42'); // write attribute\nel.classList.add('active');       // CSS class list\nel.innerHTML;                      // HTML string (use carefully)`,
             language: 'javascript',
+            analogy: {
+              icon: '🏛️',
+              title: 'Class hierarchy',
+              text: [
+                "Every DOM element inherits from a chain: Node → Element → HTMLElement → specific (HTMLButtonElement, HTMLInputElement, etc.). Each level adds more properties.",
+                "A button is an HTMLButtonElement, but also an HTMLElement, also an Element, also a Node. All those methods are available on it.",
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -5578,6 +5618,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Beyond querySelector, two traversal methods are especially useful: closest() walks up the ancestor chain and returns the first element matching a selector — perfect for event delegation. matches() checks whether an element matches a selector without traversing anywhere — useful in event handlers to filter targets.',
             codeExample: `// closest — walks UP the tree\ndocument.addEventListener('click', (e) => {\n  // Find nearest ancestor <li> from the clicked element\n  const item = e.target.closest('li');\n  if (item) console.log('Clicked item:', item.textContent);\n});\n\n// matches — does this element match?\nconst el = document.querySelector('.card');\nconsole.log(el.matches('.card.active')); // false\nconsole.log(el.matches('[data-id]'));    // depends on attrs\n\n// Combined — event delegation pattern\nlist.addEventListener('click', (e) => {\n  if (e.target.matches('.delete-btn')) {\n    e.target.closest('li').remove();\n  }\n});`,
             language: 'javascript',
+            analogy: {
+              icon: '👔',
+              title: 'Find nearest manager',
+              text: [
+                "closest() is like an employee asking 'find my nearest ancestor with the title manager.' It walks up the DOM tree and returns the first ancestor matching the selector.",
+                "matches() is simpler — it just asks 'does this element match this selector?' — a yes/no check without traversal.",
+              ],
+            },
           },
           {
             animationStep: 6,
@@ -5586,6 +5634,46 @@ for (let i = 0; i < 5; i++) {
             text: 'querySelectorAll returns a NodeList, which looks like an array but lacks array methods (map, filter, reduce). Convert it with Array.from() or spread syntax. Also note: getElementsByClassName and getElementsByTagName return live HTMLCollections that update automatically when the DOM changes; querySelectorAll returns a static snapshot.',
             codeExample: `// NodeList — no map/filter/reduce!\nconst items = document.querySelectorAll('.item');\n// items.map(...)    ❌ TypeError\nitems.forEach(...)  // ✅ forEach works directly\n\n// Convert to Array for full methods\nconst arr = Array.from(items);\nconst texts = arr.map(el => el.textContent);\n\n// Spread also works\nconst arr2 = [...document.querySelectorAll('li')];\n\n// Live vs Static\nconst live   = document.getElementsByClassName('item'); // updates\nconst static_ = document.querySelectorAll('.item');     // snapshot`,
             language: 'javascript',
+            analogy: {
+              icon: '📋',
+              title: "Someone else's shopping list",
+              text: [
+                "A NodeList is like a shopping list written by someone else — you can read it and iterate with forEach, but you can't use Array methods like .map() or .filter().",
+                "Array.from(nodeList) photocopies the list into your own format, giving you a real Array with all methods.",
+              ],
+            },
+          },
+          {
+            animationStep: 7,
+            icon: '🎛️',
+            heading: 'classList Advanced Methods',
+            text: '`classList.toggle(class, force)` adds the class when `force` is `true`, removes it when `false` — no if/else needed. `classList.replace(old, new)` swaps classes atomically. `.add()` and `.remove()` accept multiple class names separated by commas.',
+            codeExample: `const btn = document.querySelector('button')!\n\n// Toggle dark mode\ndocument.body.classList.toggle('dark')\n\n// Force-enable: always add, never remove\nbtn.classList.toggle('active', isActive)\n\n// Atomic swap — no flash of intermediate state\nbtn.classList.replace('loading', 'success')\n\n// Add multiple classes at once\nel.classList.add('visible', 'animated', 'fade-in')`,
+            language: 'javascript',
+            analogy: {
+              icon: '📺',
+              title: 'Remote control for CSS classes',
+              text: [
+                "classList is a remote control where each button does something to the class list. toggle flips the switch. toggle(class, force) locks it on or off. replace changes the channel in one press.",
+                "The force parameter in toggle is the most underused DOM feature: it makes 'add if condition' a one-liner without if/else.",
+              ],
+            },
+          },
+          {
+            animationStep: 8,
+            icon: '🏷️',
+            heading: 'data-* Attributes',
+            text: '`data-*` attributes store custom data on HTML elements without misusing class names. JavaScript reads them through the `dataset` property, which converts kebab-case to camelCase: `data-user-id` becomes `el.dataset.userId`. Writing to dataset sets the attribute.',
+            codeExample: `<!-- HTML -->\n<button data-product-id="42" data-action="buy">Buy</button>\n\n// JavaScript\nconst btn = document.querySelector('[data-action="buy"]')!\nconsole.log(btn.dataset.productId)  // "42"\nconsole.log(btn.dataset.action)     // "buy"\n\n// Writing\nbtn.dataset.status = 'loading'      // sets data-status="loading"\n\n// Event delegation with data attributes\ndocument.addEventListener('click', e => {\n  const action = (e.target as HTMLElement).dataset.action\n  if (action === 'buy') addToCart((e.target as HTMLElement).dataset.productId)\n})`,
+            language: 'typescript',
+            analogy: {
+              icon: '🗒️',
+              title: 'Sticky notes on elements',
+              text: [
+                "data-* attributes are sticky notes attached directly to HTML elements. Instead of storing state in a separate JavaScript Map keyed by element, you put it right on the element where it belongs.",
+                "They're perfect for event delegation — the click handler reads which element was clicked and what to do from the element's own data attributes.",
+              ],
+            },
           },
         ],
       },
@@ -5622,6 +5710,40 @@ for (let i = 0; i < 5; i++) {
       {
         label: 'Event listeners',
         code: '// 🎯 Event Listeners\n// addEventListener attaches a handler to any DOM event.\n\n// Simulating event handling:\nfunction handleClick(event) {\n  console.log(`Clicked: ${event.target}`)\n  console.log(`Type: ${event.type}`)\n}\n\n// In browser: button.addEventListener("click", handleClick)\n// removeEventListener uses the same reference to clean up.\n\n// Simulate dispatching:\nconst fakeEvent = { target: "#submit-btn", type: "click" }\nhandleClick(fakeEvent)\n\n// Event delegation — attach ONE listener to parent:\n// document.querySelector(".list").addEventListener("click", e => {\n//   if (e.target.matches("li")) console.log("Item clicked:", e.target.textContent)\n// })',
+      },
+    ],
+    commonErrors: [
+      {
+        title: 'querySelector before DOM is loaded',
+        why: "A script in <head> runs before the browser has parsed the body. querySelector returns null and you get 'Cannot read property of null'.",
+        fixLabel: 'Add defer to the script tag',
+        fixCode: '<script src="app.js" defer></script>',
+      },
+      {
+        title: 'innerHTML with user content',
+        why: "innerHTML parses the string as HTML — user input containing script tags or event handler attributes executes as code (XSS).",
+        fixLabel: 'Use textContent for text — it never parses HTML',
+        fixCode: 'el.textContent = userInput  // safe — treated as plain text',
+      },
+      {
+        title: 'Treating NodeList as an Array',
+        why: 'querySelectorAll returns a NodeList, not an Array. Calling .map(), .filter(), or .reduce() on it throws "is not a function".',
+        fixLabel: 'Convert with Array.from()',
+        fixCode: 'const items = Array.from(document.querySelectorAll("li"))',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Settings page',
+        heading: 'Dark mode toggle',
+        description: 'A single button that toggles a CSS class on document.body. classList.toggle returns a boolean to sync button label.',
+        code: `const btn = document.querySelector('#theme-btn')!\n\nbtn.addEventListener('click', () => {\n  const isDark = document.body.classList.toggle('dark')\n  btn.textContent = isDark ? '☀️ Light mode' : '🌙 Dark mode'\n  localStorage.setItem('theme', isDark ? 'dark' : 'light')\n})`,
+      },
+      {
+        context: 'Todo app',
+        heading: 'Render a list from data',
+        description: 'Loop over an array, create a li for each item using createElement and textContent, append to a ul.',
+        code: `const list = document.querySelector('#todo-list')!\n\nfunction renderTodos(todos: string[]) {\n  list.textContent = ''  // clear safely — no markup parsed\n  todos.forEach(todo => {\n    const li = document.createElement('li')\n    li.textContent = todo          // safe — no XSS\n    li.dataset.done = 'false'\n    list.appendChild(li)\n  })\n}`,
       },
     ],
   },
