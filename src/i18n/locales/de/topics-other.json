@@ -645,6 +645,16 @@
         "animationStep": 6,
         "heading": "NodeList vs. Array",
         "text": "querySelectorAll gibt eine NodeList zurück, die einem Array ähnelt, aber keine Array-Methoden (map, filter, reduce) besitzt. Konvertiere sie mit Array.from() oder Spread-Syntax. Außerdem: getElementsByClassName und getElementsByTagName geben live HTMLCollections zurück, die sich automatisch aktualisieren; querySelectorAll gibt einen statischen Snapshot zurück."
+      },
+      {
+        "animationStep": 7,
+        "heading": "classList Erweiterte Methoden",
+        "text": "`classList.toggle(class, force)` erzwingt das Hinzufügen (`true`) oder Entfernen (`false`) ohne `if/else`. `classList.replace('alt', 'neu')` tauscht atomisch. `.add()` und `.remove()` akzeptieren mehrere Klassen."
+      },
+      {
+        "animationStep": 8,
+        "heading": "data-* Attribute",
+        "text": "`data-*` Attribute speichern benutzerdefinierte Daten auf HTML-Elementen. Zugriff über `el.dataset` — Kebab-Case wird zu CamelCase: `data-user-id` → `el.dataset.userId`. Schreiben auf `dataset` setzt das HTML-Attribut."
       }
     ],
     "cheatSheet": {
@@ -724,6 +734,16 @@
         "animationStep": 7,
         "heading": "RESTful API-Prinzipien",
         "text": "REST verwendet HTTP-Methoden semantisch: GET liest, POST erstellt, PUT/PATCH aktualisiert, DELETE entfernt. Jeder Endpunkt repräsentiert eine Ressource (z. B. /posts, /posts/1). Antworten tragen HTTP-Statuscodes — 2xx für Erfolg, 4xx für Client-Fehler, 5xx für Server-Fehler."
+      },
+      {
+        "animationStep": 8,
+        "heading": "Fehlerbehandlungs-Muster",
+        "text": "`fetch()` lehnt nur bei **Netzwerkfehlern** ab. Eine `404` oder `500` löst trotzdem auf — `res.ok` ist `false`. `try/catch` für Netzwerkfehler, `if (!res.ok) throw` für HTTP-Fehler verwenden."
+      },
+      {
+        "animationStep": 9,
+        "heading": "AbortController",
+        "text": "`{ signal: controller.signal }` an `fetch()` übergeben. `controller.abort()` bricht die Anfrage ab. In React `useEffect` im Cleanup `abort()` aufrufen, um State-Updates nach dem Unmount zu verhindern."
       }
     ],
     "cheatSheet": {
@@ -799,6 +819,16 @@
         "animationStep": 6,
         "heading": "Event-Propagation: Bubbling und Capturing",
         "text": "Events wandern zuerst den DOM-Baum von der Wurzel zum Ziel hinunter (Capture-Phase), dann blubbern sie vom Ziel zur Wurzel hinauf (Bubble-Phase). Standardmäßig laufen Listener in der Bubble-Phase. Rufe event.stopPropagation() auf, um das Event am Weiterreisen zu hindern."
+      },
+      {
+        "animationStep": 7,
+        "heading": "Custom Events",
+        "text": "`new CustomEvent(name, { detail })` erstellt ein benutzerdefiniertes Event. `element.dispatchEvent(event)` feuert es ab. `bubbles: true` setzen, damit Elternelemente es abfangen können."
+      },
+      {
+        "animationStep": 8,
+        "heading": "Event Delegation",
+        "text": "Einen Listener am Elternelement statt N Listener an Kindelementen anbringen. `event.target.closest(selector)` nutzen, um zu erkennen welches Kind das Event ausgelöst hat. Funktioniert auch für nachträglich hinzugefügte Elemente."
       }
     ],
     "cheatSheet": {
@@ -874,6 +904,16 @@
         "animationStep": 6,
         "heading": "setItem / getItem / removeItem / clear",
         "text": "Die Web Storage API ist ein einfacher Schlüssel-Wert-Speicher. Alle Werte werden als Strings gespeichert — verwende JSON.stringify und JSON.parse, um Objekte zu speichern und abzurufen."
+      },
+      {
+        "animationStep": 7,
+        "heading": "Sicheres Lesen mit Fallback",
+        "text": "`localStorage.getItem` + `JSON.parse` in `try/catch` einwickeln. Einen typisierten Fallback zurückgeben, wenn der Key `null` oder das JSON ungültig ist. Verhindert Abstürze durch beschädigte oder fehlende Daten."
+      },
+      {
+        "animationStep": 8,
+        "heading": "Was NICHT gespeichert werden sollte",
+        "text": "Niemals Passwörter, Auth-Tokens oder Session-IDs in `localStorage` speichern. Jede XSS-Lücke legt alle Daten offen. Für Authentifizierung `httpOnly`-Cookies verwenden — diese sind für JavaScript unzugänglich."
       }
     ],
     "cheatSheet": {
