@@ -318,7 +318,17 @@
       { "animationStep": 3, "heading": "Reading and Changing Element Properties", "text": "Use textContent to read or set text safely. classList provides add, remove, toggle, and contains for CSS class management. setAttribute / getAttribute read and write HTML attributes. style lets you set inline CSS directly." },
       { "animationStep": 4, "heading": "DOM Interfaces", "text": "The DOM is structured as a hierarchy of interfaces. Document is the entry point. Node is the base for all DOM nodes (elements, text, comments). Element extends Node and adds HTML-specific methods. Understanding this hierarchy explains which methods are available on which objects." },
       { "animationStep": 5, "heading": "Advanced Querying", "text": "Beyond querySelector, two traversal methods are especially useful: closest() walks up the ancestor chain and returns the first element matching a selector — perfect for event delegation. matches() checks whether an element matches a selector without traversing anywhere — useful in event handlers to filter targets." },
-      { "animationStep": 6, "heading": "NodeList vs Array", "text": "querySelectorAll returns a NodeList, which looks like an array but lacks array methods (map, filter, reduce). Convert it with Array.from() or spread syntax. Also note: getElementsByClassName and getElementsByTagName return live HTMLCollections that update automatically when the DOM changes; querySelectorAll returns a static snapshot." }
+      { "animationStep": 6, "heading": "NodeList vs Array", "text": "querySelectorAll returns a NodeList, which looks like an array but lacks array methods (map, filter, reduce). Convert it with Array.from() or spread syntax. Also note: getElementsByClassName and getElementsByTagName return live HTMLCollections that update automatically when the DOM changes; querySelectorAll returns a static snapshot." },
+      {
+        "animationStep": 7,
+        "heading": "classList Advanced Methods",
+        "text": "`classList.toggle(class, force)` forces the class on (`true`) or off (`false`) without an `if/else`. `classList.replace('old', 'new')` swaps atomically. `.add()` and `.remove()` accept multiple class names."
+      },
+      {
+        "animationStep": 8,
+        "heading": "data-* Attributes",
+        "text": "`data-*` attributes store custom data on HTML elements. Access via `el.dataset` — kebab-case converts to camelCase: `data-user-id` → `el.dataset.userId`. Writing to `dataset` sets the HTML attribute."
+      }
     ],
     "cheatSheet": {
       "syntax": [
@@ -351,7 +361,17 @@
       { "animationStep": 4, "heading": "async/await syntax", "text": "async/await makes fetch code read like synchronous code. Always wrap in try/catch for error handling." },
       { "animationStep": 5, "heading": "GET — Reading a Response", "text": "fetch() returns a Promise that resolves to a Response object. Call response.json() to parse the body as JSON (also async). Always check response.ok or response.status before trusting the data." },
       { "animationStep": 6, "heading": "POST / PUT / DELETE with a Body", "text": "To send data, pass an options object as the second argument to fetch. Set the method, a Content-Type header, and serialize the body to JSON with JSON.stringify." },
-      { "animationStep": 7, "heading": "RESTful API Principles", "text": "REST uses HTTP methods semantically: GET reads, POST creates, PUT/PATCH updates, DELETE removes. Each endpoint represents a resource (e.g. /posts, /posts/1). Responses carry HTTP status codes — 2xx for success, 4xx for client errors, 5xx for server errors." }
+      { "animationStep": 7, "heading": "RESTful API Principles", "text": "REST uses HTTP methods semantically: GET reads, POST creates, PUT/PATCH updates, DELETE removes. Each endpoint represents a resource (e.g. /posts, /posts/1). Responses carry HTTP status codes — 2xx for success, 4xx for client errors, 5xx for server errors." },
+      {
+        "animationStep": 8,
+        "heading": "Error Handling Patterns",
+        "text": "`fetch()` only rejects on **network failure**. A `404` or `500` still resolves — `res.ok` is `false`. Use `try/catch` for network errors and `if (!res.ok) throw` for HTTP errors."
+      },
+      {
+        "animationStep": 9,
+        "heading": "AbortController",
+        "text": "Pass `{ signal: controller.signal }` to `fetch()`. Call `controller.abort()` to cancel. In React `useEffect`, `abort()` in the cleanup function prevents state updates after unmount."
+      }
     ],
     "cheatSheet": {
       "syntax": [
@@ -382,7 +402,17 @@
       { "animationStep": 3, "heading": "Event bubbling", "text": "Events bubble up the DOM tree by default. A click on an inner element also fires on all its ancestors — unless stopped." },
       { "animationStep": 4, "heading": "stopPropagation and preventDefault", "text": "stopPropagation() stops the event from bubbling. preventDefault() cancels the browser's default action (e.g. following a link, submitting a form)." },
       { "animationStep": 5, "heading": "EventTarget and addEventListener", "text": "Any DOM element implements the EventTarget interface, giving it addEventListener(type, handler, options). You can attach multiple listeners to the same event type. Always use addEventListener instead of inline handlers for better separation of concerns." },
-      { "animationStep": 6, "heading": "Event Propagation: Bubbling and Capturing", "text": "Events first travel down the DOM tree from root to target (capture phase), then bubble back up from target to root (bubble phase). By default, listeners run in the bubble phase. Call event.stopPropagation() to prevent the event from traveling further." }
+      { "animationStep": 6, "heading": "Event Propagation: Bubbling and Capturing", "text": "Events first travel down the DOM tree from root to target (capture phase), then bubble back up from target to root (bubble phase). By default, listeners run in the bubble phase. Call event.stopPropagation() to prevent the event from traveling further." },
+      {
+        "animationStep": 7,
+        "heading": "Custom Events",
+        "text": "`new CustomEvent(name, { detail })` creates a custom event. `element.dispatchEvent(event)` fires it. Set `bubbles: true` so parent elements can catch it. Any ancestor with `addEventListener(name, handler)` receives it."
+      },
+      {
+        "animationStep": 8,
+        "heading": "Event Delegation",
+        "text": "Attach one listener to the parent instead of N listeners to children. Use `event.target.closest(selector)` to identify which child triggered the event. Works for elements added after the listener is attached."
+      }
     ],
     "cheatSheet": {
       "syntax": [
@@ -413,7 +443,17 @@
       { "animationStep": 3, "heading": "localStorage persists", "text": "Data in localStorage survives page refreshes, tab closes, and browser restarts. It stays until explicitly cleared." },
       { "animationStep": 4, "heading": "sessionStorage — tab-scoped", "text": "sessionStorage has the same API as localStorage but is cleared when the tab or window is closed." },
       { "animationStep": 5, "heading": "localStorage vs sessionStorage", "text": "Both store key/value string pairs in the browser, but localStorage persists across browser sessions while sessionStorage is cleared when the tab closes. Neither should store sensitive data — they are accessible to any script on the page." },
-      { "animationStep": 6, "heading": "setItem / getItem / removeItem / clear", "text": "The Web Storage API is a simple key/value store. All values are stored as strings — use JSON.stringify and JSON.parse to store and retrieve objects." }
+      { "animationStep": 6, "heading": "setItem / getItem / removeItem / clear", "text": "The Web Storage API is a simple key/value store. All values are stored as strings — use JSON.stringify and JSON.parse to store and retrieve objects." },
+      {
+        "animationStep": 7,
+        "heading": "Safe Read with Fallback",
+        "text": "Wrap `localStorage.getItem` + `JSON.parse` in `try/catch`. Return a typed fallback if the key is `null` or the JSON is invalid. Prevents crashes from corrupted or missing data."
+      },
+      {
+        "animationStep": 8,
+        "heading": "What NOT to Store",
+        "text": "Never store passwords, auth tokens, or session IDs in `localStorage`. Any XSS vulnerability exposes all storage. Use `httpOnly` cookies for auth — they are inaccessible to JavaScript by design."
+      }
     ],
     "cheatSheet": {
       "syntax": [
