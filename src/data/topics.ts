@@ -5649,6 +5649,14 @@ for (let i = 0; i < 5; i++) {
             text: 'fetch() is the modern browser API for making HTTP requests. It replaced XMLHttpRequest and returns a Promise.',
             codeExample: 'fetch("https://api.example.com/users")\n  .then(res => res.json())\n  .then(data => console.log(data))',
             language: 'javascript',
+            analogy: {
+              icon: '✉️',
+              title: 'Sending a letter',
+              text: [
+                "Imagine sending a letter and waiting for a reply. You write the address (URL), seal the envelope (request), and drop it in the postbox (call fetch()). You don't stand at the postbox waiting — you go about your day.",
+                "When the reply arrives (Promise resolves), you open it and read the data.",
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -5657,6 +5665,14 @@ for (let i = 0; i < 5; i++) {
             text: 'The request is sent immediately but the response arrives later. fetch() returns a Promise that resolves when the server responds.',
             codeExample: 'const promise = fetch("/api/data")\n// promise is pending...\n// later: resolved with Response object',
             language: 'javascript',
+            analogy: {
+              icon: '🧾',
+              title: 'The restaurant receipt',
+              text: [
+                "When you order at a restaurant, you get a receipt immediately — but the food comes later. The receipt is the Promise. It's not the data, but proof your request was accepted.",
+                "The kitchen is busy (server processing). When the food is ready (data fetched), the waiter brings it to your table (Promise resolves).",
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -5665,6 +5681,14 @@ for (let i = 0; i < 5; i++) {
             text: 'The resolved value is a Response. It contains status, headers, and the body — but the body must be explicitly parsed.',
             codeExample: 'fetch("/api/users")\n  .then(response => {\n    console.log(response.status) // 200\n    console.log(response.ok)     // true\n    return response.json()        // parse body\n  })',
             language: 'javascript',
+            analogy: {
+              icon: '📦',
+              title: 'A sealed envelope',
+              text: [
+                "The Response object is like a sealed envelope. Before you open it, you can already see the sender's address (URL), when it was sent (headers), and whether it was delivered successfully (status code).",
+                "Only when you call .json() or .text() do you actually open the envelope and read the contents.",
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -5673,6 +5697,14 @@ for (let i = 0; i < 5; i++) {
             text: 'response.json() parses the body as JSON and returns another Promise. response.text() returns raw text.',
             codeExample: 'fetch("/api/users")\n  .then(res => res.json())    // parse JSON\n  .then(users => {\n    users.forEach(u => console.log(u.name))\n  })',
             language: 'javascript',
+            analogy: {
+              icon: '📖',
+              title: 'Opening the envelope',
+              text: [
+                ".json() is like unfolding the letter inside the envelope. The raw body is a stream of bytes — .json() reads it all and converts it to a JavaScript object.",
+                "You can only read it once. Calling .json() twice on the same Response throws an error — like trying to unfold a letter that has already been read.",
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -5681,6 +5713,14 @@ for (let i = 0; i < 5; i++) {
             text: 'async/await makes fetch code read like synchronous code. Always wrap in try/catch for error handling.',
             codeExample: 'async function loadUsers() {\n  try {\n    const res = await fetch("/api/users")\n    const users = await res.json()\n    return users\n  } catch (err) {\n    console.error("Request failed:", err)\n  }\n}',
             language: 'javascript',
+            analogy: {
+              icon: '⏳',
+              title: 'Waiting in line',
+              text: [
+                "Instead of saying 'call me back when my order is ready' (then/catch), async/await lets you say 'I'll wait right here'. The code pauses at await until the Promise resolves.",
+                "The line behind you doesn't stop — only your async function waits. Everything else in JavaScript keeps running.",
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -5689,6 +5729,14 @@ for (let i = 0; i < 5; i++) {
             text: 'fetch() returns a Promise that resolves to a Response object. Call response.json() to parse the body as JSON (also async). Always check response.ok or response.status before trusting the data.',
             codeExample: `const res = await fetch('https://jsonplaceholder.typicode.com/posts/1');\nif (!res.ok) throw new Error(\`Status: \${res.status}\`);\nconst post = await res.json();\nconsole.log(post.title);`,
             language: 'javascript',
+            analogy: {
+              icon: '🧑‍🍳',
+              title: 'Check before serving',
+              text: [
+                "A good chef checks the dish before bringing it to the table. res.ok is that check — it's true only for 2xx responses. A 404 or 500 still resolves the Promise, but res.ok is false.",
+                "Always guard with if (!res.ok) throw new Error(res.statusText) before calling res.json() — otherwise you try to parse an error page as JSON.",
+              ],
+            },
           },
           {
             animationStep: 6,
@@ -5697,6 +5745,14 @@ for (let i = 0; i < 5; i++) {
             text: 'To send data, pass an options object as the second argument to fetch. Set the method, a Content-Type header, and serialize the body to JSON with JSON.stringify.',
             codeExample: `const res = await fetch('/api/posts', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({ title: 'New Post', body: 'Content' }),\n});\nconst created = await res.json();\nconsole.log(created.id);`,
             language: 'javascript',
+            analogy: {
+              icon: '📬',
+              title: 'Sending a package',
+              text: [
+                "A GET request is like asking for a catalog. A POST is like mailing a package — you send something, not just request it. The method is the shipping label, Content-Type is what you're sending, and the body is the contents.",
+                "JSON.stringify converts your JavaScript object into a string that can travel over the network — like putting a document in an envelope before mailing.",
+              ],
+            },
           },
           {
             animationStep: 7,
@@ -5705,6 +5761,46 @@ for (let i = 0; i < 5; i++) {
             text: 'REST uses HTTP methods semantically: GET reads, POST creates, PUT/PATCH updates, DELETE removes. Each endpoint represents a resource (e.g. /posts, /posts/1). Responses carry HTTP status codes — 2xx for success, 4xx for client errors, 5xx for server errors.',
             codeExample: `// Conventional REST endpoints for a "posts" resource:\n// GET    /posts      → list all posts\n// POST   /posts      → create a new post\n// GET    /posts/1    → get post with id 1\n// PUT    /posts/1    → replace post 1 entirely\n// PATCH  /posts/1    → update part of post 1\n// DELETE /posts/1    → remove post 1`,
             language: 'javascript',
+            analogy: {
+              icon: '🗂️',
+              title: 'Standard filing cabinet',
+              text: [
+                "REST is like agreeing on standard drawer labels for a filing cabinet. GET = read a file, POST = add a file, PUT = replace a file, DELETE = remove a file.",
+                "Every team uses the same labels, so anyone can open the cabinet and know what to do — no custom instructions needed.",
+              ],
+            },
+          },
+          {
+            animationStep: 8,
+            icon: '🚨',
+            heading: 'Error Handling Patterns',
+            text: '`fetch()` only rejects its Promise on **network failures** (no connection, DNS error). It does **not** throw on 4xx or 5xx HTTP responses — those still resolve. Check `res.ok` manually. Use `try/catch` for network errors and `if (!res.ok)` for HTTP errors.',
+            codeExample: `async function getData(url: string) {\n  try {\n    const res = await fetch(url)\n    if (!res.ok) throw new Error(\`HTTP \${res.status}: \${res.statusText}\`)\n    return await res.json()\n  } catch (err) {\n    console.error('Fetch failed:', err)\n    throw err\n  }\n}`,
+            language: 'typescript',
+            analogy: {
+              icon: '🚚',
+              title: 'Two types of failure',
+              text: [
+                "Imagine two ways a delivery can fail: the truck breaks down before leaving (network error — Promise rejects), or the package arrives but is refused at the door (4xx/5xx — Promise resolves, but res.ok is false).",
+                "fetch() only tells you about the truck. You have to check the door yourself with res.ok.",
+              ],
+            },
+          },
+          {
+            animationStep: 9,
+            icon: '🛑',
+            heading: 'AbortController — Cancel a Request',
+            text: 'Use `AbortController` to cancel an in-flight fetch. Create a controller, pass `signal` to fetch, and call `abort()` to cancel. In React `useEffect`, call `abort()` in the cleanup function to prevent state updates after unmount.',
+            codeExample: `useEffect(() => {\n  const controller = new AbortController()\n\n  fetch('/api/data', { signal: controller.signal })\n    .then(res => res.json())\n    .then(setData)\n    .catch(err => {\n      if (err.name !== 'AbortError') console.error(err)\n    })\n\n  return () => controller.abort()\n}, [])`,
+            language: 'typescript',
+            analogy: {
+              icon: '📵',
+              title: 'The cancel button',
+              text: [
+                "AbortController is a cancel button you hand to fetch before pressing Send. If you press cancel before the response arrives, fetch stops and throws an AbortError.",
+                "In React, the component unmounting is the cancel button being pressed — always clean up in-flight requests to avoid setState calls after unmount.",
+              ],
+            },
           },
         ],
       },
@@ -5740,6 +5836,40 @@ for (let i = 0; i < 5; i++) {
       {
         label: 'Error handling',
         code: '// 🎯 Robust Error Handling\n// fetch() only rejects on network failure, NOT on 4xx/5xx.\n// Always check res.ok manually.\n\nasync function safeFetch(url) {\n  try {\n    const res = await fetch(url)\n    if (!res.ok) throw new Error(`Server error: ${res.status}`)\n    return await res.json()\n  } catch (err) {\n    if (err instanceof TypeError) {\n      console.error("Network error:", err.message)\n    } else {\n      console.error("Request failed:", err.message)\n    }\n    return null\n  }\n}\n\nsafeFetch("https://jsonplaceholder.typicode.com/todos/1")\n  .then(data => console.log(data))',
+      },
+    ],
+    commonErrors: [
+      {
+        title: 'Forgetting await on res.json()',
+        why: 'res.json() returns a Promise. Without await, you get a Promise object instead of the parsed data — no error is thrown, the bug is silent.',
+        fixLabel: 'Always await res.json()',
+        fixCode: 'const data = await res.json()',
+      },
+      {
+        title: 'Not checking res.ok',
+        why: 'fetch() resolves even on 404 and 500 responses. Only network failures cause the Promise to reject. You must check res.ok yourself.',
+        fixLabel: 'Guard with res.ok before parsing',
+        fixCode: 'if (!res.ok) throw new Error(res.statusText)',
+      },
+      {
+        title: "Missing Content-Type header on POST",
+        why: "When sending JSON, the server needs to know the format. Without 'Content-Type': 'application/json', many servers won't parse the body.",
+        fixLabel: 'Set the header explicitly',
+        fixCode: `headers: { 'Content-Type': 'application/json' }`,
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Weather dashboard',
+        heading: 'Fetch weather data from a public API',
+        description: 'Async data fetch with a loading state, error state, and res.ok guard — the pattern for any data-fetching component.',
+        code: `async function getWeather(city: string) {\n  const res = await fetch(\`https://api.example.com/weather?q=\${city}\`)\n  if (!res.ok) throw new Error(\`Failed: \${res.status}\`)\n  return res.json() as Promise<WeatherData>\n}\n\nconst [data, setData] = useState<WeatherData | null>(null)\nconst [loading, setLoading] = useState(false)\n\nasync function load() {\n  setLoading(true)\n  try { setData(await getWeather('Berlin')) }\n  catch (e) { console.error(e) }\n  finally { setLoading(false) }\n}`,
+      },
+      {
+        context: 'Contact page',
+        heading: 'Submit a form via POST',
+        description: 'Collect form data, send as JSON with POST, handle success and error responses.',
+        code: `async function submitForm(data: FormData) {\n  const res = await fetch('/api/contact', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify({\n      name: data.get('name'),\n      email: data.get('email'),\n    }),\n  })\n  if (!res.ok) throw new Error('Submission failed')\n  return res.json()\n}`,
       },
     ],
   },
