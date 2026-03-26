@@ -6019,6 +6019,14 @@ for (let i = 0; i < 5; i++) {
             text: 'The browser fires events when users interact — clicking, typing, scrolling, hovering. JavaScript can listen and respond.',
             codeExample: '// Common DOM events:\n// click, dblclick, mouseover\n// keydown, keyup, input\n// submit, focus, blur, scroll',
             language: 'javascript',
+            analogy: {
+              icon: '🔥',
+              title: 'Smoke detector',
+              text: [
+                "A smoke detector is always on, always listening, but does nothing most of the time. When something specific happens (smoke), it reacts. DOM events work the same — your listener is always registered, fires only on the specific event.",
+                "You don't poll ('is there smoke yet?'). You register a listener and let the browser call you when the event happens.",
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -6027,6 +6035,14 @@ for (let i = 0; i < 5; i++) {
             text: 'addEventListener attaches a callback function to an element. The callback runs every time the event fires.',
             codeExample: 'const btn = document.querySelector("#myBtn")\nbtn.addEventListener("click", function(event) {\n  console.log("Button clicked!")\n})',
             language: 'javascript',
+            analogy: {
+              icon: '📰',
+              title: 'Newsletter subscription',
+              text: [
+                "addEventListener is like subscribing to a newsletter. You sign up once and the publisher sends you every new issue. You don't have to ask — they notify you.",
+                "removeEventListener is unsubscribing. If you never unsubscribe, the newsletter keeps coming — even after you've moved.",
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -6035,6 +6051,14 @@ for (let i = 0; i < 5; i++) {
             text: 'The callback receives an Event object with information about what happened: the target element, mouse position, key pressed, and more.',
             codeExample: 'btn.addEventListener("click", (event) => {\n  console.log(event.type)    // "click"\n  console.log(event.target)  // the button element\n  console.log(event.clientX) // mouse X position\n})',
             language: 'javascript',
+            analogy: {
+              icon: '📦',
+              title: 'A parcel with metadata',
+              text: [
+                "When an event fires, the browser wraps it in an Event object and delivers it to your handler. The object carries metadata: what type of event (type), which element triggered it (target), where the mouse was (clientX/clientY), which key was pressed (key).",
+                "Your handler receives this parcel automatically as its first argument.",
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -6043,6 +6067,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Events bubble up the DOM tree by default. A click on an inner element also fires on all its ancestors — unless stopped.',
             codeExample: '// Clicking the button fires:\n// 1. button handler\n// 2. div handler  \n// 3. document handler\n// → bubbles up the tree',
             language: 'javascript',
+            analogy: {
+              icon: '🏢',
+              title: 'Shouting in a building',
+              text: [
+                "When you shout in an office, the person in the same room hears first, then the floor above, then the whole building. DOM event bubbling works the same — the event fires on the target element first, then bubbles up through every ancestor.",
+                "This is why clicking a button inside a div also triggers click handlers on the div, its parent, and all the way up.",
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -6051,6 +6083,14 @@ for (let i = 0; i < 5; i++) {
             text: 'stopPropagation() stops the event from bubbling. preventDefault() cancels the browser\'s default action (e.g. following a link, submitting a form).',
             codeExample: 'link.addEventListener("click", (e) => {\n  e.preventDefault()   // don\'t navigate\n  e.stopPropagation()  // don\'t bubble\n  handleClick()\n})',
             language: 'javascript',
+            analogy: {
+              icon: '🚷',
+              title: 'Bouncer at the door',
+              text: [
+                "stopPropagation is like a bouncer who stops the shout from echoing upward — the event fires on the target but doesn't bubble to parent elements.",
+                "preventDefault is different — it stops the browser's default behavior for the event (following a link, submitting a form) without stopping propagation.",
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -6059,6 +6099,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Any DOM element implements the EventTarget interface, giving it addEventListener(type, handler, options). You can attach multiple listeners to the same event type. Always use addEventListener instead of inline handlers for better separation of concerns.',
             codeExample: `const btn = document.querySelector('#myBtn');\n\nbtn.addEventListener('click', (event) => {\n  console.log('Clicked!', event.target);\n});\n\n// Multiple listeners on the same element are fine\nbtn.addEventListener('click', () => console.log('Second listener'));`,
             language: 'javascript',
+            analogy: {
+              icon: '📡',
+              title: 'Multiple cameras on one door',
+              text: [
+                "You can attach multiple event listeners to the same element for the same event. Each listener fires independently — one might log analytics, another updates the UI, another saves state.",
+                "Each listener has a single responsibility, which is much cleaner than one giant handler doing everything.",
+              ],
+            },
           },
           {
             animationStep: 6,
@@ -6067,6 +6115,46 @@ for (let i = 0; i < 5; i++) {
             text: 'Events first travel down the DOM tree from root to target (capture phase), then bubble back up from target to root (bubble phase). By default, listeners run in the bubble phase. Call event.stopPropagation() to prevent the event from traveling further.',
             codeExample: `document.querySelector('#parent').addEventListener('click', () => {\n  console.log('Parent clicked (bubble)');\n});\n\ndocument.querySelector('#child').addEventListener('click', (e) => {\n  console.log('Child clicked');\n  e.stopPropagation(); // prevents parent listener from running\n});`,
             language: 'javascript',
+            analogy: {
+              icon: '📭',
+              title: 'Sorting station',
+              text: [
+                "Events travel in three phases: capture (from document down to target), target (at the element itself), bubble (back up to document). By default, addEventListener uses the bubble phase.",
+                "The capture phase is like intercepting a package at the sorting station before delivery. Rarely needed, but useful for global interceptors.",
+              ],
+            },
+          },
+          {
+            animationStep: 7,
+            icon: '📻',
+            heading: 'Custom Events',
+            text: 'Create your own events with `new CustomEvent(name, { detail })`. Dispatch them with `element.dispatchEvent(event)` and listen with `addEventListener`. Custom events are ideal for loosely-coupled communication between components — no shared state or imports needed.',
+            codeExample: `// Dispatch from one part of the page\nconst event = new CustomEvent('cart:add', {\n  detail: { productId: 42, qty: 1 },\n  bubbles: true,\n})\ndocument.querySelector('#add-btn')!.dispatchEvent(event)\n\n// Listen anywhere in the tree\ndocument.addEventListener('cart:add', (e: CustomEvent) => {\n  console.log(e.detail.productId)  // 42\n  updateCartCount(e.detail.qty)\n})`,
+            language: 'typescript',
+            analogy: {
+              icon: '📡',
+              title: 'Walkie-talkies',
+              text: [
+                "Custom events are like walkie-talkies. One component broadcasts on a channel (dispatchEvent). Any component can tune in (addEventListener) without the broadcaster knowing who is listening.",
+                "This decoupling is powerful: the cart button doesn't need to import the cart panel. It just broadcasts — the panel reacts.",
+              ],
+            },
+          },
+          {
+            animationStep: 8,
+            icon: '🎯',
+            heading: 'Event Delegation',
+            text: "Instead of attaching listeners to every child element, attach one listener to the parent. Use `event.target.closest(selector)` to identify which child triggered the event. Event delegation works even for elements added **after** the listener is attached — essential for dynamic lists.",
+            codeExample: `// One listener on the parent handles all children\ndocument.querySelector('ul')!.addEventListener('click', e => {\n  const li = (e.target as Element).closest('li')\n  if (!li) return  // click was outside any li\n  handleItemClick(li)\n})`,
+            language: 'typescript',
+            analogy: {
+              icon: '🏨',
+              title: 'One receptionist for the whole building',
+              text: [
+                "Instead of hiring a receptionist for every floor, you hire one at the main entrance. Everyone who enters passes the receptionist — they check who you are and direct you.",
+                "Event delegation is the same: one listener at the parent catches all events from children. New children added later are automatically covered.",
+              ],
+            },
           },
         ],
       },
@@ -6102,6 +6190,40 @@ for (let i = 0; i < 5; i++) {
       {
         label: 'Custom events',
         code: '// 🎯 Custom Events with CustomEvent\n// Dispatch your own named events to decouple components.\n\n// Create and dispatch:\n// const event = new CustomEvent("cart:updated", {\n//   bubbles: true,\n//   detail: { itemCount: 3, total: 49.99 }\n// })\n// document.dispatchEvent(event)\n\n// Listen anywhere:\n// document.addEventListener("cart:updated", e => {\n//   console.log("Cart has", e.detail.itemCount, "items")\n//   console.log("Total:", e.detail.total)\n// })\n\n// Simulate:\nfunction dispatchCustom(name, detail) {\n  console.log(`[custom event: ${name}]`, detail)\n}\ndispatchCustom("cart:updated", { itemCount: 3, total: 49.99 })\ndispatchCustom("user:login",   { userId: 42, role: "admin" })',
+      },
+    ],
+    commonErrors: [
+      {
+        title: 'Event listener not removed on cleanup',
+        why: "In SPAs, components unmount but listeners stay attached. The callback fires after unmount and may reference stale state.",
+        fixLabel: 'Return a cleanup function in useEffect',
+        fixCode: `useEffect(() => {\n  const handler = () => setSomething(true)\n  el.addEventListener('click', handler)\n  return () => el.removeEventListener('click', handler)\n}, [])`,
+      },
+      {
+        title: 'Arrow function prevents removeEventListener',
+        why: "An arrow function creates a new reference each time. removeEventListener requires the exact same reference as addEventListener.",
+        fixLabel: 'Store the handler in a named variable',
+        fixCode: `const handler = () => console.log('clicked')\nel.addEventListener('click', handler)\nel.removeEventListener('click', handler)  // works`,
+      },
+      {
+        title: 'Calling the handler instead of passing it',
+        why: "el.addEventListener('click', handleClick()) calls handleClick immediately and passes its return value as the listener — usually undefined.",
+        fixLabel: 'Pass the function reference, no parentheses',
+        fixCode: `el.addEventListener('click', handleClick)   // correct\nel.addEventListener('click', handleClick())  // wrong`,
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Registration form',
+        heading: 'Validate a form before submit',
+        description: 'Attach a submit listener, call preventDefault, validate fields, and only submit programmatically if valid.',
+        code: `form.addEventListener('submit', (e: SubmitEvent) => {\n  e.preventDefault()\n  const email = (form.querySelector('#email') as HTMLInputElement).value\n  if (!email.includes('@')) {\n    showError('Please enter a valid email')\n    return\n  }\n  submitForm({ email })\n})`,
+      },
+      {
+        context: 'Productivity app',
+        heading: 'Global keyboard shortcut',
+        description: 'Listen for keydown on document. Match key and modifier to trigger actions from anywhere in the app.',
+        code: `document.addEventListener('keydown', (e: KeyboardEvent) => {\n  const isMac = navigator.platform.includes('Mac')\n  const modifier = isMac ? e.metaKey : e.ctrlKey\n\n  if (modifier && e.key === 'k') {\n    e.preventDefault()\n    openSearchPalette()\n  }\n})`,
       },
     ],
   },
