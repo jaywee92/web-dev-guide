@@ -29,6 +29,10 @@ const lazyRegistry: Record<string, () => Promise<{ default: AnimComp }>> = {
   TransformsViz: () => import('./css/TransformsViz'),
   TransitionsViz: () => import('./css/TransitionsViz'),
   AnimationsViz: () => import('./css/AnimationsViz'),
+  TailwindViz: () => import('./css/TailwindViz'),
+  TailwindLayoutViz: () => import('./css/TailwindLayoutViz'),
+  TailwindStatesViz: () => import('./css/TailwindStatesViz'),
+  TailwindAdvancedViz: () => import('./css/TailwindAdvancedViz'),
   AnimatedFlow: () => import('./shared/AnimatedFlow'),
   RestViz: () => import('./http/RestViz'),
   StatusCodesViz: () => import('./http/StatusCodesViz'),
@@ -70,6 +74,15 @@ const lazyRegistry: Record<string, () => Promise<{ default: AnimComp }>> = {
   GitCollabSetupViz: () => import('./git/GitCollabSetupViz'),
   GitConflictViz:    () => import('./git/GitConflictViz'),
   GitUndoViz:      () => import('./git/GitUndoViz'),
+  NextjsRoutingViz:          () => import('./nextjs/NextjsRoutingViz'),
+  NextjsLayoutsViz:          () => import('./nextjs/NextjsLayoutsViz'),
+  NextjsNavigationViz:       () => import('./nextjs/NextjsNavigationViz'),
+  NextjsServerComponentsViz: () => import('./nextjs/NextjsServerComponentsViz'),
+  NextjsClientComponentsViz: () => import('./nextjs/NextjsClientComponentsViz'),
+  NextjsSuspenseViz:         () => import('./nextjs/NextjsSuspenseViz'),
+  NextjsDataFetchingViz:     () => import('./nextjs/NextjsDataFetchingViz'),
+  NextjsServerActionsViz:    () => import('./nextjs/NextjsServerActionsViz'),
+  NextjsRouteHandlersViz:    () => import('./nextjs/NextjsRouteHandlersViz'),
 }
 
 // Synchronous cache
@@ -86,26 +99,6 @@ export async function preloadAnimation(name: string | undefined): Promise<void> 
   loadedRegistry[name] = mod.default
 }
 
-// ─── Analogy registry ─────────────────────────────────────────────────────
-
-type AnalogyComp = ComponentType<{ step: number }>
-
-const analogyLazyRegistry: Record<string, () => Promise<{ default: AnalogyComp }>> = {
-  VariablesAnalogyViz: () => import('./javascript/VariablesAnalogyViz'),
-}
-
-const loadedAnalogyRegistry: Record<string, AnalogyComp> = {}
-
-export function getAnalogyComponent(name: string | undefined): AnalogyComp | null {
-  if (!name) return null
-  return loadedAnalogyRegistry[name] ?? null
-}
-
-export async function preloadAnalogyAnimation(name: string | undefined): Promise<void> {
-  if (!name || loadedAnalogyRegistry[name] || !analogyLazyRegistry[name]) return
-  const mod = await analogyLazyRegistry[name]()
-  loadedAnalogyRegistry[name] = mod.default
-}
 
 // ─── Banner registry ───────────────────────────────────────────────────────
 

@@ -6,7 +6,7 @@
       {
         "animationStep": 0,
         "heading": "Der Client sendet eine Anfrage",
-        "text": "Dein Browser (der Client) sendet eine HTTP-Anfrage an einen Server. Sie enthält die Methode (GET, POST), die URL und Header."
+        "text": "Dein Browser (der Client) sendet eine HTTP-Anfrage an einen Server. Sie enthält die Methode (`GET`, `POST`), die URL und Header."
       },
       {
         "animationStep": 1,
@@ -73,22 +73,22 @@
       {
         "animationStep": 1,
         "heading": "GET — Daten abrufen",
-        "text": "GET fragt Daten vom Server ab. GET-Anfragen sollten sicher (keine Seiteneffekte) und idempotent (gleiches Ergebnis jedes Mal) sein. Kein Anfrage-Body."
+        "text": "`GET` fragt Daten vom Server ab. `GET`-Anfragen sollten sicher (keine Seiteneffekte) und idempotent (gleiches Ergebnis jedes Mal) sein. Kein Anfrage-Body."
       },
       {
         "animationStep": 2,
         "heading": "POST — eine Ressource erstellen",
-        "text": "POST sendet Daten, um eine neue Ressource zu erstellen. Der Server gibt die erstellte Ressource mit Status 201 Created zurück."
+        "text": "`POST` sendet Daten, um eine neue Ressource zu erstellen. Der Server gibt die erstellte Ressource mit Status 201 Created zurück."
       },
       {
         "animationStep": 3,
         "heading": "PUT und PATCH",
-        "text": "PUT ersetzt die gesamte Ressource. PATCH aktualisiert nur die angegebenen Felder. Beide zielen auf eine bestimmte Ressource per ID in der URL ab."
+        "text": "`PUT` ersetzt die gesamte Ressource. `PATCH` aktualisiert nur die angegebenen Felder. Beide zielen auf eine bestimmte Ressource per ID in der URL ab."
       },
       {
         "animationStep": 4,
         "heading": "DELETE — eine Ressource entfernen",
-        "text": "DELETE entfernt die angegebene Ressource. Ein erfolgreicher Löschvorgang gibt typischerweise 204 No Content zurück."
+        "text": "`DELETE` entfernt die angegebene Ressource. Ein erfolgreicher Löschvorgang gibt typischerweise 204 No Content zurück."
       }
     ],
     "cheatSheet": {
@@ -312,47 +312,47 @@
       {
         "animationStep": 1,
         "heading": "SELECT",
-        "text": "SELECT ruft Daten ab. * bedeutet alle Spalten. Du kannst Spaltennamen angeben, um nur das zurückzugeben, was du benötigst."
+        "text": "`SELECT` ruft Daten ab. `*` bedeutet alle Spalten. Du kannst Spaltennamen angeben, um nur das zurückzugeben, was du benötigst."
       },
       {
         "animationStep": 2,
         "heading": "WHERE — Zeilen filtern",
-        "text": "WHERE fügt Bedingungen hinzu, um zu filtern, welche Zeilen zurückgegeben werden. Verwende AND und OR für mehrere Bedingungen."
+        "text": "`WHERE` fügt Bedingungen hinzu, um zu filtern, welche Zeilen zurückgegeben werden. Verwende `AND` und `OR` für mehrere Bedingungen."
       },
       {
         "animationStep": 3,
         "heading": "ORDER BY — Ergebnisse sortieren",
-        "text": "ORDER BY sortiert das Ergebnis. ASC ist aufsteigend (Standard), DESC ist absteigend. Nach mehreren Spalten sortieren möglich."
+        "text": "`ORDER BY` sortiert das Ergebnis. `ASC` ist aufsteigend (Standard), `DESC` ist absteigend. Nach mehreren Spalten sortieren möglich."
       },
       {
         "animationStep": 4,
         "heading": "LIMIT — Ergebnisanzahl steuern",
-        "text": "LIMIT begrenzt die Anzahl der zurückgegebenen Zeilen. In Kombination mit OFFSET implementiert es Paginierung."
+        "text": "`LIMIT` begrenzt die Anzahl der zurückgegebenen Zeilen. In Kombination mit `OFFSET` implementiert es Paginierung."
       },
       {
         "animationStep": 5,
         "heading": "SELECT mit WHERE und ORDER BY",
-        "text": "WHERE filtert Zeilen, die eine Bedingung erfüllen. Du kannst mehrere Bedingungen mit AND und OR kombinieren. ORDER BY sortiert Ergebnisse — ASC (Standard) für aufsteigend, DESC für absteigend. Alias immer mehrdeutige Spalten in Multi-Tabellen-Abfragen."
+        "text": "`WHERE` filtert Zeilen, die eine Bedingung erfüllen. Du kannst mehrere Bedingungen mit `AND` und `OR` kombinieren. `ORDER BY` sortiert Ergebnisse — `ASC` (Standard) für aufsteigend, `DESC` für absteigend. Alias immer mehrdeutige Spalten in Multi-Tabellen-Abfragen."
       },
       {
         "animationStep": 6,
         "heading": "Aggregatfunktionen: COUNT, SUM, AVG",
-        "text": "Aggregatfunktionen berechnen ein einzelnes Ergebnis aus einer Menge von Zeilen. COUNT(*) zählt Zeilen, SUM addiert numerische Werte, AVG berechnet den Durchschnitt, MIN/MAX finden Extremwerte. Sie werden typischerweise mit GROUP BY kombiniert."
+        "text": "Aggregatfunktionen berechnen ein einzelnes Ergebnis aus einer Menge von Zeilen. `COUNT(*)` zählt Zeilen, `SUM` addiert numerische Werte, `AVG` berechnet den Durchschnitt, `MIN`/`MAX` finden Extremwerte. Sie werden typischerweise mit `GROUP BY` kombiniert."
       },
       {
         "animationStep": 7,
         "heading": "GROUP BY und HAVING",
-        "text": "GROUP BY fasst Zeilen, die denselben Wert in einer Spalte teilen, zu einer einzelnen Zeile zusammen, sodass Aggregate pro Gruppe operieren. HAVING filtert Gruppen nach der Aggregation — wie WHERE, aber für Gruppen."
+        "text": "`GROUP BY` fasst Zeilen, die denselben Wert in einer Spalte teilen, zu einer einzelnen Zeile zusammen, sodass Aggregate pro Gruppe operieren. `HAVING` filtert Gruppen nach der Aggregation — wie `WHERE`, aber für Gruppen."
       },
       {
         "animationStep": 8,
         "heading": "HAVING vs. WHERE",
-        "text": "WHERE filtert einzelne Zeilen, bevor GROUP BY ausgeführt wird. HAVING filtert Gruppen nach GROUP BY — es kann auf Aggregatfunktionen verweisen. Faustregel: Wenn deine Bedingung COUNT, SUM oder AVG verwendet, nutze HAVING; andernfalls WHERE. Beide können in derselben Abfrage vorkommen."
+        "text": "`WHERE` filtert einzelne Zeilen, bevor `GROUP BY` ausgeführt wird. `HAVING` filtert Gruppen nach `GROUP BY` — es kann auf Aggregatfunktionen verweisen. Faustregel: Wenn deine Bedingung `COUNT`, `SUM` oder `AVG` verwendet, nutze `HAVING`; andernfalls `WHERE`. Beide können in derselben Abfrage vorkommen."
       },
       {
         "animationStep": 9,
         "heading": "Subqueries",
-        "text": "Eine Subquery ist ein SELECT, das innerhalb einer anderen Abfrage verschachtelt ist. Die innere Abfrage wird zuerst ausgeführt; ihr Ergebnis wird von der äußeren Abfrage verwendet. Skalare Subqueries geben einen einzelnen Wert zurück (verwendbar in WHERE). IN-Subqueries geben eine Werteliste zurück. Korrelierte Subqueries referenzieren Spalten der äußeren Abfrage — mächtig, aber sie laufen einmal pro äußerer Zeile; bevorzuge JOINs für große Datensätze."
+        "text": "Eine Subquery ist ein `SELECT`, das innerhalb einer anderen Abfrage verschachtelt ist. Die innere Abfrage wird zuerst ausgeführt; ihr Ergebnis wird von der äußeren Abfrage verwendet. Skalare Subqueries geben einen einzelnen Wert zurück (verwendbar in `WHERE`). `IN`-Subqueries geben eine Werteliste zurück. Korrelierte Subqueries referenzieren Spalten der äußeren Abfrage — mächtig, aber sie laufen einmal pro äußerer Zeile; bevorzuge `JOIN`s für große Datensätze."
       }
     ],
     "cheatSheet": {
@@ -462,27 +462,27 @@
       {
         "animationStep": 0,
         "heading": "CREATE TABLE",
-        "text": "CREATE TABLE definiert die Struktur (Schema) einer Tabelle: Spaltennamen, Typen und Constraints."
+        "text": "`CREATE TABLE` definiert die Struktur (Schema) einer Tabelle: Spaltennamen, Typen und Constraints."
       },
       {
         "animationStep": 1,
         "heading": "INSERT — Zeilen hinzufügen",
-        "text": "INSERT INTO fügt neue Zeilen hinzu. Du kannst eine oder mehrere Zeilen in einer einzigen Anweisung einfügen."
+        "text": "`INSERT INTO` fügt neue Zeilen hinzu. Du kannst eine oder mehrere Zeilen in einer einzigen Anweisung einfügen."
       },
       {
         "animationStep": 2,
         "heading": "UPDATE — Zeilen ändern",
-        "text": "UPDATE ändert bestehende Zeilen. Verwende immer WHERE — ohne es wird jede Zeile in der Tabelle aktualisiert."
+        "text": "`UPDATE` ändert bestehende Zeilen. Verwende immer `WHERE` — ohne es wird jede Zeile in der Tabelle aktualisiert."
       },
       {
         "animationStep": 3,
         "heading": "DELETE — Zeilen entfernen",
-        "text": "DELETE entfernt Zeilen. Verwende immer WHERE — ohne es werden alle Zeilen gelöscht."
+        "text": "`DELETE` entfernt Zeilen. Verwende immer `WHERE` — ohne es werden alle Zeilen gelöscht."
       },
       {
         "animationStep": 4,
         "heading": "Constraints schützen Daten",
-        "text": "Constraints erzwingen Regeln auf Datenbankebene. PRIMARY KEY, NOT NULL, UNIQUE und FOREIGN KEY verhindern, dass ungültige Daten gespeichert werden."
+        "text": "Constraints erzwingen Regeln auf Datenbankebene. `PRIMARY KEY`, `NOT NULL`, `UNIQUE` und `FOREIGN KEY` verhindern, dass ungültige Daten gespeichert werden."
       }
     ],
     "cheatSheet": {
@@ -614,37 +614,37 @@
       {
         "animationStep": 0,
         "heading": "DOM-Baumstruktur",
-        "text": "Das DOM repräsentiert dein HTML als Baum von Knoten. Das document-Objekt ist die Wurzel. HTML-Elemente sind Element-Knoten; Text darin sind Text-Knoten. JavaScript kann diesen Baum über Eltern-, Kind- und Geschwisterbeziehungen traversieren."
+        "text": "Das DOM repräsentiert dein HTML als Baum von Knoten. Das `document`-Objekt ist die Wurzel. HTML-Elemente sind Element-Knoten; Text darin sind Text-Knoten. JavaScript kann diesen Baum über Eltern-, Kind- und Geschwisterbeziehungen traversieren."
       },
       {
         "animationStep": 1,
         "heading": "Elemente auswählen",
-        "text": "querySelector gibt das erste Element zurück, das einem CSS-Selektor entspricht. querySelectorAll gibt eine NodeList aller Übereinstimmungen zurück. getElementById und getElementsByClassName sind ältere Alternativen — querySelector ist flexibler und wird bevorzugt."
+        "text": "`querySelector` gibt das erste Element zurück, das einem CSS-Selektor entspricht. `querySelectorAll` gibt eine NodeList aller Übereinstimmungen zurück. `getElementById` und `getElementsByClassName` sind ältere Alternativen — `querySelector` ist flexibler und wird bevorzugt."
       },
       {
         "animationStep": 2,
         "heading": "Elemente erstellen und einfügen",
-        "text": "createElement(tag) erstellt ein losgelöstes Element. Setze seine Eigenschaften (textContent, className usw.) und füge es dann mit appendChild, prepend oder insertBefore in das DOM ein. Das Element erscheint auf der Seite erst nach dem Einfügen."
+        "text": "`createElement(tag)` erstellt ein losgelöstes Element. Setze seine Eigenschaften (`textContent`, `className` usw.) und füge es dann mit `appendChild`, `prepend` oder `insertBefore` in das DOM ein. Das Element erscheint auf der Seite erst nach dem Einfügen."
       },
       {
         "animationStep": 3,
         "heading": "Element-Eigenschaften lesen und ändern",
-        "text": "Verwende textContent, um Text sicher zu lesen oder zu setzen. classList bietet add, remove, toggle und contains für das CSS-Klassen-Management. setAttribute / getAttribute lesen und schreiben HTML-Attribute. style ermöglicht das direkte Setzen von Inline-CSS."
+        "text": "Verwende `textContent`, um Text sicher zu lesen oder zu setzen. `classList` bietet `add`, `remove`, `toggle` und `contains` für das CSS-Klassen-Management. `setAttribute` / `getAttribute` lesen und schreiben HTML-Attribute. `style` ermöglicht das direkte Setzen von Inline-CSS."
       },
       {
         "animationStep": 4,
         "heading": "DOM-Interfaces",
-        "text": "Das DOM ist als Hierarchie von Interfaces aufgebaut. Document ist der Einstiegspunkt. Node ist die Basis für alle DOM-Knoten (Elemente, Text, Kommentare). Element erweitert Node und fügt HTML-spezifische Methoden hinzu. Dieses Hierarchieverständnis erklärt, welche Methoden auf welchen Objekten verfügbar sind."
+        "text": "Das DOM ist als Hierarchie von Interfaces aufgebaut. `Document` ist der Einstiegspunkt. `Node` ist die Basis für alle DOM-Knoten (Elemente, Text, Kommentare). `Element` erweitert `Node` und fügt HTML-spezifische Methoden hinzu. Dieses Hierarchieverständnis erklärt, welche Methoden auf welchen Objekten verfügbar sind."
       },
       {
         "animationStep": 5,
         "heading": "Erweiterte Abfragen",
-        "text": "Neben querySelector sind zwei Traversal-Methoden besonders nützlich: closest() durchläuft die Vorfahrenkette nach oben und gibt das erste passende Element zurück — ideal für Event-Delegation. matches() prüft, ob ein Element einem Selektor entspricht — nützlich in Event-Handlern zum Filtern von Zielelementen."
+        "text": "Neben `querySelector` sind zwei Traversal-Methoden besonders nützlich: `closest()` durchläuft die Vorfahrenkette nach oben und gibt das erste passende Element zurück — ideal für Event-Delegation. `matches()` prüft, ob ein Element einem Selektor entspricht — nützlich in Event-Handlern zum Filtern von Zielelementen."
       },
       {
         "animationStep": 6,
         "heading": "NodeList vs. Array",
-        "text": "querySelectorAll gibt eine NodeList zurück, die einem Array ähnelt, aber keine Array-Methoden (map, filter, reduce) besitzt. Konvertiere sie mit Array.from() oder Spread-Syntax. Außerdem: getElementsByClassName und getElementsByTagName geben live HTMLCollections zurück, die sich automatisch aktualisieren; querySelectorAll gibt einen statischen Snapshot zurück."
+        "text": "`querySelectorAll` gibt eine NodeList zurück, die einem Array ähnelt, aber keine Array-Methoden (`map`, `filter`, `reduce`) besitzt. Konvertiere sie mit `Array.from()` oder Spread-Syntax. Außerdem: `getElementsByClassName` und `getElementsByTagName` geben live HTMLCollections zurück, die sich automatisch aktualisieren; `querySelectorAll` gibt einen statischen Snapshot zurück."
       },
       {
         "animationStep": 7,
@@ -698,12 +698,12 @@
       {
         "animationStep": 0,
         "heading": "Die Fetch API",
-        "text": "fetch() ist die moderne Browser-API für HTTP-Anfragen. Sie ersetzt XMLHttpRequest und gibt ein Promise zurück."
+        "text": "`fetch()` ist die moderne Browser-API für HTTP-Anfragen. Sie ersetzt `XMLHttpRequest` und gibt ein Promise zurück."
       },
       {
         "animationStep": 1,
         "heading": "fetch() gibt ein Promise zurück",
-        "text": "Die Anfrage wird sofort gesendet, aber die Antwort kommt später. fetch() gibt ein Promise zurück, das aufgelöst wird, wenn der Server antwortet."
+        "text": "Die Anfrage wird sofort gesendet, aber die Antwort kommt später. `fetch()` gibt ein Promise zurück, das aufgelöst wird, wenn der Server antwortet."
       },
       {
         "animationStep": 2,
@@ -713,27 +713,27 @@
       {
         "animationStep": 3,
         "heading": "Den Antwort-Body parsen",
-        "text": "response.json() parst den Body als JSON und gibt ein weiteres Promise zurück. response.text() gibt rohen Text zurück."
+        "text": "`response.json()` parst den Body als JSON und gibt ein weiteres Promise zurück. `response.text()` gibt rohen Text zurück."
       },
       {
         "animationStep": 4,
         "heading": "async/await-Syntax",
-        "text": "async/await lässt fetch-Code wie synchronen Code aussehen. Immer in try/catch einwickeln für Fehlerbehandlung."
+        "text": "`async/await` lässt `fetch`-Code wie synchronen Code aussehen. Immer in `try/catch` einwickeln für Fehlerbehandlung."
       },
       {
         "animationStep": 5,
         "heading": "GET — Eine Antwort lesen",
-        "text": "fetch() gibt ein Promise zurück, das zu einem Response-Objekt aufgelöst wird. Rufe response.json() auf, um den Body als JSON zu parsen (auch async). Prüfe immer response.ok oder response.status, bevor du den Daten vertraust."
+        "text": "`fetch()` gibt ein Promise zurück, das zu einem Response-Objekt aufgelöst wird. Rufe `response.json()` auf, um den Body als JSON zu parsen (auch async). Prüfe immer `response.ok` oder `response.status`, bevor du den Daten vertraust."
       },
       {
         "animationStep": 6,
         "heading": "POST / PUT / DELETE mit Body",
-        "text": "Um Daten zu senden, übergib ein Options-Objekt als zweites Argument an fetch. Setze die Methode, einen Content-Type-Header und serialisiere den Body zu JSON mit JSON.stringify."
+        "text": "Um Daten zu senden, übergib ein Options-Objekt als zweites Argument an `fetch`. Setze die Methode, einen `Content-Type`-Header und serialisiere den Body zu JSON mit `JSON.stringify`."
       },
       {
         "animationStep": 7,
         "heading": "RESTful API-Prinzipien",
-        "text": "REST verwendet HTTP-Methoden semantisch: GET liest, POST erstellt, PUT/PATCH aktualisiert, DELETE entfernt. Jeder Endpunkt repräsentiert eine Ressource (z. B. /posts, /posts/1). Antworten tragen HTTP-Statuscodes — 2xx für Erfolg, 4xx für Client-Fehler, 5xx für Server-Fehler."
+        "text": "REST verwendet HTTP-Methoden semantisch: `GET` liest, `POST` erstellt, `PUT`/`PATCH` aktualisiert, `DELETE` entfernt. Jeder Endpunkt repräsentiert eine Ressource (z. B. `/posts`, `/posts/1`). Antworten tragen HTTP-Statuscodes — 2xx für Erfolg, 4xx für Client-Fehler, 5xx für Server-Fehler."
       },
       {
         "animationStep": 8,
@@ -793,7 +793,7 @@
       {
         "animationStep": 1,
         "heading": "addEventListener",
-        "text": "addEventListener hängt eine Callback-Funktion an ein Element. Der Callback wird jedes Mal ausgeführt, wenn das Event ausgelöst wird."
+        "text": "`addEventListener` hängt eine Callback-Funktion an ein Element. Der Callback wird jedes Mal ausgeführt, wenn das Event ausgelöst wird."
       },
       {
         "animationStep": 2,
@@ -808,17 +808,17 @@
       {
         "animationStep": 4,
         "heading": "stopPropagation und preventDefault",
-        "text": "stopPropagation() stoppt das Bubbling des Events. preventDefault() bricht die Standard-Browseraktion ab (z. B. einem Link folgen, ein Formular absenden)."
+        "text": "`stopPropagation()` stoppt das Bubbling des Events. `preventDefault()` bricht die Standard-Browseraktion ab (z. B. einem Link folgen, ein Formular absenden)."
       },
       {
         "animationStep": 5,
         "heading": "EventTarget und addEventListener",
-        "text": "Jedes DOM-Element implementiert das EventTarget-Interface und gibt ihm addEventListener(type, handler, options). Du kannst mehrere Listener für denselben Event-Typ anhängen. Verwende immer addEventListener statt Inline-Handlern für eine bessere Trennung von Belangen."
+        "text": "Jedes DOM-Element implementiert das EventTarget-Interface und gibt ihm `addEventListener(type, handler, options)`. Du kannst mehrere Listener für denselben Event-Typ anhängen. Verwende immer `addEventListener` statt Inline-Handlern für eine bessere Trennung von Belangen."
       },
       {
         "animationStep": 6,
         "heading": "Event-Propagation: Bubbling und Capturing",
-        "text": "Events wandern zuerst den DOM-Baum von der Wurzel zum Ziel hinunter (Capture-Phase), dann blubbern sie vom Ziel zur Wurzel hinauf (Bubble-Phase). Standardmäßig laufen Listener in der Bubble-Phase. Rufe event.stopPropagation() auf, um das Event am Weiterreisen zu hindern."
+        "text": "Events wandern zuerst den DOM-Baum von der Wurzel zum Ziel hinunter (Capture-Phase), dann blubbern sie vom Ziel zur Wurzel hinauf (Bubble-Phase). Standardmäßig laufen Listener in der Bubble-Phase. Rufe `event.stopPropagation()` auf, um das Event am Weiterreisen zu hindern."
       },
       {
         "animationStep": 7,
@@ -878,32 +878,32 @@
       {
         "animationStep": 1,
         "heading": "setItem",
-        "text": "setItem(key, value) speichert einen String-Wert. Nicht-String-Werte müssen mit JSON.stringify serialisiert werden."
+        "text": "`setItem(key, value)` speichert einen String-Wert. Nicht-String-Werte müssen mit `JSON.stringify` serialisiert werden."
       },
       {
         "animationStep": 2,
         "heading": "getItem",
-        "text": "getItem(key) ruft den gespeicherten Wert ab. Gibt null zurück, wenn der Schlüssel nicht existiert. JSON-Werte mit JSON.parse parsen."
+        "text": "`getItem(key)` ruft den gespeicherten Wert ab. Gibt `null` zurück, wenn der Schlüssel nicht existiert. JSON-Werte mit `JSON.parse` parsen."
       },
       {
         "animationStep": 3,
         "heading": "localStorage ist persistent",
-        "text": "Daten in localStorage überleben Seitenaktualisierungen, Tab-Schließungen und Browser-Neustarts. Sie bleiben bestehen, bis sie explizit gelöscht werden."
+        "text": "Daten in `localStorage` überleben Seitenaktualisierungen, Tab-Schließungen und Browser-Neustarts. Sie bleiben bestehen, bis sie explizit gelöscht werden."
       },
       {
         "animationStep": 4,
         "heading": "sessionStorage — Tab-scoped",
-        "text": "sessionStorage hat dieselbe API wie localStorage, wird aber gelöscht, wenn der Tab oder das Fenster geschlossen wird."
+        "text": "`sessionStorage` hat dieselbe API wie `localStorage`, wird aber gelöscht, wenn der Tab oder das Fenster geschlossen wird."
       },
       {
         "animationStep": 5,
         "heading": "localStorage vs. sessionStorage",
-        "text": "Beide speichern Schlüssel-Wert-String-Paare im Browser, aber localStorage bleibt über Browser-Sitzungen hinweg bestehen, während sessionStorage beim Schließen des Tabs gelöscht wird. Keines sollte sensible Daten speichern — sie sind für alle Skripte auf der Seite zugänglich."
+        "text": "Beide speichern Schlüssel-Wert-String-Paare im Browser, aber `localStorage` bleibt über Browser-Sitzungen hinweg bestehen, während `sessionStorage` beim Schließen des Tabs gelöscht wird. Keines sollte sensible Daten speichern — sie sind für alle Skripte auf der Seite zugänglich."
       },
       {
         "animationStep": 6,
         "heading": "setItem / getItem / removeItem / clear",
-        "text": "Die Web Storage API ist ein einfacher Schlüssel-Wert-Speicher. Alle Werte werden als Strings gespeichert — verwende JSON.stringify und JSON.parse, um Objekte zu speichern und abzurufen."
+        "text": "Die Web Storage API ist ein einfacher Schlüssel-Wert-Speicher. Alle Werte werden als Strings gespeichert — verwende `JSON.stringify` und `JSON.parse`, um Objekte zu speichern und abzurufen."
       },
       {
         "animationStep": 7,
@@ -1029,12 +1029,12 @@
       {
         "animationStep": 1,
         "heading": "JSX — HTML in JavaScript",
-        "text": "JSX ermöglicht das Schreiben von HTML-ähnlicher Syntax innerhalb von JavaScript. Es sieht wie HTML aus, wird aber von Babel in JavaScript-Funktionsaufrufe umgewandelt."
+        "text": "`JSX` ermöglicht das Schreiben von HTML-ähnlicher Syntax innerhalb von JavaScript. Es sieht wie HTML aus, wird aber von Babel in `React.createElement`-Aufrufe umgewandelt."
       },
       {
         "animationStep": 2,
         "heading": "Eine Komponente ist eine Funktion",
-        "text": "Eine React-Komponente ist eine Funktion, die Props akzeptiert und JSX zurückgibt. Der Funktionsname muss mit einem Großbuchstaben beginnen."
+        "text": "Eine React-Komponente ist eine Funktion, die `props` akzeptiert und `JSX` zurückgibt. Der Funktionsname muss mit einem Großbuchstaben beginnen."
       },
       {
         "animationStep": 3,
@@ -1044,12 +1044,12 @@
       {
         "animationStep": 4,
         "heading": "Props — Daten fließen nach unten",
-        "text": "Props sind Argumente, die an Komponenten übergeben werden. Sie fließen nur vom Elternteil zum Kind — niemals umgekehrt."
+        "text": "`props` sind Argumente, die an Komponenten übergeben werden. Sie fließen nur vom Elternteil zum Kind — niemals umgekehrt."
       },
       {
         "animationStep": 5,
         "heading": "Events",
-        "text": "React verwendet camelCase-Event-Props (onClick, onChange, onSubmit). Du übergibst eine Funktionsreferenz – keinen Aufruf. React kapselt das native Event in ein SyntheticEvent, das in allen Browsern gleich funktioniert."
+        "text": "React verwendet camelCase-Event-Props (`onClick`, `onChange`, `onSubmit`). Du übergibst eine Funktionsreferenz – keinen Aufruf. React kapselt das native Event in ein SyntheticEvent, das in allen Browsern gleich funktioniert."
       },
       {
         "animationStep": 6,
@@ -1059,7 +1059,7 @@
       {
         "animationStep": 7,
         "heading": "Listen rendern",
-        "text": "Verwende .map(), um ein Array in JSX-Elemente umzuwandeln. Jedes Element in einer Liste benötigt eine stabile key-Prop – React nutzt sie, um Änderungen zu verfolgen. Verwende eine eindeutige ID aus deinen Daten, nie den Array-Index."
+        "text": "Verwende `.map()`, um ein Array in `JSX`-Elemente umzuwandeln. Jedes Element in einer Liste benötigt eine stabile `key`-Prop – React nutzt sie, um Änderungen zu verfolgen. Verwende eine eindeutige ID aus deinen Daten, nie den Array-Index."
       }
     ],
     "cheatSheet": {
@@ -1113,17 +1113,17 @@
       {
         "animationStep": 1,
         "heading": "useState",
-        "text": "useState ist ein Hook, der den aktuellen Wert und eine Setter-Funktion zurückgibt. React verfolgt den Wert zwischen Renders."
+        "text": "`useState` ist ein Hook, der den aktuellen Wert und eine Setter-Funktion zurückgibt. React verfolgt den Wert zwischen Renders."
       },
       {
         "animationStep": 2,
         "heading": "Den Setter aufrufen löst Re-Render aus",
-        "text": "Wenn du setCount aufrufst, plant React ein Re-Render. Die Komponentenfunktion wird erneut mit dem neuen State-Wert ausgeführt."
+        "text": "Wenn du `setCount` aufrufst, plant React ein Re-Render. Die Komponentenfunktion wird erneut mit dem neuen State-Wert ausgeführt."
       },
       {
         "animationStep": 3,
         "heading": "State ist lokal für jede Instanz",
-        "text": "Wenn du zwei <Counter />-Komponenten renderst, hat jede ihren eigenen unabhängigen count. State wird nicht geteilt, außer du hebst ihn hoch."
+        "text": "Wenn du zwei `<Counter />`-Komponenten renderst, hat jede ihren eigenen unabhängigen `count`. State wird nicht geteilt, außer du hebst ihn hoch."
       },
       {
         "animationStep": 4,
@@ -1188,12 +1188,12 @@
       {
         "animationStep": 0,
         "heading": "Seiteneffekte passieren nach dem Render",
-        "text": "Ein Seiteneffekt ist jede Arbeit, die etwas außerhalb der Komponente beeinflusst: Netzwerkanfragen, Timer, DOM-Manipulation. useEffect führt diese nach dem Render aus."
+        "text": "Ein Seiteneffekt ist jede Arbeit, die etwas außerhalb der Komponente beeinflusst: Netzwerkanfragen, Timer, DOM-Manipulation. `useEffect` führt diese nach dem Render aus."
       },
       {
         "animationStep": 1,
         "heading": "Leere deps — einmalig ausführen",
-        "text": "Ein leeres Array [] als zweites Argument zu übergeben teilt React mit, den Effect nur einmal auszuführen — wenn die Komponente zum ersten Mal mountet."
+        "text": "Ein leeres Array `[]` als zweites Argument zu übergeben teilt React mit, den Effect nur einmal auszuführen — wenn die Komponente zum ersten Mal mountet."
       },
       {
         "animationStep": 2,
@@ -1203,12 +1203,12 @@
       {
         "animationStep": 3,
         "heading": "Cleanup-Funktion",
-        "text": "Gib eine Funktion von useEffect zurück, um vor dem nächsten Ausführen oder beim Unmount aufzuräumen. Unerlässlich für Timer, Abonnements und Event-Listener."
+        "text": "Gib eine Funktion von `useEffect` zurück, um vor dem nächsten Ausführen oder beim Unmount aufzuräumen. Unerlässlich für Timer, Abonnements und Event-Listener."
       },
       {
         "animationStep": 4,
         "heading": "Häufige Anwendungsfälle",
-        "text": "useEffect ist für alles, was außerhalb des Render-Zyklus passieren muss: Daten fetchen, Abonnements, DOM-Manipulation, Analytics."
+        "text": "`useEffect` ist für alles, was außerhalb des Render-Zyklus passieren muss: Daten fetchen, Abonnements, DOM-Manipulation, Analytics."
       },
       {
         "animationStep": 5,
@@ -1218,7 +1218,7 @@
       {
         "animationStep": 6,
         "heading": "Wann useEffect NICHT verwendet werden sollte",
-        "text": "useEffect ist zum Synchronisieren mit externen Systemen gedacht. Vermeide es für: (1) abgeleitete Werte – berechne sie stattdessen beim Rendern; (2) event-gesteuerte Seiteneffekte – platziere sie im Handler; (3) verkettete State-Updates – sie verursachen doppelte Renders."
+        "text": "`useEffect` ist zum Synchronisieren mit externen Systemen gedacht. Vermeide es für: (1) abgeleitete Werte – berechne sie stattdessen beim Rendern; (2) event-gesteuerte Seiteneffekte – platziere sie im Handler; (3) verkettete State-Updates – sie verursachen doppelte Renders."
       }
     ],
     "cheatSheet": {
@@ -1278,22 +1278,22 @@
       {
         "animationStep": 3,
         "heading": "Link — ohne Neuladen navigieren",
-        "text": "Verwende Link statt <a href>. Link aktualisiert die URL und rendert die passende Komponente ohne vollständiges Seitenneuladen."
+        "text": "Verwende `Link` statt `<a href>`. `Link` aktualisiert die URL und rendert die passende Komponente ohne vollständiges Seitenneuladen."
       },
       {
         "animationStep": 4,
         "heading": "useParams — dynamische Segmente",
-        "text": "URL-Segmente mit : als Präfix sind dynamisch. useParams gibt ein Objekt mit den gematchten Werten zurück."
+        "text": "URL-Segmente mit `:` als Präfix sind dynamisch. `useParams` gibt ein Objekt mit den gematchten Werten zurück."
       },
       {
         "animationStep": 5,
         "heading": "Layout-Routen & Outlet",
-        "text": "Verschachtle Kind-Routen innerhalb einer Eltern-Route, die gemeinsame UI rendert (Navbar, Sidebar). Die Elternkomponente verwendet <Outlet /> als Platzhalter – React Router rendert die passende Kind-Route dort."
+        "text": "Verschachtle Kind-Routen innerhalb einer Eltern-Route, die gemeinsame UI rendert (Navbar, Sidebar). Die Elternkomponente verwendet `<Outlet />` als Platzhalter – React Router rendert die passende Kind-Route dort."
       },
       {
         "animationStep": 6,
         "heading": "Index-Routen & useNavigate",
-        "text": "Eine Index-Route ist das Standard-Kind – sie rendert, wenn der Elternpfad genau übereinstimmt. useNavigate ermöglicht programmatische Navigation: nach dem Absenden eines Formulars, Login oder anderen Events."
+        "text": "Eine Index-Route ist das Standard-Kind – sie rendert, wenn der Elternpfad genau übereinstimmt. `useNavigate` ermöglicht programmatische Navigation: nach dem Absenden eines Formulars, Login oder anderen Events."
       }
     ],
     "cheatSheet": {
@@ -1392,12 +1392,12 @@
       {
         "animationStep": 1,
         "heading": "Optionale und readonly-Eigenschaften",
-        "text": "Markiere eine Eigenschaft mit ?, um sie optional zu machen. Markiere sie mit readonly, um Mutation nach der Erstellung zu verhindern."
+        "text": "Markiere eine Eigenschaft mit `?`, um sie optional zu machen. Markiere sie mit `readonly`, um Mutation nach der Erstellung zu verhindern."
       },
       {
         "animationStep": 2,
         "heading": "Interfaces erweitern",
-        "text": "Verwende extends, um auf einem bestehenden Interface aufzubauen. Das Kind-Interface erbt alle Eltern-Eigenschaften und fügt eigene hinzu."
+        "text": "Verwende `extends`, um auf einem bestehenden Interface aufzubauen. Das Kind-Interface erbt alle Eltern-Eigenschaften und fügt eigene hinzu."
       },
       {
         "animationStep": 3,
@@ -1675,7 +1675,7 @@
       {
         "animationStep": 0,
         "heading": "Typisierte Arrays",
-        "text": "TypeScript ermöglicht es dir, festzulegen, dass ein Array nur Elemente eines bestimmten Typs enthalten soll. Verwende die T[]-Syntax oder die generische Array<T>-Form — beide sind äquivalent."
+        "text": "TypeScript ermöglicht es dir, festzulegen, dass ein Array nur Elemente eines bestimmten Typs enthalten soll. Verwende die `T[]`-Syntax oder die generische `Array<T>`-Form — beide sind äquivalent."
       },
       {
         "animationStep": 1,
@@ -1744,17 +1744,17 @@
       {
         "animationStep": 1,
         "heading": "readonly- und optionale Eigenschaften",
-        "text": "Markiere eine Eigenschaft als readonly, um Mutation nach der Konstruktion zu verhindern. Markiere sie mit ? als optional, wenn sie nicht immer bereitgestellt wird. TypeScript prüft beides zur Compile-Zeit."
+        "text": "Markiere eine Eigenschaft als `readonly`, um Mutation nach der Konstruktion zu verhindern. Markiere sie mit `?` als optional, wenn sie nicht immer bereitgestellt wird. TypeScript prüft beides zur Compile-Zeit."
       },
       {
         "animationStep": 2,
         "heading": "Zugriffsmodifikatoren",
-        "text": "TypeScript fügt drei Zugriffsmodifikatoren hinzu: public (Standard — überall zugänglich), private (nur innerhalb der Klasse) und protected (innerhalb der Klasse und Unterklassen). Das #-Präfix ist JavaScripts natives privates Feld — zur Laufzeit erzwungen, nicht nur zur Compile-Zeit."
+        "text": "TypeScript fügt drei Zugriffsmodifikatoren hinzu: `public` (Standard — überall zugänglich), `private` (nur innerhalb der Klasse) und `protected` (innerhalb der Klasse und Unterklassen). Das `#`-Präfix ist JavaScripts natives privates Feld — zur Laufzeit erzwungen, nicht nur zur Compile-Zeit."
       },
       {
         "animationStep": 3,
         "heading": "Vererbung mit extends",
-        "text": "Eine Klasse kann eine andere Klasse erweitern, um ihre öffentlichen und geschützten Mitglieder zu erben. Die Unterklasse muss super() aufrufen, bevor sie auf this zugreift. Überschreibe Methoden, um spezialisiertes Verhalten bereitzustellen."
+        "text": "Eine Klasse kann eine andere Klasse erweitern, um ihre öffentlichen und geschützten Mitglieder zu erben. Die Unterklasse muss `super()` aufrufen, bevor sie auf `this` zugreift. Überschreibe Methoden, um spezialisiertes Verhalten bereitzustellen."
       },
       {
         "animationStep": 4,
@@ -1822,7 +1822,7 @@
       {
         "animationStep": 2,
         "heading": "Erschöpfendes Switch mit never",
-        "text": "Wenn jeder Enum-Wert in einem Switch behandelt wird, weiß TypeScript, dass der Default-Zweig unerreichbar ist. Eine Zuweisung zu never im Default fängt fehlende Fälle zur Compile-Zeit ab."
+        "text": "Wenn jeder Enum-Wert in einem Switch behandelt wird, weiß TypeScript, dass der Default-Zweig unerreichbar ist. Eine Zuweisung zu `never` im Default fängt fehlende Fälle zur Compile-Zeit ab."
       },
       {
         "animationStep": 3,
@@ -1869,17 +1869,17 @@
       {
         "animationStep": 0,
         "heading": "Das as-Schlüsselwort",
-        "text": "Typ-Assertion teilt TypeScript mit: \"Vertrau mir, ich kenne den Typ besser als du.\" Verwende das as-Schlüsselwort (keine spitzen Klammern — sie kollidieren mit JSX). Die Assertion beeinflusst nur den Compiler, niemals den Laufzeitwert."
+        "text": "Typ-Assertion teilt TypeScript mit: \"Vertrau mir, ich kenne den Typ besser als du.\" Verwende das `as`-Schlüsselwort (keine spitzen Klammern — sie kollidieren mit JSX). Die Assertion beeinflusst nur den Compiler, niemals den Laufzeitwert."
       },
       {
         "animationStep": 1,
         "heading": "JSON und API-Antworten",
-        "text": "Wenn du JSON parsest oder Daten von einer API erhältst, leitet TypeScript den Typ als any oder unknown ab. Das sofortige Behaupten eines spezifischen Typs nach dem Parsen gibt dir volle Typsicherheit nachgelagert — aber du bist für die Korrektheit der Assertion verantwortlich."
+        "text": "Wenn du JSON parsest oder Daten von einer API erhältst, leitet TypeScript den Typ als `any` oder `unknown` ab. Das sofortige Behaupten eines spezifischen Typs nach dem Parsen gibt dir volle Typsicherheit nachgelagert — aber du bist für die Korrektheit der Assertion verantwortlich."
       },
       {
         "animationStep": 2,
         "heading": "Einschränkungen und Non-Null-Assertion",
-        "text": "Typ-Assertion kann keine vollständig inkompatiblen Typen konvertieren. Der Non-Null-Assertion-Operator ! behauptet, dass ein Wert weder null noch undefined ist. Verwende ihn sparsam: Wenn der Wert tatsächlich null zur Laufzeit sein kann, schützt die Assertion dich nicht."
+        "text": "Typ-Assertion kann keine vollständig inkompatiblen Typen konvertieren. Der Non-Null-Assertion-Operator `!` behauptet, dass ein Wert weder `null` noch `undefined` ist. Verwende ihn sparsam: Wenn der Wert tatsächlich `null` zur Laufzeit sein kann, schützt die Assertion dich nicht."
       }
     ],
     "cheatSheet": {
@@ -2004,22 +2004,22 @@
       {
         "animationStep": 0,
         "heading": "Der blinde Fleck von TypeScript",
-        "text": "TypeScript prüft Typen nur zur Kompilierzeit — zur Laufzeit verschwinden alle Typen. Wenn API-Daten, Formulareingaben oder localStorage-Werte ankommen, kann TypeScript nicht garantieren, dass sie der erwarteten Form entsprechen. Ein cast mit 'as User' sagt TypeScript, es soll dir vertrauen — aber wenn die API eine andere Form liefert, erhältst du stille Fehler. Zod löst dies, indem echte Laufzeitprüfungen durchgeführt werden, die exakt den TypeScript-Typen entsprechen."
+        "text": "TypeScript prüft Typen nur zur Kompilierzeit — zur Laufzeit verschwinden alle Typen. Wenn API-Daten, Formulareingaben oder `localStorage`-Werte ankommen, kann TypeScript nicht garantieren, dass sie der erwarteten Form entsprechen. Ein cast mit `as User` sagt TypeScript, es soll dir vertrauen — aber wenn die API eine andere Form liefert, erhältst du stille Fehler. Zod löst dies, indem echte Laufzeitprüfungen durchgeführt werden, die exakt den TypeScript-Typen entsprechen."
       },
       {
         "animationStep": 1,
         "heading": "Zod-Schemata",
-        "text": "Definiere Schemata mit Zod-Konstruktoren: z.string(), z.number(), z.boolean(), z.array(), z.object(). Schemata sind kompositionsfähig — man kann sie mit .optional(), .nullable(), .default() erweitern und aus kleineren Schemata größere zusammensetzen. Einmal definiert, kann jedes Schema zur Laufzeit beliebige Daten validieren und aus dem Schema selbst den entsprechenden TypeScript-Typ ableiten."
+        "text": "Definiere Schemata mit Zod-Konstruktoren: `z.string()`, `z.number()`, `z.boolean()`, `z.array()`, `z.object()`. Schemata sind kompositionsfähig — man kann sie mit `.optional()`, `.nullable()`, `.default()` erweitern und aus kleineren Schemata größere zusammensetzen. Einmal definiert, kann jedes Schema zur Laufzeit beliebige Daten validieren und aus dem Schema selbst den entsprechenden TypeScript-Typ ableiten."
       },
       {
         "animationStep": 2,
         "heading": "safeParse und parse",
-        "text": "schema.parse(data) wirft einen ZodError, wenn die Validierung scheitert — nützlich für kritische Pfade. schema.safeParse(data) wirft nie — es gibt { success: true, data } oder { success: false, error } zurück. Bevorzuge safeParse in API-Handlern und Formularvalidierung, damit unerwartete Daten nicht ganze Request-Handler zum Absturz bringen. Das error-Objekt enthält ein issues-Array mit menschenlesbaren Nachrichten."
+        "text": "`schema.parse(data)` wirft einen `ZodError`, wenn die Validierung scheitert — nützlich für kritische Pfade. `schema.safeParse(data)` wirft nie — es gibt `{ success: true, data }` oder `{ success: false, error }` zurück. Bevorzuge `safeParse` in API-Handlern und Formularvalidierung, damit unerwartete Daten nicht ganze Request-Handler zum Absturz bringen. Das `error`-Objekt enthält ein `issues`-Array mit menschenlesbaren Nachrichten."
       },
       {
         "animationStep": 3,
         "heading": "z.infer — ein Schema, ein Typ",
-        "text": "z.infer<typeof Schema> leitet automatisch den TypeScript-Typ aus einem Zod-Schema ab. Das bedeutet: du pflegst nur eine einzige Definition — das Schema. Der Typ folgt immer automatisch. Dies eliminiert die häufige Quelle von Drift, bei der ein TypeScript-Interface und die Validierungslogik auseinanderlaufen. Exportiere abgeleitete Typen neben deinen Schemata für volle Typsicherheit im gesamten Codebase."
+        "text": "`z.infer<typeof Schema>` leitet automatisch den TypeScript-Typ aus einem Zod-Schema ab. Das bedeutet: du pflegst nur eine einzige Definition — das Schema. Der Typ folgt immer automatisch. Dies eliminiert die häufige Quelle von Drift, bei der ein TypeScript-Interface und die Validierungslogik auseinanderlaufen. Exportiere abgeleitete Typen neben deinen Schemata für volle Typsicherheit im gesamten Codebase."
       }
     ],
     "cheatSheet": {
@@ -2086,17 +2086,17 @@
       {
         "animationStep": 2,
         "heading": "Vitest-Einrichtung",
-        "text": "Vitest ist ein Vite-nativer Test-Runner — er nutzt deine vite.config.ts wieder, sodass Aliases und Plugins auch in Tests funktionieren. Installiere es als Dev-Abhängigkeit, füge ein Test-Skript hinzu, und Vitest entdeckt automatisch alle *.test.ts- oder *.spec.ts-Dateien. Füge vitest run deinem Build-Skript hinzu, damit Tests den Produktions-Build bei Fehler blockieren."
+        "text": "Vitest ist ein Vite-nativer Test-Runner — er nutzt deine `vite.config.ts` wieder, sodass Aliases und Plugins auch in Tests funktionieren. Installiere es als Dev-Abhängigkeit, füge ein Test-Skript hinzu, und Vitest entdeckt automatisch alle `*.test.ts`- oder `*.spec.ts`-Dateien. Füge `vitest run` deinem Build-Skript hinzu, damit Tests den Produktions-Build bei Fehler blockieren."
       },
       {
         "animationStep": 3,
         "heading": "Test-Anatomie",
-        "text": "describe() gruppiert verwandte Tests. test() (Alias: it()) definiert einen einzelnen Fall. expect() erstellt eine Assertion — es vergleicht das tatsächliche Ergebnis mit dem erwarteten Wert. Ein Test besteht, wenn alle Assertions bestehen, und schlägt fehl, wenn eine wirft. Benenne Tests auf einfachem Englisch: Was macht er, unter welcher Bedingung."
+        "text": "`describe()` gruppiert verwandte Tests. `test()` (Alias: `it()`) definiert einen einzelnen Fall. `expect()` erstellt eine Assertion — es vergleicht das tatsächliche Ergebnis mit dem erwarteten Wert. Ein Test besteht, wenn alle Assertions bestehen, und schlägt fehl, wenn eine wirft. Benenne Tests auf einfachem Englisch: Was macht er, unter welcher Bedingung."
       },
       {
         "animationStep": 4,
         "heading": "Häufige Matcher",
-        "text": "Vitest kommt mit Jest-kompatiblen Matchern. toBe verwendet Object.is (streng) — verwende es für Primitive. toEqual macht tiefe Gleichheit — verwende es für Objekte und Arrays. toContain prüft Array-Mitgliedschaft. resolves/rejects behandeln asynchrone Assertions. .not invertiert jeden Matcher."
+        "text": "Vitest kommt mit Jest-kompatiblen Matchern. `toBe` verwendet `Object.is` (streng) — verwende es für Primitive. `toEqual` macht tiefe Gleichheit — verwende es für Objekte und Arrays. `toContain` prüft Array-Mitgliedschaft. `resolves`/`rejects` behandeln asynchrone Assertions. `.not` invertiert jeden Matcher."
       }
     ],
     "cheatSheet": {
@@ -2144,22 +2144,22 @@
       {
         "animationStep": 1,
         "heading": "Abfragen: Elemente finden",
-        "text": "RTL bietet drei Abfragefamilien. getBy* wirft, wenn nicht gefunden (für Elemente, die existieren müssen). queryBy* gibt null zurück (zum Behaupten der Abwesenheit). findBy* ist asynchron — wartet auf das Erscheinen des Elements. Die bevorzugte Abfrage ist ByRole — sie verwendet ARIA-Rollen und spiegelt wider, wie Screenreader navigieren. ByLabelText und ByText sind in der Priorität als nächstes."
+        "text": "RTL bietet drei Abfragefamilien. `getBy*` wirft, wenn nicht gefunden (für Elemente, die existieren müssen). `queryBy*` gibt `null` zurück (zum Behaupten der Abwesenheit). `findBy*` ist asynchron — wartet auf das Erscheinen des Elements. Die bevorzugte Abfrage ist `ByRole` — sie verwendet ARIA-Rollen und spiegelt wider, wie Screenreader navigieren. `ByLabelText` und `ByText` sind in der Priorität als nächstes."
       },
       {
         "animationStep": 2,
         "heading": "Events auslösen & Benutzerinteraktionen",
-        "text": "Verwende fireEvent für einfache, synchrone DOM-Events. Für realistischere Benutzerinteraktionen (Tippen, Klicken, Tabben), bevorzuge @testing-library/user-event — es feuert dieselbe Abfolge von Events wie ein echter Browser. Warte immer auf userEvent-Aktionen. Teste, was Benutzer tun können, nicht wie das DOM strukturiert ist."
+        "text": "Verwende `fireEvent` für einfache, synchrone DOM-Events. Für realistischere Benutzerinteraktionen (Tippen, Klicken, Tabben), bevorzuge `@testing-library/user-event` — es feuert dieselbe Abfolge von Events wie ein echter Browser. Warte immer auf `userEvent`-Aktionen. Teste, was Benutzer tun können, nicht wie das DOM strukturiert ist."
       },
       {
         "animationStep": 3,
         "heading": "Mocks & Spies",
-        "text": "vi.fn() erstellt einen Spy — eine Funktion, die Aufrufe aufzeichnet. Verwende es, um Abhängigkeiten (fetch, Callbacks, Module) durch kontrollierte Stellvertreter zu ersetzen. vi.stubGlobal() ersetzt Globals wie fetch. beforeEach richtet den Mock frisch für jeden Test ein; afterEach mit vi.restoreAllMocks() räumt auf. Prüfe Aufrufe mit toHaveBeenCalledWith."
+        "text": "`vi.fn()` erstellt einen Spy — eine Funktion, die Aufrufe aufzeichnet. Verwende es, um Abhängigkeiten (fetch, Callbacks, Module) durch kontrollierte Stellvertreter zu ersetzen. `vi.stubGlobal()` ersetzt Globals wie `fetch`. `beforeEach` richtet den Mock frisch für jeden Test ein; `afterEach` mit `vi.restoreAllMocks()` räumt auf. Prüfe Aufrufe mit `toHaveBeenCalledWith`."
       },
       {
         "animationStep": 4,
         "heading": "Integrationstests",
-        "text": "Integrationstests rendern eine Komponente zusammen mit ihren echten Abhängigkeiten (Hooks, Context, Router) und testen End-to-End-Flows. Wrape die Komponente in alle Provider, die sie benötigt. Verwende waitFor(), um auf asynchrone State-Updates zu warten. Teste die vollständige Benutzerreise — Formular ausfüllen → Absenden → Erfolgsmeldung — nicht isolierte Teile."
+        "text": "Integrationstests rendern eine Komponente zusammen mit ihren echten Abhängigkeiten (Hooks, Context, Router) und testen End-to-End-Flows. Wrape die Komponente in alle Provider, die sie benötigt. Verwende `waitFor()`, um auf asynchrone State-Updates zu warten. Teste die vollständige Benutzerreise — Formular ausfüllen → Absenden → Erfolgsmeldung — nicht isolierte Teile."
       }
     ],
     "cheatSheet": {
@@ -2206,7 +2206,7 @@
       {
         "animationStep": 0,
         "heading": "Abdeckungsberichte",
-        "text": "Abdeckung misst, welche Zeilen, Zweige und Funktionen deine Tests tatsächlich ausführen. Vitest verwendet v8 oder istanbul zum Erfassen. Führe mit --coverage aus, um einen Bericht zu sehen. Eine hohe Zahl garantiert keine Korrektheit — du brauchst immer noch bedeutungsvolle Assertions — aber sie hebt ungetestete Pfade hervor, die Fehler verbergen können."
+        "text": "Abdeckung misst, welche Zeilen, Zweige und Funktionen deine Tests tatsächlich ausführen. Vitest verwendet `v8` oder `istanbul` zum Erfassen. Führe mit `--coverage` aus, um einen Bericht zu sehen. Eine hohe Zahl garantiert keine Korrektheit — du brauchst immer noch bedeutungsvolle Assertions — aber sie hebt ungetestete Pfade hervor, die Fehler verbergen können."
       },
       {
         "animationStep": 1,
@@ -2221,7 +2221,7 @@
       {
         "animationStep": 3,
         "heading": "Auf GitHub Pages deployen",
-        "text": "Füge einen Deploy-Schritt hinzu, um den Vite-Produktions-Build automatisch auf GitHub Pages zu veröffentlichen, nachdem Tests bestanden haben. Setze base in vite.config.ts auf deinen Repo-Namen. Die actions/deploy-pages-Aktion übernimmt das Hochladen des dist/-Ordners. Nach dem Mergen in main ist deine Seite innerhalb von Minuten live — keine manuellen Schritte."
+        "text": "Füge einen Deploy-Schritt hinzu, um den Vite-Produktions-Build automatisch auf GitHub Pages zu veröffentlichen, nachdem Tests bestanden haben. Setze `base` in `vite.config.ts` auf deinen Repo-Namen. Die `actions/deploy-pages`-Aktion übernimmt das Hochladen des `dist/`-Ordners. Nach dem Mergen in `main` ist deine Seite innerhalb von Minuten live — keine manuellen Schritte."
       }
     ],
     "cheatSheet": {
@@ -2274,7 +2274,7 @@
       {
         "animationStep": 2,
         "heading": "Staging-Bereich",
-        "text": "Ein Wartungsbereich für Änderungen, die du im nächsten Snapshot einbeziehen möchtest. Verwende git add, um Dateien hierher zu verschieben. Du kannst manche Dateien stagen und andere weglassen — das gibt dir genaue Kontrolle über das, was du commitest."
+        "text": "Ein Wartungsbereich für Änderungen, die du im nächsten Snapshot einbeziehen möchtest. Verwende `git add`, um Dateien hierher zu verschieben. Du kannst manche Dateien stagen und andere weglassen — das gibt dir genaue Kontrolle über das, was du commitest."
       },
       {
         "animationStep": 3,
@@ -2334,12 +2334,12 @@
       {
         "animationStep": 1,
         "heading": "Start: init oder clone",
-        "text": "Für ein brandneues Projekt verwende git init. Um an einem bestehenden Projekt zu arbeiten, lädt git clone die vollständige Geschichte herunter. Das machst du nur einmal pro Projekt."
+        "text": "Für ein brandneues Projekt verwende `git init`. Um an einem bestehenden Projekt zu arbeiten, lädt `git clone` die vollständige Geschichte herunter. Das machst du nur einmal pro Projekt."
       },
       {
         "animationStep": 2,
         "heading": "Einen Branch erstellen",
-        "text": "Arbeite immer in einem Branch — niemals direkt auf main. Ein Branch ist eine isolierte Kopie der Codebasis. Deine Änderungen bleiben eingedämmt, bis du sie zurückmergen möchtest."
+        "text": "Arbeite immer in einem Branch — niemals direkt auf `main`. Ein Branch ist eine isolierte Kopie der Codebasis. Deine Änderungen bleiben eingedämmt, bis du sie zurückmergen möchtest."
       },
       {
         "animationStep": 3,
@@ -2349,7 +2349,7 @@
       {
         "animationStep": 4,
         "heading": "Zum Remote pushen",
-        "text": "Deinen Branch in das Remote-Repository pushen, damit Teammitglieder ihn sehen können. Das Flag -u setzt den Upstream, sodass zukünftige Pushes nur git push benötigen."
+        "text": "Deinen Branch in das Remote-Repository pushen, damit Teammitglieder ihn sehen können. Das Flag `-u` setzt den Upstream, sodass zukünftige Pushes nur `git push` benötigen."
       }
     ],
     "cheatSheet": {
@@ -2397,12 +2397,12 @@
       {
         "animationStep": 0,
         "heading": "Ohne .gitignore — alles wird committet",
-        "text": "git add . ohne .gitignore ausführen und du commitest versehentlich node_modules (200MB+), deine .env-Geheimnisse und Build-Ausgaben. Einmal in der Git-Geschichte sind sie schwer vollständig zu entfernen."
+        "text": "`git add .` ohne `.gitignore` ausführen und du commitest versehentlich `node_modules` (200MB+), deine `.env`-Geheimnisse und Build-Ausgaben. Einmal in der Git-Geschichte sind sie schwer vollständig zu entfernen."
       },
       {
         "animationStep": 1,
         "heading": "Eine .gitignore-Datei erstellen",
-        "text": "Füge eine Datei namens .gitignore im Root deines Projekts hinzu. Liste auf, was ignoriert werden soll — Git staged oder committet diese Dateien nie. Committe die .gitignore selbst, damit Teammitglieder dieselben Regeln erhalten."
+        "text": "Füge eine Datei namens `.gitignore` im Root deines Projekts hinzu. Liste auf, was ignoriert werden soll — Git staged oder committet diese Dateien nie. Committe die `.gitignore` selbst, damit Teammitglieder dieselben Regeln erhalten."
       },
       {
         "animationStep": 2,
@@ -2412,7 +2412,7 @@
       {
         "animationStep": 3,
         "heading": "Mit .gitignore — nur dein Code wird verfolgt",
-        "text": "Nach dem Hinzufügen von .gitignore stagt git add . nur deine eigentlichen Quelldateien. Geheimnisse bleiben lokal, node_modules bleibt von GitHub fern, und dein Repo bleibt schlank und sauber."
+        "text": "Nach dem Hinzufügen von `.gitignore` stagt `git add .` nur deine eigentlichen Quelldateien. Geheimnisse bleiben lokal, `node_modules` bleibt von GitHub fern, und dein Repo bleibt schlank und sauber."
       }
     ],
     "cheatSheet": {
@@ -2462,12 +2462,12 @@
       {
         "animationStep": 1,
         "heading": "Remote-Repository",
-        "text": "GitHub speichert eine Kopie deines Repositorys in der Cloud. Jedes Teammitglied klont es einmal, verwendet dann git pull, um die neuesten Änderungen zu erhalten, und git push, um seine Arbeit zu teilen. Das Remote ist die einzige Quelle der Wahrheit."
+        "text": "GitHub speichert eine Kopie deines Repositorys in der Cloud. Jedes Teammitglied klont es einmal, verwendet dann `git pull`, um die neuesten Änderungen zu erhalten, und `git push`, um seine Arbeit zu teilen. Das Remote ist die einzige Quelle der Wahrheit."
       },
       {
         "animationStep": 2,
         "heading": "Pull Requests",
-        "text": "Ein Pull Request (PR) ist ein GitHub-Feature, das es ermöglicht, das Mergen eines Branches in main vorzuschlagen. Vor dem Mergen können Teammitglieder den Code reviewen, Kommentare hinterlassen, Änderungen anfordern und genehmigen. Das hält den main-Branch sauber und reviewt."
+        "text": "Ein Pull Request (PR) ist ein GitHub-Feature, das es ermöglicht, das Mergen eines Branches in `main` vorzuschlagen. Vor dem Mergen können Teammitglieder den Code reviewen, Kommentare hinterlassen, Änderungen anfordern und genehmigen. Das hält den `main`-Branch sauber und reviewt."
       },
       {
         "animationStep": 3,
@@ -2518,12 +2518,12 @@
       {
         "animationStep": 1,
         "heading": "Alle klonen dasselbe Remote",
-        "text": "Jedes Teammitglied führt git clone einmal aus. Damit wird die vollständige Geschichte heruntergeladen und origin automatisch als Remote-Name gesetzt. Von da an verwenden sie git pull zum Synchronisieren und git push zum Teilen."
+        "text": "Jedes Teammitglied führt `git clone` einmal aus. Damit wird die vollständige Geschichte heruntergeladen und `origin` automatisch als Remote-Name gesetzt. Von da an verwenden sie `git pull` zum Synchronisieren und `git push` zum Teilen."
       },
       {
         "animationStep": 2,
         "heading": "main schützen — Pull-Request-Reviews verlangen",
-        "text": "Zu Settings → Branches → Add branch protection rule für main gehen. \"Require a pull request before merging\" und \"Require approvals\" aktivieren. Das verhindert, dass jemand direkt auf main pusht — alle Änderungen müssen durch einen reviewten PR."
+        "text": "Zu Settings → Branches → Add branch protection rule für `main` gehen. \"Require a pull request before merging\" und \"Require approvals\" aktivieren. Das verhindert, dass jemand direkt auf `main` pusht — alle Änderungen müssen durch einen reviewten PR."
       },
       {
         "animationStep": 3,
@@ -2578,7 +2578,7 @@
       {
         "animationStep": 1,
         "heading": "Git fügt Konflikt-Marker in die Datei ein",
-        "text": "Git markiert den Konflikt direkt in der Datei mit <<<<<<< (dein Branch), ======= (Trennzeichen) und >>>>>>> (der eingehende Branch). Alles zwischen den Markern ist der konfliktbetroffene Inhalt."
+        "text": "Git markiert den Konflikt direkt in der Datei mit `<<<<<<<` (dein Branch), `=======` (Trennzeichen) und `>>>>>>>` (der eingehende Branch). Alles zwischen den Markern ist der konfliktbetroffene Inhalt."
       },
       {
         "animationStep": 2,
@@ -2588,7 +2588,7 @@
       {
         "animationStep": 3,
         "heading": "Als aufgelöst markieren und Merge abschließen",
-        "text": "Nachdem alle Konfliktdateien bearbeitet wurden, stage sie, um Git mitzuteilen, dass sie aufgelöst sind, und führe dann git commit aus. Git erstellt den Merge-Commit automatisch mit einer Standard-Nachricht."
+        "text": "Nachdem alle Konfliktdateien bearbeitet wurden, stage sie, um Git mitzuteilen, dass sie aufgelöst sind, und führe dann `git commit` aus. Git erstellt den Merge-Commit automatisch mit einer Standard-Nachricht."
       }
     ],
     "cheatSheet": {
@@ -2628,12 +2628,12 @@
       {
         "animationStep": 0,
         "heading": "3 Tools zum Rückgängigmachen in Git",
-        "text": "Git bietet verschiedene Undo-Tools je nach Stelle im Workflow. git restore verwirft uncommittete Bearbeitungen, git reset verschiebt den HEAD-Zeiger zurück, und git revert ist die sichere Option für geteilte Branches."
+        "text": "Git bietet verschiedene Undo-Tools je nach Stelle im Workflow. `git restore` verwirft uncommittete Bearbeitungen, `git reset` verschiebt den `HEAD`-Zeiger zurück, und `git revert` ist die sichere Option für geteilte Branches."
       },
       {
         "animationStep": 1,
         "heading": "git restore — Arbeitsverzeichnis-Änderungen verwerfen",
-        "text": "Wirft alle Bearbeitungen an einer Datei weg und stellt sie auf ihren zuletzt committeten Zustand zurück. Verwende --staged, um den Staging-Bereich zu leeren ohne Änderungen zu verwerfen. Warnung: Das kann nicht rückgängig gemacht werden."
+        "text": "Wirft alle Bearbeitungen an einer Datei weg und stellt sie auf ihren zuletzt committeten Zustand zurück. Verwende `--staged`, um den Staging-Bereich zu leeren ohne Änderungen zu verwerfen. Warnung: Das kann nicht rückgängig gemacht werden."
       },
       {
         "animationStep": 2,
@@ -2692,32 +2692,32 @@
       {
         "animationStep": 0,
         "heading": "Was ist Next.js?",
-        "text": "Next.js ist ein React-Framework für Produktionsanwendungen mit integriertem Routing, Datenabruf, Code-Splitting und Deployment. Mit React 19 und React Server Components (RSC) verfolgt es ein Fullstack-Modell: Komponenten laufen dauerhaft auf dem Server, rufen Daten ohne useEffect ab und können Datenbanken direkt abfragen — im selben Komponentenbaum wie die clientseitige UI."
+        "text": "Next.js ist ein React-Framework für Produktionsanwendungen mit integriertem Routing, Datenabruf, Code-Splitting und Deployment. Mit React 19 und React Server Components (RSC) verfolgt es ein Fullstack-Modell: Komponenten laufen dauerhaft auf dem Server, rufen Daten ohne `useEffect` ab und können Datenbanken direkt abfragen — im selben Komponentenbaum wie die clientseitige UI."
       },
       {
         "animationStep": 1,
         "heading": "App Router & Projektstruktur",
-        "text": "Erstelle ein Next.js-Projekt mit `npx create-next-app@latest`. Der App Router nutzt das Dateisystem für Routen: jeder Ordner unter `src/app/` wird ein URL-Segment. Spezielle Dateien steuern das Rendering — page.js ist die UI, layout.js wrappt sie mit gemeinsamem Chrome, loading.js zeigt einen Suspense-Fallback und error.js fängt nicht behandelte Ausnahmen ab."
+        "text": "Erstelle ein Next.js-Projekt mit `npx create-next-app@latest`. Der App Router nutzt das Dateisystem für Routen: jeder Ordner unter `src/app/` wird ein URL-Segment. Spezielle Dateien steuern das Rendering — `page.js` ist die UI, `layout.js` wrappt sie mit gemeinsamem Chrome, `loading.js` zeigt einen Suspense-Fallback und `error.js` fängt nicht behandelte Ausnahmen ab."
       },
       {
         "animationStep": 2,
         "heading": "Server- vs. Client-Komponenten",
-        "text": "Im App Router ist jede Komponente standardmäßig eine Server-Komponente — sie läuft auf dem Server, kann async sein und wird nie in das Client-Bundle ausgeliefert. Füge 'use client' am Anfang einer Datei ein, um eine Client-Komponente zu erstellen, wenn Interaktivität, State oder Browser-APIs benötigt werden. Regel: mit Server-Komponenten beginnen, Client-Komponenten nur bei Bedarf einsetzen."
+        "text": "Im App Router ist jede Komponente standardmäßig eine Server-Komponente — sie läuft auf dem Server, kann `async` sein und wird nie in das Client-Bundle ausgeliefert. Füge `'use client'` am Anfang einer Datei ein, um eine Client-Komponente zu erstellen, wenn Interaktivität, State oder Browser-APIs benötigt werden. Regel: mit Server-Komponenten beginnen, Client-Komponenten nur bei Bedarf einsetzen."
       },
       {
         "animationStep": 3,
         "heading": "Datenabruf & Streaming",
-        "text": "Server-Komponenten können fetch() oder einen Datenbank-Client direkt aufrufen — kein API-Layer nötig. Für langsame Daten ein Promise an eine Client-Komponente übergeben und use() mit Suspense nutzen, um Inhalte progressiv zu streamen. Eine loading.js-Datei ist die Abkürzung: Next.js umhüllt die Seite automatisch mit einer Suspense-Boundary."
+        "text": "Server-Komponenten können `fetch()` oder einen Datenbank-Client direkt aufrufen — kein API-Layer nötig. Für langsame Daten ein Promise an eine Client-Komponente übergeben und `use()` mit Suspense nutzen, um Inhalte progressiv zu streamen. Eine `loading.js`-Datei ist die Abkürzung: Next.js umhüllt die Seite automatisch mit einer Suspense-Boundary."
       },
       {
         "animationStep": 4,
         "heading": "Server-Funktionen & Mutationen",
-        "text": "Eine Server-Funktion ist eine async-Funktion, die mit 'use server' markiert ist — sie läuft ausschließlich auf dem Server, kann aber von jeder Komponente aufgerufen werden. Als form-action-Prop ermöglicht sie die Verarbeitung von Formulareingaben ohne separaten API-Endpunkt. Nach einer Mutation revalidatePath() oder revalidateTag() aufrufen, um den Cache zu leeren."
+        "text": "Eine Server-Funktion ist eine `async`-Funktion, die mit `'use server'` markiert ist — sie läuft ausschließlich auf dem Server, kann aber von jeder Komponente aufgerufen werden. Als `form`-`action`-Prop ermöglicht sie die Verarbeitung von Formulareingaben ohne separaten API-Endpunkt. Nach einer Mutation `revalidatePath()` oder `revalidateTag()` aufrufen, um den Cache zu leeren."
       },
       {
         "animationStep": 5,
         "heading": "Fehlerbehandlung",
-        "text": "Next.js unterscheidet zwei Fehlerkategorien. Erwartete Fehler (Validierung, 404) explizit behandeln — strukturierten State aus Server-Funktionen mit useActionState zurückgeben, res.ok prüfen oder notFound() bei fehlenden Ressourcen aufrufen. Unerwartete Fehler fängt error.js ab — eine Client-Komponente mit der error-Prop und einer reset()-Funktion zum Wiederholen."
+        "text": "Next.js unterscheidet zwei Fehlerkategorien. Erwartete Fehler (Validierung, 404) explizit behandeln — strukturierten State aus Server-Funktionen mit `useActionState` zurückgeben, `res.ok` prüfen oder `notFound()` bei fehlenden Ressourcen aufrufen. Unerwartete Fehler fängt `error.js` ab — eine Client-Komponente mit der `error`-Prop und einer `reset()`-Funktion zum Wiederholen."
       }
     ],
     "cheatSheet": {
@@ -2768,6 +2768,364 @@
         "In einer Client-Komponente abrufen, wenn eine Server-Komponente ausreichen würde — jeder Client-Abruf bedeutet einen zusätzlichen Roundtrip; serverseitigen Datenzugriff bevorzugen",
         "revalidatePath() nach einer Mutation vergessen — veraltete Cache-Daten zeigen alte Werte, bis Next.js zur Revalidierung aufgefordert wird",
         "'use server' am Anfang einer Datei setzen, die auch eine Standardkomponente exportiert — jede Direktive gilt für die gesamte Datei; Server-Funktionen in separaten Action-Dateien halten"
+      ]
+    }
+  },
+  "nextjs-routing": {
+    "title": "File-based Routing",
+    "description": "Next.js bildet Ordner auf URL-Segmente ab — erstelle einen Ordner, erhalte eine Route. Dynamische Segmente, Route Groups und Catch-all-Routen geben dir volle Kontrolle ohne Router-Konfiguration.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Ordner = Routen",
+        "text": "Jeder Ordner innerhalb von `src/app/` wird zu einem URL-Pfadsegment. Eine Datei namens `page.tsx` in diesem Ordner macht ihn zu einer echten Route. Keine Router-Konfiguration, keine Imports — einfach Ordner und Datei erstellen. Verschachtelte Ordner erzeugen verschachtelte URLs."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Dynamische Segmente",
+        "text": "Einen Ordnernamen in eckige Klammern setzen, um ein dynamisches Segment zu erstellen: `[id]` passt zu /posts/1, /posts/abc usw. Den Wert über die `params`-Prop auslesen — in Next.js 15+ muss `params` awaitet werden."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Route Groups",
+        "text": "Einen Ordnernamen in Klammern setzen, um eine Route Group zu erstellen: `(marketing)` gruppiert Routen, ohne sie zur URL hinzuzufügen. So können Layouts über Routen geteilt werden, die in der URL nicht verschachtelt sind."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Catch-all-Segmente",
+        "text": "Mit `[...slug]` können mehrere Pfadsegmente gleichzeitig abgefangen werden. `params.slug` ist ein Array der Segmente. Doppelte Klammern `[[...slug]]` machen den Catch-all optional — dann passt er auch auf den Root-Pfad."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Statische Route" },
+        { "label": "Dynamisches Segment" },
+        { "label": "Route Group" },
+        { "label": "Catch-all" },
+        { "label": "Optionaler Catch-all" }
+      ],
+      "whenToUse": "File-based Routing als primäre Routing-Strategie verwenden — keine Konfiguration nötig. Route Groups nutzen, um Layouts zu teilen ohne die URL zu beeinflussen. Dynamische Segmente für inhaltsorientierte Seiten wie Blog-Posts und Produktseiten.",
+      "commonMistakes": [
+        "Vergessen, dass page.tsx erforderlich ist — ein Ordner ohne page.tsx erstellt nur ein Layout-Segment ohne UI",
+        "params in Next.js 15+ nicht awaiten — params ist jetzt ein Promise; immer awaiten",
+        "Die Catch-all-Datei falsch benennen — es muss [...slug] sein, nicht [slug]"
+      ]
+    }
+  },
+  "nextjs-layouts": {
+    "title": "Layouts & Spezielle Dateien",
+    "description": "Layouts verschachteln ohne Re-Rendering, Metadata für SEO hinzufügen und spezielle Dateien für Loading, Fehler und Not-Found-Zustände auf jeder Routenebene verwenden.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Verschachtelte Layouts",
+        "text": "`layout.tsx` umhüllt `page.tsx` und alle Kind-Routen. Layouts bleiben über Navigationen hinweg bestehen — sie rendern nicht neu, wenn sich die Kindseite ändert. Durch verschachtelte Layout-Dateien können komplexe UIs gebaut werden."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Spezielle Dateien",
+        "text": "Next.js reserviert bestimmte Dateinamen auf jeder Routenebene. `loading.tsx` zeigt ein Skeleton, während die Seite rendert. `error.tsx` fängt unbehandelte Ausnahmen ab und muss eine Client-Komponente sein. `not-found.tsx` wird gerendert, wenn `notFound()` aufgerufen wird."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Metadata API",
+        "text": "Ein metadata-Objekt oder eine `generateMetadata()`-Funktion aus `page.tsx` oder `layout.tsx` exportieren, um Head-Tags zu setzen. Statische Metadata wird als Konstante exportiert. Dynamische Metadata verwendet `generateMetadata()` — eine `async`-Funktion, die dieselben `params` wie die Seite erhält."
+      },
+      {
+        "animationStep": 3,
+        "heading": "RootLayout-Anforderungen",
+        "text": "Jede Next.js-App muss `app/layout.tsx` haben — das Root-Layout. Es muss html- und body-Tags enthalten. Es umhüllt jede Seite und ist der richtige Ort für globale Styles, Analytics, Auth-Provider und Theme-Provider."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Layout-Datei" },
+        { "label": "Loading UI" },
+        { "label": "Error Boundary" },
+        { "label": "Not Found" },
+        { "label": "Statische Metadata" },
+        { "label": "Dynamische Metadata" }
+      ],
+      "whenToUse": "Layouts für persistente UI verwenden (Nav, Sidebar, Footer). loading.tsx nutzen, um Layout-Verschiebungen während Datenabrufen zu vermeiden. Die Metadata API statt manueller Head-Tags verwenden — sie übernimmt Deduplizierung und Vererbung automatisch.",
+      "commonMistakes": [
+        "html + body im Root-Layout vergessen — Next.js wirft einen Fehler, wenn sie fehlen",
+        "error.tsx als Server-Komponente verwenden — es muss 'use client' haben, um die reset()-Funktion zu nutzen",
+        "template.tsx übermäßig verwenden — anders als layout wird es bei jeder Navigation neu gemountet"
+      ]
+    }
+  },
+  "nextjs-navigation": {
+    "title": "Navigation",
+    "description": "Link für deklarative Navigation mit Prefetching, useRouter für programmatische Navigation und redirect() / notFound() für serverseitiges Routing.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Link-Komponente",
+        "text": "`Link` aus `next/link` statt a für clientseitige Navigation verwenden — kein vollständiger Seitenaufruf. Next.js prefetcht verlinkte Seiten automatisch im Hintergrund, wenn sie im Viewport erscheinen, wodurch Navigation sich sofort anfühlt."
+      },
+      {
+        "animationStep": 1,
+        "heading": "useRouter — Programmatische Navigation",
+        "text": "`useRouter` aus `next/navigation` in Client-Komponenten verwenden, wenn nach einer Aktion navigiert werden soll. `router.push()` fügt zum Verlauf hinzu, `router.replace()` ersetzt den aktuellen Eintrag, `router.back()` und `router.forward()` navigieren durch den Verlauf."
+      },
+      {
+        "animationStep": 2,
+        "heading": "usePathname & useSearchParams",
+        "text": "`usePathname()` gibt den aktuellen Pfad als String zurück — nützlich für die Hervorhebung aktiver Nav-Links. `useSearchParams()` liest den ?key=value Query-String. Beide sind Client-Komponenten-Hooks aus `next/navigation`."
+      },
+      {
+        "animationStep": 3,
+        "heading": "redirect() und notFound()",
+        "text": "`redirect()` aus `next/navigation` navigiert programmatisch aus Server-Komponenten, Server-Funktionen und Route Handlers — keine Client-Komponente nötig. `notFound()` rendert die nächste `not-found.tsx`-Datei. Beide werfen intern, sodass Code danach nie ausgeführt wird."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Link", "note": "Prefetcht beim Hover — statt <a> verwenden" },
+        { "label": "useRouter", "note": "Nur Client-Komponenten" },
+        { "label": "usePathname", "note": "Für aktive Link-Hervorhebung" },
+        { "label": "useSearchParams", "note": "Liest ?key=value Query-String" },
+        { "label": "redirect()", "note": "Wirft intern — kein Code danach wird ausgeführt" },
+        { "label": "notFound()", "note": "Rendert nächste not-found.tsx" }
+      ],
+      "whenToUse": "Link für alle Navigationen in JSX verwenden. useRouter für Navigation durch Nicht-Link-Interaktionen. redirect() und notFound() in Server-Komponenten und Server-Actions für Auth-Prüfungen und fehlende Ressourcen.",
+      "commonMistakes": [
+        "<a href> statt Link verwenden — verursacht einen vollständigen Seitenaufruf und verliert den clientseitigen State",
+        "useRouter in einer Server-Komponente aufrufen — es ist nur ein Client-Komponenten-Hook",
+        "Vergessen, dass redirect() wirft — jeglicher Code nach redirect() wird nicht ausgeführt"
+      ]
+    }
+  },
+  "nextjs-server-components": {
+    "title": "Server-Komponenten",
+    "description": "Server-Komponenten laufen dauerhaft auf dem Server — async, direkter Datenbankzugriff und kein JavaScript im Browser-Bundle.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Immer auf dem Server",
+        "text": "React Server Components laufen ausschließlich auf dem Server und werden nie ins Browser-Bundle geliefert. Sie können `async` sein, direkt auf Datenbanken und Secrets zugreifen und aus dem Dateisystem lesen. Jede Komponente im App Router ist standardmäßig eine Server-Komponente — keine Direktive nötig."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Direkter Datenzugriff",
+        "text": "Server-Komponenten können Datenbanken abfragen, Dateien lesen und interne APIs direkt aufrufen — kein separater API-Endpunkt nötig. Sensible Zugangsdaten verlassen den Server nie, da die Komponente nie im Browser läuft."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Was nicht möglich ist",
+        "text": "Server-Komponenten können keinen React-State, keine Effekte oder Browser-APIs verwenden. Kein `useState`, `useEffect`, `useContext`, `useRef`. Keine Event-Handler wie `onClick` oder `onChange`. Kein `window`, `document`, `localStorage`. Bei Bedarf `'use client'` hinzufügen oder den interaktiven Teil in eine separate Client-Komponente auslagern."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Komposition mit Client-Komponenten",
+        "text": "Server-Komponenten können Client-Komponenten als Kinder rendern. Serialisierbare Daten (Strings, Zahlen, einfache Objekte, Arrays) als Props übergeben. Der Komponentenbaum kann Server und Client frei mischen — jede Komponente rendert in ihrer Umgebung."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Server-Komponente (Standard)" },
+        { "label": "Direkter DB-Zugriff" },
+        { "label": "Parallele Datenabrufe" },
+        { "label": "Daten an Client übergeben" }
+      ],
+      "whenToUse": "Server-Komponenten für alles verwenden, was Daten abruft, statische Inhalte anzeigt oder nicht zum Browser-Bundle beitragen soll. Nur zu Client-Komponenten wechseln, wenn Interaktivität, State oder Browser-APIs benötigt werden.",
+      "commonMistakes": [
+        "useState oder useEffect in einer Server-Komponente hinzufügen — interaktive Logik in eine Client-Komponente auslagern",
+        "Versuchen, eine Funktion als Prop an eine Client-Komponente zu übergeben — Server Actions für serverseitige Callbacks verwenden",
+        "Eine schwere clientseitige Bibliothek in einer Server-Komponente importieren — sicherstellen, dass sie Server-Umgebungen unterstützt"
+      ]
+    }
+  },
+  "nextjs-client-components": {
+    "title": "Client-Komponenten",
+    "description": "'use client' hinzufügen, um Hooks, Event-Handler und Browser-APIs zu aktivieren. Client-Komponenten werden weiterhin für das initiale HTML server-seitig gerendert — die Direktive aktiviert Interaktivität, kein reines Client-Rendering.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "'use client'-Direktive",
+        "text": "`'use client'` als allererste Zeile einer Datei hinzufügen, um sie als Client-Komponente zu markieren. Das bezieht die gesamte Datei — und alles, was sie importiert — ins Client-Bundle ein. Die Direktive ist eine Grenzdeklaration: sie teilt Next.js mit, wo der Server-zu-Client-Übergang stattfindet."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Wann Client-Komponenten verwenden",
+        "text": "`'use client'` verwenden, wenn die Komponente benötigt: React-Hooks (`useState`, `useEffect`, `useRef`, `useContext`), Event-Handler (`onClick`, `onChange`, `onSubmit`), Browser-APIs (`window`, `document`, `localStorage`, `navigator`) oder Echtzeit-Updates. Wenn keines davon zutrifft, als Server-Komponente belassen."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Hydration",
+        "text": "Client-Komponenten werden weiterhin serverseitig für das initiale HTML gerendert — `'use client'` bedeutet nicht, Server-Rendering zu überspringen. Next.js rendert die Komponente auf dem Server für schnelles initiales Laden, liefert dann JavaScript und hydratisiert es auf dem Client. Hydration erfordert identische Ausgaben von Server und Client."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Grenzen zu den Blättern verschieben",
+        "text": "Die `'use client'`-Grenze schließt alles ein, was aus dieser Datei importiert wird. Wird sie weit oben im Baum platziert, werden alle darunter liegenden Komponenten zu Client-Komponenten. Best Practice: `'use client'` so weit wie möglich nach unten in den Baum verschieben, zu den kleinsten Komponenten, die tatsächlich Interaktivität benötigen."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "'use client'-Direktive" },
+        { "label": "Wann verwenden" },
+        { "label": "Grenzen zu den Blättern verschieben" }
+      ],
+      "whenToUse": "'use client' nur hinzufügen, wenn Hooks, Events oder Browser-APIs benötigt werden. Die Grenze so tief wie möglich im Baum halten — Daten in Server-Komponenten abrufen, dann an Client-Blattkomponenten für Interaktion übergeben.",
+      "commonMistakes": [
+        "Eine Komponente mit 'use client' async machen — 'use client'-Komponenten können nicht async sein",
+        "'use client' als Sicherheitsmaßnahme zu jeder Komponente hinzufügen — das untergräbt RSC und bläht das Bundle auf",
+        "Davon ausgehen, dass 'use client' kein Server-Rendering bedeutet — Client-Komponenten werden für das initiale HTML serverseitig gerendert"
+      ]
+    }
+  },
+  "nextjs-suspense": {
+    "title": "Suspense & Streaming",
+    "description": "Server-gerendertes HTML progressiv mit Suspense streamen, Skeletons während des Ladens anzeigen und Fehler sowie Not-Found-Zustände mit dedizierten Boundary-Dateien behandeln.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "loading.tsx — Sofortige Skeleton-UI",
+        "text": "`loading.tsx` neben einer `page.tsx` hinzufügen, um sie automatisch in eine Suspense-Boundary einzuwickeln. Next.js streamt das Layout sofort, während die Seite Daten abruft — Nutzer sehen ein Skeleton statt einem leeren Bildschirm."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Streaming mit Suspense",
+        "text": "Für feinere Kontrolle — einzelne Abschnitte einer Seite streamen — Suspense manuell verwenden. Einen fallback-Prop für das Skeleton angeben. Daten ohne await abrufen, das Promise an eine Client-Komponente übergeben, die use() zum Suspendieren nutzt. Mehrere Suspense-Boundaries auf einer Seite streamen unabhängig voneinander."
+      },
+      {
+        "animationStep": 2,
+        "heading": "error.tsx und not-found.tsx",
+        "text": "`error.tsx` fängt alle unbehandelten Ausnahmen ab, die während des Renderings in seinem Routensegment auftreten. Es muss eine Client-Komponente sein, um den `reset()`-Callback zu nutzen. `not-found.tsx` wird gerendert, wenn `notFound()` aufgerufen wird."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "loading.tsx" },
+        { "label": "Manuelles Suspense" },
+        { "label": "use() in Client-Komponente" },
+        { "label": "error.tsx" },
+        { "label": "not-found.tsx" }
+      ],
+      "whenToUse": "loading.tsx für seitenseitige Ladezustände verwenden. Manuelles Suspense für das Streaming mehrerer unabhängiger Datenbereiche auf einer Seite. error.tsx für elegante Fehlerwiederherstellung.",
+      "commonMistakes": [
+        "Das Promise vor der Übergabe an eine Client-Komponente awaiten — NICHT awaiten; das rohe Promise übergeben, damit Suspense suspendieren kann",
+        "'use client' bei error.tsx vergessen — es muss eine Client-Komponente sein, um reset() aufzurufen",
+        "loading.tsx und manuelles Suspense auf derselben Route verwenden — manuelles Suspense gibt feinere Kontrolle über einzelne Abschnitte"
+      ]
+    }
+  },
+  "nextjs-data-fetching": {
+    "title": "Data Fetching",
+    "description": "Daten in Server-Komponenten ohne useEffect abrufen. Caching mit fetch-Optionen steuern, Waterfalls mit parallelem Abruf vermeiden und bei Bedarf oder nach Zeitplan revalidieren.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "fetch() in Server-Komponenten",
+        "text": "Server-Komponenten können `fetch()` direkt aufrufen — kein `useEffect`, kein Loading-State, kein API-Route. Next.js erweitert das native fetch mit Caching-Optionen. Die Antwort wird automatisch dedupliziert: rufen mehrere Server-Komponenten dieselbe URL während eines Renderings auf, macht Next.js nur eine Netzwerkanfrage."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Cache-Optionen & Revalidierung",
+        "text": "Mit der next-Option steuern, wie Next.js Fetch-Antworten cached. force-cache (Standard) cached unbegrenzt. no-store ruft immer frisch ab. revalidate: 60 cached, aber aktualisiert alle 60 Sekunden. revalidateTag() oder revalidatePath() verwenden, um den Cache manuell aus einer Server-Action zu leeren."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Paralleles Abrufen",
+        "text": "Sequentielle await-Aufrufe erzeugen einen Waterfall — jeder Abruf wartet auf den vorherigen. `Promise.all()` verwenden, um alle Abrufe gleichzeitig zu starten. Dies ist besonders wichtig in verschachtelten Layouts und Seiten, wo mehrere Datenstücke benötigt werden."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Datenbankzugriff & ORM",
+        "text": "Server-Komponenten können Datenbank-Clients direkt importieren — kein API-Layer nötig. Ein ORM wie Prisma oder Drizzle für Datenbankabfragen mit vollständigen TypeScript-Typen verwenden. server-only importieren, um zu verhindern, dass ein Modul versehentlich im Browser ausgeführt wird."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Einfacher Abruf" },
+        { "label": "No-store (dynamisch)" },
+        { "label": "Revalidierung (ISR)" },
+        { "label": "Tag revalidieren" },
+        { "label": "Paralleles Abrufen" }
+      ],
+      "whenToUse": "Daten direkt in Server-Komponenten abrufen — keine API-Routen, kein useEffect. Paralleles Abrufen für alle unabhängigen Daten. Zeitgesteuerte Revalidierung für sich gelegentlich ändernde Daten, no-store für Echtzeit-Daten.",
+      "commonMistakes": [
+        "Sequentielles await für unabhängige Daten — Promise.all() verwenden, um Abrufe parallel auszuführen",
+        "fetch in einer Client-Komponente mit useEffect verwenden — Abrufe in Server-Komponenten verschieben",
+        "res.ok vor res.json() nicht prüfen — eine 404- oder 500-Antwort wirft nicht; immer vor dem Parsen prüfen"
+      ]
+    }
+  },
+  "nextjs-server-actions": {
+    "title": "Server Actions",
+    "description": "Async-Funktionen mit 'use server' markieren, um Server Actions zu erstellen — aus Formularen oder Client-Komponenten aufrufen, um Daten ohne API-Endpunkt zu mutieren.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "'use server'-Funktionen",
+        "text": "Eine Server Action ist eine async-Funktion, die mit `'use server'` markiert ist. Sie läuft nur auf dem Server, kann aber von überall aufgerufen werden — einer Client-Komponente, einem Formular-action-Prop oder einer anderen Server-Komponente. Next.js serialisiert den Aufruf transparent über HTTP."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Formular-Actions",
+        "text": "Eine Server Action direkt an den action-Prop eines Formulars übergeben — kein `onSubmit`, kein `e.preventDefault()`, kein `fetch()`. Der Browser sendet die FormData per POST an die Server Action. Dies funktioniert auch ohne JavaScript — eine Progressive Enhancement."
+      },
+      {
+        "animationStep": 2,
+        "heading": "useActionState — Pending & Fehler",
+        "text": "`useActionState` umhüllt eine Server Action mit Pending/Fehler-State in einer Client-Komponente. Es gibt `[state, action, isPending]` zurück. Die Action ersetzt die rohe Server Action. `isPending` ist true, während die Action läuft. Der `state` enthält den Rückgabewert des letzten Aufrufs."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Actions aus Client-Komponenten aufrufen",
+        "text": "Server Actions können programmatisch aus Client-Komponenten aufgerufen werden — nicht nur aus Formularen. Die Action importieren und wie eine normale async-Funktion aufrufen. `useTransition` verwenden, um ein `isPending`-Flag ohne Formularbindung zu erhalten. Nützlich für Löschen-Buttons, Toggle-Actions und Nicht-Formular-Mutationen."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Server Action definieren" },
+        { "label": "Formular-Action" },
+        { "label": "useActionState" },
+        { "label": "Programmatischer Aufruf" },
+        { "label": "Nach Mutation" }
+      ],
+      "whenToUse": "Server Actions für alle Datenmutationen verwenden — Erstellen, Aktualisieren, Löschen. Formular-Actions für Formulare (Progressive Enhancement) bevorzugen. useActionState für Formulare mit Fehler/Pending-UI. useTransition für Nicht-Formular-Mutationen wie Löschen-Buttons.",
+      "commonMistakes": [
+        "revalidatePath() oder revalidateTag() nach einer Mutation vergessen — die UI zeigt veraltete Daten bis zum nächsten vollständigen Reload",
+        "Server Actions für Datenabrufe verwenden — sie sind nur für Mutationen; async Server-Komponenten für Lesevorgänge nutzen",
+        "'use server' in einer Client-Komponenten-Datei platzieren — Server Actions müssen in separaten Dateien oder inline in Server-Komponenten sein"
+      ]
+    }
+  },
+  "nextjs-route-handlers": {
+    "title": "Route Handler",
+    "description": "API-Endpunkte mit Route Handlers erstellen — HTTP GET/POST/DELETE-Endpunkte mit den Standard-Web-Request- und Response-APIs.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Route-Handler-Dateien",
+        "text": "Eine `route.ts`-Datei innerhalb von `app/api/` erstellen, um HTTP-Endpunkte zu definieren. Benannte Funktionen für jede Methode exportieren: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`. Die Datei verwendet die Standard-Web-Request- und Response-APIs. Route Handler können async sein und auf Datenbanken und Secrets zugreifen."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Request-Daten lesen",
+        "text": "Route Handler erhalten ein Standard-Request-Objekt. `request.json()` für JSON-Bodies, `request.formData()` für Formular-Einsendungen, `request.headers` für Header und `new URL(request.url)` für Query-Parameter verwenden. `NextRequest` aus `next/server` für zusätzliche Hilfsmittel wie `cookies()` und `nextUrl` nutzen."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Route Handler vs. Server Actions",
+        "text": "Server Actions (bevorzugt) für Mutationen aus der eigenen React-UI verwenden — kein API-Layer nötig. Route Handler verwenden, wenn eine echte HTTP-API benötigt wird: Webhooks von Drittanbietern, Nutzung durch mobile Apps oder externe Clients oder bei Bedarf von benutzerdefinierten Status-Codes und Headern."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "GET-Handler" },
+        { "label": "POST-Handler" },
+        { "label": "Dynamische Route" },
+        { "label": "Query-Parameter" },
+        { "label": "Fehler-Antwort" }
+      ],
+      "whenToUse": "Route Handler für Webhooks, öffentliche APIs für externe Clients und Fälle verwenden, in denen benutzerdefinierte HTTP-Status-Codes oder Header benötigt werden. Für alle Mutationen aus der eigenen React-UI Server Actions bevorzugen.",
+      "commonMistakes": [
+        "Route Handler für jede Mutation in der eigenen UI erstellen — Server Actions sind einfacher und besser integriert",
+        "Fehlerfall ohne korrekten Status-Code behandeln — immer passende HTTP-Status-Codes zurückgeben",
+        "route.ts und page.tsx im selben Ordner mischen — Next.js wirft einen Fehler; API- und Seiten-Routen müssen in separaten Ordnern sein"
       ]
     }
   },

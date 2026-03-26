@@ -276,7 +276,7 @@
     }
   },
   "ts-basics": {
-    "title": "TypeScript Basics",
+    "title": "Basics",
     "description": "Static types that catch errors before your code runs",
     "steps": [
       { "animationStep": 0, "heading": "JavaScript types are implicit", "text": "In JavaScript, variables have types at runtime, but you never declare them. The type is inferred from the value." },
@@ -475,6 +475,34 @@
       ]
     }
   },
+  "react-intro": {
+    "title": "React — The Big Picture",
+    "description": "Where React came from, how it evolved, and how to start a modern React project",
+    "steps": [
+      { "animationStep": 0, "heading": "2013 — JSX & the component idea", "text": "React was open-sourced by Facebook in 2013. Its core insight: build UIs from small, reusable pieces called components. JSX — an HTML-like syntax inside JavaScript — was created alongside it. React could run on a server from day one, but it was mainly used to build interactive SPAs in the browser." },
+      { "animationStep": 1, "heading": "2015 — React everywhere", "text": "React Native launched in 2015, bringing the same component model to iOS and Android native apps. Major companies — Netflix, Airbnb, Dropbox — adopted React. ES6 class syntax became the standard way to write stateful components with lifecycle methods (componentDidMount, componentDidUpdate, componentWillUnmount)." },
+      { "animationStep": 2, "heading": "2019 — Hooks change everything", "text": "React 16.8 introduced Hooks — useState, useEffect, and friends. Hooks let functional components manage state and side effects without class syntax. They quickly became the de facto standard. Code became shorter, easier to compose, and simpler to test. Class components still work but are rarely written in new projects." },
+      { "animationStep": 3, "heading": "2024 — Back to the server", "text": "React 19 introduced Server Components. Components can now run on the server, fetch data directly from a database, and stream HTML + JSON to the client. Only \"Client Components\" (marked with \"use client\") ship JavaScript to the browser. Frameworks like Next.js 15 and Remix/React Router v7 are the primary way to use Server Components today." },
+      { "animationStep": 4, "heading": "Starting a React project today", "text": "Two strategies: use a meta-framework (recommended for production) or assemble your own tooling.\n\nMeta-frameworks handle routing, data fetching, bundling, and rendering strategy for you:\n• Next.js 15 — full-stack web apps, file-system routing, Server Components\n• Remix / React Router v7 — nested routes, server mutations, progressive enhancement\n• Expo SDK 52+ — iOS/Android native apps with React Native\n\nDIY tooling gives you full control and teaches fundamentals:\n• Vite (used in this course) — instant dev server, Rollup-powered builds\n• Parcel — zero-config bundler\n• Rsbuild + Rspack — Rust-powered, 5–10× faster than Webpack" }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Vite + React scaffold", "note": "Used in this course — fast, minimal, Rollup-based" },
+        { "label": "Next.js scaffold", "note": "Full-stack, file-system routing, Server Components" },
+        { "label": "Server Component (Next.js)", "note": "No \"use client\" = runs on server by default" },
+        { "label": "Client Component", "note": "\"use client\" makes it interactive, ships JS to browser" }
+      ],
+      "patterns": [
+        { "title": "Framework decision tree" }
+      ],
+      "whenToUse": "Use Vite when learning React core APIs or building SPAs. Reach for Next.js when you need server rendering, API routes, or full-stack capabilities. Use Expo for mobile.",
+      "commonMistakes": [
+        "Starting with a meta-framework before understanding React basics — you'll confuse React's own APIs with framework magic",
+        "Using Create React App (CRA) — it is deprecated and unmaintained; use Vite instead",
+        "Writing class components in new projects — Hooks are the modern standard; class components are only needed for error boundaries"
+      ]
+    }
+  },
   "react-components": {
     "title": "Components & JSX",
     "description": "Build UIs from reusable, composable function components",
@@ -605,6 +633,8 @@
     }
   },
   "react-context": {
+    "title": "Context & useReducer",
+    "description": "Share state across the component tree without prop drilling — and manage complex state with useReducer",
     "steps": [
       {
         "animationStep": 0,
@@ -644,7 +674,7 @@
     ]
   },
   "ts-interfaces": {
-    "title": "TypeScript Interfaces",
+    "title": "Interfaces",
     "description": "Define object contracts — optional props, readonly fields, extension, and implementation",
     "steps": [
       { "animationStep": 0, "heading": "Interfaces describe object shapes", "text": "An interface defines a contract: any object assigned that type must have exactly those properties with those types. It documents intent and lets TypeScript enforce it." },
@@ -675,7 +705,7 @@
     }
   },
   "ts-generics": {
-    "title": "TypeScript Generics",
+    "title": "Generics",
     "description": "Write reusable, type-safe functions and interfaces that work with any type",
     "steps": [
       { "animationStep": 0, "heading": "The problem: rigid types", "text": "Without generics you need a separate function for each type — firstNumber, firstString, firstBoolean. This violates DRY." },
@@ -710,8 +740,27 @@
     "steps": [
       { "animationStep": 0, "heading": "typeof and instanceof guards", "text": "TypeScript narrows types inside conditional blocks. After typeof check, the type is refined automatically." },
       { "animationStep": 1, "heading": "Discriminated unions", "text": "A discriminated union uses a shared literal property to distinguish between types. TypeScript narrows based on that field." },
-      { "animationStep": 2, "heading": "Custom type guards", "text": "A type predicate function (x is T) tells TypeScript the exact narrowed type when the function returns true." }
-    ]
+      { "animationStep": 2, "heading": "Custom type guards", "text": "A type predicate function (x is T) tells TypeScript the exact narrowed type when the function returns true." },
+      { "animationStep": 3, "heading": "Equality narrowing", "text": "TypeScript narrows the type when you compare with === or !==. When both sides are checked for equality, TypeScript eliminates impossible types." },
+      { "animationStep": 4, "heading": "The \"in\" operator", "text": "The in operator checks whether a property exists on an object. TypeScript narrows the type based on which branch is entered — useful for discriminating between types that share some but not all properties." },
+      { "animationStep": 5, "heading": "Custom type predicates", "text": "A user-defined type guard is a function whose return type is a type predicate (param is Type). When it returns true, TypeScript narrows the argument to that type everywhere the guard is used." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "typeof guard", "note": "Works for: string, number, boolean, bigint, symbol, undefined, object, function" },
+        { "label": "instanceof guard", "note": "Narrows class instances" },
+        { "label": "in operator", "note": "Checks property existence — narrows union members" },
+        { "label": "Equality narrowing", "note": "Strict equality eliminates impossible types" },
+        { "label": "Type predicate", "note": "Return type \"v is T\" narrows at call site" },
+        { "label": "Discriminated union", "note": "Shared literal property narrows the union" }
+      ],
+      "whenToUse": "Use typeof for primitives, instanceof for class instances, the in operator to distinguish object shapes, and custom predicates when you need to reuse a check or when TypeScript cannot infer it automatically.",
+      "commonMistakes": [
+        "Forgetting that typeof null === \"object\" — always check for null explicitly before checking typeof for objects",
+        "Using as (type assertion) instead of a proper type guard — assertions bypass the type system; guards prove the type at runtime",
+        "Writing a predicate that always returns true — the predicate must actually test the runtime value, not just assert"
+      ]
+    }
   },
   "ts-utility-types": {
     "title": "Utility Types",
@@ -719,8 +768,144 @@
     "steps": [
       { "animationStep": 0, "heading": "Partial and Required", "text": "Partial<T> makes all properties optional. Required<T> makes all properties required. Both derive a new type from an existing interface." },
       { "animationStep": 1, "heading": "Pick and Omit", "text": "Pick<T, K> keeps only the listed keys. Omit<T, K> removes the listed keys. Both create a subset type." },
-      { "animationStep": 2, "heading": "Record, Readonly, and ReturnType", "text": "Record<K, V> creates an object type with keys K and values V. Readonly<T> prevents mutation. ReturnType<F> extracts a function's return type." }
-    ]
+      { "animationStep": 2, "heading": "Record, Readonly, and ReturnType", "text": "Record<K, V> creates an object type with keys K and values V. Readonly<T> prevents mutation. ReturnType<F> extracts a function's return type." },
+      { "animationStep": 3, "heading": "Exclude, Extract, and NonNullable", "text": "Exclude<T, U> removes from T all types that are assignable to U. Extract<T, U> keeps only types assignable to U. NonNullable<T> removes null and undefined — useful for values that have been validated." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Partial<T>", "note": "Use for update/patch payloads" },
+        { "label": "Required<T>", "note": "Makes every optional prop required" },
+        { "label": "Pick<T, K>", "note": "Keep only listed keys" },
+        { "label": "Omit<T, K>", "note": "Remove listed keys" },
+        { "label": "Record<K, V>", "note": "Key-value map type" },
+        { "label": "Exclude / Extract", "note": "Filter union types" },
+        { "label": "NonNullable<T>", "note": "Remove null + undefined from union" },
+        { "label": "ReturnType<F>", "note": "Infer what a function returns" }
+      ],
+      "patterns": [
+        { "title": "Patch payload (Partial)" },
+        { "title": "Config builder" }
+      ],
+      "whenToUse": "Use utility types instead of duplicating interface definitions. Partial and Omit are essential for API update payloads. Pick creates focused view-models. Record builds dictionaries.",
+      "commonMistakes": [
+        "Defining a separate \"optional\" interface by hand — use Partial<T> or Pick<T, K> instead; they stay in sync when the base type changes",
+        "Confusing Exclude and Omit — Omit removes keys from an object type; Exclude filters members from a union type",
+        "Not using NonNullable after validation — if you have checked that a value is not null, NonNullable communicates that to TypeScript"
+      ]
+    }
+  },
+  "ts-arrays": {
+    "title": "Arrays & Tuples",
+    "description": "Typed arrays with push enforcement and fixed-length tuples for positional data",
+    "steps": [
+      { "animationStep": 0, "heading": "Typed arrays", "text": "TypeScript allows you to specify that an array should only contain elements of a particular type. Use the T[] syntax or the generic Array<T> form — both are equivalent." },
+      { "animationStep": 1, "heading": "Arrays of objects", "text": "You can type arrays of custom object shapes. TypeScript checks each element against the type, and gives you autocomplete for all properties when you iterate." },
+      { "animationStep": 2, "heading": "Tuples — fixed-length arrays", "text": "A tuple is a typed array with a fixed number of elements where each position has its own type. Tuples are useful for positional data like coordinates, key-value pairs, or function return values." },
+      { "animationStep": 3, "heading": "Labeled tuples", "text": "TypeScript supports labeled tuple elements for better readability. Labels do not change the type — they only appear in editor tooltips — but they make the intent much clearer than unnamed positional slots." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Typed array (T[])", "note": "Most common syntax; T[] and Array<T> are equivalent" },
+        { "label": "Generic array (Array<T>)", "note": "More readable for complex nested types" },
+        { "label": "Readonly array", "note": "Prevents mutation — good for configuration" },
+        { "label": "Tuple", "note": "Fixed-length; each index has its own type" },
+        { "label": "Tuple with optional element", "note": "Trailing ? makes the element optional" }
+      ],
+      "patterns": [
+        { "title": "Array of objects" },
+        { "title": "Function returning tuple" }
+      ],
+      "whenToUse": "Use T[] for any homogeneous collection. Use tuples when you have a fixed set of positional values with different types — especially for function return values that bundle related data without needing a full object.",
+      "commonMistakes": [
+        "Using any[] — this defeats type checking on array contents; use the specific element type instead",
+        "Exceeding tuple length — TypeScript allows push on non-readonly tuples, which can corrupt positional assumptions; use readonly tuples when immutability matters",
+        "Confusing tuples with union arrays — [string, number] is a two-element tuple; (string | number)[] is an array of any length with mixed types"
+      ]
+    }
+  },
+  "ts-classes": {
+    "title": "Classes & Inheritance",
+    "description": "TypeScript classes with typed properties, access modifiers, and abstract base classes",
+    "steps": [
+      { "animationStep": 0, "heading": "Class syntax with types", "text": "TypeScript classes work like JavaScript classes but with type annotations. Declare property types at the top of the class body before the constructor. TypeScript enforces that the constructor initializes every non-optional property." },
+      { "animationStep": 1, "heading": "readonly and optional properties", "text": "Mark a property readonly to prevent mutation after construction. Mark it optional with ? when it may not always be provided. TypeScript checks both at compile time." },
+      { "animationStep": 2, "heading": "Access modifiers", "text": "TypeScript adds three access modifiers: public (default — accessible everywhere), private (only within the class), and protected (within the class and subclasses). The # prefix is JavaScript's native private field — enforced at runtime, not just compile time." },
+      { "animationStep": 3, "heading": "Inheritance with extends", "text": "A class can extend another class to inherit its public and protected members. The subclass must call super() before accessing this. Override methods to provide specialized behavior." },
+      { "animationStep": 4, "heading": "Abstract classes", "text": "An abstract class cannot be instantiated directly — it exists to be extended. Abstract methods have no implementation in the base class; every concrete subclass must implement them." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Class with typed props", "note": "Declare property types before constructor" },
+        { "label": "readonly", "note": "Can be set in constructor only" },
+        { "label": "Access modifiers", "note": "private is compile-time; # is runtime-enforced" },
+        { "label": "extends", "note": "Inherits public + protected members" },
+        { "label": "abstract class", "note": "Cannot instantiate — must be subclassed" },
+        { "label": "implements", "note": "Class must provide all interface members" }
+      ],
+      "patterns": [
+        { "title": "Abstract base class" },
+        { "title": "Parameter shorthand" }
+      ],
+      "whenToUse": "Use classes when you need encapsulation, inheritance, or shared behavior across instances. Prefer abstract classes over interfaces when you also want to share concrete method implementations. For simple data containers, prefer interfaces or type aliases.",
+      "commonMistakes": [
+        "Forgetting super() in subclass constructors — TypeScript errors if you access this before calling super()",
+        "Using private when you need protected — private members are inaccessible in subclasses; use protected when subclasses need them",
+        "Overusing class-based OOP in React — React components are best as functions; only reach for classes when modeling domain entities with behavior"
+      ]
+    }
+  },
+  "ts-enums": {
+    "title": "Enums",
+    "description": "Named constants with numeric or string values — and exhaustive switch checks",
+    "steps": [
+      { "animationStep": 0, "heading": "Numeric enums", "text": "An enum declares a set of named constants. By default, values are auto-incremented numbers starting at 0. You can override the start value or set explicit values for any member." },
+      { "animationStep": 1, "heading": "String enums", "text": "String enums require explicit string values for every member. They are more readable in logs and debugging because the value itself is meaningful — unlike numeric enums where you only see a number." },
+      { "animationStep": 2, "heading": "Exhaustive switch with never", "text": "When every enum value is handled in a switch, TypeScript knows the default branch is unreachable. Assigning to never in the default catches missing cases at compile time." },
+      { "animationStep": 3, "heading": "Real-world use: RBAC roles", "text": "String enums are well-suited for roles, statuses, and configuration constants that appear in logs, APIs, and databases — the string value is self-documenting." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Numeric enum", "note": "Auto-numbered from 0; supports reverse lookup" },
+        { "label": "String enum", "note": "Values are readable strings — preferred for APIs/logs" },
+        { "label": "Const enum", "note": "Faster but cannot be iterated at runtime" },
+        { "label": "Enum as type", "note": "Only enum members pass the type check" }
+      ],
+      "patterns": [
+        { "title": "Exhaustive switch" }
+      ],
+      "whenToUse": "Use string enums for status values, roles, and configuration keys that appear in APIs, logs, and databases — the string value is self-documenting. Use const enum for compile-time constants that are never iterated. Prefer string unions (\"draft\" | \"published\") over enums in React props — they are simpler and require no import.",
+      "commonMistakes": [
+        "Using numeric enums where the value appears in logs or APIs — the number has no meaning; use string enums instead",
+        "Forgetting that TypeScript numeric enums are two-way — Direction[0] gives \"Up\", which can cause unexpected behavior",
+        "Using enums in React component props — prefer string literal unions which are lighter and require no import"
+      ]
+    }
+  },
+  "ts-type-assertion": {
+    "title": "Type Assertion",
+    "description": "Override TypeScript's inferred type with as — and when to use it safely",
+    "steps": [
+      { "animationStep": 0, "heading": "The as keyword", "text": "Type assertion tells TypeScript \"trust me, I know the type better than you do.\" Use the as keyword (not angle brackets — they conflict with JSX). The assertion only affects the compiler, never the runtime value." },
+      { "animationStep": 1, "heading": "JSON and API responses", "text": "When you parse JSON or receive data from an API, TypeScript infers the type as any or unknown. Asserting a specific type immediately after parsing gives you full type safety downstream — but you are responsible for the correctness of the assertion." },
+      { "animationStep": 2, "heading": "Limitations and non-null assertion", "text": "Type assertion cannot convert completely incompatible types. The non-null assertion operator ! asserts that a value is neither null nor undefined. Use it sparingly: if the value really can be null at runtime, the assertion will not protect you." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "as assertion", "note": "Prefer as over angle brackets — compatible with JSX" },
+        { "label": "Non-null assertion (!)", "note": "Use only when you are certain the value exists" },
+        { "label": "Double assertion", "note": "Last resort — signals something is wrong with the types" },
+        { "label": "as const", "note": "Narrows to literal types and makes object readonly" }
+      ],
+      "patterns": [
+        { "title": "DOM element casting" }
+      ],
+      "whenToUse": "Use type assertion when TypeScript cannot infer the correct type from context — typically when selecting DOM elements, parsing JSON, or working with weakly-typed third-party libraries. Always prefer a runtime type guard over a bare assertion when the value comes from an external source.",
+      "commonMistakes": [
+        "Using as to silence type errors instead of fixing the underlying issue — assertions bypass the type system; fix the root cause instead",
+        "Overusing non-null assertion (!) — each ! is a promise to TypeScript that can crash at runtime if the value is actually null",
+        "Double assertions (as unknown as T) — always a design smell; use proper generics or type guards instead"
+      ]
+    }
   },
   "ts-react": {
     "title": "TypeScript in React",
@@ -730,7 +915,8 @@
       { "animationStep": 1, "heading": "Typing State", "text": "useState accepts a generic: useState<T>(initial). When initial state is null or undefined, TypeScript cannot infer the full type — always annotate explicitly. For complex objects, define a type alias and pass it as the generic. TypeScript then prevents you from setting state with the wrong shape." },
       { "animationStep": 2, "heading": "Typing useRef & useReducer", "text": "useRef needs an explicit element type — TypeScript cannot guess whether it points to an input, a div, or a canvas. Pass the HTML element type as a generic and null as the initial value. useReducer benefits most from TypeScript: define State and a discriminated union for Action, and the exhaustive default branch catches missing cases at compile time." },
       { "animationStep": 3, "heading": "useCallback & useMemo", "text": "useCallback caches a function so its reference stays stable across renders — pass the typed function directly. useMemo caches a computed value and only recomputes when dependencies change. TypeScript infers the return type of useMemo from the callback. Both are most valuable when passed to child components via props or used as useEffect dependencies." },
-      { "animationStep": 4, "heading": "Typing API responses", "text": "Define a type for your API response and pass it as the generic to useState and fetch wrappers. A generic fetch utility fetchData<T>() fetches a URL and asserts the JSON matches T — giving you full type safety downstream. Use Partial<T> for PATCH operations where only some fields are sent." }
+      { "animationStep": 4, "heading": "Typing API responses", "text": "Define a type for your API response and pass it as the generic to useState and fetch wrappers. A generic fetch utility fetchData<T>() fetches a URL and asserts the JSON matches T — giving you full type safety downstream. Use Partial<T> for PATCH operations where only some fields are sent." },
+      { "animationStep": 5, "heading": "Typing DOM Events", "text": "React provides specific event handler types for each HTML element. Use MouseEventHandler<Element>, ChangeEventHandler<Element>, and FormEventHandler<Element> so TypeScript knows which properties are available on the event object." }
     ],
     "cheatSheet": {
       "syntax": [
@@ -739,7 +925,8 @@
         { "label": "useRef", "note": "Always type the HTML element; use optional chaining" },
         { "label": "useReducer action union", "note": "Discriminated union — exhaustive switch catches missing cases" },
         { "label": "children prop", "note": "ReactNode covers all valid JSX child types" },
-        { "label": "Generic fetch", "note": "Assert the response type — T flows to callers" }
+        { "label": "Generic fetch", "note": "Assert the response type — T flows to callers" },
+        { "label": "Event handler types", "note": "Specific handler types give accurate event.target" }
       ],
       "patterns": [
         { "title": "Component with typed props" },
@@ -751,6 +938,37 @@
         "Letting useState infer from null — useState(null) gives type null, not string | null; always pass the generic",
         "Skipping types on useRef — untyped refs produce any; always pass the HTML element type",
         "Using any to silence errors — any disables all checking downstream; prefer unknown and narrow the type"
+      ]
+    }
+  },
+  "ts-zod": {
+    "title": "Zod — Runtime Validation",
+    "description": "Validate external data at runtime and infer TypeScript types from schemas — one source of truth",
+    "steps": [
+      { "animationStep": 0, "heading": "TypeScript's blind spot", "text": "TypeScript types only exist during development. When compiled to JavaScript, every interface and type is erased. Data arriving at runtime — from APIs, forms, or localStorage — is never checked by TypeScript. You can assert a type with `as`, but that's a promise to the compiler, not a real check. If the API changes shape, your app crashes silently." },
+      { "animationStep": 1, "heading": "Define schemas with Zod", "text": "Zod is a TypeScript-first schema validation library. You define a schema using Zod primitives — z.string(), z.number(), z.boolean(), z.object(). The schema is a real JavaScript object that exists at runtime and can validate incoming data." },
+      { "animationStep": 2, "heading": "safeParse — validate without throwing", "text": "Call safeParse() with the raw data. It returns { success, data, error } — never throws. Check success before accessing data. If validation fails, error contains detailed information about every field that did not match." },
+      { "animationStep": 3, "heading": "z.infer — one source of truth", "text": "Instead of writing a TypeScript type AND a Zod schema for the same thing, derive the type directly from the schema using z.infer. The schema becomes the single source of truth: change the schema, and the type updates automatically." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Primitives", "note": "Building blocks for all schemas" },
+        { "label": "String refinements", "note": "Chain methods to add constraints" },
+        { "label": "Object schema", "note": "optional() makes a field nullable/undefined" },
+        { "label": "Arrays & enums", "note": "Composable — use inside z.object()" },
+        { "label": "safeParse", "note": "Never throws — always check success first" },
+        { "label": "parse", "note": "Use when you want to throw on invalid input" },
+        { "label": "z.infer", "note": "Derive TypeScript type from schema — single source of truth" }
+      ],
+      "patterns": [
+        { "title": "Validated fetch utility" },
+        { "title": "Form validation" }
+      ],
+      "whenToUse": "Use Zod whenever data crosses a boundary you do not control: API responses, form submissions, URL parameters, localStorage values. Define the schema once and derive the TypeScript type from it with z.infer — never maintain a separate type and validator for the same shape.",
+      "commonMistakes": [
+        "Using as User instead of parsing with Zod — type assertions are promises to the compiler, not runtime checks; the assertion silently passes even if the data has the wrong shape",
+        "Calling parse() instead of safeParse() in user-facing code — parse() throws a ZodError that can crash a component; safeParse() returns success/error so you can handle it gracefully",
+        "Forgetting to derive the type with z.infer — if you write a separate TypeScript type, it can drift out of sync with the schema; always use z.infer as the single source of truth"
       ]
     }
   },
@@ -1020,6 +1238,399 @@
         "Using git reset on already-pushed commits — this rewrites history and will force-push errors or confuse teammates; use git revert instead",
         "git restore . with unsaved work you meant to keep — there is no undo; double-check git status before running",
         "Losing stashes — git stash drop removes a stash permanently; use git stash list to confirm before dropping"
+      ]
+    }
+  },
+  "nextjs-basics": {
+    "title": "Next.js",
+    "description": "Build fullstack React apps with the App Router — server components, data fetching, server functions, and error handling",
+    "steps": [
+      { "animationStep": 0, "heading": "What is Next.js?", "text": "Next.js is a React framework for production apps that provides routing, data fetching, code-splitting, and deployment out of the box. With React 19 and React Server Components (RSC), it now embraces a fullstack model: components can run permanently on the server, fetch data without useEffect, and query databases directly — all in the same component tree as your client-side UI." },
+      { "animationStep": 1, "heading": "App Router & project structure", "text": "Create a Next.js project with `npx create-next-app@latest`. The App Router uses the file system to define routes: every folder under `src/app/` becomes a URL segment. Special files control what renders at each segment — page.js is the UI, layout.js wraps it with shared chrome, loading.js shows a Suspense fallback, and error.js catches uncaught exceptions." },
+      { "animationStep": 2, "heading": "Server vs Client Components", "text": "In the App Router, every component is a Server Component by default — it runs on the server, can be async, and never ships to the client bundle. Add 'use client' at the top of a file to opt into a Client Component when you need interactivity, state, or browser APIs. The rule: start with Server Components, reach for Client Components only when necessary." },
+      { "animationStep": 3, "heading": "Data fetching & streaming", "text": "Server Components can use fetch() or call a database client directly — no API layer needed. For slow data, pass a Promise to a Client Component and use use() with Suspense to stream content progressively. A loading.js file is the shortcut: Next.js automatically wraps the page in a Suspense boundary and shows the loading UI while rendering." },
+      { "animationStep": 4, "heading": "Server Functions & mutations", "text": "A Server Function is an async function marked with 'use server' — it runs exclusively on the server but can be called from any component, including Client Components. Use them as form action props to handle submissions without a separate API endpoint. After mutating data, call revalidatePath() or revalidateTag() to purge the cache and trigger a re-render." },
+      { "animationStep": 5, "heading": "Error handling", "text": "Next.js splits errors into two categories. Expected errors (validation, 404s) should be handled explicitly — return structured state from Server Functions with useActionState, check res.ok from fetch, or call notFound() for missing resources. Unexpected errors are caught by error.js boundaries — a Client Component that receives the error and a reset() function to retry." }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Server Component", "note": "async, can fetch/query DB, never in browser bundle" },
+        { "label": "Client Component", "note": "'use client' must be the first line" },
+        { "label": "Server Function", "note": "Called as form action or from Client Components" },
+        { "label": "Suspense streaming", "note": "Client Component uses use(promise) to unwrap" },
+        { "label": "loading.js", "note": "Automatically wraps page.js in a Suspense boundary" },
+        { "label": "error.js", "note": "Catches uncaught exceptions in this route segment" },
+        { "label": "notFound()", "note": "Renders the nearest not-found.js file" }
+      ],
+      "patterns": [
+        { "title": "Server Component with fetch" },
+        { "title": "Server Function form action" },
+        { "title": "Streaming with Suspense" }
+      ],
+      "whenToUse": "Use Next.js when you need a production-ready fullstack React setup with built-in routing, server rendering, and deployment optimizations. Prefer plain React + Vite when you are building a client-only SPA without server-side data requirements.",
+      "commonMistakes": [
+        "Using useState or useEffect in a Server Component — these are client-only APIs; add 'use client' or move the logic to a child Client Component",
+        "Fetching in a Client Component when a Server Component would do — every client fetch adds a round-trip; prefer server-side data access",
+        "Forgetting revalidatePath() after a mutation — stale cached data will show old values until Next.js is told to revalidate",
+        "Putting 'use server' at the top of a file that also exports a default component — each directive scopes its file; keep Server Functions in separate action files"
+      ]
+    }
+  },
+  "nextjs-routing": {
+    "title": "File-based Routing",
+    "description": "Next.js maps folders to URL segments — create a folder, get a route. Dynamic segments, route groups, and catch-all routes give you full control without a router config.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Folders = Routes",
+        "text": "Every folder inside `src/app/` becomes a URL path segment. A file named `page.tsx` inside that folder makes it a real route. No router config, no imports — just create the folder and file. Nested folders create nested URLs."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Dynamic Segments",
+        "text": "Wrap a folder name in square brackets to create a dynamic segment: `[id]` matches /posts/1, /posts/abc, etc. Read the value with the `params` prop — in Next.js 15+ `params` must be awaited."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Route Groups",
+        "text": "Wrap a folder name in parentheses to create a route group: `(marketing)` groups routes without adding to the URL. Use this to share layouts across routes that are not nested in the URL."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Catch-all Segments",
+        "text": "Use `[...slug]` to match multiple path segments at once. `params.slug` is an array of the segments. Add double brackets `[[...slug]]` to make the catch-all optional — it then also matches the root path."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Static route" },
+        { "label": "Dynamic segment" },
+        { "label": "Route group" },
+        { "label": "Catch-all" },
+        { "label": "Optional catch-all" }
+      ],
+      "whenToUse": "Use file-based routing as your primary routing strategy — no configuration needed. Use route groups to share layouts without affecting URLs. Use dynamic segments for content-driven pages like blog posts, product pages, and user profiles.",
+      "commonMistakes": [
+        "Forgetting that page.tsx is required — creating a folder without page.tsx creates a layout-only segment that renders no UI",
+        "Reading params without awaiting in Next.js 15+ — params is now a Promise; always await it",
+        "Naming the catch-all file incorrectly — it must be [...slug] not [slug] to match multiple segments"
+      ]
+    }
+  },
+  "nextjs-layouts": {
+    "title": "Layouts & Special Files",
+    "description": "Nest layouts without re-rendering, add metadata for SEO, and use special files to handle loading, errors, and not-found states at every route level.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Nested Layouts",
+        "text": "`layout.tsx` wraps `page.tsx` and all child routes. Layouts persist across navigations — they do not re-render when the child page changes. Nest layout files to build complex UI: a root layout with html and body, a dashboard layout with a sidebar, a settings layout with a tab bar."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Special Files",
+        "text": "Next.js reserves specific filenames at each route segment. `loading.tsx` shows a skeleton while the page renders. `error.tsx` catches unhandled exceptions and must be a Client Component. `not-found.tsx` renders when `notFound()` is called. `template.tsx` re-renders on every navigation — useful for page transitions."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Metadata API",
+        "text": "Export a metadata object or a generateMetadata() function from any `page.tsx` or `layout.tsx` to set head tags. Static metadata is exported as a constant. Dynamic metadata uses generateMetadata() — an `async` function that receives the same `params` as the page."
+      },
+      {
+        "animationStep": 3,
+        "heading": "RootLayout Requirements",
+        "text": "Every Next.js app must have `app/layout.tsx` — the root layout. It must include html and body tags. It wraps every page and is the right place for global styles, analytics, auth providers, and theme providers."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Layout file" },
+        { "label": "Loading UI" },
+        { "label": "Error boundary" },
+        { "label": "Not found" },
+        { "label": "Static metadata" },
+        { "label": "Dynamic metadata" }
+      ],
+      "whenToUse": "Use layouts for persistent UI (nav, sidebar, footer). Use loading.tsx to prevent layout shift during data fetches. Use the metadata API instead of manually adding head tags — it handles deduplication and inheritance automatically.",
+      "commonMistakes": [
+        "Forgetting html + body in the root layout — Next.js will throw an error if they are missing",
+        "Using error.tsx as a Server Component — it must have 'use client' to use the reset() function",
+        "Overusing template.tsx — unlike layout, it re-mounts on every navigation which can hurt performance"
+      ]
+    }
+  },
+  "nextjs-navigation": {
+    "title": "Navigation",
+    "description": "Link for declarative navigation with prefetching, useRouter for programmatic navigation, and redirect() / notFound() for server-side routing.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Link Component",
+        "text": "Use `Link` from `next/link` instead of a for client-side navigation — no full page reload. Next.js automatically prefetches linked pages in the background when they appear in the viewport, making navigation feel instant."
+      },
+      {
+        "animationStep": 1,
+        "heading": "useRouter — Programmatic Navigation",
+        "text": "Use `useRouter` from `next/navigation` in Client Components when you need to navigate after an action. router.push() adds to history, router.replace() replaces the current entry, router.back() and router.forward() move through history."
+      },
+      {
+        "animationStep": 2,
+        "heading": "usePathname & useSearchParams",
+        "text": "`usePathname()` returns the current path as a string — useful for highlighting active nav links. `useSearchParams()` reads the ?key=value query string. Both are Client Component hooks from `next/navigation`."
+      },
+      {
+        "animationStep": 3,
+        "heading": "redirect() and notFound()",
+        "text": "`redirect()` from `next/navigation` navigates programmatically from Server Components, Server Functions, and Route Handlers — no need for a Client Component. `notFound()` renders the nearest `not-found.tsx` file. Both throw internally, so code after them never runs."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Link", "note": "Prefetches on hover — use instead of <a>" },
+        { "label": "useRouter", "note": "Client Components only" },
+        { "label": "usePathname", "note": "For active link highlighting" },
+        { "label": "useSearchParams", "note": "Reads ?key=value query string" },
+        { "label": "redirect()", "note": "Throws internally — no code runs after it" },
+        { "label": "notFound()", "note": "Renders nearest not-found.tsx" }
+      ],
+      "whenToUse": "Use Link for all navigation in JSX. Use useRouter for navigation triggered by non-link interactions. Use redirect() and notFound() in Server Components and Server Actions for auth guards and missing resources.",
+      "commonMistakes": [
+        "Using <a href> instead of Link — causes a full page reload and loses client-side state",
+        "Calling useRouter in a Server Component — it is a Client Component hook only",
+        "Forgetting that redirect() throws — any code after redirect() will not execute"
+      ]
+    }
+  },
+  "nextjs-server-components": {
+    "title": "Server Components",
+    "description": "Server Components run permanently on the server — async, access databases directly, and ship zero JavaScript to the browser.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Always on the Server",
+        "text": "React Server Components run exclusively on the server and are never shipped to the browser bundle. They can be `async`, access databases and secrets directly, and read from the filesystem. Every component in the App Router is a Server Component by default — no directive needed."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Direct Data Access",
+        "text": "Server Components can call databases, read files, and fetch from internal APIs directly — no separate API endpoint required. Sensitive credentials never leave the server because the component never runs in the browser."
+      },
+      {
+        "animationStep": 2,
+        "heading": "What You Cannot Do",
+        "text": "Server Components cannot use React state, effects, or any browser API. No `useState`, `useEffect`, `useContext`, `useRef`. No event handlers like `onClick` or `onChange`. No `window`, `document`, `localStorage`. If you need any of these, add `'use client'` or extract the interactive part into a separate Client Component."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Composing with Client Components",
+        "text": "Server Components can render Client Components as children. Pass serializable data (strings, numbers, plain objects, arrays) as props. The component tree can freely mix server and client — each component renders in the environment it belongs to."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Server Component (default)" },
+        { "label": "Direct DB access" },
+        { "label": "Parallel data fetching" },
+        { "label": "Passing data to Client" }
+      ],
+      "whenToUse": "Use Server Components for everything that fetches data, displays static content, or should not add to the browser bundle. Only switch to Client Components when you need interactivity, state, or browser APIs.",
+      "commonMistakes": [
+        "Adding useState or useEffect to a Server Component — move interactive logic to a Client Component",
+        "Trying to pass a function as a prop to a Client Component — use Server Actions for server-side callbacks",
+        "Importing a heavy client-side library in a Server Component — check that it supports server environments"
+      ]
+    }
+  },
+  "nextjs-client-components": {
+    "title": "Client Components",
+    "description": "Add 'use client' to enable hooks, event handlers, and browser APIs. Client Components are still server-rendered for the initial HTML — the directive opts into interactivity, not client-only rendering.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "'use client' Directive",
+        "text": "Add 'use client' as the very first line of a file to mark it as a Client Component. This opts the entire file — and everything it imports — into the client bundle. The directive is a boundary declaration: it tells Next.js where the server-to-client handoff happens."
+      },
+      {
+        "animationStep": 1,
+        "heading": "When to Use Client Components",
+        "text": "Use 'use client' when your component needs: React hooks (useState, useEffect, useRef, useContext), event handlers (onClick, onChange, onSubmit), browser APIs (window, document, localStorage, navigator), or real-time updates. If none of these apply, keep it as a Server Component."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Hydration",
+        "text": "Client Components are still server-rendered for the initial HTML — 'use client' does not mean skip server rendering. Next.js renders the component on the server to produce HTML (fast initial paint), then ships the JavaScript and hydrates it on the client. Hydration requires server and client renders to produce identical output."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Push Boundaries to the Leaves",
+        "text": "The 'use client' boundary includes everything imported from that file. Placing it high in the tree makes everything below it a Client Component. Best practice: push 'use client' as far down the tree as possible, to the smallest components that actually need interactivity."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "'use client' directive" },
+        { "label": "When to use" },
+        { "label": "Push to leaves" }
+      ],
+      "whenToUse": "Add 'use client' only when you need hooks, events, or browser APIs. Keep the boundary as low in the tree as possible — fetch data in Server Components, then pass it down to leaf-level Client Components for interaction.",
+      "commonMistakes": [
+        "Making a component async with 'use client' — 'use client' components cannot be async",
+        "Adding 'use client' to every component as a safety measure — this defeats RSC and inflates the bundle",
+        "Assuming 'use client' means no server rendering — Client Components ARE server-rendered for the initial HTML"
+      ]
+    }
+  },
+  "nextjs-suspense": {
+    "title": "Suspense & Streaming",
+    "description": "Stream server-rendered HTML progressively with Suspense, show skeletons while data loads, and handle errors and not-found states with dedicated boundary files.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "loading.tsx — Instant Skeleton UI",
+        "text": "Add loading.tsx next to any page.tsx to automatically wrap it in a Suspense boundary. Next.js streams the layout immediately while the page fetches data — users see a skeleton instead of a blank screen. loading.tsx is a Server Component and can be a simple spinner or a full skeleton."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Streaming with Suspense",
+        "text": "For more granular control — streaming individual sections of a page — use Suspense manually. Pass a fallback prop for the skeleton. Start fetching data without await, pass the Promise to a Client Component that uses use() to suspend. Multiple Suspense boundaries on one page stream independently."
+      },
+      {
+        "animationStep": 2,
+        "heading": "error.tsx and not-found.tsx",
+        "text": "error.tsx catches any unhandled exception thrown during rendering or data fetching in its route segment. It must be a Client Component to use the reset() callback. not-found.tsx renders when notFound() is called. Place these files at different route levels to scope which errors they catch."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "loading.tsx" },
+        { "label": "Manual Suspense" },
+        { "label": "use() in Client Component" },
+        { "label": "error.tsx" },
+        { "label": "not-found.tsx" }
+      ],
+      "whenToUse": "Use loading.tsx for page-level loading states. Use manual Suspense for streaming multiple independent data sections on one page. Use error.tsx for graceful error recovery.",
+      "commonMistakes": [
+        "Awaiting the promise before passing to a Client Component — do NOT await; pass the raw Promise so Suspense can suspend",
+        "Forgetting 'use client' on error.tsx — it needs to be a Client Component to call reset()",
+        "Using loading.tsx and manual Suspense on the same route — manual Suspense gives finer control over individual sections"
+      ]
+    }
+  },
+  "nextjs-data-fetching": {
+    "title": "Data Fetching",
+    "description": "Fetch data in Server Components without useEffect. Control caching with fetch options, avoid waterfalls with parallel fetching, and revalidate on demand or on a schedule.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "fetch() in Server Components",
+        "text": "Server Components can call fetch() directly — no useEffect, no loading state, no API route. Next.js extends the native fetch with caching options. The response is automatically deduped: if multiple Server Components call the same URL during one render, Next.js makes only one network request."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Cache Options & Revalidation",
+        "text": "Control how Next.js caches fetch responses with the next option. force-cache (default) caches indefinitely. no-store always fetches fresh. revalidate: 60 caches but refreshes every 60 seconds. Use revalidateTag() or revalidatePath() to manually bust the cache from a Server Action."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Parallel Fetching",
+        "text": "Sequential await calls create a waterfall — each fetch waits for the previous to finish. Use Promise.all() to fire all fetches simultaneously. This is especially important in nested layouts and pages where multiple pieces of data are needed."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Database Access & ORM",
+        "text": "Server Components can import database clients directly — no API layer needed. Use an ORM like Prisma or Drizzle to query your database with full TypeScript types. Add server-only import to any module that should never accidentally run in the browser."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Basic fetch" },
+        { "label": "No-store (dynamic)" },
+        { "label": "Revalidate (ISR)" },
+        { "label": "Revalidate tag" },
+        { "label": "Parallel fetching" }
+      ],
+      "whenToUse": "Fetch data directly in Server Components — no API routes, no useEffect. Use parallel fetching for all independent data. Use timed revalidation for data that changes occasionally, no-store for real-time data, and manual revalidation for mutation-driven updates.",
+      "commonMistakes": [
+        "Sequential await for independent data — use Promise.all() to run fetches in parallel and avoid waterfalls",
+        "Using fetch inside a Client Component with useEffect — move fetches to Server Components to keep them server-side",
+        "Forgetting to check res.ok before calling res.json() — a 404 or 500 response does not throw; always check before parsing"
+      ]
+    }
+  },
+  "nextjs-server-actions": {
+    "title": "Server Actions",
+    "description": "Mark async functions with 'use server' to create Server Actions — call them from forms or Client Components to mutate data without building an API endpoint.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "'use server' Functions",
+        "text": "A Server Action is an async function marked with 'use server'. It runs only on the server but can be called from anywhere — a Client Component, a form action prop, or another Server Component. Next.js serializes the call over HTTP transparently. Use Server Actions for all mutations: creating, updating, deleting data."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Form Actions",
+        "text": "Pass a Server Action directly to a form's action prop — no onSubmit, no e.preventDefault(), no fetch(). The browser POSTs the FormData to the Server Action. This works even with JavaScript disabled — a progressive enhancement."
+      },
+      {
+        "animationStep": 2,
+        "heading": "useActionState — Pending & Errors",
+        "text": "useActionState wraps a Server Action with pending/error state in a Client Component. It returns [state, action, isPending]. The action replaces the raw Server Action — pass it to the form. isPending is true while the action runs. The state holds the return value of the last call."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Calling Actions from Client Components",
+        "text": "Server Actions can be called programmatically from Client Components — not just from forms. Import the action and call it like any async function. Use useTransition to get an isPending flag without tying it to a form. Useful for delete buttons, toggle actions, and any non-form mutation."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "Define a Server Action" },
+        { "label": "Form action" },
+        { "label": "useActionState" },
+        { "label": "Programmatic call" },
+        { "label": "After mutation" }
+      ],
+      "whenToUse": "Use Server Actions for all data mutations — create, update, delete. Prefer form actions for forms (progressive enhancement). Use useActionState for forms that need error/pending UI. Use useTransition for non-form mutations like delete buttons and toggles.",
+      "commonMistakes": [
+        "Forgetting revalidatePath() or revalidateTag() after a mutation — the UI will show stale data until the next full reload",
+        "Using Server Actions for data fetching — they are for mutations only; use async Server Components for reads",
+        "Placing 'use server' in a Client Component file — Server Actions must be in separate files or inline in Server Components"
+      ]
+    }
+  },
+  "nextjs-route-handlers": {
+    "title": "Route Handlers",
+    "description": "Build API endpoints with Route Handlers — HTTP GET/POST/DELETE endpoints using the standard Web Request and Response APIs.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Route Handler Files",
+        "text": "Create a route.ts file inside app/api/ to define HTTP endpoints. Export named functions for each method: GET, POST, PUT, PATCH, DELETE. The file uses the standard Web Request and Response APIs. Route Handlers can be async and can access databases and secrets just like Server Components."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Reading Request Data",
+        "text": "Route Handlers receive a standard Request object. Use request.json() for JSON bodies, request.formData() for form submissions, request.headers for headers, and new URL(request.url) to parse query parameters. Use NextRequest from next/server for extra utilities like cookies() and nextUrl."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Route Handlers vs Server Actions",
+        "text": "Use Server Actions (preferred) for mutations triggered by forms and buttons in your own UI — no API layer needed. Use Route Handlers when you need a proper HTTP API: webhooks from third parties, consumption by mobile apps or external clients, or when you need to return custom status codes and headers."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        { "label": "GET handler" },
+        { "label": "POST handler" },
+        { "label": "Dynamic route" },
+        { "label": "Query params" },
+        { "label": "Error response" }
+      ],
+      "whenToUse": "Use Route Handlers for webhooks, public APIs consumed by external clients, and cases where you need custom HTTP status codes or headers. For all mutations from your own React UI, prefer Server Actions.",
+      "commonMistakes": [
+        "Building Route Handlers for every mutation in your own UI — Server Actions are simpler and more integrated for internal mutations",
+        "Forgetting to handle the error case with a proper status code — always return appropriate HTTP status codes",
+        "Mixing route.ts and page.tsx in the same folder — Next.js will throw an error; API routes and page routes must be in separate folders"
       ]
     }
   },
