@@ -53,6 +53,7 @@ const lazyRegistry: Record<string, () => Promise<{ default: AnimComp }>> = {
   GenericsViz: () => import('./typescript/GenericsViz'),
   RouterViz: () => import('./react/RouterViz'),
   FetchViz: () => import('./webapis/FetchViz'),
+  DomViz: () => import('./webapis/DomViz'),
   DomEventsViz: () => import('./webapis/DomEventsViz'),
   StorageViz: () => import('./webapis/StorageViz'),
   ComponentsViz: () => import('./react/ComponentsViz'),

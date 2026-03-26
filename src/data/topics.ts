@@ -5517,7 +5517,7 @@ for (let i = 0; i < 5; i++) {
   {
     id: 'webapi-dom',
     category: 'webapis',
-    animationComponent: 'DomEventsViz',
+    animationComponent: 'DomViz',
     bannerComponent: 'DomBanner',
     nextTopicId: 'webapi-events',
     title: 'DOM API',
