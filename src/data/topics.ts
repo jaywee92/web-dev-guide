@@ -6250,6 +6250,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Browsers provide built-in key-value storage that works without any server. Useful for preferences, cached data, and offline state.',
             codeExample: '// Two storage APIs:\nlocalStorage    // persists forever\nsessionStorage  // cleared on tab close',
             language: 'javascript',
+            analogy: {
+              icon: '📌',
+              title: 'Sticky note vs whiteboard',
+              text: [
+                "localStorage is a sticky note on your monitor — it stays there when you close your laptop, when you restart the browser, when you come back a week later.",
+                "sessionStorage is a whiteboard in a meeting room — everything is wiped when the meeting (browser tab) ends.",
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -6258,6 +6266,14 @@ for (let i = 0; i < 5; i++) {
             text: 'setItem(key, value) stores a string value. Non-string values must be serialized with JSON.stringify.',
             codeExample: 'localStorage.setItem("username", "Alice")\nlocalStorage.setItem("theme", "dark")\nlocalStorage.setItem("prefs", JSON.stringify({ lang: "en" }))',
             language: 'javascript',
+            analogy: {
+              icon: '📓',
+              title: 'Writing in a notebook',
+              text: [
+                "setItem is like writing a note: key is the label, value is the content. But localStorage only accepts plain text — even if you write a number, it's stored as the string '42'.",
+                "That's why JSON.stringify is essential — it converts objects and arrays to a string before storing.",
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -6266,6 +6282,14 @@ for (let i = 0; i < 5; i++) {
             text: 'getItem(key) retrieves the stored value. Returns null if the key does not exist. Parse JSON values with JSON.parse.',
             codeExample: 'const name = localStorage.getItem("username") // "Alice"\nconst prefs = JSON.parse(\n  localStorage.getItem("prefs") ?? "{}"\n)',
             language: 'javascript',
+            analogy: {
+              icon: '🔎',
+              title: 'Looking something up',
+              text: [
+                "getItem is like flipping to a page by label. If the page exists, you get the content. If not — if you've never written to that key, or it was cleared — you get null.",
+                "Always check for null before parsing. A null check protects you from calling JSON.parse on a value that was never written.",
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -6274,6 +6298,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Data in localStorage survives page refreshes, tab closes, and browser restarts. It stays until explicitly cleared.',
             codeExample: '// Persists across sessions:\nlocalStorage.setItem("visited", "true")\n// close browser, reopen...\nlocalStorage.getItem("visited")  // still "true"',
             language: 'javascript',
+            analogy: {
+              icon: '💾',
+              title: 'Survives a power cut',
+              text: [
+                "Unlike variables in memory, localStorage survives browser restarts, computer restarts, and sleep. It's persisted to disk.",
+                "The only ways it disappears: the user clears browser data, you call localStorage.clear(), or the user is in private/incognito mode (cleared on tab close).",
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -6282,6 +6314,14 @@ for (let i = 0; i < 5; i++) {
             text: 'sessionStorage has the same API as localStorage but is cleared when the tab or window is closed.',
             codeExample: 'sessionStorage.setItem("step", "3")\n// close tab → data gone\n\n// Remove a key:\nlocalStorage.removeItem("theme")\n// Clear everything:\nlocalStorage.clear()',
             language: 'javascript',
+            analogy: {
+              icon: '🏢',
+              title: 'Conference room whiteboard',
+              text: [
+                "sessionStorage is scoped to the browser tab. Open a new tab — empty storage. Close the tab — everything gone. Perfect for wizard forms, multi-step flows, or temporary state.",
+                "Unlike localStorage, sessionStorage is also tab-isolated: two tabs to the same origin cannot read each other's sessionStorage.",
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -6290,6 +6330,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Both store key/value string pairs in the browser, but localStorage persists across browser sessions while sessionStorage is cleared when the tab closes. Neither should store sensitive data — they are accessible to any script on the page.',
             codeExample: `// localStorage — survives page refresh and browser close\nlocalStorage.setItem('theme', 'dark');\n\n// sessionStorage — cleared on tab close\nsessionStorage.setItem('draft', 'Hello...');`,
             language: 'javascript',
+            analogy: {
+              icon: '🗄️',
+              title: 'Two different drawers',
+              text: [
+                "localStorage is your personal desk drawer — it's yours across all sessions, persists forever, shared between all tabs to the same origin.",
+                "sessionStorage is a locker that gets cleared when you leave the building (tab closes). Each tab has its own locker.",
+              ],
+            },
           },
           {
             animationStep: 6,
@@ -6298,10 +6346,84 @@ for (let i = 0; i < 5; i++) {
             text: 'The Web Storage API is a simple key/value store. All values are stored as strings — use JSON.stringify and JSON.parse to store and retrieve objects.',
             codeExample: `// Store\nlocalStorage.setItem('user', JSON.stringify({ name: 'Alice', age: 25 }));\n\n// Retrieve\nconst user = JSON.parse(localStorage.getItem('user'));\nconsole.log(user.name); // 'Alice'\n\n// Remove one key\nlocalStorage.removeItem('user');\n\n// Wipe all keys\nlocalStorage.clear();`,
             language: 'javascript',
+            analogy: {
+              icon: '🗝️',
+              title: 'The full keycard',
+              text: [
+                "setItem and getItem are the most common operations. removeItem deletes a specific key. clear() nukes everything — use with caution.",
+                "The API is synchronous — it blocks the main thread. For large amounts of data, consider IndexedDB instead.",
+              ],
+            },
+          },
+          {
+            animationStep: 7,
+            icon: '🛡️',
+            heading: 'Safe Read with Fallback',
+            text: '`JSON.parse` throws a `SyntaxError` if the stored string is not valid JSON — from corrupted data, manual DevTools edits, or a previous bug. Always wrap reads in `try/catch` with a typed fallback value.',
+            codeExample: `function getStored<T>(key: string, fallback: T): T {\n  try {\n    const raw = localStorage.getItem(key)\n    if (raw === null) return fallback\n    return JSON.parse(raw) as T\n  } catch {\n    return fallback\n  }\n}\n\n// Usage\nconst prefs = getStored('userPrefs', { theme: 'light', lang: 'en' })\nconst cart  = getStored<string[]>('cart', [])`,
+            language: 'typescript',
+            analogy: {
+              icon: '⛑️',
+              title: 'Reading without a safety net',
+              text: [
+                "JSON.parse is like reading a note that could be in any language. Usually it's valid JSON, but sometimes a previous bug wrote gibberish. Without a try/catch, your whole app crashes on one bad note.",
+                "The fallback is what you'd use if the note was never written. The try/catch handles both missing and corrupted data in one pattern.",
+              ],
+            },
+          },
+          {
+            animationStep: 8,
+            icon: '⚠️',
+            heading: 'What NOT to Store',
+            text: 'Never store **passwords**, **auth tokens**, **session IDs**, or sensitive personal data in `localStorage` or `sessionStorage`. Any XSS vulnerability on your page exposes all storage instantly. Use **`httpOnly` cookies** for authentication — they are inaccessible to JavaScript by design.',
+            codeExample: `// Never store credentials in localStorage\n// localStorage.setItem('authToken', token)   <- do not do this\n\n// Auth tokens belong in httpOnly cookies (set by server):\n// Set-Cookie: token=abc123; HttpOnly; Secure; SameSite=Strict\n\n// Safe to store in localStorage:\nlocalStorage.setItem('theme', 'dark')\nlocalStorage.setItem('language', 'de')\nlocalStorage.setItem('cart', JSON.stringify(cartItems))`,
+            language: 'typescript',
+            analogy: {
+              icon: '🔑',
+              title: 'House keys under the doormat',
+              text: [
+                "Storing an auth token in localStorage is like hiding your house keys under the doormat. Anyone who finds an XSS vulnerability on your page can read it with one line of JavaScript.",
+                "httpOnly cookies are the bank vault. They're set by the server, invisible to JavaScript, and automatically sent with every request. If you build auth, use httpOnly cookies.",
+              ],
+            },
           },
         ],
       },
       { id: 'playground', type: 'playground', steps: [] },
+    ],
+    commonErrors: [
+      {
+        title: 'Storing auth tokens in localStorage',
+        why: 'localStorage is readable by any JavaScript on the page. A single XSS vulnerability exposes all tokens — a critical security breach.',
+        fixLabel: 'Use httpOnly cookies for authentication',
+        fixCode: `// Server sets this — JS cannot read it\n// Set-Cookie: token=...; HttpOnly; Secure; SameSite=Strict`,
+      },
+      {
+        title: 'JSON.parse without try/catch',
+        why: 'Corrupted data, manual DevTools edits, or a previous bug can leave invalid JSON in storage. JSON.parse throws a SyntaxError that crashes your app.',
+        fixLabel: 'Always wrap JSON.parse in try/catch',
+        fixCode: `try {\n  return JSON.parse(localStorage.getItem(key) ?? 'null')\n} catch {\n  return fallback\n}`,
+      },
+      {
+        title: 'Ignoring QuotaExceededError',
+        why: 'Browsers limit localStorage to ~5MB. Writing beyond this throws QuotaExceededError synchronously. Uncaught, it silently crashes setItem.',
+        fixLabel: 'Catch the error on setItem',
+        fixCode: `try {\n  localStorage.setItem(key, value)\n} catch (e) {\n  console.warn('Storage quota exceeded', e)\n}`,
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'App settings',
+        heading: 'Persist user preferences',
+        description: 'Read preferences on app load with a safe fallback. Write on every change. Use JSON for structured data.',
+        code: `const prefs = getStored('prefs', { theme: 'light', lang: 'en' })\napplyTheme(prefs.theme)\n\nfunction updatePref(key: string, value: string) {\n  const current = getStored('prefs', { theme: 'light', lang: 'en' })\n  const updated = { ...current, [key]: value }\n  localStorage.setItem('prefs', JSON.stringify(updated))\n}`,
+      },
+      {
+        context: 'E-commerce',
+        heading: 'Cart that survives page refresh',
+        description: 'Load cart from localStorage on mount. Write on every add/remove. Parse safely with try/catch, default to empty array.',
+        code: `const [cart, setCart] = useState<CartItem[]>(\n  () => getStored<CartItem[]>('cart', [])\n)\n\nuseEffect(() => {\n  try {\n    localStorage.setItem('cart', JSON.stringify(cart))\n  } catch { /* quota exceeded — degrade gracefully */ }\n}, [cart])`,
+      },
     ],
     cheatSheet: {
       syntax: [
