@@ -5,9 +5,7 @@ import type { Topic, ExplanationStep } from '@/types'
 import CodeBlock from '@/components/ui/CodeBlock'
 import { useAnimationStep } from '@/hooks/useAnimationStep'
 import AnalogyPanel from './AnalogyPanel'
-import {
-  getAnalogyComponent, preloadAnalogyAnimation,
-} from '@/topics/registry'
+
 
 interface Props {
   topic: Topic
@@ -21,16 +19,6 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
   const steps = explanationSection?.steps ?? []
   const ctrl = useAnimationStep({ totalSteps: Math.max(steps.length, 1), autoPlay: false })
 
-  const [AnalogyComp, setAnalogyComp] = useState<ComponentType<{ step: number }> | null>(
-    () => topic ? getAnalogyComponent(topic.analogyComponent) : null
-  )
-
-  useEffect(() => {
-    if (!topic?.analogyComponent) return
-    preloadAnalogyAnimation(topic.analogyComponent).then(() => {
-      setAnalogyComp(() => getAnalogyComponent(topic.analogyComponent))
-    })
-  }, [topic?.analogyComponent])
 
   if (steps.length === 0) return null
 
@@ -116,8 +104,6 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
             <AnalogyPanel
               analogy={steps[ctrl.step]?.analogy}
               color={topic.color}
-              AnalogyComp={AnalogyComp}
-              step={ctrl.step}
             />
           </div>
 
@@ -143,10 +129,9 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
 }
 
 function renderInlineText(text: string, color: string): React.ReactNode {
-  const parts = text.split(/(`[^`]+`)/)
+  const parts = text.split(/(`[^`]+`|\*\*[^*]+\*\*)/)
   return parts.map((part, i) => {
     if (part.startsWith('`') && part.endsWith('`')) {
-      const code = part.slice(1, -1)
       return (
         <code key={i} style={{
           fontFamily: 'var(--font-mono)', fontSize: 11,
@@ -156,9 +141,12 @@ function renderInlineText(text: string, color: string): React.ReactNode {
           padding: '1px 5px',
           color,
         }}>
-          {code}
+          {part.slice(1, -1)}
         </code>
       )
+    }
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return <strong key={i} style={{ color: 'var(--text)', fontWeight: 650 }}>{part.slice(2, -2)}</strong>
     }
     return part
   })
@@ -171,8 +159,10 @@ function StepBlock({ step, index, active, onActivate, color }: {
   onActivate: () => void
   color: string
 }) {
+  const { t } = useTranslation('topic')
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { margin: '-40% 0px -40% 0px' })
+  const [expanded, setExpanded] = useState(false)
 
   useEffect(() => {
     if (inView && !active) onActivate()
@@ -250,10 +240,60 @@ function StepBlock({ step, index, active, onActivate, color }: {
       </div>
 
       {/* Body */}
-      <div style={{ padding: '13px 18px 15px 21px' }}>
-        <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.75, margin: 0, marginBottom: step.codeExample ? 12 : 0 }}>
+      <div style={{ padding: '13px 18px 15px 21px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.75, margin: 0 }}>
           {renderInlineText(step.text, color)}
         </p>
+
+        {/* Expanded deeper explanation — Insight Cards */}
+        {step.expandedText && expanded && (
+          <div style={{ borderTop: `1px solid ${color}18`, paddingTop: 10, display: 'flex', flexDirection: 'column', gap: 7 }}>
+            {step.expandedText.split(/\n\n+/).map((para, i) => {
+              const trimmed = para.trim()
+              // Only use label if bold appears early (first 40 chars) — avoids mid-sentence extractions
+              const earlyBoldMatch = trimmed.match(/^\*\*([^*]+)\*\*|^.{0,40}\*\*([^*]+)\*\*/)
+              const label = earlyBoldMatch ? (earlyBoldMatch[1] ?? earlyBoldMatch[2]) : null
+              return (
+                <div key={i} style={{
+                  borderRadius: 8,
+                  border: `1px solid var(--border)`,
+                  background: 'var(--surface-bright)',
+                  padding: '9px 12px',
+                }}>
+                  {label && (
+                    <div style={{
+                      fontSize: 9, fontFamily: 'var(--font-mono)', fontWeight: 700,
+                      letterSpacing: '0.1em', color: `${color}99`,
+                      textTransform: 'uppercase', marginBottom: 4,
+                    }}>
+                      {label}
+                    </div>
+                  )}
+                  <p style={{ fontSize: 12.5, color: 'var(--text-muted)', lineHeight: 1.65, margin: 0 }}>
+                    {renderInlineText(trimmed, color)}
+                  </p>
+                </div>
+              )
+            })}
+          </div>
+        )}
+
+        {/* Learn more / Show less toggle */}
+        {step.expandedText && (
+          <button
+            onClick={e => { e.stopPropagation(); setExpanded(v => !v) }}
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+              fontSize: 12, color: `${color}b3`, fontWeight: 600,
+              alignSelf: 'flex-start', fontFamily: 'inherit',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = color }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = `${color}b3` }}
+          >
+            {expanded ? t('showLess') : t('learnMore')}
+          </button>
+        )}
+
         {step.codeExample && (
           <CodeBlock code={step.codeExample} language={step.language} />
         )}
