@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step Card Redesign — Preview</title>
+<style>
+  :root {
+    --bg:#0f1117;--surface:#1a1d27;--surface-bright:#222633;
+    --border:#2e3348;--text:#e2e4ed;--text-muted:#8b8fa7;--text-faint:#555a73;
+    --mono:'JetBrains Mono','Fira Code',monospace;
+    --c:#5b9cf5;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;padding:32px 24px 80px;min-height:100vh}
+  h1{font-size:22px;font-weight:800;margin-bottom:6px}
+  .sub{font-size:13px;color:var(--text-muted);margin-bottom:36px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1200px}
+  @media(max-width:800px){.grid{grid-template-columns:1fr}}
+
+  /* wrapper */
+  .opt{border-radius:14px;border:2px solid transparent;padding:16px;cursor:pointer;transition:border-color .2s,background .2s}
+  .opt:hover{background:#fff04;border-color:var(--c)30}
+  .opt.sel{border-color:var(--c);background:var(--c)08}
+  .opt-label{display:flex;align-items:center;gap:8px;margin-bottom:12px;
+    font-size:10px;font-family:var(--mono);font-weight:800;letter-spacing:.12em;color:var(--text-faint);text-transform:uppercase}
+  .letter{width:20px;height:20px;border-radius:5px;background:var(--c)18;border:1px solid var(--c)44;
+    color:var(--c);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .opt.sel .letter{background:var(--c);color:#0f1117;border-color:var(--c)}
+  .badge{font-size:8px;background:#fb923c15;border:1px solid #fb923c40;color:#fb923c;
+    border-radius:4px;padding:1px 6px;font-family:var(--mono);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+
+  /* shared */
+  code{font-family:var(--mono);font-size:11px;background:var(--c)14;border:1px solid var(--c)33;
+    border-radius:3px;padding:1px 5px;color:var(--c)}
+  b{color:var(--text);font-weight:650}
+  .pill{display:inline-block;font-size:9px;font-family:var(--mono);font-weight:800;letter-spacing:.1em;
+    padding:2px 7px;border-radius:20px;background:var(--c)2e;border:1px solid var(--c)66;color:var(--c);text-transform:uppercase}
+  .icon{width:36px;height:36px;border-radius:9px;background:var(--c)33;border:1px solid var(--c)73;
+    display:flex;align-items:center;justify-content:center;font-size:17px;
+    box-shadow:0 0 12px var(--c)2e;flex-shrink:0}
+
+  /* ── A current ── */
+  .ca{border-radius:13px;border:1px solid var(--c)4d;overflow:hidden;position:relative;
+    background:linear-gradient(90deg,var(--c)0a 0%,var(--surface) 110px);box-shadow:0 4px 24px var(--c)10}
+  .ca .ab{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c)}
+  .ca .hd{display:flex;align-items:center;gap:12px;padding:13px 16px 11px 20px;
+    background:linear-gradient(135deg,var(--c)1e 0%,var(--c)08 100%);border-bottom:1px solid var(--c)26}
+  .ca .bd{padding:12px 16px 14px 20px;display:flex;flex-direction:column;gap:8px}
+  .ca .mt{font-size:13px;color:var(--text-muted);line-height:1.75}
+  .ca .exp{border-top:1px solid var(--c)18;padding-top:8px;display:flex;flex-direction:column;gap:6px}
+  .ca .exp p{font-size:12.5px;color:var(--text-muted);line-height:1.72}
+  .ca .tog{background:none;border:none;cursor:pointer;padding:0;font-size:12px;color:var(--c)b3;font-weight:600;font-family:inherit}
+
+  /* ── B callout ── */
+  .cb{border-radius:13px;border:1px solid var(--c)4d;overflow:hidden;position:relative;
+    background:linear-gradient(90deg,var(--c)0a 0%,var(--surface) 110px);box-shadow:0 4px 24px var(--c)10}
+  .cb .ab{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c)}
+  .cb .hd{display:flex;align-items:center;gap:12px;padding:13px 16px 11px 20px;
+    background:linear-gradient(135deg,var(--c)1e 0%,var(--c)08 100%);border-bottom:1px solid var(--c)26}
+  .cb .bd{padding:12px 16px 14px 20px;display:flex;flex-direction:column;gap:10px}
+  .cb .mt{font-size:13px;color:var(--text-muted);line-height:1.75}
+  .cb .box{background:var(--c)0d;border:1px solid var(--c)28;border-left:3px solid var(--c)80;
+    border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:7px}
+  .cb .box-title{font-size:10px;font-family:var(--mono);font-weight:700;letter-spacing:.1em;color:var(--c);text-transform:uppercase}
+  .cb .box p{font-size:12.5px;color:var(--text-muted);line-height:1.7}
+  .cb .btn{display:inline-flex;align-items:center;gap:5px;background:var(--c)10;
+    border:1px solid var(--c)28;border-radius:6px;padding:5px 11px;
+    font-size:11px;color:var(--c);font-weight:600;font-family:inherit;cursor:pointer;align-self:flex-start}
+
+  /* ── C drawer ── */
+  .cc{border-radius:13px;border:1px solid var(--c)4d;overflow:hidden;position:relative;
+    background:linear-gradient(90deg,var(--c)0a 0%,var(--surface) 110px);box-shadow:0 4px 24px var(--c)10}
+  .cc .ab{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c)}
+  .cc .hd{display:flex;align-items:center;gap:12px;padding:13px 16px 11px 20px;
+    background:linear-gradient(135deg,var(--c)1e 0%,var(--c)08 100%);border-bottom:1px solid var(--c)26}
+  .cc .bd{padding:12px 16px 10px 20px;display:flex;flex-direction:column;gap:8px}
+  .cc .mt{font-size:13px;color:var(--text-muted);line-height:1.75}
+  .cc .div{display:flex;align-items:center;gap:8px;margin-top:2px}
+  .cc .dline{flex:1;height:1px;background:var(--c)20}
+  .cc .dbtn{padding:4px 10px;background:var(--c)08;border:1px solid var(--c)25;border-radius:20px;
+    font-size:10px;font-family:var(--mono);color:var(--c)90;font-weight:700;letter-spacing:.06em;white-space:nowrap}
+  .cc .drawer{background:#0d0f1a;border-top:1px solid var(--c)15;padding:14px 16px 14px 20px;
+    display:flex;flex-direction:column;gap:11px}
+  .cc .bul{display:flex;gap:9px;align-items:flex-start}
+  .cc .dot{width:6px;height:6px;border-radius:50%;background:var(--c)60;flex-shrink:0;margin-top:5px}
+  .cc .bul p{font-size:12.5px;color:var(--text-muted);line-height:1.7}
+  .cc .colbar{display:flex;align-items:center;justify-content:center;gap:5px;padding:7px;
+    border-top:1px solid var(--c)10;font-size:10px;font-family:var(--mono);color:var(--c)55;font-weight:700;letter-spacing:.06em}
+
+  /* ── D insight cards ── */
+  .cd{border-radius:13px;border:1px solid var(--c)4d;overflow:hidden;position:relative;
+    background:linear-gradient(90deg,var(--c)0a 0%,var(--surface) 110px);box-shadow:0 4px 24px var(--c)10}
+  .cd .ab{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c)}
+  .cd .hd{display:flex;align-items:center;gap:12px;padding:13px 16px 11px 20px;
+    background:linear-gradient(135deg,var(--c)1e 0%,var(--c)08 100%);border-bottom:1px solid var(--c)26}
+  .cd .bd{padding:12px 16px 14px 20px;display:flex;flex-direction:column;gap:10px}
+  .cd .mt{font-size:13px;color:var(--text-muted);line-height:1.75}
+  .cd .cg{display:flex;flex-direction:column;gap:7px}
+  .cd .ic{border-radius:8px;border:1px solid var(--border);background:var(--surface-bright);padding:9px 12px}
+  .cd .icl{font-size:9px;font-family:var(--mono);font-weight:700;letter-spacing:.1em;
+    color:var(--c)80;text-transform:uppercase;margin-bottom:4px}
+  .cd .ic p{font-size:12px;color:var(--text-muted);line-height:1.65}
+  .cd .tog{background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;gap:5px;
+    font-size:11px;color:var(--c)90;font-weight:600;font-family:inherit;align-self:flex-start}
+
+  /* bottom bar */
+  #bar{position:fixed;bottom:0;left:0;right:0;padding:13px 24px;
+    background:#0d0f18ee;border-top:1px solid var(--border);backdrop-filter:blur(14px);
+    display:flex;align-items:center;justify-content:center;gap:12px;
+    font-size:13px;color:var(--text-muted)}
+  #bar b{color:var(--c)}
+</style>
+</head>
+<body>
+
+<h1>Step Card Redesign — 4 Optionen</h1>
+<p class="sub">Alle mit identischem Inhalt und aufgeklapptem "Learn more". Klicke eine Karte um sie auszuwählen.</p>
+
+<div class="grid">
+
+<!-- ══ A: AKTUELL ══ -->
+<div class="opt" onclick="sel(this,'A')">
+  <div class="opt-label"><div class="letter">A</div> Aktuelles Design — Referenz</div>
+  <div class="ca">
+    <div class="ab"></div>
+    <div class="hd">
+      <div class="icon">⚡</div>
+      <div style="display:flex;flex-direction:column;gap:3px">
+        <span class="pill">INFO 02</span>
+        <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:2px">fetch() returns a Promise</h3>
+      </div>
+    </div>
+    <div class="bd">
+      <p class="mt">The request is sent immediately but the response arrives later. <code>fetch()</code> returns a <b>Promise</b> that resolves when the server responds.</p>
+      <div class="exp">
+        <p>A <code>fetch()</code> call returns a <b>Promise</b> that goes through two stages. It first resolves to a <code>Response</code> object when the headers arrive. Then you call <code>.json()</code> or <code>.text()</code> to get another Promise that resolves when the full body is parsed.</p>
+        <p>The two-stage design allows you to inspect headers and decide whether to continue reading the body — you can process a large file chunk by chunk using <code>response.body</code> as a <code>ReadableStream</code> rather than waiting for the entire download to complete.</p>
+      </div>
+      <button class="tog">↑ Show less</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ B: CALLOUT BOX ══ -->
+<div class="opt" onclick="sel(this,'B')">
+  <div class="opt-label"><div class="letter">B</div> Callout Box &nbsp;<span class="badge">Neu</span></div>
+  <div class="cb">
+    <div class="ab"></div>
+    <div class="hd">
+      <div class="icon">⚡</div>
+      <div style="display:flex;flex-direction:column;gap:3px">
+        <span class="pill">INFO 02</span>
+        <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:2px">fetch() returns a Promise</h3>
+      </div>
+    </div>
+    <div class="bd">
+      <p class="mt">The request is sent immediately but the response arrives later. <code>fetch()</code> returns a <b>Promise</b> that resolves when the server responds.</p>
+      <div class="box">
+        <div class="box-title">💡 &nbsp;Deep dive</div>
+        <p>A <code>fetch()</code> call returns a <b>Promise</b> going through two stages. It first resolves to a <code>Response</code> object when headers arrive — then you call <code>.json()</code> or <code>.text()</code> to parse the body. This lets you inspect <code>response.status</code> or <code>Content-Type</code> <b>before</b> reading the full body.</p>
+        <p>The two-stage design makes <b>streaming large responses</b> possible: use <code>response.body</code> as a <code>ReadableStream</code> to process data chunk by chunk without waiting for the full download to complete.</p>
+      </div>
+      <button class="btn">↑ Collapse</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ C: DEEP DIVE DRAWER ══ -->
+<div class="opt" onclick="sel(this,'C')">
+  <div class="opt-label"><div class="letter">C</div> Deep Dive Drawer &nbsp;<span class="badge">Neu</span></div>
+  <div class="cc">
+    <div class="ab"></div>
+    <div class="hd">
+      <div class="icon">⚡</div>
+      <div style="display:flex;flex-direction:column;gap:3px">
+        <span class="pill">INFO 02</span>
+        <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:2px">fetch() returns a Promise</h3>
+      </div>
+    </div>
+    <div class="bd">
+      <p class="mt">The request is sent immediately but the response arrives later. <code>fetch()</code> returns a <b>Promise</b> that resolves when the server responds.</p>
+      <div class="div">
+        <div class="dline"></div>
+        <div class="dbtn">▾ &nbsp;DEEPER EXPLANATION</div>
+        <div class="dline"></div>
+      </div>
+    </div>
+    <div class="drawer">
+      <div class="bul">
+        <div class="dot"></div>
+        <p>A <code>fetch()</code> call returns a <b>Promise</b> going through two stages. It first resolves to a <code>Response</code> when <b>headers arrive</b> — then a second call (<code>.json()</code> or <code>.text()</code>) reads the body. Both steps are async and both return Promises.</p>
+      </div>
+      <div class="bul">
+        <div class="dot"></div>
+        <p>The two-stage design lets you inspect headers first and decide whether to stream the body — useful for checking <code>Content-Type</code> before downloading, or processing data chunk by chunk via <code>response.body</code> as a <code>ReadableStream</code>.</p>
+      </div>
+    </div>
+    <div class="colbar">▴ &nbsp;COLLAPSE</div>
+  </div>
+</div>
+
+<!-- ══ D: INSIGHT CARDS ══ -->
+<div class="opt" onclick="sel(this,'D')">
+  <div class="opt-label"><div class="letter">D</div> Insight Cards &nbsp;<span class="badge">Neu</span></div>
+  <div class="cd">
+    <div class="ab"></div>
+    <div class="hd">
+      <div class="icon">⚡</div>
+      <div style="display:flex;flex-direction:column;gap:3px">
+        <span class="pill">INFO 02</span>
+        <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:2px">fetch() returns a Promise</h3>
+      </div>
+    </div>
+    <div class="bd">
+      <p class="mt">The request is sent immediately but the response arrives later. <code>fetch()</code> returns a <b>Promise</b> that resolves when the server responds.</p>
+      <div class="cg">
+        <div class="ic">
+          <div class="icl">🔵 &nbsp;Zwei-Stufen Promise</div>
+          <p>Löst zuerst zu einem <code>Response</code>-Objekt auf wenn die <b>Headers ankommen</b> — dann liest ein zweiter Aufruf von <code>.json()</code> oder <code>.text()</code> den vollständigen <b>Body</b>.</p>
+        </div>
+        <div class="ic">
+          <div class="icl">⚡ &nbsp;Warum das wichtig ist</div>
+          <p>Prüfe <code>response.status</code> oder <code>Content-Type</code> <b>bevor</b> du den Body lädst — ideal für große Responses oder um direkt mit <code>response.body</code> als <code>ReadableStream</code> zu streamen.</p>
+        </div>
+        <div class="ic">
+          <div class="icl">📦 &nbsp;ReadableStream</div>
+          <p>Verarbeite große Dateien <b>chunk-weise</b> ohne auf den vollständigen Download zu warten — perfekt für Live-Daten, Log-Streams oder progressive Ladestrategien.</p>
+        </div>
+      </div>
+      <button class="tog">▲ &nbsp;Show less</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /grid -->
+
+<div id="bar">Wähle eine Option: &nbsp;<b id="pick">noch nichts ausgewählt</b></div>
+
+<script>
+function sel(el, name) {
+  document.querySelectorAll('.opt').forEach(o => o.classList.remove('sel'))
+  el.classList.add('sel')
+  document.getElementById('pick').textContent = 'Option ' + name + ' ausgewählt ✓'
+}
+</script>
+</body>
+</html>

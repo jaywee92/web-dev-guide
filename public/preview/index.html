@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Previews — web-dev-guide</title>
+<style>
+  :root {
+    --bg: #0f1117; --surface: #1a1d27; --border: #2e3348;
+    --text: #e2e4ed; --tm: #8b8fa7; --tf: #555a73;
+    --mono: 'JetBrains Mono', 'Fira Code', monospace;
+    --c: #5b9cf5;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', system-ui, sans-serif; padding: 48px 24px 80px; }
+
+  header { max-width: 720px; margin-bottom: 48px; }
+  header h1 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+  header p { font-size: 13px; color: var(--tm); }
+  header a { color: var(--c); text-decoration: none; font-size: 12px; }
+  header a:hover { text-decoration: underline; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; max-width: 960px; }
+
+  a.card {
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    text-decoration: none;
+    transition: border-color .15s, background .15s, transform .15s;
+  }
+  a.card:hover { border-color: var(--c)66; background: var(--c)06; transform: translateY(-2px); }
+
+  .card-date { font-family: var(--mono); font-size: 9px; color: var(--tf); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
+  .card-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 5px; line-height: 1.3; }
+  .card-desc { font-size: 12px; color: var(--tm); line-height: 1.6; }
+
+  .badge {
+    display: inline-block; margin-top: 12px;
+    font-family: var(--mono); font-size: 8px; font-weight: 800;
+    letter-spacing: .1em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 20px;
+    background: var(--c)14; border: 1px solid var(--c)33; color: var(--c);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Design Previews</h1>
+  <p>UI-Prototypen für das web-dev-guide Projekt &nbsp;·&nbsp; <a href="/web-dev-guide/">← Zurück zur App</a></p>
+</header>
+
+<div class="grid">
+
+  <a class="card" href="preview-step-upgrade.html">
+    <div class="card-date">2026-04-10</div>
+    <div class="card-title">Step Block Upgrade</div>
+    <div class="card-desc">Beschreibungstext, Insight Cards und CodeBlock aufgewertet — Vorher/Nachher-Vergleich.</div>
+    <span class="badge">Neu</span>
+  </a>
+
+  <a class="card" href="preview-step-redesign-2.html">
+    <div class="card-date">2026-03-14</div>
+    <div class="card-title">Step Card — Weitere Optionen</div>
+    <div class="card-desc">Verschiedene Varianten für das StepBlock-Layout (Tabs, Chips, Split-View u.a.).</div>
+  </a>
+
+  <a class="card" href="preview-step-redesign.html">
+    <div class="card-date">2026-03-14</div>
+    <div class="card-title">Step Card Redesign</div>
+    <div class="card-desc">Erste Überarbeitung des StepBlock-Designs mit aktivem Zustand und Akzentlinien.</div>
+  </a>
+
+  <a class="card" href="preview-step-options.html">
+    <div class="card-date">2026-03-13</div>
+    <div class="card-title">Step Options</div>
+    <div class="card-desc">Optionenübersicht für Step-Card-Varianten.</div>
+  </a>
+
+  <a class="card" href="preview-step-design.html">
+    <div class="card-date">2026-03-13</div>
+    <div class="card-title">Step Design</div>
+    <div class="card-desc">Grundlegendes Step-Card-Design.</div>
+  </a>
+
+  <a class="card" href="preview-sidebar-options.html">
+    <div class="card-date">2026-03-12</div>
+    <div class="card-title">Sidebar Optionen</div>
+    <div class="card-desc">Layout-Varianten für die Topic-Sidebar.</div>
+  </a>
+
+  <a class="card" href="preview-explanation.html">
+    <div class="card-date">2026-03-12</div>
+    <div class="card-title">Explanation Panel</div>
+    <div class="card-desc">Prototyp für den Explanation-Bereich auf Topic-Seiten.</div>
+  </a>
+
+  <a class="card" href="preview-expand-box.html">
+    <div class="card-date">2026-03-12</div>
+    <div class="card-title">Expand Box</div>
+    <div class="card-desc">Expandierbare Box-Komponente — verschiedene Varianten.</div>
+  </a>
+
+</div>
+
+</body>
+</html>

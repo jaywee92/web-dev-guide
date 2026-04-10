@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step Design Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117; --surface: #1a1d27; --sb: #222633;
+  --border: #2e3348; --text: #e2e4ed; --muted: #8b8fa7; --faint: #555a73;
+  --radius: 12px; --mono: 'JetBrains Mono', monospace; --body: system-ui, sans-serif;
+  --blue: #5b9cf5; --green: #34d399; --yellow: #f59e0b; --purple: #a78bfa; --red: #e06c75;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--body); background: var(--bg); color: var(--text); padding-bottom: 100px; }
+
+/* ── Topbar ── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; gap: 3px; flex-wrap: nowrap;
+  padding: 0 16px; height: 52px; overflow-x: auto; scrollbar-width: none;
+  background: #0d0f18f2; backdrop-filter: blur(14px); border-bottom: 1px solid var(--border);
+}
+.topbar::-webkit-scrollbar { display: none; }
+.tl { font-family: var(--mono); font-size: 11px; color: var(--faint); margin-right: 10px; white-space: nowrap; flex-shrink: 0; }
+.tab {
+  padding: 5px 12px; border: none; background: none; font-family: var(--mono); font-size: 11px;
+  color: var(--faint); cursor: pointer; border-radius: 6px; transition: all .18s; white-space: nowrap; flex-shrink: 0;
+}
+.tab:hover { color: var(--text); background: var(--surface); }
+.tab.active { color: var(--blue); background: #5b9cf515; }
+.rec { font-size: 9px; font-family: var(--mono); font-weight: 700; padding: 1px 5px; border-radius: 10px;
+  margin-left: 5px; background: #34d39918; border: 1px solid #34d39935; color: var(--green);
+  text-transform: uppercase; letter-spacing: .06em; }
+
+/* ── Scenes ── */
+.scene { display: none; max-width: 780px; margin: 0 auto; padding: 36px 24px; }
+.scene.active { display: block; }
+
+/* ── Section label ── */
+.sh { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+.sl { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+.sr { flex: 1; height: 1px; background: var(--border); }
+
+/* ── Scene description ── */
+.note {
+  padding: 12px 16px; border-radius: 9px; margin-bottom: 24px;
+  background: var(--surface); border: 1px solid var(--border);
+  font-size: 12.5px; color: var(--muted); line-height: 1.65;
+}
+.note strong { color: var(--text); }
+
+/* ── Step card ── */
+.step {
+  border-radius: 13px; border: 1px solid var(--border); overflow: hidden;
+  background: var(--surface); position: relative; margin-bottom: 14px;
+  transition: border-color .3s, box-shadow .3s, background .3s;
+}
+.step.on {
+  border-color: #5b9cf54d; box-shadow: 0 4px 28px #5b9cf510;
+  background: linear-gradient(90deg, #5b9cf50a 0%, var(--surface) 110px);
+}
+.accent { position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: #5b9cf528; transition: background .3s; }
+.step.on .accent { background: var(--blue); }
+.hdr {
+  display: flex; align-items: center; gap: 12px; padding: 13px 18px 11px 21px;
+  background: linear-gradient(135deg, #5b9cf50e 0%, #5b9cf503 100%);
+  border-bottom: 1px solid #5b9cf50e; transition: background .3s;
+}
+.step.on .hdr { background: linear-gradient(135deg, #5b9cf51c 0%, #5b9cf507 100%); border-bottom-color: #5b9cf522; }
+.ico {
+  width: 36px; height: 36px; flex-shrink: 0; border-radius: 8px;
+  background: #5b9cf518; border: 1px solid #5b9cf530;
+  display: flex; align-items: center; justify-content: center; font-size: 17px;
+  transition: background .3s;
+}
+.step.on .ico { background: #5b9cf530; border-color: #5b9cf560; box-shadow: 0 0 12px #5b9cf525; }
+.badge {
+  display: inline-flex; align-self: flex-start; font-family: var(--mono); font-size: 9px; font-weight: 800;
+  letter-spacing: .1em; padding: 2px 7px; border-radius: 20px; text-transform: uppercase;
+  background: #5b9cf518; border: 1px solid #5b9cf528; color: #5b9cf580; transition: all .3s;
+}
+.step.on .badge { background: #5b9cf52a; border-color: #5b9cf560; color: var(--blue); }
+.ttl { font-size: 14.5px; font-weight: 700; color: var(--text); line-height: 1.25; margin-top: 3px; }
+.body { padding: 13px 18px 15px 21px; display: flex; flex-direction: column; gap: 10px; }
+
+/* ── Inline code ── */
+.ic { font-family: var(--mono); font-size: 11px; background: #5b9cf512; border: 1px solid #5b9cf530; border-radius: 3px; padding: 1px 5px; color: var(--blue); }
+
+/* ── TODAY: plain text / bullets ── */
+.lead { font-size: 14px; color: var(--text); line-height: 1.8; }
+.ba { display: flex; align-items: flex-start; gap: 7px; }
+.ba-arrow { color: var(--blue); font-size: 10px; flex-shrink: 0; margin-top: 5px; font-weight: 700; }
+.ba-text { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+/* ── P2: Lede hierarchy ── */
+.lede { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.65; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.follow { font-size: 13.5px; color: var(--muted); line-height: 1.75; }
+
+/* ── P3: Bullet chips ── */
+.blist { display: flex; flex-direction: column; gap: 3px; padding: 2px 0; }
+.brow { display: flex; align-items: center; gap: 8px; }
+.chip {
+  flex-shrink: 0; font-family: var(--mono); font-size: 9px; font-weight: 700;
+  padding: 2px 7px; border-radius: 4px; letter-spacing: .04em;
+  background: #5b9cf512; border: 1px solid #5b9cf52e; color: var(--blue);
+}
+.chip.ok   { background: #34d39912; border-color: #34d39928; color: var(--green); }
+.chip.no   { background: #f59e0b12; border-color: #f59e0b28; color: var(--yellow); }
+.chip.bad  { background: #e06c7512; border-color: #e06c7528; color: var(--red); }
+.btext { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+
+/* ── P4: Callouts ── */
+.callout { display: flex; align-items: flex-start; gap: 10px; padding: 9px 13px; border-radius: 8px; }
+.c-insight { background: #5b9cf510; border: 1px solid #5b9cf52a; }
+.c-tip     { background: #34d39910; border: 1px solid #34d39926; }
+.c-warn    { background: #f59e0b10; border: 1px solid #f59e0b26; }
+.c-syntax  { background: #a78bfa10; border: 1px solid #a78bfa26; }
+.c-icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+.c-text { font-size: 12.5px; line-height: 1.6; margin: 0; font-weight: 500; }
+.c-insight .c-text { color: var(--blue); }
+.c-tip     .c-text { color: var(--green); }
+.c-warn    .c-text { color: var(--yellow); }
+.c-syntax  .c-text { color: var(--purple); }
+
+/* ── P5: Reference grid ── */
+.refgrid { display: grid; grid-template-columns: auto 1fr; gap: 1px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+.rg-hdr { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); padding: 5px 10px; background: var(--sb); }
+.rg-cell { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--blue); padding: 6px 10px; background: #5b9cf508; border-right: 1px solid var(--border); white-space: nowrap; }
+.rg-desc { font-size: 12.5px; color: var(--muted); padding: 6px 10px; background: var(--surface); }
+.rg-row-divider { grid-column: 1 / -1; height: 1px; background: var(--border); }
+
+/* ── P6: Before/After ── */
+.ba-split { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ba-block { border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+.ba-label {
+  font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; padding: 6px 12px;
+  display: flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--border);
+}
+.ba-label.bad-lbl  { background: #e06c7510; color: var(--red); }
+.ba-label.good-lbl { background: #34d39910; color: var(--green); }
+.ba-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.ba-label.bad-lbl  .ba-dot { background: var(--red); }
+.ba-label.good-lbl .ba-dot { background: var(--green); }
+
+/* ── Code blocks ── */
+.cb { border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+.cb-hdr {
+  display: flex; align-items: center; gap: 8px; padding: 7px 13px;
+  background: var(--sb); border-bottom: 1px solid var(--border);
+}
+.cb-file { font-family: var(--mono); font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 5px; flex: 1; }
+.cb-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+.cb-lang {
+  font-family: var(--mono); font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px;
+  letter-spacing: .06em; text-transform: uppercase; flex-shrink: 0;
+}
+.lang-html { background: #e06c7512; border: 1px solid #e06c7528; color: #e06c75; }
+.lang-js   { background: #d19a6612; border: 1px solid #d19a6628; color: #d19a66; }
+.lang-css  { background: #61afef12; border: 1px solid #61afef28; color: #61afef; }
+.lang-ts   { background: #5b9cf512; border: 1px solid #5b9cf528; color: #5b9cf5; }
+.cb-copy { font-family: var(--mono); font-size: 10px; color: var(--faint); background: none; border: none; cursor: pointer; margin-left: 4px; }
+pre.cb-code {
+  background: #0e1017; padding: 13px 15px; font-family: var(--mono); font-size: 12.5px;
+  line-height: 1.7; color: #abb2bf; overflow-x: auto; margin: 0;
+}
+.cb-out {
+  display: flex; align-items: center; gap: 8px; padding: 7px 13px;
+  background: #0a0c12; border-top: 1px solid var(--border);
+}
+.cb-out-lbl { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .08em; color: #34d39970; text-transform: uppercase; flex-shrink: 0; }
+.cb-out-val { font-family: var(--mono); font-size: 12px; color: #34d399; }
+
+/* shiki token colours */
+.kw { color: #c678dd; } .fn { color: #61afef; } .str { color: #98c379; }
+.cm { color: #5c6370; font-style: italic; } .num { color: #d19a66; }
+.tag { color: #e06c75; } .attr { color: #d19a66; } .val { color: #98c379; }
+.op { color: #56b6c2; } .var { color: #e5c07b; }
+
+/* ── Tab divider ── */
+.divider { width: 1px; height: 20px; background: var(--border); margin: 0 4px; flex-shrink: 0; }
+
+/* ── New P7: Step Summary tag ── */
+.summary-row { display: flex; align-items: center; gap: 8px; padding-top: 4px; }
+.summary-lbl { font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .06em; color: var(--faint); text-transform: uppercase; }
+.summary-chip {
+  font-family: var(--mono); font-size: 10px; padding: 3px 10px; border-radius: 20px;
+  background: #5b9cf510; border: 1px solid #5b9cf530; color: var(--blue);
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="tl">Step Design:</span>
+  <button class="tab active" onclick="show('today')">Aktuell</button>
+  <div class="divider"></div>
+  <button class="tab" onclick="show('p1')">1 · Code-Label + Output</button>
+  <button class="tab" onclick="show('p2')">2 · Lede-Text</button>
+  <button class="tab" onclick="show('p3')">3 · Bullet-Chips</button>
+  <button class="tab" onclick="show('p4')">4 · Callout-Typen</button>
+  <button class="tab" onclick="show('p5')">5 · Referenz-Grid</button>
+  <button class="tab" onclick="show('p6')">6 · Before / After</button>
+  <button class="tab" onclick="show('p7')">7 · Step-Summary</button>
+  <div class="divider"></div>
+  <button class="tab" onclick="show('all')">Alles kombiniert <span class="rec">Empfohlen</span></button>
+</div>
+
+<!-- ══════════════ AKTUELL ══════════════ -->
+<div id="sc-today" class="scene active">
+  <div class="note"><strong>Aktueller Stand</strong> — alle Steps identisch, Code ohne Kontext, Text flach ohne Hierarchie.</div>
+  <div class="sh"><span class="sl">How it works</span><div class="sr"></div></div>
+
+  <div class="step on">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">⚙️</div><div><span class="badge">INFO 01</span><div class="ttl">Opening tag</div></div></div>
+    <div class="body">
+      <p class="lead">The opening tag names the element. <code class="ic">&lt;p&gt;</code> means paragraph. <code class="ic">&lt;h1&gt;</code> means main heading. The name determines how the browser renders the content.</p>
+      <div class="cb"><div class="cb-hdr"><span style="font-family:var(--mono);font-size:10px;color:var(--faint)">html</span><button class="cb-copy">⎘</button></div><pre class="cb-code"><span class="tag">&lt;p&gt;</span>Hello, world!<span class="tag">&lt;/p&gt;</span></pre></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">📐</div><div><span class="badge">INFO 02</span><div class="ttl">Attributes</div></div></div>
+    <div class="body">
+      <p class="lead">Attributes go inside the opening tag. They come in <code class="ic">name="value"</code> pairs. Common ones:</p>
+      <div class="ba"><span class="ba-arrow">▸</span><span class="ba-text"><code class="ic">href</code> — link URL</span></div>
+      <div class="ba"><span class="ba-arrow">▸</span><span class="ba-text"><code class="ic">src</code> — image source</span></div>
+      <div class="ba"><span class="ba-arrow">▸</span><span class="ba-text"><code class="ic">alt</code> — alternative text</span></div>
+      <div class="ba"><span class="ba-arrow">▸</span><span class="ba-text"><code class="ic">class</code> — CSS styling group</span></div>
+      <div class="cb"><div class="cb-hdr"><span style="font-family:var(--mono);font-size:10px;color:var(--faint)">html</span><button class="cb-copy">⎘</button></div><pre class="cb-code"><span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"/about"</span> <span class="attr">class</span>=<span class="val">"nav-link"</span><span class="tag">&gt;</span>About<span class="tag">&lt;/a&gt;</span></pre></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">🌳</div><div><span class="badge">INFO 03</span><div class="ttl">Nesting &amp; the DOM tree</div></div></div>
+    <div class="body">
+      <p class="lead">Elements can be nested inside each other. The result is a tree — the DOM. Every element has one parent, zero or more children.</p>
+      <div class="cb"><div class="cb-hdr"><span style="font-family:var(--mono);font-size:10px;color:var(--faint)">html</span><button class="cb-copy">⎘</button></div><pre class="cb-code"><span class="tag">&lt;ul&gt;</span>
+  <span class="tag">&lt;li&gt;</span>First item<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Second item<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span></pre></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ P1: Code-Label + Output ══════════════ -->
+<div id="sc-p1" class="scene">
+  <div class="note"><strong>Proposal 1 — Code-Block mit Sprach-Pill + Output-Zeile.</strong> Farbiges Sprach-Label oben rechts, Dateiname links. Optionaler <code class="ic">Result →</code> Block unten zeigt was der Code im Browser erzeugt.</div>
+  <div class="sh"><span class="sl">How it works</span><div class="sr"></div></div>
+
+  <div class="step on">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">⚙️</div><div><span class="badge">INFO 01</span><div class="ttl">Opening tag</div></div></div>
+    <div class="body">
+      <p class="lead">The opening tag names the element. <code class="ic">&lt;p&gt;</code> means paragraph. <code class="ic">&lt;h1&gt;</code> means main heading.</p>
+      <div class="cb">
+        <div class="cb-hdr"><div class="cb-file"><div class="cb-dot"></div>index.html</div><span class="cb-lang lang-html">HTML</span><button class="cb-copy" style="margin-left:4px">⎘</button></div>
+        <pre class="cb-code"><span class="tag">&lt;p&gt;</span>Hello, world!<span class="tag">&lt;/p&gt;</span></pre>
+        <div class="cb-out"><span class="cb-out-lbl">Result →</span><span class="cb-out-val">Hello, world!  (rendered as paragraph)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">📐</div><div><span class="badge">INFO 02</span><div class="ttl">Attributes</div></div></div>
+    <div class="body">
+      <p class="lead">Attributes configure elements as <code class="ic">name="value"</code> pairs inside the opening tag.</p>
+      <div class="cb">
+        <div class="cb-hdr"><div class="cb-file"><div class="cb-dot"></div>nav.html</div><span class="cb-lang lang-html">HTML</span><button class="cb-copy" style="margin-left:4px">⎘</button></div>
+        <pre class="cb-code"><span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"/about"</span> <span class="attr">class</span>=<span class="val">"nav-link"</span> <span class="attr">target</span>=<span class="val">"_blank"</span><span class="tag">&gt;</span>About<span class="tag">&lt;/a&gt;</span></pre>
+        <div class="cb-out"><span class="cb-out-lbl">Result →</span><span class="cb-out-val">Clickable link → /about, opens in new tab</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">🟡</div><div><span class="badge">INFO 03</span><div class="ttl">Variables</div></div></div>
+    <div class="body">
+      <p class="lead">Use <code class="ic">let</code> for values that change, <code class="ic">const</code> for values that don't.</p>
+      <div class="cb">
+        <div class="cb-hdr"><div class="cb-file"><div class="cb-dot"></div>app.js</div><span class="cb-lang lang-js">JS</span><button class="cb-copy" style="margin-left:4px">⎘</button></div>
+        <pre class="cb-code"><span class="kw">const</span> <span class="var">name</span> = <span class="str">'Alice'</span>
+<span class="kw">let</span> <span class="var">score</span> = <span class="num">0</span>
+<span class="var">score</span> <span class="op">+=</span> <span class="num">10</span>
+console.<span class="fn">log</span>(<span class="var">score</span>)</pre>
+        <div class="cb-out"><span class="cb-out-lbl">Result →</span><span class="cb-out-val">10</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ P2: Lede-Text ══════════════ -->
+<div id="sc-p2" class="scene">
+  <div class="note"><strong>Proposal 2 — Lede-Text Hierarchie.</strong> Erster Satz: 15px, font-weight 500, volle Textfarbe + Trennlinie. Folgetext: 13.5px gedämpft. Kein Daten-Änderung — nur Split beim ersten Satzende.</div>
+  <div class="sh"><span class="sl">How it works</span><div class="sr"></div></div>
+
+  <div class="step on">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">⚙️</div><div><span class="badge">INFO 01</span><div class="ttl">Opening tag</div></div></div>
+    <div class="body">
+      <p class="lede">The opening tag names the element.</p>
+      <p class="follow"><code class="ic">&lt;p&gt;</code> means paragraph. <code class="ic">&lt;h1&gt;</code> means main heading. <code class="ic">&lt;a&gt;</code> means anchor (link). The name determines how the browser renders the content.</p>
+      <div class="cb"><div class="cb-hdr"><span style="font-family:var(--mono);font-size:10px;color:var(--faint)">html</span><button class="cb-copy">⎘</button></div><pre class="cb-code"><span class="tag">&lt;p&gt;</span>Hello, world!<span class="tag">&lt;/p&gt;</span></pre></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">📐</div><div><span class="badge">INFO 02</span><div class="ttl">Attributes</div></div></div>
+    <div class="body">
+      <p class="lede">Attributes go inside the opening tag and provide extra information.</p>
+      <p class="follow">They come in <code class="ic">name="value"</code> pairs. Common ones: <code class="ic">href</code> (link URL), <code class="ic">src</code> (image source), <code class="ic">alt</code> (alt text), <code class="ic">class</code> (styling group).</p>
+      <div class="cb"><div class="cb-hdr"><span style="font-family:var(--mono);font-size:10px;color:var(--faint)">html</span><button class="cb-copy">⎘</button></div><pre class="cb-code"><span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"/about"</span> <span class="attr">class</span>=<span class="val">"nav-link"</span><span class="tag">&gt;</span>About<span class="tag">&lt;/a&gt;</span></pre></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">🌳</div><div><span class="badge">INFO 03</span><div class="ttl">Nesting &amp; the DOM tree</div></div></div>
+    <div class="body">
+      <p class="lede">HTML elements can be nested inside each other.</p>
+      <p class="follow">The result is a tree structure called the DOM. Every element has exactly one parent and zero or more children. Indentation in your code mirrors nesting depth.</p>
+      <div class="cb"><div class="cb-hdr"><span style="font-family:var(--mono);font-size:10px;color:var(--faint)">html</span><button class="cb-copy">⎘</button></div><pre class="cb-code"><span class="tag">&lt;ul&gt;</span>
+  <span class="tag">&lt;li&gt;</span>First item<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Second item<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span></pre></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ P3: Bullet Chips ══════════════ -->
+<div id="sc-p3" class="scene">
+  <div class="note"><strong>Proposal 3 — Bullet-Chips.</strong> Statt <code class="ic">▸ text</code> — farbige Code-Chips als Schlüssel. Chips können neutral, <span style="color:var(--green)">✓ ok</span> oder <span style="color:var(--yellow)">✗ avoid</span> sein — macht Listen sofort scanbar.</div>
+  <div class="sh"><span class="sl">How it works</span><div class="sr"></div></div>
+
+  <div class="step on">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">📐</div><div><span class="badge">INFO 01</span><div class="ttl">Attributes</div></div></div>
+    <div class="body">
+      <p class="lead">Attributes configure elements. Common ones:</p>
+      <div class="blist">
+        <div class="brow"><span class="chip">href</span><span class="btext">URL target for links</span></div>
+        <div class="brow"><span class="chip">src</span><span class="btext">File source for images and scripts</span></div>
+        <div class="brow"><span class="chip">alt</span><span class="btext">Description text for images — required for accessibility</span></div>
+        <div class="brow"><span class="chip">class</span><span class="btext">CSS group name — multiple classes space-separated</span></div>
+      </div>
+      <div class="cb"><div class="cb-hdr"><span style="font-family:var(--mono);font-size:10px;color:var(--faint)">html</span><button class="cb-copy">⎘</button></div><pre class="cb-code"><span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"/about"</span> <span class="attr">class</span>=<span class="val">"nav-link"</span><span class="tag">&gt;</span>About<span class="tag">&lt;/a&gt;</span></pre></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">🌳</div><div><span class="badge">INFO 02</span><div class="ttl">Nesting rules</div></div></div>
+    <div class="body">
+      <p class="lead">Elements nest inside each other. These rules matter:</p>
+      <div class="blist">
+        <div class="brow"><span class="chip ok">✓ ok</span><span class="btext">Block elements like <code class="ic">&lt;div&gt;</code> can wrap inline elements like <code class="ic">&lt;span&gt;</code></span></div>
+        <div class="brow"><span class="chip no">✗ avoid</span><span class="btext">Inline elements like <code class="ic">&lt;span&gt;</code> should not wrap block elements</span></div>
+        <div class="brow"><span class="chip ok">✓ ok</span><span class="btext">Close tags in reverse order — last opened, first closed</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ P4: Callout-Typen ══════════════ -->
+<div id="sc-p4" class="scene">
+  <div class="note"><strong>Proposal 4 — Callout-Varianten.</strong> Neben ⚡ Insight drei neue Typen: 💡 Tip (grün), ⚠️ Warning (gelb), 📖 Syntax (violett). Werden via <code class="ic">[!tip]</code> Shorthand im Step-Text definiert.</div>
+  <div class="sh"><span class="sl">How it works</span><div class="sr"></div></div>
+
+  <div class="step on">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">⚙️</div><div><span class="badge">INFO 01</span><div class="ttl">Opening tag</div></div></div>
+    <div class="body">
+      <p class="lead">The opening tag names the element. <code class="ic">&lt;p&gt;</code> means paragraph. <code class="ic">&lt;h1&gt;</code> means main heading.</p>
+      <div class="callout c-insight"><span class="c-icon">⚡</span><p class="c-text">Choose tags for <strong>meaning</strong>, not appearance. <code class="ic">&lt;button&gt;</code> for actions, not a styled <code class="ic">&lt;div&gt;</code>.</p></div>
+      <div class="cb"><div class="cb-hdr"><span style="font-family:var(--mono);font-size:10px;color:var(--faint)">html</span><button class="cb-copy">⎘</button></div><pre class="cb-code"><span class="tag">&lt;p&gt;</span>Hello, world!<span class="tag">&lt;/p&gt;</span></pre></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">📐</div><div><span class="badge">INFO 02</span><div class="ttl">Attributes</div></div></div>
+    <div class="body">
+      <p class="lead">Attributes go inside the opening tag as <code class="ic">name="value"</code> pairs.</p>
+      <div class="callout c-tip"><span class="c-icon">💡</span><p class="c-text">Always add <code class="ic">alt</code> to images and <code class="ic">lang</code> to <code class="ic">&lt;html&gt;</code> — two attributes that cover most accessibility requirements.</p></div>
+      <div class="callout c-warn"><span class="c-icon">⚠️</span><p class="c-text">Attribute values must always be quoted. <code class="ic">href=/about</code> is invalid HTML and breaks strict parsers.</p></div>
+      <div class="cb"><div class="cb-hdr"><span style="font-family:var(--mono);font-size:10px;color:var(--faint)">html</span><button class="cb-copy">⎘</button></div><pre class="cb-code"><span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"/about"</span> <span class="attr">class</span>=<span class="val">"nav-link"</span><span class="tag">&gt;</span>About<span class="tag">&lt;/a&gt;</span></pre></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">🌳</div><div><span class="badge">INFO 03</span><div class="ttl">Nesting &amp; the DOM tree</div></div></div>
+    <div class="body">
+      <p class="lead">HTML elements can be nested. The result is the DOM — a live tree the browser builds from your markup.</p>
+      <div class="callout c-syntax"><span class="c-icon">📖</span><p class="c-text"><strong>DOM</strong> = Document Object Model. JavaScript reads and modifies this tree — <code class="ic">querySelector()</code> finds elements, <code class="ic">appendChild()</code> adds to it.</p></div>
+      <div class="cb"><div class="cb-hdr"><span style="font-family:var(--mono);font-size:10px;color:var(--faint)">html</span><button class="cb-copy">⎘</button></div><pre class="cb-code"><span class="tag">&lt;ul&gt;</span>
+  <span class="tag">&lt;li&gt;</span>First item<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Second item<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span></pre></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ P5: Referenz-Grid ══════════════ -->
+<div id="sc-p5" class="scene">
+  <div class="note"><strong>Proposal 5 — Referenz-Grid (neu).</strong> Für Steps mit 3+ gleichwertigen Items (Attribute, Properties, Methoden): kompakte 2-spaltige Tabelle statt Bullet-Liste. Scanbar wie eine Quick-Reference.</div>
+  <div class="sh"><span class="sl">How it works</span><div class="sr"></div></div>
+
+  <div class="step on">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">📐</div><div><span class="badge">INFO 01</span><div class="ttl">Attributes</div></div></div>
+    <div class="body">
+      <p class="lead">Attributes configure elements as <code class="ic">name="value"</code> pairs inside the opening tag.</p>
+      <div class="refgrid">
+        <div class="rg-hdr">Attribute</div><div class="rg-hdr">Purpose</div>
+        <div class="rg-row-divider"></div>
+        <div class="rg-cell">href</div><div class="rg-desc">URL target for links</div>
+        <div class="rg-row-divider"></div>
+        <div class="rg-cell">src</div><div class="rg-desc">File source for images and scripts</div>
+        <div class="rg-row-divider"></div>
+        <div class="rg-cell">alt</div><div class="rg-desc">Description text for images — required for accessibility</div>
+        <div class="rg-row-divider"></div>
+        <div class="rg-cell">class</div><div class="rg-desc">CSS group name — multiple classes space-separated</div>
+        <div class="rg-row-divider"></div>
+        <div class="rg-cell">id</div><div class="rg-desc">Unique identifier — used by CSS and JavaScript to target one element</div>
+      </div>
+      <div class="cb"><div class="cb-hdr"><span style="font-family:var(--mono);font-size:10px;color:var(--faint)">html</span><button class="cb-copy">⎘</button></div><pre class="cb-code"><span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"/about"</span> <span class="attr">class</span>=<span class="val">"nav-link"</span> <span class="attr">id</span>=<span class="val">"about-btn"</span><span class="tag">&gt;</span>About<span class="tag">&lt;/a&gt;</span></pre></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">🟡</div><div><span class="badge">INFO 02</span><div class="ttl">Array Methods</div></div></div>
+    <div class="body">
+      <p class="lead">Arrays have built-in methods for transforming and querying data.</p>
+      <div class="refgrid">
+        <div class="rg-hdr">Method</div><div class="rg-hdr">What it does</div>
+        <div class="rg-row-divider"></div>
+        <div class="rg-cell">.map()</div><div class="rg-desc">Returns a new array — transforms every item</div>
+        <div class="rg-row-divider"></div>
+        <div class="rg-cell">.filter()</div><div class="rg-desc">Returns a new array — keeps only matching items</div>
+        <div class="rg-row-divider"></div>
+        <div class="rg-cell">.reduce()</div><div class="rg-desc">Reduces all items to a single value</div>
+        <div class="rg-row-divider"></div>
+        <div class="rg-cell">.find()</div><div class="rg-desc">Returns the first matching item (or undefined)</div>
+        <div class="rg-row-divider"></div>
+        <div class="rg-cell">.includes()</div><div class="rg-desc">Returns true / false — checks if value exists</div>
+      </div>
+      <div class="cb"><div class="cb-hdr"><div class="cb-file"><div class="cb-dot"></div>arrays.js</div><span class="cb-lang lang-js">JS</span><button class="cb-copy" style="margin-left:4px">⎘</button></div><pre class="cb-code"><span class="kw">const</span> <span class="var">nums</span> = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>]
+<span class="var">nums</span>.<span class="fn">filter</span>(<span class="var">n</span> => <span class="var">n</span> > <span class="num">2</span>)  <span class="cm">// [3, 4]</span>
+<span class="var">nums</span>.<span class="fn">map</span>(<span class="var">n</span> => <span class="var">n</span> * <span class="num">2</span>)    <span class="cm">// [2, 4, 6, 8]</span></pre></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ P6: Before / After ══════════════ -->
+<div id="sc-p6" class="scene">
+  <div class="note"><strong>Proposal 6 — Before / After Vergleich (neu).</strong> Für Steps die einen häufigen Fehler korrigieren: zwei Code-Blöcke nebeneinander — links ✗ falsch, rechts ✓ richtig. Macht den Unterschied sofort sichtbar.</div>
+  <div class="sh"><span class="sl">How it works</span><div class="sr"></div></div>
+
+  <div class="step on">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">🔒</div><div><span class="badge">INFO 01</span><div class="ttl">const vs let</div></div></div>
+    <div class="body">
+      <p class="lede">Use <code class="ic">const</code> by default. Only use <code class="ic">let</code> when you need to reassign.</p>
+      <div class="ba-split">
+        <div class="ba-block">
+          <div class="ba-label bad-lbl"><div class="ba-dot"></div>Avoid</div>
+          <pre class="cb-code" style="font-size:12px"><span class="kw">let</span> <span class="var">name</span> = <span class="str">'Alice'</span>
+<span class="kw">let</span> <span class="var">PI</span> = <span class="num">3.14</span>
+<span class="kw">let</span> <span class="var">config</span> = <span class="op">{}</span></pre>
+        </div>
+        <div class="ba-block">
+          <div class="ba-label good-lbl"><div class="ba-dot"></div>Prefer</div>
+          <pre class="cb-code" style="font-size:12px"><span class="kw">const</span> <span class="var">name</span> = <span class="str">'Alice'</span>
+<span class="kw">const</span> <span class="var">PI</span> = <span class="num">3.14</span>
+<span class="kw">const</span> <span class="var">config</span> = <span class="op">{}</span></pre>
+        </div>
+      </div>
+      <div class="callout c-insight"><span class="c-icon">⚡</span><p class="c-text"><code class="ic">const</code> prevents accidental reassignment — the linter will catch the mistake before it runs.</p></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">🎨</div><div><span class="badge">INFO 02</span><div class="ttl">Specificity — right vs wrong selector</div></div></div>
+    <div class="body">
+      <p class="lede">Overly specific selectors break re-use and create debugging headaches.</p>
+      <div class="ba-split">
+        <div class="ba-block">
+          <div class="ba-label bad-lbl"><div class="ba-dot"></div>Too specific</div>
+          <pre class="cb-code" style="font-size:12px"><span class="fn">header</span> <span class="fn">nav</span> <span class="fn">ul</span> <span class="fn">li</span> <span class="fn">a</span> <span class="op">{</span>
+  <span class="attr">color</span>: <span class="val">blue</span>;
+<span class="op">}</span></pre>
+        </div>
+        <div class="ba-block">
+          <div class="ba-label good-lbl"><div class="ba-dot"></div>Targeted</div>
+          <pre class="cb-code" style="font-size:12px"><span class="fn">.nav-link</span> <span class="op">{</span>
+  <span class="attr">color</span>: <span class="val">blue</span>;
+<span class="op">}</span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ P7: Step Summary ══════════════ -->
+<div id="sc-p7" class="scene">
+  <div class="note"><strong>Proposal 7 — Step-Summary Tag (neu).</strong> Am Ende jedes Step-Cards ein kleines TL;DR-Chip — eine einzeilige Kernaussage. Bleibt auch sichtbar wenn der Step inaktiv/gedimmt ist.</div>
+  <div class="sh"><span class="sl">How it works</span><div class="sr"></div></div>
+
+  <div class="step on">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">⚙️</div><div><span class="badge">INFO 01</span><div class="ttl">Opening tag</div></div></div>
+    <div class="body">
+      <p class="lead">The opening tag names the element. <code class="ic">&lt;p&gt;</code> means paragraph. <code class="ic">&lt;h1&gt;</code> means main heading. The name determines how the browser renders the content.</p>
+      <div class="cb"><div class="cb-hdr"><span style="font-family:var(--mono);font-size:10px;color:var(--faint)">html</span><button class="cb-copy">⎘</button></div><pre class="cb-code"><span class="tag">&lt;p&gt;</span>Hello, world!<span class="tag">&lt;/p&gt;</span></pre></div>
+      <div class="summary-row"><span class="summary-lbl">TL;DR</span><span class="summary-chip">tag name = semantic meaning</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">📐</div><div><span class="badge">INFO 02</span><div class="ttl">Attributes</div></div></div>
+    <div class="body">
+      <p class="lead">Attributes configure elements as <code class="ic">name="value"</code> pairs inside the opening tag.</p>
+      <div class="cb"><div class="cb-hdr"><span style="font-family:var(--mono);font-size:10px;color:var(--faint)">html</span><button class="cb-copy">⎘</button></div><pre class="cb-code"><span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"/about"</span> <span class="attr">class</span>=<span class="val">"nav-link"</span><span class="tag">&gt;</span>About<span class="tag">&lt;/a&gt;</span></pre></div>
+      <div class="summary-row"><span class="summary-lbl">TL;DR</span><span class="summary-chip">attributes live inside the opening tag as name="value"</span></div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">🌳</div><div><span class="badge">INFO 03</span><div class="ttl">Nesting &amp; the DOM tree</div></div></div>
+    <div class="body">
+      <p class="lead">Nesting elements inside each other creates the DOM — the live tree JavaScript works with.</p>
+      <div class="cb"><div class="cb-hdr"><span style="font-family:var(--mono);font-size:10px;color:var(--faint)">html</span><button class="cb-copy">⎘</button></div><pre class="cb-code"><span class="tag">&lt;ul&gt;</span>
+  <span class="tag">&lt;li&gt;</span>First item<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;li&gt;</span>Second item<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span></pre></div>
+      <div class="summary-row"><span class="summary-lbl">TL;DR</span><span class="summary-chip">every element has one parent and zero or more children</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ALLES KOMBINIERT ══════════════ -->
+<div id="sc-all" class="scene">
+  <div class="note"><strong>Alles kombiniert — Empfehlung.</strong> Lede-Text + Code-Label/Output + Bullet-Chips + Callout-Typen + Referenz-Grid + Before/After + Step-Summary. Jeder Step wählt nur was er braucht.</div>
+  <div class="sh"><span class="sl">How it works</span><div class="sr"></div></div>
+
+  <!-- Step 1: Lede + Code mit Output + Insight Callout + Summary -->
+  <div class="step on">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">⚙️</div><div><span class="badge">INFO 01</span><div class="ttl">Opening tag</div></div></div>
+    <div class="body">
+      <p class="lede">The opening tag names the element.</p>
+      <p class="follow"><code class="ic">&lt;p&gt;</code> means paragraph. <code class="ic">&lt;h1&gt;</code> means main heading. <code class="ic">&lt;a&gt;</code> means anchor. The name tells the browser what the content <em>is</em> — not just how it looks.</p>
+      <div class="callout c-insight"><span class="c-icon">⚡</span><p class="c-text">Choose tags for <strong>meaning</strong>, not appearance — <code class="ic">&lt;button&gt;</code> for actions, not a styled <code class="ic">&lt;div&gt;</code>.</p></div>
+      <div class="cb">
+        <div class="cb-hdr"><div class="cb-file"><div class="cb-dot"></div>index.html</div><span class="cb-lang lang-html">HTML</span><button class="cb-copy" style="margin-left:4px">⎘</button></div>
+        <pre class="cb-code"><span class="tag">&lt;p&gt;</span>Hello, world!<span class="tag">&lt;/p&gt;</span></pre>
+        <div class="cb-out"><span class="cb-out-lbl">Result →</span><span class="cb-out-val">Hello, world!  (rendered as paragraph)</span></div>
+      </div>
+      <div class="summary-row"><span class="summary-lbl">TL;DR</span><span class="summary-chip">tag name = semantic meaning</span></div>
+    </div>
+  </div>
+
+  <!-- Step 2: Lede + Referenz-Grid + Tip Callout + Warning + Code + Summary -->
+  <div class="step">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">📐</div><div><span class="badge">INFO 02</span><div class="ttl">Attributes</div></div></div>
+    <div class="body">
+      <p class="lede">Attributes configure elements with extra information.</p>
+      <p class="follow">They sit inside the opening tag as <code class="ic">name="value"</code> pairs. Most-used:</p>
+      <div class="refgrid">
+        <div class="rg-hdr">Attribute</div><div class="rg-hdr">Purpose</div>
+        <div class="rg-row-divider"></div>
+        <div class="rg-cell">href</div><div class="rg-desc">URL target for links</div>
+        <div class="rg-row-divider"></div>
+        <div class="rg-cell">src</div><div class="rg-desc">File source for images and scripts</div>
+        <div class="rg-row-divider"></div>
+        <div class="rg-cell">alt</div><div class="rg-desc">Image description — required for accessibility</div>
+        <div class="rg-row-divider"></div>
+        <div class="rg-cell">class</div><div class="rg-desc">CSS group name — multiple values space-separated</div>
+      </div>
+      <div class="callout c-tip"><span class="c-icon">💡</span><p class="c-text">Add <code class="ic">alt</code> to every image and <code class="ic">lang</code> to <code class="ic">&lt;html&gt;</code> — covers most accessibility requirements instantly.</p></div>
+      <div class="callout c-warn"><span class="c-icon">⚠️</span><p class="c-text">Always quote attribute values. <code class="ic">href=/about</code> is invalid HTML.</p></div>
+      <div class="cb">
+        <div class="cb-hdr"><div class="cb-file"><div class="cb-dot"></div>nav.html</div><span class="cb-lang lang-html">HTML</span><button class="cb-copy" style="margin-left:4px">⎘</button></div>
+        <pre class="cb-code"><span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"/about"</span> <span class="attr">class</span>=<span class="val">"nav-link"</span> <span class="attr">target</span>=<span class="val">"_blank"</span><span class="tag">&gt;</span>About<span class="tag">&lt;/a&gt;</span></pre>
+        <div class="cb-out"><span class="cb-out-lbl">Result →</span><span class="cb-out-val">Clickable link → /about, opens in new tab</span></div>
+      </div>
+      <div class="summary-row"><span class="summary-lbl">TL;DR</span><span class="summary-chip">attributes live inside the opening tag as name="value"</span></div>
+    </div>
+  </div>
+
+  <!-- Step 3: Lede + Before/After + Syntax Callout + Summary -->
+  <div class="step">
+    <div class="accent"></div>
+    <div class="hdr"><div class="ico">🌳</div><div><span class="badge">INFO 03</span><div class="ttl">Nesting &amp; the DOM tree</div></div></div>
+    <div class="body">
+      <p class="lede">Nesting elements inside each other creates the DOM — the live tree JavaScript works with.</p>
+      <p class="follow">Every element has exactly one parent. Children are elements directly inside another element.</p>
+      <div class="callout c-syntax"><span class="c-icon">📖</span><p class="c-text"><strong>DOM</strong> = Document Object Model. JavaScript reads and modifies this tree — <code class="ic">querySelector()</code> finds nodes, <code class="ic">appendChild()</code> adds them.</p></div>
+      <div class="ba-split">
+        <div class="ba-block">
+          <div class="ba-label bad-lbl"><div class="ba-dot"></div>Wrong order</div>
+          <pre class="cb-code" style="font-size:12px"><span class="tag">&lt;div&gt;</span>
+  <span class="tag">&lt;p&gt;</span>text<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/p&gt;</span>  <span class="cm">✗ broken</span></pre>
+        </div>
+        <div class="ba-block">
+          <div class="ba-label good-lbl"><div class="ba-dot"></div>Correct order</div>
+          <pre class="cb-code" style="font-size:12px"><span class="tag">&lt;div&gt;</span>
+  <span class="tag">&lt;p&gt;</span>text<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/div&gt;</span>  <span class="cm">✓ correct</span></pre>
+        </div>
+      </div>
+      <div class="summary-row"><span class="summary-lbl">TL;DR</span><span class="summary-chip">close tags in reverse order — last opened, first closed</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ORDER = ['today','p1','p2','p3','p4','p5','p6','p7','all']
+function show(id) {
+  document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'))
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ORDER[i] === id))
+  document.getElementById('sc-' + id).classList.add('active')
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+</script>
+</body>
+</html>

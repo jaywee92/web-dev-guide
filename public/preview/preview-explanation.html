@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preview — How it Works Redesign</title>
+<style>
+  :root {
+    --bg: #0f1117; --surface: #1a1d27; --surface-bright: #222633;
+    --border: #2e3348; --text: #e2e4ed; --text-muted: #8b8fa7; --text-faint: #555a73;
+    --radius: 12px; --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+    --color: #5b9cf5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-body); background: var(--bg); color: var(--text); }
+
+  /* ── Layout ── */
+  .page { display: flex; gap: 0; min-height: 100vh; }
+
+  /* ── Toggle bar ── */
+  .toggle-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; gap: 16px;
+    padding: 10px 24px; background: #0f1117ee;
+    backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono); font-size: 12px;
+  }
+  .toggle-bar span { color: var(--text-faint); }
+  .btn-toggle {
+    padding: 5px 14px; border-radius: 6px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text); font-family: var(--font-mono);
+    font-size: 11px; cursor: pointer; transition: all .2s;
+  }
+  .btn-toggle.active { background: var(--color); color: #fff; border-color: var(--color); }
+  .btn-toggle:hover:not(.active) { border-color: var(--color); color: var(--color); }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: 240px; flex-shrink: 0;
+    background: var(--surface); border-right: 1px solid var(--border);
+    padding: 80px 16px 40px; transition: width .35s cubic-bezier(.4,0,.2,1), padding .35s;
+    overflow: hidden;
+  }
+  .sidebar.collapsed { width: 52px; padding: 80px 10px 40px; }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+    border-radius: 8px; font-size: 13px; color: var(--text-muted);
+    margin-bottom: 3px; cursor: pointer; white-space: nowrap;
+    transition: background .15s, color .15s;
+  }
+  .sidebar-item:hover { background: var(--surface-bright); color: var(--text); }
+  .sidebar-item.active { background: #5b9cf514; color: var(--color); }
+  .sidebar-item .dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    background: var(--border); transition: background .2s;
+  }
+  .sidebar-item.active .dot { background: var(--color); }
+  .sidebar-label { transition: opacity .2s; }
+  .sidebar.collapsed .sidebar-label { opacity: 0; pointer-events: none; }
+  .sidebar-collapse-btn {
+    width: 100%; display: flex; align-items: center; gap: 8px;
+    padding: 6px 10px; background: none; border: none; color: var(--text-faint);
+    font-size: 11px; font-family: var(--font-mono); cursor: pointer;
+    border-radius: 6px; margin-bottom: 16px; white-space: nowrap;
+  }
+  .sidebar-collapse-btn:hover { color: var(--text-muted); }
+
+  /* ── Main content ── */
+  .main { flex: 1; min-width: 0; padding: 80px 40px 80px; max-width: 1100px; transition: max-width .35s; }
+  .main.wide { max-width: 1200px; }
+
+  /* ── Topic header ── */
+  .topic-header { margin-bottom: 32px; }
+  .breadcrumb { font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); margin-bottom: 12px; }
+  .progress-bar { height: 3px; background: var(--surface-bright); border-radius: 2px; margin-bottom: 16px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 35%; border-radius: 2px; background: linear-gradient(to right, #5b9cf599, #5b9cf5); }
+  .topic-title { font-size: 36px; font-weight: 800; margin-bottom: 10px; }
+
+  /* ── Description — CURRENT vs NEW ── */
+  .desc-current { color: var(--text-muted); font-size: 16px; line-height: 1.6; }
+  .desc-new {
+    color: var(--text); font-size: 16px; line-height: 1.65;
+    padding: 14px 18px; border-radius: 10px;
+    background: #5b9cf50a; border-left: 3px solid #5b9cf555;
+  }
+
+  /* ── Section heading ── */
+  .section-heading { font-size: 22px; font-weight: 700; margin-bottom: 36px; color: var(--text); }
+  .section-heading-new {
+    font-size: 18px; font-weight: 700; color: var(--text-faint);
+    font-family: var(--font-mono); letter-spacing: .08em; text-transform: uppercase;
+    margin-bottom: 28px; display: flex; align-items: center; gap: 10px;
+  }
+  .section-heading-new::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  /* ── Grid ── */
+  .explanation-grid-current {
+    display: grid; grid-template-columns: minmax(0,44fr) minmax(0,56fr); gap: 40px; align-items: start;
+    padding: 0 24px; /* ← das ist das Problem */
+  }
+  .explanation-grid-new {
+    display: grid; grid-template-columns: minmax(0,38fr) minmax(0,62fr); gap: 48px; align-items: start;
+    /* kein extra padding */
+  }
+
+  /* ── Animation panel ── */
+  .anim-panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); height: 280px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-faint); font-size: 13px; font-family: var(--font-mono);
+  }
+  .step-dots { display: flex; gap: 6px; justify-content: center; margin-top: 14px; }
+  .dot-inactive { width: 8px; height: 8px; border-radius: 4px; background: var(--border); border: none; }
+  .dot-active { width: 24px; height: 8px; border-radius: 4px; background: var(--color); border: none; }
+
+  /* ── Step blocks CURRENT ── */
+  .step-current {
+    border-radius: 13px; border: 1px solid var(--border);
+    background: var(--surface); overflow: hidden; margin-bottom: 12px; opacity: .35;
+  }
+  .step-current.active { border-color: #5b9cf54d; opacity: 1; box-shadow: 0 4px 28px #5b9cf512; background: linear-gradient(90deg,#5b9cf50a 0%,var(--surface) 100px); }
+  .step-header-current {
+    display: flex; align-items: center; gap: 13px; padding: 14px 18px 12px 21px;
+    background: linear-gradient(135deg,#5b9cf51e 0%,#5b9cf508 100%);
+    border-bottom: 1px solid #5b9cf526; position: relative;
+  }
+  .step-header-current::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--color); }
+  .icon-box-current {
+    width: 38px; height: 38px; border-radius: 9px;
+    background: #5b9cf533; border: 1px solid #5b9cf573;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+  .badge-current {
+    font-family: var(--font-mono); font-size: 9px; font-weight: 800; letter-spacing: .1em;
+    padding: 2px 7px; border-radius: 20px; background: #5b9cf52e; border: 1px solid #5b9cf566;
+    color: var(--color); text-transform: uppercase; display: inline-flex; margin-bottom: 3px;
+  }
+  .step-title-current { font-size: 15px; font-weight: 700; color: var(--text); margin: 0; line-height: 1.25; }
+  .step-body-current { padding: 13px 18px 15px 21px; display: flex; flex-direction: column; gap: 9px; }
+  .key-insight-current {
+    display: flex; gap: 9px; padding: 8px 12px;
+    background: #5b9cf512; border: 1px solid #5b9cf530; border-radius: 7px;
+  }
+  /* Lead text CURRENT — eingerückt mit borderLeft */
+  .lead-current {
+    font-size: 13px; color: var(--text-muted); line-height: 1.75; margin: 0;
+    padding-left: 10px; border-left: 2px solid #5b9cf544;
+  }
+  .code-preview {
+    background: #0d0f18; border: 1px solid var(--border); border-radius: 8px;
+    padding: 12px 14px; font-family: var(--font-mono); font-size: 11.5px;
+    color: #8b9cf5; line-height: 1.7; margin-top: 2px;
+  }
+
+  /* ── Step blocks NEW ── */
+  .step-new {
+    border-radius: 14px; border: 1px solid var(--border);
+    background: var(--surface); overflow: hidden; margin-bottom: 14px; opacity: .3;
+    transition: all .3s;
+  }
+  .step-new.active {
+    border-color: #5b9cf550; opacity: 1;
+    box-shadow: 0 6px 32px #5b9cf514;
+    background: linear-gradient(135deg, #5b9cf50d 0%, var(--surface) 180px);
+  }
+  .step-header-new {
+    display: flex; align-items: center; gap: 16px; padding: 16px 20px 14px 24px;
+    background: linear-gradient(135deg,#5b9cf51a 0%,transparent 100%);
+    border-bottom: 1px solid #5b9cf520; position: relative;
+  }
+  .step-header-new::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--color); border-radius:0 2px 2px 0; }
+  .icon-box-new {
+    width: 44px; height: 44px; border-radius: 11px; flex-shrink: 0;
+    background: #5b9cf520; border: 1px solid #5b9cf540;
+    display: flex; align-items: center; justify-content: center; font-size: 22px;
+  }
+  .step-num-new {
+    font-family: var(--font-mono); font-size: 10px; color: var(--color);
+    letter-spacing: .12em; text-transform: uppercase; opacity: .8; margin-bottom: 4px;
+  }
+  .step-title-new { font-size: 16px; font-weight: 700; color: var(--text); margin: 0; line-height: 1.3; }
+  .step-body-new { padding: 16px 20px 18px 24px; display: flex; flex-direction: column; gap: 12px; }
+  .key-insight-new {
+    display: flex; gap: 10px; padding: 10px 14px;
+    background: linear-gradient(135deg, #5b9cf518, #5b9cf50a);
+    border: 1px solid #5b9cf540; border-radius: 8px;
+  }
+  .key-insight-new span:first-child { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+  .key-insight-new p { font-size: 13px; color: var(--color); line-height: 1.65; margin: 0; font-weight: 500; }
+  /* Lead text NEW — kein Einzug, größer, besser lesbar */
+  .lead-new {
+    font-size: 14px; color: var(--text); line-height: 1.8; margin: 0;
+  }
+  .lead-new code {
+    font-family: var(--font-mono); font-size: 12px;
+    background: #5b9cf514; border: 1px solid #5b9cf330;
+    border-radius: 3px; padding: 1px 5px; color: var(--color);
+  }
+
+  /* ── Labels ── */
+  .preview-label {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .1em; color: var(--text-faint);
+    margin-bottom: 12px; padding: 4px 10px; border: 1px solid var(--border);
+    border-radius: 20px; display: inline-block;
+  }
+  .preview-label.new { border-color: var(--color); color: var(--color); background: #5b9cf50a; }
+
+  /* ── Side-by-side wrapper ── */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 0 0 40px; }
+  .compare-panel { min-width: 0; }
+
+  /* ── Sidebar preview mini ── */
+  .sidebar-mini {
+    width: 200px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px 12px; font-size: 12px;
+  }
+  .sidebar-mini-collapsed {
+    width: 52px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px 10px; font-size: 12px;
+    display: flex; flex-direction: column; gap: 10px; align-items: center;
+  }
+  .mini-item {
+    display: flex; align-items: center; gap: 8px; padding: 7px 8px;
+    border-radius: 6px; color: var(--text-muted); margin-bottom: 2px;
+  }
+  .mini-item.active { background: #5b9cf514; color: var(--color); }
+  .mini-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+  .mini-item.active .mini-dot { background: var(--color); }
+  .mini-label { white-space: nowrap; overflow: hidden; }
+  .mini-icon { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .mini-icon.active { background: var(--color); }
+  .mini-icon.inactive { background: var(--border); }
+
+  /* Divider */
+  .divider { height: 1px; background: var(--border); margin: 40px 0; }
+  .section-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .section-sub { color: var(--text-muted); font-size: 14px; margin-bottom: 28px; }
+
+  strong.accent { color: var(--color); }
+</style>
+</head>
+<body>
+
+<div class="toggle-bar">
+  <span>Preview</span>
+  <button class="btn-toggle active" id="btn-dark" onclick="setTheme('dark')">Dark</button>
+  <button class="btn-toggle" id="btn-light" onclick="setTheme('light')">Light</button>
+</div>
+
+<div style="padding: 80px 40px 60px; max-width: 1300px; margin: 0 auto;">
+
+  <!-- ═══ 1. DESCRIPTION ═══ -->
+  <div class="section-title">① Topic Description</div>
+  <div class="section-sub">Die Description ist aktuell zu blass — wird schwer lesbar gegen den Hintergrund.</div>
+
+  <div class="compare">
+    <div class="compare-panel">
+      <div class="preview-label">Aktuell</div>
+      <p class="desc-current">Understand the fetch-on-render waterfall and how render-as-you-fetch with Suspense eliminates it</p>
+    </div>
+    <div class="compare-panel">
+      <div class="preview-label new">Neu — besser lesbar</div>
+      <p class="desc-new">Understand the fetch-on-render waterfall and how render-as-you-fetch with Suspense eliminates it</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 2. SIDEBAR ═══ -->
+  <div class="section-title">② Sidebar — Auto-Collapse beim Scrollen zur Explanation</div>
+  <div class="section-sub">Sidebar klappt sich ein sobald "How it Works" sichtbar wird → mehr Lesebreite.</div>
+
+  <div class="compare" style="align-items: start; gap: 48px;">
+    <div class="compare-panel" style="display: flex; flex-direction: column; gap: 12px;">
+      <div class="preview-label">Aktuell — immer offen</div>
+      <div style="display: flex; gap: 20px; align-items: start;">
+        <div class="sidebar-mini">
+          <div style="font-family: var(--font-mono); font-size: 9px; color: var(--text-faint); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .1em;">JavaScript</div>
+          <div class="mini-item"><div class="mini-dot"></div><div class="mini-label">Variables</div></div>
+          <div class="mini-item"><div class="mini-dot"></div><div class="mini-label">Arrays</div></div>
+          <div class="mini-item active"><div class="mini-dot"></div><div class="mini-label">Functions</div></div>
+          <div class="mini-item"><div class="mini-dot"></div><div class="mini-label">Closures</div></div>
+          <div class="mini-item"><div class="mini-dot"></div><div class="mini-label">Promises</div></div>
+          <div style="margin-top: 16px; font-family: var(--font-mono); font-size: 9px; color: var(--text-faint); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px;">Sections</div>
+          <div class="mini-item"><div class="mini-dot"></div><div class="mini-label">Intro</div></div>
+          <div class="mini-item active"><div class="mini-dot"></div><div class="mini-label">How it works</div></div>
+          <div class="mini-item"><div class="mini-dot"></div><div class="mini-label">Cheat Sheet</div></div>
+        </div>
+        <div style="flex:1; height: 160px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; display:flex; align-items:center; justify-content:center; color: var(--text-faint); font-size: 12px; font-family: var(--font-mono);">Content area<br><span style="font-size: 10px; color: var(--text-faint);">(schmal)</span></div>
+      </div>
+    </div>
+    <div class="compare-panel" style="display: flex; flex-direction: column; gap: 12px;">
+      <div class="preview-label new">Neu — eingeklappt während Explanation</div>
+      <div style="display: flex; gap: 12px; align-items: start;">
+        <div class="sidebar-mini-collapsed">
+          <div class="mini-icon inactive"></div>
+          <div class="mini-icon inactive"></div>
+          <div class="mini-icon active"></div>
+          <div class="mini-icon inactive"></div>
+          <div class="mini-icon inactive"></div>
+          <div style="width:1px; height:12px; background: var(--border);"></div>
+          <div class="mini-icon inactive"></div>
+          <div class="mini-icon active"></div>
+          <div class="mini-icon inactive"></div>
+        </div>
+        <div style="flex:1; height: 160px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; display:flex; align-items:center; justify-content:center; color: var(--text-faint); font-size: 12px; font-family: var(--font-mono);">Content area<br><span style="font-size: 10px; color: var(--color);">(+188px breiter)</span></div>
+      </div>
+      <div style="font-size: 12px; color: var(--text-muted);">↑ Sidebar zeigt nur Icon-Punkte. Hover zeigt Tooltip. Klick expandiert wieder.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 3. EXPLANATION SECTION ═══ -->
+  <div class="section-title">③ How it Works — Section Heading</div>
+  <div class="section-sub">Weniger dominant, mehr wie ein technisches Label.</div>
+
+  <div class="compare">
+    <div class="compare-panel">
+      <div class="preview-label">Aktuell</div>
+      <h2 class="section-heading">How it works</h2>
+    </div>
+    <div class="compare-panel">
+      <div class="preview-label new">Neu</div>
+      <div class="section-heading-new">How it works</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 4. STEP BLOCKS ═══ -->
+  <div class="section-title">④ Step Blocks — Side by Side</div>
+  <div class="section-sub">Links: aktuell (eingerückter Text, kleiner, blass). Rechts: neu (klarer, größer, kein Einzug).</div>
+
+  <div class="compare" style="align-items: start;">
+    <!-- CURRENT -->
+    <div class="compare-panel">
+      <div class="preview-label" style="margin-bottom: 16px;">Aktuell</div>
+      <!-- Extra padding wrapper — das ist das Problem -->
+      <div style="padding: 0 24px;">
+        <!-- Active step current -->
+        <div class="step-current active">
+          <div class="step-header-current">
+            <div class="icon-box-current">⚡</div>
+            <div>
+              <div class="badge-current">INFO 01</div>
+              <h3 class="step-title-current">Render-as-you-fetch</h3>
+            </div>
+          </div>
+          <div class="step-body-current">
+            <div class="key-insight-current">
+              <span style="font-size:13px; flex-shrink:0; margin-top:1px; color: var(--color);">⚡</span>
+              <p style="font-size:12.5px; color: var(--color); line-height:1.6; margin:0; font-weight:500;">Start fetches <strong>before</strong> rendering — pass raw Promises to components using <code style="font-family:var(--font-mono);font-size:10px;background:#5b9cf514;border:1px solid #5b9cf333;border-radius:3px;padding:1px 4px;">use()</code> + Suspense.</p>
+            </div>
+            <!-- Lead text — EINGERÜCKT -->
+            <p class="lead-current">Render-as-you-fetch starts all fetches before the component tree renders — then renders components that suspend until their data arrives.</p>
+            <div class="code-preview">const postPromise = fetchPost(id)<br>const commentsP = fetchComments(id)</div>
+          </div>
+        </div>
+        <!-- Inactive step -->
+        <div class="step-current">
+          <div class="step-header-current" style="background: linear-gradient(135deg,#5b9cf50f 0%,#5b9cf504 100%); border-bottom-color: #5b9cf50f;">
+            <div class="icon-box-current" style="background:#5b9cf51a; border-color:#5b9cf533;">🛣️</div>
+            <div>
+              <div class="badge-current" style="background:#5b9cf51a; border-color:#5b9cf52e; color: #5b9cf58c;">INFO 02</div>
+              <h3 class="step-title-current">Loaders as the solution</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:10px; font-size:11px; color: var(--text-faint); font-family: var(--font-mono); padding: 0 24px;">
+        ← padding: 0 24px (extra eingerückt)
+      </div>
+    </div>
+
+    <!-- NEW -->
+    <div class="compare-panel">
+      <div class="preview-label new" style="margin-bottom: 16px;">Neu</div>
+      <!-- No extra padding -->
+      <div>
+        <!-- Active step new -->
+        <div class="step-new active">
+          <div class="step-header-new">
+            <div class="icon-box-new">⚡</div>
+            <div style="flex:1;">
+              <div class="step-num-new">Step 01</div>
+              <h3 class="step-title-new">Render-as-you-fetch</h3>
+            </div>
+          </div>
+          <div class="step-body-new">
+            <div class="key-insight-new">
+              <span>⚡</span>
+              <p>Start fetches <strong>before</strong> rendering — pass raw Promises to components using <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf330;border-radius:3px;padding:1px 5px;color:var(--color);">use()</code> + Suspense.</p>
+            </div>
+            <!-- Lead text — KEIN EINZUG, größer -->
+            <p class="lead-new">Render-as-you-fetch starts all fetches before the component tree renders — then renders components that suspend until their data arrives. Total wait = slowest single request.</p>
+            <div class="code-preview">const postPromise = fetchPost(id)<br>const commentsP = fetchComments(id)</div>
+          </div>
+        </div>
+        <!-- Inactive step -->
+        <div class="step-new">
+          <div class="step-header-new" style="background: transparent;">
+            <div class="icon-box-new" style="background: #5b9cf510; border-color: #5b9cf525; opacity:.6;">🛣️</div>
+            <div style="opacity:.6;">
+              <div class="step-num-new">Step 02</div>
+              <h3 class="step-title-new">Loaders as the solution</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:10px; font-size:11px; color: var(--color); font-family: var(--font-mono);">
+        ← kein extra padding (bündig)
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══ 5. FULL PREVIEW ═══ -->
+  <div class="section-title">⑤ Gesamtansicht — Neues Layout</div>
+  <div class="section-sub">So würde die komplette "How it Works" Section aussehen mit allen Änderungen kombiniert.</div>
+
+  <div style="border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--bg);">
+    <!-- Simulated page header -->
+    <div style="padding: 24px 40px 0; border-bottom: 1px solid var(--border); background: var(--surface);">
+      <div class="breadcrumb">Docs / JavaScript / Data Fetching Strategies</div>
+      <div class="progress-bar"><div class="progress-fill"></div></div>
+      <div class="topic-title">Data Fetching Strategies</div>
+      <p class="desc-new" style="margin-bottom: 20px;">Understand the fetch-on-render waterfall and how render-as-you-fetch with Suspense eliminates it</p>
+    </div>
+
+    <!-- Simulated explanation section -->
+    <div style="padding: 32px 40px; display: flex; gap: 0; align-items: start;">
+      <!-- Collapsed sidebar -->
+      <div class="sidebar-mini-collapsed" style="margin-top: 8px; margin-right: 20px; flex-shrink: 0;">
+        <div style="font-size: 9px; color: var(--text-faint); font-family: var(--font-mono);">JS</div>
+        <div class="mini-icon inactive"></div>
+        <div class="mini-icon active"></div>
+        <div class="mini-icon inactive"></div>
+        <div style="width:20px; height:1px; background: var(--border);"></div>
+        <div class="mini-icon inactive"></div>
+        <div class="mini-icon active"></div>
+        <div class="mini-icon inactive"></div>
+      </div>
+      <!-- Content -->
+      <div style="flex: 1; min-width: 0;">
+        <div class="section-heading-new">How it works</div>
+        <div style="display: grid; grid-template-columns: minmax(0,38fr) minmax(0,62fr); gap: 40px; align-items: start;">
+          <!-- Left: anim -->
+          <div>
+            <div class="anim-panel" style="height: 220px;">Animation Panel</div>
+            <div class="step-dots">
+              <button class="dot-active" style="border:none; cursor:pointer;"></button>
+              <button class="dot-inactive" style="border:none; cursor:pointer;"></button>
+              <button class="dot-inactive" style="border:none; cursor:pointer;"></button>
+              <button class="dot-inactive" style="border:none; cursor:pointer;"></button>
+            </div>
+          </div>
+          <!-- Right: steps -->
+          <div>
+            <div class="step-new active">
+              <div class="step-header-new">
+                <div class="icon-box-new">⚡</div>
+                <div>
+                  <div class="step-num-new">Step 01</div>
+                  <h3 class="step-title-new">Render-as-you-fetch</h3>
+                </div>
+              </div>
+              <div class="step-body-new">
+                <div class="key-insight-new">
+                  <span>⚡</span>
+                  <p>Start fetches <strong>before</strong> rendering — pass raw Promises with <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf330;border-radius:3px;padding:1px 5px;color:var(--color);">use()</code> + Suspense.</p>
+                </div>
+                <p class="lead-new">Render-as-you-fetch starts all fetches before the component tree renders — then renders components that suspend until their data arrives.</p>
+              </div>
+            </div>
+            <div class="step-new">
+              <div class="step-header-new" style="background:transparent;">
+                <div class="icon-box-new" style="background:#5b9cf510;border-color:#5b9cf525;opacity:.5;">🛣️</div>
+                <div style="opacity:.5;">
+                  <div class="step-num-new">Step 02</div>
+                  <h3 class="step-title-new">Loaders as the solution</h3>
+                </div>
+              </div>
+            </div>
+            <div class="step-new">
+              <div class="step-header-new" style="background:transparent;">
+                <div class="icon-box-new" style="background:#5b9cf510;border-color:#5b9cf525;opacity:.35;">🎯</div>
+                <div style="opacity:.35;">
+                  <div class="step-num-new">Step 03</div>
+                  <h3 class="step-title-new">Suspense + use()</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top: 32px; padding: 20px 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; font-size: 13px; color: var(--text-muted); line-height: 1.8;">
+    <strong style="color: var(--text);">Zusammenfassung der Änderungen:</strong><br>
+    ① Description: <strong class="accent">text-muted → text</strong> + leichter farbiger Hintergrund für mehr Lesbarkeit<br>
+    ② Sidebar: <strong class="accent">auto-collapse</strong> auf 52px beim Scrollen zur Explanation (+188px Breite)<br>
+    ③ Section heading: <strong class="accent">monospace label-style</strong> statt großem h2<br>
+    ④ Padding fix: <strong class="accent">extra 24px entfernt</strong> — Steps bündig mit dem Rest der Seite<br>
+    ⑤ Lead text: <strong class="accent">14px, var(--text), kein Einzug</strong> — besser lesbar<br>
+    ⑥ Step badge: <strong class="accent">"INFO 01" → "Step 01"</strong> — klarer<br>
+    ⑦ Grid ratio: <strong class="accent">44/56 → 38/62</strong> — mehr Platz für Text
+  </div>
+
+</div>
+
+<script>
+function setTheme(t) {
+  if (t === 'light') {
+    document.documentElement.style.setProperty('--bg', '#f8f9fc');
+    document.documentElement.style.setProperty('--surface', '#ffffff');
+    document.documentElement.style.setProperty('--surface-bright', '#f0f2f8');
+    document.documentElement.style.setProperty('--border', '#dde0ec');
+    document.documentElement.style.setProperty('--text', '#1a1d27');
+    document.documentElement.style.setProperty('--text-muted', '#5a5e78');
+    document.documentElement.style.setProperty('--text-faint', '#9094b0');
+    document.getElementById('btn-dark').classList.remove('active');
+    document.getElementById('btn-light').classList.add('active');
+  } else {
+    document.documentElement.style.setProperty('--bg', '#0f1117');
+    document.documentElement.style.setProperty('--surface', '#1a1d27');
+    document.documentElement.style.setProperty('--surface-bright', '#222633');
+    document.documentElement.style.setProperty('--border', '#2e3348');
+    document.documentElement.style.setProperty('--text', '#e2e4ed');
+    document.documentElement.style.setProperty('--text-muted', '#8b8fa7');
+    document.documentElement.style.setProperty('--text-faint', '#555a73');
+    document.getElementById('btn-light').classList.remove('active');
+    document.getElementById('btn-dark').classList.add('active');
+  }
+}
+</script>
+</body>
+</html>

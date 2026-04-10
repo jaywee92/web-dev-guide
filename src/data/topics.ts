@@ -1827,7 +1827,14 @@ export const TOPICS: Topic[] = [
             text: 'Without any CSS, browsers apply their own built-in styles — serif fonts, margins on headings, blue underlined links. Every stylesheet you write overrides these defaults.',
             expandedText: 'Browser default styles vary slightly between browsers — Chrome, Firefox, and Safari each ship with their own **user agent stylesheet**. CSS resets and normalizers (like `normalize.css`) iron out these differences. The modern approach is a minimal reset with `*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }` which makes sizing predictable and removes all default spacing.\n\nDefault styles exist because the web began as a document format — `<h1>` large and bold, `<a>` blue and underlined, `<em>` italic. These conventions predate CSS. Today they are baseline fallbacks for unstyled HTML, not design defaults.',
             codeExample: '/* No CSS needed to see browser defaults */\n/* h1 → bold + margin, p → margin, a → blue + underline */',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🖨️',
+              title: 'Step 0 — Browser defaults: the factory settings',
+              text: [
+                'Every device ships with factory settings — default font, default wallpaper, default ringtone. You can change them, but they are always there if you do nothing.',
+                'Browsers have built-in default stylesheets. `<h1>` is large and bold, `<a>` is blue and underlined, `<p>` has top and bottom margin. These exist even if you write zero CSS.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -1836,7 +1843,14 @@ export const TOPICS: Topic[] = [
             text: 'Apply CSS directly on a single element using the `style` attribute. Inline styles have the highest specificity — they override external and internal stylesheets. Use only for truly one-off dynamic values (e.g. set by JavaScript).',
             expandedText: 'The high specificity of inline styles is intentional: JavaScript-set styles (`element.style.color = "red"`) need to override any external stylesheet without adding new class names. However, using inline styles for general styling creates maintenance problems — there is no single source of truth, styles cannot be reused, and they require JavaScript to update.\n\nFrameworks like React set inline styles as objects: `style={{ color: "red", fontSize: "16px" }}`. This is syntactically different from HTML strings but produces the same DOM inline style attribute. CSS-in-JS libraries like styled-components and Emotion generate class names at runtime, avoiding inline style specificity issues entirely.',
             codeExample: '<p style="color: blue; font-weight: bold;">\n  This paragraph is styled inline.\n</p>',
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '🖊️',
+              title: 'Step 1 — Inline styles: writing on the page itself',
+              text: [
+                'Correcting a printed document by writing in the margin with a pen. The fix is right there, but it only applies to that one copy.',
+                'Inline styles use the `style` attribute directly on an element. They work, but mix presentation into HTML and cannot be reused. Hard to maintain at scale.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -1845,7 +1859,14 @@ export const TOPICS: Topic[] = [
             text: 'Write CSS inside a `<style>` element in the `<head>`. Useful for single-page prototypes or HTML email templates. Not ideal for multi-page sites — styles must be duplicated in every file.',
             expandedText: 'Internal `<style>` tags are also used by CSS-in-JS libraries and **server-side rendering** frameworks that inject per-component styles into the `<head>`. Next.js, Astro, and similar frameworks may emit `<style>` tags per component to avoid loading CSS for components that are not on the current page.\n\nFor HTML email templates, internal `<style>` is the only reliable option — email clients like Gmail strip `<link>` tags entirely. Inline styles are still the most compatible for email because many clients also strip `<style>` tags from the `<head>`.',
             codeExample: '<head>\n  <style>\n    p { color: blue; font-weight: bold; }\n  </style>\n</head>',
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '📋',
+              title: 'Step 2 — Internal style tag: sticky notes on the cover page',
+              text: [
+                'Sticking a sheet of personal notes to the inside cover of a book. The notes apply to that book only.',
+                'A `<style>` block inside `<head>` scopes CSS to that single HTML file. Fine for one-off pages; breaks down when sharing styles across multiple pages.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -1854,7 +1875,14 @@ export const TOPICS: Topic[] = [
             text: 'Link a `.css` file using `<link>` in the `<head>`. Best practice for real projects — one file applies to every page. Change one file, every page updates.',
             expandedText: 'External stylesheets are **cached** by the browser after the first download — returning visitors pay no network cost. The browser uses the `ETag` or `Last-Modified` headers to validate the cached version. Long cache lifetimes combined with content-addressed filenames (like `style.abc123.css` from a build tool) are a standard performance optimization.\n\nA single external stylesheet can be applied across an entire website, ensuring visual consistency without duplication. CSS preprocessors like Sass and Less compile to a single CSS file. Build tools like Vite bundle multiple CSS files into one, minimizing HTTP requests.',
             codeExample: '<head>\n  <link rel="stylesheet" href="style.css">\n</head>\n\n/* style.css */\np { color: blue; font-weight: bold; }',
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '📖',
+              title: 'Step 3 — External stylesheet: the company style guide',
+              text: [
+                'A company style guide that all designers reference. Change the guide once and every document updates automatically.',
+                'An external `.css` file linked with `<link>` is the company style guide. All pages that link it share the same rules. One change propagates everywhere.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -1863,7 +1891,14 @@ export const TOPICS: Topic[] = [
             text: 'When multiple rules target the same element, the browser uses specificity to decide the winner. Higher specificity always wins. Equal specificity? The later rule in the source wins.',
             expandedText: '**Specificity** is calculated as three separate counters: (ID count, class/attribute/pseudo-class count, type/pseudo-element count). An ID selector beats any number of class selectors. Two conflicting rules with equal specificity resolve by **source order** — the later rule wins. `!important` overrides all specificity but creates its own cascade layer that is difficult to override.\n\nCommon specificity mistakes: nesting selectors too deeply (`.nav .menu .item a` creates unnecessarily high specificity), using IDs in CSS (they block reuse), and using `!important` to force overrides (which requires ever-escalating `!important` to override the override).',
             codeExample: '/* (0,0,1) type */\np { color: grey; }\n\n/* (0,1,0) class — WINS (higher spec) */\n.text { color: blue; }\n\n/* (0,0,1) same as first, later but loses */\np { color: red; }',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '⚖️',
+              title: 'Step 4 — The Cascade: who wins the argument',
+              text: [
+                'Three people give conflicting instructions. The most senior person wins. If seniority is equal, the most recent instruction wins.',
+                'The Cascade resolves conflicts. Inline styles beat internal, which beat external. Among equal-specificity rules, the last one declared wins.',
+              ],
+            },
           },
         ],
       },
@@ -1946,7 +1981,14 @@ export const TOPICS: Topic[] = [
             text: 'The innermost area. This is where your text and images live. `width` and `height` apply here by default.',
             expandedText: 'The **content box** is where text flows and replaced elements like images render. By default, CSS `width` and `height` apply to the content box only — padding and border are added on top. This default (`box-sizing: content-box`) means `width: 200px` on an element with `padding: 20px` produces a 240px-wide element visually.\n\n`box-sizing: border-box` changes the calculation so `width` includes padding and border. A `width: 200px` element with `padding: 20px` stays 200px wide — the padding is carved out of the content area. This is universally preferred in modern CSS and is typically set globally as `*, *::before, *::after { box-sizing: border-box; }`.',
             codeExample: '.box { width: 200px; height: 100px; }',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '📦',
+              title: 'Step 0 — Content box: what is inside the package',
+              text: [
+                'A package has contents inside — the actual item you ordered. The size of the content is the size of what you put in, independent of any wrapping.',
+                'The content box is the inner area holding text or child elements. `width` and `height` set this inner size in the default `content-box` model.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -1954,7 +1996,14 @@ export const TOPICS: Topic[] = [
             text: 'Space between the content and the border. Padding is inside the element — it shares the background color.',
             expandedText: 'Padding is rendered with the **element background color**, so it visually extends the colored area of the element. A common pattern is setting `padding` on a container to create internal breathing room rather than applying `margin` on child elements, which avoids margin collapse edge cases.\n\nPadding shorthand follows the **TRBL (Top Right Bottom Left)** clockwise convention: `padding: 10px 20px 10px 20px` sets top, right, bottom, left. Two-value shorthand `padding: 10px 20px` sets top/bottom and left/right. One value sets all four sides equally. Individual sides: `padding-top`, `padding-right`, `padding-bottom`, `padding-left`.',
             codeExample: '.box { padding: 24px; }',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🛍️',
+              title: 'Step 1 — Padding: the protective foam inside',
+              text: [
+                'A fragile item surrounded by foam padding. The foam is inside the box, pushing the item away from the walls. Padding belongs to the element.',
+                'Padding is the space between content and the border. It inherits the element background — it is interior space, not separation from neighbours.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -1962,7 +2011,14 @@ export const TOPICS: Topic[] = [
             text: 'A line that wraps around padding and content. Can be styled independently.',
             expandedText: 'Borders are drawn on top of the background and inside the **CSS outline**. With the default `content-box` sizing, borders add to the total element size. With `border-box`, borders are included in the declared `width` and `height`. The `outline` property (used for focus indicators) does not affect layout — it renders outside the border without pushing other elements.\n\nBorder shorthand (`border: 2px solid #333`) sets all four sides. Individual sides (`border-top`, `border-right`, etc.) override specific edges. `border-radius` rounds corners independently or uniformly. Setting `border-radius: 50%` on a square element creates a circle.',
             codeExample: '.box { border: 2px solid #4ade80; }',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🪟',
+              title: 'Step 2 — Border: the window frame',
+              text: [
+                'A window frame surrounds the glass. It is structural, visible, and adds to the overall size of the window unit.',
+                'Border wraps around padding and content. It is visible and adds to the element size. `border: 2px solid` adds 4px total to width and height.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -1970,7 +2026,14 @@ export const TOPICS: Topic[] = [
             text: 'Space outside the border. Pushes other elements away. Margins can collapse between siblings.',
             expandedText: '**Margin collapse** is one of the most confusing CSS behaviors. When two vertical margins touch (adjacent siblings or parent-child without padding/border separator), they collapse to the **larger** of the two values rather than adding together. This means `margin-bottom: 20px` on a paragraph and `margin-top: 30px` on the next produces 30px of space, not 50px.\n\nMargin collapse only occurs vertically (top/bottom) for block elements in normal flow. It does not occur for flex children, grid items, floated elements, or absolutely/fixed positioned elements. Setting `overflow: auto` or `padding` on a parent prevents collapsing between parent and child margins.',
             codeExample: '.box { margin: 16px auto; }',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🚧',
+              title: 'Step 3 — Margin: keep-out zone around the element',
+              text: [
+                'Construction barriers around a work site: stay this far back. The barriers are outside the site, not part of it.',
+                'Margin is outside the element, creating space between neighbours. It has no background. Adjacent vertical margins collapse — the larger one wins.',
+              ],
+            },
           },
         ],
       },
@@ -2057,7 +2120,14 @@ export const TOPICS: Topic[] = [
             text: 'Flexbox solves the navbar in 2 lines: `display: flex` on the container, then `justify-content: space-between` pushes the logo left and links right. The browser handles everything in between.',
             expandedText: '**Flexbox** replaced older techniques like float-based navbars and `inline-block` grids. The two-line pattern `display: flex; justify-content: space-between` achieves what previously required calculating widths, adding clearfix hacks, and fighting mysterious whitespace issues.\n\nThe flex formatting context changes how children size themselves. Flex children stretch to fill the cross-axis height by default (`align-items: stretch`). This makes same-height card columns trivially easy — apply `display: flex` to the row container and all cards become equally tall without JavaScript height matching.',
             codeExample: `.nav {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n}`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🍱',
+              title: 'Step 0 — Navbar: items in a bento tray',
+              text: [
+                'A bento tray organises items in one row. Each compartment holds one item side by side.',
+                'A navbar is the canonical flexbox use case. `display: flex; justify-content: space-between` — logo left, links right, no floats needed.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -2065,7 +2135,14 @@ export const TOPICS: Topic[] = [
             heading: 'Responsive card rows',
             text: "Add `flex-wrap: wrap` so cards automatically drop to the next row when there's no space. `gap` replaces margin hacks. Each card gets `flex: 1 1 250px` — grow, shrink, minimum 250px wide.",
             codeExample: `.grid {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 16px;\n}\n.card { flex: 1 1 250px; }`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🃏',
+              title: 'Step 1 — Card rows: playing cards that wrap',
+              text: [
+                'Deal cards onto the table — side by side until you run out of space, then they wrap to a new row.',
+                '\'flex-wrap: wrap\' lets items flow onto new rows. Combined with `flex: 1 1 280px`, cards grow to fill and wrap gracefully on smaller screens.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -2073,7 +2150,14 @@ export const TOPICS: Topic[] = [
             heading: 'Perfect centering',
             text: "The most searched CSS question: how do I center this? With flexbox it's two properties on the parent. `justify-content` centers on the main axis, `align-items` on the cross axis.",
             codeExample: `.container {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  height: 100vh;\n}`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🎯',
+              title: 'Step 2 — Perfect centering: the bullseye',
+              text: [
+                'Placing a dot exactly at the centre of a target — equal distance from every edge, horizontal and vertical.',
+                'Two lines: `display: flex; align-items: center; justify-content: center`. The cleanest centering solution in CSS.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -2082,7 +2166,14 @@ export const TOPICS: Topic[] = [
             text: 'These three flex properties cover 90% of real layouts. Start with these, add `flex-direction: column` for vertical stacks.',
             expandedText: 'Flexbox is for **one-dimensional layout** — one row or one column at a time. CSS Grid handles two-dimensional layouts simultaneously. The decision rule: use Flexbox when you want items to control their own size and wrap naturally; use Grid when you want precise control over both row and column tracks from the container.\n\nThe `gap` property on flex containers adds space between items without affecting outer edges, replacing margin hacks. `row-gap` and `column-gap` set gaps independently. Gap-based spacing is always preferred over margin on individual items because it avoids the edge-case where the first or last item has unwanted outer spacing.',
             codeExample: `/* Container */\ndisplay: flex;\njustify-content: space-between; /* main axis */\nalign-items: center;            /* cross axis */\ngap: 16px;                      /* spacing */\n\n/* Child */\nflex: 1;         /* grow to fill */\nflex: 0 0 200px; /* fixed 200px */`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🎛️',
+              title: 'Step 3 — Core properties: the three dials',
+              text: [
+                'A mixing board has three key dials: how items are distributed (justify-content), how they align (align-items), and whether they wrap (flex-wrap).',
+                'The core trio: `justify-content` (main-axis), `align-items` (cross-axis), `flex-wrap`. `gap` adds spacing without margins.',
+              ],
+            },
           },
         ],
       },
@@ -2170,7 +2261,14 @@ export const TOPICS: Topic[] = [
             text: '`grid-template-areas` lets you draw your layout as ASCII art. Each string is a row. Repeated names span multiple columns. A dot (`.`) is an empty cell.',
             expandedText: '**Named template areas** are essentially a visual DSL for your layout. Reading the CSS, you can immediately understand the page structure without inspecting the DOM. The string representation must form a rectangle — each row must have the same number of columns, and each named area must be contiguous.\n\nThe `grid-template-areas` value also implicitly defines row and column counts. If you specify `grid-template-areas` but not `grid-template-columns`, each column is sized as `auto` by default. Pair named areas with explicit `grid-template-columns` and `grid-template-rows` for full control.',
             codeExample: `.layout {\n  display: grid;\n  grid-template-columns: 200px 1fr;\n  grid-template-rows: auto 1fr auto;\n  grid-template-areas:\n    "header header"\n    "sidebar main"\n    "footer footer";\n}`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🏗️',
+              title: 'Step 0 — Named areas: blueprint with labelled rooms',
+              text: [
+                'An architect labels rooms on the blueprint: KITCHEN, BEDROOM. No coordinates — just names.',
+                '`grid-template-areas` maps layout with strings. `\'header header\' \'sidebar main\'` creates a 2x2 grid with header spanning both columns.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -2178,7 +2276,14 @@ export const TOPICS: Topic[] = [
             heading: 'Assign children',
             text: "Each child gets a `grid-area` name matching the template. The browser places it exactly — no tracking column/row numbers.",
             codeExample: `header  { grid-area: header; }\n.sidebar { grid-area: sidebar; }\nmain    { grid-area: main; }\nfooter  { grid-area: footer; }`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🪑',
+              title: 'Step 1 — Assign children: place the furniture',
+              text: [
+                'Once the blueprint labels rooms, movers place furniture in each room by name: sofa goes in LIVING ROOM.',
+                'Each child gets `grid-area: header` and Grid places it in the matching named area. Change the template string to reorder the whole layout.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -2187,7 +2292,14 @@ export const TOPICS: Topic[] = [
             text: 'Redefine the template in a `@media` query. The browser re-flows all named areas instantly — no changing individual `grid-column`/`row` values.',
             expandedText: 'Redefining `grid-template-areas` inside a `@media` query is the **most maintainable pattern** for responsive grid layouts. Instead of overriding individual `grid-column` and `grid-row` on every child, you update a single ASCII art string on the parent and every named child repositions automatically.\n\nFor simpler responsive grids, `grid-template-columns: repeat(auto-fit, minmax(250px, 1fr))` creates a grid that automatically adjusts the number of columns based on available space. Items wrap to new rows when they would be smaller than 250px — no media queries needed.',
             codeExample: `@media (max-width: 768px) {\n  .layout {\n    grid-template-areas:\n      "header"\n      "main"\n      "sidebar"\n      "footer";\n    grid-template-columns: 1fr;\n  }\n}`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '📱',
+              title: 'Step 2 — Responsive areas: same furniture different floor plan',
+              text: [
+                'Same furniture, different apartment layout for small vs large. The furniture labels stay the same; only the blueprint changes.',
+                'Inside a media query, redefine `grid-template-areas`. The same children, same `grid-area` values — but the layout changes completely.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -2195,7 +2307,14 @@ export const TOPICS: Topic[] = [
             heading: 'fr unit and auto-fit',
             text: '`fr` (fractional unit) fills remaining space proportionally. Combine with `repeat(auto-fill, minmax())` for grids that automatically adapt their column count.',
             codeExample: `/* 3 equal columns */\ngrid-template-columns: 1fr 1fr 1fr;\n\n/* Auto-responsive cards */\ngrid-template-columns:\n  repeat(auto-fill, minmax(250px, 1fr));`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '📏',
+              title: 'Step 3 — fr and auto-fit: elastic shelving',
+              text: [
+                'Elastic shelving that fills available space with equal-width slots. Add a shelf and each slot shrinks to share.',
+                'The `fr` unit means fraction of remaining space. `repeat(auto-fit, minmax(200px, 1fr))` creates as many columns as fit — responsive without media queries.',
+              ],
+            },
           },
         ],
       },
@@ -2282,7 +2401,14 @@ export const TOPICS: Topic[] = [
             text: 'CSS rules start with a selector that tells the browser which elements to style.',
             expandedText: '**Selectors** form the core of CSS architecture. How you name and target elements determines how maintainable and conflict-prone your stylesheets are. Overly specific selectors like `.nav > ul > li > a:first-child` create brittle code that breaks when HTML is restructured.\n\nMethodologies like BEM (Block, Element, Modifier) and utility-first CSS (Tailwind) are both responses to the difficulty of managing selector specificity at scale. BEM enforces flat class names with no nesting. Utility-first eliminates custom selectors entirely in favor of predefined atomic classes.',
             codeExample: 'h1 { color: blue; }   /* type selector */\n.card { padding: 16px; }  /* class selector */\n#hero { font-size: 48px; } /* ID selector */',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🎯',
+              title: 'Step 0 — Selectors: addressing a letter',
+              text: [
+                'A letter reaches the right recipient because the address uniquely identifies them: country, city, street, name.',
+                'CSS selectors target specific HTML elements. The more specific the selector, the narrower the targeting.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -2291,7 +2417,14 @@ export const TOPICS: Topic[] = [
             text: 'The `*` selector matches every element on the page. Often used for CSS resets.',
             expandedText: 'The **universal selector** `*` has **zero specificity**, meaning any class or type rule overrides it. This is why `* { box-sizing: border-box }` works correctly as a reset — component styles can still override box-sizing on specific elements without specificity conflicts.\n\nIncluding `*::before, *::after` in the box-sizing reset ensures pseudo-elements also use border-box. Without this, `::before` and `::after` pseudo-elements on some elements may size unexpectedly when used for decorative layout.',
             codeExample: '* {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🌐',
+              title: 'Step 1 — Universal selector *: addressing everyone',
+              text: [
+                'A flyer left on every desk — no name, just everyone gets it.',
+                'The `*` selector matches every element. `* { box-sizing: border-box }` applies to all. Great for resets.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -2300,7 +2433,14 @@ export const TOPICS: Topic[] = [
             text: 'Match elements by their tag name. Every `<h1>` on the page gets this style.',
             expandedText: 'Type selectors match **purely by element name**, not by any attribute or class. They are useful for setting baseline styles on elements (heading sizes, list marker removal, link colors) but risky for component-level styling since they match every instance globally.\n\nCombining type selectors with a parent context (`.card p`) adds specificity and limits scope, but creates coupling between HTML structure and CSS. A dedicated class like `.card-body` is more robust — it survives HTML restructuring and self-documents the intended use.',
             codeExample: 'h1 { font-size: 32px; }\np  { line-height: 1.6; }\na  { color: #5b9cf5; }',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🏷️',
+              title: 'Step 2 — Type selectors: addressing by job title',
+              text: [
+                'Sending an email to all engineers — everyone with that title receives it, regardless of name.',
+                '`p { color: gray }` styles every `<p>` element. Type selectors match all instances of an HTML tag.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -2309,7 +2449,14 @@ export const TOPICS: Topic[] = [
             text: 'Classes start with a dot. They are reusable — many elements can share the same class.',
             expandedText: 'An element can have **multiple classes** and match multiple class rules simultaneously. Class names should describe **what the element is** semantically (`.nav-link`, `.card-title`) rather than what it looks like (`.red`, `.bold`). Semantic names remain meaningful when the design changes — `.primary-action` still makes sense even when the color changes.\n\nClass selectors have the same specificity (0,1,0) regardless of name length. `.a` and `.extremely-specific-class` have identical specificity. The only way specificity differs is by combining multiple class selectors in one rule: `.card.featured` has (0,2,0) specificity.',
             codeExample: '.button {\n  padding: 8px 16px;\n  border-radius: 4px;\n}\n\n.button.primary { background: #5b9cf5; }',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '📛',
+              title: 'Step 3 — Class selectors: addressing by badge colour',
+              text: [
+                'At a conference, green badges are sponsors, red are speakers. You address all speakers by targeting badge colour.',
+                '`.highlight { background: yellow }` styles every element with `class=highlight`. Classes are the workhorse of CSS targeting.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -2318,7 +2465,14 @@ export const TOPICS: Topic[] = [
             text: 'When multiple rules target the same element, specificity determines the winner. ID > class > type. Higher specificity always wins regardless of order.',
             expandedText: '**Specificity** is calculated as three separate counters: (ID count, class/attribute/pseudo-class count, type/pseudo-element count). An ID selector beats any number of class selectors. Equal specificity resolves by **source order** — the later rule wins. `!important` overrides all specificity but creates a separate cascade layer difficult to escape.\n\nCommon mistakes: nesting selectors too deeply (`.nav .menu .item a` creates unnecessarily high specificity), using IDs in CSS (blocks reuse and creates specificity problems), and using `!important` to force overrides which requires escalating `!important` to override.',
             codeExample: '/* specificity: 0,0,1 */\nh1 { color: grey; }\n\n/* specificity: 0,1,0 — wins over h1 */\n.title { color: blue; }\n\n/* specificity: 1,0,0 — always wins */\n#hero { color: green; }',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '⚖️',
+              title: 'Step 4 — Specificity: seniority decides the winner',
+              text: [
+                'Three managers give conflicting instructions. The most senior wins.',
+                'Specificity is a score: inline=1000, ID=100, class=10, type=1. The highest score wins. `!important` is a nuclear override.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -2327,7 +2481,14 @@ export const TOPICS: Topic[] = [
             text: 'Pseudo-classes target elements based on their state or position. `:hover` fires when the mouse is over the element. `:focus` activates when a form field is focused. `:nth-child(n)` matches by position in a list.',
             expandedText: '**Pseudo-classes** enable powerful accessibility patterns. `:focus-visible` shows a focus indicator only for keyboard navigation, not mouse clicks — preserving ring-free mouse UX while keeping keyboard indicators for accessibility. Modern browsers implement this natively.\n\n`:not()`, `:is()`, and `:where()` are powerful combinators. `:where()` has zero specificity making it ideal for resets. `:has()` ("the parent selector") matches a parent based on its children: `.card:has(img)` styles cards that contain an image.',
             codeExample: 'a:hover  { text-decoration: underline; }\ninput:focus { outline: 2px solid #3b82f6; }\nli:nth-child(odd)  { background: rgba(255,255,255,0.05); }\nli:first-child { font-weight: bold; }',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🔔',
+              title: 'Step 5 — Pseudo-classes: styling by current state',
+              text: [
+                'A traffic light: red when stopped, green when moving — same light, different appearance based on state.',
+                'Pseudo-classes like `:hover`, `:focus`, `:checked` style elements based on state. `a:hover { color: red }` — no JS needed.',
+              ],
+            },
           },
           {
             animationStep: 6,
@@ -2335,7 +2496,14 @@ export const TOPICS: Topic[] = [
             heading: 'Pseudo-elements — virtual sub-parts',
             text: 'Pseudo-elements style a part of an element that doesn\'t exist in the HTML. `::before` and `::after` inject generated content. `::first-line` and `::first-letter` target text. Always use `content: ""` with `::before`/`::after`.',
             codeExample: 'p::first-line { font-weight: bold; }\n\n.card::before {\n  content: "";\n  display: block;\n  width: 4px;\n  background: #3b82f6;\n}\n\na::after { content: " →"; }',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🎩',
+              title: 'Step 6 — Pseudo-elements: the conjured helper',
+              text: [
+                'A magician produces a handkerchief from thin air — it looks real but is not in the physical pocket.',
+                'Pseudo-elements like `::before` and `::after` inject virtual elements. `p::before { content: star }` adds a star before every paragraph — no HTML change.',
+              ],
+            },
           },
         ],
       },
@@ -2421,7 +2589,14 @@ export const TOPICS: Topic[] = [
             heading: 'Named colors',
             text: 'CSS has 140+ named colors like red, blue, tomato, and cornflowerblue. Simple but limited — you can\'t fine-tune them.',
             codeExample: 'color: tomato;\nbackground-color: cornflowerblue;',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🎨',
+              title: 'Step 0 — Named colors: paint tin labels',
+              text: [
+                'A hardware store sells paint with names: Midnight Blue, Fire Red. You pick by name.',
+                'CSS has 140+ named colours: `red`, `dodgerblue`, `tomato`. Great for prototyping but limits you to a fixed palette.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -2429,7 +2604,14 @@ export const TOPICS: Topic[] = [
             heading: 'HEX codes',
             text: 'Six hex digits encode red, green, and blue channels (#RRGGBB). The most common format you\'ll see in designs. Shorthand: #RGB when each pair repeats.',
             codeExample: 'color: #ef4444;       /* red */\ncolor: #3b82f6;       /* blue */\ncolor: #fff;          /* white shorthand */',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🔢',
+              title: 'Step 1 — HEX codes: the colour DNA',
+              text: [
+                'A manufacturer internal code for exact reproduction: R=59, G=130, B=246 written as #3B82F6.',
+                'Hex encodes red, green, blue as two-digit base-16 numbers: `#RRGGBB`. Add two digits for alpha: `#ff000080` is half-transparent red.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -2438,7 +2620,14 @@ export const TOPICS: Topic[] = [
             text: 'rgb() takes three 0–255 values for red, green, blue. rgba() adds a fourth value (0–1) for transparency — great for overlays.',
             expandedText: 'The modern CSS Color Level 4 `color()` syntax can express **P3 wide-gamut colors** that go beyond sRGB. `color(display-p3 1 0 0)` is a more vibrant red than `#ff0000` on P3 displays (modern Apple devices). The `@supports` rule detects support: `@supports (color: color(display-p3 1 0 0))`.\n\nThe 4-argument `rgb()` (modern CSS Color 4 syntax) and `rgba()` are now equivalent: `rgb(255 0 0 / 50%)` and `rgba(255, 0, 0, 0.5)` produce identical results in all modern browsers. The space-separated syntax is the newer standard.',
             codeExample: 'color: rgb(239, 68, 68);\nbackground: rgba(0, 0, 0, 0.5); /* 50% black overlay */',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🎚️',
+              title: 'Step 2 — RGB and RGBA: three dials and a dimmer',
+              text: [
+                'A stage lighting board: three colour dials (RGB) and a brightness dimmer (alpha).',
+                'RGB: `rgb(59, 130, 246)`. RGBA adds alpha: `rgba(59, 130, 246, 0.5)` for 50% opacity. More readable than hex for tweaking one channel.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -2447,7 +2636,14 @@ export const TOPICS: Topic[] = [
             text: 'hsl() uses Hue (0–360°), Saturation (%), and Lightness (%). Much more intuitive for creating color palettes — just shift the hue.',
             expandedText: '**HSL** makes color scales trivial: fix the hue and saturation, vary lightness from 10% to 90% to generate a complete palette. Tailwind generates its color scales this way.\n\n`oklch()` (CSS Color Level 4) is the modern alternative using a perceptually uniform model. In HSL, yellow at 50% lightness looks much brighter than blue at 50% lightness because HSL is not perceptually uniform. OKLCH fixes this — equal lightness changes produce visually equal brightness changes across all hues. It is the recommended color space for modern design systems.',
             codeExample: 'color: hsl(0, 84%, 60%);     /* red */\ncolor: hsl(217, 91%, 60%);   /* blue — same sat/light */\ncolor: hsla(0, 84%, 60%, 0.5);',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🎡',
+              title: 'Step 3 — HSL: the artist colour wheel',
+              text: [
+                'An artist thinks in hue (which colour), saturation (how vivid), lightness (how light or dark).',
+                'HSL: `hsl(210, 90%, 60%)` — hue in degrees, saturation%, lightness%. Easier to create harmonious colour schemes by rotating hue.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -2455,7 +2651,14 @@ export const TOPICS: Topic[] = [
             heading: 'CSS Units',
             text: '`px` is absolute. `em` is relative to the parent\'s font-size. `rem` is relative to the root `<html>` font-size (usually 16px). `%` is relative to the parent\'s size. Use `rem` for font sizes, `px` for borders, `%` for widths.',
             codeExample: 'font-size: 16px;    /* absolute */\npadding: 1rem;      /* 16px if root = 16px */\nwidth: 50%;         /* half of parent */\nmargin: 0.5em;      /* half of parent font-size */',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '📏',
+              title: 'Step 4 — CSS units: measuring in the right system',
+              text: [
+                'A carpenter uses mm for precision, an architect uses metres for rooms, a cartographer kilometres. Right unit for the right context.',
+                'CSS units: `px` fixed, `em`/`rem` type-relative, `%` container-relative, `vw`/`vh` viewport-relative. Use `rem` for fonts.',
+              ],
+            },
           },
         ],
       },
@@ -2542,7 +2745,14 @@ export const TOPICS: Topic[] = [
             text: 'Without CSS, browsers apply their own default styles — usually Times New Roman at 16px. Every CSS reset or stylesheet you write is overriding these defaults.',
             expandedText: '**Browser default text styles** exist because the web began as an academic document system where serif fonts, heading hierarchy, and link styling mattered more than visual design. CSS resets (like `* { margin: 0; padding: 0 }`) remove these defaults entirely; normalizers (normalize.css) make them consistent across browsers.\n\nNever override the root `font-size` with a fixed pixel value — doing so breaks users who have increased their system font size for accessibility. Set `font-size: 100%` on `<html>` (or omit it) to preserve the user\'s preference, then use `rem` units throughout.',
             codeExample: '/* Browser default — no CSS applied */\nbody { font: 16px serif; }',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '📄',
+              title: 'Step 0 — Browser defaults: the unsealed letter',
+              text: [
+                'An unsealed letter with no formatting — just plain text in the browser default style.',
+                'Without CSS, every browser applies its own default typography. Your styles override these defaults.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -2550,7 +2760,14 @@ export const TOPICS: Topic[] = [
             text: '`font-family` sets the typeface — always end with a generic fallback. `font-size` controls how big text appears. `font-weight` ranges from 100 (thin) to 900 (black), with 400 = normal and 700 = bold.',
             expandedText: 'The **font-family cascade** means the browser tries each listed family in order, using the first one available. Generic families (`sans-serif`, `serif`, `monospace`) are the mandatory final fallback — every browser guarantees at least one font for each.\n\nSystem font stacks like `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif` use the operating system\'s native font for a familiar appearance with zero download cost. Variable fonts provide all weights and styles in a single file — `@font-face` with `format("woff2-variations")` enables fine-grained weight control across the 100–900 range.',
             codeExample: 'body {\n  font-family: "Inter", sans-serif;\n  font-size: 16px;\n  font-weight: 400;\n}',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🔤',
+              title: 'Step 1 — Font properties: the typeface toolbox',
+              text: [
+                'Three core decisions: which typeface (font-family), what size (font-size), how heavy (font-weight).',
+                'The foundational trio: `font-family: Inter, sans-serif`, `font-size: 16px`, `font-weight: 700`. These control 80% of typographic feel.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -2558,7 +2775,14 @@ export const TOPICS: Topic[] = [
             text: '`text-align` positions text horizontally (left, center, right, justify). `text-decoration` controls underlines, strikethroughs, and their style.',
             expandedText: '`text-align: justify` creates newspaper-style columns but produces **uneven word spacing** in narrow containers or with long words. Combining `text-align: justify` with `hyphens: auto` reduces spacing issues by allowing hyphenation at line breaks.\n\n`text-decoration` is now a shorthand for `text-decoration-line`, `text-decoration-color`, `text-decoration-style`, and `text-decoration-thickness`. Custom underline styles are possible: `text-decoration: underline wavy #3b82f6 2px`. Removing link underlines hurts accessibility — underlines are a primary visual indicator that text is a link.',
             codeExample: 'h1 { text-align: center; }\na  { text-decoration: none; }   /* removes link underline */\n.strike { text-decoration: line-through; }',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '📰',
+              title: 'Step 2 — text-align and decoration: the newspaper editor',
+              text: [
+                'An editor decides: is this headline centred or left? Should this link be underlined?',
+                '`text-align: center` centres text. `text-decoration: none` removes the default underline from links.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -2566,7 +2790,14 @@ export const TOPICS: Topic[] = [
             text: '`letter-spacing` adjusts space between characters. `line-height` controls the height of each line — use a unitless value like 1.6 so it scales with font size.',
             expandedText: 'Using a **unitless line-height** (like 1.6) is critical for inheritance. `line-height: 24px` on a parent does not scale when a child increases its font-size — lines overlap. `line-height: 1.6` means "1.6 times the current font-size" and scales automatically throughout the inheritance chain.\n\nTypography guidelines for body text: `font-size: 16px–18px`, `line-height: 1.5–1.7`, `max-width: 65ch–75ch`. The `ch` unit equals the width of the "0" character, making it ideal for controlling line length. Research shows lines longer than 75 characters reduce reading comprehension.',
             codeExample: 'p {\n  line-height: 1.6;       /* 1.6× font-size */\n  letter-spacing: 0.01em;\n}\n\n.heading { letter-spacing: -0.02em; }',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🎼',
+              title: 'Step 3 — Spacing: the musical score',
+              text: [
+                'A score uses precise notation for space between notes. Too tight: unreadable. Too loose: no coherence.',
+                '`letter-spacing` adjusts space between characters. `line-height: 1.6` sets space between lines — 1.5 to 1.8 is comfortable for body text.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -2574,7 +2805,14 @@ export const TOPICS: Topic[] = [
             text: 'Load custom fonts with `@import` inside your CSS. Google Fonts generates the URL for you. `@font-face` works the same way but for locally hosted font files.',
             expandedText: 'The `display=swap` descriptor in `@font-face` (and the corresponding URL parameter in Google Fonts) tells the browser to show a **fallback font** immediately, then swap to the web font when loaded. This prevents FOIT (Flash of Invisible Text). `font-display: optional` is better for performance — if the font is not cached and cannot load quickly, the fallback is used permanently for that page load.\n\nSelf-hosting fonts avoids third-party DNS lookups and connection overhead. Build tools can **subset** fonts to only the characters used in the page, dramatically reducing file size. Variable fonts provide all weights in a single file, further reducing HTTP requests.',
             codeExample: '/* At top of CSS file */\n@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");\n\nbody { font-family: "Inter", sans-serif; }',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🌐',
+              title: 'Step 4 — Google Fonts: the free font library',
+              text: [
+                'A free public library with thousands of curated books — browse, pick, borrow. No purchase, no install.',
+                'Google Fonts provides web fonts via CDN. Add `<link>` then use `font-family: Inter, sans-serif`. Zero hosting cost.',
+              ],
+            },
           },
         ],
       },
@@ -2661,35 +2899,70 @@ export const TOPICS: Topic[] = [
             heading: 'background-color',
             text: 'The simplest background — a solid color fill. Accepts any CSS color value: named, hex, rgb, hsl.',
             codeExample: '.box {\n  background-color: #3b82f6;\n  /* or: background: #3b82f6; (shorthand) */\n}',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🖼️',
+              title: 'Step 0 — background-color: painting the wall',
+              text: [
+                'Painting a room wall is the simplest decoration: one colour, fills the space. Everything else goes on top.',
+                '`background-color` fills the element background with a solid colour. It sits behind all other background layers.',
+              ],
+            },
           },
           {
             animationStep: 1,
             heading: 'background-image',
             text: 'Load an image as a background using `url()`. The image doesn\'t affect the document flow — it\'s purely decorative. Always pair with a fallback `background-color`.',
             codeExample: '.hero {\n  background-image: url("photo.jpg");\n  background-color: #1e293b; /* fallback */\n}',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🖼️',
+              title: 'Step 1 — background-image: hanging a painting',
+              text: [
+                'After painting, you hang a photograph. The photo sits on the wall colour but does not replace it.',
+                '`background-image: url(photo.jpg)` renders on top of `background-color`. Use `<img>` for meaningful images screen readers should read.',
+              ],
+            },
           },
           {
             animationStep: 2,
             heading: 'repeat, position & size',
             text: '`background-repeat` controls tiling. `background-position` sets origin. `background-size: cover` fills the container, `contain` fits within it.',
             codeExample: '.hero {\n  background-image: url("photo.jpg");\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: cover;\n}',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🗺️',
+              title: 'Step 2 — repeat, position and size: hanging correctly',
+              text: [
+                'Hanging a painting requires three decisions: does it tile, where does it go, how big?',
+                '`background-repeat: no-repeat; background-position: center; background-size: cover` — scales to fill container, cropping if needed.',
+              ],
+            },
           },
           {
             animationStep: 3,
             heading: 'linear-gradient()',
             text: 'Gradients are generated images — no image file needed. `linear-gradient()` transitions between colors in a straight line. Specify the angle and two or more color stops.',
             codeExample: 'background: linear-gradient(135deg, #6366f1, #ec4899);\nbackground: linear-gradient(to right, #1e293b, #3b82f6 50%, #6366f1);',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🌅',
+              title: 'Step 3 — linear-gradient: the sunset strip',
+              text: [
+                'A sunset transitions smoothly from orange at the horizon to deep blue at the top.',
+                '`background: linear-gradient(135deg, #f97316, #3b82f6)` — smooth transition at 45 degrees. Multiple colour stops possible.',
+              ],
+            },
           },
           {
             animationStep: 4,
             heading: 'radial-gradient()',
             text: '`radial-gradient()` radiates from a center point outward. Great for spotlight effects and subtle depth. Combine with transparency for overlays.',
             codeExample: 'background: radial-gradient(circle, #6366f1, #0f172a);\nbackground: radial-gradient(ellipse at top left, #6366f1 0%, transparent 60%);',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '💡',
+              title: 'Step 4 — radial-gradient: the spotlight',
+              text: [
+                'A spotlight creates a circle of bright light that fades to darkness at the edges.',
+                '`background: radial-gradient(circle, #fbbf24, #1e1e2e)` — bright centre, dark edges. Perfect for glow effects.',
+              ],
+            },
           },
         ],
       },
@@ -2776,7 +3049,14 @@ export const TOPICS: Topic[] = [
             text: '`box-shadow` takes: x-offset, y-offset, blur-radius, spread-radius, color. Only the first two are required. Positive x = right, positive y = down.',
             expandedText: 'The **spread radius** defaults to 0 — the shadow is the same size as the element. A positive spread expands the shadow, a negative spread shrinks it. A zero-offset zero-blur shadow with only spread creates a solid frame that looks like a border but does not affect layout: `box-shadow: 0 0 0 3px blue`.\n\nMultiple box-shadows are comma-separated — the first renders on top. Each shadow has its own offset, blur, spread, and color. This enables complex layered effects like Material Design\'s elevation system.',
             codeExample: `.card {\n  /* x  y  blur  spread  color */\n  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.4);\n}`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🔦',
+              title: 'Step 0 — box-shadow anatomy: the shadow recipe',
+              text: [
+                'A shadow depends on four things: offset (position), blur (edge softness), spread, and colour.',
+                '\'box-shadow\' takes: `offset-x offset-y blur-radius spread-radius color`. Example: `0 4px 16px 0 rgba(0,0,0,0.2)`.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -2785,7 +3065,14 @@ export const TOPICS: Topic[] = [
             text: 'A single shadow with slight y-offset and blur creates depth. Keep the shadow subtle — too strong looks dated. rgba gives transparency control.',
             expandedText: 'Using **rgba() for shadow color** lets shadows blend naturally with any background. `rgba(0, 0, 0, 0.15)` looks subtle on white and remains visible on gray backgrounds. A pure `#000` shadow always looks heavy and unnatural.\n\nFor dark mode designs, shadows become less visible against dark backgrounds. Some dark mode UIs switch to a different strategy — using a subtle `rgba(255, 255, 255, 0.05)` rim light on element edges rather than a drop shadow, creating depth through highlights instead.',
             codeExample: `.card {\n  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);\n}`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '📄',
+              title: 'Step 1 — Simple drop shadow: the floating card',
+              text: [
+                'A business card slightly above a table casts a soft shadow — the card appears to float.',
+                'A card shadow: `box-shadow: 0 2px 8px rgba(0,0,0,0.15)`. Small y-offset, moderate blur, low opacity. The most common pattern.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -2794,7 +3081,14 @@ export const TOPICS: Topic[] = [
             text: 'Stack multiple shadows with commas for realism. A tight near-shadow + a diffuse far-shadow mimics how light actually behaves. This is the secret behind polished UI design systems.',
             expandedText: 'Layering two shadows — one tight and dark for proximity, one diffuse and lighter for ambient light — more accurately models **ambient occlusion** in physical lighting. Material Design uses multiple shadow layers at different opacities and blurs.\n\n`filter: drop-shadow()` is different from `box-shadow` — it follows the rendered shape including transparent areas. For PNG images with irregular shapes, `filter: drop-shadow()` traces the image contour while `box-shadow` only shadows the rectangular bounding box.',
             codeExample: `.card {\n  box-shadow:\n    0 1px 2px  rgba(0,0,0,0.4),\n    0 8px 32px rgba(91,156,245,0.25);\n}`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🎂',
+              title: 'Step 2 — Layered shadows: multiple candles',
+              text: [
+                'Three candles at different distances cast three overlapping shadows. The result feels natural and dimensional.',
+                'Comma-separated shadow layers: `0 1px 2px rgba(0,0,0,0.1), 0 4px 16px rgba(0,0,0,0.15)`. A crisp layer plus a soft layer — photorealistic depth.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -2803,7 +3097,14 @@ export const TOPICS: Topic[] = [
             text: 'Adding `inset` flips the shadow to the inside of the box. Used for pressed button states, inner depth on inputs, or sunken effects.',
             expandedText: '**Inset shadows** are drawn on the inner surface, creating a recessed appearance. Combining inset and regular shadows creates button press effects: outer shadow on default state, inset shadow on `:active` state.\n\nNegative spread on inset shadows creates subtle inner highlights: `box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1)` adds a top-edge light reflection to a dark button. Form inputs with `box-shadow: inset 0 2px 4px rgba(0,0,0,0.1)` communicate the field\'s interactivity through visual depth.',
             codeExample: `.input:focus {\n  box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);\n}\n\n.btn:active {\n  box-shadow: inset 0 3px 6px rgba(0,0,0,0.3);\n}`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🔵',
+              title: 'Step 3 — Inset shadow: the pressed button',
+              text: [
+                'A button that sinks into its surface when pressed — the shadow is now inside the element.',
+                'Adding `inset` flips the shadow inside: `box-shadow: inset 0 2px 4px rgba(0,0,0,0.2)`. Perfect for pressed states and recessed UI.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -2812,7 +3113,14 @@ export const TOPICS: Topic[] = [
             text: 'Zero offset + large blur = glow. Works on `box-shadow` for halos, `text-shadow` for glowing text effects. `text-shadow` syntax is identical but has no spread.',
             expandedText: '**Glow effects** work because the browser blurs the shadow outward in all directions from the element border. Zero offsets and a large blur radius create a symmetric glow. Neon text effect using stacked text-shadows: `text-shadow: 0 0 7px #fff, 0 0 14px #fff, 0 0 30px #3b82f6`.\n\n`text-shadow` syntax is identical to `box-shadow` but has no spread radius — the four values are x-offset, y-offset, blur, color. Multiple text-shadows simulate 3D depth, embossing, or print effects. Hard shadow for letterpress: `text-shadow: 1px 1px 0 rgba(0,0,0,0.3)`.',
             codeExample: `/* Glow */\n.glow {\n  box-shadow:\n    0 0 24px #5b9cf588,\n    0 0 48px #5b9cf533;\n}\n\n/* Text shadow */\nh1 {\n  text-shadow: 0 0 20px #a78bfa;\n}`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '✨',
+              title: 'Step 4 — Glow and text-shadow: neon signs',
+              text: [
+                'A neon sign glows with coloured light around it — bleeds into the surrounding air.',
+                'A glow effect uses colour instead of black: `box-shadow: 0 0 20px #3b82f6`. `text-shadow: 0 0 10px #fbbf24` creates a golden text glow.',
+              ],
+            },
           },
         ],
       },
@@ -2898,7 +3206,14 @@ export const TOPICS: Topic[] = [
             text: 'By default, `overflow: visible` means content spills out of its container. This breaks layouts — a text block or image can overlap sibling elements.',
             expandedText: 'The `overflow: visible` default exists because the CSS spec prioritized **content accessibility over clipping**. Content should never be hidden unless the author explicitly requests it. Clipping must be an intentional choice.\n\nOverflow creates a new **stacking context** when combined with certain properties. An element with `overflow: hidden` and `position: relative` creates a stacking context that can affect how `position: fixed` descendants behave — fixed elements inside `overflow: hidden` containers may not behave as expected.',
             codeExample: `.box {\n  width: 200px;\n  height: 80px;\n  /* overflow: visible is the default */\n}`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '💧',
+              title: 'Step 0 — The overflow problem: water past the rim',
+              text: [
+                'Pour too much water into a glass and it overflows. The glass has a fixed size; excess goes beyond the boundary.',
+                'By default, content too large for its container overflows visibly. This is `overflow: visible` — often causes broken layouts.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -2907,7 +3222,14 @@ export const TOPICS: Topic[] = [
             text: '`overflow: hidden` clips content at the container boundary. Nothing is scrollable — the overflow just disappears. Use it to contain floated children, clip images, or create masked effects.',
             expandedText: '`overflow: hidden` also **establishes a new block formatting context (BFC)**, which is why it clears floats. Adding `overflow: hidden` to a container that holds only floated children causes the container to expand to contain them. This is the classic "clearfix" technique.\n\n`clip-path` is the modern alternative for non-rectangular clipping — circles, polygons, SVG paths. Unlike `overflow: hidden`, `clip-path` does not create a BFC and can clip to shapes that extend beyond the element\'s own boundary box.',
             codeExample: `.box {\n  overflow: hidden;\n}\n\n/* Also clips child border-radius */\n.avatar-container {\n  border-radius: 50%;\n  overflow: hidden;\n}`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '✂️',
+              title: 'Step 1 — overflow hidden: cutting the excess',
+              text: [
+                'Cutting a photograph to fit a frame — anything outside the boundary is removed.',
+                '`overflow: hidden` clips content at the element boundary. Commonly used to contain floats and clip absolutely positioned children.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -2916,7 +3238,14 @@ export const TOPICS: Topic[] = [
             text: '`auto` adds a scrollbar only when content overflows. `scroll` always shows the scrollbar. Prefer `auto` — it avoids layout shift on content size changes. Control axes separately with `overflow-x` / `overflow-y`.',
             expandedText: '`overflow: auto` is almost always preferable to `overflow: scroll` because it **only shows a scrollbar when needed**, preserving layout space when content fits. `overflow: scroll` permanently reserves scrollbar space, causing layout shifts as content changes.\n\n`overflow-x` and `overflow-y` control axes independently. A common pattern: `overflow-x: hidden; overflow-y: auto` for a container that scrolls vertically but must not overflow horizontally. Setting one axis to `hidden` forces the other to be `auto` if it was `visible`.',
             codeExample: `.sidebar {\n  height: 400px;\n  overflow-y: auto;\n  overflow-x: hidden;\n}\n\n.code-block {\n  overflow-x: auto; /* horizontal scroll for long lines */\n}`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '📜',
+              title: 'Step 2 — overflow auto: the scroll as needed',
+              text: [
+                'A receipt too long for the counter gets clipped to a clipboard with a scroll. You pull it out if needed.',
+                '`overflow: auto` adds a scrollbar only when content overflows. `overflow: scroll` adds scrollbars always. Use `auto` — cleaner.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -2925,7 +3254,14 @@ export const TOPICS: Topic[] = [
             text: 'Truncates text with "..." at the container edge. Requires three properties working together: `white-space: nowrap` (prevent wrapping), `overflow: hidden` (hide overflow), `text-overflow: ellipsis` (show dots).',
             expandedText: 'The three-property combo is strict: remove `white-space: nowrap` and text wraps instead of overflowing. Remove `overflow: hidden` and text overflows the container visibly. Remove `text-overflow: ellipsis` and text is clipped without the "..." indicator.\n\nMulti-line ellipsis: `-webkit-line-clamp: 3` combined with `display: -webkit-box`, `-webkit-box-orient: vertical`, and `overflow: hidden` clips to exactly 3 lines with ellipsis. This is now supported in all major browsers despite the `-webkit-` prefix, and the standardized `line-clamp` property is in the CSS Overflow Level 4 spec.',
             codeExample: `.truncate {\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n\n  /* Optional: set a max-width */\n  max-width: 200px;\n}`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '…',
+              title: 'Step 3 — text-overflow ellipsis: the truncated headline',
+              text: [
+                'A newspaper headline too long for the column gets cut with an ellipsis: Breaking News: Scientists Discover...',
+                'Requires three properties together: `overflow: hidden; white-space: nowrap; text-overflow: ellipsis`. Essential for card titles and nav items.',
+              ],
+            },
           },
         ],
       },
@@ -3009,7 +3345,14 @@ export const TOPICS: Topic[] = [
             heading: 'Block flow',
             text: 'Block elements stack vertically — each one starts on a new line and stretches to fill available width. div, p, h1–h6, and section are block elements by default.',
             codeExample: 'div { display: block; } /* default */\n/* Each div starts on its own line */',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '📦',
+              title: 'Step 0 — display block: stacking bricks',
+              text: [
+                'Stacking bricks in a column — each brick starts a new row and stretches the full width.',
+                'Block elements (div, p, h1) take the full line width and stack vertically. Setting `display: block` forces this behaviour.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -3017,7 +3360,14 @@ export const TOPICS: Topic[] = [
             heading: 'display: inline',
             text: '`display: inline` elements sit side by side in the text flow. They only take up as much width as their content. You can\'t set width or height on inline elements.',
             codeExample: 'span { display: inline; } /* default */\na, strong, em { display: inline; }',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🔤',
+              title: 'Step 1 — display inline: words in a sentence',
+              text: [
+                'Words in a sentence flow side by side, wrapping to the next line naturally.',
+                'Inline elements (span, a, em) sit inline with text. They ignore width/height properties. `display: inline` makes any element flow with text.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -3025,7 +3375,14 @@ export const TOPICS: Topic[] = [
             heading: 'display: inline-block',
             text: '`display: inline-block` — the best of both worlds. Sits inline like text, but accepts width, height, padding, and margin like a block.',
             codeExample: '.badge {\n  display: inline-block;\n  width: 80px;\n  padding: 4px 12px;\n}',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🍱',
+              title: 'Step 2 — display inline-block: labelled boxes on a shelf',
+              text: [
+                'Labelled boxes arranged side by side on a shelf — each box is self-contained, can be sized, and sits in a row with others.',
+                '`display: inline-block` combines both: flows with text but respects width/height. Used for navigation items and image+text combos.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -3033,7 +3390,14 @@ export const TOPICS: Topic[] = [
             heading: 'position: relative',
             text: 'The element stays in the normal flow but can be nudged using `top`, `right`, `bottom`, `left`. The space it would have occupied is preserved. Commonly used as a positioning anchor for absolute children.',
             codeExample: '.nudged {\n  position: relative;\n  top: 10px;   /* moves down 10px */\n  left: 20px;  /* moves right 20px */\n}',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '📌',
+              title: 'Step 3 — position relative: the nudged employee',
+              text: [
+                'An employee stays at their assigned desk but moves 20cm to the left. The desk is still reserved — no one else fills it.',
+                '\'position: relative\' moves the element visually without removing it from flow. Other elements keep the original space. `top/left/right/bottom` offset it.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -3041,7 +3405,14 @@ export const TOPICS: Topic[] = [
             heading: 'position: absolute',
             text: 'Removes the element from the normal flow — other elements ignore it. Positions relative to the nearest ancestor with `position: relative` (or the viewport if none). Essential for tooltips, dropdowns, and overlays.',
             codeExample: '.parent { position: relative; }\n\n.tooltip {\n  position: absolute;\n  top: 100%;\n  left: 0;\n  /* anchored to .parent corner */\n}',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🪟',
+              title: 'Step 4 — position absolute fixed sticky: anchoring strategies',
+              text: [
+                'Anchors have different modes: anchor to a room corner (absolute), anchor to the window (fixed), anchor until you scroll past (sticky).',
+                '\'absolute\' anchors to nearest positioned ancestor. `fixed` anchors to viewport — stays on screen while scrolling. `sticky` sticks on scroll.',
+              ],
+            },
           },
         ],
       },
@@ -3127,7 +3498,14 @@ export const TOPICS: Topic[] = [
             text: 'Without media queries, your layout is fixed. On mobile, content may overflow or look cramped. Responsive design makes your CSS adapt to the viewport.',
             expandedText: '**Fixed-width layouts** pre-date widespread mobile. The `<meta name="viewport" content="width=device-width, initial-scale=1">` tag is required to activate responsive behavior — without it, mobile browsers zoom out to show the full desktop width and media queries behave unexpectedly.\n\nMedia queries support beyond width: `prefers-color-scheme` (dark/light mode), `prefers-reduced-motion` (animation accessibility), `prefers-contrast`, `hover` (touch vs mouse), and `pointer` (coarse = touch, fine = mouse). These enable adaptive UIs that go beyond simple layout changes.',
             codeExample: '/* No media queries — same layout everywhere */\n.container { width: 1200px; }',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '📐',
+              title: 'Step 0 — Mobile first: design the tent before the mansion',
+              text: [
+                'Designers sketch a compact tent first, then expand to a full house. Easier to add space than to remove clutter.',
+                'Mobile-first CSS means writing base styles for small screens, then using `@media (min-width)` to add complexity for larger ones.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -3135,7 +3513,14 @@ export const TOPICS: Topic[] = [
             text: '`@media` applies styles only when a condition is true. `min-width: 768px` means "apply these styles on screens 768px wide or wider" — the tablet breakpoint.',
             expandedText: '**Breakpoints** should be content-based, not device-based. Add a breakpoint wherever your specific content looks awkward — not at specific device widths. A layout with two columns may need to stack at 600px while another works fine at 400px. Content-based breakpoints remain valid much longer than device-specific ones.\n\nWith container queries (`@container`), components can respond to their parent\'s size rather than the viewport. This enables truly portable components that adapt correctly whether in a sidebar or a main area — the same markup, different layout based on container width.',
             codeExample: '@media (min-width: 768px) {\n  .grid {\n    grid-template-columns: 1fr 1fr;\n  }\n}',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '📺',
+              title: 'Step 1 — Media queries: TV size-specific instructions',
+              text: [
+                'A TV manual has different setup instructions per screen size: small, medium, large.',
+                '\'@media (min-width: 768px) { }\' applies CSS only when viewport is at least 768px. Stack multiple queries for a fluid breakpoint ladder.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -3143,7 +3528,14 @@ export const TOPICS: Topic[] = [
             text: 'Stack media queries from smallest to largest. The 1024px breakpoint unlocks a 3-column layout for wider screens.',
             expandedText: '**Content-based breakpoints** are where your specific layout breaks — not device sizes. Inspect your design at various widths and add breakpoints only where the content looks awkward. Resist matching specific device dimensions (375px iPhone, 1024px iPad) as those change each product cycle.\n\nModern layout techniques reduce the need for breakpoints. `grid-template-columns: repeat(auto-fit, minmax(250px, 1fr))` creates a responsive grid without any media queries. `flex-wrap: wrap` with `flex: 1 1 250px` on children achieves similar results. Reserve explicit breakpoints for major layout structure changes.',
             codeExample: '@media (min-width: 1024px) {\n  .grid {\n    grid-template-columns: repeat(3, 1fr);\n  }\n}',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🌊',
+              title: 'Step 2 — Fluid layouts: the elastic band',
+              text: [
+                'An elastic band stretches and contracts with the container. `%` and `fr` units behave like elastic bands.',
+                '`width: 100%; max-width: 1200px` limits growth. `grid-template-columns: repeat(auto-fit, minmax(240px, 1fr))` adjusts column count automatically.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -3151,7 +3543,14 @@ export const TOPICS: Topic[] = [
             text: 'Write base styles for mobile, then add complexity at larger sizes using `min-width` queries. This is the opposite of "desktop-first" (`max-width`). Mobile-first is the industry standard — it forces simpler defaults.',
             expandedText: '**Mobile-first** means the default CSS (outside any media query) targets mobile. This produces cleaner code — mobile layouts are simpler and serve as the baseline. Desktop enhancements are progressive additions. Desktop-first accumulates override complexity as you undo desktop styles for mobile.\n\nMobile-first also improves perceived performance: on slow connections, users see the mobile layout immediately while desktop CSS loads. The fallback is a functional mobile layout, not a broken desktop layout on a small screen.',
             codeExample: '/* Mobile first: base styles = mobile */\n.grid { display: block; }\n\n/* Enhance for larger screens */\n@media (min-width: 768px) {\n  .grid { display: grid; grid-template-columns: 1fr 1fr; }\n}',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🎚️',
+              title: 'Step 3 — Responsive typography: zoom in on small signs',
+              text: [
+                'Street signs in a small village can be smaller because traffic is slow. Motorway signs must be large enough to read at speed.',
+                '\'clamp(1rem, 2.5vw, 2rem)\' sets minimum, preferred, and maximum font sizes. Text grows with viewport but never overflows.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -3159,7 +3558,14 @@ export const TOPICS: Topic[] = [
             text: 'Use `%`, `vw`, `vh`, and `rem` instead of fixed `px` for layouts that scale naturally. `clamp()` is powerful: it sets a minimum, a fluid value, and a maximum.',
             expandedText: '`clamp(min, ideal, max)` is a **fluid value with guardrails**. The ideal value (usually `vw`-based) grows with the viewport, but `clamp` caps it at a maximum and enforces a minimum. `font-size: clamp(1rem, 2.5vw, 1.5rem)` scales from 16px on small screens to 24px maximum on large screens — no media queries needed.\n\n`min()` and `max()` CSS functions are often more precise than media queries for numeric properties. `width: min(100%, 800px)` is equivalent to `max-width: 800px` with `width: 100%` — just more compact. These functions can combine different unit types: `width: min(90vw, 600px)`.',
             codeExample: '.container {\n  width: min(100%, 1100px);\n  padding: 0 clamp(16px, 4vw, 48px);\n}\n\nh1 { font-size: clamp(1.5rem, 5vw, 3rem); }',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🖼️',
+              title: 'Step 4 — Responsive images: the right resolution poster',
+              text: [
+                'A poster looks sharp on a small billboard but blurry on a large one if you use the same print. Responsive images serve size-appropriate files.',
+                '\'max-width: 100%\' prevents overflow. `srcset` delivers the right resolution file. `<picture>` enables different crops per breakpoint.',
+              ],
+            },
           },
         ],
       },
@@ -3243,7 +3649,14 @@ export const TOPICS: Topic[] = [
             text: 'By default, images render at their natural (intrinsic) size. A 1200px photo in a 400px container will overflow — breaking your layout.',
             expandedText: '**Images are "replaced elements"** with intrinsic dimensions. Unlike block elements, they do not expand to fill their container — they render at their natural size unless constrained. `display: block` on an image removes the inline baseline gap that causes the classic "small gap below image" issue in inline containers.\n\n`aspect-ratio` prevents **Cumulative Layout Shift (CLS)** by reserving the correct space before the image loads. Setting `width` and `height` HTML attributes alongside `height: auto; width: 100%` in CSS achieves the same — the browser calculates the aspect ratio from the attributes and reserves space accordingly.',
             codeExample: '/* No CSS — image renders at full size */\n<img src="photo.jpg">',
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '🎞️',
+              title: 'Step 0 — Image sizing: the photo in the frame',
+              text: [
+                'A photo too big for its frame spills over. Too small and there are gaps. The frame sets boundaries.',
+                'By default images render at intrinsic size. `width: 100%; height: auto` makes them scale to container width while preserving aspect ratio.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -3251,7 +3664,14 @@ export const TOPICS: Topic[] = [
             text: 'The simplest responsive image fix. The image will never be wider than its container, and scales down proportionally if the container is smaller.',
             expandedText: '`max-width: 100%` does **not set a width** — it only prevents the image from exceeding its container. The image renders at natural size if smaller, and shrinks proportionally if the container is narrower. The responsive image baseline: `img { max-width: 100%; height: auto; display: block; }`.\n\nFor performance, serve images sized for their display dimensions. Serving a 3000px image that renders at 300px wastes bandwidth. Use `srcset` with `sizes` for resolution switching, or `<picture>` with `<source media>` for art direction — different crops for different viewports.',
             codeExample: 'img {\n  max-width: 100%;\n  height: auto; /* maintain aspect ratio */\n  display: block; /* remove inline gap below image */\n}',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '✂️',
+              title: 'Step 1 — object-fit: cropping the photo',
+              text: [
+                'A photo printed on a postcard always fits the postcard. The printer crops or letterboxes the original.',
+                '`object-fit: cover` fills the container, cropping edges if needed. `contain` fits entirely inside, possibly letterboxing. Use `cover` for hero images.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -3259,21 +3679,42 @@ export const TOPICS: Topic[] = [
             text: 'When you need an image to fill a fixed-size container without distortion. `object-fit: cover` scales and crops the image to fill. Use `object-position` to control the crop anchor.',
             expandedText: '`object-fit` is analogous to `background-size` — `cover` crops to fill, `contain` fits without cropping. `object-position` controls which part of the image is visible when `cover` crops: `object-position: top` keeps the top visible, useful for portrait photos.\n\n`object-fit` requires explicit `width` and `height` on the `<img>` element to take effect. Without them, the image renders at intrinsic size. Setting `width: 100%; height: 300px; object-fit: cover` creates a uniform thumbnail height regardless of source image dimensions.',
             codeExample: '.thumbnail {\n  width: 300px;\n  height: 200px;\n  object-fit: cover;           /* fill, crop to fit */\n  object-position: center top; /* anchor crop */\n}',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🏛️',
+              title: 'Step 2 — object-position: where to crop',
+              text: [
+                'When cropping a photo of a person, you want to keep the face centred, not the feet.',
+                '\'object-position: center top\' keeps the top of the image visible after cropping. Useful for portrait photos in landscape containers.',
+              ],
+            },
           },
           {
             animationStep: 3,
             heading: 'border-radius',
             text: 'Round any element\'s corners with border-radius. 50% on a square element creates a perfect circle — great for avatars.',
             codeExample: '.card-image { border-radius: 12px; }\n.avatar {\n  border-radius: 50%;\n  width: 64px;\n  height: 64px;\n  object-fit: cover;\n}',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🌑',
+              title: 'Step 3 — filter: the Instagram lens',
+              text: [
+                'An Instagram filter applies a colour correction in one tap — no Photoshop required.',
+                '\'filter: grayscale(100%)\' converts to black-and-white. `blur(4px)` blurs. `brightness(1.2)` brightens. Chain with spaces: `filter: contrast(1.1) saturate(1.3)`.',
+              ],
+            },
           },
           {
             animationStep: 4,
             heading: 'aspect-ratio',
             text: '`aspect-ratio` locks a container\'s proportions. The image fills it with `object-fit: cover`. This prevents layout shift while images load.',
             codeExample: '.card-image {\n  aspect-ratio: 16 / 9; /* widescreen */\n  width: 100%;\n  object-fit: cover;\n}\n\n.square { aspect-ratio: 1; }',
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🌫️',
+              title: 'Step 4 — backdrop-filter: frosted glass',
+              text: [
+                'Frosted glass blurs whatever is behind it while keeping the glass panel itself sharp.',
+                '\'backdrop-filter: blur(12px)\' blurs background elements visible through the element — great for floating nav or modal overlays.',
+              ],
+            },
           },
         ],
       },
@@ -3352,11 +3793,51 @@ export const TOPICS: Topic[] = [
         id: 'explanation',
         type: 'explanation',
         steps: [
-          { animationStep: 0, icon: '🎛️', heading: 'The problem: hardcoded values', text: 'Without variables, you repeat the same color hex in dozens of rules. Change the brand color? Find and replace across every file.', expandedText: 'Hardcoded values scattered across thousands of CSS lines create a maintenance nightmare — changing a brand color means a global find-and-replace across every file. **CSS Custom Properties** (also called CSS variables) solve this by giving values names, so a single change at the source propagates everywhere automatically.\n\nUnlike Sass or Less variables which are resolved at compile time and become static values, custom properties are **live at runtime**. JavaScript can read them with `getComputedStyle(el).getPropertyValue("--color")` and update them with `el.style.setProperty("--color", "#ff0000")`, enabling dynamic theming without page reloads.', codeExample: '.btn { background: #3b82f6; }\n.link { color: #3b82f6; }\n/* Change brand = edit many places */', language: 'css' },
-          { animationStep: 1, icon: '🌊', heading: 'Declare with --name', text: 'Custom properties start with `--`. Declare them on `:root` to make them globally available. They cascade just like any CSS property.', expandedText: 'Custom properties follow normal CSS **cascade and inheritance** rules. Declared on `:root`, they are available globally because `:root` is the highest-specificity ancestor of every element. Declared on a `.card` selector, they are only available inside `.card` and its children.\n\nThe **double-dash prefix** (`--`) is required by the CSS spec to distinguish custom properties from future standard properties. Custom properties are **case-sensitive**: `--Color-Primary` and `--color-primary` are two different variables. Unlike Sass variables which compile to static values, custom properties are **resolved at runtime** — JavaScript can read and set them via `element.style.setProperty("--color-primary", "#ff0000")`.', codeExample: ':root {\n  --color-primary: #3b82f6;\n  --radius: 8px;\n}', language: 'css' },
-          { animationStep: 2, icon: '🌓', heading: 'Use with var()', text: 'The `var()` function reads the custom property value. Change `--color-primary` in one place and every rule using `var(--color-primary)` updates automatically.', expandedText: 'The `var()` function reads the current computed value of a custom property, following the **cascade** from the element outward. `var(--color-primary, #3b82f6)` uses `#3b82f6` as a **fallback** when the variable is undefined — this is essential in component libraries where consumers may not define every token.\n\n`var()` can even reference another variable: `var(--spacing-lg, calc(var(--spacing-md) * 2))`. Because resolution happens at runtime, the value updates immediately when the variable changes — no JavaScript needed for theme switches.', codeExample: '.btn  { background: var(--color-primary); }\n.link { color: var(--color-primary); }\n/* Change brand = edit :root only */', language: 'css' },
-          { animationStep: 3, icon: '⚡', heading: 'Override in child scope', text: 'Re-declare the variable inside a selector to override it for that subtree. Child elements see the new value; elements outside are unaffected.', expandedText: 'Scoped overrides are what make custom properties uniquely powerful for **theming**. A dark mode implementation can simply redefine `--bg` and `--text` on `[data-theme="dark"]` without touching a single component style. `var()` always looks up the cascade from the **element where it is used**, not where it was declared.\n\nThis scoping also enables **component-level theming**: a `.card` can expose its own `--card-bg` variable that consumers can override per-instance. This pattern is how design systems achieve flexibility — components define their shape, consumers control the appearance.', codeExample: ':root { --color-primary: #3b82f6; }\n\n.dark-section {\n  --color-primary: #1d4ed8;\n}\n/* .btn inside .dark-section gets #1d4ed8 */\n/* .btn outside still gets #3b82f6 */', language: 'css' },
-          { animationStep: 4, icon: '🎛️', heading: 'Design token system', text: 'A small set of custom properties (colors, spacing, radii) becomes your design system. Components reference tokens — change a token and the whole UI updates.', expandedText: 'A **design token system** is a small set of named values (colors, spacing, radii, shadows) that represent every visual decision in a UI. Tokens like `--color-primary`, `--spacing-md`, and `--radius-sm` act as a contract between design and code.\n\nTokens can be exported from tools like Figma and imported as a single CSS file, ensuring designers and developers always reference the same values. When the design team decides to change the primary color, updating one token cascades to every component that references it — no component code needs to change.', codeExample: ':root {\n  --color-primary:  #3b82f6;\n  --color-surface:  #1e293b;\n  --radius:         8px;\n  --spacing-md:     16px;\n}', language: 'css' },
+          { animationStep: 0, icon: '🎛️', heading: 'The problem: hardcoded values', text: 'Without variables, you repeat the same color hex in dozens of rules. Change the brand color? Find and replace across every file.', expandedText: 'Hardcoded values scattered across thousands of CSS lines create a maintenance nightmare — changing a brand color means a global find-and-replace across every file. **CSS Custom Properties** (also called CSS variables) solve this by giving values names, so a single change at the source propagates everywhere automatically.\n\nUnlike Sass or Less variables which are resolved at compile time and become static values, custom properties are **live at runtime**. JavaScript can read them with `getComputedStyle(el).getPropertyValue("--color")` and update them with `el.style.setProperty("--color", "#ff0000")`, enabling dynamic theming without page reloads.', codeExample: '.btn { background: #3b82f6; }\n.link { color: #3b82f6; }\n/* Change brand = edit many places */', language: 'css' ,
+            analogy: {
+              icon: '🔑',
+              title: 'Step 0 — Declaring variables: the master key ring',
+              text: [
+                'A master key ring holds one key per door. Change a key once and every lock that uses it opens differently.',
+                ':root { --brand: #3b82f6 } declares a global CSS variable. Any property can reference `var(--brand)` — change it once, update everywhere.',
+              ],
+            },},
+          { animationStep: 1, icon: '🌊', heading: 'Declare with --name', text: 'Custom properties start with `--`. Declare them on `:root` to make them globally available. They cascade just like any CSS property.', expandedText: 'Custom properties follow normal CSS **cascade and inheritance** rules. Declared on `:root`, they are available globally because `:root` is the highest-specificity ancestor of every element. Declared on a `.card` selector, they are only available inside `.card` and its children.\n\nThe **double-dash prefix** (`--`) is required by the CSS spec to distinguish custom properties from future standard properties. Custom properties are **case-sensitive**: `--Color-Primary` and `--color-primary` are two different variables. Unlike Sass variables which compile to static values, custom properties are **resolved at runtime** — JavaScript can read and set them via `element.style.setProperty("--color-primary", "#ff0000")`.', codeExample: ':root {\n  --color-primary: #3b82f6;\n  --radius: 8px;\n}', language: 'css' ,
+            analogy: {
+              icon: '📌',
+              title: 'Step 1 — Using var(): calling the key by name',
+              text: [
+                'Instead of copying the key code each time, you just say \'use the master key\' and the system knows which one.',
+                '`color: var(--brand)` references the variable. `var(--color, #000)` provides a fallback if the variable is undefined.',
+              ],
+            },},
+          { animationStep: 2, icon: '🌓', heading: 'Use with var()', text: 'The `var()` function reads the custom property value. Change `--color-primary` in one place and every rule using `var(--color-primary)` updates automatically.', expandedText: 'The `var()` function reads the current computed value of a custom property, following the **cascade** from the element outward. `var(--color-primary, #3b82f6)` uses `#3b82f6` as a **fallback** when the variable is undefined — this is essential in component libraries where consumers may not define every token.\n\n`var()` can even reference another variable: `var(--spacing-lg, calc(var(--spacing-md) * 2))`. Because resolution happens at runtime, the value updates immediately when the variable changes — no JavaScript needed for theme switches.', codeExample: '.btn  { background: var(--color-primary); }\n.link { color: var(--color-primary); }\n/* Change brand = edit :root only */', language: 'css' ,
+            analogy: {
+              icon: '🎚️',
+              title: 'Step 2 — Overriding at component level: local dial override',
+              text: [
+                'A hotel has a central heating system, but each room has its own dial. Override the central setting in your room.',
+                'CSS variables cascade. A component can declare `--brand: red` and all its children use the local value. Outer scopes are unaffected.',
+              ],
+            },},
+          { animationStep: 3, icon: '⚡', heading: 'Override in child scope', text: 'Re-declare the variable inside a selector to override it for that subtree. Child elements see the new value; elements outside are unaffected.', expandedText: 'Scoped overrides are what make custom properties uniquely powerful for **theming**. A dark mode implementation can simply redefine `--bg` and `--text` on `[data-theme="dark"]` without touching a single component style. `var()` always looks up the cascade from the **element where it is used**, not where it was declared.\n\nThis scoping also enables **component-level theming**: a `.card` can expose its own `--card-bg` variable that consumers can override per-instance. This pattern is how design systems achieve flexibility — components define their shape, consumers control the appearance.', codeExample: ':root { --color-primary: #3b82f6; }\n\n.dark-section {\n  --color-primary: #1d4ed8;\n}\n/* .btn inside .dark-section gets #1d4ed8 */\n/* .btn outside still gets #3b82f6 */', language: 'css' ,
+            analogy: {
+              icon: '🧮',
+              title: 'Step 3 — calc() with variables: the spreadsheet formula',
+              text: [
+                'A spreadsheet uses cell references in formulas: =A1 + B1. Change one cell and every formula using it updates.',
+                '\'calc(var(--spacing) * 2)\' computes from a variable. `calc(100% - var(--sidebar-width))` is the main content formula.',
+              ],
+            },},
+          { animationStep: 4, icon: '🎛️', heading: 'Design token system', text: 'A small set of custom properties (colors, spacing, radii) becomes your design system. Components reference tokens — change a token and the whole UI updates.', expandedText: 'A **design token system** is a small set of named values (colors, spacing, radii, shadows) that represent every visual decision in a UI. Tokens like `--color-primary`, `--spacing-md`, and `--radius-sm` act as a contract between design and code.\n\nTokens can be exported from tools like Figma and imported as a single CSS file, ensuring designers and developers always reference the same values. When the design team decides to change the primary color, updating one token cascades to every component that references it — no component code needs to change.', codeExample: ':root {\n  --color-primary:  #3b82f6;\n  --color-surface:  #1e293b;\n  --radius:         8px;\n  --spacing-md:     16px;\n}', language: 'css' ,
+            analogy: {
+              icon: '🌙',
+              title: 'Step 4 — Theme switching: flipping the light switch',
+              text: [
+                'A single switch changes every light in the house from warm to cool white. One change, whole-house effect.',
+                'Toggle a `data-theme` attribute on `<html>`. Inside `[data-theme=dark] { --bg: #111; --text: #eee }` overrides all colours at once. No class toggling per component.',
+              ],
+            },},
         ],
       },
       { id: 'playground', type: 'playground', steps: [] },
@@ -3436,7 +3917,14 @@ export const TOPICS: Topic[] = [
             text: 'When colors are scattered across 50 CSS files, changing your brand color means grep-and-replace across the entire codebase. One missed instance and your UI is inconsistent.',
             expandedText: '**Declaring tokens on `:root`** makes them available in every element including pseudo-elements. The `:root` pseudo-class has higher specificity than the `html` type selector — `:root { --color: red }` wins over `html { --color: blue }`.\n\nScattered hardcoded values make **code reviews harder** — reviewers cannot tell if a new `#3b82f6` is the established brand primary or an arbitrary one-off. Named tokens document design decisions and make auditing the design system straightforward.',
             codeExample: `/* Hardcoded — a maintenance nightmare */\n.btn    { background: #3b82f6; }\n.link   { color: #3b82f6; }\n.border { border-color: #3b82f6; }`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🎨',
+              title: 'Step 0 — Design tokens: the official colour palette',
+              text: [
+                'A brand guidelines document lists every approved colour, spacing, and typography value. Designers and engineers work from the same palette.',
+                'Design tokens are named CSS variables: `--color-brand`, `--space-4`, `--radius-md`. Named by role, not value — `--text-muted` not `--gray-400`.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -3445,7 +3933,14 @@ export const TOPICS: Topic[] = [
             text: '`:root` variables are globally available. Define your entire design token system here — colors, spacing, radius, shadows. Components reference tokens, never raw values.',
             expandedText: '**Declaring tokens on `:root`** makes them globally available. The class-toggle approach works seamlessly with JavaScript frameworks: React `<html className={isDark ? "dark" : ""}>`  — the entire theme changes with a single boolean toggle, zero component updates required.\n\nDesign token systems built on `:root` variables bridge the gap between design tools and code. Each token is a named design decision, not a raw value. Changing `--color-primary` from blue to purple updates the entire UI without touching any component styles.',
             codeExample: `:root {\n  --color-primary:   #3b82f6;\n  --color-bg:        #ffffff;\n  --color-text:      #1e293b;\n  --color-surface:   #f1f5f9;\n  --radius:          8px;\n  --shadow:          0 4px 12px rgba(0,0,0,0.1);\n}\n\n.btn { background: var(--color-primary); }`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🌙',
+              title: 'Step 1 — Dark mode: swapping the colour palette',
+              text: [
+                'A theatre stage designer swaps every prop and light gel for a night scene. The stage structure stays identical — only colours change.',
+                'Define all colours as variables. A `[data-theme=dark]` block redefines them. Toggle the attribute in JS. Components never know which theme is active.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -3454,7 +3949,14 @@ export const TOPICS: Topic[] = [
             text: 'Override the same variable names in a `.dark` class. Add/remove this class from `<html>` or `<body>` in JavaScript. No component code changes — they all read the same variable names.',
             expandedText: 'The **class-toggle approach** pairs with `localStorage` to persist theme preference. Store the toggle state, read it before first render to apply the correct class in `<html>` before any JavaScript fully executes — this prevents a flash of wrong theme.\n\nServer-rendered apps can read a theme preference cookie on the server and pre-apply the correct class in the HTML response before the page reaches the browser. This eliminates the theme flash entirely for returning visitors.',
             codeExample: `.dark {\n  --color-primary:  #818cf8;\n  --color-bg:       #0f172a;\n  --color-text:     #e2e8f0;\n  --color-surface:  #1e293b;\n}\n\n// Toggle in JavaScript\ndocument.documentElement.classList.toggle('dark')`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🔬',
+              title: 'Step 2 — Component-scoped tokens: the local dialect',
+              text: [
+                'Standard English everywhere, but each neighbourhood has its own slang. The component speaks the local dialect — the system still understands it.',
+                'Scope variables inside a component selector: `.card { --card-bg: white; --card-radius: 8px }`. Only that component and its children inherit them.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -3462,7 +3964,14 @@ export const TOPICS: Topic[] = [
             heading: 'prefers-color-scheme',
             text: "Respect the user's OS preference automatically. `prefers-color-scheme` reads the system setting and activates the dark token overrides — no JavaScript needed for the initial state.",
             codeExample: `@media (prefers-color-scheme: dark) {\n  :root {\n    --color-primary:  #818cf8;\n    --color-bg:       #0f172a;\n    --color-text:     #e2e8f0;\n    --color-surface:  #1e293b;\n  }\n}`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🧰',
+              title: 'Step 3 — Utility classes and variables: the toolkit',
+              text: [
+                'A toolbox contains labelled tools. You pick the right tool by name, not by memorising its drawer location.',
+                'Utility classes like `text-muted` map to token variables. Change `--text-muted` once and all `text-muted` usages update across the app.',
+              ],
+            },
           },
         ],
       },
@@ -3540,11 +4049,51 @@ export const TOPICS: Topic[] = [
         id: 'explanation',
         type: 'explanation',
         steps: [
-          { animationStep: 0, icon: '🔄', heading: 'No transform', text: 'Without transform, the element sits in its normal document flow. Transforms apply visually — they do not push other elements around.', expandedText: 'Without transforms, moving elements requires changing layout properties like `margin` or `top`, which triggers **full reflow** — the browser recalculates every affected element position. Transforms bypass layout entirely, operating on the **composited layer**, making them vastly more efficient for animations.\n\nThe **composited layer** is a separate GPU texture that can be moved, scaled, or rotated without triggering reflow or repaint. This is why `transform` and `opacity` are the two CSS properties most recommended for animation — they never cause layout work.', codeExample: '.box {\n  width: 100px;\n  height: 100px;\n  background: #3b82f6;\n}', language: 'css' },
-          { animationStep: 1, icon: '⚙️', heading: 'translate()', text: '`translate(x, y)` moves the element from its normal position. Unlike margin, it does not affect surrounding layout — other elements stay put.', expandedText: '`translate()` uses the element **own dimensions** as the reference frame, not the parent. `translateX(50%)` shifts right by half the element own width — enabling the classic centering trick: `left: 50%; transform: translateX(-50%)` centers an element of any width without knowing that width in advance.\n\nUnlike changing `margin-left` or `left`, `translate()` does **not affect document flow** — neighboring elements do not shift. Translated elements can overlap other content, which is ideal for **hover lift effects** and **slide-in animations** where you want visual movement without layout reflow.', codeExample: '.box {\n  transform: translate(40px, 20px);\n  /* Moves right 40px, down 20px */\n}', language: 'css' },
-          { animationStep: 2, icon: '⏱️', heading: 'rotate()', text: '`rotate(angle)` spins the element around its `transform-origin` (default: center). Positive values = clockwise.', expandedText: 'Rotation happens around the **transform-origin**, which defaults to the center of the element (50% 50%). Changing `transform-origin` to `top left` makes the element rotate around its top-left corner — useful for fold-out panels and card-flip effects.\n\nPositive degrees rotate **clockwise**; negative degrees rotate counter-clockwise. Values above 360deg or below -360deg are valid and useful for multi-rotation animations. Combining `rotate()` with a CSS transition creates smooth spin effects without JavaScript.', codeExample: '.box {\n  transform: rotate(45deg);\n  /* Rotate 45° clockwise */\n}', language: 'css' },
-          { animationStep: 3, icon: '🚀', heading: 'scale()', text: '`scale(n)` resizes the element visually. `1` = original size, `1.5` = 50% larger, `0.5` = half size.', expandedText: '`scale(1)` is the **identity** — no visual change. `scale(0)` collapses to a point. `scale(2)` doubles both dimensions visually without affecting layout. Unlike `width`/`height`, scaling does **not affect document flow**, so neighboring elements never move.\n\nA subtle gotcha: scaling also scales child elements, borders, and box-shadows. A 1px border on a `scale(2)` element renders as 2px visually. For hover scale effects, combine with `transform-origin` and `transition` to create **zoom-in card effects** that feel polished and intentional.', codeExample: '.box {\n  transform: scale(1.5);\n  /* 150% of original size */\n}', language: 'css' },
-          { animationStep: 4, icon: '🎭', heading: 'Combining transforms', text: 'Multiple transform functions stack left-to-right. Order matters — rotate then translate is different from translate then rotate.', expandedText: 'Multiple transform functions are applied **right to left** mathematically — `translate(100px) rotate(45deg)` first rotates, then translates along the original axis. `rotate(45deg) translate(100px)` first rotates, then translates along the rotated axis. These produce completely different results.\n\nThis order dependency is the most common source of confusion with transforms. Always mentally trace: start with the rightmost function, apply it, then move left. For complex animations, break transforms into separate steps with `animation` keyframes to maintain control over the ordering at each frame.', codeExample: '.box {\n  transform: translate(20px, -10px)\n             rotate(20deg)\n             scale(1.2);\n}', language: 'css' },
+          { animationStep: 0, icon: '🔄', heading: 'No transform', text: 'Without transform, the element sits in its normal document flow. Transforms apply visually — they do not push other elements around.', expandedText: 'Without transforms, moving elements requires changing layout properties like `margin` or `top`, which triggers **full reflow** — the browser recalculates every affected element position. Transforms bypass layout entirely, operating on the **composited layer**, making them vastly more efficient for animations.\n\nThe **composited layer** is a separate GPU texture that can be moved, scaled, or rotated without triggering reflow or repaint. This is why `transform` and `opacity` are the two CSS properties most recommended for animation — they never cause layout work.', codeExample: '.box {\n  width: 100px;\n  height: 100px;\n  background: #3b82f6;\n}', language: 'css' ,
+            analogy: {
+              icon: '🔄',
+              title: 'Step 0 — translate: the moving van',
+              text: [
+                'Moving a sofa to a different spot in the room. The sofa itself does not change — only its position.',
+                '\'transform: translate(20px, -10px)\' shifts an element right 20px and up 10px. Does not affect layout — neighbours do not move.',
+              ],
+            },},
+          { animationStep: 1, icon: '⚙️', heading: 'translate()', text: '`translate(x, y)` moves the element from its normal position. Unlike margin, it does not affect surrounding layout — other elements stay put.', expandedText: '`translate()` uses the element **own dimensions** as the reference frame, not the parent. `translateX(50%)` shifts right by half the element own width — enabling the classic centering trick: `left: 50%; transform: translateX(-50%)` centers an element of any width without knowing that width in advance.\n\nUnlike changing `margin-left` or `left`, `translate()` does **not affect document flow** — neighboring elements do not shift. Translated elements can overlap other content, which is ideal for **hover lift effects** and **slide-in animations** where you want visual movement without layout reflow.', codeExample: '.box {\n  transform: translate(40px, 20px);\n  /* Moves right 40px, down 20px */\n}', language: 'css' ,
+            analogy: {
+              icon: '🔭',
+              title: 'Step 1 — scale: the zoom lens',
+              text: [
+                'A zoom lens enlarges or shrinks the subject without moving the camera.',
+                '\'transform: scale(1.5)\' scales to 150% from the element\'s transform-origin (default: centre). `scale(0.5)` halves it. Negative values mirror.',
+              ],
+            },},
+          { animationStep: 2, icon: '⏱️', heading: 'rotate()', text: '`rotate(angle)` spins the element around its `transform-origin` (default: center). Positive values = clockwise.', expandedText: 'Rotation happens around the **transform-origin**, which defaults to the center of the element (50% 50%). Changing `transform-origin` to `top left` makes the element rotate around its top-left corner — useful for fold-out panels and card-flip effects.\n\nPositive degrees rotate **clockwise**; negative degrees rotate counter-clockwise. Values above 360deg or below -360deg are valid and useful for multi-rotation animations. Combining `rotate()` with a CSS transition creates smooth spin effects without JavaScript.', codeExample: '.box {\n  transform: rotate(45deg);\n  /* Rotate 45° clockwise */\n}', language: 'css' ,
+            analogy: {
+              icon: '⏱️',
+              title: 'Step 2 — rotate: the clock hand',
+              text: [
+                'A clock hand rotates around its anchor point — the base stays fixed while the tip sweeps an arc.',
+                '\'transform: rotate(45deg)\' rotates clockwise. `rotateX/Y(60deg)` for 3D tilts. Combine with `perspective` on the parent for depth.',
+              ],
+            },},
+          { animationStep: 3, icon: '🚀', heading: 'scale()', text: '`scale(n)` resizes the element visually. `1` = original size, `1.5` = 50% larger, `0.5` = half size.', expandedText: '`scale(1)` is the **identity** — no visual change. `scale(0)` collapses to a point. `scale(2)` doubles both dimensions visually without affecting layout. Unlike `width`/`height`, scaling does **not affect document flow**, so neighboring elements never move.\n\nA subtle gotcha: scaling also scales child elements, borders, and box-shadows. A 1px border on a `scale(2)` element renders as 2px visually. For hover scale effects, combine with `transform-origin` and `transition` to create **zoom-in card effects** that feel polished and intentional.', codeExample: '.box {\n  transform: scale(1.5);\n  /* 150% of original size */\n}', language: 'css' ,
+            analogy: {
+              icon: '💎',
+              title: 'Step 3 — skew: the italic lean',
+              text: [
+                'Italic type leans to the right by a few degrees — same letterform, slanted presentation.',
+                '\'transform: skewX(15deg)` leans horizontally. `skewY` tilts vertically. Used for decorative shapes, parallelogram cards.',
+              ],
+            },},
+          { animationStep: 4, icon: '🎭', heading: 'Combining transforms', text: 'Multiple transform functions stack left-to-right. Order matters — rotate then translate is different from translate then rotate.', expandedText: 'Multiple transform functions are applied **right to left** mathematically — `translate(100px) rotate(45deg)` first rotates, then translates along the original axis. `rotate(45deg) translate(100px)` first rotates, then translates along the rotated axis. These produce completely different results.\n\nThis order dependency is the most common source of confusion with transforms. Always mentally trace: start with the rightmost function, apply it, then move left. For complex animations, break transforms into separate steps with `animation` keyframes to maintain control over the ordering at each frame.', codeExample: '.box {\n  transform: translate(20px, -10px)\n             rotate(20deg)\n             scale(1.2);\n}', language: 'css' ,
+            analogy: {
+              icon: '🎬',
+              title: 'Step 4 — Chaining transforms: the CGI pipeline',
+              text: [
+                'A 3D animation pipeline applies transforms in sequence: scale the model, then rotate it, then translate it into position.',
+                'Multiple transforms chain left to right: `transform: translate(50%, 50%) rotate(45deg) scale(0.8)`. Order matters — each transform is relative to the previous result.',
+              ],
+            },},
         ],
       },
       { id: 'playground', type: 'playground', steps: [] },
@@ -3618,12 +4167,60 @@ export const TOPICS: Topic[] = [
         id: 'explanation',
         type: 'explanation',
         steps: [
-          { animationStep: 0, icon: '🔄', heading: 'Without transition', text: 'Without transition, any property change snaps instantly. It works, but feels abrupt.', expandedText: 'Without transitions, state changes are **instantaneous** — the browser paints the new style in a single frame. This can feel jarring for hover effects, modal appearances, or color changes. Transitions tell the browser to **interpolate** between two style states over a specified duration.\n\nOnly **animatable** CSS properties can be transitioned. Properties like `display`, `visibility`, and most layout-affecting ones cannot be interpolated smoothly. For showing/hiding, use `opacity` (which transitions) combined with `pointer-events: none` (to block interaction) as a common workaround.', codeExample: '.btn:hover {\n  background: #1d4ed8; /* snaps instantly */\n}', language: 'css' },
-          { animationStep: 1, icon: '⚙️', heading: 'Add transition: property duration', text: '`transition` tells the browser to animate the named property over a given duration. The animation plays in both directions automatically.', expandedText: 'The transition rule should be **on the base element**, not on the `:hover` state. `button { transition: background 0.3s; }` means the transition applies going both into and out of the hover state. If you put `transition` only in `:hover`, the element transitions smoothly in but snaps back instantly on mouse-out.\n\nThe `transition-delay` property is powerful for **staggered animations** — set incrementally longer delays on list items to create a cascade entrance effect. Delays also apply to the return transition unless you override them in the base state.', codeExample: '.btn {\n  transition: background 0.3s;\n}\n.btn:hover {\n  background: #1d4ed8;\n}', language: 'css' },
-          { animationStep: 2, icon: '⏳', heading: 'transition: all', text: '`all` animates every changing property. Convenient but can be slow — prefer listing specific properties for performance.', expandedText: '`transition: all` can trigger transitions on properties you did not intend to animate, like `color` or `font-size`, and has a **performance cost** because the browser must monitor all properties. In production, always specify exact properties: `transition: background 0.2s, transform 0.3s`.\n\n**Not all CSS properties are GPU-composited** — `transform` and `opacity` are handled by the compositor thread and never cause reflow or repaint. Transitioning `width`, `height`, or `margin` triggers layout recalculation on every frame, which can cause visible jank on low-end devices.', codeExample: '.btn {\n  transition: all 0.5s;\n}', language: 'css' },
-          { animationStep: 3, icon: '⏱️', heading: 'Timing functions', text: 'The timing function controls the pace. `ease-in-out` starts slow, speeds up, then slows down — the most natural feel for UI.', expandedText: '**Timing functions** define the velocity curve of the animation. `ease` starts fast and decelerates — feels natural for most UI. `ease-in` accelerates into the motion — good for elements exiting the screen. `ease-out` decelerates into rest — good for elements entering. `ease-in-out` is slow at both ends — good for side panels.\n\n`cubic-bezier(x1, y1, x2, y2)` gives complete control over the curve. Use tools like **cubic-bezier.com** to design visually. `steps(n)` creates discrete jumps — useful for sprite animations. `linear` maintains constant velocity — good for loading spinners.', codeExample: 'transition: all 0.4s ease-in-out;\n\n/* ease | linear | ease-in | ease-out | ease-in-out */', language: 'css' },
-          { animationStep: 4, icon: '⏳', heading: 'Multiple transitions', text: 'Comma-separate to give each property a different duration. Common: color transitions slower than transform.', expandedText: '**Different durations per property** produce natural-feeling interactions. A button hover might transition `background` quickly (0.15s) and `box-shadow` more slowly (0.25s) to give depth. Comma-separated transitions stack: `transition: background 0.15s ease, transform 0.2s ease, box-shadow 0.25s ease`.\n\nThe `transition-delay` can also be per-property: `transition: opacity 0.3s 0s, transform 0.3s 0.1s` makes the transform start 100ms after opacity. This **stagger** technique is widely used for menu items, card grids, and list animations to create a choreographed entrance.', codeExample: '.btn {\n  transition:\n    background 0.3s ease,\n    transform  0.2s ease;\n}', language: 'css' },
-          { animationStep: 5, icon: '🚀', heading: 'Animate the right properties', text: 'Not all CSS properties are equal. `transform` and `opacity` run on the GPU compositor thread — they never trigger layout recalculation. `width`, `height`, `top`, `left` force reflow on every frame, causing jank. Prefer `translate()` over `left`/`top` for movement.', expandedText: 'The browser rendering pipeline: **JS → Style → Layout → Paint → Composite**. Animating properties in the Layout step (`width`, `margin`, `padding`) forces the entire pipeline to re-run on every frame — 60fps means 16ms per frame, leaving almost no budget. Properties in the Composite step (`transform`, `opacity`) skip Layout and Paint entirely.\n\n`will-change: transform` is a hint to the browser to promote an element to its own compositor layer in advance, preventing the **jank** of layer promotion happening mid-animation. Use it sparingly — each composited layer consumes GPU memory, so only apply to elements you know will animate.', codeExample: `/* Slow — triggers layout */\n.bad  { transition: width 0.3s, margin 0.3s; }\n\n/* Fast — GPU composited */\n.good { transition: transform 0.3s, opacity 0.3s; }\n\n/* Move with transform, not left */\n.box:hover { transform: translateX(20px); }`, language: 'css' },
+          { animationStep: 0, icon: '🔄', heading: 'Without transition', text: 'Without transition, any property change snaps instantly. It works, but feels abrupt.', expandedText: 'Without transitions, state changes are **instantaneous** — the browser paints the new style in a single frame. This can feel jarring for hover effects, modal appearances, or color changes. Transitions tell the browser to **interpolate** between two style states over a specified duration.\n\nOnly **animatable** CSS properties can be transitioned. Properties like `display`, `visibility`, and most layout-affecting ones cannot be interpolated smoothly. For showing/hiding, use `opacity` (which transitions) combined with `pointer-events: none` (to block interaction) as a common workaround.', codeExample: '.btn:hover {\n  background: #1d4ed8; /* snaps instantly */\n}', language: 'css' ,
+            analogy: {
+              icon: '🔦',
+              title: 'Step 0 — Without transition: the light switch',
+              text: [
+                'A light switch snaps between on and off instantly — no fade, no warmup.',
+                'Without `transition`, CSS changes are instant. A hover colour change flips in a single frame — jarring.',
+              ],
+            },},
+          { animationStep: 1, icon: '⚙️', heading: 'Add transition: property duration', text: '`transition` tells the browser to animate the named property over a given duration. The animation plays in both directions automatically.', expandedText: 'The transition rule should be **on the base element**, not on the `:hover` state. `button { transition: background 0.3s; }` means the transition applies going both into and out of the hover state. If you put `transition` only in `:hover`, the element transitions smoothly in but snaps back instantly on mouse-out.\n\nThe `transition-delay` property is powerful for **staggered animations** — set incrementally longer delays on list items to create a cascade entrance effect. Delays also apply to the return transition unless you override them in the base state.', codeExample: '.btn {\n  transition: background 0.3s;\n}\n.btn:hover {\n  background: #1d4ed8;\n}', language: 'css' ,
+            analogy: {
+              icon: '🕯️',
+              title: 'Step 1 — transition property duration: the dimmer switch',
+              text: [
+                'A dimmer fades light smoothly over 300ms. You tell it which thing to animate and how long.',
+                '\'transition: background 0.3s\' tells the browser to animate the background over 300ms whenever it changes.',
+              ],
+            },},
+          { animationStep: 2, icon: '⏳', heading: 'transition: all', text: '`all` animates every changing property. Convenient but can be slow — prefer listing specific properties for performance.', expandedText: '`transition: all` can trigger transitions on properties you did not intend to animate, like `color` or `font-size`, and has a **performance cost** because the browser must monitor all properties. In production, always specify exact properties: `transition: background 0.2s, transform 0.3s`.\n\n**Not all CSS properties are GPU-composited** — `transform` and `opacity` are handled by the compositor thread and never cause reflow or repaint. Transitioning `width`, `height`, or `margin` triggers layout recalculation on every frame, which can cause visible jank on low-end devices.', codeExample: '.btn {\n  transition: all 0.5s;\n}', language: 'css' ,
+            analogy: {
+              icon: '🌈',
+              title: 'Step 2 — transition all: animate everything',
+              text: [
+                'A dimmer connected to all the lights — convenient, but not everything needs a fade.',
+                '\'transition: all 0.3s\' animates every changing property. Prefer naming specific properties for better performance.',
+              ],
+            },},
+          { animationStep: 3, icon: '⏱️', heading: 'Timing functions', text: 'The timing function controls the pace. `ease-in-out` starts slow, speeds up, then slows down — the most natural feel for UI.', expandedText: '**Timing functions** define the velocity curve of the animation. `ease` starts fast and decelerates — feels natural for most UI. `ease-in` accelerates into the motion — good for elements exiting the screen. `ease-out` decelerates into rest — good for elements entering. `ease-in-out` is slow at both ends — good for side panels.\n\n`cubic-bezier(x1, y1, x2, y2)` gives complete control over the curve. Use tools like **cubic-bezier.com** to design visually. `steps(n)` creates discrete jumps — useful for sprite animations. `linear` maintains constant velocity — good for loading spinners.', codeExample: 'transition: all 0.4s ease-in-out;\n\n/* ease | linear | ease-in | ease-out | ease-in-out */', language: 'css' ,
+            analogy: {
+              icon: '🎢',
+              title: 'Step 3 — Timing functions: the rollercoaster profile',
+              text: [
+                'Some rollercoasters ease in slowly and accelerate; others drop instantly. The speed profile is part of the experience.',
+                'Timing functions: `ease`, `linear`, `ease-in`, `ease-out`, `cubic-bezier()` for custom curves.',
+              ],
+            },},
+          { animationStep: 4, icon: '⏳', heading: 'Multiple transitions', text: 'Comma-separate to give each property a different duration. Common: color transitions slower than transform.', expandedText: '**Different durations per property** produce natural-feeling interactions. A button hover might transition `background` quickly (0.15s) and `box-shadow` more slowly (0.25s) to give depth. Comma-separated transitions stack: `transition: background 0.15s ease, transform 0.2s ease, box-shadow 0.25s ease`.\n\nThe `transition-delay` can also be per-property: `transition: opacity 0.3s 0s, transform 0.3s 0.1s` makes the transform start 100ms after opacity. This **stagger** technique is widely used for menu items, card grids, and list animations to create a choreographed entrance.', codeExample: '.btn {\n  transition:\n    background 0.3s ease,\n    transform  0.2s ease;\n}', language: 'css' ,
+            analogy: {
+              icon: '🎛️',
+              title: 'Step 4 — Multiple transitions: different speeds per property',
+              text: [
+                'Stage lighting can fade spotlights at different rates. Each light has its own timing.',
+                'Comma-separated: `transition: background 0.3s ease, transform 0.15s ease-out`. This precision makes interactions feel premium.',
+              ],
+            },},
+          { animationStep: 5, icon: '🚀', heading: 'Animate the right properties', text: 'Not all CSS properties are equal. `transform` and `opacity` run on the GPU compositor thread — they never trigger layout recalculation. `width`, `height`, `top`, `left` force reflow on every frame, causing jank. Prefer `translate()` over `left`/`top` for movement.', expandedText: 'The browser rendering pipeline: **JS → Style → Layout → Paint → Composite**. Animating properties in the Layout step (`width`, `margin`, `padding`) forces the entire pipeline to re-run on every frame — 60fps means 16ms per frame, leaving almost no budget. Properties in the Composite step (`transform`, `opacity`) skip Layout and Paint entirely.\n\n`will-change: transform` is a hint to the browser to promote an element to its own compositor layer in advance, preventing the **jank** of layer promotion happening mid-animation. Use it sparingly — each composited layer consumes GPU memory, so only apply to elements you know will animate.', codeExample: `/* Slow — triggers layout */\n.bad  { transition: width 0.3s, margin 0.3s; }\n\n/* Fast — GPU composited */\n.good { transition: transform 0.3s, opacity 0.3s; }\n\n/* Move with transform, not left */\n.box:hover { transform: translateX(20px); }`, language: 'css' ,
+            analogy: {
+              icon: '🏎️',
+              title: 'Step 5 — Animate the right properties: the GPU highway',
+              text: [
+                'Sports cars use the motorway for speed — not local roads. Certain CSS properties have a GPU fast lane.',
+                '\'transform\' and `opacity` animate on the GPU — smooth at 60fps. Avoid `width`, `height`, `top`, `left` — they trigger layout recalculation every frame.',
+              ],
+            },},
         ],
       },
       { id: 'playground', type: 'playground', steps: [] },
@@ -3695,12 +4292,60 @@ export const TOPICS: Topic[] = [
         id: 'explanation',
         type: 'explanation',
         steps: [
-          { animationStep: 0, icon: '🎞️', heading: 'Animations vs transitions', text: 'Transitions react to state changes. Animations run on their own — no user interaction needed. They have defined keyframes, can loop, and can pause.', expandedText: '**Transitions** are reactive — they only activate when a CSS property changes due to a trigger (hover, class toggle, focus). **Animations** are self-driven — they run on their own timeline regardless of element state, can loop, reverse, pause, and chain multiple stages.\n\nUse transitions for **UI feedback**: hover effects, menu opens, button presses. Use animations for **self-contained motion**: loading spinners, attention-grabbing pulses, decorative entrance effects. Mixing both is common — a menu might open via a transition, then a pulsing dot inside uses an animation.', codeExample: '/* Transition: needs a trigger */\n.btn:hover { background: blue; }\n\n/* Animation: runs on its own */\n.spinner { animation: spin 1s linear infinite; }', language: 'css' },
-          { animationStep: 1, icon: '🎬', heading: '@keyframes', text: 'Define the animation with `@keyframes` + a name. Use `from`/`to` for two states, or percentages (`0%`, `50%`, `100%`) for multiple stops.', expandedText: '`@keyframes` blocks are **reusable declarations** — the same keyframe animation can be applied to multiple elements with different durations, delays, and timing functions. `from` and `to` are aliases for `0%` and `100%`. Add intermediate stops like `25%`, `75%` to create multi-stage motion.\n\nThe **interpolation** between keyframes uses the `animation-timing-function` you specify. You can even set a different timing function per keyframe stage: `50% { animation-timing-function: ease-in; }` makes just that segment accelerate into the next keyframe.', codeExample: '@keyframes bounce {\n  from { transform: translateY(0); }\n  to   { transform: translateY(-60px); }\n}\n\n/* Not applied yet — just defined */', language: 'css' },
-          { animationStep: 2, icon: '⚙️', heading: 'Apply with animation shorthand', text: 'The `animation` shorthand takes name, duration, timing, and more. Without a duration the animation plays in 0 seconds and is invisible.', expandedText: 'The `animation` shorthand packs 8 properties: **name, duration, timing-function, delay, iteration-count, direction, fill-mode, play-state**. The most common mistake is omitting `duration` — the default is `0s`, which makes the animation appear to do nothing.\n\nWhen using multiple animations on one element, separate them with commas: `animation: pulse 1s infinite, fadeIn 0.3s ease forwards`. Each animation runs on its own independent timeline. The `animation-play-state: paused` property lets you pause via JavaScript without removing the animation.', codeExample: '.ball {\n  animation: bounce 0.8s;\n  /* name  duration */\n}', language: 'css' },
-          { animationStep: 3, icon: '⏱️', heading: 'Repeat with iteration-count', text: '`animation-iteration-count: infinite` loops forever. Use `alternate` to play forward then backward — creates smooth bounce without jumps.', expandedText: '`iteration-count: infinite` is standard for loaders and background effects. Finite counts like `3` play the animation that many times and stop — combined with `fill-mode: forwards`, the element holds the final keyframe state after finishing. Fractional values like `2.5` play 2.5 cycles — useful for animations that should end halfway through.\n\n`animation-direction: alternate` reverses the animation on every odd cycle, creating a **ping-pong effect** without duplicate keyframes. `alternate-reverse` starts from `100%` and goes backward first. This cuts keyframe complexity in half for symmetric animations like pulses and breathe effects.', codeExample: '.ball {\n  animation: bounce 0.8s ease-in-out infinite alternate;\n}', language: 'css' },
-          { animationStep: 4, icon: '🎭', heading: 'animation-fill-mode', text: '`animation-fill-mode` controls the element\'s state after the animation. `forwards` holds the final keyframe — the element stays where the animation ended.', expandedText: '`animation-fill-mode` controls the element style **outside the animation timeline**. Without it, the element snaps back to its pre-animation styles the moment the animation ends — which causes a jarring flash. `forwards` holds the final keyframe styles after completion.\n\n`backwards` applies the **first keyframe styles during the delay period** — so if your animation fades in from `opacity: 0`, the element is invisible during the delay rather than visible then suddenly jumping to invisible. `both` combines `forwards` and `backwards`, which is almost always what you want for entrance animations with delays.', codeExample: ".ball {\n  animation: bounce 0.8s ease-out forwards;\n  /* 'forwards' = stay at the final keyframe */\n}", language: 'css' },
-          { animationStep: 5, icon: '🎭', heading: 'animation-fill-mode', text: 'Without `fill-mode`, an element snaps back to its original state when the animation ends. `forwards` keeps the final keyframe applied. `backwards` applies the first keyframe immediately (before delay). `both` does both.', expandedText: '`animation-fill-mode: both` is the **recommended default** for most animations with delays. It combines the `backwards` behavior (first keyframe during delay) with `forwards` (last keyframe after completion), giving a seamless experience from start to finish.\n\nFor **staggered list animations**, set each item to `animation: fadeInUp 0.4s ease both` with incrementally longer delays using CSS custom properties or the `nth-child` selector: `li:nth-child(2) { animation-delay: 0.1s; }`. This creates the cascading entrance effect seen in modern dashboards and card grids.', codeExample: `/* Without: element resets after animation */\nanimation: slideIn 0.5s ease;\n\n/* With: stays at final position */\nanimation: slideIn 0.5s ease forwards;\n\n/* With delay: starts from keyframe 0 immediately */\nanimation: slideIn 0.5s ease 1s both;`, language: 'css' },
+          { animationStep: 0, icon: '🎞️', heading: 'Animations vs transitions', text: 'Transitions react to state changes. Animations run on their own — no user interaction needed. They have defined keyframes, can loop, and can pause.', expandedText: '**Transitions** are reactive — they only activate when a CSS property changes due to a trigger (hover, class toggle, focus). **Animations** are self-driven — they run on their own timeline regardless of element state, can loop, reverse, pause, and chain multiple stages.\n\nUse transitions for **UI feedback**: hover effects, menu opens, button presses. Use animations for **self-contained motion**: loading spinners, attention-grabbing pulses, decorative entrance effects. Mixing both is common — a menu might open via a transition, then a pulsing dot inside uses an animation.', codeExample: '/* Transition: needs a trigger */\n.btn:hover { background: blue; }\n\n/* Animation: runs on its own */\n.spinner { animation: spin 1s linear infinite; }', language: 'css' ,
+            analogy: {
+              icon: '⏰',
+              title: 'Step 0 — Animations vs transitions: alarm vs clock',
+              text: [
+                'A clock loops continuously. An alarm fires reactively when triggered.',
+                'Transitions only play when a property changes. Animations run on a keyframe script and can loop, play in reverse, start without user interaction.',
+              ],
+            },},
+          { animationStep: 1, icon: '🎬', heading: '@keyframes', text: 'Define the animation with `@keyframes` + a name. Use `from`/`to` for two states, or percentages (`0%`, `50%`, `100%`) for multiple stops.', expandedText: '`@keyframes` blocks are **reusable declarations** — the same keyframe animation can be applied to multiple elements with different durations, delays, and timing functions. `from` and `to` are aliases for `0%` and `100%`. Add intermediate stops like `25%`, `75%` to create multi-stage motion.\n\nThe **interpolation** between keyframes uses the `animation-timing-function` you specify. You can even set a different timing function per keyframe stage: `50% { animation-timing-function: ease-in; }` makes just that segment accelerate into the next keyframe.', codeExample: '@keyframes bounce {\n  from { transform: translateY(0); }\n  to   { transform: translateY(-60px); }\n}\n\n/* Not applied yet — just defined */', language: 'css' ,
+            analogy: {
+              icon: '🎬',
+              title: 'Step 1 — @keyframes: the film script',
+              text: [
+                'A film script lists every scene: Scene 1 fade in, Scene 100 fade out. The director follows the script.',
+                '@keyframes defines the animation script with `from`/`to` or percentage stops. `@keyframes pulse { 0% { opacity:1 } 50% { opacity:0.3 } 100% { opacity:1 } }`.',
+              ],
+            },},
+          { animationStep: 2, icon: '⚙️', heading: 'Apply with animation shorthand', text: 'The `animation` shorthand takes name, duration, timing, and more. Without a duration the animation plays in 0 seconds and is invisible.', expandedText: 'The `animation` shorthand packs 8 properties: **name, duration, timing-function, delay, iteration-count, direction, fill-mode, play-state**. The most common mistake is omitting `duration` — the default is `0s`, which makes the animation appear to do nothing.\n\nWhen using multiple animations on one element, separate them with commas: `animation: pulse 1s infinite, fadeIn 0.3s ease forwards`. Each animation runs on its own independent timeline. The `animation-play-state: paused` property lets you pause via JavaScript without removing the animation.', codeExample: '.ball {\n  animation: bounce 0.8s;\n  /* name  duration */\n}', language: 'css' ,
+            analogy: {
+              icon: '📺',
+              title: 'Step 2 — animation shorthand: the play button settings',
+              text: [
+                'A media player has settings: track, duration, repeat count, start delay. Configure before hitting play.',
+                '\'animation: pulse 2s ease-in-out infinite\' wires `@keyframes` to the element. Order: name, duration, timing, delay, count, direction, fill-mode.',
+              ],
+            },},
+          { animationStep: 3, icon: '⏱️', heading: 'Repeat with iteration-count', text: '`animation-iteration-count: infinite` loops forever. Use `alternate` to play forward then backward — creates smooth bounce without jumps.', expandedText: '`iteration-count: infinite` is standard for loaders and background effects. Finite counts like `3` play the animation that many times and stop — combined with `fill-mode: forwards`, the element holds the final keyframe state after finishing. Fractional values like `2.5` play 2.5 cycles — useful for animations that should end halfway through.\n\n`animation-direction: alternate` reverses the animation on every odd cycle, creating a **ping-pong effect** without duplicate keyframes. `alternate-reverse` starts from `100%` and goes backward first. This cuts keyframe complexity in half for symmetric animations like pulses and breathe effects.', codeExample: '.ball {\n  animation: bounce 0.8s ease-in-out infinite alternate;\n}', language: 'css' ,
+            analogy: {
+              icon: '🔁',
+              title: 'Step 3 — iteration-count: play it N times',
+              text: [
+                'A jukebox plays once, on repeat, or exactly three times. You choose.',
+                '\'animation-iteration-count: infinite\' loops forever. `3` plays three times. `alternate` plays forward then backward on repeat.',
+              ],
+            },},
+          { animationStep: 4, icon: '🎭', heading: 'animation-fill-mode', text: '`animation-fill-mode` controls the element\'s state after the animation. `forwards` holds the final keyframe — the element stays where the animation ended.', expandedText: '`animation-fill-mode` controls the element style **outside the animation timeline**. Without it, the element snaps back to its pre-animation styles the moment the animation ends — which causes a jarring flash. `forwards` holds the final keyframe styles after completion.\n\n`backwards` applies the **first keyframe styles during the delay period** — so if your animation fades in from `opacity: 0`, the element is invisible during the delay rather than visible then suddenly jumping to invisible. `both` combines `forwards` and `backwards`, which is almost always what you want for entrance animations with delays.', codeExample: ".ball {\n  animation: bounce 0.8s ease-out forwards;\n  /* 'forwards' = stay at the final keyframe */\n}", language: 'css' ,
+            analogy: {
+              icon: '🎭',
+              title: 'Step 4 — animation-fill-mode: costume before and after',
+              text: [
+                'An actor wears street clothes before and after the show. `forwards` means stay in costume after the final curtain.',
+                '\'animation-fill-mode: forwards\' holds the final state. Without it, the element snaps back to original styles when animation ends.',
+              ],
+            },},
+          { animationStep: 5, icon: '🎭', heading: 'animation-fill-mode', text: 'Without `fill-mode`, an element snaps back to its original state when the animation ends. `forwards` keeps the final keyframe applied. `backwards` applies the first keyframe immediately (before delay). `both` does both.', expandedText: '`animation-fill-mode: both` is the **recommended default** for most animations with delays. It combines the `backwards` behavior (first keyframe during delay) with `forwards` (last keyframe after completion), giving a seamless experience from start to finish.\n\nFor **staggered list animations**, set each item to `animation: fadeInUp 0.4s ease both` with incrementally longer delays using CSS custom properties or the `nth-child` selector: `li:nth-child(2) { animation-delay: 0.1s; }`. This creates the cascading entrance effect seen in modern dashboards and card grids.', codeExample: `/* Without: element resets after animation */\nanimation: slideIn 0.5s ease;\n\n/* With: stays at final position */\nanimation: slideIn 0.5s ease forwards;\n\n/* With delay: starts from keyframe 0 immediately */\nanimation: slideIn 0.5s ease 1s both;`, language: 'css' ,
+            analogy: {
+              icon: '🧲',
+              title: 'Step 5 — direction and play-state: pause and reverse',
+              text: [
+                'A film you can pause mid-scene and resume, or play backwards.',
+                '\'animation-play-state: paused\' pauses mid-animation. `animation-direction: reverse` plays keyframes backwards.',
+              ],
+            },},
         ],
       },
       { id: 'playground', type: 'playground', steps: [] },
@@ -6232,7 +6877,14 @@ age  = 25
 // JavaScript
 const name = "Alice"  // fixed
 let   age  = 25       // mutable`,
-            language: 'python',
+            language: 'python',            analogy: {
+              icon: '🗂️',
+              title: 'Step 0 — Variables: same idea different syntax',
+              text: [
+                'Two chefs follow the same recipe in French and English. The ingredients are identical — only the language differs.',
+                'Python: `x = 5`. JavaScript: `let x = 5` or `const x = 5`. JS has `var` (legacy, avoid), `let` (block-scoped, reassignable), `const` (non-reassignable).',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -6250,7 +6902,14 @@ function greet(name = "World") {
 }
 // Arrow shorthand
 const greet = (name = "World") => \`Hello, \${name}\``,
-            language: 'python',
+            language: 'python',            analogy: {
+              icon: '🔧',
+              title: 'Step 1 — Functions: def vs function',
+              text: [
+                'A recipe step in French and English: same action, different syntax. Both produce fried onion.',
+                'Python: `def greet(name):` with indented body. JavaScript: `function greet(name) {}` with braces. JS also has arrow functions: `const greet = (name) => {}`.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -6274,7 +6933,14 @@ if (age >= 18) {
 } else {
   console.log("child")
 }`,
-            language: 'python',
+            language: 'python',            analogy: {
+              icon: '🚦',
+              title: 'Step 2 — Control flow: if else and loops are universal',
+              text: [
+                'Traffic lights work the same way in any country. The logic is identical; only the road laws differ at the edges.',
+                'Both use `if/else` and `for`/`while`. Python uses colons and indentation; JS uses braces. `elif` in Python is `else if` in JS.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -6295,7 +6961,14 @@ true/false  // lowercase!
 42          // number (always float internally)
 3.14        // number
 "hello"     // string`,
-            language: 'python',
+            language: 'python',            analogy: {
+              icon: '🏷️',
+              title: 'Step 3 — Data types: the same atoms different labels',
+              text: [
+                'English and German both have words for water, bread, fire. Chemical formulas are the same in any language.',
+                'Both have strings, numbers, booleans, arrays, and dicts/objects. JS has `null` AND `undefined`; Python just has `None`. JS uses `===` for strict equality.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -6318,7 +6991,14 @@ for (const fruit of fruits) {
 }
 // Array method
 const doubled = [1,2,3].map(x => x * 2)`,
-            language: 'python',
+            language: 'python',            analogy: {
+              icon: '🔄',
+              title: 'Step 4 — Loops: for-of vs for-in vs range',
+              text: [
+                'A postman has different routes: house by house (items), address by address (keys), or counting stops (index).',
+                'JS has three: `for...of` iterates values (like Python for-in), `for...in` iterates keys, classic `for` with index. Use `for...of` for arrays.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -6341,7 +7021,14 @@ const user = {
 }
 user.name           // dot access
 user?.address?.city // optional chaining`,
-            language: 'python',
+            language: 'python',            analogy: {
+              icon: '📖',
+              title: 'Step 5 — Dicts vs Objects: the same data store',
+              text: [
+                'A contacts book is a contacts book whether you call it a dictionary or an object. Both store name-value pairs.',
+                'Python: `person = {name: Alice}`, access with `person[name]`. JS: `const person = { name: Alice }`, access with `person.name` or `person[name]`.',
+              ],
+            },
           },
           {
             animationStep: 6,
@@ -6365,7 +7052,14 @@ async function fetchData(url) {
   return data
 }
 fetchData(url)`,
-            language: 'python',
+            language: 'python',            analogy: {
+              icon: '⏳',
+              title: 'Step 6 — Async await: the same waiting model',
+              text: [
+                'Both kitchens use the same strategy: start the slow task, do other work, come back when done.',
+                'Both use `async`/`await`. Python: `async def fetch()`. JavaScript: `async function fetch()`. `await` pauses the current function, not the whole program.',
+              ],
+            },
           },
           {
             animationStep: 7,
@@ -6385,7 +7079,14 @@ f"Hi {name}"           # f-string
 "a,b".split(",")       // ["a", "b"]
 ["a","b"].join(",")    // "a,b"
 \`Hi \${name}\`           // template literal`,
-            language: 'python',
+            language: 'python',            analogy: {
+              icon: '✂️',
+              title: 'Step 7 — String methods: the same scissors different handles',
+              text: [
+                'Scissors are scissors. Whether the handle is red or blue, they make the same cuts.',
+                'Both have upper/toUpperCase, strip/trim, split, replace. Python uses f-strings; JS uses template literals. Same operations, slightly different names.',
+              ],
+            },
           },
           {
             animationStep: 8,
@@ -6407,7 +7108,14 @@ nums.pop()          // removes & returns last
 nums.sort((a,b)=>a-b) // needs comparator!
 nums.length         // 3
 nums.map(x => x*2)  // returns NEW array`,
-            language: 'python',
+            language: 'python',            analogy: {
+              icon: '📋',
+              title: 'Step 8 — Array and List methods: the universal list toolkit',
+              text: [
+                'Both have the same essential toolkit: add, remove, find, sort. The method names are slightly different.',
+                'Python: `append()`, `pop()`, list comprehensions. JS: `push()`, `pop()`, `.map()/.filter()/.reduce()` built-in. JS array methods are more common in practice.',
+              ],
+            },
           },
           {
             animationStep: 9,
@@ -6431,7 +7139,14 @@ users.find(u => u.id === 1)             // undefined if not found
 scores.some(x => x > 10)               // true / false
 scores.every(x => x > 0)               // true / false
 nums.reduce((acc, x) => acc + x, 0)`,
-            language: 'python',
+            language: 'python',            analogy: {
+              icon: '🔍',
+              title: 'Step 9 — Functional array methods: map filter reduce',
+              text: [
+                'An assembly line: transform every item (map), remove failures (filter), combine into a total (reduce).',
+                'JS: `[1,2,3].map(x => x*2)`, `.filter(x => x > 1)`, `.reduce((acc, x) => acc+x, 0)`. Python: list comprehensions `[x*2 for x in nums if x > 1]`.',
+              ],
+            },
           },
           {
             animationStep: 10,
@@ -6457,7 +7172,14 @@ try {
 } finally {
   console.log("always runs")
 }`,
-            language: 'python',
+            language: 'python',            analogy: {
+              icon: '🛡️',
+              title: 'Step 10 — Error handling: try except vs try catch',
+              text: [
+                'Both kitchens have fire extinguishers. One says extincteur, the other fire extinguisher. In an emergency both work the same.',
+                'Python: `try/except Exception as e`. JavaScript: `try/catch (e)`. Both have `finally`. Python uses `raise`; JS uses `throw`.',
+              ],
+            },
           },
         ],
       },
@@ -6583,35 +7305,70 @@ for (let i = 0; i < 5; i++) {
             icon: '🌐',
             heading: 'The client sends a request',
             text: 'Your browser (the client) sends an HTTP request to a server. It includes the method (`GET`, `POST`), the URL, and headers.',
-            expandedText: 'Every web interaction starts with the **client** (browser, mobile app, or CLI) sending an **HTTP request** to a server. The request includes a **method** (GET, POST, PUT, DELETE), a **URL**, **headers** (content type, auth token, accepted encodings), and an optional **body** for POST/PUT.\n\nThe client has no direct connection yet — it must first pass through DNS resolution, TCP handshaking, and (for HTTPS) TLS negotiation. This multi-step setup explains why the **first request** is slower than subsequent ones, and why **connection reuse** (HTTP keep-alive, HTTP/2 multiplexing) is an important performance optimisation.',
+            expandedText: 'Every web interaction starts with the **client** (browser, mobile app, or CLI) sending an **HTTP request** to a server. The request includes a **method** (GET, POST, PUT, DELETE), a **URL**, **headers** (content type, auth token, accepted encodings), and an optional **body** for POST/PUT.\n\nThe client has no direct connection yet — it must first pass through DNS resolution, TCP handshaking, and (for HTTPS) TLS negotiation. This multi-step setup explains why the **first request** is slower than subsequent ones, and why **connection reuse** (HTTP keep-alive, HTTP/2 multiplexing) is an important performance optimisation.',            analogy: {
+              icon: '📬',
+              title: 'Step 0 — Client sends request: posting a letter',
+              text: [
+                'Writing a letter, putting it in an envelope, dropping it in a postbox. The letter includes destination, return address, and message.',
+                'An HTTP request has a destination (URL), a sender (browser with headers), and optional content (body).',
+              ],
+            },
           },
           {
             animationStep: 1,
             icon: '📤',
             heading: 'DNS resolution',
             text: 'The domain name is resolved to an IP address by a DNS server. Like a phone book lookup.',
-            expandedText: '**DNS** (Domain Name System) translates a hostname like `api.example.com` into an IP address (`203.0.113.42`) that routers use to forward packets. The lookup cascades: browser cache → OS cache → local DNS resolver → root nameservers → TLD nameservers → authoritative nameservers.\n\nEach record has a **TTL** (time-to-live) controlling cache duration. A low TTL enables fast failover; a high TTL reduces lookup latency. **DNS prefetching** (`<link rel="dns-prefetch" href="//api.example.com">`) tells the browser to resolve a domain in the background before a resource is requested, reducing perceived latency for third-party API calls.',
+            expandedText: '**DNS** (Domain Name System) translates a hostname like `api.example.com` into an IP address (`203.0.113.42`) that routers use to forward packets. The lookup cascades: browser cache → OS cache → local DNS resolver → root nameservers → TLD nameservers → authoritative nameservers.\n\nEach record has a **TTL** (time-to-live) controlling cache duration. A low TTL enables fast failover; a high TTL reduces lookup latency. **DNS prefetching** (`<link rel="dns-prefetch" href="//api.example.com">`) tells the browser to resolve a domain in the background before a resource is requested, reducing perceived latency for third-party API calls.',            analogy: {
+              icon: '📖',
+              title: 'Step 1 — DNS resolution: looking up the phone book',
+              text: [
+                'You have a name but need a phone number. You look it up in a directory.',
+                'DNS translates `example.com` into an IP address like `93.184.216.34`. The result is cached locally for faster future lookups.',
+              ],
+            },
           },
           {
             animationStep: 2,
             icon: '📥',
             heading: 'The server processes',
             text: 'The server receives the request, runs your application code (`Flask`, `Node.js`), may query a database.',
-            expandedText: '**TCP** establishes a reliable connection via a **three-way handshake**: client sends SYN, server replies SYN-ACK, client sends ACK. Only after this can data flow. **HTTPS** adds a **TLS handshake** on top, negotiating encryption before any application data is sent.\n\n**HTTP/2** multiplexes multiple request/response pairs over a single TCP connection, eliminating head-of-line blocking. **HTTP/3** replaces TCP with **QUIC** (UDP-based), combining transport and TLS handshakes into one round trip — important for mobile clients on high-latency networks. Most CDNs and servers support HTTP/2 by default today.',
+            expandedText: '**TCP** establishes a reliable connection via a **three-way handshake**: client sends SYN, server replies SYN-ACK, client sends ACK. Only after this can data flow. **HTTPS** adds a **TLS handshake** on top, negotiating encryption before any application data is sent.\n\n**HTTP/2** multiplexes multiple request/response pairs over a single TCP connection, eliminating head-of-line blocking. **HTTP/3** replaces TCP with **QUIC** (UDP-based), combining transport and TLS handshakes into one round trip — important for mobile clients on high-latency networks. Most CDNs and servers support HTTP/2 by default today.',            analogy: {
+              icon: '🏭',
+              title: 'Step 2 — Server processes: the factory receiving the order',
+              text: [
+                'The factory receives your order, reads what was requested, locates stock, packages it, and hands it to the courier.',
+                'The server receives the request, parses it, runs business logic or queries a database, assembles the response.',
+              ],
+            },
           },
           {
             animationStep: 3,
             icon: '📥',
             heading: 'Database query',
             text: 'The app queries the database (`PostgreSQL`, `SQLite`) and waits for results.',
-            expandedText: 'An **HTTP request** has four parts: the **request line** (method + URL + HTTP version), **headers** (key-value metadata), a blank line, and an optional **body**. Common headers: `Content-Type` (body format), `Authorization` (bearer token), `Accept` (acceptable response formats), and `Cookie` (session data).\n\n**HTTPS** encrypts the entire request — headers, body, and URL path — so eavesdroppers see only the hostname (from TLS SNI) and data volume. Sensitive data like API keys must never appear in URL query strings even over HTTPS — always use headers or a POST body where the content is encrypted and not logged in server access logs.',
+            expandedText: 'An **HTTP request** has four parts: the **request line** (method + URL + HTTP version), **headers** (key-value metadata), a blank line, and an optional **body**. Common headers: `Content-Type` (body format), `Authorization` (bearer token), `Accept` (acceptable response formats), and `Cookie` (session data).\n\n**HTTPS** encrypts the entire request — headers, body, and URL path — so eavesdroppers see only the hostname (from TLS SNI) and data volume. Sensitive data like API keys must never appear in URL query strings even over HTTPS — always use headers or a POST body where the content is encrypted and not logged in server access logs.',            analogy: {
+              icon: '🗄️',
+              title: 'Step 3 — Database query: checking the warehouse inventory',
+              text: [
+                'The factory worker checks the warehouse: is this item in stock?',
+                'Most server responses require a database query. The server sends SQL, the database returns matching rows, the server shapes them into the response.',
+              ],
+            },
           },
           {
             animationStep: 4,
             icon: '🔄',
             heading: 'Response sent back',
             text: 'The server sends an HTTP response: status code (200 OK, 404 Not Found), headers, and the body (`HTML`, `JSON`).',
-            expandedText: 'An **HTTP response** has a **status line** (HTTP version + status code + reason), **headers** (Content-Type, Cache-Control, Set-Cookie, CORS headers), a blank line, and the **body** (HTML, JSON, binary). `Content-Type` tells the client how to parse the body.\n\n**Caching headers** dramatically affect performance: `Cache-Control: max-age=3600` allows clients and CDNs to cache for one hour. `ETag` provides a fingerprint for conditional requests — the server can respond with `304 Not Modified` and no body when content has not changed. Well-designed caching reduces server load by orders of magnitude and improves perceived performance for repeat visitors.',
+            expandedText: 'An **HTTP response** has a **status line** (HTTP version + status code + reason), **headers** (Content-Type, Cache-Control, Set-Cookie, CORS headers), a blank line, and the **body** (HTML, JSON, binary). `Content-Type` tells the client how to parse the body.\n\n**Caching headers** dramatically affect performance: `Cache-Control: max-age=3600` allows clients and CDNs to cache for one hour. `ETag` provides a fingerprint for conditional requests — the server can respond with `304 Not Modified` and no body when content has not changed. Well-designed caching reduces server load by orders of magnitude and improves perceived performance for repeat visitors.',            analogy: {
+              icon: '📦',
+              title: 'Step 4 — Response sent back: the parcel arrives',
+              text: [
+                'The courier delivers the package. The label says what is inside and you decide whether to keep it.',
+                'The HTTP response contains a status code (200, 404, 500), headers, and a body (HTML, JSON). The browser parses and renders it.',
+              ],
+            },
           },
         ],
       },
@@ -6659,7 +7416,14 @@ for (let i = 0; i < 5; i++) {
             text: 'REST (Representational State Transfer) is a convention for designing APIs. Resources are represented as URLs, and HTTP methods (`GET`, `POST`, `PUT`, `DELETE`) express the action.',
             expandedText: '**REST** (Representational State Transfer) is an **architectural style** for APIs, not a protocol. Its core idea: treat server-side data as **resources** at stable URLs (`/users`, `/users/42`). HTTP verbs express the action — GET retrieves, POST creates, PUT/PATCH updates, DELETE removes. URLs should name resources (nouns), not actions (verbs).\n\nA RESTful API is **stateless**: every request carries all the information the server needs — no session state is stored between requests. This makes REST APIs **horizontally scalable** and cacheable. Authentication is conveyed via `Authorization` headers on every request rather than server-stored sessions.',
             codeExample: 'GET    /users        → list all users\nGET    /users/42    → get user 42\nPOST   /users        → create a user\nPUT    /users/42    → replace user 42\nDELETE /users/42    → delete user 42',
-            language: 'http',
+            language: 'http',            analogy: {
+              icon: '📍',
+              title: 'Step 0 — Resources as URLs: every noun has an address',
+              text: [
+                'Every person has a home address. You do not say go find John — you go to 27 Oak Street.',
+                'REST treats everything as a resource with a URL. `/users` is the users collection, `/users/42` is user 42. URL is the noun; HTTP method is the verb.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -6668,7 +7432,14 @@ for (let i = 0; i < 5; i++) {
             text: '`GET` requests data from the server. They should be safe (no side effects) and idempotent (same result every time). No request body.',
             expandedText: '`GET` is the **safe and idempotent** read verb — calling it any number of times produces the same result with no server-side changes. Browsers, CDNs, and caches exploit this by caching `GET` responses. Never use `GET` for operations that change state — the URL might be prefetched by browsers or security scanners.\n\n`GET` requests have no body. Query parameters (`?page=2&limit=10`) pass filtering and pagination. Because URLs can be bookmarked and shared, `GET` is correct for anything a user might want to link to. When a CDN caches a `GET` response, subsequent requests are served without hitting your application server — a major performance win.',
             codeExample: 'GET /api/products HTTP/1.1\nHost: api.example.com\nAuthorization: Bearer <token>',
-            language: 'http',
+            language: 'http',            analogy: {
+              icon: '📖',
+              title: 'Step 1 — GET: reading a library book',
+              text: [
+                'Reading a library book leaves no trace — the book is unchanged. You took information; nothing was modified.',
+                'GET retrieves data without side effects. It is safe and idempotent. `GET /users/42` returns user 42 data.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -6677,7 +7448,14 @@ for (let i = 0; i < 5; i++) {
             text: '`POST` sends data to create a new resource. The server returns the created resource with status 201 Created.',
             expandedText: '`POST` is **not idempotent**: calling it twice creates two resources. Use it to create new server-side resources — the request body contains the data, and the server assigns the ID. Respond with `201 Created` plus a `Location` header pointing to the new resource URL.\n\n`POST` is also used for **actions** that do not fit CRUD: password resets, file uploads, complex search queries, or background job triggers. Always protect `POST` endpoints with authentication. For browser clients, use CSRF tokens to prevent cross-site request forgery attacks where a malicious page causes the authenticated user browser to make unintended requests.',
             codeExample: 'POST /api/users HTTP/1.1\nContent-Type: application/json\n\n{\n  "name": "Alice",\n  "email": "alice@example.com"\n}',
-            language: 'http',
+            language: 'http',            analogy: {
+              icon: '📮',
+              title: 'Step 2 — POST: dropping a new letter in the mailbox',
+              text: [
+                'Dropping a new letter creates a new piece of mail. The post office assigns it a tracking number.',
+                'POST creates a new resource. The server assigns the ID. Not idempotent — calling it twice creates two resources.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -6685,7 +7463,14 @@ for (let i = 0; i < 5; i++) {
             heading: 'PUT and PATCH',
             text: '`PUT` replaces the entire resource. `PATCH` updates only the specified fields. Both target a specific resource by ID in the URL.',
             codeExample: '// PUT — replace entire user:\nPUT /api/users/42\n{ "name": "Alice", "email": "new@email.com" }\n\n// PATCH — update one field:\nPATCH /api/users/42\n{ "email": "new@email.com" }',
-            language: 'http',
+            language: 'http',            analogy: {
+              icon: '✏️',
+              title: 'Step 3 — PUT and PATCH: replacing vs editing a form',
+              text: [
+                'PUT is resubmitting the whole form. PATCH is correcting just one field with whiteout.',
+                'PUT replaces the entire resource. PATCH does a partial update — only the fields you send are changed.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -6694,7 +7479,14 @@ for (let i = 0; i < 5; i++) {
             text: '`DELETE` removes the specified resource. A successful delete typically returns 204 No Content.',
             expandedText: '**HTTP status codes** let clients handle outcomes programmatically. `200 OK` — general success. `201 Created` — resource created. `204 No Content` — success, no body. `400 Bad Request` — invalid data. `401 Unauthorized` — not authenticated. `403 Forbidden` — lacks permission. `404 Not Found`. `422 Unprocessable` — validation failed. `500 Internal Server Error`.\n\nChoosing the correct code makes your API **self-documenting**. A client can redirect on `401`, retry on `503`, and display a validation error on `422` without knowing anything specific about the endpoint. Always return consistent error shapes (`{ error: { code, message } }`) so clients can display helpful feedback.',
             codeExample: 'DELETE /api/users/42 HTTP/1.1\nAuthorization: Bearer <token>\n\n// Response:\nHTTP/1.1 204 No Content',
-            language: 'http',
+            language: 'http',            analogy: {
+              icon: '🗑️',
+              title: 'Step 4 — DELETE: shredding a document',
+              text: [
+                'Feeding a document to the shredder removes it permanently.',
+                'DELETE removes a resource. `DELETE /users/42` removes user 42. Returns 204 No Content on success.',
+              ],
+            },
           },
         ],
       },
@@ -6743,7 +7535,14 @@ for (let i = 0; i < 5; i++) {
             text: 'In SSR, the server generates the complete HTML for each request and sends a ready-to-display page to the browser. The browser receives full markup immediately — minimal JavaScript needed to show content. Examples: PHP, Django templates, Ruby on Rails, Next.js with getServerSideProps. Pros: fast first paint, excellent SEO, works without JS. Cons: full server hit per navigation, slower subsequent transitions.',
             expandedText: '**Server-Side Rendering** means the server builds the complete HTML on every request and sends it ready-to-display. The user sees content immediately on first paint without waiting for JavaScript. SSR is **SEO-friendly** — search engine crawlers receive fully rendered HTML with all metadata.\n\nThe trade-off is **server cost**: each request requires computation (running the app, querying the database). Frameworks like **Next.js** (React), **Nuxt** (Vue), and **SvelteKit** support SSR. SSR is the right choice for pages where content varies per request, must be crawlable, or must display data without a loading state — editorial sites, e-commerce product pages, and authenticated dashboards.',
             codeExample: `<!-- SSR: server sends complete HTML -->\n<!-- Browser receives this from the server: -->\n<!DOCTYPE html>\n<html>\n  <head><title>Products</title></head>\n  <body>\n    <h1>Products</h1>\n    <ul>\n      <li>Widget — $9.99</li>\n      <li>Gadget — $24.99</li>\n    </ul>\n  </body>\n</html>\n<!-- Content is immediately visible — no JS needed to render -->`,
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '🍽️',
+              title: 'Step 0 — SSR: the restaurant kitchen',
+              text: [
+                'At a restaurant, the kitchen prepares the meal. You receive a finished dish.',
+                'SSR runs on the server, renders HTML, and sends a complete page. Fast first paint, great for SEO.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -6752,7 +7551,14 @@ for (let i = 0; i < 5; i++) {
             text: 'In CSR, the server sends a minimal HTML shell plus a JavaScript bundle. The browser downloads, parses, and executes the JS, which then renders the full UI. Examples: Create React App, Vue SPA, Angular — any single-page application. Pros: fast navigation after initial load, rich interactions, cheap static hosting. Cons: slow initial load (JS bundle must download+parse+execute), SEO requires extra configuration.',
             expandedText: '**CSR** shifts all rendering to the browser. The server sends a minimal HTML shell plus a JavaScript bundle. The browser executes the bundle, fetches data via API, and renders the UI. The initial paint shows a blank or skeleton screen while JavaScript loads — slower **Time to First Meaningful Paint** than SSR.\n\nCSR excels for **highly interactive, app-like experiences** — dashboards, editors, admin panels — where users navigate client-side after the initial load, making subsequent navigations instant. CSR is also simpler to deploy as static files on a CDN. The downsides: poor SEO for content pages and a slow initial experience on low-end devices or slow networks.',
             codeExample: `<!-- CSR: server sends minimal shell -->\n<!DOCTYPE html>\n<html>\n  <body>\n    <div id="root"></div>\n    <script src="/bundle.js"></script>\n    <!-- bundle.js fetches data + renders UI in the browser -->\n  </body>\n</html>\n\n// React then fetches data and renders:\nfetch('/api/products')\n  .then(res => res.json())\n  .then(products => renderProductList(products));`,
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '🛒',
+              title: 'Step 1 — CSR: the supermarket with a recipe',
+              text: [
+                'At a supermarket, you receive ingredients and cook at home. More work, but fully customisable.',
+                'CSR sends a minimal HTML shell plus JavaScript. The browser fetches data and renders everything. Slower first paint but rich interactivity once loaded.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -6760,7 +7566,14 @@ for (let i = 0; i < 5; i++) {
             heading: 'Direct Comparison',
             text: 'SSR and CSR make different trade-offs. SSR wins on first paint speed and SEO but requires a server for every page view. CSR wins on subsequent navigation speed and hosting cost but struggles with initial load time and search engine crawling. Neither is universally better — choose based on your app\'s priorities.',
             codeExample: `// SSR trade-offs:\n// ✅ Fast First Contentful Paint (FCP)\n// ✅ SEO out of the box\n// ✅ Works without JavaScript\n// ❌ Full server round-trip per navigation\n// ❌ Higher server compute costs\n\n// CSR trade-offs:\n// ✅ Instant navigation after initial load\n// ✅ Rich, app-like interactions\n// ✅ Static hosting (low cost)\n// ❌ Slow initial load (JS bundle)\n// ❌ SEO needs configuration or prerendering`,
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '⚖️',
+              title: 'Step 2 — Comparison: restaurant vs supermarket',
+              text: [
+                'The restaurant wins on immediate satisfaction. The supermarket wins on customisation. Most apps use both.',
+                'SSR: faster first paint, better SEO. CSR: rich interactivity, instant navigation after load. Modern frameworks blend both.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -6768,7 +7581,14 @@ for (let i = 0; i < 5; i++) {
             heading: 'Static Site Generation (SSG)',
             text: 'SSG runs your app at build time, pre-renders HTML, and deploys it to a CDN. No server needed at runtime — pages are served in milliseconds from the edge. Great for content that rarely changes: marketing pages, blogs, documentation. ISR (Incremental Static Regeneration) extends SSG by letting pages rebuild on demand or on a schedule without a full redeploy.',
             codeExample: `// SSG: HTML is built once at deploy time\n// Next.js (App Router) — default behaviour\nexport default async function ProductPage() {\n  const product = await db.getProduct(id) // runs at build time\n  return <Product data={product} />\n}\n\n// ISR — rebuild this page every 60 seconds\nexport const revalidate = 60\n\n// Force SSG explicitly\nexport const dynamic = 'force-static'`,
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '📸',
+              title: 'Step 3 — SSG: the photobook printed in advance',
+              text: [
+                'A photobook printed and shipped before the event. Fast to hand out because all work was done upfront.',
+                'SSG renders HTML at build time. Pages are pre-built and served from a CDN. Fastest delivery, no server at runtime.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -6777,7 +7597,14 @@ for (let i = 0; i < 5; i++) {
             text: 'RSC is a React-specific strategy introduced in React 19. Components can be either Server or Client. Server Components fetch data, render HTML, and send a compact JSON payload to the browser — no JavaScript is shipped for them. Client Components (marked "use client") handle interactivity. RSC cuts bundle size dramatically and simplifies data fetching. Next.js 15 is the main framework implementing RSC today.',
             expandedText: '**React Server Components** (RSC) run on the server at request or build time, fetch data directly, and send **serialised HTML + a JSON payload** to the client — zero JavaScript is shipped for the server component itself. Only `"use client"` components ship JavaScript to the browser.\n\nRSC eliminates the classic waterfall: no `useEffect` data-fetching, no loading spinners for initial data. The boundary is **compositional**: a Server Component can render Client Components, and Client Components can nest Server Components via `children`. **Next.js App Router** (Next.js 13+) is built on RSC — all components are Server Components by default; you opt into client interactivity with `"use client"`.',
             codeExample: `// Server Component — zero JS sent to browser\nasync function ProductList() {\n  const items = await db.query('SELECT * FROM products')\n  return (\n    <ul>\n      {items.map(p => (\n        <li key={p.id}>\n          {p.name} — <AddToCart id={p.id} />  {/* Client Component */}\n        </li>\n      ))}\n    </ul>\n  )\n}\n\n// Client Component — ships JS, handles clicks\n'use client'\nfunction AddToCart({ id }: { id: number }) {\n  const [added, setAdded] = useState(false)\n  return <button onClick={() => setAdded(true)}>{added ? '✓' : 'Add'}</button>\n}`,
-            language: 'tsx',
+            language: 'tsx',            analogy: {
+              icon: '🔀',
+              title: 'Step 4 — RSC: the smart hybrid kitchen',
+              text: [
+                'A hybrid kitchen: the chef prepares the slow parts in the kitchen, the waiter finishes table-side. Each part done where most efficient.',
+                'React Server Components run on the server without sending their JS to the browser. Client Components handle interactivity.',
+              ],
+            },
           },
         ],
       },
@@ -6826,7 +7653,14 @@ for (let i = 0; i < 5; i++) {
             text: 'HTTP status codes are 3-digit numbers grouped by category. The first digit indicates success, redirect, or error.',
             expandedText: '**HTTP status codes** are three-digit numbers that machines use to understand request outcomes without parsing the response body. They are grouped by first digit: **1xx** informational, **2xx** success, **3xx** redirection, **4xx** client error, **5xx** server error.\n\nUsing the correct code makes APIs **self-documenting** and enables generic client behaviour: display a friendly message for any `404`, retry with backoff on `503`, or follow redirects on `301` — without knowing anything specific about the API. Returning `200 OK` with an error body (a common mistake) breaks tooling, logging, and monitoring that rely on the status code.',
             codeExample: '1xx — Informational\n2xx — Success\n3xx — Redirection\n4xx — Client errors\n5xx — Server errors',
-            language: 'http',
+            language: 'http',            analogy: {
+              icon: '📬',
+              title: 'Step 0 — Status codes: the delivery receipt',
+              text: [
+                'Every delivery ends with a status: delivered, recipient not found, address incorrect. The code tells you what happened.',
+                'Every HTTP response starts with a three-digit code. 2xx success, 3xx redirect, 4xx client error, 5xx server error.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -6835,7 +7669,14 @@ for (let i = 0; i < 5; i++) {
             text: '200 OK is the standard success response. 201 Created is returned after a successful `POST`. 204 No Content means success with no body.',
             expandedText: '**`200 OK`** is the generic success code for `GET`, `PUT`, and `PATCH` requests that return a body. **`201 Created`** should follow a `POST` that creates a resource — include a `Location` header pointing to the new URL. **`204 No Content`** signals success with no body, used after `DELETE` or a `PUT` with no return data.\n\n**`202 Accepted`** is for async operations: the request was received and will be processed later — used for background jobs and queued tasks. Always document whether operations are synchronous (`200`/`201`) or asynchronous (`202`) so consumers know whether to poll a status endpoint or await the response directly.',
             codeExample: 'HTTP/1.1 200 OK          → request succeeded\nHTTP/1.1 201 Created     → resource created\nHTTP/1.1 204 No Content  → success, no body',
-            language: 'http',
+            language: 'http',            analogy: {
+              icon: '✅',
+              title: 'Step 1 — 2xx: the delivery succeeded',
+              text: [
+                'The parcel arrived. 200 means exactly what you ordered. 201 means a new item was created. 204 means success but nothing to pick up.',
+                '200 OK, 201 Created (after POST), 204 No Content (after DELETE). 2xx = everything went right.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -6844,7 +7685,14 @@ for (let i = 0; i < 5; i++) {
             text: '301 Moved Permanently tells the client the resource has a new URL. 302 Found is a temporary redirect.',
             expandedText: '**`301 Moved Permanently`** tells clients and search engines a URL has changed forever — browsers and crawlers cache this and use the new URL on all future requests. **`302 Found`** is a temporary redirect; clients follow it but keep using the original URL.\n\n**`304 Not Modified`** is used with caching: when a client sends `If-None-Match` and the resource has not changed, the server returns `304` with no body — saving bandwidth. **`307`** and **`308`** are modern equivalents of `302` and `301` that guarantee the HTTP **method** is preserved during redirect (a `POST` stays a `POST`), unlike the ambiguous original `302` behaviour.',
             codeExample: 'HTTP/1.1 301 Moved Permanently\nLocation: https://newsite.com/page\n\nHTTP/1.1 302 Found\nLocation: /login',
-            language: 'http',
+            language: 'http',            analogy: {
+              icon: '🔀',
+              title: 'Step 2 — 3xx: follow the forwarding address',
+              text: [
+                'A letter marked address changed, please forward. The postbox redirects to the new address.',
+                '301 Moved Permanently. 302 Found (temporary). 304 Not Modified (cache still valid). 3xx = go somewhere else.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -6853,7 +7701,14 @@ for (let i = 0; i < 5; i++) {
             text: '4xx errors mean the client made a mistake. 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found.',
             expandedText: '**`400 Bad Request`** means the server could not parse or validate the request — missing fields, invalid JSON, or out-of-range values. Include a helpful error body. **`401 Unauthorized`** means authentication is missing or invalid. **`403 Forbidden`** means authenticated but lacking permission — do not expose whether the resource exists.\n\n**`422 Unprocessable Entity`** is preferred for semantic validation failures (email already taken) where `400` is too generic. **`429 Too Many Requests`** signals rate limiting — include `Retry-After`. **`409 Conflict`** indicates a state clash: creating a resource that already exists or a stale optimistic-lock update.',
             codeExample: '400 Bad Request    → invalid data sent\n401 Unauthorized   → not logged in\n403 Forbidden      → logged in, no permission\n404 Not Found      → resource does not exist\n422 Unprocessable  → validation failed',
-            language: 'http',
+            language: 'http',            analogy: {
+              icon: '🙅',
+              title: 'Step 3 — 4xx: you made a mistake',
+              text: [
+                'The customer fills the form wrong (400), shows no ID (401), lacks membership (403), asks for nonexistent product (404).',
+                '400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 422 Unprocessable Entity. 4xx = client error.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -6862,7 +7717,14 @@ for (let i = 0; i < 5; i++) {
             text: "5xx errors mean something went wrong on the server side — not the client's fault.",
             expandedText: '**`500 Internal Server Error`** is the generic catch-all for unhandled server exceptions. **`502 Bad Gateway`** means the server got an invalid response from an upstream service. **`503 Service Unavailable`** means the server is temporarily overloaded or in maintenance — include a `Retry-After` header.\n\n**`504 Gateway Timeout`** occurs when an upstream service takes too long, common when a database query exceeds the configured timeout. Unlike 4xx codes, 5xx errors are the server fault, not the client. Well-designed APIs return detailed error objects for debugging while never leaking stack traces or internal details to untrusted clients in production.',
             codeExample: '500 Internal Server Error → server crashed\n502 Bad Gateway          → upstream issue\n503 Service Unavailable  → server overloaded\n504 Gateway Timeout      → upstream too slow',
-            language: 'http',
+            language: 'http',            analogy: {
+              icon: '💥',
+              title: 'Step 4 — 5xx: the shop has a problem',
+              text: [
+                'The customer did everything right but the till is broken (500), the service is down (503), or the warehouse took too long (504).',
+                '500 Internal Server Error, 502 Bad Gateway, 503 Service Unavailable, 504 Gateway Timeout. 5xx = server error.',
+              ],
+            },
           },
         ],
       },
@@ -6910,7 +7772,14 @@ for (let i = 0; i < 5; i++) {
             text: 'A database is an organised collection of structured data managed by a Database Management System (DBMS). Key components: the data itself, a schema (structure definition), the DBMS engine, queries, and users. Unlike plain files, databases support concurrent access, complex queries, referential integrity, and transactions.',
             expandedText: 'A **database** is not just a file — it is a managed system that provides concurrent access, indexing, query optimisation, and crash recovery. The **DBMS** handles all of that so your application code only needs to express *what* data it wants, not *how* to retrieve it.\n\nThe four pillars of relational databases are **ACID**: Atomicity ensures a transaction is all-or-nothing, Consistency keeps data valid at all times, Isolation prevents concurrent transactions from interfering, and Durability guarantees committed data survives crashes. These guarantees are why relational databases remain the default choice for business data.',
             codeExample: `-- Without a database: flat file chaos\n-- users.txt: Alice,alice@example.com,1990-01-01\n-- orders.txt: 1,Alice,widget,49.99\n-- Updating Alice's email means editing every file that references her.\n\n-- With a database: single source of truth\nSELECT u.name, o.total\nFROM users u JOIN orders o ON o.user_id = u.id\nWHERE u.email = 'alice@example.com';`,
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '🗄️',
+              title: 'Step 0 — Database: the organised filing system',
+              text: [
+                'A filing cabinet with labelled drawers. Everything is findable, organised, and persistent.',
+                'A database stores data persistently and makes it searchable. Data survives restarts, is accessible to multiple users, and can be queried efficiently.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -6919,7 +7788,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Relational databases store data in tables — rows are records, columns are typed attributes. A primary key uniquely identifies each row (often `SERIAL` or `AUTO_INCREMENT`). ACID guarantees ensure data integrity: Atomicity (all-or-nothing), Consistency (always valid state), Isolation (concurrent-safe), Durability (committed = permanent). Examples: `PostgreSQL`, `MySQL`, `SQLite`.',
             expandedText: 'A **relational database** organises data into tables. Each column has a declared type (`TEXT`, `INTEGER`, `BOOLEAN`, `TIMESTAMPTZ`), and constraints like `NOT NULL` and `UNIQUE` enforce correctness at the database level — before application code can even see the value.\n\n`SERIAL PRIMARY KEY` creates an auto-incrementing integer column that uniquely identifies each row. **Foreign keys** (`REFERENCES`) create hard links between tables: the database will refuse to insert a row whose foreign key points to a non-existent parent, preventing orphaned data.',
             codeExample: `-- Tables relate to each other via foreign keys\nCREATE TABLE users (\n  id    SERIAL PRIMARY KEY,\n  name  VARCHAR(100) NOT NULL,\n  email VARCHAR(255) UNIQUE NOT NULL\n);\n\nCREATE TABLE orders (\n  id      SERIAL PRIMARY KEY,\n  user_id INT REFERENCES users(id),  -- foreign key\n  total   DECIMAL(10, 2) NOT NULL,\n  created_at TIMESTAMP DEFAULT NOW()\n);`,
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '📋',
+              title: 'Step 1 — Relational databases: the spreadsheet network',
+              text: [
+                'Multiple connected spreadsheets: one for customers, one for orders. Each order row refers to a customer row by ID.',
+                'Relational databases (PostgreSQL, MySQL) store data in tables linked via foreign keys. SQL is the query language. Strong consistency, ideal for structured data.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -6928,7 +7804,14 @@ for (let i = 0; i < 5; i++) {
             text: 'NoSQL databases trade rigid schemas for flexibility and scale. Four main types: Document stores (`MongoDB`) — JSON-like documents with nested data. Key-Value (`Redis`) — ultra-fast in-memory, ideal for caching. Graph (`Neo4j`) — nodes and edges for relationship-heavy queries. Column-oriented (`Cassandra`) — high write throughput for time-series and analytics.',
             expandedText: '**NoSQL** covers several distinct storage models. **Document stores** like MongoDB keep related data together in one JSON-like document — good when the data structure varies per record. **Key-value stores** like Redis are just a hash map in memory — microsecond reads make them ideal for caching and sessions.\n\n**Graph databases** like Neo4j treat relationships as first-class citizens — efficient for social networks or recommendation engines. **Column-family stores** like Cassandra optimise for massive write throughput by grouping columns together on disk. Most production systems use both: a relational database for durable data and Redis for ephemeral fast-access data.',
             codeExample: `// MongoDB document store — flexible schema\ndb.users.insertOne({\n  name: "Alice",\n  email: "alice@example.com",\n  preferences: { theme: "dark", lang: "en" },\n  tags: ["admin", "beta-tester"]\n});\n\n// Redis key-value — caching a session\n// SET session:abc123 '{"userId":1,"role":"admin"}' EX 3600\n// GET session:abc123`,
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '📄',
+              title: 'Step 2 — NoSQL databases: the flexible notebook',
+              text: [
+                'A flexible notebook where each page can have different fields. No fixed schema required.',
+                'NoSQL databases (MongoDB, Redis) sacrifice rigid structure for flexibility. Great for unstructured data, high write volumes, and horizontal scaling.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -6937,7 +7820,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Use SQL when: data has clear relationships, you need ACID guarantees, or you run complex `JOIN` queries and reports. Use NoSQL when: data structure is variable or nested, you need massive horizontal scale, or your workload is write-heavy. In practice, many systems use both — `PostgreSQL` for persistent data, `Redis` for caching.',
             expandedText: 'Use **SQL** (PostgreSQL, MySQL) when data has clear relationships, you need `JOIN` queries, or you rely on `ACID` transactions — for example financial records, user accounts, and order systems. Use **NoSQL** when the data shape varies widely, you need horizontal scale across many servers, or you are building a cache or analytics pipeline.\n\nIn practice the two models complement each other. A typical web app uses PostgreSQL as the source of truth for persistent data and Redis as a fast cache layer. Understanding when each database type shines prevents costly architectural mistakes early in a project.',
             codeExample: `-- SQL: structured, relational data\nSELECT u.name, COUNT(o.id) AS order_count\nFROM users u\nLEFT JOIN orders o ON o.user_id = u.id\nGROUP BY u.name\nHAVING COUNT(o.id) > 5;\n\n// NoSQL (Redis): ephemeral, fast key-value\n// await redis.setEx('user:1:cart', 1800, JSON.stringify(cart));\n// const cart = JSON.parse(await redis.get('user:1:cart'));`,
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '🔀',
+              title: 'Step 3 — SQL vs NoSQL: the right tool for the job',
+              text: [
+                'A hammer for nails, a screwdriver for screws. The choice is about the problem.',
+                'SQL: complex relationships, transactions, strong queries. NoSQL: flexible schema, massive scale, simple access patterns.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -6946,7 +7836,14 @@ for (let i = 0; i < 5; i++) {
             text: 'SQL (Structured Query Language) is the standard for relational databases. `CREATE TABLE` defines a table\'s schema with column names, types, and constraints. Common data types: `SERIAL` (auto-increment integer), `VARCHAR(n)` (string up to n chars), `INT`, `BOOLEAN`, `TIMESTAMP`, `TEXT` (unlimited string), `DECIMAL(p,s)`. Constraints: `PRIMARY KEY`, `NOT NULL`, `UNIQUE`, `DEFAULT`, `FOREIGN KEY`.',
             expandedText: 'SQL is a **declarative** language — you describe the result you want, not the steps to get it. `CREATE TABLE` defines a schema with typed columns and constraints. `SERIAL` is a PostgreSQL shorthand for an auto-incrementing `INTEGER` column, perfect for primary keys.\n\nConstraints enforce data integrity at the database layer: `PRIMARY KEY` ensures uniqueness and enables fast lookups, `NOT NULL` rejects missing values, `UNIQUE` prevents duplicates, `DEFAULT` supplies a fallback, and `REFERENCES` enforces referential integrity between tables. Good schema design shifts validation from application code into the database engine.',
             codeExample: `-- Create a table with common data types + constraints\nCREATE TABLE products (\n  id          SERIAL PRIMARY KEY,\n  name        VARCHAR(200) NOT NULL,\n  description TEXT,\n  price       DECIMAL(10, 2) NOT NULL DEFAULT 0.00,\n  in_stock    BOOLEAN NOT NULL DEFAULT true,\n  category    VARCHAR(50),\n  created_at  TIMESTAMP DEFAULT NOW()\n);\n\n-- Insert a row\nINSERT INTO products (name, price, category)\nVALUES ('Widget Pro', 29.99, 'gadgets');`,
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '💬',
+              title: 'Step 4 — SQL syntax primer: ordering at a counter',
+              text: [
+                'Ordering at a counter: Give me a large coffee from the menu where it is less than four pounds.',
+                'SQL reads like English: `SELECT name FROM users WHERE active = true ORDER BY name LIMIT 10`. Universal across all SQL databases.',
+              ],
+            },
           },
         ],
       },
@@ -6993,7 +7890,14 @@ for (let i = 0; i < 5; i++) {
             text: 'A database table is like a spreadsheet — rows are records, columns are fields. Each table has a defined schema.',
             expandedText: 'Every PostgreSQL **table** is a structured grid of typed columns. The **schema** — column names and types — is defined once when the table is created. Every row added must conform to that schema — the database engine rejects rows that violate types or constraints.\n\nThe `id` column is typically a `SERIAL PRIMARY KEY`: `SERIAL` auto-increments so you never have to supply it, and `PRIMARY KEY` creates a unique index for fast lookups. Think of the primary key as the permanent address of a row — other tables reference it via **foreign keys**.',
             codeExample: 'users table:\n┌────┬──────────┬──────────────────────┐\n│ id │ name     │ email                │\n├────┼──────────┼──────────────────────┤\n│  1 │ Alice    │ alice@example.com    │\n│  2 │ Bob      │ bob@example.com      │\n└────┴──────────┴──────────────────────┘',
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '📋',
+              title: 'Step 0 — SELECT: reading from a spreadsheet',
+              text: [
+                'Opening a spreadsheet and reading rows. You can read all columns or pick specific ones.',
+                'SELECT col1, col2 FROM table; reads specific columns. SELECT * returns everything. The most fundamental SQL operation.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -7002,7 +7906,14 @@ for (let i = 0; i < 5; i++) {
             text: '`SELECT` retrieves data. `*` means all columns. You can specify column names to return only what you need.',
             expandedText: '`SELECT` is the most-used SQL statement. `SELECT *` returns every column — useful during development but expensive in production because it transmits columns you may not need. Naming specific columns reduces network traffic and makes the query self-documenting.\n\nColumn aliases (`AS`) rename columns in the result set without changing the table. They are essential when two joined tables share a column name, or when an expression would otherwise appear with an auto-generated label. Always list only the columns your application actually uses — this also insulates your code from schema additions.',
             codeExample: '-- All columns, all rows:\nSELECT * FROM users;\n\n-- Specific columns:\nSELECT name, email FROM users;',
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '🔍',
+              title: 'Step 1 — WHERE: the search filter',
+              text: [
+                'Filtering a spreadsheet: show only rows where status equals active.',
+                'WHERE filters rows before returning them. `WHERE age > 18 AND active = true` — conditions use AND, OR, NOT, and comparison operators.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -7011,7 +7922,14 @@ for (let i = 0; i < 5; i++) {
             text: '`WHERE` adds conditions to filter which rows are returned. Use `AND` and `OR` for multiple conditions.',
             expandedText: '`WHERE` is the heart of SQL filtering. Conditions can test equality (`=`), comparison (`>`, `<`, `>=`, `<=`), negation (`!=`), pattern matching (`LIKE`, `ILIKE`), and set membership (`IN`, `NOT IN`). Combine conditions with `AND` and `OR`; use parentheses to control precedence.\n\n`NULL` comparisons require special syntax: `IS NULL` and `IS NOT NULL` — comparing with `= NULL` always returns false in SQL. Use `BETWEEN low AND high` as shorthand for range checks. Always use **parameterized queries** (`$1`, `$2`) rather than string interpolation to prevent SQL injection.',
             codeExample: 'SELECT * FROM users\nWHERE age > 25;\n\nSELECT * FROM users\nWHERE age > 25 AND active = true;',
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '📊',
+              title: 'Step 2 — ORDER BY and LIMIT: sorting and paging',
+              text: [
+                'A leaderboard sorted by score descending, showing only the top 10.',
+                'ORDER BY score DESC sorts results. LIMIT 10 returns only ten rows. OFFSET 10 skips the first ten — used for pagination.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -7020,7 +7938,14 @@ for (let i = 0; i < 5; i++) {
             text: '`ORDER BY` sorts the result set. `ASC` is ascending (default), `DESC` is descending. Sort by multiple columns.',
             expandedText: '`ORDER BY` sorts the result rows before they are returned. The default direction is `ASC` (ascending, smallest first). `DESC` reverses it. You can sort by multiple columns: the second column is used as a tiebreaker when the first column has equal values.\n\nSorting happens **after** filtering (`WHERE`) and **after** grouping (`GROUP BY`) but **before** `LIMIT`. Without `ORDER BY`, PostgreSQL does not guarantee any particular row order — even if results look ordered today, they may not be after a table rewrite or vacuum.',
             codeExample: 'SELECT * FROM users\nORDER BY name ASC;\n\nSELECT * FROM products\nORDER BY price DESC, name ASC;',
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '🧮',
+              title: 'Step 3 — Aggregate functions: the summary row',
+              text: [
+                'A cash register receipt totals all items and counts them at the bottom.',
+                'COUNT(*), SUM(amount), AVG(price), MIN, MAX — aggregate functions collapse many rows into one summary value.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -7029,7 +7954,14 @@ for (let i = 0; i < 5; i++) {
             text: '`LIMIT` caps the number of rows returned. Combined with `OFFSET`, it implements pagination.',
             expandedText: '`LIMIT n` stops returning rows after `n` results — critical for performance on large tables. `OFFSET k` skips the first `k` rows, enabling **pagination**: page 1 is `LIMIT 10 OFFSET 0`, page 2 is `LIMIT 10 OFFSET 10`, and so on.\n\nFor large datasets, `OFFSET`-based pagination slows down as the offset grows because PostgreSQL must still read and discard the skipped rows. **Keyset pagination** (using `WHERE id > last_seen_id ORDER BY id LIMIT 10`) is faster for deep pages because it leverages the primary key index directly.',
             codeExample: '-- First 10 users:\nSELECT * FROM users LIMIT 10;\n\n-- Page 2 (rows 11-20):\nSELECT * FROM users\nLIMIT 10 OFFSET 10;',
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '🗂️',
+              title: 'Step 4 — GROUP BY: sub-totals per category',
+              text: [
+                'A receipt that groups items by category: food total, drinks total, tax total.',
+                'GROUP BY category collapses rows into one row per unique value. Combined with COUNT/SUM: `SELECT dept, COUNT(*) FROM employees GROUP BY dept`.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -7038,7 +7970,14 @@ for (let i = 0; i < 5; i++) {
             text: '`WHERE` filters rows that match a condition. You can combine multiple conditions with `AND` and `OR`. `ORDER BY` sorts results — `ASC` (default) for ascending, `DESC` for descending. Always alias ambiguous columns in multi-table queries.',
             expandedText: '`WHERE` and `ORDER BY` are the workhorses of every `SELECT` query. Always prefer specific column lists over `SELECT *` in production: naming columns documents intent, reduces data transfer, and protects against breakage if new columns are added.\n\nUse **parameterized queries** (`$1`, `$2` in PostgreSQL) whenever a value comes from user input or external data — never interpolate variables directly into SQL strings. This is the single most important practice for preventing SQL injection attacks. Most ORM libraries and the `pg` Node.js driver handle this automatically.',
             codeExample: `-- Get active users sorted by name\nSELECT id, name, email\nFROM users\nWHERE active = true\n  AND age >= 18\nORDER BY name ASC;`,
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '🚦',
+              title: 'Step 5 — HAVING: the group filter',
+              text: [
+                'Filtering the sub-totals: show only departments with more than 5 employees.',
+                'HAVING filters after aggregation — WHERE cannot use aggregate results. `GROUP BY dept HAVING COUNT(*) > 5` removes small departments.',
+              ],
+            },
           },
           {
             animationStep: 6,
@@ -7047,7 +7986,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Aggregate functions compute a single result from a set of rows. `COUNT(*)` counts rows, `SUM` adds numeric values, `AVG` computes the mean, `MIN`/`MAX` find extremes. They are typically combined with `GROUP BY`.',
             expandedText: '**Aggregate functions** collapse many rows into a single summary value. `COUNT(*)` counts all rows in the group. `COUNT(column)` counts non-NULL values only. `SUM` adds up numbers. `AVG` divides the sum by the count. `MIN` and `MAX` find the extremes.\n\nAggregates are almost always used with `GROUP BY` to compute summaries per category, user, or time period. Without `GROUP BY`, the aggregate collapses the entire result set into one row. In the select list, you can only reference columns that appear in `GROUP BY` or are wrapped in an aggregate — any other column reference is a SQL error.',
             codeExample: `SELECT\n  category,\n  COUNT(*)       AS total_products,\n  AVG(price)     AS avg_price,\n  SUM(quantity)  AS total_stock\nFROM products\nGROUP BY category;`,
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '📝',
+              title: 'Step 6 — INSERT: adding a new row',
+              text: [
+                'Filling in a new line on a form and submitting it.',
+                'INSERT INTO users (name, email) VALUES (\'Alice\', \'alice@example.com\') adds a single row. Use RETURNING id to get the generated primary key.',
+              ],
+            },
           },
           {
             animationStep: 7,
@@ -7056,7 +8002,14 @@ for (let i = 0; i < 5; i++) {
             text: '`GROUP BY` collapses rows that share the same value in a column into a single row, letting aggregates operate per group. `HAVING` filters groups after aggregation — like `WHERE`, but for groups.',
             expandedText: '`GROUP BY` partitions rows into buckets based on the values in the specified columns, then applies aggregate functions separately to each bucket. Each unique combination of grouped column values becomes one output row.\n\n`HAVING` is like `WHERE` but operates on the result of aggregation rather than on individual rows. Use `WHERE` to filter rows **before** grouping (which is faster — fewer rows to aggregate), and `HAVING` to filter groups **after** aggregation when your condition involves an aggregate like `COUNT(*)` or `SUM(price)`.',
             codeExample: `-- Categories with more than 5 products\nSELECT category, COUNT(*) AS count\nFROM products\nGROUP BY category\nHAVING COUNT(*) > 5\nORDER BY count DESC;`,
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '✏️',
+              title: 'Step 7 — UPDATE: editing a row',
+              text: [
+                'Correcting a typo in a spreadsheet cell — the row stays, just one value changes.',
+                'UPDATE users SET email = \'new@example.com\' WHERE id = 1 modifies existing rows. Always include WHERE or you update every row.',
+              ],
+            },
           },
           {
             animationStep: 8,
@@ -7065,7 +8018,14 @@ for (let i = 0; i < 5; i++) {
             text: '`WHERE` filters individual rows before `GROUP BY` runs. `HAVING` filters groups after `GROUP BY` — it can reference aggregate functions. Rule of thumb: if your condition uses `COUNT`, `SUM`, or `AVG`, use `HAVING`; otherwise use `WHERE`. Both can appear in the same query.',
             expandedText: 'The mental model: SQL processes clauses in this order — `FROM` (which tables), `WHERE` (filter rows), `GROUP BY` (form groups), `HAVING` (filter groups), `SELECT` (compute output columns), `ORDER BY` (sort), `LIMIT`/`OFFSET` (paginate). This order explains every column-not-found or aggregate-in-WHERE error you will ever encounter.\n\n`HAVING COUNT(*) > 5` is valid because `COUNT` runs at the `GROUP BY` stage, before `HAVING` evaluates. `WHERE COUNT(*) > 5` is invalid because `WHERE` runs before grouping. Keep this pipeline in mind and most SQL puzzles become straightforward.',
             codeExample: `-- WHERE filters rows BEFORE grouping\n-- HAVING filters groups AFTER grouping\n\nSELECT category, COUNT(*) AS total, AVG(price) AS avg_price\nFROM products\nWHERE in_stock = true           -- filter rows first\nGROUP BY category\nHAVING COUNT(*) > 5             -- then filter groups\n  AND AVG(price) < 100\nORDER BY total DESC;`,
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '🗑️',
+              title: 'Step 8 — DELETE: removing a row',
+              text: [
+                'Deleting a row from a spreadsheet. Irreversible without a backup.',
+                'DELETE FROM users WHERE id = 1 removes matching rows permanently. Omitting WHERE deletes everything. Use transactions for safety.',
+              ],
+            },
           },
           {
             animationStep: 9,
@@ -7074,7 +8034,14 @@ for (let i = 0; i < 5; i++) {
             text: 'A subquery is a `SELECT` nested inside another query. The inner query runs first; its result is used by the outer query. Scalar subqueries return a single value (usable in `WHERE`). `IN` subqueries return a list of values. Correlated subqueries reference the outer query\'s columns — powerful but run once per outer row, so prefer `JOIN`s for performance on large datasets.',
             expandedText: 'A **subquery** is a complete `SELECT` nested inside another SQL statement. The database executes the inner query first and feeds its result to the outer query. **Scalar subqueries** return exactly one value and can appear in `WHERE` or `SELECT`. **`IN` subqueries** return a column of values and work like a dynamic set membership test.\n\n**Correlated subqueries** reference columns from the outer query — they re-execute once per outer row, making them potentially slow on large tables. Prefer a `JOIN` when the same result can be expressed that way. Use subqueries when the logic is clearest written as a nested question.',
             codeExample: `-- Scalar subquery: single value in WHERE\nSELECT name, price\nFROM products\nWHERE price > (SELECT AVG(price) FROM products);\n\n-- IN subquery: list of values\nSELECT name, email\nFROM users\nWHERE id IN (\n  SELECT user_id FROM orders\n  WHERE total > 100\n);\n\n-- Correlated subquery (runs once per row — use carefully)\nSELECT name,\n  (SELECT COUNT(*) FROM orders o WHERE o.user_id = u.id) AS order_count\nFROM users u;`,
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '⚡',
+              title: 'Step 9 — Indexes: the book\'s index',
+              text: [
+                'Looking up a term in a textbook using the index page — direct reference, no page-by-page scan.',
+                'CREATE INDEX ON users(email) builds a data structure for fast lookup by email. Without an index, PostgreSQL scans every row.',
+              ],
+            },
           },
         ],
       },
@@ -7157,7 +8124,14 @@ for (let i = 0; i < 5; i++) {
             text: 'In a relational database, data is split across tables to avoid duplication. A users table and a posts table are linked by a foreign key.',
             expandedText: '**Normalisation** is the practice of storing each fact in exactly one place. Instead of repeating a user name in every post row, you store the name once in a `users` table and put only the `user_id` in every post. This eliminates update anomalies: if a user changes their name, one `UPDATE` fixes every post automatically.\n\nThe cost is that reading related data requires joining tables back together. The database engine optimises this join, especially when both sides have indexes on the join column. Understanding the normalisation tradeoff explains why foreign keys and joins exist.',
             codeExample: 'users:  id, name\nposts:  id, user_id, title\n               ↑\n        references users.id',
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '🔗',
+              title: 'Step 0 — What is a JOIN: stapling two forms together',
+              text: [
+                'A HR department has two forms: employee details and department records. They staple them together by matching the department ID.',
+                'JOIN combines rows from two tables where a condition matches. SELECT * FROM employees JOIN departments ON employees.dept_id = departments.id.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -7166,7 +8140,14 @@ for (let i = 0; i < 5; i++) {
             text: 'The foreign key is a column that references the primary key of another table. This is how relationships are defined using `REFERENCES`.',
             expandedText: 'A **foreign key** column holds the primary key value of a related row in another table. Declaring it with `REFERENCES table(column)` tells PostgreSQL to enforce referential integrity: inserting a `user_id` that does not exist in `users` will be rejected with a constraint violation error.\n\nThis server-side enforcement is far more reliable than application-level checks. If two applications share the same database, or a migration script runs directly, the constraint still protects the data. Omitting foreign keys is a common early mistake that leads to orphaned rows and data inconsistencies that are expensive to clean up later.',
             codeExample: 'CREATE TABLE posts (\n  id      SERIAL PRIMARY KEY,\n  user_id INT REFERENCES users(id),\n  title   TEXT\n);',
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '🤝',
+              title: 'Step 1 — INNER JOIN: only the matches',
+              text: [
+                'Only employees whose department ID exists in the departments table get included. Orphaned records are excluded.',
+                'INNER JOIN returns rows that match in both tables. Non-matching rows from either table are dropped.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -7175,7 +8156,14 @@ for (let i = 0; i < 5; i++) {
             text: '`INNER JOIN` returns rows where there is a match in both tables. If a user has no posts, they do not appear in the result.',
             expandedText: '`INNER JOIN` is the most common join. It produces a row in the output for every pair of rows from the two tables where the `ON` condition is true. Rows from either table that have no match are silently excluded from the result.\n\nThe `ON` clause typically compares the foreign key to the primary key: `ON users.id = posts.user_id`. If a user has three posts, they will appear on three output rows — one per post. This is expected and can be addressed with aggregation (`GROUP BY`) if you want one summary row per user.',
             codeExample: 'SELECT users.name, posts.title\nFROM users\nINNER JOIN posts\n  ON users.id = posts.user_id;',
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '📋',
+              title: 'Step 2 — LEFT JOIN: all employees including unassigned',
+              text: [
+                'All employees appear in the list. Those without a department show NULL in the department columns.',
+                'LEFT JOIN returns all rows from the left table plus matches from the right. Non-matching right rows become NULL.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -7184,7 +8172,14 @@ for (let i = 0; i < 5; i++) {
             text: '`LEFT JOIN` returns all rows from the left table, with `NULL`s for missing matches. Use this when you want results even if no match exists.',
             expandedText: '`LEFT JOIN` is "left table wins." Every row from the left (first) table appears in the output, even if no matching row exists in the right table. For unmatched right-side rows, all right-side columns are filled with `NULL`.\n\nThis is the go-to join when you want to count how many related records exist, including zeros. A user with no posts still appears — with `NULL` in the post columns. To find users with no posts at all, add `WHERE posts.id IS NULL` — the NULL in a foreign key column is the signal that no match was found.',
             codeExample: 'SELECT users.name, posts.title\nFROM users\nLEFT JOIN posts\n  ON users.id = posts.user_id;\n-- Users with no posts appear with NULL title',
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '🔄',
+              title: 'Step 3 — RIGHT JOIN and FULL JOIN: all combinations',
+              text: [
+                'RIGHT JOIN keeps all department rows even if no employee is assigned. FULL JOIN keeps all rows from both sides.',
+                'RIGHT JOIN = mirror of LEFT. FULL OUTER JOIN returns all rows from both tables, with NULLs where no match exists.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -7193,7 +8188,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Use aliases to shorten table names. You can chain multiple `JOIN`s to combine three or more tables.',
             expandedText: 'Table **aliases** (e.g. `FROM users u`) shorten repetitive qualified column names like `users.name` to `u.name`. They are required when joining a table to itself (a self-join) because both sides need different names to be unambiguous.\n\nChaining multiple `JOIN`s combines three or more tables in a single query. The database processes joins left to right, building up an intermediate result set at each step. Indexing join columns — especially foreign keys — is critical: unindexed joins on large tables perform a full table scan for every row, which can be catastrophically slow.',
             codeExample: 'SELECT u.name, p.title, c.body\nFROM users u\nJOIN posts p ON u.id = p.user_id\nJOIN comments c ON p.id = c.post_id\nWHERE u.active = true;',
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '⚡',
+              title: 'Step 4 — JOIN performance: the index handshake',
+              text: [
+                'Stapling forms is fast when both piles are sorted by ID. Unsorted piles require scanning everything.',
+                'JOINs on indexed foreign keys are fast. Without indexes, each JOIN row triggers a full table scan. Always index join columns.',
+              ],
+            },
           },
         ],
       },
@@ -7275,7 +8277,14 @@ for (let i = 0; i < 5; i++) {
             text: '`CREATE TABLE` defines the structure (schema) of a table: column names, types, and constraints.',
             expandedText: '`CREATE TABLE` is a **DDL** (Data Definition Language) statement — it modifies the database structure rather than the data. Column types constrain what values can be stored: `TEXT` for variable-length strings, `INTEGER` for whole numbers, `DECIMAL(p, s)` for fixed-precision numbers like money, `BOOLEAN` for true/false, and `TIMESTAMPTZ` for timestamps with timezone.\n\n`NOT NULL` prevents a column from holding the absence-of-value sentinel. Only allow `NULL` when the absence of a value is genuinely meaningful for that column. `UNIQUE` creates an index and rejects duplicate values — essential for email addresses, usernames, and other natural keys.',
             codeExample: 'CREATE TABLE users (\n  id    SERIAL PRIMARY KEY,\n  name  TEXT NOT NULL,\n  email TEXT UNIQUE NOT NULL,\n  age   INTEGER\n);',
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '🏗️',
+              title: 'Step 0 — CREATE TABLE: designing the spreadsheet',
+              text: [
+                'Before entering data, you define column headers and their types: Name (text), Age (number), Active (checkbox).',
+                'CREATE TABLE defines structure: column names, data types, constraints. The schema is the contract.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -7284,7 +8293,14 @@ for (let i = 0; i < 5; i++) {
             text: '`INSERT INTO` adds new rows. You can insert one row or multiple rows in a single statement.',
             expandedText: '`INSERT INTO` is the SQL verb for creating rows. Listing column names explicitly (rather than relying on positional order) protects your query from breaking if columns are reordered or new columns with defaults are added later.\n\n`RETURNING` turns an `INSERT` into a combined write-and-read operation: the database performs the insert and immediately returns the specified columns of the new row. This avoids a second round-trip query to fetch the auto-generated `id` or server-set `created_at`. Always use `RETURNING id` at minimum so your application immediately knows the primary key of the new row.',
             codeExample: "INSERT INTO users (name, email, age)\nVALUES ('Alice', 'alice@example.com', 28);\n\n-- Multiple rows:\nINSERT INTO users (name, email)\nVALUES ('Bob', 'bob@example.com'),\n       ('Carol', 'carol@example.com');",
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '➕',
+              title: 'Step 1 — INSERT: adding a new row',
+              text: [
+                'Filling in a new row in the spreadsheet — one record per customer or order.',
+                'INSERT adds one or more rows. Use `RETURNING id` to get the new row auto-generated values back immediately.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -7293,7 +8309,14 @@ for (let i = 0; i < 5; i++) {
             text: '`UPDATE` changes existing rows. Always use `WHERE` — without it, every row in the table is updated.',
             expandedText: '`UPDATE` modifies existing rows. The `WHERE` clause determines which rows are affected. **Omitting `WHERE` updates every single row in the table** — this is one of the most common and destructive SQL mistakes. Always double-check that `WHERE` is present before running an `UPDATE` in production.\n\n`RETURNING *` (or specific columns) makes `UPDATE` return the modified rows, again avoiding a follow-up `SELECT`. Use parameterized queries (`$1`, `$2`) for all values. In Node.js with the `pg` driver: `pool.query("UPDATE users SET name=$1 WHERE id=$2 RETURNING *", [name, id])`.',
             codeExample: "-- Update one user:\nUPDATE users\nSET email = 'new@example.com'\nWHERE id = 1;\n\n-- Update multiple fields:\nUPDATE users\nSET name = 'Alice B.', age = 29\nWHERE id = 1;",
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '✏️',
+              title: 'Step 2 — UPDATE: correcting a cell',
+              text: [
+                'Correcting a cell in the spreadsheet. Without a WHERE clause, you accidentally change every row.',
+                'UPDATE without WHERE modifies every row — almost always a bug. Always use `WHERE id = 42`. Use `RETURNING` to get the updated row back.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -7302,7 +8325,14 @@ for (let i = 0; i < 5; i++) {
             text: '`DELETE` removes rows. Always use `WHERE` — without it, all rows are deleted.',
             expandedText: '`DELETE FROM table WHERE condition` removes matching rows permanently. Like `UPDATE`, **omitting `WHERE` deletes every row** in the table — the table structure remains but all data is gone. There is no undo unless you have a transaction open or a backup.\n\n`RETURNING id` (or other columns) reports which rows were deleted — useful for logging or confirming the operation. For soft deletes (keeping historical data), prefer `UPDATE ... SET deleted_at = NOW()` and filter by `WHERE deleted_at IS NULL` in queries. Hard deletes remove the row entirely from the table.',
             codeExample: '-- Delete one row:\nDELETE FROM users WHERE id = 1;\n\n-- Delete by condition:\nDELETE FROM users\nWHERE active = false AND age < 18;',
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '🗑️',
+              title: 'Step 3 — DELETE: tearing out a row',
+              text: [
+                'Removing a row permanently. Without a filter, you delete the whole spreadsheet.',
+                'DELETE without WHERE removes all rows. Soft deletes (adding a `deleted_at` column) preserve audit trails.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -7311,7 +8341,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Constraints enforce rules at the database level. `PRIMARY KEY`, `NOT NULL`, `UNIQUE`, and `FOREIGN KEY` prevent invalid data from being stored.',
             expandedText: '**Constraints** are declarative rules enforced by the database engine. `PRIMARY KEY` makes a column the unique identifier for each row and creates an index automatically. `NOT NULL` rejects `NULL` values. `UNIQUE` prevents duplicates and builds an index. `REFERENCES` (foreign key) rejects values that do not exist in the referenced table. `DEFAULT` fills in a value when the column is omitted from the `INSERT`.\n\n`ON CONFLICT` enables **upsert** logic: `INSERT ... ON CONFLICT (col) DO UPDATE SET ...` either inserts a new row or updates the conflicting one atomically. This is far cleaner than a read-then-write check in application code, which can have race conditions.',
             codeExample: 'CREATE TABLE orders (\n  id         SERIAL PRIMARY KEY,  -- unique, auto-increment\n  user_id    INT REFERENCES users(id),  -- foreign key\n  total      DECIMAL NOT NULL,  -- required\n  status     TEXT DEFAULT \'pending\',  -- default value\n  created_at TIMESTAMPTZ DEFAULT NOW()\n);',
-            language: 'sql',
+            language: 'sql',            analogy: {
+              icon: '🔐',
+              title: 'Step 4 — Constraints: the form validation rules',
+              text: [
+                'A form that refuses to submit if required fields are empty or the email is already taken.',
+                'Constraints enforce integrity: `NOT NULL`, `UNIQUE`, `PRIMARY KEY`, `FOREIGN KEY`, `CHECK`. They catch bad data the application layer misses.',
+              ],
+            },
           },
         ],
       },
@@ -7396,7 +8433,14 @@ for (let i = 0; i < 5; i++) {
             text: 'In JavaScript, variables have types at runtime, but you never declare them. The type is inferred from the assigned value.',
             expandedText: 'JavaScript is **dynamically typed**: variables have no declared type, and the engine figures out the type at runtime based on the current value. This flexibility is convenient for small scripts but creates a category of bugs that only surface when the code actually runs — often in production.\n\n**TypeScript** adds an optional static type layer on top of JavaScript. You annotate variables, function parameters, and return values with types. The TypeScript compiler (`tsc`) checks all those annotations before the code ever runs, turning runtime surprises into compile-time errors visible in your editor.',
             codeExample: 'let age = 25        // type: number\nlet name = "Alice"  // type: string\nlet active = true   // type: boolean',
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🕵️',
+              title: 'Step 0 — Implicit JS types: the unnamed ingredients',
+              text: [
+                'A recipe that says add some white powder — you assume flour, but it might be salt or sugar.',
+                'JavaScript variables have types at runtime but you never declare them. Type errors only surface at runtime — often in production.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -7405,7 +8449,14 @@ for (let i = 0; i < 5; i++) {
             text: 'TypeScript adds type annotations using a `:` after the variable name. This tells the compiler exactly what type is expected.',
             expandedText: 'Type **annotations** are written after a colon: `let age: number = 25`. They tell the compiler exactly which type a variable should hold. TypeScript uses this information to flag mismatches before the code runs.\n\nIn practice you do not annotate every variable — TypeScript **infers** types from assigned values. `let age = 25` infers `number` automatically. Annotations are most valuable on function parameters and return types, where TypeScript cannot always infer without more context.',
             codeExample: 'let age: number = 25\nlet name: string = "Alice"\nlet active: boolean = true',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🏷️',
+              title: 'Step 1 — Explicit types: labelling every ingredient',
+              text: [
+                'Labelling every container: FLOUR, SALT, SUGAR. Anyone reading the recipe knows exactly what goes in.',
+                'TypeScript adds type annotations: `let count: number = 0`. The compiler checks every assignment at author time. Type errors become edit-time errors.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -7414,7 +8465,14 @@ for (let i = 0; i < 5; i++) {
             text: 'If you try to assign the wrong type, TypeScript flags it immediately — before the code ever runs.',
             expandedText: 'When TypeScript detects a type mismatch, it produces a **compile-time error** — a red squiggle in your editor and a failure in `tsc`. The code is rejected before it can run. This is fundamentally different from JavaScript, where the equivalent bug would silently execute and fail at runtime.\n\nThe error message names the exact variable and describes the conflict: "Type `string` is not assignable to type `number`." This precision eliminates guesswork. Many TypeScript errors are caught the moment you type them, before you even save the file, thanks to language server integration in VS Code and other editors.',
             codeExample: 'let age: number = 25\nage = "hello"\n//   ~~~~~~~~~\n// Error: Type \'string\' is not\n// assignable to type \'number\'',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🔬',
+              title: 'Step 2 — Compile-time errors: QA before shipping',
+              text: [
+                'A factory that quality-checks every part before assembly. Defective parts are caught before the product ships.',
+                'TypeScript compiler (`tsc`) checks code before it runs. A type mismatch is an error during `npm run build` — not a crash in production.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -7423,7 +8481,14 @@ for (let i = 0; i < 5; i++) {
             text: 'An `interface` describes what properties an object must have. TypeScript will error if a required property is missing or has the wrong type.',
             expandedText: 'An `interface` is a named description of an object shape. Any object assigned that interface type must have all required properties with their declared types. TypeScript performs **structural typing** (also called duck typing): an object is compatible with an interface if it has at least all the required properties, regardless of how it was created.\n\nInterfaces exist only in TypeScript source — they are completely erased during compilation and produce no JavaScript output. They are a pure compile-time tool for catching shape mismatches before your code runs.',
             codeExample: 'interface User {\n  name: string\n  age: number\n}\n\nconst user: User = {\n  name: "Alice",\n  age: 25,\n}',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '📋',
+              title: 'Step 3 — Interfaces: the contract form',
+              text: [
+                'A contract form specifying what must be provided: name (required string), age (optional number).',
+                'Interfaces define object shape: `interface User { id: number; email: string; name?: string }`. The `?` marks optional fields.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -7432,7 +8497,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Generics allow functions and classes to work with any type while still enforcing type safety. `T` is a placeholder that is filled in at call time.',
             expandedText: '**Generics** solve the problem of writing the same function multiple times for different types. A type parameter `<T>` acts as a placeholder that gets filled in at the call site. The compiler infers `T` from the argument you pass, so you rarely need to write it explicitly.\n\nThe key benefit over `any` is that generics **preserve type information** through the function: `first<T>(arr: T[]): T` guarantees the return type matches the array element type. With `any`, that connection is lost. Generics are the mechanism behind built-in utilities like `Array<T>`, `Promise<T>`, and `Record<K, V>`.',
             codeExample: 'function first<T>(arr: T[]): T {\n  return arr[0]\n}\n\nfirst([1, 2, 3])       // T = number\nfirst(["a", "b"])     // T = string',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🔧',
+              title: 'Step 4 — Generics: the adjustable spanner',
+              text: [
+                'An adjustable spanner works on any bolt size. You set the jaw width and it adapts.',
+                'Generics create reusable typed functions: `function identity<T>(value: T): T`. TypeScript infers `T` from the argument.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -7441,7 +8513,14 @@ for (let i = 0; i < 5; i++) {
             text: 'JavaScript only fails at runtime — often in production. TypeScript moves mistakes to development time: the compiler blocks the build and highlights every broken call in your editor. Rename a field, change a function signature, pass the wrong type — TypeScript flags it instantly instead of at 2 AM.',
             expandedText: 'TypeScript is a **superset of JavaScript**: every valid `.js` file is also valid TypeScript. TypeScript adds types on top, but the compiled output is plain JavaScript that runs in any browser or Node.js version. The compiler strips all type annotations — they produce zero runtime cost.\n\nMoving a project to TypeScript does not require rewriting everything at once. You can migrate file by file, using `allowJs: true` to mix `.js` and `.ts` files. Each typed file immediately catches bugs in that area. Teams that adopt TypeScript gradually report that the biggest productivity gains come from refactoring: the compiler flags every callsite that breaks when a function signature changes.',
             codeExample: `// JavaScript: silent failure at runtime\nfunction sendInvoice(customer) {\n  customer.sendEmail('Your invoice is ready') // 💥 crashes if sendEmail missing\n}\nsendInvoice({ name: 'Ada' }) // no error until the button is clicked\n\n// TypeScript: caught at compile time\ntype Customer = {\n  name: string\n  sendEmail: (msg: string) => void\n}\nfunction sendInvoice(customer: Customer): void {\n  customer.sendEmail('Your invoice is ready')\n}\nsendInvoice({ name: 'Ada' })\n// Error: Property 'sendEmail' is missing in type '{ name: string }'\n// but required in type 'Customer'`,
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🧯',
+              title: 'Step 5 — Why TypeScript: the fire drill',
+              text: [
+                'A fire drill reveals the gap between we think we know and we actually know. TypeScript is the permanent drill on every save.',
+                'Without TypeScript a refactor renames a function but misses 3 call sites — production crashes. With TypeScript the compiler reports all 3 broken references immediately.',
+              ],
+            },
           },
         ],
       },
@@ -8523,7 +9602,14 @@ for (let i = 0; i < 5; i++) {
             text: 'React was open-sourced by Facebook in 2013. Its core insight: build UIs from small, reusable pieces called components. `JSX` — an HTML-like syntax inside JavaScript — was created alongside it. React could run on a server from day one, but it was mainly used to build interactive SPAs in the browser.',
             expandedText: '**React** solves the problem of keeping the DOM in sync with application state. Before React, developers manually called `document.querySelector` and `element.textContent = ...` for every state change, which led to subtle bugs when state and UI drifted apart. React introduces a **declarative model**: you describe what the UI should look like for a given state, and React calculates the minimal DOM mutations needed to reach that state.\n\nThe engine behind this is the **virtual DOM** — a lightweight JavaScript representation of the real DOM tree. When state changes, React creates a new virtual tree and **diffs** it against the previous one, then applies only the changed nodes. This reconciliation process is what makes React fast even on complex, frequently-updating UIs.',
             codeExample: '// Pre-modern React (2013) — class components\nvar LikeButton = React.createClass({\n  getInitialState: function() {\n    return { liked: false }\n  },\n  render: function() {\n    return React.DOM.button(\n      { onClick: this.toggle },\n      this.state.liked ? "Liked!" : "Like"\n    )\n  }\n})',
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🧩',
+              title: 'Step 0 — What is React: LEGO for UIs',
+              text: [
+                'LEGO builds complex structures from small, reusable bricks. Each brick has a defined shape and connects to others in a standard way.',
+                'React builds UIs from components — small, reusable JS functions that return JSX. Compose them like LEGO: App contains Header, Sidebar, Main.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -8532,7 +9618,14 @@ for (let i = 0; i < 5; i++) {
             text: 'React Native launched in 2015, bringing the same component model to iOS and Android native apps. Major companies — Netflix, Airbnb, Dropbox — adopted React. ES6 class syntax became the standard way to write stateful components with lifecycle methods (`componentDidMount`, `componentDidUpdate`, `componentWillUnmount`).',
             expandedText: '**React Native** extended the component model beyond the web browser to iOS and Android by mapping JSX components to native platform widgets instead of DOM nodes. The same mental model — components, props, state — applies on every target. **ES6 class components** introduced proper lifecycle hooks: `componentDidMount` fires after the first render, `componentDidUpdate` fires after subsequent renders, and `componentWillUnmount` fires before the component is removed.\n\nClass components also introduced `this.setState`, which was the only way to trigger re-renders for nearly six years. The major downside was that stateful logic was tightly coupled to the class instance, making it impossible to share behaviour between components without higher-order components or render props — patterns that added deep nesting and indirection.',
             codeExample: '// React with ES6 classes (2015–2018 era)\nclass Counter extends React.Component {\n  state = { count: 0 }\n\n  componentDidMount() {\n    document.title = `Count: ${this.state.count}`\n  }\n\n  render() {\n    return (\n      <button onClick={() => this.setState({ count: this.state.count + 1 })}>\n        {this.state.count}\n      </button>\n    )\n  }\n}',
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🖨️',
+              title: 'Step 1 — JSX: HTML with superpowers',
+              text: [
+                'A word processor template that auto-fills fields: Dear {name}, your order {orderId} is ready.',
+                'JSX looks like HTML but lives in JS. Use `{}` to embed expressions: `<h1>Hello, {name}</h1>`. Babel compiles it to `React.createElement` calls.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -8541,7 +9634,14 @@ for (let i = 0; i < 5; i++) {
             text: 'React 16.8 introduced Hooks — `useState`, `useEffect`, and friends. Hooks let functional components manage state and side effects without class syntax. They quickly became the de facto standard. Code became shorter, easier to compose, and simpler to test. Class components still work but are rarely written in new projects.',
             expandedText: '**Hooks** arrived in React 16.8 and are the most significant change to the React programming model since the initial release. `useState` and `useEffect` replace the entire lifecycle API with two composable primitives. More importantly, **custom hooks** let you extract stateful logic into reusable functions that are independent of any component — something class components could never do cleanly.\n\nThe adoption was nearly universal because hooks are fully backward-compatible. Class components still work, but the React team has stated that hooks are the direction of all future React API design. New features like `useTransition`, `useDeferredValue`, and `use` are hooks-only, which means understanding hooks is essential for using modern React.',
             codeExample: '// Same counter with Hooks (modern style)\nfunction Counter() {\n  const [count, setCount] = useState(0)\n\n  useEffect(() => {\n    document.title = `Count: ${count}`\n  }, [count])\n\n  return (\n    <button onClick={() => setCount(c => c + 1)}>\n      {count}\n    </button>\n  )\n}',
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🌳',
+              title: 'Step 2 — Component tree: the org chart',
+              text: [
+                'A company org chart: CEO at top, departments below, teams under each department.',
+                'React renders a component tree. `<App>` is root. Each component renders children. React reconciles changes by diffing the virtual DOM tree.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -8550,7 +9650,14 @@ for (let i = 0; i < 5; i++) {
             text: 'React 19 introduced Server Components. Components can now run on the server, fetch data directly from a database, and stream HTML + JSON to the client. Only "Client Components" (marked with `"use client"`) ship JavaScript to the browser. Frameworks like Next.js 15 and Remix/React Router v7 are the primary way to use Server Components today.',
             expandedText: '**React Server Components** (RSC) represent a new primitive introduced in React 19 where a component runs permanently on the server and never ships its source code or dependencies to the browser. This is fundamentally different from traditional server-side rendering, where the same component code runs on both server and client — RSCs have a hard boundary that prevents server-only code from leaking to the client bundle.\n\nThe practical impact is dramatic: a server component can `await` a database query, read environment secrets, and import heavy server-only libraries — all without adding a single byte to the client JavaScript bundle. The `"use client"` directive opts a component and all its imports into the **client bundle**, making the boundary explicit and auditable. Frameworks like **Next.js 15** implement the full RSC spec.',
             codeExample: '// Server Component — runs on server, no JS sent to client\nasync function ProductList() {\n  const products = await db.query("SELECT * FROM products")\n  return <ul>{products.map(p => <li key={p.id}>{p.name}</li>)}</ul>\n}\n\n// Client Component — interactive, JS ships to browser\n"use client"\nfunction AddToCart({ id }: { id: number }) {\n  const [added, setAdded] = useState(false)\n  return <button onClick={() => setAdded(true)}>{added ? "✓" : "Add"}</button>\n}',
-            language: 'tsx',
+            language: 'tsx',            analogy: {
+              icon: '💾',
+              title: 'Step 3 — State: the component\'s memory',
+              text: [
+                'A calculator screen displays the current number — the display is state. Press a button and state updates, screen re-renders.',
+                'State is data owned by a component. `useState` returns [value, setter]. Call the setter and React re-renders the component with the new value.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -8559,7 +9666,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Two strategies: use a meta-framework (recommended for production) or assemble your own tooling.\n\nMeta-frameworks handle routing, data fetching, bundling, and rendering strategy for you:\n• Next.js 15 — full-stack web apps, file-system routing, Server Components\n• Remix / React Router v7 — nested routes, server mutations, progressive enhancement\n• Expo SDK 52+ — iOS/Android native apps with React Native\n\nDIY tooling gives you full control and teaches fundamentals:\n• Vite (used in this course) — instant dev server, Rollup-powered builds\n• Parcel — zero-config bundler\n• Rsbuild + Rspack — Rust-powered, 5–10× faster than Webpack',
             expandedText: 'Choosing a project setup comes down to one question: do you need server rendering? For **learning React fundamentals**, `Vite` is the best choice — its dev server starts in under a second, and the minimal scaffolding means you see exactly which React APIs you are using. For **production web apps** that need SEO, server rendering, or API routes, reach for **Next.js** which handles bundling, routing, and deployment targets with sane defaults.\n\n**React Router v7** (formerly Remix) is the right choice when your app has complex nested data requirements and you want tight control over how mutations and loaders interact. For mobile, **Expo** provides the same component model on iOS and Android with a managed build service. Avoid Create React App — it is deprecated, unmaintained, and uses an outdated bundler that cannot match the performance of modern alternatives.',
             codeExample: '# Meta-framework approach\nnpx create-next-app@latest my-app\n\n# DIY approach (used in this course)\nnpm create vite@latest my-app -- --template react-ts\ncd my-app && npm install && npm run dev\n\n# React Native / Expo\nnpx create-expo-app@latest my-app',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '📡',
+              title: 'Step 4 — Props: the package delivery',
+              text: [
+                'A parent sends a labelled package to a child. The child unwraps the package and uses the contents but cannot change the label.',
+                'Props flow from parent to child: `<Button color=\'blue\' label=\'Click\' />`. Inside Button: `function Button({ color, label })`. Props are read-only.',
+              ],
+            },
           },
         ],
       },
@@ -8640,7 +9754,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Plain HTML defines the structure once. To reuse a button, you copy-paste the markup — which quickly becomes hard to maintain.',
             expandedText: '**Component-based architecture** is the foundational shift that React introduced over traditional HTML templating. In a component model every piece of UI is a self-contained unit that owns its markup, styles, and behaviour. When a button needs to change, you update one file rather than hunting for every copy-pasted instance. This is the same principle that makes functions better than copy-pasted code blocks.\n\nThe key property of a well-designed component is **single responsibility** — it should do one thing well. A `Button` component is responsible for rendering a button with the correct style; a `ProductCard` is responsible for rendering a product with its image and price. Small, focused components are easier to test, reuse, and reason about in isolation.',
             codeExample: '<button class="btn btn-primary">Save</button>\n<button class="btn btn-primary">Submit</button>\n<!-- duplicated everywhere -->',
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '🔧',
+              title: 'Step 0 — Function components: the recipe card',
+              text: [
+                'A recipe card describes the dish but is not the dish. Each time you cook from it, a new instance of the dish appears.',
+                'A function component is a recipe: `function Card({ title }) { return <div>{title}</div> }`. Call it as `<Card title=\'Hello\' />` to create an instance.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -8649,7 +9770,14 @@ for (let i = 0; i < 5; i++) {
             text: '`JSX` lets you write HTML-like syntax inside JavaScript. It looks like HTML but it is transformed to JavaScript function calls by Babel.',
             expandedText: '**JSX** is syntactic sugar that compiles to `React.createElement` calls. The expression `<h1 className="title">Hello</h1>` is exactly equivalent to `React.createElement("h1", { className: "title" }, "Hello")`. Understanding this transform explains why JSX has certain rules: you must have a single root element, `class` becomes `className` because `class` is a reserved word in JavaScript, and expressions inside `{}` must return a value — statements like `if` do not work directly.\n\nThe **Babel transform** or **esbuild** handles this at build time — there is no JSX runtime overhead. In React 17+ the new JSX transform eliminates the need to import React in every file because the compiler injects the `react/jsx-runtime` import automatically. Curly braces `{}` are the escape hatch from JSX back to JavaScript, allowing any JavaScript expression: variables, function calls, ternaries, and template literals.',
             codeExample: '// JSX\nconst element = <h1 className="title">Hello</h1>\n\n// What it compiles to:\nconst element = React.createElement("h1", { className: "title" }, "Hello")',
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🏭',
+              title: 'Step 1 — JSX rules: the factory spec sheet',
+              text: [
+                'A factory spec sheet: one item per sheet, attributes must be valid, all openings must be closed.',
+                'JSX rules: single root element (or Fragment), camelCase attributes (`className`, `onClick`), all tags self-closed (`<br />`), and JS expressions in `{}`.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -8658,7 +9786,14 @@ for (let i = 0; i < 5; i++) {
             text: 'A React component is a function that accepts `props` and returns `JSX`. The function name must start with a capital letter.',
             expandedText: '**Props** are the primary mechanism for passing data between components. They flow in one direction — from parent to child — which makes data flow easy to trace. A component declares what props it accepts (usually with a TypeScript interface), and the parent provides them at the call site. The child component is a **pure function of its props**: given the same props, it always renders the same output.\n\nThis one-directional data flow is a deliberate constraint. It eliminates an entire class of bugs where two components silently update each other in a cycle. When you need a child to communicate back to the parent, the pattern is to pass a **callback function** as a prop — the child calls it with data, and the parent decides what to do with it. This keeps authority over state in the parent where it can coordinate multiple children.',
             codeExample: 'function Button({ children, onClick }) {\n  return (\n    <button className="btn" onClick={onClick}>\n      {children}\n    </button>\n  )\n}',
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '📦',
+              title: 'Step 2 — Props: the package delivery system',
+              text: [
+                'A warehouse ships packages. Each package has a label (prop name) and contents (prop value). The recipient unpacks what they need.',
+                'Props are inputs: `<UserCard name=\'Alice\' age={30} />`. Destructure in function: `function UserCard({ name, age }) {}`. Any JS value is valid as a prop.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -8667,7 +9802,14 @@ for (let i = 0; i < 5; i++) {
             text: 'You build complex UIs by nesting components. Each component can contain other components — forming a tree.',
             expandedText: 'The **`children` prop** is a special prop that React automatically populates with whatever JSX is placed between a component opening and closing tags. It is the mechanism behind every wrapper component: `<Card>`, `<Modal>`, `<Layout>`, and `<ErrorBoundary>` all use `children` to render content they know nothing about. This is sometimes called the **composition pattern** and is preferred over configuration props like `content={...}` for complex nested content.\n\nThe `children` prop has type `React.ReactNode`, which accepts JSX, strings, numbers, arrays, and `null`. You can render children anywhere inside the parent JSX, render them multiple times, or even inspect them with `React.Children.map`. A component that accepts `children` is open for extension without modification — you can pass anything to it without changing the component itself.',
             codeExample: 'function App() {\n  return (\n    <Card>\n      <h2>Title</h2>\n      <Button onClick={save}>Save</Button>\n    </Card>\n  )\n}',
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🪆',
+              title: 'Step 3 — children prop: the Russian doll',
+              text: [
+                'A large Russian doll holds smaller dolls inside. The outer doll does not know what dolls are inside — they were put there by the parent.',
+                '\'children\' is a special prop: `<Modal><p>Content here</p></Modal>`. Inside Modal: `function Modal({ children }) { return <div>{children}</div> }`.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -8676,7 +9818,14 @@ for (let i = 0; i < 5; i++) {
             text: '`props` are arguments passed to components. They flow only from parent to child — never the other way.',
             expandedText: '**Composition** — assembling small components into larger ones — is how React applications scale. A `PageHeader` might compose a `Logo`, a `NavBar`, and a `UserMenu`. The `NavBar` composes a list of `NavLink` components. Each level knows about its immediate children but nothing about the wider tree. This mirrors how functions compose: each function does one thing and delegates the rest to the functions it calls.\n\nA practical rule: if you find yourself adding a new prop to a component to control a detail deep inside it, consider **lifting that detail to a child component** and passing it via `children` instead. A `<Button iconLeft={...} iconRight={...} loading={...}>` accumulates props for every possible variation; a `<Button><Spinner /> Save</Button>` is more flexible because the parent decides the content. Composition reduces the prop surface of each component and makes them easier to use in unforeseen contexts.',
             codeExample: '// Parent passes props:\n<Button color="blue" size="lg" onClick={handleClick}>\n  Submit\n</Button>\n\n// Child receives them:\nfunction Button({ color, size, onClick, children }) { ... }',
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '📋',
+              title: 'Step 4 — Default props: factory settings',
+              text: [
+                'A new phone has default settings out of the box. You only change the settings you care about.',
+                'Destructure with defaults: `function Button({ size = \'md\', variant = \'primary\' }) {}`. Or use `Button.defaultProps = {}` (legacy). TypeScript handles this with optional types.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -8685,7 +9834,14 @@ for (let i = 0; i < 5; i++) {
             text: 'React uses camelCase event props (`onClick`, `onChange`, `onSubmit`). You pass a function reference — not a call. React wraps the native event in a `SyntheticEvent` that works the same across all browsers.',
             expandedText: 'React uses **camelCase event prop names** — `onClick`, `onChange`, `onSubmit`, `onKeyDown` — because JSX compiles to JavaScript objects, and HTML attribute names with hyphens would be invalid JavaScript property names. The event handler receives a **synthetic event** that wraps the native browser event, normalizing differences across browsers. You can access the native event via `event.nativeEvent` if needed, but the synthetic event covers almost every use case.\n\nA common pattern is to define the handler as a named function inside the component rather than an inline arrow function, especially when the handler is reused or complex. Inline arrow functions in JSX create a new function reference on every render, which can cause unnecessary re-renders in child components that use `React.memo`. For simple one-liner handlers the performance difference is negligible, but establishing the named-function habit produces more readable code in large components.',
             codeExample: `function Form() {\n  function handleSubmit(e) {\n    e.preventDefault()   // stop page reload\n    console.log('submitted')\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <input onChange={e => console.log(e.target.value)} />\n      <button onClick={() => alert('clicked!')}>Send</button>\n    </form>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🗺️',
+              title: 'Step 5 — Conditional rendering: the conditional signpost',
+              text: [
+                'A signpost only shows arrows for roads that exist. A road to nowhere has no arrow.',
+                '\'condition && <Component />\' renders only if truthy. Ternary: `active ? <On /> : <Off />`. Avoid returning `false` — return `null` for nothing.',
+              ],
+            },
           },
           {
             animationStep: 6,
@@ -8694,7 +9850,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Use plain JavaScript inside `JSX` to conditionally show UI. Ternary for either/or, `&&` for show-or-nothing, early return for complex branches.',
             expandedText: '**Conditional rendering** in JSX is done with JavaScript expressions rather than template directives. The short-circuit operator `condition && <Component />` renders the component when the condition is truthy — but beware: if `condition` is `0`, React renders the number `0` in the DOM rather than nothing. Use `!!count && <Component />` or a ternary to avoid this common pitfall.\n\nThe **ternary operator** `condition ? <A /> : <B />` is the idiomatic way to choose between two alternatives. For more than two branches, extract the logic into a variable before the return or into a helper function. Deeply nested ternaries in JSX are hard to read and should be refactored. The pattern `const content = isLoading ? <Spinner /> : isError ? <Error /> : <Data />` defined above the return statement is much clearer than the same logic inlined in JSX.',
             codeExample: `function Status({ isLoggedIn, isLoading }) {\n  if (isLoading) return <Spinner />          // early return\n\n  return (\n    <div>\n      {isLoggedIn ? <Dashboard /> : <Login />}  {/* ternary */}\n      {isLoggedIn && <Logout />}               {/* && */}\n    </div>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📃',
+              title: 'Step 6 — Lists: the restaurant menu',
+              text: [
+                'A restaurant prints one menu entry per dish in the kitchen\'s dish list.',
+                'Map an array to JSX: `items.map(item => <li key={item.id}>{item.name}</li>)`. Each element must have a unique `key` prop for reconciliation.',
+              ],
+            },
           },
           {
             animationStep: 7,
@@ -8703,7 +9866,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Use `.map()` to turn an array into `JSX` elements. Every sibling in a list needs a stable `key` prop — React uses it to track which items changed. Use a unique ID from your data, never the array index.',
             expandedText: 'Rendering a list in JSX uses `Array.prototype.map` to transform a data array into an array of JSX elements. The **`key` prop** is required on each element and must be stable and unique within the list — React uses it to identify which items have changed, been added, or been removed between renders. Without keys, React re-renders the entire list on every change; with stable keys, it updates only the changed items.\n\nUsing the array index as a key is acceptable only for **static lists that never reorder or filter**. If items can be reordered or deleted, index keys cause bugs: React maps the key `0` to whatever element is first in the new array, not the original first item, causing stale state and incorrect animations. Always use a stable identifier from your data — a database ID, a slug, or a UUID — as the key value.',
             codeExample: `const products = [\n  { id: 1, name: 'Keyboard', price: 79 },\n  { id: 2, name: 'Mouse',    price: 39 },\n]\n\nfunction ProductList() {\n  return (\n    <ul>\n      {products.map(p => (\n        <li key={p.id}>               {/* stable ID as key */}\n          {p.name} — €{p.price}\n        </li>\n      ))}\n    </ul>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🔑',
+              title: 'Step 7 — key prop: the unique order number',
+              text: [
+                'A kitchen has order numbers on each ticket. The waiter matches the finished dish to the correct table by ticket number.',
+                '\'key\' tells React which list item corresponds to which DOM node when the list changes. Use a stable unique ID — never use array index in dynamic lists.',
+              ],
+            },
           },
         ],
       },
@@ -8801,7 +9971,14 @@ for (let i = 0; i < 5; i++) {
             text: 'State is data that can change over time and causes the component to re-render when it does. Props come from outside; state lives inside.',
             expandedText: '**`useState`** is the fundamental hook for managing local component state. Without it, variables declared inside a function component reset to their initial value on every render because React calls the function fresh each time. `useState` stores the value in a slot that persists between renders, and the **setter function** triggers a re-render with the new value.\n\nThe setter does not merge objects like the old `this.setState` did — it **replaces** the entire value. This means `setState("hello")` replaces whatever was there before. For object state you must spread the existing object: `setState(prev => ({ ...prev, name: "Alice" }))`. The **functional update form** `setState(prev => ...)` is important whenever the new state depends on the old state, particularly inside `useEffect`, event handlers shared between renders, or any async code where the closure might capture a stale value.',
             codeExample: '// Without state, UI is static:\nfunction Counter() {\n  let count = 0  // this never updates the UI\n  return <div>{count}</div>\n}',
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '💾',
+              title: 'Step 0 — What is state: the whiteboard in the room',
+              text: [
+                'A classroom whiteboard shows the current lesson content. Change the board and every student immediately sees the new content.',
+                'State is data that changes over time, owned by a component. When state changes, React re-renders the component and its children.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -8810,7 +9987,14 @@ for (let i = 0; i < 5; i++) {
             text: '`useState` is a Hook that returns the current value and a setter function. React tracks the value between renders.',
             expandedText: 'The **destructuring syntax** `const [count, setCount] = useState(0)` unpacks the tuple that `useState` returns: `[currentValue, setter]`. Naming the setter `set` plus the variable name is a strong convention. The tuple structure means you can rename both values freely, which enables multiple independent state variables with clean names: `const [name, setName] = useState("")` and `const [age, setAge] = useState(0)` in the same component.\n\nThe **initial value** passed to `useState` is used only on the **first render** — React ignores it on subsequent renders. If computing the initial value is expensive (reading from `localStorage`, parsing JSON), pass a **lazy initializer function** instead: `useState(() => JSON.parse(localStorage.getItem("prefs") ?? "{}"))`. React calls the function only once, avoiding the expensive computation on every render.',
             codeExample: 'import { useState } from "react"\n\nfunction Counter() {\n  const [count, setCount] = useState(0)\n  //     value   setter   initial value\n}',
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🕹️',
+              title: 'Step 1 — useState: the counter button',
+              text: [
+                'A click counter on a conference badge: press a button, number increments, badge displays the new count.',
+                '\'const [count, setCount] = useState(0)\'. `count` reads the value. `setCount(count + 1)` schedules a re-render with the new value.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -8819,7 +10003,14 @@ for (let i = 0; i < 5; i++) {
             text: 'When you call `setCount`, React schedules a re-render. The component function runs again with the new state value.',
             expandedText: 'React **batches multiple `setState` calls** from the same event handler into a single re-render. If you call `setCount(c + 1)` three times in one click handler, the component re-renders once with the count incremented by one — not three times. This is because each call reads from the same stale `c` value captured in the closure. The fix is the **functional update form**: `setCount(c => c + 1)` three times produces three increments because each call receives the most recently queued value.\n\nAs of React 18, batching also applies to `setState` calls inside `setTimeout`, `Promise.then`, and native event handlers — previously only React synthetic event handlers were batched. This automatic batching is one of the most impactful performance improvements in React 18. If you ever need to force a synchronous re-render, `ReactDOM.flushSync(() => setState(...))` opts out of batching, but this should be rare.',
             codeExample: 'function Counter() {\n  const [count, setCount] = useState(0)\n  return (\n    <button onClick={() => setCount(count + 1)}>\n      Clicked {count} times\n    </button>\n  )\n}',
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '📸',
+              title: 'Step 2 — State as a snapshot: the frozen frame',
+              text: [
+                'A movie is made of individual frames. Each frame is a snapshot — it does not change after it is captured.',
+                'Each render captures a snapshot of state. Calling `setCount` inside an event handler uses the count from that render, not a live reference.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -8828,7 +10019,14 @@ for (let i = 0; i < 5; i++) {
             text: 'If you render two `<Counter />` components, each has its own independent count. State is not shared unless you lift it up.',
             expandedText: 'The **functional update form** `setState(prev => computeNew(prev))` guarantees that the function always receives the **latest queued state**, not the value captured by the enclosing closure. This matters most in `useEffect` with stale dependencies, in `setTimeout` callbacks, and in event handlers attached to DOM elements outside React control. The direct form `setState(count + 1)` inside a loop or async function can silently discard updates because all iterations close over the same `count`.\n\nA classic bug: calling `setCount(count + 1)` inside a `setInterval` captures `count` at the time the interval is created. One second later `count` is still 0 in the closure, so every tick sets count to 1. The fix is `setCount(c => c + 1)` — this always increments whatever the current value is, independent of when the interval was created. Any time state depends on its previous value, the functional form is the correct choice.',
             codeExample: 'function App() {\n  return (\n    <>\n      <Counter /> {/* count: 0 */}\n      <Counter /> {/* count: 0, independent */}\n    </>\n  )\n}',
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '📬',
+              title: 'Step 3 — Batched updates: the grouped mail delivery',
+              text: [
+                'A postman batches letters for the same address and delivers them in one trip.',
+                'React batches multiple `setState` calls in one event handler into one re-render. This is automatic in React 18+ for all async code too.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -8837,7 +10035,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Hooks must always be called at the top level of a component — never inside conditions, loops, or nested functions.',
             expandedText: '**Derived state** is a value that can be computed from existing state or props and therefore does not need its own `useState`. If you store `firstName`, `lastName`, and `fullName` all as state, you must remember to update `fullName` every time either name changes. If you derive `fullName = firstName + " " + lastName` inline during render, it is always correct by construction — there is no synchronisation step to forget.\n\nA rule of thumb for deciding whether to add a state variable: can this value be computed from other state or props? If yes, do not store it — compute it. The **minimum necessary state** principle keeps components simple. Common candidates for elimination: formatted dates derived from a timestamp, filtered arrays derived from a full array plus a search string, and totals derived from a list of items. Only reach for `useMemo` if the derivation is genuinely expensive and you have measured the performance impact.',
             codeExample: '// ✅ Correct:\nfunction MyComp() {\n  const [a, setA] = useState(0)\n  const [b, setB] = useState("")\n}\n\n// ❌ Wrong:\nfunction MyComp() {\n  if (condition) {\n    const [a, setA] = useState(0)  // error!\n  }\n}',
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '⬆️',
+              title: 'Step 4 — Lifting state: the shared scoreboard',
+              text: [
+                'Two players\' scores displayed on one shared scoreboard. Neither player owns the board — the referee does.',
+                'When siblings need shared data, lift state to their common parent and pass down via props. The parent owns the data; children receive it.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -8846,7 +10051,14 @@ for (let i = 0; i < 5; i++) {
             text: 'When the new state depends on the previous value, pass a function to the setter instead of a value. React calls it with the most recent state — even if multiple updates were batched. Use `prev =>` to always read the latest value.',
             expandedText: 'The **functional update pattern** is especially important when multiple state updates are triggered from the same async function. In a handler that calls `setCount(count + 1)` twice, both calls read the same `count` from the closure and schedule the same update — the result is an increment of one, not two. Using `setCount(c => c + 1)` twice correctly produces an increment of two because the second call receives the result of the first.\n\nFor complex state with multiple sub-values that update together, consider switching from `useState` to `useReducer`. A reducer centralises all update logic in one function and makes the relationship between actions and state changes explicit. The reducer must be a **pure function** — no side effects, same inputs always produce same outputs — which also makes it trivially testable outside of React.',
             codeExample: `// ❌ Unreliable when batched:\nsetCount(count + 1)\nsetCount(count + 1)  // both read the same stale 'count'\n\n// ✅ Always correct:\nsetCount(prev => prev + 1)\nsetCount(prev => prev + 1)  // each sees the latest value\n\n// Common use-cases:\nsetItems(prev => [...prev, newItem])          // add to array\nsetItems(prev => prev.filter(i => i.id !== id)) // remove`,
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🏗️',
+              title: 'Step 5 — Derived state: the calculated column',
+              text: [
+                'A spreadsheet calculates a Total column from Quantity and Price — you do not store Total separately.',
+                'Do not duplicate state. Compute derived values during render: `const total = items.reduce((s, i) => s + i.price, 0)`. Storing derivable data leads to sync bugs.',
+              ],
+            },
           },
           {
             animationStep: 6,
@@ -8855,7 +10067,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Never mutate state directly — React won\'t detect the change. Always create a new object or array using spread. For objects: spread and override. For arrays: use `.map()`, `.filter()`, or spread.',
             expandedText: 'React will not detect changes to **mutated objects or arrays** because mutation keeps the same reference. `state.items.push(newItem)` followed by `setState(state)` passes the same array reference, so React sees that nothing changed and skips the re-render. The fix is to always create a **new reference**: `setState({ ...state, items: [...state.items, newItem] })` creates a new array and a new object, which triggers the re-render.\n\nThis immutability requirement is intentional. It enables React to compare previous and next state with a cheap reference equality check (`===`) rather than a deep comparison. Libraries like **Immer** make immutable updates ergonomic by letting you write mutating code in a `produce()` callback that Immer converts to an immutable update behind the scenes. Immer is included in Redux Toolkit and is also usable standalone with `useState`.',
             codeExample: `const [form, setForm] = useState({ name: '', email: '' })\n\n// ✅ Spread creates a new object:\nsetForm(prev => ({ ...prev, email: e.target.value }))\n\n// ❌ Direct mutation — React ignores this:\nform.email = e.target.value  // never!\n\n// Controlled input wired to object state:\n<input\n  value={form.email}\n  onChange={e => setForm(prev => ({ ...prev, email: e.target.value }))}\n/>`,
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🔄',
+              title: 'Step 6 — useReducer: the state machine',
+              text: [
+                'A traffic light has states: red → green → yellow → red. Actions trigger transitions. The current state plus action determines next state.',
+                '\'useReducer(reducer, initial)\' is better for complex state. The reducer is a pure function: `(state, action) => newState`.',
+              ],
+            },
           },
           {
             animationStep: 7,
@@ -8864,7 +10083,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Siblings cannot share state directly. Lift state to their closest common parent. The parent owns the state and passes it down via `props` — along with the setter so children can trigger updates.',
             expandedText: '**Lifting state up** is the pattern for sharing state between sibling components. When two children need to read the same value, move the state to their closest common ancestor. The ancestor holds the state and passes it down as props. If a child needs to update the shared state, the ancestor passes the setter (or a callback) as a prop. This preserves the single-source-of-truth principle: the value lives in one place.\n\nLifting state is not free — every `setState` call on the ancestor re-renders the ancestor and all its children, not just the components that use the state. For widely-shared state that updates frequently, this can become a performance issue. **Context API** solves the transport problem (avoiding prop drilling) but does not help with re-renders. **Zustand** or **Jotai** provide atom-based state outside the component tree, enabling components to subscribe to only the slice of state they care about.',
             codeExample: `// Parent owns the state:\nfunction App() {\n  const [theme, setTheme] = useState('light')\n  return (\n    <>\n      <Toggle theme={theme} onToggle={() =>\n        setTheme(t => t === 'light' ? 'dark' : 'light')\n      } />\n      <Page theme={theme} />   {/* receives value */}\n      <Footer theme={theme} /> {/* receives value */}\n    </>\n  )\n}`,
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🌐',
+              title: 'Step 7 — Context: the broadcast station',
+              text: [
+                'A radio station broadcasts on one frequency. Every radio in range tuned to that station receives the signal — no direct cable needed.',
+                'React Context broadcasts state down the tree without prop drilling. Provider wraps the tree; any child calls `useContext(MyContext)` to tune in.',
+              ],
+            },
           },
         ],
       },
@@ -8961,7 +10187,14 @@ for (let i = 0; i < 5; i++) {
             text: 'A side effect is any work that affects something outside the component: network requests, timers, DOM manipulation. `useEffect` runs these after the render.',
             expandedText: '**`useEffect`** is the hook for synchronising a React component with an external system — the network, the DOM, a timer, a WebSocket, or any other side effect. React keeps the render function pure: it describes the UI given the current state. Everything that reaches outside the component — reading from a server, writing to the DOM, subscribing to events — belongs in a `useEffect`. Placing side effects directly in the render function causes them to run on every keystroke and concurrent render, leading to bugs and performance issues.\n\nThe hook runs **after the browser has painted** the screen, not synchronously like `componentDidMount`. This means the user sees the initial render before the effect fires, which is good for perceived performance. If an effect needs to run before the paint (for example, to measure a DOM element to avoid a visual flash), use `useLayoutEffect` instead — it fires synchronously after DOM mutations but before the browser paints.',
             codeExample: 'useEffect(() => {\n  // runs after every render by default\n  document.title = `Count: ${count}`\n})',
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '📡',
+              title: 'Step 0 — What is useEffect: the side channel',
+              text: [
+                'A main assembly line produces the product. A side channel takes samples, runs tests, and logs results — separate from the main process.',
+                'useEffect runs code after render without blocking it. It is the hook for side effects: API calls, subscriptions, DOM mutations, timers.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -8970,7 +10203,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Passing an empty array `[]` as the second argument tells React to run the effect only once — when the component first mounts.',
             expandedText: 'The **dependency array** is the second argument to `useEffect` and controls when the effect re-runs. An **empty array `[]`** means the effect runs once after the first render — equivalent to `componentDidMount` plus `componentWillUnmount`. A **non-empty array** like `[userId]` means re-run whenever `userId` changes. **No second argument** means re-run on every render, which is almost never what you want.\n\nEvery variable from the component scope that the effect uses must appear in the dependency array. Omitting a dependency causes a **stale closure bug**: the effect sees the old value from when it was last created. The ESLint rule `react-hooks/exhaustive-deps` enforces this automatically and should never be disabled. If adding a dependency causes an infinite loop, the underlying cause is usually a missing `useCallback` or `useMemo` to stabilise a reference.',
             codeExample: 'useEffect(() => {\n  fetch("/api/users")\n    .then(r => r.json())\n    .then(setUsers)\n}, [])  // [] = run once on mount',
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🔭',
+              title: 'Step 1 — Dependency array: the trigger list',
+              text: [
+                'A sensor alarm only fires when the sensors it monitors change state. Empty list = arm once; specific sensors = fire on their change.',
+                '\'useEffect(fn, [dep])\' runs after the first render and whenever `dep` changes. `[]` runs once on mount. No array means run after every render.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -8979,7 +10219,14 @@ for (let i = 0; i < 5; i++) {
             text: 'List the values the effect depends on. React re-runs the effect whenever any of those values change.',
             expandedText: 'The **cleanup function** is returned from the effect and runs before the next execution of the effect and when the component unmounts. Without cleanup, a component that subscribes to a WebSocket and then unmounts leaves an active subscription sending state updates to a dead component — React will warn about calling `setState` on an unmounted component and the subscription leaks memory. Always clean up subscriptions, event listeners, and intervals.\n\nFor **fetch requests**, the cleanup should abort the in-flight request when the dependency changes before the request resolves. The `AbortController` API is the standard tool: create a controller inside the effect, pass `{ signal: controller.signal }` to `fetch`, and call `controller.abort()` in the cleanup. Without this, a component that fetches based on a search query will show results from whichever query resolves last — which may not be the most recent one typed.',
             codeExample: 'useEffect(() => {\n  fetch(`/api/users/${userId}`)\n    .then(r => r.json())\n    .then(setUser)\n}, [userId])  // re-runs when userId changes',
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🚿',
+              title: 'Step 2 — Cleanup function: the drain',
+              text: [
+                'After filling a bathtub, you open the drain before filling it again. Without draining, water overflows.',
+                'Return a function from useEffect to clean up: cancel subscriptions, clear timers. React calls it before the next effect runs and on unmount.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -8988,7 +10235,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Return a function from `useEffect` to clean up before the next run or on unmount. Essential for `setInterval`/`clearInterval`, subscriptions, and event listeners.',
             expandedText: '**Data fetching inside `useEffect`** is a common pattern but has well-known limitations. The effect fires after the first render, so there is always a render with no data before the fetch completes — you must handle the `undefined` or `null` initial state explicitly. The pattern requires three state variables: `data`, `loading`, and `error`. Forgetting to handle the error state results in silent failures; forgetting to handle loading results in UI flashes.\n\nFor anything beyond a simple one-off fetch, reach for a data-fetching library like **TanStack Query** or **SWR**. They handle caching, deduplication, background refetching, and error retries automatically — problems that are non-trivial to solve correctly with raw `useEffect`. In **Next.js** with Server Components, many use cases for `useEffect` data fetching disappear entirely because you can `await` data directly in the server-rendered component.',
             codeExample: 'useEffect(() => {\n  const timer = setInterval(tick, 1000)\n  return () => {\n    clearInterval(timer)  // cleanup!\n  }\n}, [])',
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '📬',
+              title: 'Step 3 — Fetching data: the delivery request',
+              text: [
+                'Placing an online order: send the request, wait, receive the package when ready, display it.',
+                '\'useEffect(() => { fetch(url).then(r => r.json()).then(setData) }, [url])\'. Each time URL changes, a new fetch fires. Cancel stale requests with AbortController.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -8997,7 +10251,14 @@ for (let i = 0; i < 5; i++) {
             text: '`useEffect` is for anything that needs to happen outside the render cycle: data fetching, subscriptions, DOM manipulation, analytics.',
             expandedText: 'A **stale closure** occurs when the effect captures a value from a previous render and uses it even after the value has changed. Because JavaScript closures close over the variables in scope at the time of creation, an effect created when `count` was 0 will always see `count` as 0 unless `count` is in the dependency array and the effect is recreated. This is the most common and confusing `useEffect` bug.\n\nThe **exhaustive-deps** ESLint rule surfaces stale closures at development time by requiring every variable used inside the effect to appear in the dependency array. When you feel tempted to suppress the warning, it usually means one of three things: the dependency should be memoised with `useCallback` or `useMemo`, the logic should be restructured to avoid the dependency, or you genuinely need a ref (`useRef`) to access the latest value without triggering re-runs.',
             codeExample: '// Data fetching\nuseEffect(() => { fetch(url).then(...) }, [url])\n\n// Event listener\nuseEffect(() => {\n  window.addEventListener("resize", handler)\n  return () => window.removeEventListener("resize", handler)\n}, [])',
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '📻',
+              title: 'Step 4 — Event subscriptions: tuning in',
+              text: [
+                'Tuning a radio: subscribe to a station on mount, change station when a setting changes, unsubscribe when the radio turns off.',
+                '\'window.addEventListener(\'resize\', handler)\' in useEffect. Return `() => window.removeEventListener(\'resize\', handler)` to clean up on unmount.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -9006,7 +10267,14 @@ for (let i = 0; i < 5; i++) {
             text: 'When fetching inside `useEffect`, a fast second request can resolve before a slow first one — causing stale data to win. Fix it: set an `ignore` flag in the cleanup function so only the latest request updates state.',
             expandedText: 'The **race condition** in async effects occurs when two requests are in flight simultaneously — triggered by a dependency changing before the first request resolves — and the first request resolves after the second. The UI ends up showing stale data. The classic fix is a **cleanup flag**: declare `let cancelled = false` inside the effect, check `if (!cancelled)` before calling `setState`, and set `cancelled = true` in the cleanup.\n\nAn alternative and more robust approach is to use `AbortController` to cancel the in-flight HTTP request itself rather than just ignoring the response. This also frees server resources and avoids unnecessary JSON parsing. Combine the two techniques for maximum correctness: abort the request AND guard state updates. Libraries like TanStack Query implement both automatically, which is another reason to prefer them over manual `useEffect` for data fetching.',
             codeExample: `useEffect(() => {\n  let ignore = false          // reset each time effect runs\n\n  async function fetchUser() {\n    const res = await fetch(\`/api/users/\${userId}\`)\n    const data = await res.json()\n    if (!ignore) setUser(data) // skip if already cleaned up\n  }\n\n  fetchUser()\n  return () => { ignore = true } // cleanup: ignore stale response\n}, [userId])`,
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🔄',
+              title: 'Step 5 — Effect timing: after the paint',
+              text: [
+                'A painter finishes the wall (render), then the client inspects it (useEffect). The inspection does not block the painting.',
+                'useEffect fires after the browser paints. Use `useLayoutEffect` if you need to measure the DOM before the paint — e.g., for tooltip positioning.',
+              ],
+            },
           },
           {
             animationStep: 6,
@@ -9015,7 +10283,14 @@ for (let i = 0; i < 5; i++) {
             text: '`useEffect` is for syncing with external systems. Avoid it for: (1) derived values — compute them during render instead; (2) event-triggered side effects — put them in the handler; (3) chained state updates — they cause double renders.',
             expandedText: '**When not to use `useEffect`** is as important as knowing when to use it. React documentation explicitly lists cases where `useEffect` is the wrong tool: transforming data for rendering (compute during render or use `useMemo`), handling user events (use event handlers, not effects), synchronising to another React state variable (derive it during render), and fetching data on mount (use a router loader or server component instead).\n\nA warning sign that `useEffect` is being misused: an effect that watches a state variable and immediately calls `setState` to update a different variable. This creates a **double render** — the component renders with the old derived value, the effect fires, sets the new value, and the component renders again. The correct fix is to compute the derived value directly during render. `useEffect` is for **external synchronisation**, not internal state transformations.',
             codeExample: `// ❌ Don't use useEffect to derive values:\nuseEffect(() => {\n  setFullName(firstName + ' ' + lastName)\n}, [firstName, lastName])\n\n// ✅ Just compute during render:\nconst fullName = firstName + ' ' + lastName\n\n// ❌ Don't use useEffect for event side effects:\nuseEffect(() => { sendAnalytics(page) }, [page])\n\n// ✅ Put it in the event handler:\nfunction handleNavClick() {\n  navigate(page)\n  sendAnalytics(page)  // side effect belongs here\n}`,
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🚦',
+              title: 'Step 6 — Common pitfalls: the infinite loop trap',
+              text: [
+                'A thermostat that increases the temperature every time it detects a temperature change would run forever.',
+                'Adding state setters to `useEffect` without proper deps causes infinite loops. Always ask: what change should trigger this effect? Put only those deps in the array.',
+              ],
+            },
           },
         ],
       },
@@ -9112,7 +10387,14 @@ for (let i = 0; i < 5; i++) {
             text: 'An interface defines a contract: any object assigned that type must have exactly those properties with those types. It documents intent and lets TypeScript enforce it.',
             expandedText: 'An **interface** in TypeScript is a named description of an object shape: it lists property names and their required types. Any value assigned to that interface type must have at least those properties. TypeScript uses **structural typing** — it checks the shape, not the class hierarchy.\n\nInterfaces exist only at compile time. The compiled JavaScript contains no trace of them. They are pure documentation enforced by the compiler: you tell TypeScript what shape an object should have, and it rejects any code that violates that contract.',
             codeExample: 'interface Point {\n  x: number\n  y: number\n}\n\nconst p: Point = { x: 3, y: 7 }',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '📋',
+              title: 'Step 0 — Interface as contract: the job description',
+              text: [
+                'A job description: 5 years experience (required), driving licence (optional). Any candidate matching qualifies.',
+                'An interface describes required shape. `interface Product { id: number; name: string }`. Structural typing — the name does not matter, the shape does.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -9121,7 +10403,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Mark a property with `?` to make it optional. Mark it with `readonly` to prevent mutation after creation.',
             expandedText: '**Optional properties** (`?`) allow a property to be absent or `undefined`. TypeScript will not complain if the property is missing, but it will complain if you try to use it without checking for `undefined` first. This matches the real-world pattern of objects with optional fields like `middleName` or `phoneNumber`.\n\n**Readonly** properties can only be set during object creation. Any later attempt to reassign them is a compile-time error. This is weaker than `Object.freeze()` (which is runtime) but much cheaper — TypeScript readonly is a design-time guard that communicates intent and catches accidental mutations in your code.',
             codeExample: 'interface Config {\n  host: string\n  port?: number      // optional\n  readonly id: string // immutable\n}',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🔒',
+              title: 'Step 1 — Optional and readonly: the immutable fields',
+              text: [
+                'A form with pre-filled locked fields (readonly) and optional fields you can skip.',
+                'Optional `?` means the property may be absent. `readonly` means it cannot be reassigned after construction.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -9130,7 +10419,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Use `extends` to build on an existing interface. The child interface inherits all parent properties and adds its own.',
             expandedText: 'Interface **extension** is how TypeScript models hierarchies. `interface Dog extends Animal` means Dog has all of Animal required properties plus its own. You can extend multiple interfaces at once: `interface C extends A, B`. This is the primary mechanism for building layered type hierarchies.\n\n`extends` on interfaces is purely additive — the child interface cannot remove or narrow properties from the parent. If you need to modify an inherited property type, use intersection types (`A & { prop: narrower }`) or a separate type alias instead.',
             codeExample: 'interface Animal {\n  name: string\n}\n\ninterface Dog extends Animal {\n  breed: string\n}\n// Dog has: name + breed',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🧬',
+              title: 'Step 2 — Extending interfaces: the upgraded job description',
+              text: [
+                'A senior engineer role inherits all engineer requirements and adds new ones.',
+                '`interface AdminUser extends User { adminLevel: number }` inherits all User properties and adds more.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -9139,7 +10435,14 @@ for (let i = 0; i < 5; i++) {
             text: 'A class can `implement` an interface, promising to provide all the required properties and methods. TypeScript errors if anything is missing.',
             expandedText: 'When a class declares `implements AnInterface`, TypeScript verifies that it provides every property and method the interface requires — with compatible types. If anything is missing or has the wrong signature, the compiler errors immediately.\n\n`implements` is a **compile-time contract only** — it produces no JavaScript output. Unlike `extends` (inheritance), `implements` does not give the class any implementation from the interface. The class must still write its own method bodies. This makes interfaces ideal for defining contracts between modules without coupling them to a shared base class.',
             codeExample: 'interface Greetable {\n  greet(): string\n}\n\nclass Person implements Greetable {\n  greet(): string {\n    return "hello"\n  }\n}',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🤝',
+              title: 'Step 3 — Implements: the signed contract',
+              text: [
+                'Signing a contract commits you to fulfil all listed obligations. Miss one and the contract is invalid.',
+                'A class that `implements` an interface must provide all required properties and methods. Missing items cause a compile-time error.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -9148,7 +10451,14 @@ for (let i = 0; i < 5; i++) {
             text: 'When you don\'t know all property names up front, use an index signature (`[key: string]: T`) to allow any string key with a specific value type.',
             expandedText: 'An **index signature** `[key: string]: T` tells TypeScript that an object may have any number of string-keyed properties, all with the same value type `T`. This models dictionaries, lookup tables, and configuration maps.\n\nIndex signatures interact with explicit properties: if you declare `[key: string]: number`, then every named property must also be `number`. If you want both `string` and `number` values, use `[key: string]: string | number`. Prefer `Record<string, T>` (a utility type) over raw index signatures in most cases — it reads more clearly.',
             codeExample: 'interface Dict {\n  [key: string]: number\n}\n\nconst scores: Dict = {\n  alice: 95,\n  bob: 82,\n}',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '📖',
+              title: 'Step 4 — Index signatures: the open-ended dictionary',
+              text: [
+                'A dictionary that lets you look up any word and always returns a definition.',
+                'Index signatures type objects with dynamic keys: `interface StringMap { [key: string]: string }`. Any string key is valid and returns a string.',
+              ],
+            },
           },
         ],
       },
@@ -9247,7 +10557,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Without generics you need a separate function for each type — firstNumber, firstString, firstBoolean. This violates DRY.',
             expandedText: 'Without generics you have two options: write a separate function for each type (repetitive and hard to maintain) or use `any` (which loses all type information). Neither is satisfactory for reusable utilities.\n\nThe symptom is usually copy-paste: `firstNumber`, `firstString`, `firstBoolean` — identical logic with only the type annotation changed. Generics solve this by parameterising the type itself, so one well-typed function works for all types while still giving callers accurate types.',
             codeExample: 'function firstNum(arr: number[]): number {\n  return arr[0]\n}\n// Need a SECOND function for strings...',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '📦',
+              title: 'Step 0 — Rigid types: a box that only fits one size',
+              text: [
+                'A box labelled only for apples. You need a separate box for oranges and another for bananas.',
+                'Without generics: `function wrapString(x: string)` only works for strings. You need `wrapNumber`, `wrapBoolean` etc. Rigid types force duplication.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -9256,7 +10573,14 @@ for (let i = 0; i < 5; i++) {
             text: 'A type parameter `<T>` is a placeholder that gets replaced with a real type at call time. One function works for all types.',
             expandedText: 'A **type parameter** `<T>` is a compile-time placeholder. When you call a generic function, TypeScript substitutes the actual type for `T` throughout the function signature. The return type `T` and the parameter type `T[]` stay in sync: if you pass `number[]`, the return is `number`.\n\nType parameters can have any name — `T`, `U`, `K`, `V` are conventional single letters. Multiple type parameters are separated by commas: `function zip<A, B>(a: A[], b: B[]): [A, B][]`. Each parameter is independent and inferred separately from the arguments.',
             codeExample: 'function first<T>(arr: T[]): T {\n  return arr[0]\n}',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🔧',
+              title: 'Step 1 — Generic functions: the adjustable container',
+              text: [
+                'An adjustable container that adapts to whatever you put in it. One container, works for any contents.',
+                '`function wrap<T>(x: T): { value: T }` — `T` is a type variable. Call `wrap(hello)` and T becomes `string`. One function, type-safe for everything.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -9265,7 +10589,14 @@ for (let i = 0; i < 5; i++) {
             text: 'You rarely need to write the type argument explicitly — TypeScript infers `T` from what you pass in.',
             expandedText: '**Type inference** is TypeScript deducing `T` from the arguments you pass. In `first([1, 2, 3])`, TypeScript sees an array of `number` and concludes `T = number`, making the return type `number`. You never write `first<number>([1, 2, 3])` — the inference is automatic.\n\nExplicit type arguments are only needed when inference is ambiguous or when you want to assert a specific type: `useState<User | null>(null)` — here `null` alone cannot tell TypeScript you want `User | null`, so the explicit generic is necessary. In most other cases, let TypeScript infer.',
             codeExample: 'first([1, 2, 3])    // T = number → 1\nfirst(["a", "b"])  // T = string → "a"\nfirst([true])      // T = boolean → true',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🕵️',
+              title: 'Step 2 — Type inference: the detective deduces T',
+              text: [
+                'A detective who does not need to be told the suspect name — the evidence makes it obvious.',
+                'TypeScript infers the generic type from the argument. `wrap(hello)` — TypeScript concludes `T = string` without you writing it.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -9274,7 +10605,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Interfaces can also have type parameters. The type is specified when you use the interface.',
             expandedText: '**Generic interfaces** parameterise the shape of the object rather than a function. `interface Box<T> { value: T }` creates a family of types: `Box<number>`, `Box<string>`, `Box<User[]>`. The type argument is supplied at use time.\n\nGeneric interfaces are the foundation of the TypeScript standard library: `Array<T>`, `Promise<T>`, `Map<K, V>`, `Set<T>`, `Record<K, V>`. Building your own generic interfaces for API responses (`ApiResponse<T>`), paginated lists (`Page<T>`), and event payloads keeps your codebase consistent and reduces duplicated type definitions.',
             codeExample: 'interface Box<T> {\n  value: T\n  label: string\n}\n\nconst n: Box<number> = { value: 42, label: "age" }',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '📋',
+              title: 'Step 3 — Generic interfaces: the universal form template',
+              text: [
+                'A form template that can be filled with employee or customer data. Same structure, different data type.',
+                '\'interface ApiResponse<T> { data: T; status: number }\' — use as `ApiResponse<User>` or `ApiResponse<Product[]>`. Structure stays the same; payload type changes.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -9283,7 +10621,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Use `extends` to restrict what types `T` can be. This lets you safely access properties that are guaranteed to exist.',
             expandedText: 'A **constraint** (`<T extends SomeType>`) limits which types can be substituted for `T`. Without a constraint, TypeScript assumes `T` can be anything — so you cannot safely access any property on it. Adding `extends { length: number }` tells TypeScript that `T` is guaranteed to have a `.length` property, making `val.length` type-safe.\n\n`extends keyof T` is a particularly powerful constraint: `<T, K extends keyof T>` means "K must be one of T property names." This is how `getProperty<T, K extends keyof T>(obj: T, key: K): T[K]` achieves typed property access — eliminating `any` in generic lookup utilities.',
             codeExample: 'function getLength<T extends { length: number }>(val: T): number {\n  return val.length\n}\n\ngetLength("hello")   // 5\ngetLength([1,2,3])   // 3',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '⛓️',
+              title: 'Step 4 — Constraints: the spanner with a minimum jaw',
+              text: [
+                'The adjustable spanner works on bolts but has a minimum jaw — it will not fit tiny watch screws.',
+                '`function getLength<T extends { length: number }>(x: T)` — T must have a length property. Strings and arrays work; numbers are rejected.',
+              ],
+            },
           },
         ],
       },
@@ -9380,7 +10725,14 @@ for (let i = 0; i < 5; i++) {
             text: 'TypeScript narrows types inside conditional blocks. After a `typeof` check, the type is refined automatically.',
             expandedText: '**Type narrowing** is TypeScript ability to refine a broad union type to a specific type inside a conditional branch. After a `typeof val === "string"` check, TypeScript knows `val` is `string` in the true branch and narrows `number | boolean` in the false branch. This happens automatically — no cast needed.\n\n`typeof` works for primitives (`string`, `number`, `boolean`, `bigint`, `symbol`, `undefined`). `instanceof` works for class instances (`err instanceof Error`). Both are **type guards**: runtime checks that TypeScript understands and uses to update its internal type model.',
             codeExample: 'function format(val: string | number) {\n  if (typeof val === "string") {\n    return val.toUpperCase() // string here\n  }\n  return val.toFixed(2)    // number here\n}',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🔍',
+              title: 'Step 0 — typeof and instanceof: checking the label',
+              text: [
+                'Before using an unknown container, you check the label (typeof) or recognise the bottle shape (instanceof).',
+                '\'typeof x === string\' narrows `string | number` to `string` inside the block. `instanceof Date` narrows to `Date`.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -9388,7 +10740,14 @@ for (let i = 0; i < 5; i++) {
             text: 'A discriminated union uses a shared literal property to distinguish between types. TypeScript narrows based on that field.',
             expandedText: 'A **discriminated union** is a union of object types that share one literal-typed property — the discriminant. Each member has a different literal value for that property. TypeScript uses the discriminant check to narrow the union to the specific member inside the branch.\n\nThis pattern is the idiomatic TypeScript way to model state machines, action payloads (Redux), result types, and any situation with a fixed set of variants. A `switch (shape.kind)` over a discriminated union is both exhaustive (TypeScript catches missing cases) and precise (each case has the right narrowed type).',
             codeExample: 'type Shape =\n  | { kind: "circle"; radius: number }\n  | { kind: "rect"; width: number; height: number }\n\nfunction area(s: Shape) {\n  if (s.kind === "circle") return Math.PI * s.radius ** 2\n  return s.width * s.height\n}',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🏷️',
+              title: 'Step 1 — Discriminated unions: the shipping label',
+              text: [
+                'A parcel system handles letters, parcels, pallets. The handler reads the type label first.',
+                'Add a literal `type` field to each variant. Switch on `type` and TypeScript knows exactly which variant is active in each case.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -9396,7 +10755,14 @@ for (let i = 0; i < 5; i++) {
             text: 'A type predicate function (`x is T`) tells TypeScript the exact narrowed type when the function returns true.',
             expandedText: 'A **type predicate** is a function whose return type is `param is Type`. When the function returns `true`, TypeScript narrows `param` to `Type` at the call site. This is how you encapsulate a reusable runtime check and give it a TypeScript type signature.\n\nType predicates are essential when the narrowing logic is complex enough to deserve its own function — checking multiple properties, validating array shapes, or distinguishing between two interfaces. The function must actually perform a correct runtime check; TypeScript trusts the predicate and will not verify its logic.',
             codeExample: 'function isString(val: unknown): val is string {\n  return typeof val === "string"\n}\n\nif (isString(input)) {\n  console.log(input.length) // string here\n}',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🔬',
+              title: 'Step 2 — Custom type guards: the expert test',
+              text: [
+                'A sommelier tastes a wine and declares this is a Pinot Noir. The declaration narrows what was unknown.',
+                '\'function isUser(x: unknown): x is User\' — the `x is User` return type is a type predicate. When it returns true, TypeScript narrows x to User.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -9405,7 +10771,14 @@ for (let i = 0; i < 5; i++) {
             text: 'TypeScript narrows the type when you compare with === or !==. When both sides are checked for equality, TypeScript eliminates impossible types.',
             expandedText: '**Equality narrowing** occurs when TypeScript sees a strict equality check (`===` or `!==`) between two values. If one side is a literal type, TypeScript removes impossible types from the union on both branches. This works for `null`, `undefined`, and string/number literals.\n\nEquality narrowing composes naturally with discriminated unions: `if (x.kind === "circle")` narrows the union to just the `circle` variant. It also works to rule out `null`: `if (x !== null)` makes `x` non-nullable inside the block. Prefer `===` over `==` to avoid JavaScript loose equality coercions.',
             codeExample: 'function padLeft(value: string, padding: string | number) {\n  if (padding === 0) {\n    return value  // padding is 0 here, not just number\n  }\n  if (typeof padding === "number") {\n    return " ".repeat(padding) + value\n  }\n  return padding + value  // string here\n}',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🟰',
+              title: 'Step 3 — Equality narrowing: the matching name tags',
+              text: [
+                'Two people both claim to be Alex. When their IDs both say Alex Johnson, you know they are the same person.',
+                '\'if (x === admin)\' narrows x from `string` to the literal `admin`. TypeScript tracks what values are possible after each equality check.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -9414,7 +10787,14 @@ for (let i = 0; i < 5; i++) {
             text: 'The in operator checks whether a property exists on an object. TypeScript narrows the type based on which branch is entered — useful for discriminating between types that share some but not all properties.',
             expandedText: 'The **`in` operator** checks whether a property exists on an object at runtime. TypeScript uses this to narrow between union members that have different sets of properties. `if ("drive" in vehicle)` narrows `vehicle` to the type that has a `drive` property.\n\nThis is particularly useful when you cannot add a discriminant property to existing types, or when dealing with optional properties. `"drive" in vehicle` is true even if `drive` is `undefined` — it only checks existence. For robust narrowing across module boundaries, prefer a discriminant property over `in` checks when you control the types.',
             codeExample: 'type Car  = { drive(): void; fuel: string }\ntype Boat = { sail(): void; fuel: string }\n\nfunction move(vehicle: Car | Boat) {\n  if ("drive" in vehicle) {\n    vehicle.drive()  // TypeScript knows it is Car here\n  } else {\n    vehicle.sail()   // Boat here\n  }\n}',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🗝️',
+              title: 'Step 4 — in operator: checking the key ring',
+              text: [
+                'To know if someone has office access, check if they have an office key on their key ring.',
+                '\'if (email in user)\' narrows between object shapes. The `in` operator is perfect when there is no explicit type field.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -9423,7 +10803,14 @@ for (let i = 0; i < 5; i++) {
             text: 'A user-defined type guard is a function whose return type is a type predicate (`param is Type`). When it returns true, TypeScript narrows the argument to that type everywhere the guard is used.',
             expandedText: 'A **user-defined type guard** (type predicate function) is the most powerful narrowing tool. The return type annotation `pet is Fish` tells TypeScript: "if this function returns true, treat the argument as `Fish` everywhere after the call." TypeScript takes this on faith — it does not analyse the function body for correctness.\n\nThis places responsibility on the developer: the predicate **must** actually verify the runtime type correctly. A predicate that always returns `true` or performs an incorrect check will narrow to the wrong type silently. Test type guard functions carefully and keep them simple — the more complex the check, the more likely a bug will go unnoticed.',
             codeExample: 'type Fish = { swim(): void }\ntype Bird = { fly(): void }\n\nfunction isFish(pet: Fish | Bird): pet is Fish {\n  return (pet as Fish).swim !== undefined\n}\n\nconst pet: Fish | Bird = getRandomPet()\nif (isFish(pet)) {\n  pet.swim()  // TypeScript knows pet is Fish\n} else {\n  pet.fly()   // Bird here\n}',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🎯',
+              title: 'Step 5 — Type predicates: the certified inspector',
+              text: [
+                'A building inspector certifies a structure as safe. Their certification changes what actions are allowed.',
+                'Returning `value is SomeType` from a function makes it an official type predicate. TypeScript guarantees the type inside any `if (isPremiumUser(u))` block.',
+              ],
+            },
           },
         ],
       },
@@ -9516,7 +10903,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Partial<T> makes all properties optional. Required<T> makes all properties required. Both derive a new type from an existing interface.',
             expandedText: '**`Partial<T>`** transforms every property in `T` to optional, enabling you to represent partial updates without defining a separate draft interface. This is the correct type for `PATCH` request bodies and form state objects that may be partially filled.\n\n**`Required<T>`** is the inverse: it removes the `?` from every property. Use it when you receive a `Partial` value and have filled in all defaults, producing a fully-populated object. Both are **mapped types** under the hood — they iterate over all keys of `T` and transform each one.',
             codeExample: 'interface User { id: number; name: string; email: string }\n\ntype UserDraft = Partial<User>\n// { id?: number; name?: string; email?: string }\n\ntype StrictUser = Required<UserDraft>\n// { id: number; name: string; email: string }',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🛠️',
+              title: 'Step 0 — Partial and Required: draft vs final form',
+              text: [
+                'A draft form where all fields are optional. A final form where all are required. Same fields, different requirements.',
+                '\'Partial<User>\' makes every field optional — perfect for update payloads. `Required<User>` makes every field required. Transform types without rewriting.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -9524,7 +10918,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Pick<T, K> keeps only the listed keys. Omit<T, K> removes the listed keys. Both create a subset type.',
             expandedText: '**`Pick<T, K>`** creates a new type containing only the keys you list. It is the TypeScript equivalent of selecting specific columns in a SQL query — a focused view type with only what the consumer needs. Use it for view models, API response shapes, and component props derived from a larger entity type.\n\n**`Omit<T, K>`** does the opposite: it copies all properties from `T` except the listed keys. Use `Omit<User, "password">` for safe public-facing types, or `Omit<User, "id" | "createdAt">` for creation payloads where the database generates those fields.',
             codeExample: 'type UserPreview = Pick<User, "id" | "name">\n// { id: number; name: string }\n\ntype PublicUser = Omit<User, "email">\n// { id: number; name: string }',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '✂️',
+              title: 'Step 1 — Pick and Omit: the tailored extract',
+              text: [
+                'Pick fields you need from a report, or take the full report minus the sensitive parts.',
+                '\'Pick<User, id | email>\' creates a type with only those fields. `Omit<User, password>` excludes password. For API responses that should not expose internal fields.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -9532,7 +10933,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Record<K, V> creates an object type with keys K and values V. Readonly<T> prevents mutation. ReturnType<F> extracts a function\'s return type.',
             expandedText: '**`Record<K, V>`** builds an object type where every key is of type `K` and every value is of type `V`. It is the canonical way to type dictionaries and lookup tables: `Record<string, number>` is clearer than writing an index signature by hand.\n\n**`Readonly<T>`** marks all properties as `readonly`. **`ReturnType<F>`** extracts the return type of a function — useful when you want to type a variable that holds a function result without duplicating the type definition. Combine these utilities: `Readonly<Partial<User>>` builds a readonly update payload in one expression.',
             codeExample: 'type Scores = Record<string, number>\n// { [key: string]: number }\n\nconst config: Readonly<User> = { id: 1, name: "Alice", email: "a@b.com" }\n// config.id = 2 // Error: readonly\n\nfunction getUser() { return { id: 1, name: "Alice" } }\ntype User2 = ReturnType<typeof getUser>\n// { id: number; name: string }',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '📚',
+              title: 'Step 2 — Record Readonly and ReturnType: three more power tools',
+              text: [
+                'A catalogue (Record), a laminated document you cannot write on (Readonly), and a label saying this box contains whatever this machine produces (ReturnType).',
+                '\'Record<string, User>\' is a dictionary type. `Readonly<User>` prevents mutation. `ReturnType<typeof myFn>` extracts the function return type.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -9541,7 +10949,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Exclude<T, U> removes from T all types that are assignable to U. Extract<T, U> keeps only types assignable to U. NonNullable<T> removes null and undefined — useful for values that have been validated.',
             expandedText: '**`Exclude<T, U>`** filters a union `T` by removing any members that are assignable to `U`. **`Extract<T, U>`** keeps only the members assignable to `U`. These are complementary: one is a set difference, the other a set intersection, both operating on union types.\n\n**`NonNullable<T>`** is `Exclude<T, null | undefined>` — it removes the nullable members. Use it after a null check when you want TypeScript to reflect that a value has been validated. All three utilities are **distributive conditional types** under the hood, applying the condition to each member of the union independently.',
             codeExample: 'type Status = "draft" | "published" | "archived"\n\ntype Active   = Exclude<Status, "archived">\n// "draft" | "published"\n\ntype Pub      = Extract<Status, "published" | "removed">\n// "published"  (only shared with Status)\n\ntype ID = string | number | null | undefined\ntype ValidID = NonNullable<ID>\n// string | number',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🔍',
+              title: 'Step 3 — Exclude Extract NonNullable: set operations',
+              text: [
+                'Filter a list: keep only strings (Extract), remove strings (Exclude), remove empties (NonNullable).',
+                '\'Exclude<a | b | c, a>\' gives `b | c`. `Extract<string | number, string>` gives `string`. `NonNullable<string | null>` gives `string`.',
+              ],
+            },
           },
         ],
       },
@@ -9641,7 +11056,14 @@ for (let i = 0; i < 5; i++) {
             text: 'TypeScript allows you to specify that an array should only contain elements of a particular type. Use the T[] syntax or the generic Array<T> form — both are equivalent.',
             expandedText: '**Typed arrays** (`T[]` or `Array<T>`) tell TypeScript what kind of elements the array holds. TypeScript uses this to type the return values of array methods: `scores.map(s => s * 2)` returns `number[]` because `scores` is `number[]`. The compiler catches errors like pushing a string into a number array.\n\nBoth syntaxes are equivalent. `T[]` is more concise and is preferred for simple types. `Array<T>` reads more clearly for nested or complex types like `Array<Record<string, number>>`. Use `readonly T[]` or `ReadonlyArray<T>` when the array should not be mutated after creation.',
             codeExample: 'const scores: number[] = [10, 20, 30]\nconst names: string[] = ["Alice", "Bob"]\nconst flags: Array<boolean> = [true, false]\n\n// TypeScript enforces the element type:\nscores.push(40)    // OK\nscores.push("oops") // Error: string not assignable to number',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '📋',
+              title: 'Step 0 — Typed arrays: the same kind of items',
+              text: [
+                'A box labelled only apples guarantees every item inside is an apple.',
+                '\'string[]\' or `Array<string>` constrains every element to string. TypeScript catches `numbers.push(hello)` at compile time.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -9650,7 +11072,14 @@ for (let i = 0; i < 5; i++) {
             text: 'You can type arrays of custom object shapes. TypeScript checks each element against the type, and gives you autocomplete for all properties when you iterate.',
             expandedText: 'Arrays of **object types** (`User[]`, `Product[]`) unlock powerful type inference through iteration. When you call `users.forEach(user => ...)`, TypeScript knows `user` is a `User` inside the callback — full autocomplete for all properties, and errors on misspelled property names.\n\nThis also applies to `map`, `filter`, `find`, and `reduce`. `users.filter(u => u.active)` returns `User[]`. `users.find(u => u.id === id)` returns `User | undefined`. TypeScript preserves the element type through method chains, giving you type safety at every step without manual annotations.',
             codeExample: 'type User = {\n  id: number\n  name: string\n}\n\nconst users: User[] = [\n  { id: 1, name: "Alice" },\n  { id: 2, name: "Bob" },\n]\n\nusers.forEach(user => {\n  console.log(user.name.toUpperCase())  // autocomplete works!\n})',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '👤',
+              title: 'Step 1 — Arrays of objects: the typed roster',
+              text: [
+                'A class roster where every row must have a name, age, and student ID.',
+                '\'const users: User[]\' — every element must match the User interface. TypeScript catches structural mismatches.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -9659,7 +11088,14 @@ for (let i = 0; i < 5; i++) {
             text: 'A tuple is a typed array with a fixed number of elements where each position has its own type. Tuples are useful for positional data like coordinates, key-value pairs, or function return values.',
             expandedText: 'A **tuple** is a typed array with a fixed number of elements where each position has its own specific type. TypeScript enforces both the length and the per-position type: `const p: [number, string] = [42, "hello"]` — position 0 is always `number`, position 1 is always `string`.\n\nTuples are ideal for function return values that bundle related data without creating a full named object. They enable clean destructuring: `const [lat, lng] = getCoordinates()`. React `useState` returns `[T, Dispatch<SetStateAction<T>>]` — a tuple where each position has a different type.',
             codeExample: 'type Coordinate = [number, number]\n\nconst point: Coordinate = [10, 20]\n\n// Each position is separately typed:\nconst x = point[0]  // number\nconst y = point[1]  // number\n\n// Destructuring works naturally:\nconst [lat, lng] = point',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🎫',
+              title: 'Step 2 — Tuples: the numbered ticket',
+              text: [
+                'A numbered ticket stub: slot 0 is always the seat number, slot 1 is always the row letter. Fixed positions, fixed types.',
+                'A tuple `[number, string]` types a fixed-length array with specific types per position. TypeScript rejects wrong order or extra elements.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -9668,7 +11104,14 @@ for (let i = 0; i < 5; i++) {
             text: 'TypeScript supports labeled tuple elements for better readability. Labels do not change the type — they only appear in editor tooltips — but they make the intent much clearer than unnamed positional slots.',
             expandedText: '**Labeled tuple elements** (TypeScript 4.0+) add names to each position without changing the underlying type. The labels appear in editor tooltips and improve readability, especially for tuples with multiple elements of the same type.\n\nLabels do not affect assignability or runtime behaviour — `[start: number, end: number]` is identical to `[number, number]` at the type level. They are purely for documentation. Functions that return tuples benefit most: `function minMax(arr: number[]): [min: number, max: number]` makes the return value immediately self-explanatory at every call site.',
             codeExample: 'type Range = [start: number, end: number]\ntype KeyValue = [key: string, value: unknown]\n\nfunction getRange(): Range {\n  return [0, 100]\n}\n\nconst [start, end] = getRange()\nconsole.log(start, end)  // 0, 100\n\n// React useState is implemented as a tuple:\nconst [count, setCount] = useState(0)',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🏷️',
+              title: 'Step 3 — Labeled tuples: the named fields',
+              text: [
+                'A form with field labels: Seat: 14, Row: B. Labels make values self-documenting.',
+                '\'[seat: number, row: string]\' labels each tuple position. IDEs show labels in autocomplete, making the API self-documenting.',
+              ],
+            },
           },
         ],
       },
@@ -9766,7 +11209,14 @@ for (let i = 0; i < 5; i++) {
             text: 'TypeScript classes work like JavaScript classes but with type annotations. Declare property types at the top of the class body before the constructor. TypeScript enforces that the constructor initializes every non-optional property.',
             expandedText: 'TypeScript **classes** add type declarations to the properties of a JavaScript class. You declare each property with its type before the constructor, and the constructor must assign all non-optional non-readonly properties or TypeScript will error.\n\nThe type annotations on class properties serve two purposes: they document the class schema, and they let TypeScript verify every method that reads or writes those properties. Method return types are inferred when not annotated, but explicit return type annotations are recommended for public methods — they act as a contract that the method must honour.',
             codeExample: 'class Animal {\n  name: string\n  age: number\n\n  constructor(name: string, age: number) {\n    this.name = name\n    this.age = age\n  }\n\n  speak(): string {\n    return `${this.name} says hello`\n  }\n}\n\nconst dog = new Animal("Rex", 3)\nconsole.log(dog.speak())  // Rex says hello',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🏭',
+              title: 'Step 0 — Typed classes: the blueprint with specifications',
+              text: [
+                'A factory blueprint specifies every part: motor type, conveyor belt speed, on/off switch. Every machine built from it must have all parts.',
+                'TypeScript classes combine OOP with type safety. Properties are declared with types: `class Counter { count: number = 0 }`. The compiler verifies everything.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -9775,7 +11225,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Mark a property readonly to prevent mutation after construction. Mark it optional with ? when it may not always be provided. TypeScript checks both at compile time.',
             expandedText: '**`readonly`** properties can be assigned exactly once — in the constructor. Any attempt to reassign them later is a compile-time error. This models immutable identifiers like database IDs or creation timestamps: the value is set at construction time and never changes.\n\n**Optional properties** (`?`) on classes work just like on interfaces: the property may be `undefined`. When reading an optional property, TypeScript forces you to handle the `undefined` case (with optional chaining `?.` or a null check) before calling methods on it, preventing runtime errors.',
             codeExample: 'class User {\n  readonly id: number      // set once, never changed\n  name: string\n  email?: string           // may be absent\n\n  constructor(id: number, name: string, email?: string) {\n    this.id   = id\n    this.name = name\n    this.email = email\n  }\n}\n\nconst user = new User(1, "Alice")\n// user.id = 2  // Error: cannot assign to readonly property',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '📌',
+              title: 'Step 1 — Readonly and optional: fixed plate and optional accessory',
+              text: [
+                'A machine serial number (readonly — stamped at manufacture) and an optional dust cover (may or may not be fitted).',
+                '\'readonly id: number\' cannot be reassigned after construction. `name?: string` is optional — the class works without it.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -9784,7 +11241,14 @@ for (let i = 0; i < 5; i++) {
             text: 'TypeScript adds three access modifiers: public (default — accessible everywhere), private (only within the class), and protected (within the class and subclasses). The # prefix is JavaScript\'s native private field — enforced at runtime, not just compile time.',
             expandedText: '**Access modifiers** control where a property or method can be referenced. `public` (the default) means accessible from anywhere. `private` means only within the class body — TypeScript will error at any external access. `protected` is like `private` but accessible in subclasses too, making it suitable for properties that subclasses need but callers should not use directly.\n\nNote: TypeScript `private` keyword is a **compile-time restriction only**. At runtime, the property is still accessible. For true runtime privacy, use JavaScript `#field` syntax — these are enforced by the JavaScript engine itself and inaccessible even with bracket notation.',
             codeExample: 'class BankAccount {\n  public  owner: string        // accessible anywhere\n  private balance: number      // compile-time private\n  #secret: string              // runtime-enforced private\n\n  constructor(owner: string, balance: number) {\n    this.owner   = owner\n    this.balance = balance\n    this.#secret = "shh"\n  }\n\n  deposit(amount: number) {\n    this.balance += amount     // OK — same class\n  }\n}\n\nconst acc = new BankAccount("Alice", 1000)\n// acc.balance   // Error: private\n// acc.#secret   // Error: private field',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🔐',
+              title: 'Step 2 — Access modifiers: the HR policy',
+              text: [
+                'Public employees visible in the directory. Private salary in HR only. Protected data accessible to managers and HR but not public.',
+                '\'public\' — accessible everywhere. `private` — only inside the class body. `protected` — inside class and subclasses. Compile-time enforcement.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -9793,7 +11257,14 @@ for (let i = 0; i < 5; i++) {
             text: 'A class can extend another class to inherit its public and protected members. The subclass must call super() before accessing this. Override methods to provide specialized behavior. Use protected members when subclasses need access but the outside world should not.',
             expandedText: 'Class **inheritance** via `extends` lets a subclass inherit all `public` and `protected` members of the parent class. The subclass constructor must call `super()` before accessing `this` — TypeScript errors if you forget. Override methods to provide specialised behaviour for the subclass while sharing the common interface.\n\n`protected` members are the communication channel between a base class and its subclasses. Make a member `protected` when subclasses need it but external callers should not access it directly. The combination of `protected` properties and `public` methods is a classic encapsulation pattern: hide the state, expose controlled behaviour.',
             codeExample: 'class Animal {\n  protected name: string\n\n  constructor(name: string) {\n    this.name = name\n  }\n\n  move(): string {\n    return `${this.name} moves`\n  }\n}\n\nclass Dog extends Animal {\n  breed: string\n\n  constructor(name: string, breed: string) {\n    super(name)         // required before this\n    this.breed = breed\n  }\n\n  bark(): string {\n    return `${this.name} barks!`  // protected — accessible in subclass\n  }\n}',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🧬',
+              title: 'Step 3 — Inheritance: the family tree',
+              text: [
+                'A child inherits the family surname and adds their own personality. A specialised version of the parent.',
+                '\'class AdminUser extends User\' inherits all User properties and methods. `super()` calls the parent constructor. TypeScript checks override signatures.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -9802,7 +11273,14 @@ for (let i = 0; i < 5; i++) {
             text: 'An abstract class cannot be instantiated directly — it exists to be extended. Abstract methods have no implementation in the base class; every concrete subclass must implement them. Use abstract classes when you want a shared base with a required contract.',
             expandedText: 'An **abstract class** is a template that cannot be instantiated directly — it exists only to be extended. Abstract methods declare a signature without an implementation; every concrete subclass must provide its own. This enforces a contract: all subclasses are guaranteed to have the required methods, making them interchangeable through the base class type.\n\nAbstract classes shine when you have shared behaviour (concrete methods) alongside required but variable behaviour (abstract methods). A `Shape` base class can implement a `describe()` method using `area()`, while each concrete shape (`Circle`, `Rectangle`) provides its own `area()`. Polymorphism then lets you call `shape.describe()` on any Shape without knowing the concrete type.',
             codeExample: 'abstract class Shape {\n  abstract area(): number      // no body — must be implemented\n\n  describe(): string {         // concrete method — inherited as-is\n    return `Area: ${this.area().toFixed(2)}`\n  }\n}\n\nclass Circle extends Shape {\n  constructor(private radius: number) { super() }\n\n  area(): number {\n    return Math.PI * this.radius ** 2\n  }\n}\n\nclass Rectangle extends Shape {\n  constructor(private w: number, private h: number) { super() }\n\n  area(): number { return this.w * this.h }\n}\n\n// new Shape()  // Error: cannot create abstract class',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🎭',
+              title: 'Step 4 — Abstract classes: the role template',
+              text: [
+                'A theatre role description: this character must enter, deliver a monologue, and exit. Each actor implements it differently.',
+                'Abstract classes cannot be instantiated. `abstract class Shape { abstract area(): number }` requires every subclass to implement `area()`.',
+              ],
+            },
           },
         ],
       },
@@ -9901,7 +11379,14 @@ for (let i = 0; i < 5; i++) {
             text: 'An enum declares a set of named constants. By default, values are auto-incremented numbers starting at 0. You can override the start value or set explicit values for any member.',
             expandedText: 'A TypeScript **enum** compiles to a real JavaScript object. For numeric enums, the object has both forward (`Direction.Up === 0`) and reverse mappings (`Direction[0] === "Up"`). This two-way mapping is unique to numeric enums and can cause surprises if you pass the numeric value where the enum type is expected.\n\nEnum members auto-increment from `0` by default. You can override the start: `enum Status { Active = 1, Inactive, Archived }` gives values 1, 2, 3. You can also set each member explicitly — useful for HTTP status codes or error codes that have meaningful numeric values.',
             codeExample: 'enum Direction {\n  Up,    // 0\n  Down,  // 1\n  Left,  // 2\n  Right, // 3\n}\n\nconst move = Direction.Up\nconsole.log(move)          // 0\nconsole.log(Direction[0])  // "Up" (reverse lookup)',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🔢',
+              title: 'Step 0 — Numeric enums: the status codes',
+              text: [
+                'A hospital triage system: 1=critical, 2=urgent, 3=standard. Compact but requires memorisation.',
+                '\'enum Status { Active, Inactive, Pending }\' auto-assigns 0, 1, 2. Numeric enums compile to a bidirectional mapping.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -9910,7 +11395,14 @@ for (let i = 0; i < 5; i++) {
             text: 'String enums require explicit string values for every member. They are more readable in logs and debugging because the value itself is meaningful — unlike numeric enums where you only see a number.',
             expandedText: '**String enums** require an explicit string value for every member. Unlike numeric enums, they do not produce a reverse mapping — `Status["active"]` does not exist. The value itself is meaningful: logs, API payloads, and databases show `"published"` rather than `1`.\n\nString enums are safer than numeric enums in practice: passing `1` to a function expecting `Direction` is a valid number but semantically wrong. A function expecting `Status` will only accept `Status.Draft`, `Status.Published`, or `Status.Archived` — not arbitrary strings. This makes them the preferred choice for roles, statuses, and configuration constants.',
             codeExample: 'enum Status {\n  Draft     = "draft",\n  Published = "published",\n  Archived  = "archived",\n}\n\nfunction getLabel(status: Status): string {\n  return status.charAt(0).toUpperCase() + status.slice(1)\n}\n\nconsole.log(getLabel(Status.Published))  // "Published"',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🔤',
+              title: 'Step 1 — String enums: self-documenting codes',
+              text: [
+                'Labels on buttons: START, STOP, PAUSE. No memorisation needed — the label tells you what it does.',
+                '\'enum Direction { Up = UP, Down = DOWN }\' — the value equals a readable string. Self-documenting in logs and debuggers. The recommended choice.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -9919,7 +11411,14 @@ for (let i = 0; i < 5; i++) {
             text: 'When every enum value is handled in a switch, TypeScript knows the default branch is unreachable. Assigning to never in the default catches missing cases at compile time — if you add a new enum member later, TypeScript errors immediately.',
             expandedText: 'The **`never` trick** for exhaustive switches is one of the most powerful TypeScript patterns. After handling every enum case, the `default` branch assigns the switch expression to `never`. Since `never` accepts no values, TypeScript errors if any case is missing — the error message tells you exactly which member was not handled.\n\nThis pattern pays dividends when you add a new enum member: every switch statement in the codebase that is missing a case will fail to compile. You cannot accidentally ship code that silently ignores a new variant. Pair this with `const enum` for zero-runtime-cost compile-time constants.',
             codeExample: 'enum Color { Red, Green, Blue }\n\nfunction paint(color: Color): string {\n  switch (color) {\n    case Color.Red:   return "#ff0000"\n    case Color.Green: return "#00ff00"\n    case Color.Blue:  return "#0000ff"\n    default: {\n      const _exhaustive: never = color\n      // Add Color.Purple and this line will error!\n      throw new Error(`Unhandled color: ${color}`)\n    }\n  }\n}',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🔍',
+              title: 'Step 2 — Exhaustive switch with never: covering all cases',
+              text: [
+                'A checklist confirming every type of mail was processed. If a new type is added, the checklist fails.',
+                'Adding `default: const _: never = x` means if we reach here, we missed a variant. When a new enum value is added, the compiler errors.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -9928,7 +11427,14 @@ for (let i = 0; i < 5; i++) {
             text: 'String enums are well-suited for roles, statuses, and configuration constants that appear in logs, APIs, and databases — the string value is self-documenting.',
             expandedText: 'String enums used for **RBAC roles** are an excellent fit because the string value appears in API requests, database records, and logs — all of which benefit from human-readable values rather than opaque numbers. Passing `Role.Admin` to a function expecting `Role` gives TypeScript enough information to catch accidental string literals at compile time.\n\nA common modern alternative to enums is a `const` object with `as const`: `const Role = { Admin: "admin", User: "user" } as const`. This avoids enum compilation quirks and works identically in plain JavaScript. The trade-off is that `Role` is an object, not a type — you need `type Role = typeof Role[keyof typeof Role]` to get the union type.',
             codeExample: 'enum Role {\n  Admin   = "admin",\n  Editor  = "editor",\n  Viewer  = "viewer",\n}\n\nfunction canEdit(role: Role): boolean {\n  return role === Role.Admin || role === Role.Editor\n}\n\ncanEdit(Role.Admin)   // true\ncanEdit(Role.Viewer)  // false\n// canEdit("admin")   // Error: string not assignable to Role',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🛡️',
+              title: 'Step 3 — Enums for RBAC: the role hierarchy',
+              text: [
+                'An office where different badge colours open different doors: red opens all (Admin), blue opens most (Manager), grey opens the lobby (User).',
+                '\'enum Role { User = USER, Manager = MANAGER, Admin = ADMIN }\' makes roles explicit and prevents typos like admine.',
+              ],
+            },
           },
         ],
       },
@@ -10024,7 +11530,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Type assertion tells TypeScript "trust me, I know the type better than you do." Use the `as` keyword (not angle brackets — they conflict with JSX). The assertion only affects the compiler, never the runtime value.',
             expandedText: '**Type assertion** (`as`) overrides TypeScript inferred type without any runtime check or conversion. It is a compile-time instruction: "treat this value as `HTMLInputElement`." If you are wrong, TypeScript will not catch it — the error will surface at runtime.\n\nUse `as` when TypeScript cannot infer a specific enough type from context, and you are confident about the actual type. DOM queries (`document.getElementById`) return `HTMLElement | null` because TypeScript cannot know which element type is in the HTML. Asserting `as HTMLInputElement` unlocks `.value` and `.checked` properties.',
             codeExample: 'const input = document.getElementById("search")\n// TypeScript: HTMLElement | null\n\n// Assert the specific element type:\nconst searchInput = input as HTMLInputElement\nsearchInput.value  // now accessible — no error\n\n// Old angle-bracket syntax (avoid in .tsx files):\nconst old = <HTMLInputElement>input  // same effect, conflicts with JSX',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🎭',
+              title: 'Step 0 — as keyword: telling the detective what to look for',
+              text: [
+                'A detective briefed: treat this as a murder case, not an accident. The briefing narrows how they interpret the evidence.',
+                '\'const input = document.getElementById(email) as HTMLInputElement\' — you tell TypeScript what specific type this is. Use only when you know more than the compiler.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -10033,7 +11546,14 @@ for (let i = 0; i < 5; i++) {
             text: 'When you parse JSON or receive data from an API, TypeScript infers the type as `any` or `unknown`. Asserting a specific type immediately after parsing gives you full type safety downstream — but you are responsible for the correctness of the assertion.',
             expandedText: '`fetch` and `JSON.parse` return `any` or `unknown`. Asserting a type with `as User` immediately after parsing makes the rest of the code type-safe. This is a **promise to the compiler**: you are claiming the runtime value matches the type. If the API changes shape, your assertion is stale and runtime errors can follow.\n\nThe safer alternative is a **runtime type guard** (or a library like Zod): validate the data before asserting. `if (isUser(data)) { /* data is User here */ }` is better than `data as User`. Use assertions for data you genuinely control (your own API with a fixed schema) and guards for third-party or user-supplied data.',
             codeExample: 'type User = { id: number; name: string; email: string }\n\nasync function fetchUser(id: number): Promise<User> {\n  const res  = await fetch(`/api/users/${id}`)\n  const data = await res.json()  // type: any\n  return data as User            // assert the shape\n}\n\n// Better: validate with a type guard before asserting\nfunction isUser(val: unknown): val is User {\n  return typeof val === "object" && val !== null && "id" in val\n}',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '📡',
+              title: 'Step 1 — API responses: the untrusted package',
+              text: [
+                'A package arrives from an unknown sender. The label says machine parts but you cannot be certain until you open it.',
+                '\'JSON.parse(response)\' returns `any`. Cast with `as User` to get type safety. For true safety, validate with Zod — `as` alone is an assertion, not a guarantee.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -10042,7 +11562,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Type assertion cannot convert completely incompatible types — you can only assert to a type that TypeScript considers overlapping. The non-null assertion operator `!` asserts that a value is neither `null` nor `undefined`. Use it sparingly: if the value really can be null at runtime, the assertion will not protect you.',
             expandedText: 'TypeScript only allows assertions to a **related type** — one that overlaps structurally with the inferred type. You cannot assert `number as string` because they are completely unrelated. The workaround is a **double assertion** through `unknown`: `number as unknown as string`. This is always a design smell — if you need it, something is wrong with the types.\n\nThe **non-null assertion operator `!`** is a special assertion that strips `null | undefined` from a type. `document.getElementById("app")!` returns `HTMLElement` instead of `HTMLElement | null`. Use `!` only when you are certain the element exists — if it is missing at runtime, the next property access will throw a `TypeError`.',
             codeExample: '// Non-null assertion operator (!)\nconst canvas = document.getElementById("canvas")!\n// Type: HTMLElement (not HTMLElement | null)\n\n// Combine with as for specific element:\nconst ctx = (document.getElementById("canvas")! as HTMLCanvasElement)\n  .getContext("2d")\n\n// Incompatible assertion requires double assertion:\nconst num = "hello" as unknown as number  // dangerous!\n// Only use double assertion as a last resort',
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '⚠️',
+              title: 'Step 2 — Limitations: careful with assertions',
+              text: [
+                'Asserting a bridge is safe does not make it safe. The assertion bypasses the inspector check.',
+                '\'as\' bypasses type checks — use sparingly. Non-null assertion `!` guarantees something is not null. If you are wrong, you get a runtime error. Prefer narrowing.',
+              ],
+            },
           },
         ],
       },
@@ -10138,7 +11665,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Define a type alias for your component\'s props. TypeScript will error if required props are missing or have the wrong type. Mark optional props with ?. Use React.ReactNode for children. Union types constrain allowed values — great for status/variant props.',
             expandedText: '**Typed props** are the first and most valuable TypeScript feature in React. Defining a `type` for props turns every component into a self-documenting contract: calling the component without a required prop, or passing the wrong type, is a compile error — not a runtime warning or a confusing undefined.\n\nUse `React.ReactNode` for the `children` prop — it covers all valid JSX child types: JSX elements, strings, numbers, arrays, fragments, and `null`. Use **string literal unions** for variant props (`"primary" | "secondary"`) rather than plain `string` — this restricts the allowed values and enables autocomplete in JSX.',
             codeExample: `type GreetingProps = {\n  name: string\n  age?: number          // optional\n}\nconst Greeting = ({ name, age = 0 }: GreetingProps) => (\n  <h1>Hello {name}, age {age}</h1>\n)\n\n// Union types for variants:\ntype ButtonProps = {\n  label: string\n  variant: 'primary' | 'secondary' | 'danger'\n  children: React.ReactNode\n}\n\n// TypeScript errors if you pass the wrong type:\n<Greeting name={42} />  // Error: number not assignable to string\n<Button variant="ghost" /> // Error: not assignable to union`,
-            language: 'tsx',
+            language: 'tsx',            analogy: {
+              icon: '📋',
+              title: 'Step 0 — Typed props: the component contract',
+              text: [
+                'A component accepting a title (string, required), count (number, optional), and onClick handler is like a form specifying which fields are required.',
+                '\'interface ButtonProps { label: string; onClick: () => void }\' — TypeScript rejects `<Button onClick={42} />` at compile time.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -10147,7 +11681,14 @@ for (let i = 0; i < 5; i++) {
             text: 'useState accepts a generic: `useState<T>(initial)`. When initial state is `null` or `undefined`, TypeScript cannot infer the full type — always annotate explicitly. For complex objects, define a `type` alias and pass it as the generic. TypeScript then prevents you from setting state with the wrong shape.',
             expandedText: '**`useState<T>(initial)`** accepts an explicit generic when TypeScript cannot infer the full type from the initial value. The most common case: `useState<User | null>(null)` — `null` alone would infer `null`, losing the `User` part. With the generic, `setUser(someUser)` and `setUser(null)` are both valid; anything else is an error.\n\nFor complex state with multiple related fields, define a `type` alias and use it: `const [form, setForm] = useState<FormState>({ ... })`. This ensures every `setForm` call provides a conforming object. The type flows into the setter automatically — TypeScript checks every state update.',
             codeExample: `import { useState } from 'react'\n\ntype Post = { id: number; title: string; body: string }\n\nfunction Posts() {\n  // Generic prevents wrong-shape assignments:\n  const [posts, setPosts]   = useState<Post[]>([])\n  const [loading, setLoading] = useState(true)        // inferred: boolean\n  const [error, setError]   = useState<string | null>(null)\n\n  // TypeScript would catch this:\n  // setPosts('oops')  // Error: string not assignable to Post[]\n\n  if (loading) return <p>Loading…</p>\n  if (error)   return <p>Error: {error}</p>\n  return <ul>{posts.map(p => <li key={p.id}>{p.title}</li>)}</ul>\n}`,
-            language: 'tsx',
+            language: 'tsx',            analogy: {
+              icon: '🏷️',
+              title: 'Step 1 — Typed state: labelled containers',
+              text: [
+                'Each shelf labelled and sized for a specific item. You cannot accidentally put salt in the flour spot.',
+                '\'const [count, setCount] = useState<number>(0)\' — TypeScript infers type from initial value. Explicit annotation documents intent.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -10156,7 +11697,14 @@ for (let i = 0; i < 5; i++) {
             text: '`useRef` needs an explicit element type — TypeScript cannot guess whether it points to an input, a div, or a canvas. Pass the HTML element type as a generic and `null` as the initial value. `useReducer` benefits most from TypeScript: define `State` and a discriminated union for `Action`, and the exhaustive `default` branch catches missing cases at compile time.',
             expandedText: '`useRef<HTMLInputElement>(null)` must be typed with the HTML element type. TypeScript cannot infer it from the initial `null` value alone. The generic tells TypeScript that `ref.current` will eventually hold an `HTMLInputElement`, unlocking its specific properties like `.value`, `.focus()`, and `.select()`.\n\n`useReducer` with a **discriminated union** for `Action` is the most type-safe state management pattern in React. Each action case has its own payload shape. The exhaustive `default: const _: never = action` pattern makes adding a new action type a compile error everywhere the reducer is used — impossible to forget to handle it.',
             codeExample: `import { useRef, useReducer } from 'react'\n\n// useRef — always type the element:\nconst inputRef = useRef<HTMLInputElement>(null)\n<input ref={inputRef} />\ninputRef.current?.focus()  // safe optional chain\n\n// useReducer — discriminated union for actions:\ntype State  = { count: number }\ntype Action = { type: 'inc' } | { type: 'dec' } | { type: 'reset' }\n\nconst reducer = (state: State, action: Action): State => {\n  switch (action.type) {\n    case 'inc':   return { count: state.count + 1 }\n    case 'dec':   return { count: state.count - 1 }\n    case 'reset': return { count: 0 }\n    default: {\n      const _never: never = action  // compile error if a case is missing\n      throw new Error('unhandled action')\n    }\n  }\n}\n\nconst [state, dispatch] = useReducer(reducer, { count: 0 })`,
-            language: 'tsx',
+            language: 'tsx',            analogy: {
+              icon: '🔧',
+              title: 'Step 2 — useRef and useReducer: the typed tools',
+              text: [
+                'A typed tool belt: the wrench slot only accepts wrenches.',
+                '\'useRef<HTMLInputElement>(null)\' types the ref. `useReducer<Reducer<State, Action>>` checks every dispatched action matches the union.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -10165,7 +11713,14 @@ for (let i = 0; i < 5; i++) {
             text: '`useCallback` caches a function so its reference stays stable across renders — pass the typed function directly. `useMemo` caches a computed value and only recomputes when dependencies change. TypeScript infers the return type of `useMemo` from the callback. Both are most valuable when passed to child components via props or used as `useEffect` dependencies.',
             expandedText: '**`useCallback`** memoizes a function reference, preventing child components from re-rendering when the parent re-renders and the function is in their props. TypeScript infers the parameter and return types from the callback body, so you rarely need explicit annotations.\n\n**`useMemo`** memoizes a computed value. TypeScript infers the return type of `useMemo` from the callback. Both hooks accept a dependency array — TypeScript does not check this array; the `react-hooks/exhaustive-deps` ESLint rule does. Add that rule to your config to catch missing dependencies.',
             codeExample: `import { useCallback, useMemo, useState } from 'react'\n\nfunction Dashboard({ items }: { items: number[] }) {\n  const [multiplier, setMultiplier] = useState(2)\n\n  // useMemo — result type inferred as number[]\n  const doubled = useMemo(\n    () => items.map(n => n * multiplier),\n    [items, multiplier]\n  )\n\n  // useCallback — stable function reference, typed explicitly\n  const handleClick = useCallback(\n    (id: number): void => {\n      console.log('clicked', id)\n    },\n    []  // no deps → created once\n  )\n\n  return (\n    <ul>\n      {doubled.map((n, i) => (\n        <li key={i} onClick={() => handleClick(i)}>{n}</li>\n      ))}\n    </ul>\n  )\n}`,
-            language: 'tsx',
+            language: 'tsx',            analogy: {
+              icon: '🔁',
+              title: 'Step 3 — useCallback and useMemo: typed memoization',
+              text: [
+                'A library rare book catalogue: memoised, precisely labelled. You know exactly what type is in each slot.',
+                '\'useCallback<(id: number) => void>\' ensures the callback signature stays correct after refactoring.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -10174,7 +11729,14 @@ for (let i = 0; i < 5; i++) {
             text: 'Define a `type` for your API response and pass it as the generic to `useState` and fetch wrappers. A generic fetch utility `fetchData<T>()` fetches a URL and asserts the JSON matches `T` — giving you full type safety downstream. Use `Partial<T>` for PATCH operations where only some fields are sent.',
             expandedText: 'A **generic fetch utility** like `fetchData<T>(url)` is the cleanest way to add TypeScript to API calls. The caller specifies the expected type, and TypeScript propagates it through all downstream uses of the result. This is a convenient pattern but remember: the `as T` at the end is still an assertion — not a runtime check.\n\nFor production-grade safety, combine the generic utility with a **Zod schema**: validate the raw JSON before asserting the type. `const data = Schema.parse(raw)` will throw a `ZodError` with field-level details if the API shape differs from expectations. `Partial<T>` for PATCH payloads is idiomatic: the caller only sends changed fields, and TypeScript ensures each field has the correct type.',
             codeExample: `type User = {\n  id: number\n  name: string\n  email: string\n}\n\n// Generic fetch utility — reusable across any endpoint\nasync function fetchData<T>(url: string): Promise<T> {\n  const res = await fetch(url)\n  if (!res.ok) throw new Error('Fetch failed')\n  return res.json() as T\n}\n\n// Usage — TypeScript knows users is User[]\nconst users = await fetchData<User[]>('/api/users')\nconsole.log(users[0].name)  // autocomplete works!\n\n// Partial for PATCH — only send changed fields\nasync function updateUser(id: number, patch: Partial<User>) {\n  return fetchData<User>(\`/api/users/\${id}\`)\n}`,
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '📡',
+              title: 'Step 4 — Typed API responses: the verified delivery',
+              text: [
+                'A warehouse checking every incoming delivery against a manifest. Contents not matching the paperwork are flagged.',
+                'Typed API: `const data: ApiResponse<User[]> = await res.json()`. Combine with Zod for runtime safety.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -10183,7 +11745,14 @@ for (let i = 0; i < 5; i++) {
             text: 'React provides specific event handler types for each HTML element. Use `MouseEventHandler<Element>`, `ChangeEventHandler<Element>`, and `FormEventHandler<Element>` so TypeScript knows which properties are available on the event object.',
             expandedText: 'React typed event handlers (`MouseEventHandler<T>`, `ChangeEventHandler<T>`, `FormEventHandler<T>`) provide accurate types for the event object. The generic type parameter `T` is the element type — `ChangeEventHandler<HTMLInputElement>` gives you `e.target.value` as a `string` with full autocomplete.\n\nInlining the handler as an arrow function in JSX is usually enough: `<input onChange={e => setName(e.target.value)} />` — TypeScript infers the event type from the prop. Explicit handler types are most useful when the handler is defined outside JSX or passed around as a callback, where the event type would otherwise need an annotation.',
             codeExample: `import { MouseEventHandler, ChangeEventHandler, FormEventHandler } from 'react'\n\ntype ButtonProps = {\n  onClick: MouseEventHandler<HTMLButtonElement>\n}\n\nfunction SearchForm() {\n  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {\n    console.log(e.target.value)  // string — TypeScript knows the type\n  }\n\n  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {\n    e.preventDefault()           // FormEvent has preventDefault\n    const data = new FormData(e.currentTarget)\n    console.log(data.get('query'))\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <input name="query" onChange={handleChange} />\n      <button type="submit">Search</button>\n    </form>\n  )\n}`,
-            language: 'tsx',
+            language: 'tsx',            analogy: {
+              icon: '🖱️',
+              title: 'Step 5 — Typing DOM events: the right glove',
+              text: [
+                'Left gloves for left hands. Using the wrong event type is like putting a left glove on your right hand.',
+                '\'onChange: (e: React.ChangeEvent<HTMLInputElement>) => void\' — the event type includes the element type so you can access `e.target.value` safely.',
+              ],
+            },
           },
         ],
       },
@@ -10290,7 +11859,14 @@ const user = await res.json() as User  // ← no actual check!
 
 // If the API returns { id: "abc" } instead of { id: 42 },
 // TypeScript won't warn you — the bug surfaces at runtime.`,
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🕳️',
+              title: 'Step 0 — TypeScript blind spot: the unverified delivery',
+              text: [
+                'TypeScript checks code at compile time, but runtime data from APIs is untyped. A type declaration is a trust statement — not a guarantee.',
+                '\'const user = response.json() as User\' — TypeScript accepts this, but if the API sends wrong data you get a runtime error. TypeScript types vanish at runtime.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -10314,7 +11890,14 @@ const PostSchema = z.object({
   status: z.enum(['draft', 'published', 'archived']),
   tags:   z.array(z.string()),
 })`,
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🛡️',
+              title: 'Step 1 — Zod schemas: the customs declaration',
+              text: [
+                'At customs, every item is checked against the declaration form. Items that do not match are rejected at the border.',
+                '\'const UserSchema = z.object({ id: z.number(), email: z.string().email() })\' — validates at runtime. `UserSchema.parse(data)` throws if data does not match.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -10334,7 +11917,14 @@ if (!result.success) {
 
 // result.data is fully typed as User — safe to use
 console.log(result.data.name.toUpperCase())`,
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '✅',
+              title: 'Step 2 — safeParse: the customs officer who does not arrest you',
+              text: [
+                'A customs officer who hands you a detailed report instead of arresting you. You handle the issue gracefully.',
+                '\'UserSchema.safeParse(data)\' returns `{ success: true, data }` or `{ success: false, error }` — never throws. Use for user input where errors are expected.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -10359,7 +11949,14 @@ async function fetchUser(id: number): Promise<User> {
   const raw = await fetch(\`/api/users/\${id}\`).then(r => r.json())
   return UserSchema.parse(raw)  // throws if invalid
 }`,
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🔗',
+              title: 'Step 3 — z.infer: one source of truth',
+              text: [
+                'A factory where the blueprint IS the specification and the quality checklist. Change the blueprint and both update.',
+                '\'type User = z.infer<typeof UserSchema>\' — one definition, two uses: runtime validation AND compile-time types. Change the schema and the type updates automatically.',
+              ],
+            },
           },
         ],
       },
@@ -10487,7 +12084,14 @@ function validate(data: unknown) {
             text: 'Traditional websites load a new HTML page on every navigation. React Router intercepts the URL change and swaps components instead — no full page reload.',
             expandedText: '**Client-side routing** works by intercepting URL changes and re-rendering the component tree without a round-trip to the server. React Router uses the **History API** — specifically `pushState` and `replaceState` — to update the URL bar and manage the browser history stack without triggering a page reload. The result is navigation that feels instant because only the changed components re-render and all in-memory React state is preserved.\n\nThis model requires the server to be configured to serve the same HTML file for every route — otherwise a hard refresh of `/about` returns a 404 from the server. In development, Vite handles this automatically. In production, the web server (Nginx, Vercel, Netlify) must be configured with a **catch-all rule** that redirects all unmatched paths to `index.html`. Forgetting this is the most common deployment gotcha for single-page React applications.',
             codeExample: '// URL changes but page never reloads\nmyapp.com/          → <Home />\nmyapp.com/about     → <About />\nmyapp.com/users/42  → <UserProfile />',
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🗺️',
+              title: 'Step 0 — Client-side routing: the in-browser GPS',
+              text: [
+                'A GPS that reroutes without pulling over and calling a new taxi. You stay in the same car; the map redraws instantly.',
+                'React Router intercepts link clicks and renders the matching component — no page reload, no HTTP request, instant transitions.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -10496,7 +12100,14 @@ function validate(data: unknown) {
             text: 'BrowserRouter provides routing context to your entire app. It uses the HTML5 History API to keep the URL in sync with the UI.',
             expandedText: '`BrowserRouter` must wrap the entire application exactly once at the root level. It provides the routing context that all other React Router hooks and components consume. A common mistake is rendering two `BrowserRouter` components — for example, one in `App.tsx` and another inside a testing wrapper — which creates two separate routing contexts. Hooks like `useNavigate` and `useParams` read from the nearest `Router` ancestor, so components inside the inner router cannot see routes defined in the outer one.\n\nThe alternative providers are `HashRouter` (adds `#/path` to URLs, works without server configuration), `MemoryRouter` (keeps history in memory, useful for tests and embedded environments), and `StaticRouter` (server-side rendering with a provided URL string). For new projects always use `BrowserRouter` unless you have a specific reason to avoid the History API. **`RouterProvider`** with `createBrowserRouter` is the newer approach that unlocks loader and action data patterns.',
             codeExample: 'import { BrowserRouter } from "react-router-dom"\n\n<BrowserRouter>\n  <App />\n</BrowserRouter>',
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🏠',
+              title: 'Step 1 — BrowserRouter: the post office sorting hall',
+              text: [
+                'A sorting hall that all mail passes through. Without it, letters have no system.',
+                '\'<BrowserRouter>\' wraps your entire app and provides routing context. All `<Link>`, `<Route>`, and hooks must be descendants.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -10505,7 +12116,14 @@ function validate(data: unknown) {
             text: 'Routes picks the first matching Route and renders its element. Each Route maps a URL path to a component.',
             expandedText: 'In React Router v6, `Routes` uses a **specificity-based matching algorithm** that automatically ranks routes by specificity — static segments beat dynamic ones, longer paths beat shorter ones. This means route order mostly does not matter for correctness, unlike v5 where the first match always won. The exception is **wildcard routes** (`path="*"`) which must come last; they match everything and will intercept routes defined after them.\n\nThe `path` prop supports dynamic segments with `:paramName` syntax, which React Router populates into the `params` object accessible via `useParams`. A segment like `/users/:id/posts/:postId` creates two params. The special pattern `/*` is a splat — it matches the rest of the path after the prefix and is available as `params["*"]`. Understanding these matching rules prevents the common bug of routes silently failing to render because a more general pattern intercepts them.',
             codeExample: 'import { Routes, Route } from "react-router-dom"\n\n<Routes>\n  <Route path="/" element={<Home />} />\n  <Route path="/about" element={<About />} />\n  <Route path="/users" element={<Users />} />\n</Routes>',
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📋',
+              title: 'Step 2 — Routes and Route: the rule book',
+              text: [
+                'A rule book: if the address starts with /admin, deliver to admin office; if /user, deliver to user department.',
+                '\'<Routes>\' is the container. `<Route path=/about element={<About />} />` maps URL patterns to components. First match renders.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -10514,7 +12132,14 @@ function validate(data: unknown) {
             text: 'Use `Link` instead of `<a href>`. `Link` updates the URL and renders the matching component without a full page reload.',
             expandedText: '`Link` renders a standard `<a>` element in the DOM, which means it inherits all built-in browser behaviours: keyboard focus, screen-reader announcements, right-click to open in a new tab, and Cmd+Click on macOS. React Router intercepts the click event and calls `history.pushState` to prevent the default full-page navigation, but the element itself is a real anchor — it is accessible and semantic by default. `NavLink` is a specialised version that automatically receives an `active` class when its `to` prop matches the current URL.\n\nThe `to` prop accepts a **relative path** (relative to the current route), an **absolute path** (starts with `/`), or an **object** with `pathname`, `search`, and `hash` fields. Relative paths are particularly useful in nested route trees because they resolve against the nearest parent route rather than the page URL. This means a link with `to="edit"` inside a route mounted at `/users/42` navigates to `/users/42/edit` without hardcoding the parent path.',
             codeExample: 'import { Link } from "react-router-dom"\n\n// No page reload!\n<Link to="/about">About</Link>',
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🚪',
+              title: 'Step 3 — Link: the door that does not slam',
+              text: [
+                'A revolving door that moves you to the next room without requiring the whole building to rebuild.',
+                '\'<Link to=/about>\' renders an `<a>` that intercepts the click. No page reload — React Router renders the matching component in place.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -10523,7 +12148,14 @@ function validate(data: unknown) {
             text: 'URL segments prefixed with `:` are dynamic. `useParams` returns an object with the matched values.',
             expandedText: '`useParams` returns an object of the **dynamic segment values** from the current URL. All values are strings — React Router cannot know if `:id` should be a number or a UUID. A common bug is comparing a param directly to a number: `userId === 42` is always false because `"42" !== 42`. Always parse numeric params with `parseInt` or `Number` and validate the result is not `NaN` before using it in queries or comparisons.\n\nWhen a required param is missing or the URL does not match any route, `useParams` returns an empty object. If your component depends on a specific param being present, guard against `undefined` explicitly. The TypeScript signature `useParams<{ id: string }>()` declares the expected param names and types, but this is not runtime validation — the actual URL may not match. For route type safety at the path level, frameworks like TanStack Router generate types from the route configuration.',
             codeExample: '// Route: <Route path="/users/:id" element={<UserProfile />} />\n\nfunction UserProfile() {\n  const { id } = useParams()\n  // at /users/42 → id = "42"\n}',
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🪪',
+              title: 'Step 4 — useParams: reading the address plate',
+              text: [
+                'A delivery driver reads the house number to know which specific house. Same street; different number.',
+                '\'<Route path=/users/:id />\' — inside that component, `const { id } = useParams()` retrieves it. `/users/42` gives `id = 42`.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -10532,7 +12164,14 @@ function validate(data: unknown) {
             text: 'Nest child routes inside a parent `Route` that renders shared UI (navbar, sidebar). The parent component uses `<Outlet />` as a placeholder — React Router renders the matched child route there.',
             expandedText: '`Outlet` is the placeholder inside a **layout route** where matched child routes render. Without an `Outlet`, the parent layout renders but the child page content never appears — this silent failure (correct URL, blank content area) is one of the most common React Router bugs. The parent layout component knows where the child content goes via `<Outlet />` but knows nothing about which child will render, preserving the separation of concerns between the shell and the page.\n\nNested layouts compose just like nested components. A root layout provides the global navigation and footer; a settings layout adds a sidebar; individual settings pages render inside the sidebar layout. Each level adds its shell without knowing about the levels above or below it. The `useOutletContext` hook allows a parent layout to pass data down to the rendered child without prop drilling, which is useful for sharing data loaded at the layout level.',
             codeExample: `// Route config — children nested inside layout:\n<Routes>\n  <Route path="/app" element={<AppLayout />}>\n    <Route index element={<Dashboard />} />\n    <Route path="settings" element={<Settings />} />\n  </Route>\n</Routes>\n\n// AppLayout.tsx:\nfunction AppLayout() {\n  return (\n    <div>\n      <Navbar />        {/* shared across all children */}\n      <Outlet />        {/* child route renders here */}\n    </div>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🏗️',
+              title: 'Step 5 — Layout routes and Outlet: the building frame',
+              text: [
+                'A building structural frame stays in place while the rooms inside change.',
+                'A layout route wraps child routes. The layout component renders shared UI (navbar, sidebar) and `<Outlet />` where matched children render.',
+              ],
+            },
           },
           {
             animationStep: 6,
@@ -10541,7 +12180,14 @@ function validate(data: unknown) {
             text: 'An index route is the default child — it renders when the parent path matches exactly. `useNavigate` lets you navigate programmatically: after form submission, login, or any event.',
             expandedText: 'An **index route** (`<Route index />`) is the default child that renders when the parent path matches exactly but no further segments are present. Without an index route, navigating to the parent path renders the parent layout with an empty `Outlet`. Index routes solve the "what shows in the main area when the sidebar is visible but nothing is selected" problem. Think of them as the `/` of a nested route tree.\n\n`useNavigate` returns an imperative navigation function for cases where you cannot use `Link` — after a form submission, after an async action, or in response to non-user events. Passing `{ replace: true }` replaces the current history entry rather than pushing a new one, so the user cannot press Back to return to the previous URL. Use `replace` after login redirects or onboarding flows where returning to the pre-navigation page would be confusing or broken.',
             codeExample: `// Index route = default child at /app:\n<Route path="/app" element={<AppLayout />}>\n  <Route index element={<Dashboard />} />     {/* /app */}\n  <Route path="settings" element={<Settings />} /> {/* /app/settings */}\n</Route>\n\n// Programmatic navigation:\nfunction LoginForm() {\n  const navigate = useNavigate()\n\n  async function handleSubmit(e) {\n    e.preventDefault()\n    await login(credentials)\n    navigate('/app', { replace: true })  // replace history entry\n  }\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🧭',
+              title: 'Step 6 — Index routes and useNavigate: the default room',
+              text: [
+                'When you enter a hotel floor, you expect a corridor with a default direction.',
+                'An index route renders when no child path matches. `useNavigate()` gives you `navigate(path)` for programmatic navigation.',
+              ],
+            },
           },
         ],
       },
@@ -10640,7 +12286,14 @@ function validate(data: unknown) {
             text: 'Prop drilling is passing data through intermediate components that don\'t use it — just so a deeply nested child can receive it. As trees grow, every layer must declare and forward props it doesn\'t care about.',
             expandedText: '**Prop drilling** becomes a problem when intermediate components act as data relays — they receive props only to pass them to their children, without using the data themselves. Every intermediate component now has an unnecessary dependency on the shape of that data, which means changing the data structure requires updates across multiple files. Context eliminates the relay chain by making data available to any component in the subtree that asks for it, regardless of depth.\n\nContext is not a replacement for all state management. The right mental model is **dependency injection**: the Provider injects a value into the subtree, and any descendant can access it without being explicitly wired up. This is appropriate for data that is truly global to a subtree — the current user, the active theme, the preferred locale. For data that is only needed a few levels deep, prop drilling is often simpler and more explicit. **Zustand** or **Jotai** are better choices when context performance becomes an issue.',
             codeExample: `// 😩 Every layer forwards 'user' even though only Avatar uses it:\nfunction App() {\n  const user = { name: 'Ana' }\n  return <Layout user={user} />       // doesn't need user\n}\nfunction Layout({ user }) {\n  return <Sidebar user={user} />     // doesn't need user\n}\nfunction Sidebar({ user }) {\n  return <Avatar user={user} />      // finally used here!\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '☎️',
+              title: 'Step 0 — Prop drilling: the telephone chain',
+              text: [
+                'A message that needs to reach the 10th floor via the switchboard on every floor. Each floor passes it down.',
+                'Prop drilling passes data through every intermediate component — even ones that do not need it. Tedious and fragile.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -10649,7 +12302,14 @@ function validate(data: unknown) {
             text: '`createContext()` creates the context object. Wrap the subtree that needs access with `<XContext.Provider value={...}>`. Every component inside can read that value directly — no matter how deep.',
             expandedText: '`createContext` takes a **default value** that is used when a component calls `useContext` but has no `Provider` ancestor in the tree. This is not the same as the initial state of the Provider — it is the fallback for components rendered completely outside any Provider. A common pattern for typed contexts is to pass `null` as the default and then throw an error in the custom hook if the value is null: `if (!ctx) throw new Error("useAuth must be inside AuthProvider")`. This produces a clear error message rather than silent failures.\n\nAlways wrap context in a **custom hook** — `useTheme`, `useAuth`, `useCart` — rather than exposing `useContext(ThemeContext)` directly. The custom hook can add validation, hide implementation details, and be refactored to a different state solution without changing any consumer. It is also more readable: `useAuth()` is immediately understandable, while `useContext(AuthContext)` requires knowing what `AuthContext` is.',
             codeExample: `import { createContext, useState } from 'react'\n\n// 1. Create context (default used when no Provider exists above)\nconst UserContext = createContext(null)\n\n// 2. Wrap the tree — value is available to all descendants\nfunction App() {\n  const [user] = useState({ name: 'Ana', avatar: '/ana.jpg' })\n  return (\n    <UserContext.Provider value={user}>\n      <Layout />    {/* no user prop needed */}\n    </UserContext.Provider>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📡',
+              title: 'Step 1 — createContext and Provider: the radio broadcast',
+              text: [
+                'A radio station broadcasts on a frequency. Any radio tuned to that frequency receives the signal.',
+                '\'const ThemeContext = createContext(default)\' creates the channel. `<ThemeContext.Provider value={theme}>` broadcasts. Any descendant can tune in.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -10658,7 +12318,14 @@ function validate(data: unknown) {
             text: '`useContext(MyContext)` reads the nearest Provider above and returns its value. The component re-renders automatically when the value changes. Any component can consume — no prop passing required.',
             expandedText: 'Every component that calls `useContext` **re-renders whenever the context value changes by reference**. A common performance mistake is passing an object literal directly as the value: `<UserContext.Provider value={{ user, logout }}>`. This creates a new object reference on every render of the Provider parent, causing all consumers to re-render even if `user` and `logout` have not changed. The fix is **`useMemo`**: `const value = useMemo(() => ({ user, logout }), [user, logout])` so the reference is stable when neither dependency changes.\n\nFor contexts that hold both a frequently-updated value and a rarely-updated one — like a scroll position and the current user — all consumers re-render on every scroll event, even consumers that only care about the user. The solution is to **split into separate contexts**: one for fast-updating values and one for slow-updating ones. Each consumer subscribes only to the context it needs, so scroll updates do not trigger re-renders in components that do not care about scroll position.',
             codeExample: `import { useContext } from 'react'\n\n// Anywhere in the tree — no props received:\nfunction Avatar() {\n  const user = useContext(UserContext)\n  return <img src={user.avatar} alt={user.name} />\n}\n\n// Middle layers stay completely clean:\nfunction Layout()  { return <Sidebar /> }\nfunction Sidebar() { return <Avatar /> }`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📻',
+              title: 'Step 2 — useContext: the radio receiver',
+              text: [
+                'A radio in the kitchen, in the bedroom — all tuned to the same station.',
+                '\'const theme = useContext(ThemeContext)\' tunes in from any component. Re-renders only when the context value changes.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -10667,7 +12334,14 @@ function validate(data: unknown) {
             text: 'Context works best for data that is truly global or shared across many components. Avoid it for frequently-changing data — every context value change re-renders all its consumers.',
             expandedText: 'Context pairs naturally with `useReducer` to implement a **state management pattern** that scales to moderate complexity. The reducer handles state transitions; the context distributes state and dispatch to the subtree. The Provider composes them: `const [state, dispatch] = useReducer(reducer, initialState)` and provides `{ state, dispatch }` to consumers. This pattern is powerful enough to handle shopping carts, form wizards, and multi-step flows without reaching for an external library.\n\nA refinement is to expose **action creator functions** from the custom hook rather than `dispatch` directly: `const { addItem, removeItem, clearCart } = useCart()`. Consumers never write raw `dispatch({ type: "ADD_ITEM", payload: item })` strings — typos in action type strings are silent bugs. Action creators are just functions that call dispatch with the correct action shape, and they can also validate input or add side effects like analytics calls before dispatching.',
             codeExample: `// ✅ Good candidates for Context:\n// - Auth state (current user, login / logout)\n// - Theme (dark / light mode)\n// - Locale / language\n// - User preferences\n\n// ❌ Avoid Context for:\n// - Data needed by only 1–2 siblings → lift state instead\n// - High-frequency updates (mouse position, scroll)\n//   → causes unnecessary re-renders in all consumers\n// - Complex app-wide state in large apps → Zustand / Redux`,
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🎯',
+              title: 'Step 3 — When to use Context: the right broadcast',
+              text: [
+                'A company broadcasts HR announcements on the all-staff channel. Project updates go on project-specific channels.',
+                'Use Context for: authentication, theme, language. Avoid for: frequently-changing data (widespread re-renders), server state (use TanStack Query).',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -10676,7 +12350,14 @@ function validate(data: unknown) {
             text: 'When `useState` manages multiple interrelated fields — like a cart with items, total, and count — every update must touch all of them consistently. `useReducer` centralises all transitions into one pure function: `(state, action) => newState`.',
             expandedText: '`useReducer` is a better fit than `useState` when **multiple state fields are updated together** or when **the next state depends on the previous state** in a non-trivial way. A form that tracks `{ name, email, isSubmitting, error }` and must reset all fields on success or restore them on cancel is a perfect use case. The reducer receives the full state and the action, and returns a complete new state object — all the update logic for every action is in one place.\n\nReducers must be **pure functions** — same inputs always produce the same output, no side effects. This makes them trivially testable outside of React: `expect(reducer(initialState, { type: "INCREMENT" })).toEqual({ count: 1 })` with no component mounting required. Side effects (fetch calls, localStorage writes) belong in event handlers or `useEffect`, not in the reducer itself.',
             codeExample: `// ❌ useState: every action manually syncs multiple fields\nfunction addToCart(product) {\n  setCart(prev => ({\n    items: recalcItems(prev.items, product),\n    total: recalcTotal(...),   // easy to forget\n    count: recalcCount(...),   // easy to get wrong\n  }))\n}\n\n// ✅ useReducer: one function owns all transitions\ndispatch({ type: 'ADD_ITEM', payload: product })\n// cartReducer updates items + total + count atomically`,
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🏭',
+              title: 'Step 4 — useReducer: the state machine factory',
+              text: [
+                'A traffic light controller: accepts events and transitions to the next state following predefined rules.',
+                '\'useReducer(reducer, initialState)\' replaces multiple `useState` calls. The reducer is pure: `(state, action) => newState`. Explicit and testable.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -10685,7 +12366,14 @@ function validate(data: unknown) {
             text: '`useReducer` returns `[state, dispatch]`. Actions are plain objects with a `type` string and optional `payload`. The reducer switches on `type` and returns a new state object — never mutate existing state directly.',
             expandedText: 'Returning a **new state object** from the reducer is essential for React to detect changes. If you mutate the existing state and return the same reference, React sees that the state object has not changed and skips the re-render. Always spread the existing state and override the changed fields: `return { ...state, count: state.count + 1 }`. For nested state, you must spread at every level.\n\n**Immer** makes this ergonomic for deeply nested state by allowing mutations inside a `produce()` callback that it converts to an immutable update. `useImmerReducer` from the `use-immer` package drops in as a replacement for `useReducer` with Immer built in. For moderately complex state trees this can significantly reduce the volume of spread operators in reducer code while maintaining the immutability guarantees that React depends on.',
             codeExample: `const initialState = { items: [], total: '€0.00', count: 0 }\n\nfunction cartReducer(state, action) {\n  switch (action.type) {\n    case 'ADD_ITEM':    return addItem(state, action.payload)\n    case 'REMOVE_ITEM': return removeItem(state, action.payload)\n    case 'CLEAR_CART':  return initialState\n    default:            return state\n  }\n}\n\nconst [cart, dispatch] = useReducer(cartReducer, initialState)\n\n// Trigger a state transition:\ndispatch({ type: 'ADD_ITEM', payload: { id: 1, name: 'Keyboard', price: 79 } })\ndispatch({ type: 'CLEAR_CART' })`,
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '📨',
+              title: 'Step 5 — Dispatch and actions: sending memos',
+              text: [
+                'An employee sends a memo to HR: Action: Update email, Payload: new@example.com. HR processes it without the employee touching the database.',
+                '\'dispatch({ type: SET_USER, payload: user })\' sends an action to the reducer. Dispatch is the only way to change state.',
+              ],
+            },
           },
           {
             animationStep: 6,
@@ -10693,7 +12381,14 @@ function validate(data: unknown) {
             heading: 'Reducer + Context together',
             text: 'Combine both patterns: put `useReducer` inside a Provider and expose `[state, dispatch]` through context. Any child can read state or fire actions without prop drilling. A custom hook gives consumers a clean, error-safe API.',
             codeExample: `const CartContext = createContext(null)\n\nexport function CartProvider({ children }) {\n  const [state, dispatch] = useReducer(cartReducer, initialState)\n  return (\n    <CartContext.Provider value={{ state, dispatch }}>\n      {children}\n    </CartContext.Provider>\n  )\n}\n\n// Custom hook — throws if used outside CartProvider:\nexport function useCart() {\n  const ctx = useContext(CartContext)\n  if (!ctx) throw new Error('useCart must be inside CartProvider')\n  return ctx\n}\n\n// Usage anywhere in the tree:\nfunction ProductCard({ product }) {\n  const { dispatch } = useCart()\n  return (\n    <button onClick={() =>\n      dispatch({ type: 'ADD_ITEM', payload: product })\n    }>Add to cart</button>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🎛️',
+              title: 'Step 6 — Reducer and Context: the control panel broadcast',
+              text: [
+                'A central control panel manages all systems (state) and broadcasts status to all floors (Context).',
+                'Combine: create Context with both `state` and `dispatch`. The Provider holds the `useReducer` result. Any component reads state or triggers changes via dispatch.',
+              ],
+            },
           },
         ],
       },
@@ -10793,7 +12488,14 @@ function validate(data: unknown) {
             text: 'React Router started as a client-side routing library. In v7, it can also run as a full framework — handling file-based routes, server-side rendering, and data loading out of the box. In library mode you configure `<BrowserRouter>` yourself; in framework mode you scaffold with `create-react-router` and React Router owns the entry point.',
             expandedText: '**React Router framework mode** (previously Remix) inverts the traditional relationship between the app and the router. In library mode you configure the router inside your React app; in framework mode the router owns the entry point, the Vite dev server plugin, and the build output. This ownership allows the framework to implement features that are impossible for a library: **type-safe route paths** generated at build time, **automatic code-splitting** per route module, and **server rendering** without additional configuration.\n\nThe `routes.ts` config file is evaluated at build time to produce a **typed route manifest**. Route paths defined in config are checked statically — a typo like `/usres/:id` is a build-time error, not a runtime 404. The manifest also drives the code-splitting: each route module is a separate chunk that is loaded only when the user navigates to that route, reducing the initial bundle to only the code needed for the first page.',
             codeExample: `// Library mode — you manage everything:\nimport { BrowserRouter, Routes, Route } from 'react-router'\n\nfunction App() {\n  return (\n    <BrowserRouter>\n      <Routes>\n        <Route path="/" element={<Home />} />\n        <Route path="/about" element={<About />} />\n      </Routes>\n    </BrowserRouter>\n  )\n}\n\n// Framework mode — scaffold once, React Router takes over:\n// npx create-react-router@latest my-app\n// → generates: app/root.tsx, app/routes.ts, react-router.config.js`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🔧',
+              title: 'Step 0 — Library vs Framework mode: tool vs scaffolding',
+              text: [
+                'A power drill is a tool. A pre-assembled furniture kit is scaffolding. React Router offers both.',
+                'Library mode: use `<BrowserRouter>` with JSX routes (full control). Framework mode: use `createBrowserRouter` with config and loaders (data loading, code splitting).',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -10802,7 +12504,14 @@ function validate(data: unknown) {
             text: 'Framework mode uses a `routes.js` file to declare your route tree. The `index()` helper declares the index route; `route()` declares named routes with a URL pattern and a file path to the route module.',
             expandedText: 'The **`routes.ts` configuration** uses a hierarchical `route()` and `layout()` API that mirrors how the component tree is structured. A `layout()` call wraps its children in a shared layout component that renders an `Outlet`; `route()` defines a path and a module file. The nested structure of the config directly determines the nested structure of the rendered components — the config is the authoritative source of truth for the URL tree and the component tree simultaneously.\n\nRoute paths in the config are **statically checked** at build time, which eliminates an entire class of typo-based bugs. The generated type information also enables IDE autocomplete for `Link to` and `useNavigate` calls — you get a type error if you navigate to a path that does not exist. This level of route type safety was previously only available through third-party solutions like TanStack Router.',
             codeExample: `// app/routes.js\nimport { index, route } from '@react-router/dev/routes'\n\nexport default [\n  index('routes/home.jsx'),\n  route('/about',         'routes/about.jsx'),\n  route('/products/:pid', 'routes/product.jsx'),\n  route('/todos',         'routes/todos.jsx'),\n]`,
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '📁',
+              title: 'Step 1 — routes.js config: the building directory',
+              text: [
+                'A building directory lists every room, its location, and who manages it.',
+                '\'createBrowserRouter([{ path: /, element: <Root />, children: [...] }])\' — loaders, actions, and error boundaries are co-located with each route.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -10811,7 +12520,14 @@ function validate(data: unknown) {
             text: 'A route module is a file that exports named functions React Router understands: `default` (the component), `loader`/`clientLoader` (data fetching), `action`/`clientAction` (mutations), and `ErrorBoundary` (error UI). React Router wires these automatically — no manual prop passing needed.',
             expandedText: 'A **route module** is a file that exports a specific set of named exports that React Router recognises: `default` (the component), `loader` (server-side data), `clientLoader` (client-side data), `action` (server-side mutation), `clientAction` (client-side mutation), `HydrateFallback` (initial load skeleton), and `ErrorBoundary` (error UI). Each route is fully self-contained — all the concerns for that URL are co-located in one file.\n\nThis co-location has significant maintainability benefits. To understand what a route does, you open one file: you see what data it needs, how it handles errors, and how it handles mutations — without tracing through separate API files, context providers, or effect hooks. React Router automatically **code-splits** each route module so users download only the JavaScript for the routes they visit.',
             codeExample: `// app/routes/product.jsx\n\nexport async function clientLoader({ params }) {\n  const res = await fetch(\`/api/products/\${params.pid}\`)\n  return res.json()   // becomes loaderData\n}\n\nexport function HydrateFallback() {\n  return <div>Loading...</div>\n}\n\nexport default function Product({ loaderData }) {\n  return <h1>{loaderData.name}</h1>\n}\n\nexport function ErrorBoundary() {\n  return <div>Something went wrong.</div>\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📦',
+              title: 'Step 2 — Route modules: the self-contained department',
+              text: [
+                'Each department manages its own hiring, operations, and reporting. Everything in one file.',
+                'A route module exports: `default` (component), `loader` (data fetching), `action` (mutations), `ErrorBoundary`. Everything the route needs lives together.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -10820,7 +12536,14 @@ function validate(data: unknown) {
             text: '`clientLoader` fetches data in the browser before the component renders. It receives `{ params }` for URL parameters. Export `HydrateFallback` to show a loading UI while it runs on the first visit.',
             expandedText: 'A **`clientLoader`** runs in the browser after navigation and can use browser-only APIs like `localStorage`, `sessionStorage`, and `IndexedDB` alongside `fetch`. The `HydrateFallback` component is shown only on the initial page load while the `clientLoader` is running — on subsequent client-side navigations, the previous route remains visible until the loader resolves, preventing loading spinners on fast transitions.\n\nThe pattern of reading from a client-side cache in `clientLoader` and falling back to the network if stale is a powerful way to make navigation feel instant. Return cached data immediately, then optionally revalidate in the background. The `serverLoader()` utility (available inside `clientLoader`) allows forwarding the request to the server loader when the cache misses, combining client-side speed with server-side freshness.',
             codeExample: `export async function clientLoader({ params }) {\n  const res = await fetch(\`https://api.example.com/products/\${params.pid}\`)\n  return res.json()   // becomes loaderData prop\n}\n\nexport function HydrateFallback() {\n  return <p>Loading product...</p>\n}\n\nexport default function Product({ loaderData }) {\n  return (\n    <main>\n      <h1>{loaderData.name}</h1>\n      <p>{loaderData.description}</p>\n      <strong>\${loaderData.price}</strong>\n    </main>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '⚡',
+              title: 'Step 3 — clientLoader: the customer fetches at the counter',
+              text: [
+                'A customer goes to the service counter to pick up their order. Request goes from the browser, response comes to the browser.',
+                '\'export clientLoader = async ({ params }) => await fetch(url)\' runs in the browser. Component uses `useLoaderData()`. Equivalent to useEffect+fetch but colocated.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -10829,7 +12552,14 @@ function validate(data: unknown) {
             text: '`loader` runs on the server — before the HTML is sent to the browser. It can safely access databases or server-only APIs without exposing them to the client bundle. On client-side navigations React Router calls it via a network request. The component receives the same `loaderData` prop — no changes needed.',
             expandedText: 'A **server-side loader** has access to the full Node.js environment — environment variables, database connections, and server-only secrets that must never be bundled into the client. On server-rendered requests, the loader runs in the same process as the response. On client-side navigations, React Router automatically calls the loader via a `fetch` to a framework-generated API endpoint, and the component receives `loaderData` identically in both scenarios without any code change in the component.\n\n`defer()` allows a loader to return a mix of resolved and pending data. Resolved values render immediately; promised values stream in as they resolve. The component wraps the pending value in `<Suspense>` to show a skeleton until the slow data arrives. This pattern is ideal for pages with a fast critical path (user info, page title) and a slow secondary section (recommendations, analytics) — the fast parts render immediately while slow parts load progressively.',
             codeExample: `// Replace clientLoader with loader — component stays identical:\nexport async function loader({ params }) {\n  const res = await fetch(\`https://api.example.com/products/\${params.pid}\`)\n  return res.json()   // runs on server — never in the browser bundle\n}\n\nexport default function Product({ loaderData }) {\n  return <h1>{loaderData.name}</h1>  // same as before\n}\n\n// 💡 Check the Network tab: no API request visible!\n//    The server fetched data and embedded it in the HTML.`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🖥️',
+              title: 'Step 4 — loader: the warehouse prepares before delivery',
+              text: [
+                'The warehouse prepares your order before the courier picks it up. When you receive it, everything is ready.',
+                '\'export loader = async ({ params }) => await db.user.find(params.id)\' runs on the server. Data is ready before the component renders.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -10838,7 +12568,14 @@ function validate(data: unknown) {
             text: '`clientAction` / `action` handle form mutations. React Router\'s `<Form>` component serialises the submission and calls the matching action. The result is available as `actionData`. After the action runs, loaders automatically revalidate — no manual refetch.',
             expandedText: '**Automatic revalidation** after an action is one of the most powerful features in React Router framework mode. After a successful action, every active loader on the page re-runs in parallel and the components update atomically with fresh data. This eliminates the manual cache-invalidation code — the `useEffect` calls and `setData` calls — that fills most React mutation implementations. The page is always in sync with the server after a mutation without any developer effort.\n\n`shouldRevalidate` is an escape hatch that allows specific loaders to opt out of automatic revalidation when they know the action does not affect their data. For example, a navigation sidebar that loads the user menu items does not need to refetch after a post is created. `shouldRevalidate` receives the previous and next URL plus the form data and action result, allowing fine-grained control over which loaders revalidate after which actions.',
             codeExample: `import { Form } from 'react-router'\n\nexport async function clientAction({ request }) {\n  const formData = await request.formData()\n  const title = formData.get('title')\n  await saveTodo(title)\n  return { success: true }\n}\n\nexport default function Todos({ actionData }) {\n  return (\n    <div>\n      <Form method="post">  {/* React Router's Form — not native <form> */}\n        <input name="title" placeholder="New todo" />\n        <button type="submit">Add</button>\n      </Form>\n      {actionData?.success && <p>Todo added!</p>}\n    </div>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📮',
+              title: 'Step 5 — Form and actions: the post office workflow',
+              text: [
+                'Filling in a form and posting it. The post office processes it on the server and sends back a confirmation.',
+                '\'<Form method=post>\' submits to the route action function. No `e.preventDefault()` needed — React Router handles it.',
+              ],
+            },
           },
           {
             animationStep: 6,
@@ -10847,7 +12584,14 @@ function validate(data: unknown) {
             text: 'React Router v7 supports three rendering strategies configured in `react-router.config.js`. CSR (SPA mode) renders everything in the browser; SSR renders HTML on every server request; SSG pre-renders pages at build time. Your choice determines when loaders run.',
             expandedText: 'The **rendering strategy** — SSR, SSG, or CSR — determines how and when HTML is generated. **SSR** (server-side rendering) generates HTML on every request, guaranteeing fresh content and full crawlability, but requires a running Node.js server and adds latency proportional to data-fetching time. **SSG** (static site generation) pre-renders HTML at build time into static files served from a CDN with near-zero latency, but content is only as fresh as the last build.\n\n**CSR** (client-side rendering) delivers an empty shell and renders entirely in the browser, making it the simplest to deploy on any static host. However, search engine crawlers receive empty HTML and must execute JavaScript to index content — reliability and latency of crawler JS execution varies. React Router framework mode supports all three strategies per-route, allowing a hybrid: statically generate marketing pages, SSR authenticated dashboard pages, and CSR interactive editor pages — all in the same project.',
             codeExample: `// react-router.config.js\n\n// CSR — SPA mode, all loaders run in browser:\nexport default { ssr: false }\n\n// SSR — server renders on every request (default):\nexport default { ssr: true }\n\n// SSG — pre-render specific routes at build time:\nexport default {\n  ssr: true,\n  async prerender() {\n    return ['/', '/about', '/products/1', '/products/2']\n  }\n}\n\n// Strategy | Loader runs…           | Data available…\n// CSR      | In the browser         | After React mounts\n// SSR      | On the server          | Before HTML is sent\n// SSG      | At build time (server) | Embedded in HTML`,
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🎚️',
+              title: 'Step 6 — Rendering strategies: choosing your cooking method',
+              text: [
+                'Some dishes are best grilled (SSR), others served cold (SSG), others cooked to order (CSR).',
+                'Route-level strategies: `loader` for SSR, `clientLoader` for CSR, static exports for SSG. Mix strategies across routes in the same app.',
+              ],
+            },
           },
         ],
       },
@@ -10946,7 +12690,14 @@ function validate(data: unknown) {
             text: 'When a parent component fetches data and only renders a child after its data arrives, and that child fetches its own data, you get a waterfall — each request waits for the previous one. Total wait time equals the sum of all requests, not the longest.',
             expandedText: 'The **waterfall problem** is the single biggest source of poor perceived performance in React applications. When a parent component fetches data, the child cannot even start mounting until the parent data arrives. If the child also fetches data, users wait for both requests sequentially. Three levels of nesting with sequential fetches means users wait for the sum of all request latencies rather than the maximum. The fix is to **start all fetches as early as possible** — ideally at navigation time before any component renders.\n\nRouter loaders are the most reliable solution because they run before the route transition completes. By the time React starts rendering the component tree, the data is already in flight or available. `Promise.all` in a loader starts multiple fetches simultaneously: `const [user, posts] = await Promise.all([getUser(id), getPosts(id)])`. This changes the wait time from `latencyA + latencyB` to `Math.max(latencyA, latencyB)` — a dramatic improvement when both requests take hundreds of milliseconds.',
             codeExample: `// 🌊 Waterfall: each request waits for the previous one\n\n// t=0ms    → App renders, fetches posts\n// t=500ms  → posts arrive, PostList renders\n// t=500ms  → PostList fetches comments\n// t=1000ms → comments arrive, Comments renders\n// t=1000ms → Comments fetches likes\n// t=1500ms → likes arrive — user sees full page\n\n// 3 × 500ms = 1500ms total wait\n\n// With parallel fetches:\n// t=0ms    → fetch posts + comments + likes simultaneously\n// t=500ms  → all arrive — user sees full page (3× faster)`,
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🌊',
+              title: 'Step 0 — Waterfall: waiting in a queue',
+              text: [
+                'Waiting to order, then waiting for food, then waiting for the bill. Each step waits for the previous.',
+                'Component A fetches user. B needs user ID to fetch orders. C needs orders to fetch products. Serial requests multiply latency.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -10955,7 +12706,14 @@ function validate(data: unknown) {
             text: 'The classic pattern puts fetching inside `useEffect`. The component renders first with a spinner, then the effect fires, then state updates cause a re-render with data. Easy to understand but forces sequential rendering: a child cannot start fetching until its parent has finished and rendered it.',
             expandedText: 'The **stale closure bug** in `useEffect` data fetching is critical to understand: if the component re-renders with a new `userId` prop while the previous `fetch` is still in flight, both requests will eventually call `setState`. Whichever resolves last wins — which may not be the most recent request. The fix requires a cleanup flag: `let cancelled = false` inside the effect, `if (!cancelled) setState(data)` in the `.then`, and `return () => { cancelled = true }` as the cleanup.\n\nFor HTTP requests, `AbortController` is more thorough because it cancels the in-flight request rather than just ignoring the response: `const controller = new AbortController()`, pass `{ signal: controller.signal }` to `fetch`, and `controller.abort()` in the cleanup. This avoids unnecessary JSON parsing and frees server resources. Combine both techniques for correctness: abort the request AND guard state updates. Data-fetching libraries like **TanStack Query** handle both automatically.',
             codeExample: `function Post({ id }) {\n  const [post, setPost]       = useState(null)\n  const [loading, setLoading] = useState(true)\n\n  useEffect(() => {\n    fetch(\`/api/posts/\${id}\`)\n      .then(r => r.json())\n      .then(data => { setPost(data); setLoading(false) })\n  }, [id])\n\n  if (loading) return <Spinner />\n\n  // Only after post loads does Comments mount and start fetching:\n  return (\n    <article>\n      <h1>{post.title}</h1>\n      <Comments postId={id} />  {/* 🌊 cascade starts here */}\n    </article>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🔁',
+              title: 'Step 1 — useEffect fetching: fetch on arrival',
+              text: [
+                'Arriving at a hotel and only then calling room service. You could not pre-order — you had to arrive first.',
+                '\'useEffect(() => { fetch(...) }, [])\' fetches after the component renders. Shows a loading state first. Creates waterfalls when components depend on each other data.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -10964,7 +12722,14 @@ function validate(data: unknown) {
             text: 'Render-as-you-fetch starts all fetches before the component tree renders — then renders components that suspend until their data arrives. Fetches run in parallel so total time equals the slowest single request. The key: initiate fetches at navigation time, not at render time.',
             expandedText: '**Render-as-you-fetch** is a pattern where the data fetch starts at the earliest possible moment — before the component that consumes the data mounts — typically at navigation time in a router loader. The promise is passed down as a prop or provided via context, and the consuming component calls `use(promise)` to access the data. This is fundamentally different from **fetch-on-render** where the fetch starts inside `useEffect` after the component mounts.\n\nThe critical rule is that the promise must be created **outside the component** that consumes it. Creating the promise inside the component defeats the purpose — the fetch starts at mount time just like `useEffect`. In React Router framework mode, `defer()` implements render-as-you-fetch natively: the loader returns a promise, the component wraps it in `<Suspense>`, and React streams the resolved value to the browser as soon as it is ready.',
             codeExample: `// ⚡ Start both fetches immediately — store the promises, don't await:\nconst postPromise     = fetchPost(id)\nconst commentsPromise = fetchComments(id)\n\n// Both requests fire at t=0ms and run in parallel.\n// Pass promises to child components:\nfunction Page() {\n  return (\n    <>\n      <Suspense fallback={<Spinner />}>\n        <Post promise={postPromise} />\n      </Suspense>\n      <Suspense fallback={<Spinner />}>\n        <Comments promise={commentsPromise} />\n      </Suspense>\n    </>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🚀',
+              title: 'Step 2 — Render-as-you-fetch: pre-order before arrival',
+              text: [
+                'Ordering room service while still in the taxi. By the time you arrive, the food is already on its way.',
+                'Start fetching before rendering. With React Router loaders, requests begin at navigation time — not after the component tree renders.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -10973,7 +12738,14 @@ function validate(data: unknown) {
             text: 'React\'s `use()` hook unwraps a promise inside a component. If the promise is not resolved yet, the component suspends and React shows the nearest `<Suspense>` fallback. Once resolved, the component renders with the data. `ErrorBoundary` catches rejections — no `try`/`catch` needed.',
             expandedText: 'The **`use()` hook** in React 19 can unwrap a Promise inside a component and returns the resolved value. If the Promise is still pending, `use()` suspends the component by throwing the Promise — React catches it and renders the nearest `<Suspense>` fallback. When the Promise resolves, React resumes rendering the component with the data. If the Promise rejects, the throw propagates to the nearest `ErrorBoundary`. This mechanism makes async data access feel synchronous in the component body.\n\n`use()` differs from `await` in that it can be called **conditionally** and inside loops — unlike other hooks. This flexibility is intentional because `use()` is designed for consumption patterns, not just top-level effect declarations. Combining `use()` with `<Suspense>` and `<ErrorBoundary>` creates a clean separation: the component body handles the success path, `Suspense` handles the loading path, and `ErrorBoundary` handles the error path — each concern in a dedicated place.',
             codeExample: `import { use, Suspense } from 'react'\n\nfunction Post({ promise }) {\n  const post = use(promise)  // suspends until promise resolves\n  return <h1>{post.title}</h1>\n}\n\nfunction Comments({ promise }) {\n  const comments = use(promise)\n  return <ul>{comments.map(c => <li key={c.id}>{c.body}</li>)}</ul>\n}\n\n// Both render independently — neither blocks the other:\n<ErrorBoundary fallback={<Error />}>\n  <Suspense fallback={<Spinner />}><Post promise={postP} /></Suspense>\n  <Suspense fallback={<Spinner />}><Comments promise={commP} /></Suspense>\n</ErrorBoundary>`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🎭',
+              title: 'Step 3 — Suspense and use(): the placeholder while waiting',
+              text: [
+                'A museum placeholder shows while the painting is in restoration.',
+                '\'<Suspense fallback={<Skeleton />}>\' shows a fallback while children wait. `use(promise)` suspends until the promise resolves.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -10982,7 +12754,14 @@ function validate(data: unknown) {
             text: 'The cleanest render-as-you-fetch implementation delegates fetching to your router. React Router\'s `loader` runs the moment a navigation starts — before any component renders. You get parallel fetching without manually managing promises or caches in your components.',
             expandedText: 'Router **loaders** are superior to `useEffect` for data fetching because they run before the route transition completes — the browser URL does not update and the component does not mount until the loader resolves. This means the component always receives data on its first render with no loading state needed in the component itself. The user experiences the navigation as instant loading of a complete page rather than a flash of empty content followed by a spinner.\n\n`defer()` offers the best of both worlds: the URL updates immediately (giving the user feedback that navigation worked) while slow data streams in progressively behind `<Suspense>` boundaries. Critical data (above the fold) can be awaited synchronously in the loader while non-critical data (below the fold, secondary panels) is deferred. The result is a page that appears instantly with real content, with slower sections filling in as their data arrives.',
             codeExample: `// React Router data mode — loader fires at navigation time:\nexport async function loader({ params }) {\n  // Both fetches start in parallel — neither is awaited:\n  const post     = fetchPost(params.id)\n  const comments = fetchComments(params.id)\n  return { post, comments }  // return the promises\n}\n\nexport default function PostPage({ loaderData }) {\n  const { post, comments } = loaderData\n  return (\n    <>\n      <Suspense fallback={<Spinner />}>\n        <Post promise={post} />\n      </Suspense>\n      <Suspense fallback={<Spinner />}>\n        <Comments promise={comments} />\n      </Suspense>\n    </>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🚂',
+              title: 'Step 4 — Loaders: the pre-loaded train',
+              text: [
+                'A train that loads all its cargo before leaving the station. Passengers board and the cargo is already there.',
+                'Framework loaders run data fetching before the component tree renders. All data is ready when components mount — no useEffect, no loading states needed.',
+              ],
+            },
           },
         ],
       },
@@ -11077,7 +12856,14 @@ function validate(data: unknown) {
             text: 'The classic React form pattern intercepts the native submit event, calls `preventDefault()` to stop the page from reloading, then manually sends data with `fetch`. You manage loading, error, and success state yourself with `useState`.',
             expandedText: 'The traditional pattern of managing form submission state with three separate `useState` hooks — `loading`, `error`, and `success` — requires careful coordination to keep them consistent. A common bug is forgetting to call `setLoading(false)` inside the `catch` block, leaving the submit button permanently disabled after a network failure. Using a `finally` block solves this but adds boilerplate. A subtle secondary bug is calling `setLoading(true)` without setting `error` to `null` first, so a retry after a failure shows both the spinner and the previous error message simultaneously.\n\n**React 19 form actions** replace this coordination overhead with a single `useActionState` hook that manages loading, error, and result state in one place. The action function receives `previousState` and `formData` and returns the next state — validation errors, success flags, or redirect instructions. The hook returns `[state, dispatch, isPending]` so the component has everything it needs to render the correct UI for every phase of the submission lifecycle.',
             codeExample: `function ContactForm() {\n  const [loading, setLoading] = useState(false)\n  const [error, setError]     = useState(null)\n\n  async function handleSubmit(e) {\n    e.preventDefault()      // stop page reload\n    setLoading(true)\n    try {\n      const form = new FormData(e.target)\n      await fetch('/api/contact', {\n        method: 'POST',\n        body:    JSON.stringify({ email: form.get('email') }),\n        headers: { 'Content-Type': 'application/json' },\n      })\n    } catch (err) {\n      setError(err.message)\n    } finally {\n      setLoading(false)\n    }\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <input name="email" type="email" />\n      <button disabled={loading}>Send</button>\n      {error && <p className="text-red-500">{error}</p>}\n    </form>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📬',
+              title: 'Step 0 — onSubmit and preventDefault: intercepting the post',
+              text: [
+                'Intercepting a letter before it reaches the postbox, reading it, and deciding what to do.',
+                'The default form submit reloads the page. `e.preventDefault()` intercepts it before the reload triggers.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -11086,7 +12872,14 @@ function validate(data: unknown) {
             text: 'React 19 introduces the `action` prop on `<form>`. Pass an async function directly — React calls it with a `FormData` object when the form submits. No `onSubmit`, no `preventDefault`. The function is the action; the form is the trigger.',
             expandedText: '**React 19 form actions** integrate with the browser native form submission model and the `FormData` API, which means they work without JavaScript as a **progressive enhancement** baseline. The `action` prop on a `<form>` element accepts an async function that receives a `FormData` object. No event object, no `e.preventDefault()`, no manual JSON serialisation — React handles all of that. In frameworks like Next.js, Server Actions extend this pattern to run the action function on the server with no client-server boundary code.\n\nThe `FormData` API supports **repeated keys** for multi-value fields like checkboxes: `formData.getAll("interests")` returns an array. Using `get("interests")` for a checkbox group returns only the first checked value — a common mistake. `FormData` also handles file inputs natively, returning `File` objects that can be passed directly to `fetch` as the body. Understanding the `FormData` API is essential for working with React 19 form patterns correctly.',
             codeExample: `// React 19 — pass an async function to action:\nasync function submitContact(formData) {\n  const email = formData.get('email')\n  await fetch('/api/contact', {\n    method: 'POST',\n    body:    JSON.stringify({ email }),\n    headers: { 'Content-Type': 'application/json' },\n  })\n}\n\nfunction ContactForm() {\n  return (\n    <form action={submitContact}>  {/* action, not onSubmit */}\n      <input name="email" type="email" />\n      <button type="submit">Send</button>\n    </form>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '⚡',
+              title: 'Step 1 — Form actions React 19: the smart postbox',
+              text: [
+                'A smart postbox that processes letters automatically and shows a sending indicator.',
+                'React 19 form actions: `<form action={serverAction}>`. No preventDefault, no fetch call, no useState for pending — React handles the lifecycle.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -11095,7 +12888,14 @@ function validate(data: unknown) {
             text: '`FormData` is the browser\'s built-in way to collect form field values. Each input\'s `name` attribute becomes a key. `formData.get()` retrieves a single value; `formData.getAll()` retrieves multiple values for checkboxes and multi-select inputs.',
             expandedText: '`FormData` supports the full HTML form field model: text inputs, selects, textareas, checkboxes, radio buttons, and file inputs. `formData.get(name)` returns the value as a string (or `null` if absent); `formData.getAll(name)` returns an array for multi-value fields. **File inputs** return `File` objects rather than strings, and `File` extends `Blob` so the data can be passed directly to APIs that accept binary data without any encoding step.\n\nValidating `FormData` on the server requires explicit type coercion because all values arrive as strings. The number `"42"` must be parsed with `Number()` or `parseInt`; the boolean `"on"` (checkbox checked) must be compared explicitly. **Zod** has a `z.coerce` family of validators that automatically convert string inputs to the correct type, making `FormData` validation ergonomic: `const schema = z.object({ age: z.coerce.number().min(18) })` handles the string-to-number conversion automatically.',
             codeExample: `async function handleSignup(formData) {\n  // Single values:\n  const name  = formData.get('name')   // 'Ana'\n  const email = formData.get('email')  // 'ana@example.com'\n  const role  = formData.get('role')   // 'developer'\n\n  // Multiple values (checkboxes, multi-select):\n  const tags = formData.getAll('tags') // ['react', 'typescript']\n\n  await createUser({ name, email, role, tags })\n}\n\nfunction SignupForm() {\n  return (\n    <form action={handleSignup}>\n      <input name="name" />\n      <input name="email" type="email" />\n      <input type="checkbox" name="tags" value="react" />\n      <input type="checkbox" name="tags" value="typescript" />\n      <button type="submit">Sign up</button>\n    </form>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📋',
+              title: 'Step 2 — FormData: the structured envelope',
+              text: [
+                'A structured envelope with labelled pockets: subject, body, attachments. Read each pocket by label.',
+                '\'new FormData(formElement)\' collects all named input values. `formData.get(email)` reads the email field. No manual state for each field.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -11104,7 +12904,14 @@ function validate(data: unknown) {
             text: '`useFormStatus()` from `react-dom` reads the `pending` state of the nearest parent form action. Use it inside a submit button component to disable the button while the action runs. The component must be inside the form — it reads context, not props.',
             expandedText: '`useFormStatus` reads the **pending state of the nearest ancestor `<form>`** that has a React 19 action. It must be called inside a component that is a **descendant** of the form, not the form component itself. This is the most common mistake: calling `useFormStatus` at the top level of the component that renders the form. The hook reads context provided by the form, so it cannot see its own parent form — it needs to be in a child component like `<SubmitButton>`.\n\nThe pattern requires extracting the submit button into its own component: `function SubmitButton() { const { pending } = useFormStatus(); return <button disabled={pending}>...</button> }`. This separation is also good design — the submit button is a reusable component that works with any form that uses React 19 actions. The `pending` flag is `true` from the moment the form is submitted until the action function returns, covering the entire round-trip including any server processing time.',
             codeExample: `import { useFormStatus } from 'react-dom'\n\n// Must be a separate component INSIDE the form:\nfunction SubmitButton() {\n  const { pending } = useFormStatus()\n  return (\n    <button type="submit" disabled={pending}>\n      {pending ? 'Saving…' : 'Save'}\n    </button>\n  )\n}\n\nfunction ContactForm() {\n  return (\n    <form action={submitContact}>\n      <input name="email" type="email" />\n      <SubmitButton />  {/* inside the form — can read pending state */}\n    </form>\n  )\n}\n\n// ❌ Wrong — useFormStatus outside the form always returns pending: false:\n// function ContactForm() {\n//   const { pending } = useFormStatus()  // doesn't work here`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '⏳',
+              title: 'Step 3 — useFormStatus: the in-progress indicator',
+              text: [
+                'A spinner that appears on the submit button while processing. The button is disabled. The user knows something is happening.',
+                '\'const { pending } = useFormStatus()\' — reads whether the parent form action is in flight. Disable the button and show a spinner while pending.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -11113,7 +12920,14 @@ function validate(data: unknown) {
             text: 'If a form action throws, wrapping the form in an `ErrorBoundary` (from `react-error-boundary`) catches the error and renders a fallback. The fallback receives `resetErrorBoundary` to let the user retry. Best for unexpected server failures — not per-field validation.',
             expandedText: 'Using `ErrorBoundary` for forms should be reserved for truly unexpected failures — network timeouts, 500 responses, or uncaught exceptions in the action function — not for validation errors. Showing a full error boundary UI (which typically replaces the entire form) for a missing required field is a poor user experience: all form input is lost and the user must start over. **Inline validation errors** returned as action state are the correct pattern for expected failures; `ErrorBoundary` is the last-resort safety net.\n\nThe optimal form architecture combines both: `useActionState` returns structured validation errors that render inline next to the relevant fields, and the form is wrapped in an `ErrorBoundary` that catches unexpected server failures with a friendly message and a retry button. The `reset()` function from the error boundary retries the render, but for form errors it is usually better to navigate back to the form URL so the user can re-enter their data.',
             codeExample: `import { ErrorBoundary } from 'react-error-boundary'\n\nfunction FormError({ error, resetErrorBoundary }) {\n  return (\n    <div role="alert">\n      <p>Something went wrong: {error.message}</p>\n      <button onClick={resetErrorBoundary}>Try again</button>\n    </div>\n  )\n}\n\nfunction ContactPage() {\n  return (\n    <ErrorBoundary FallbackComponent={FormError}>\n      <ContactForm />\n    </ErrorBoundary>\n  )\n}\n\nasync function submitContact(formData) {\n  const res = await fetch('/api/contact', { method: 'POST', body: formData })\n  if (!res.ok) throw new Error('Server error — please try again')\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🧯',
+              title: 'Step 4 — Error boundaries for forms: the safety net',
+              text: [
+                'A safety net under the tightrope. If the performer falls, the net catches them.',
+                'An `ErrorBoundary` around a form catches render errors from failed mutations. Always have a fallback — uncaught errors crash the whole component tree.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -11122,7 +12936,14 @@ function validate(data: unknown) {
             text: '`useActionState(action, initialState)` wraps a form action and returns the latest result as state — perfect for per-field validation errors. Your action receives `(previousState, formData)` and returns the new state (e.g. `{ errors: { email: \'Required\' } }`).',
             expandedText: '`useActionState` threads **previous state** through every action call. The action signature is `async function action(previousState, formData)` — note that `previousState` is the **first argument**, not `formData`. This is the most common source of subtle bugs: if you write the action to accept only `formData`, the `formData` argument silently receives `previousState` and validation breaks in ways that are very hard to debug. Always match the signature exactly.\n\nThe previous state pattern enables **incremental form wizards** where each step validates and stores its data before moving to the next step. The state accumulates across submissions: step 1 returns `{ step: 1, name: "Alice" }`, step 2 action receives that as `previousState` and returns `{ step: 2, name: "Alice", email: "alice@example.com" }`. The final submission has access to all collected data without localStorage or hidden form fields.',
             codeExample: `import { useActionState } from 'react'\n\nasync function signupAction(previousState, formData) {\n  const email = formData.get('email')\n  if (!email) return { errors: { email: 'Email is required' } }\n  await createUser({ email })\n  return { errors: {}, success: true }\n}\n\nfunction SignupForm() {\n  const [state, action] = useActionState(signupAction, { errors: {} })\n\n  return (\n    <form action={action}>\n      <input name="email" type="email" />\n      {state.errors.email && (\n        <p className="text-red-500">{state.errors.email}</p>\n      )}\n      <SubmitButton />\n      {state.success && <p>Account created!</p>}\n    </form>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🎛️',
+              title: 'Step 5 — useActionState: the form status panel',
+              text: [
+                'A delivery tracking dashboard: current status, last message, and a retry button.',
+                '\'const [state, formAction, isPending] = useActionState(action, initialState)\' manages the full action lifecycle. One hook replaces useEffect+useState for async form state.',
+              ],
+            },
           },
         ],
       },
@@ -11219,7 +13040,14 @@ function validate(data: unknown) {
             text: 'Every time a user navigates back to a route, a plain useEffect fetch fires again — even if the data has not changed. This wastes network requests, causes loading flickers, and makes apps feel slow. Client-side caching stores fetch results keyed by query, so subsequent visits are instant.',
             expandedText: '**TanStack Query** solves problems that manual `useEffect` data fetching cannot: **request deduplication**, background refetching, stale-while-revalidate caching, and coordinated invalidation. When two components mount simultaneously with the same `queryKey`, only one HTTP request fires — both components receive the same data when it resolves. This deduplication is invisible but prevents request storms when the same data is needed in multiple places simultaneously.\n\nThe **`QueryClient`** is a cache that stores query results, tracks loading state, and manages background refetching. It is configured once at the application root and accessed by all `useQuery` calls through the `QueryClientProvider`. The cache is shared across the entire application, so navigating away from a page and back can return cached data instantly while the background refetch is in progress — a user experience improvement that is difficult to implement correctly with manual `useEffect`.',
             codeExample: `// Without caching — every navigation triggers a new request:\n// User visits /posts      → fetches posts (500ms)\n// User visits /posts/1    → fetches post (500ms)\n// User goes back to /posts → fetches posts AGAIN (500ms) 😩\n\n// With TanStack Query — cached results returned instantly:\n// User visits /posts      → fetches posts, stores in cache\n// User visits /posts/1    → fetches post\n// User goes back to /posts → returns cached posts instantly ⚡\n//                           (refetches in background if stale)`,
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🗃️',
+              title: 'Step 0 — The caching problem: the constantly-ringing phone',
+              text: [
+                'Every time a colleague wants the menu, they call the kitchen. If 50 colleagues call in 5 minutes, the kitchen answers the same question 50 times.',
+                'Without caching, every component mounting runs a fresh fetch. TanStack Query answers all instances from a single request and refetches intelligently.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -11228,7 +13056,14 @@ function validate(data: unknown) {
             text: 'TanStack Query tracks whether cached data is "fresh" (recently fetched — serve as-is) or "stale" (old enough that a background refetch should happen). `staleTime` controls the window — `0` means always stale, `Infinity` means never auto-refetch. Default is `0`.',
             expandedText: '`staleTime` and `gcTime` are independent and frequently confused. **`staleTime`** (default: `0`) controls when data is considered stale — at `staleTime: 0` data is stale immediately after it is received, so the next mount or window focus triggers a background refetch. A non-zero `staleTime` means the data is considered fresh for that duration and no background refetch is triggered. **`gcTime`** (formerly `cacheTime`, default: 5 minutes) controls how long unused data stays in the cache before being garbage collected.\n\nData marked as stale is **not thrown away immediately** — it remains in the cache and is returned to new subscribers while a background refetch is in progress. This is the **stale-while-revalidate** pattern: users see data instantly (even if slightly stale) and the freshest data replaces it silently when the refetch completes. Setting `staleTime: Infinity` disables background refetching entirely — data never becomes stale and is only refreshed through explicit invalidation.',
             codeExample: `import { QueryClient, QueryClientProvider } from '@tanstack/react-query'\n\nconst queryClient = new QueryClient({\n  defaultOptions: {\n    queries: {\n      staleTime: 60_000,  // data stays fresh for 60 seconds globally\n    },\n  },\n})\n\n// Override per query:\nuseQuery({\n  queryKey: ['user', userId],\n  queryFn:  () => fetchUser(userId),\n  staleTime: Infinity,   // user profile — rarely changes\n})\n\nuseQuery({\n  queryKey: ['feed'],\n  queryFn:  fetchFeed,\n  staleTime: 10_000,     // news feed — refresh every 10 seconds\n})`,
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🥛',
+              title: 'Step 1 — Stale vs fresh: the milk expiry date',
+              text: [
+                'Fresh milk from this morning is fine. Last week milk should not be used without checking.',
+                '\'staleTime: 60_000\' means cached data is fresh for 60 seconds. After that it is stale and refetches on next access.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -11237,7 +13072,14 @@ function validate(data: unknown) {
             text: '`useQuery({ queryKey, queryFn })` fetches and caches data. `queryKey` is an array that uniquely identifies the query — include all variables the result depends on. `queryFn` is the async function. Returns `{ data, isLoading, isError, error }`.',
             expandedText: 'The **`queryKey`** is a dependency array analogous to `useEffect` dependency array — every variable that the `queryFn` uses must appear in the key. `useQuery({ queryKey: ["user", userId], queryFn: () => fetchUser(userId) })` — if `userId` changes, TanStack Query creates a new cache entry for the new key and fetches fresh data. Omitting `userId` from the key means the same cache entry is returned regardless of which user is selected, showing stale data from the previous user.\n\nKey **structure** matters for cache invalidation. Hierarchical keys like `["posts", postId, "comments"]` allow targeted invalidation: `invalidateQueries({ queryKey: ["posts", postId] })` invalidates all queries nested under that post. A practical rule: structure keys to reflect the data hierarchy, with the most general segment first and the most specific last. This makes invalidation patterns predictable and avoids over-invalidating unrelated queries.',
             codeExample: `import { useQuery } from '@tanstack/react-query'\n\nfunction Post({ id }) {\n  const { data: post, isLoading, isError, error } = useQuery({\n    queryKey: ['post', id],         // id is part of key — different ids = different cache entries\n    queryFn:  () => fetchPost(id),  // async function\n  })\n\n  if (isLoading) return <Spinner />\n  if (isError)   return <p>Error: {error.message}</p>\n\n  return (\n    <article>\n      <h1>{post.title}</h1>\n      <p>{post.body}</p>\n    </article>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📡',
+              title: 'Step 2 — useQuery: the smart data subscription',
+              text: [
+                'A digital newspaper subscription that delivers the current edition on demand and updates when a new one is available.',
+                '\'const { data, isLoading, error } = useQuery({ queryKey: [users], queryFn: fetchUsers })\' — declarative data subscription.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -11246,7 +13088,14 @@ function validate(data: unknown) {
             text: 'When a stale query mounts again, TanStack Query shows the cached data immediately and refetches in the background. If new data arrives, the UI updates automatically. Users see content instantly — no spinner on return visits.',
             expandedText: '`isLoading` and `isFetching` represent different states. **`isLoading`** is `true` only on the initial fetch when there is no cached data — it transitions to `false` once data is received for the first time and never becomes `true` again for that query key. **`isFetching`** is `true` whenever any request is in progress, including background refetches. Show a full-screen loading skeleton on `isLoading`; show a subtle progress indicator on `isFetching` to avoid disruptive UI flashes during routine background refreshes.\n\nThe `status` field provides a union type — `"pending"`, `"success"`, `"error"` — for structured UI rendering. Destructuring all three states and rendering conditionally gives TypeScript the correct narrowed type in each branch: inside `status === "success"`, `data` is typed as the resolved value rather than `T | undefined`. This is one of the key ergonomic advantages of TanStack Query over manual `useEffect` state management.',
             codeExample: `// TanStack Query refetches stale data automatically:\n// - On component mount (if stale)\n// - On window focus (refetchOnWindowFocus: true by default)\n// - On network reconnection\n// - On a timer (refetchInterval)\n\nuseQuery({\n  queryKey: ['notifications'],\n  queryFn:  fetchNotifications,\n  refetchInterval: 30_000,    // poll every 30 seconds\n})\n\n// Show a subtle indicator during background refetch:\nfunction Posts() {\n  const { data, isFetching } = useQuery({ queryKey: ['posts'], queryFn: fetchPosts })\n  return (\n    <div>\n      {isFetching && <span className="text-sm opacity-50">Refreshing…</span>}\n      {data?.map(p => <PostCard key={p.id} post={p} />)}\n    </div>\n  )\n}`,
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🔄',
+              title: 'Step 3 — Background refetch: the silent newspaper delivery',
+              text: [
+                'The newspaper is on your doorstep when you wake up. You did not wait; it updated itself.',
+                'TanStack Query refetches on window focus, network reconnect, component remount. The UI shows last known data while new data loads silently.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -11255,7 +13104,14 @@ function validate(data: unknown) {
             text: '`useMutation({ mutationFn })` handles write operations. Call `mutate(variables)` to trigger it. Use `onSuccess` to invalidate related queries — `queryClient.invalidateQueries()` marks matching queries stale and triggers a refetch, keeping the UI in sync with the server.',
             expandedText: '`invalidateQueries` marks matching cache entries as stale and immediately triggers a background refetch if there are active subscribers. It uses **prefix matching** by default: invalidating `["posts"]` also invalidates `["posts", 1]` and `["posts", 1, "comments"]`, making it easy to invalidate an entire data hierarchy after a mutation. For **optimistic updates** — where the UI should reflect the mutation result instantly — use `onMutate` to call `setQueryData` with the expected result, then confirm in `onSuccess` and roll back in `onError`.\n\n`useMutation` manages the lifecycle of a mutation: `isPending` is `true` while the mutation is in flight, `isError` and `isSuccess` reflect the outcome. The `mutateAsync` function returns a Promise for cases where you need to `await` the result — for example, to navigate after a successful mutation. The `onSettled` callback fires on both success and error, making it the right place for unconditional cleanup like re-enabling a submit button.',
             codeExample: `import { useMutation, useQueryClient } from '@tanstack/react-query'\n\nfunction NewPostForm() {\n  const queryClient = useQueryClient()\n\n  const { mutate, isPending } = useMutation({\n    mutationFn: (postData) => createPost(postData),\n    onSuccess: () => {\n      // Invalidate posts list so it refetches with the new post:\n      queryClient.invalidateQueries({ queryKey: ['posts'] })\n    },\n  })\n\n  function handleSubmit(e) {\n    e.preventDefault()\n    const form = new FormData(e.target)\n    mutate({ title: form.get('title'), body: form.get('body') })\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <input name="title" />\n      <textarea name="body" />\n      <button disabled={isPending}>\n        {isPending ? 'Saving…' : 'Publish'}\n      </button>\n    </form>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '✏️',
+              title: 'Step 4 — useMutation: the change request',
+              text: [
+                'A change request form: fill in, submit, wait for confirmation, then the records update.',
+                '\'mutation.mutate(data)\' triggers the async operation. `onSuccess: () => queryClient.invalidateQueries([users])` invalidates cache so the list refetches.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -11264,7 +13120,14 @@ function validate(data: unknown) {
             text: 'React Router loaders re-run on every navigation by default — even when the data has not changed. You can integrate TanStack Query with loaders using `queryClient.ensureQueryData()`: the loader populates the cache, and subsequent visits are served instantly without a network round-trip.',
             expandedText: 'Using `ensureQueryData` inside a router loader is a **cache-first** data-loading strategy: if fresh data is already in the cache (within `staleTime`), the loader returns immediately with no network request — navigation is instant. If data is stale or absent, the loader fetches it before the component mounts. The component then calls `useQuery` with the same key to subscribe to the cache, receiving the pre-loaded data on its first render with no loading state.\n\nThis pattern combines the best of both worlds: **router loaders** prevent the waterfall and ensure data is available before render; **TanStack Query** provides caching, background refetching, and real-time updates after the initial load. The component has a live subscription to the cache — if data is invalidated after mount (by a mutation elsewhere), the component automatically re-renders with fresh data. Neither the loader nor the component needs to be modified to gain this behaviour.',
             codeExample: `// src/main.jsx — provide QueryClient to the router\nimport { QueryClient, QueryClientProvider } from '@tanstack/react-query'\nconst queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 60_000 } } })\n\n// src/routes/posts.jsx — loader uses TanStack Query as cache layer\nconst postsQuery = { queryKey: ['posts'], queryFn: () => fetch('/api/posts').then(r => r.json()) }\n\nexport const loader = async () => {\n  // Returns cached data instantly on re-visit; only fetches when stale\n  return queryClient.ensureQueryData(postsQuery)\n}\n\nexport default function PostsPage() {\n  // useQuery reads from the same cache the loader populated\n  const { data: posts } = useQuery(postsQuery)\n  return <ul>{posts.map(p => <li key={p.id}>{p.title}</li>)}</ul>\n}`,
-            language: 'javascript',
+            language: 'javascript',            analogy: {
+              icon: '🚂',
+              title: 'Step 5 — Loader integration: data on the platform before boarding',
+              text: [
+                'Arriving at the platform to find your luggage already loaded. You board and everything is ready.',
+                'Prefetch in the loader with `queryClient.prefetchQuery(...)`. When the component mounts, the cache is warm — `useQuery` returns data instantly.',
+              ],
+            },
           },
         ],
       },
@@ -11362,7 +13225,14 @@ function validate(data: unknown) {
             text: 'Next.js is a React framework for production apps that provides routing, data fetching, code-splitting, and deployment out of the box. With React 19 and React Server Components (RSC), it now embraces a fullstack model: components can run permanently on the server, fetch data without `useEffect`, and query databases directly — all in the same component tree as your client-side UI.',
             expandedText: '**Next.js** is a React framework that bundles routing, server rendering, data fetching, API endpoints, and deployment configuration into a single cohesive toolchain. Plain React requires assembling these concerns separately — Vite for bundling, React Router for routing, `useEffect` for data fetching, Express for API endpoints. Next.js replaces this assembly with **convention-based defaults** so teams spend time on product code rather than infrastructure wiring.\n\nThe **App Router** (introduced in Next.js 13) is built on top of **React Server Components**, which means components are server-rendered by default and only send HTML to the browser. This is architecturally different from earlier SSR approaches where the same component code ran on both server and client. The App Router enables components to directly `await` database queries, read environment secrets, and import server-only libraries without any of that code reaching the client bundle.',
             codeExample: `// The mental shift: server as permanent co-equal runtime\n\n// ❌ Old model — SSR was a one-time render step before hydration\n// getServerSideProps() ran on every request, then handed off to client\n\n// ✅ New model — Server Components run on the server PERMANENTLY\nexport default async function Page() {\n  // Runs on the server — never shipped to the browser\n  const posts = await db.select().from(postsTable)\n  \n  return (\n    <ul>\n      {posts.map(p => (\n        <li key={p.id}>\n          <h2>{p.title}</h2>\n          <InteractiveVoteButton postId={p.id} />  {/* Client Component */}\n        </li>\n      ))}\n    </ul>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🏗️',
+              title: 'Step 0 — What is Next.js: the pre-built house',
+              text: [
+                'Vite is a plot of land and the tools to build. Next.js is a plot with foundations poured and plumbing roughed in.',
+                'Next.js is a React framework. Out of the box: file-based routing, SSR/SSG, image optimisation, TypeScript, ESLint, and deployment-ready build output.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -11371,7 +13241,14 @@ function validate(data: unknown) {
             text: 'Create a Next.js project with `npx create-next-app@latest`. The App Router uses the file system to define routes: every folder under `src/app/` becomes a URL segment. Special files control what renders at each segment — `page.js` is the UI, `layout.js` wraps it with shared chrome, `loading.js` shows a Suspense fallback, and `error.js` catches uncaught exceptions.',
             expandedText: 'The **App Router** uses the filesystem inside `src/app/` as the routing configuration. Each folder is a URL segment; a file named `page.tsx` makes that segment publicly accessible as a route. Files named `layout.tsx`, `loading.tsx`, `error.tsx`, and `not-found.tsx` have special roles and are automatically applied without any import or configuration. This convention-over-configuration approach means a developer can infer the routing structure by reading the directory tree.\n\n`next dev` starts the development server with hot module replacement; `next build` compiles and optimises the project for production with automatic static analysis to determine which pages can be pre-rendered; `next start` serves the production build. The build output reports each route with its rendering strategy (static, dynamic, or ISR) and bundle sizes, giving immediate visibility into the performance characteristics of every page.',
             codeExample: `// Bootstrap a new project:\n// npx create-next-app@latest\n// → TypeScript: No  ESLint: Yes  Tailwind: Yes  src/: Yes  App Router: Yes\n\nsrc/app/\n├── layout.js          // Root layout — wraps every page (html, body, nav)\n├── page.js            // Renders at /\n├── loading.js         // Suspense fallback shown during page render\n├── error.js           // Error boundary for this route segment\n├── about/\n│   └── page.js        // Renders at /about\n└── post/\n    └── [id]/\n        └── page.js    // Renders at /post/1, /post/2 … (dynamic segment)\n\n// src/app/layout.js\nexport default function RootLayout({ children }) {\n  return (\n    <html lang="en">\n      <body>\n        <nav>My App</nav>\n        {children}        {/* page.js renders here */}\n      </body>\n    </html>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📁',
+              title: 'Step 1 — App Router and project structure: the floor plan',
+              text: [
+                'Every room has a location in the floor plan. The file position in `app/` is its URL.',
+                '\'app/page.tsx\' maps to `/`. `app/about/page.tsx` maps to `/about`. `page.tsx` is the UI; `layout.tsx` is the shared wrapper.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -11380,7 +13257,14 @@ function validate(data: unknown) {
             text: "In the App Router, every component is a Server Component by default — it runs on the server, can be `async`, and never ships to the client bundle. Add `'use client'` at the top of a file to opt into a Client Component when you need interactivity, state, or browser APIs. The rule: start with Server Components, reach for Client Components only when necessary.",
             expandedText: 'The **Server Component / Client Component** distinction is the most important mental model in the App Router. Server Components run exclusively on the server, can use `async/await`, can read secrets and databases, and send only HTML to the browser — their source code and dependencies never reach the client bundle. Client Components (marked with `"use client"`) are the traditional React model: they run on both server (for initial HTML) and client (for hydration and interactivity).\n\nThe `"use client"` directive is a **module boundary**, not a per-component declaration. Everything in a file marked `"use client"` and everything that file imports becomes part of the client bundle. This means placing `"use client"` high in the import tree (for example, at a layout component) accidentally pulls a large amount of code into the client bundle. The optimal pattern is to keep Client Components as **leaf nodes** — small, focused components at the edges of the tree that handle specific interactive requirements.',
             codeExample: `// ─── Server Component (default) ───────────────────────────\n// async ✅  fetch/db ✅  no hooks ✅  no browser APIs ✅\nexport default async function PostPage({ params }) {\n  const post = await db.posts.findById(params.id)  // runs on server only\n  return (\n    <article>\n      <h1>{post.title}</h1>\n      <p>{post.body}</p>\n      <LikeButton postId={post.id} />  {/* Client Component for interactivity */}\n    </article>\n  )\n}\n\n// ─── Client Component ──────────────────────────────────────\n// 'use client' must be the FIRST line\n'use client'\nimport { useState } from 'react'\n\nexport default function LikeButton({ postId }) {\n  const [liked, setLiked] = useState(false)\n  return (\n    <button onClick={() => setLiked(l => !l)}>\n      {liked ? '❤️ Liked' : '🤍 Like'}\n    </button>\n  )\n}\n// useState, useEffect, onClick, window, localStorage → Client Component\n// fetch, db queries, secrets, no interactivity       → Server Component`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🍳',
+              title: 'Step 2 — Server vs Client Components: kitchen vs dining room',
+              text: [
+                'Food is prepared in the kitchen, served in the dining room. Server Components run in the kitchen — close to data, never sent to the browser.',
+                'All App Router components are Server Components by default. Add `use client` to opt into client rendering. Server Components fetch data directly.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -11389,7 +13273,14 @@ function validate(data: unknown) {
             text: "Server Components can use `fetch()` or call a database client directly — no API layer needed. For slow data, pass a Promise to a Client Component and use `use()` with `<Suspense>` to stream content progressively. A `loading.js` file is the shortcut: Next.js automatically wraps the page in a Suspense boundary and shows the loading UI while rendering.",
             expandedText: 'Next.js **automatically code-splits** the JavaScript bundle by route. When a user visits `/about`, they download only the JavaScript for the `/about` page and its dependencies — not the JavaScript for `/dashboard` or `/settings`. On client-side navigation, Next.js prefetches the destination page JavaScript bundle when a `<Link>` enters the viewport, so the navigation appears instant. This is enabled by default and requires no configuration.\n\nBeyond route-level splitting, Next.js performs **tree-shaking** at build time to eliminate unused exports from every module. Server Component imports are excluded from the client bundle entirely — only the rendered HTML output crosses the server-client boundary. Dynamic imports with `next/dynamic` enable **lazy loading** of Client Components, deferring their JavaScript download until they are needed. Combining these mechanisms keeps the critical-path JavaScript minimal even on large applications.',
             codeExample: `// Simple fetch in a Server Component\nexport default async function PostsPage() {\n  const res = await fetch('https://jsonplaceholder.typicode.com/posts')\n  if (!res.ok) throw new Error('Failed to fetch')\n  const posts = await res.json()\n  return <PostsList posts={posts} />\n}\n\n// ─── Streaming with Suspense ────────────────────────────────\n// src/app/page.js (Server Component — NOT async)\nimport { Suspense } from 'react'\nimport { PostsList, PostsListSkeleton } from '@/components'\nimport { getPosts } from '@/data/posts'\n\nexport default function Home() {\n  const postsPromise = getPosts()  // start fetching — don\\'t await\n  return (\n    <Suspense fallback={<PostsListSkeleton />}>\n      <PostsList postsPromise={postsPromise} />\n    </Suspense>\n  )\n}\n\n// src/components/PostsList.js (Client Component)\n'use client'\nimport { use } from 'react'\nexport default function PostsList({ postsPromise }) {\n  const posts = use(postsPromise)  // suspends until resolved\n  return <ul>{posts.map(p => <li key={p.id}>{p.title}</li>)}</ul>\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🌊',
+              title: 'Step 3 — Data fetching and streaming: the river not the lake',
+              text: [
+                'Water flows continuously — you do not wait for the lake to fill before drinking.',
+                'Server Components use `async/await` directly. Next.js streams HTML progressively. `<Suspense>` boundaries show fallbacks while slow sections load.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -11398,7 +13289,14 @@ function validate(data: unknown) {
             text: "A Server Function is an async function marked with `'use server'` — it runs exclusively on the server but can be called from any component, including Client Components. Use them as form action props to handle submissions without a separate API endpoint. After mutating data, call `revalidatePath()` or `revalidateTag()` to purge the cache and trigger a re-render.",
             expandedText: 'Next.js extends the standard `fetch` API with **caching semantics** specific to the App Router. `fetch(url)` in a Server Component caches the response by default, so multiple components fetching the same URL in the same request receive the same cached response. `fetch(url, { cache: "no-store" })` opts out of caching and fetches fresh data on every request. `fetch(url, { next: { revalidate: 60 } })` uses cached data and re-validates it at most once per minute.\n\nFor mutations, `revalidatePath(path)` and `revalidateTag(tag)` invalidate specific cached pages or fetch results from Server Actions or Route Handlers. These functions are called after a database write to ensure subsequent page renders reflect the updated data. Tags are attached to fetch calls with `{ next: { tags: ["posts"] } }` and invalidated together with `revalidateTag("posts")`, enabling efficient cache invalidation without specifying individual URLs.',
             codeExample: `// src/app/actions.js\n'use server'\nimport { revalidatePath } from 'next/cache'\n\nexport async function createPost(formData) {\n  const title = formData.get('title')\n  const body  = formData.get('body')\n\n  if (!title || !body) {\n    return { error: 'Title and body are required.' }\n  }\n\n  await db.posts.create({ title, body })    // runs on server only\n  revalidatePath('/posts')                  // bust the /posts cache\n  return { success: true }\n}\n\n// src/app/new-post/page.js — form calls the Server Function directly\nimport { createPost } from '../actions'\n\nexport default function NewPostPage() {\n  return (\n    <form action={createPost}>\n      <input  name="title" placeholder="Title" />\n      <textarea name="body" placeholder="Body" />\n      <button type="submit">Publish</button>\n    </form>\n  )\n  // No fetch(), no API route, no useEffect — the browser POSTs to the\n  // Server Function. Works even with JavaScript disabled.\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📮',
+              title: 'Step 4 — Server Functions and mutations: the secure post office',
+              text: [
+                'A form submitted to a secure government post office. The clerk processes it with access to all official databases.',
+                'Server Functions marked `use server` run on the server when called from the browser. Next.js serialises the form and revalidates the cache.',
+              ],
+            },
           },
           {
             animationStep: 5,
@@ -11407,7 +13305,14 @@ function validate(data: unknown) {
             text: "Next.js splits errors into two categories. Expected errors (validation, 404s) should be handled explicitly — return structured state from Server Functions with `useActionState`, check `res.ok` from `fetch`, or call `notFound()` for missing resources. Unexpected errors (unhandled exceptions) are caught by `error.js` boundaries — a Client Component that receives the `error` and a `reset()` function to retry.",
             expandedText: 'Next.js splits errors into two categories with different handling strategies. **Expected errors** — validation failures, missing resources, unauthorised access — are handled explicitly: Server Actions return structured error state via `useActionState`, `notFound()` renders the nearest `not-found.tsx`, and `redirect()` navigates to a different URL. These errors are part of normal application flow and should never reach an error boundary.\n\n**Unexpected errors** — unhandled exceptions, network failures, database errors — are caught by `error.tsx` boundaries. An `error.tsx` file must be a Client Component (because it uses the `reset()` function from the React error boundary API) and is scoped to its directory and children. The root `app/global-error.tsx` is the last-resort boundary for the root layout. Distinguishing between the two types prevents the pattern of wrapping everything in try-catch and returning error states for both expected and unexpected failures.',
             codeExample: `// ─── Expected: Server Function returns error state ─────────\n'use server'\nexport async function registerUser(prevState, formData) {\n  const email = formData.get('email')\n  if (!email) return { error: 'Email is required.' }\n  await db.users.create({ email })\n  return { success: true }\n}\n\n// ─── Expected: notFound() for missing resources ─────────────\nimport { notFound } from 'next/navigation'\nexport default async function PostPage({ params }) {\n  const res = await fetch(\`/api/posts/\${params.id}\`)\n  if (res.status === 404) notFound()   // renders the nearest not-found.js\n  const post = await res.json()\n  return <h1>{post.title}</h1>\n}\n\n// ─── Unexpected: src/app/error.js ───────────────────────────\n'use client'   // must be a Client Component\nexport default function Error({ error, reset }) {\n  return (\n    <div>\n      <h2>Something went wrong</h2>\n      <p>{error.message}</p>\n      <button onClick={() => reset()}>Try again</button>\n    </div>\n  )\n}\n// Place error.js next to page.js to scope it to that route.\n// app/global-error.js is the last-resort fallback for the root.`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🧯',
+              title: 'Step 5 — Error handling: the fire exit plan',
+              text: [
+                'Every floor has a fire exit map. In Next.js, each route segment has its own error boundary.',
+                '\'error.tsx\' catches all errors for that route segment. `not-found.tsx` renders when `notFound()` is called. Errors are isolated — one broken route does not crash the app.',
+              ],
+            },
           },
         ],
       },
@@ -11510,7 +13415,14 @@ function validate(data: unknown) {
             text: 'Every folder inside `src/app/` becomes a URL path segment. A file named `page.tsx` inside that folder makes it a real route. No router config, no imports — just create the folder and file. Nested folders create nested URLs: `app/blog/post/page.tsx` → `/blog/post`.',
             expandedText: 'The App Router treats each folder inside `src/app/` as a **route segment**. Only files named `page.tsx` are publicly accessible URLs — other TypeScript files (components, utilities, tests) can live alongside them without becoming routes. This co-location of route files with their helpers reduces the need to jump between a `pages/` directory and a `components/` directory when working on a feature. The folder structure is both the routing configuration and the project organisation.\n\nSpecial filenames inside a segment control the rendering behaviour: `layout.tsx` wraps child segments with shared UI, `loading.tsx` provides a Suspense fallback shown during navigation, `error.tsx` is the error boundary for that segment and its children, and `not-found.tsx` renders when `notFound()` is called from within the segment. These files are automatically wired up by Next.js — no import or route registration is required.',
             codeExample: `src/app/\n├── page.tsx           # /\n├── about/\n│   └── page.tsx       # /about\n├── blog/\n│   ├── page.tsx       # /blog\n│   └── post/\n│       └── page.tsx   # /blog/post`,
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '🗂️',
+              title: 'Step 0 — File-based routing: the folder as URL',
+              text: [
+                'A company\'s file storage mirrors its org chart: /finance/reports/q1.pdf. The file path IS the document address.',
+                'In Next.js App Router, every `page.tsx` inside `app/` becomes a URL. `app/blog/page.tsx` → `/blog`. The folder structure IS the routing tree.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -11519,7 +13431,14 @@ function validate(data: unknown) {
             text: "Wrap a folder name in square brackets to create a dynamic segment: `[id]` matches `/posts/1`, `/posts/abc`, etc. Read the value with the `params` prop — it's an object with keys matching the bracket names. For async Server Components, `params` must be awaited.",
             expandedText: '**Dynamic segments** — folder names wrapped in square brackets like `[id]` — capture the URL value at that position. The captured value is passed to the `page.tsx` as a `params` prop: `export default function Page({ params }: { params: { id: string } })`. In Next.js 15, `params` is a Promise in Server Components, requiring `await params` before accessing fields.\n\nDynamic segments are **always strings** regardless of how they appear in the URL. The numeric-looking `"42"` in `/users/42` arrives as the string `"42"`, not the number `42`. Always parse and validate dynamic params before using them in database queries or comparisons. TypeScript will remind you that params are strings, but runtime validation with Zod provides an additional safety net against malformed URLs that bypass TypeScript.',
             codeExample: `// app/posts/[id]/page.tsx\n// Matches /posts/1, /posts/hello, /posts/any-value\n\nexport default async function PostPage({ params }) {\n  const { id } = await params         // Next.js 15+: params is async\n  const post = await fetchPost(id)\n\n  return <h1>{post.title}</h1>\n}\n\n// Multiple dynamic segments:\n// app/shop/[category]/[product]/page.tsx\n// → /shop/shoes/nike-air  →  params = { category: 'shoes', product: 'nike-air' }`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🔖',
+              title: 'Step 1 — Dynamic segments: the template URL',
+              text: [
+                'A library call number system: every book has the same format (GENRE/AUTHOR/TITLE) but unique values.',
+                '\'app/blog/[slug]/page.tsx\' creates a dynamic route. `params.slug` in the page component receives the URL segment value.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -11528,7 +13447,14 @@ function validate(data: unknown) {
             text: "Wrap a folder name in parentheses to create a route group: `(marketing)` groups routes without adding to the URL. Use this to share layouts across routes that aren't nested in the URL — e.g. all marketing pages share a layout, all dashboard pages share another.",
             expandedText: '**Catch-all segments** `[...slug]` match any number of path segments after the prefix and collect them as a string array in `params.slug`. A file at `app/docs/[...slug]/page.tsx` matches `/docs/intro`, `/docs/getting-started/installation`, and `/docs/api/reference/types`. **Optional catch-all segments** `[[...slug]]` also match the parent path with no segments — the file matches `/docs` as well as all nested paths.\n\nCatch-all routes are most useful for documentation sites and content platforms where the URL structure is content-driven rather than hard-coded. The `slug` array represents the path hierarchy and can be used to look up the correct content: `docs/getting-started/installation` maps to `["getting-started", "installation"]`. Combined with `generateStaticParams`, Next.js pre-renders all known paths at build time while falling back to dynamic rendering for unknown paths.',
             codeExample: `app/\n├── (marketing)/        # no URL segment — just a layout group\n│   ├── layout.tsx      # shared layout for marketing pages\n│   ├── about/page.tsx  # /about  (NOT /marketing/about)\n│   └── pricing/page.tsx # /pricing\n├── (dashboard)/\n│   ├── layout.tsx      # separate layout for dashboard\n│   ├── analytics/page.tsx  # /analytics\n│   └── settings/page.tsx   # /settings\n└── page.tsx            # /  (outside both groups)`,
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '🗺️',
+              title: 'Step 2 — Route groups: the invisible folder',
+              text: [
+                'Departments in an office building share the same address but are grouped internally by floor. The floor number does not appear in the address.',
+                'Folders wrapped in \'()\' like `(marketing)` group routes without adding to the URL. Useful for applying layouts to specific sections.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -11537,7 +13463,14 @@ function validate(data: unknown) {
             text: 'Use `[...slug]` to match multiple path segments at once. `params.slug` is an array of the segments. Useful for docs, CMSs, and any deeply nested dynamic content. Add double brackets `[[...slug]]` to make the catch-all optional — it then also matches the root path.',
             expandedText: '**Route groups** — folders wrapped in parentheses like `(auth)` — organise routes without affecting the URL. A file at `app/(auth)/login/page.tsx` renders at `/login`, not `/auth/login`. Route groups are most useful for applying different layouts to different groups of routes that happen to share the same URL prefix level. The `(marketing)` group can have a public layout with a navigation bar; the `(app)` group can have a dashboard layout with a sidebar — both at the root URL level.\n\nRoute groups also allow **multiple root layouts** in an application. Wrapping different groups in different `layout.tsx` files gives each group its own `<html>` and `<body>` tags, which is useful for applications where the marketing site and the authenticated app have completely different HTML structures and global styles.',
             codeExample: `// app/docs/[...slug]/page.tsx\n// Matches: /docs/intro, /docs/api/hooks, /docs/a/b/c\n\nexport default async function DocsPage({ params }) {\n  const { slug } = await params\n  // /docs/api/hooks  →  slug = ['api', 'hooks']\n\n  return <h1>{slug.join(' / ')}</h1>\n}\n\n// Optional catch-all: [[...slug]]\n// app/[[...slug]]/page.tsx\n// Also matches /  (slug = undefined)`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🏗️',
+              title: 'Step 3 — Parallel and intercepting routes: the side panel',
+              text: [
+                'An app shows a photo in a modal when clicked. The URL updates to `/photos/42` but the gallery stays visible behind the modal.',
+                '\'@slot\' and \'(.)intercept\' notation enables parallel and intercepting routes. Parallel routes fill named slots in a layout simultaneously.',
+              ],
+            },
           },
         ],
       },
@@ -11625,7 +13558,14 @@ function validate(data: unknown) {
             text: "`layout.tsx` wraps `page.tsx` and all child routes. Layouts **persist across navigations** — they don't re-render when the child page changes. Nest layout files to build complex UI: a root layout with `<html>` and `<body>`, a dashboard layout with a sidebar, a settings layout with a tab bar.",
             expandedText: '**Nested layouts** are the primary mechanism for sharing chrome — headers, sidebars, footers, navigation — across multiple pages without repeating the same JSX. Traditional SPAs with React Router require manually rendering shared components in every page or threading them through a root component. The App Router applies layouts automatically based on the folder hierarchy: a `layout.tsx` in a folder wraps every page in that folder and its subdirectories without any import or configuration in the pages themselves.\n\nThe nested structure means a settings page at `/settings/profile` is rendered inside the profile route, which is inside the settings layout, which is inside the root layout. Each layout renders its `{children}` without knowing whether the child is another layout or a page. This **composition without coupling** is what allows deep nesting without increasing complexity.',
             codeExample: `// app/layout.tsx — Root layout (required)\nexport default function RootLayout({ children }) {\n  return (\n    <html lang="en">\n      <body>\n        <Navbar />\n        {children}       {/* page.tsx renders here */}\n        <Footer />\n      </body>\n    </html>\n  )\n}\n\n// app/dashboard/layout.tsx — nested layout\n// Renders inside RootLayout's {children}\nexport default function DashboardLayout({ children }) {\n  return (\n    <div className="flex">\n      <Sidebar />\n      <main className="flex-1">{children}</main>\n    </div>\n  )\n}\n// app/dashboard/page.tsx renders inside DashboardLayout's {children}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🏛️',
+              title: 'Step 0 — Root layout: the building shell',
+              text: [
+                'The outer shell of a building — the foundation, exterior walls, lobby — stays constant. Tenants come and go inside.',
+                '\'app/layout.tsx\' is the root layout. Every page is rendered inside it. It wraps `{children}` and is never destroyed on navigation.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -11634,7 +13574,14 @@ function validate(data: unknown) {
             text: 'Next.js reserves specific filenames at each route segment. `loading.tsx` shows a skeleton while the page renders. `error.tsx` catches unhandled exceptions (must be a Client Component). `not-found.tsx` renders when `notFound()` is called. `template.tsx` is like a layout but re-renders on every navigation — useful for page transitions and per-page analytics.',
             expandedText: 'A `layout.tsx` exports a default React component that accepts a `children` prop representing the matched child route. The children prop contains the rendered output of the next layout or page in the hierarchy. Layouts are **persistent across navigations** between pages they wrap — the layout component does not unmount when the user navigates from `/settings/profile` to `/settings/notifications`. State, scroll position, and component instance are all preserved.\n\nLayouts can be **async Server Components** that fetch data needed for the shell — for example, the current user for the navigation bar. The data is fetched once when the layout mounts and is available to all child pages without re-fetching. However, layouts cannot read search params or dynamic route params from levels below them. If a layout needs data from a dynamic segment, it must be in the layout own segment or above.',
             codeExample: `// app/posts/loading.tsx\n// Shown automatically while page.tsx is rendering\nexport default function Loading() {\n  return <div className="animate-pulse">Loading posts…</div>\n}\n\n// app/posts/error.tsx  — must be 'use client'\n'use client'\nexport default function Error({ error, reset }) {\n  return (\n    <div>\n      <p>Failed to load: {error.message}</p>\n      <button onClick={reset}>Retry</button>\n    </div>\n  )\n}\n\n// app/posts/not-found.tsx\nexport default function NotFound() {\n  return <h2>Post not found</h2>\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🪆',
+              title: 'Step 1 — Nested layouts: floors within floors',
+              text: [
+                'Each floor of a building has its own common area (kitchen, conference room) shared by that floor\'s occupants.',
+                'Nested `layout.tsx` files compose hierarchically. `app/dashboard/layout.tsx` wraps all `/dashboard/*` routes with a shared sidebar or header.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -11643,7 +13590,14 @@ function validate(data: unknown) {
             text: 'Export a `metadata` object or a `generateMetadata()` function from any `page.tsx` or `layout.tsx` to set `<head>` tags. Static metadata is exported as a constant. Dynamic metadata (based on params) uses `generateMetadata()` — an async function that receives the same `params` as the page.',
             expandedText: 'The **root layout** at `app/layout.tsx` is required and must include the `<html>` and `<body>` tags. It wraps every page in the application and is the right place for global styles, global providers (like a `QueryClientProvider` wrapped in a Client Component), and metadata defaults. Without the root layout, Next.js throws a build error.\n\nEvery layout in the hierarchy adds its wrapper around the nested content. A settings layout might add a sidebar and breadcrumbs; the root layout provides the global navigation. When a page renders, the output is: root layout then settings layout then page content. Layouts cannot pass props to their child pages — the children prop is opaque. If data needs to flow from layout to page, use a **React context** provider in the layout with a `"use client"` boundary.',
             codeExample: `// Static metadata — export from page.tsx or layout.tsx\nexport const metadata = {\n  title: 'My Blog',\n  description: 'A blog about web development',\n  openGraph: {\n    title: 'My Blog',\n    images: ['/og-image.png'],\n  },\n}\n\n// Dynamic metadata — for pages with params\nexport async function generateMetadata({ params }) {\n  const { id } = await params\n  const post = await getPost(id)\n\n  return {\n    title: post.title,\n    description: post.excerpt,\n    openGraph: { images: [post.coverImage] },\n  }\n}\n\nexport default function PostPage({ params }) { /* … */ }`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📌',
+              title: 'Step 2 — Layout persistence: the persistent receptionist',
+              text: [
+                'The receptionist in a hotel lobby is always at the desk. Guests checking in and out do not move the receptionist.',
+                'Layouts are not unmounted on route change — state, scroll position, and data persist. A sidebar with open/closed state survives navigation.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -11652,7 +13606,14 @@ function validate(data: unknown) {
             text: "Every Next.js app must have `app/layout.tsx` — the root layout. It must include `<html>` and `<body>` tags. It wraps every page in your app and is the right place for global styles, analytics, auth providers, and theme providers. Child layouts inherit from it but don't need to repeat `<html>` or `<body>`.",
             expandedText: 'Layouts **do not re-render when navigating between sibling pages** within the same layout. When a user navigates from `/settings/profile` to `/settings/notifications`, the settings layout stays mounted — only the page content (the `{children}`) changes. This preserves layout state: an open dropdown in the sidebar stays open, a search field in the header retains its value, and a sticky header remains at its scrolled position.\n\nThis persistence is a meaningful UX improvement over full-page navigation. In a traditional multi-page app, every navigation discards all client state and re-fetches the page shell. In Next.js with the App Router, navigation within a layout is as smooth as in-app navigation in a single-page application, while still benefiting from server-side data fetching and pre-rendering for each individual page.',
             codeExample: `// app/layout.tsx — required, must have html + body\nimport './globals.css'\n\nexport const metadata = {\n  title: { default: 'My App', template: '%s | My App' },\n  description: 'My fullstack Next.js application',\n}\n\nexport default function RootLayout({ children }) {\n  return (\n    <html lang="en">\n      <body className="min-h-screen bg-gray-50">\n        <ThemeProvider>\n          <Navbar />\n          {children}\n        </ThemeProvider>\n      </body>\n    </html>\n  )\n}\n// title template: PostPage returns { title: 'My Post' }\n// → renders as <title>My Post | My App</title>`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🗃️',
+              title: 'Step 3 — Template vs layout: the daily reset',
+              text: [
+                'A classroom resets every period — chairs rearranged, whiteboard cleaned. The building stays but the room resets.',
+                '\'template.tsx\' mounts fresh on every navigation — creating new component instances, resetting state. Use when you need entry animations or fresh data per page.',
+              ],
+            },
           },
         ],
       },
@@ -11734,7 +13695,14 @@ function validate(data: unknown) {
             text: 'Use `<Link href="...">` from `next/link` instead of `<a>` for client-side navigation — no full page reload. Next.js automatically **prefetches** linked pages in the background when they appear in the viewport, making navigation feel instant. Pass `scroll={false}` to prevent scrolling to the top on navigation.',
             expandedText: 'Full page reloads discard all JavaScript state, re-download the page shell, re-execute global scripts, and require a server round trip. **Client-side navigation** in Next.js preserves the current layout and swaps only the changed page segment, keeping all layout state intact and eliminating the visual flash of a full reload. Next.js achieves this by shipping a client-side router that intercepts clicks on `<Link>` components and uses the React reconciler to update the rendered tree in place.\n\nFor **SEO and initial load performance**, Next.js still renders each page on the server. The first request to any URL receives fully rendered HTML that search engine crawlers can index immediately. Subsequent navigations within the app are client-side and do not re-render on the server — they fetch only the React Server Component payload (a compact JSON representation of the server-rendered tree) and apply it to the client tree.',
             codeExample: `import Link from 'next/link'\n\n// Basic navigation — client-side, no full reload\n<Link href="/about">About</Link>\n\n// Dynamic route\n<Link href={\`/posts/\${post.id}\`}>{post.title}</Link>\n\n// Active link (with usePathname)\n'use client'\nimport { usePathname } from 'next/navigation'\nexport function NavLink({ href, children }) {\n  const pathname = usePathname()\n  return (\n    <Link\n      href={href}\n      className={pathname === href ? 'font-bold text-blue-600' : 'text-gray-600'}\n    >\n      {children}\n    </Link>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🚗',
+              title: 'Step 0 — Link component: the motorway sign',
+              text: [
+                'A motorway sign tells your car to take the exit. The sign is part of the page; clicking it starts navigation.',
+                '\'<Link href=\'/about\'>About</Link>\' handles client-side navigation. Unlike `<a>`, it prefetches the destination on hover and does not reload the page.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -11743,7 +13711,14 @@ function validate(data: unknown) {
             text: "Use `useRouter` from `next/navigation` in Client Components when you need to navigate after an action — form submit, button click, or conditional redirect. `router.push()` adds to history (back button works), `router.replace()` replaces the current entry, `router.back()` and `router.forward()` move through history.",
             expandedText: 'The `Link` component from `next/link` renders a standard `<a>` element that intercepts clicks for client-side navigation. It **prefetches** the destination page React Server Component payload when the link enters the viewport, so the navigation appears instant even before the user clicks. Prefetching is automatic in production and disabled in development to reduce noise in the network panel. Set `prefetch={false}` on links to expensive or authenticated pages to avoid unnecessary prefetch requests.\n\n`Link` accepts the same `href` values as an `<a>` tag: absolute paths (`/about`), relative paths (`../settings`), and URL objects `{ pathname: "/users", query: { page: 2 } }`. The `replace` prop replaces the current history entry instead of pushing a new one — useful for navigation that should not be reversible with the Back button. The `scroll={false}` prop prevents scrolling to the top of the page after navigation, useful for paginated lists and tabs.',
             codeExample: `'use client'\nimport { useRouter } from 'next/navigation'\n\nexport default function LoginForm() {\n  const router = useRouter()\n\n  async function handleSubmit(e) {\n    e.preventDefault()\n    const ok = await login(formData)\n    if (ok) {\n      router.push('/dashboard')    // navigate + add to history\n    }\n  }\n\n  return <form onSubmit={handleSubmit}>…</form>\n}\n\n// router.replace('/login')   — no history entry (e.g. after logout)\n// router.back()              — like browser back button\n// router.refresh()           — re-fetch Server Components on current page`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🎮',
+              title: 'Step 1 — useRouter: the programmatic navigator',
+              text: [
+                'A GPS that accepts API commands: `gps.navigate(\'/home\')`. Navigate programmatically from your code, not just from link clicks.',
+                '\'const router = useRouter()\' inside a Client Component. `router.push(\'/dashboard\')` navigates programmatically. `router.back()` goes back. `router.replace` skips history entry.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -11752,7 +13727,14 @@ function validate(data: unknown) {
             text: '`usePathname()` returns the current path as a string — useful for highlighting active nav links. `useSearchParams()` reads the `?key=value` query string. Both are Client Component hooks from `next/navigation`. For reading params from the URL segment (e.g. `[id]`), use the `params` prop in Server Components or `useParams()` in Client Components.',
             expandedText: '`useRouter` from `next/navigation` provides programmatic navigation methods for situations where a `<Link>` cannot be used — inside event handlers, after async operations, or in response to non-click events. `router.push(url)` navigates forward and adds to the history stack; `router.replace(url)` navigates without adding to the stack; `router.back()` goes back in the stack.\n\n`useRouter` must be called in a Client Component — it requires access to browser APIs and the client-side router context. A common pattern is to call it after a form submission or server action completes: `const router = useRouter(); const handleSubmit = async () => { await createPost(data); router.push("/posts") }`. For server-side redirects after Server Actions, use the `redirect()` function from `next/navigation` instead, which is a server-only API.',
             codeExample: `'use client'\nimport { usePathname, useSearchParams, useParams } from 'next/navigation'\n\nfunction NavItem({ href, label }) {\n  const pathname = usePathname()\n  const isActive = pathname === href || pathname.startsWith(href + '/')\n  return <Link href={href} className={isActive ? 'active' : ''}>{label}</Link>\n}\n\nfunction SearchResults() {\n  const searchParams = useSearchParams()\n  const query = searchParams.get('q')  // ?q=hello  →  'hello'\n  return <p>Searching for: {query}</p>\n}\n\n// Dynamic segment value in a Client Component:\nfunction PostActions() {\n  const { id } = useParams()           // app/posts/[id]/page.tsx  →  id = '42'\n  return <button onClick={() => deletePost(id)}>Delete</button>\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📍',
+              title: 'Step 2 — usePathname and useSearchParams: reading the map',
+              text: [
+                'Reading your current position on the map and noting the filter options you had set.',
+                '\'usePathname()\' returns the current URL path. `useSearchParams().get(\'q\')` reads query params. Both are Client Component hooks — they re-render on URL change.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -11761,7 +13743,14 @@ function validate(data: unknown) {
             text: '`redirect()` from `next/navigation` navigates programmatically from Server Components, Server Functions, and Route Handlers — no need for a Client Component. Use it for auth guards, post-submission redirects, and locale redirects. `notFound()` renders the nearest `not-found.tsx` file. Both throw internally, so code after them never runs.',
             expandedText: '`usePathname` returns the current URL pathname as a string and re-renders the component when the pathname changes. It is the standard tool for highlighting the active item in a navigation menu: compare `usePathname()` to each link `href` and apply an `active` class when they match. The hook only re-renders when the pathname changes — not on query string or hash changes.\n\n`useSearchParams` returns the current URL search parameters as a `ReadonlyURLSearchParams` object and re-renders when the search string changes. Reading and writing search params is the recommended way to implement UI state that should be bookmarkable and shareable — filter states, sort orders, pagination, and tab selections. Use `router.push()` or `router.replace()` with a new search string to update params, or the `<Link>` component with a `query` object for declarative updates.',
             codeExample: `import { redirect, notFound } from 'next/navigation'\n\n// Auth guard in a Server Component\nexport default async function Dashboard() {\n  const session = await getSession()\n  if (!session) redirect('/login')     // immediately stops rendering\n  return <h1>Dashboard</h1>\n}\n\n// 404 for missing resources\nexport default async function PostPage({ params }) {\n  const { id } = await params\n  const post = await getPost(id)\n  if (!post) notFound()                // renders not-found.tsx\n  return <article>{post.title}</article>\n}\n\n// After a Server Action mutation\n'use server'\nexport async function deletePost(id) {\n  await db.posts.delete(id)\n  redirect('/posts')                   // works in Server Functions too\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '⏳',
+              title: 'Step 3 — Loading and error states: the buffering screen',
+              text: [
+                'A streaming video shows a buffering spinner while loading. If the stream fails, an error screen replaces it.',
+                '\'loading.tsx\' in a route segment shows while the page is loading. `error.tsx` catches errors thrown during render and shows a fallback UI.',
+              ],
+            },
           },
         ],
       },
@@ -11843,7 +13832,14 @@ function validate(data: unknown) {
             text: "React Server Components (RSC) run exclusively on the server — they are never shipped to the browser bundle. They can be `async`, access databases and secrets directly, and read from the filesystem. Every component in the App Router is a Server Component **by default** — no directive needed. The shift: the server is no longer just for initial HTML; it's a permanent co-equal runtime alongside the client.",
             expandedText: '**React Server Components** (RSC) are a new primitive where a component runs exclusively on the server and never sends its JavaScript to the browser. The output is HTML (for the initial request) or a React Server Component payload — a compact JSON-like description of the rendered tree — for subsequent client-side navigations. The component source code, its imports, and its server-only dependencies never appear in the client bundle.\n\nThis is architecturally different from traditional SSR. In SSR, the same component code runs on both server and client — the client needs the component JavaScript to hydrate the server-rendered HTML into an interactive React tree. In RSC, the component runs only on the server; there is nothing to hydrate. Only **Client Components** (`"use client"`) are hydrated on the client. The practical result: server-only libraries like database ORMs, encryption utilities, and file system modules can be used in components without any risk of them reaching the browser.',
             codeExample: `// app/posts/page.tsx — Server Component (default)\n// This code NEVER runs in the browser\n// No JavaScript is shipped for this component\n\nexport default async function PostsPage() {\n  // Direct DB access — no API layer needed\n  const posts = await db.posts.findMany({ orderBy: { createdAt: 'desc' } })\n\n  return (\n    <ul>\n      {posts.map(post => (\n        <li key={post.id}>\n          <h2>{post.title}</h2>\n          <p>{post.excerpt}</p>\n        </li>\n      ))}\n    </ul>\n  )\n}\n// bundle size impact: 0 bytes — nothing shipped to browser`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🏭',
+              title: 'Step 0 — Server Components: the factory',
+              text: [
+                'A factory assembles products and ships them complete. The customer receives a finished product, not raw parts.',
+                'Server Components run only on the server. They fetch data, render HTML, and send the result to the browser. No JS shipped for the component itself.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -11852,7 +13848,14 @@ function validate(data: unknown) {
             text: 'Server Components can call databases, read files, and fetch from internal APIs directly — no separate API endpoint required. Sensitive credentials (API keys, DB connection strings) never leave the server because the component never runs in the browser. This eliminates an entire category of security risk: secrets literally cannot be exposed to the client.',
             expandedText: 'Server Components have **zero JavaScript bundle cost**. A Server Component that imports a 500 KB markdown parser adds zero bytes to the client bundle because the import is resolved on the server and only the rendered HTML output is sent to the browser. This fundamentally changes the cost-benefit analysis of third-party libraries: dependencies that were previously too large to justify can be used freely in Server Components.\n\nThe **no-JavaScript guarantee** also improves security. Secrets like API keys, database connection strings, and cryptographic salts can be used directly in Server Component code — they are evaluated on the server and never serialised into the client-visible payload. There is no risk of accidentally exposing secrets through the client bundle. The Next.js `server-only` package provides a guard: importing it in a file causes a build error if that file is ever imported by a Client Component.',
             codeExample: `import { db } from '@/lib/db'\nimport { readFile } from 'fs/promises'\n\nexport default async function Dashboard() {\n  // Query database directly — no /api/dashboard endpoint needed\n  const [user, stats, config] = await Promise.all([\n    db.users.findById(getCurrentUserId()),\n    db.analytics.getStats(),\n    readFile('./config/dashboard.json', 'utf-8'),  // filesystem access\n  ])\n\n  // process.env.DATABASE_URL is safe here — never in browser bundle\n  // API keys, tokens, connection strings: use them freely\n\n  return (\n    <main>\n      <h1>Welcome, {user.name}</h1>\n      <StatsGrid data={stats} />         {/* Server Component */}\n      <InteractiveChart config={JSON.parse(config)} />  {/* Client Component */}\n    </main>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📦',
+              title: 'Step 1 — Zero bundle: the invisible worker',
+              text: [
+                'A factory worker assembles your package but is never shipped to you. Only the package arrives.',
+                'Server Components add zero bytes to the client bundle. Libraries used only in Server Components (like ORM, markdown parser) stay on the server.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -11861,7 +13864,14 @@ function validate(data: unknown) {
             text: "Server Components cannot use React state, effects, or any browser API — they run before hydration and have no access to the DOM. No `useState`, `useEffect`, `useContext`, `useRef`. No event handlers like `onClick` or `onChange`. No `window`, `document`, `localStorage`. If you need any of these, add `'use client'` to the file or extract the interactive part into a separate Client Component.",
             expandedText: 'Server Components support **native `async/await`**. A Server Component function can be declared `async` and can `await` database queries, API calls, or file system operations directly in the component body. The component suspends rendering (at the server level) until the awaited values resolve, then continues rendering synchronously. There is no `useEffect`, no `useState` for loading states, and no async state management boilerplate.\n\nNext.js uses **React Suspense** to stream the server-rendered output. When a Server Component `await`s data, Next.js sends the already-rendered parts of the page to the browser immediately and streams the awaited parts as they resolve. Wrapping an async Server Component in `<Suspense fallback={<Skeleton />}>` provides the loading UI that displays while the `await` is pending. This **progressive streaming** pattern dramatically improves time-to-first-byte and perceived performance.',
             codeExample: `// ❌ This will throw — useState in a Server Component\nexport default async function Counter() {\n  const [count, setCount] = useState(0)   // Error!\n  return <button onClick={() => setCount(c => c + 1)}>{count}</button>\n}\n\n// ✅ Split: Server Component fetches, Client Component handles interaction\nexport default async function PostPage({ params }) {\n  const post = await getPost((await params).id)\n  return (\n    <article>\n      <h1>{post.title}</h1>\n      <p>{post.body}</p>\n      <LikeButton postId={post.id} />   {/* Isolated Client Component */}\n    </article>\n  )\n}\n\n// ❌ Also avoid in Server Components:\n// useRouter, usePathname, useSearchParams — use params prop instead\n// document.title — use metadata export instead`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🗄️',
+              title: 'Step 2 — Direct data access: the direct warehouse line',
+              text: [
+                'The factory worker has a direct internal phone line to the warehouse. No middle layer needed for internal communication.',
+                'Server Components can `await db.query()` directly — no API layer needed. Credentials stay on the server. The result is embedded in the rendered HTML.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -11870,7 +13880,14 @@ function validate(data: unknown) {
             text: 'Server Components can render Client Components as children — this is the composition model. Pass serializable data (strings, numbers, plain objects, arrays) as props. You cannot pass functions or class instances as props to Client Components. The component tree can freely mix server and client — each component renders in the environment it belongs to.',
             expandedText: 'Server Components **cannot** use `useState`, `useEffect`, event handlers (`onClick`, `onChange`), browser APIs (`window`, `document`, `localStorage`), or any React hook that depends on client state. These capabilities require a Client Component. The `"use client"` directive at the top of a file declares that the component and its entire import subtree are Client Components.\n\nThe design pattern for handling this constraint is **composition**: a Server Component renders the static parts and data-fetched content, and imports Client Components for interactive islands. A product page Server Component fetches the product from the database and renders the title, description, and images — zero JavaScript. An `<AddToCartButton>` Client Component handles the click interaction. The page has rich content with minimal JavaScript because only the interactive parts ship JavaScript to the browser.',
             codeExample: `// Server Component — fetches and passes serializable data\nexport default async function ProductPage({ params }) {\n  const product = await getProduct((await params).id)\n\n  return (\n    <div>\n      {/* Server Components — no JS shipped */}\n      <ProductImages images={product.images} />\n      <ProductDescription text={product.description} />\n\n      {/* Client Components — only these add JS to bundle */}\n      <AddToCartButton productId={product.id} price={product.price} />\n      <ReviewsCarousel reviews={product.reviews} />\n    </div>\n  )\n}\n\n// ✅ Passing serializable data is fine:\n// strings, numbers, booleans, plain objects, arrays, Date strings\n\n// ❌ Cannot pass functions as props to Client Components:\n// <Button onClick={someServerFn} />  — use Server Actions instead`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🔒',
+              title: 'Step 3 — What cannot be done: server-side restrictions',
+              text: [
+                'A factory worker cannot attend your birthday party — they are at the factory. Some things require physical presence on the client side.',
+                'Server Components cannot use `useState`, `useEffect`, browser APIs, or event handlers. These need Client Components — mark with `\'use client\'`.',
+              ],
+            },
           },
         ],
       },
@@ -11950,7 +13967,14 @@ function validate(data: unknown) {
             text: "Add `'use client'` as the very first line of a file to mark it as a Client Component. This opts the entire file — and everything it imports — into the client bundle. The directive is a **boundary** declaration: it tells Next.js where the server-to-client handoff happens. You do NOT need to add it to every interactive file — only to the topmost file in a client subtree.",
             expandedText: 'The `"use client"` directive solves the problem of using **browser APIs and React interactivity** in the App Router server-first model. Without it, every component is a Server Component that cannot use `useState`, `useEffect`, or event handlers. Adding `"use client"` at the top of a file (before any imports) marks that file and its entire import graph as part of the client bundle, enabling the full React hooks API.\n\nA critical subtlety: `"use client"` is a **module system boundary**, not a component-level attribute. When a file has `"use client"`, all imports in that file also become client-side, regardless of whether those imports have their own `"use client"` directive. This means placing `"use client"` near the top of the component tree (for example, in a layout) can accidentally pull large amounts of code into the client bundle. Always place `"use client"` as deep in the component tree as possible.',
             codeExample: `'use client'           // must be the FIRST line — before imports\n\nimport { useState } from 'react'\n\nexport default function Counter() {\n  const [count, setCount] = useState(0)\n\n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button onClick={() => setCount(c => c + 1)}>+1</button>\n    </div>\n  )\n}\n\n// ✅ Any component that Counter imports is also a Client Component\n// ✅ Counter can be imported by a Server Component — it renders fine\n// ✅ Initial HTML is still server-rendered; JS hydrates it on the client`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🎮',
+              title: 'Step 0 — Client Components: the interactive kiosk',
+              text: [
+                'A self-service kiosk at a supermarket has a screen you interact with directly. It responds to taps, shows animations, manages your session locally.',
+                'Client Components run in the browser. They handle `useState`, `useEffect`, event listeners, and browser APIs. Marked with `\'use client\'` at top of file.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -11959,7 +13983,14 @@ function validate(data: unknown) {
             text: "Use `'use client'` when your component needs: React hooks (`useState`, `useEffect`, `useRef`, `useContext`), event handlers (`onClick`, `onChange`, `onSubmit`), browser APIs (`window`, `document`, `localStorage`, `navigator`), or real-time updates (WebSockets, subscriptions). If none of these apply, keep it as a Server Component.",
             expandedText: '`"use client"` at the top of a file creates a **server-client boundary**. The component in that file and everything it imports is bundled for the client. Components imported by the `"use client"` file do not need their own directive — they inherit client status from the import chain. However, a Server Component can be **passed as a prop** (including `children`) to a Client Component without becoming a Client Component itself — props cross the boundary as serialised data, not code.\n\nThis prop-passing pattern is the key to efficient App Router architecture. A `<ThemeProvider>` Client Component can wrap server-rendered children: `<ThemeProvider><ServerSidebar /><ServerContent /></ThemeProvider>`. The `ThemeProvider` is a Client Component with theme state; `ServerSidebar` and `ServerContent` are Server Components passed as `children`. The server components are rendered on the server; only the `ThemeProvider` JavaScript is sent to the client.',
             codeExample: `// ✅ Needs 'use client' — uses state + event handler\n'use client'\nimport { useState } from 'react'\nexport function Toggle() {\n  const [on, setOn] = useState(false)\n  return <button onClick={() => setOn(v => !v)}>{on ? 'On' : 'Off'}</button>\n}\n\n// ✅ Needs 'use client' — reads localStorage\n'use client'\nimport { useEffect, useState } from 'react'\nexport function ThemeToggle() {\n  const [theme, setTheme] = useState('light')\n  useEffect(() => {\n    setTheme(localStorage.getItem('theme') ?? 'light')\n  }, [])\n  return <button onClick={() => setTheme(t => t === 'light' ? 'dark' : 'light')}>{theme}</button>\n}\n\n// ❌ Does NOT need 'use client' — no hooks, no events, pure display\nexport function UserCard({ name, email }) {\n  return <div><h3>{name}</h3><p>{email}</p></div>\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🔌',
+              title: 'Step 1 — The \'use client\' boundary: the power socket',
+              text: [
+                'Plugging into a socket brings power to everything connected. The `\'use client\'` directive powers interactive capability for that component subtree.',
+                '\'use client\' marks the root of a Client Component subtree. All imports in that file become Client Components too. Server Components can render Client Components.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -11968,7 +13999,14 @@ function validate(data: unknown) {
             text: "Client Components are still **server-rendered** for the initial HTML — `'use client'` does not mean \"skip server rendering\". Next.js renders the component on the server to produce HTML (fast initial paint), then ships the JavaScript and \"hydrates\" it on the client — attaching event listeners and activating state. Hydration requires the server and client renders to produce **identical** output.",
             expandedText: 'Client Components are **server-side rendered on the first request** to generate the initial HTML, then **hydrated** on the client to attach event handlers and restore React state. This means a Client Component with `useState` renders twice: once on the server (without state, since hooks are not available) and once on the client (with full interactivity). The server render produces the initial HTML for fast page display; the client hydration makes it interactive.\n\n**Hydration mismatches** occur when the server-rendered HTML does not match what the client renders during hydration. Common causes: accessing `window` or `document` during render (not available on the server), using `Math.random()` or `Date.now()` without a stable seed, and conditionally rendering based on browser state like `localStorage`. The fix is to guard browser-only code with `typeof window !== "undefined"` or to use `useEffect` which runs only on the client.',
             codeExample: `'use client'\nimport { useState, useEffect } from 'react'\n\n// ✅ Safe — initial state is the same on server and client\nexport function Counter() {\n  const [count, setCount] = useState(0)\n  return <button onClick={() => setCount(c => c + 1)}>{count}</button>\n}\n\n// ❌ Hydration mismatch — server renders nothing, client renders timestamp\nexport function Clock() {\n  const [time, setTime] = useState(new Date().toLocaleTimeString())\n  return <p>{time}</p>\n  // Server renders "12:00:00", client may render "12:00:01" → mismatch!\n}\n\n// ✅ Fix: start with null, set in useEffect (client-only)\nexport function Clock() {\n  const [time, setTime] = useState<string | null>(null)\n  useEffect(() => {\n    setTime(new Date().toLocaleTimeString())\n    const id = setInterval(() => setTime(new Date().toLocaleTimeString()), 1000)\n    return () => clearInterval(id)\n  }, [])\n  return <p>{time ?? '…'}</p>\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🧱',
+              title: 'Step 2 — Composition: the building blueprint',
+              text: [
+                'A building has a concrete core (structure = Server) and glass curtain walls (exterior = interactive Client). Both exist in the same building.',
+                'Best pattern: Server Components handle data fetching at the top. Pass data as props to Client Components at the leaves. Keep interactivity at the edges.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -11977,7 +14015,14 @@ function validate(data: unknown) {
             text: "The `'use client'` boundary includes everything imported from that file. Placing it high in the component tree makes everything below it a Client Component — defeating the purpose of RSC. The best practice: push `'use client'` as far down the tree as possible, to the smallest components that actually need interactivity.",
             expandedText: 'The architectural principle for Client Components is to **keep them small and at the edges** of the component tree. A large Client Component pulls all of its dependencies into the client bundle. A small Client Component wrapping a specific interactive element keeps the bundle cost proportional to the interactivity needed. The result is a component tree where most of the surface area is server-rendered with zero JavaScript cost, and small interactive islands are precisely targeted Client Components.\n\nA practical audit: look at every component in the tree and ask whether it truly needs `useState`, `useEffect`, or an event handler. If not, remove `"use client"` and let it be a Server Component. The most common candidates for conversion back to Server Components are data-display components that happen to be in the same file as an interactive component — **file splitting** puts the interactive part in its own `"use client"` file and leaves the data-display component as a Server Component.',
             codeExample: `// ❌ Bad — entire page is a Client Component just for one button\n'use client'\nexport default async function BlogPage() {     // ← async doesn't work in 'use client'\n  const posts = await getPosts()              // ← this won't run on server\n  return (\n    <div>\n      {posts.map(p => <PostCard key={p.id} post={p} />)}\n      <LikeButton />\n    </div>\n  )\n}\n\n// ✅ Good — only the button is a Client Component\n// app/blog/page.tsx (Server Component — no directive)\nexport default async function BlogPage() {\n  const posts = await getPosts()              // ← runs on server ✓\n  return (\n    <div>\n      {posts.map(p => <PostCard key={p.id} post={p} />)}\n      <LikeButton />   {/* ← Client Component only for the button */}\n    </div>\n  )\n}\n\n// app/components/LikeButton.tsx\n'use client'\nexport function LikeButton() {\n  const [liked, setLiked] = useState(false)\n  return <button onClick={() => setLiked(l => !l)}>{liked ? '❤️' : '🤍'}</button>\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📡',
+              title: 'Step 3 — Serialisable props: the telegram',
+              text: [
+                'A telegram carries only text — no furniture, no food. Data crossing the server-client boundary must be serialisable.',
+                'Only serialisable values can be passed from Server to Client Components as props: strings, numbers, JSON objects. Functions and class instances cannot cross the boundary.',
+              ],
+            },
           },
         ],
       },
@@ -12056,7 +14101,14 @@ function validate(data: unknown) {
             text: 'Add `loading.tsx` next to any `page.tsx` to automatically wrap it in a `<Suspense>` boundary. Next.js streams the layout immediately while the page fetches data — users see a skeleton instead of a blank screen. The layout, header, and navigation are visible right away; only the loading area waits. `loading.tsx` is a Server Component and can be as simple as a spinner or as rich as a full skeleton.',
             expandedText: 'Without **Suspense**, every async Server Component blocks the entire page from rendering until all data fetches complete. If one component fetches user data in 100ms and another fetches recommendations in 2000ms, the user waits the full 2 seconds before seeing anything — even though 90% of the page was ready in 100ms. Suspense decouples component rendering from data availability: fast components render immediately, slow components show a fallback while loading.\n\n**Streaming** sends HTML to the browser in chunks as each Suspense boundary resolves. The browser can display and hydrate the fast parts while still waiting for slow parts. From the user perspective, the page progressively fills in rather than appearing all at once after a long wait. The Time to First Contentful Paint improves dramatically even though the total data-fetching time is the same. Suspense with streaming is enabled automatically in the Next.js App Router for all `loading.tsx` files and explicit `<Suspense>` boundaries.',
             codeExample: `// app/posts/loading.tsx\n// Shown immediately while app/posts/page.tsx is rendering\nexport default function PostsLoading() {\n  return (\n    <div className="space-y-4">\n      {[1,2,3].map(i => (\n        <div key={i} className="animate-pulse">\n          <div className="h-6 bg-gray-200 rounded w-3/4 mb-2" />\n          <div className="h-4 bg-gray-100 rounded w-1/2" />\n        </div>\n      ))}\n    </div>\n  )\n}\n\n// app/posts/page.tsx — fetches data; loading.tsx shown meanwhile\nexport default async function PostsPage() {\n  const posts = await db.posts.findMany()    // loading.tsx visible during this await\n  return <PostsList posts={posts} />\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '⏳',
+              title: 'Step 0 — Suspense: the placeholder menu board',
+              text: [
+                'A restaurant board says COMING SOON while the daily special is being prepared. Once ready, the board updates automatically.',
+                '\'<Suspense fallback={<Skeleton />}>\' shows the fallback while the child component awaits async data. When the Promise resolves, React swaps in the real content.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -12065,7 +14117,14 @@ function validate(data: unknown) {
             text: 'For more granular control — streaming individual sections of a page — use `<Suspense>` manually. Pass a `fallback` prop for the skeleton. Start fetching data without `await`, pass the Promise to a Client Component that uses `use()` to suspend. Multiple Suspense boundaries on one page stream independently — fast sections appear while slow ones are still loading.',
             expandedText: 'Placing a `<Suspense fallback={...}>` boundary around any async Server Component enables streaming for that component independently. When Next.js encounters the boundary, it renders the fallback immediately and continues rendering the rest of the page — the slow component is streamed in separately when its data arrives. Multiple Suspense boundaries on a page stream independently: a slow recommendation panel does not block the fast main content from being sent to the browser.\n\nThe **fallback** should be structurally similar to the content it replaces — a skeleton that matches the layout of the loading content prevents layout shifts when the real content streams in. A generic spinner is better than nothing but causes jarring layout shifts if the content has a different size. Libraries like `shadcn/ui` provide skeleton components that match common content patterns. The fallback renders immediately and never causes a layout shift relative to itself.',
             codeExample: `import { Suspense } from 'react'\n\n// Server Component — NOT async, starts fetches without awaiting\nexport default function DashboardPage() {\n  const statsPromise  = getStats()           // fires immediately\n  const activityPromise = getActivity()      // fires immediately (parallel)\n\n  return (\n    <main>\n      <h1>Dashboard</h1>\n\n      {/* Stats stream in first (usually faster) */}\n      <Suspense fallback={<StatsSkeleton />}>\n        <StatsWidget statsPromise={statsPromise} />\n      </Suspense>\n\n      {/* Activity streams independently */}\n      <Suspense fallback={<ActivitySkeleton />}>\n        <ActivityFeed activityPromise={activityPromise} />\n      </Suspense>\n    </main>\n  )\n}\n\n// Client Component — uses use() to suspend on the promise\n'use client'\nimport { use } from 'react'\nexport function StatsWidget({ statsPromise }) {\n  const stats = use(statsPromise)   // suspends until resolved\n  return <StatsGrid data={stats} />\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🚦',
+              title: 'Step 1 — Streaming: the progressive download',
+              text: [
+                'A progressive JPEG loads first as a blurry overview, then sharpens progressively as more data arrives.',
+                'Next.js + Suspense streams HTML from server to browser in chunks. The shell renders immediately; each deferred section arrives as its data resolves.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -12074,7 +14133,14 @@ function validate(data: unknown) {
             text: "`error.tsx` catches any unhandled exception thrown during rendering or data fetching in its route segment. It must be a Client Component (needs `'use client'`) to use the `reset()` callback. `not-found.tsx` renders when `notFound()` is called from a page or Server Action. Place these files at different route levels to scope which errors they catch — a segment-level `error.tsx` handles only that subtree.",
             expandedText: '**Streaming** HTML is implemented at the HTTP level using **chunked transfer encoding** — the server sends the HTTP response in multiple chunks without specifying the total `Content-Length` upfront. The browser renders each chunk as it arrives. Next.js coordinates this with React streaming renderer: as Suspense boundaries resolve, React generates the HTML for the deferred content and sends it in subsequent chunks. The browser appends the streamed content to the correct positions using inline scripts that replace the fallback placeholders.\n\nStreaming has a critical constraint: **HTTP headers cannot be modified after the first byte is sent**. This means cookies, redirects, and status codes must be set before any Suspense boundary starts streaming. If a Server Action or a deeply-nested Server Component needs to redirect based on auth state, the redirect must happen synchronously before rendering begins — typically in a root layout or middleware. The `redirect()` function from `next/navigation` throws internally, which is why it must be called before the first `await`.',
             codeExample: `// app/posts/error.tsx — 'use client' is required\n'use client'\nimport { useEffect } from 'react'\n\nexport default function PostsError({ error, reset }) {\n  useEffect(() => {\n    // Log to an error tracking service\n    console.error(error)\n  }, [error])\n\n  return (\n    <div className="text-center py-12">\n      <h2 className="text-xl font-semibold text-red-600">\n        Failed to load posts\n      </h2>\n      <p className="text-gray-500 mt-2">{error.message}</p>\n      <button\n        onClick={reset}\n        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded"\n      >\n        Try again\n      </button>\n    </div>\n  )\n}\n\n// app/posts/not-found.tsx — Server Component, no directive needed\nexport default function PostNotFound() {\n  return (\n    <div className="text-center py-12">\n      <h2>Post not found</h2>\n      <Link href="/posts">← Back to posts</Link>\n    </div>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🧩',
+              title: 'Step 2 — Granular loading: the section-by-section reveal',
+              text: [
+                'A dashboard where the header and sidebar appear instantly but each data widget loads independently — no waiting for the slowest widget.',
+                'Wrap each slow section in its own `<Suspense>`. Fast sections render immediately; slow ones show their own skeleton. The page feels responsive.',
+              ],
+            },
           },
         ],
       },
@@ -12155,7 +14221,14 @@ function validate(data: unknown) {
             text: "Server Components can call `fetch()` directly — no `useEffect`, no loading state, no API route. Next.js extends the native `fetch` with caching options. The response is automatically deduped: if multiple Server Components call the same URL during one render, Next.js makes only one network request. Mark a fetch with `{ cache: 'no-store' }` if the data must always be fresh.",
             expandedText: 'Next.js extends the native `fetch` API with **caching semantics** controlled by the second argument. `fetch(url)` (no options) uses the `"force-cache"` default — the response is cached indefinitely and reused on subsequent requests. `fetch(url, { cache: "no-store" })` fetches fresh data on every request, equivalent to traditional SSR. `fetch(url, { next: { revalidate: 60 } })` uses **Incremental Static Regeneration (ISR)** — the response is cached and regenerated at most once every 60 seconds.\n\nMultiple Server Components in the same request tree that `fetch` the same URL receive **deduplicated responses** — only one HTTP request fires. This deduplication is automatic and enables components to fetch the data they need independently without coordinating to avoid redundant requests. The `unstable_cache` function (stable in Next.js 15) provides the same semantics for non-`fetch` data sources like database queries.',
             codeExample: `// app/posts/page.tsx — Server Component\nexport default async function PostsPage() {\n  // Cached by default (like force-cache)\n  const res = await fetch('https://api.example.com/posts')\n  if (!res.ok) throw new Error(\`Failed: \${res.status}\`)\n  const posts = await res.json()\n\n  return (\n    <ul>\n      {posts.map(post => (\n        <li key={post.id}>{post.title}</li>\n      ))}\n    </ul>\n  )\n}\n\n// No useState ✓    No useEffect ✓    No loading state needed ✓\n// (loading.tsx handles the skeleton while this awaits)`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📬',
+              title: 'Step 0 — fetch in Server Components: the internal courier',
+              text: [
+                'An internal office courier delivers documents from one desk to another without going outside.',
+                'In Server Components, `await fetch(url)` runs on the server. No CORS issues. Add `{ cache: \'no-store\' }` for dynamic data or `{ next: { revalidate: 60 } }` to cache.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -12164,7 +14237,14 @@ function validate(data: unknown) {
             text: "Control how Next.js caches fetch responses with the `next` option. `{ cache: 'force-cache' }` (default) caches indefinitely — use for data that rarely changes. `{ cache: 'no-store' }` always fetches fresh — use for real-time data. `{ next: { revalidate: 60 } }` caches but refreshes every 60 seconds (ISR). Use `revalidateTag()` or `revalidatePath()` to manually bust the cache from a Server Action.",
             expandedText: '`fetch` with `{ cache: "no-store" }` makes the page **dynamically rendered** — it opts out of the static cache and fetches fresh data on every request. This is equivalent to the old `getServerSideProps` behaviour. `fetch` with `{ next: { revalidate: N } }` enables **ISR** — Next.js generates the page statically and regenerates it in the background after `N` seconds when the next request arrives. The stale page is served immediately; the fresh page is ready for the next request.\n\nWith ISR, the user always sees a version of the page — stale or fresh — with zero latency for static file serving. The regeneration happens asynchronously without blocking any request. For content that changes rarely (product listings, blog posts, documentation), ISR provides near-instant delivery with fresh-enough data. For content that changes frequently or must be personalised (user dashboards, real-time prices), `"no-store"` or `revalidatePath` / `revalidateTag` on mutation are more appropriate.',
             codeExample: `// Static — cached indefinitely (default behaviour)\nconst posts = await fetch('/api/posts')\n\n// Dynamic — never cached, always fresh\nconst user = await fetch('/api/me', { cache: 'no-store' })\n\n// Timed revalidation (ISR) — refresh every 60 seconds\nconst products = await fetch('/api/products', {\n  next: { revalidate: 60 }\n})\n\n// Tagged — bust manually from a Server Action\nconst data = await fetch('/api/config', {\n  next: { tags: ['config'] }\n})\n\n// In a Server Action after mutation:\nimport { revalidateTag, revalidatePath } from 'next/cache'\nrevalidateTag('config')         // busts all fetches tagged 'config'\nrevalidatePath('/dashboard')    // busts the entire /dashboard page`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🗃️',
+              title: 'Step 1 — Static vs dynamic: fresh vs archived',
+              text: [
+                'A library keeps archived newspapers (static) and a live news ticker (dynamic). Different freshness needs, different retrieval methods.',
+                'Default: Next.js caches fetch results (static). `no-store` opts out for real-time data. `revalidate` gives timed freshness — ISR (Incremental Static Regeneration).',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -12173,7 +14253,14 @@ function validate(data: unknown) {
             text: 'Sequential `await` calls create a **waterfall** — each fetch waits for the previous to finish. Use `Promise.all()` to fire all fetches simultaneously. This is especially important in nested layouts and pages where multiple pieces of data are needed — serial fetches at each layout level compound dramatically.',
             expandedText: '`generateStaticParams` exports from a dynamic route page and returns an array of param objects for all known paths. Next.js pre-renders each combination at build time into a static HTML file. A blog at `app/posts/[slug]/page.tsx` with `generateStaticParams` that returns all post slugs produces a static HTML file for every post. Requests are served from the CDN with zero server processing time.\n\nFor paths not returned by `generateStaticParams`, the default behaviour is `dynamicParams = true` — Next.js renders them dynamically on first request and optionally caches the result. Setting `export const dynamicParams = false` makes Next.js return a 404 for any path not pre-rendered, which is appropriate for fixed content sets like documentation versions. The combination of static generation for known paths and dynamic fallback for unknown paths is the foundation of most large content sites.',
             codeExample: `// ❌ Sequential — total time = A + B + C\nexport default async function Dashboard() {\n  const user    = await getUser()       // 100ms\n  const posts   = await getPosts()      // 200ms\n  const stats   = await getStats()      // 150ms\n  // Total: ~450ms\n}\n\n// ✅ Parallel — total time = max(A, B, C)\nexport default async function Dashboard() {\n  const [user, posts, stats] = await Promise.all([\n    getUser(),        // 100ms ↘\n    getPosts(),       // 200ms  → all fire at once\n    getStats(),       // 150ms ↗\n  ])\n  // Total: ~200ms\n}\n\n// For error handling, use Promise.allSettled:\nconst results = await Promise.allSettled([getUser(), getPosts()])\nconst user  = results[0].status === 'fulfilled' ? results[0].value : null\nconst posts = results[1].status === 'fulfilled' ? results[1].value : []`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🔄',
+              title: 'Step 2 — Parallel fetching: the multi-counter checkout',
+              text: [
+                'A supermarket opens multiple checkouts simultaneously instead of queuing everyone at one register.',
+                '\'await Promise.all([fetch(a), fetch(b)])\' fetches in parallel. Avoid `await fetch(a); await fetch(b)` — that waterfalls and doubles latency.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -12182,7 +14269,14 @@ function validate(data: unknown) {
             text: "Server Components can import database clients directly — no API layer needed. Use an ORM like Prisma or Drizzle to query your database with full TypeScript types. Keep the client in a singleton to prevent connection pool exhaustion during hot reload. Add `'server-only'` import to any module that should never accidentally run in the browser.",
             expandedText: '`revalidatePath(path)` and `revalidateTag(tag)` allow **on-demand cache invalidation** from Server Actions and Route Handlers. After a database write, calling `revalidatePath("/posts")` marks all cached responses for that path as stale — the next request regenerates the page with fresh data. `revalidateTag("posts")` invalidates all `fetch` calls that were tagged with `{ next: { tags: ["posts"] } }`, enabling targeted invalidation without specifying exact URLs.\n\nTags enable a **content-based invalidation strategy**: tag every fetch related to a resource with the resource identifier, then invalidate by tag when that resource changes. `fetch("/api/posts", { next: { tags: ["posts", "post-123"] } })` can be invalidated globally with `revalidateTag("posts")` or specifically with `revalidateTag("post-123")`. This pattern scales well to complex content relationships where multiple pages display the same underlying resource.',
             codeExample: `// lib/db.ts\nimport { drizzle } from 'drizzle-orm/node-postgres'\nimport { Pool } from 'pg'\n\n// Singleton — prevents multiple pools during dev hot reload\nconst pool = new Pool({ connectionString: process.env.DATABASE_URL })\nexport const db = drizzle(pool)\n\n// app/posts/page.tsx — direct DB query in a Server Component\nimport { db } from '@/lib/db'\nimport { posts } from '@/lib/schema'\n\nexport default async function PostsPage() {\n  const allPosts = await db.select().from(posts).orderBy(posts.createdAt)\n  return <PostList posts={allPosts} />\n}\n\n// lib/data.ts — add 'server-only' to prevent client imports\nimport 'server-only'\nexport async function getSecretData() {\n  return await db.select().from(secrets)  // safe — can't be imported client-side\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🔒',
+              title: 'Step 3 — Server Actions for mutations: the sealed form',
+              text: [
+                'A form submitted to a sealed governmental office — it is processed on their side. You send the form; they handle the logic.',
+                'Server Actions (functions marked `\'use server\'`) run on the server. Call them from Client Components for mutations: form submit, button click. No separate API route needed.',
+              ],
+            },
           },
         ],
       },
@@ -12263,7 +14357,14 @@ function validate(data: unknown) {
             text: "A Server Action is an `async` function marked with `'use server'`. It runs **only on the server** but can be called from anywhere — a Client Component, a form `action` prop, or another Server Component. Next.js serializes the call over HTTP transparently. Use Server Actions for all mutations: creating, updating, deleting data. No API endpoint needed.",
             expandedText: 'Traditional form handling in React requires a client-side event handler that calls `e.preventDefault()`, reads form values, makes an API `fetch`, and updates state. **Server Actions** eliminate the API layer entirely: the `action` prop on a `<form>` accepts an `async` function with the `"use server"` directive, and Next.js wires it directly to a secure POST endpoint. The function receives `FormData` and runs on the server with access to the database, environment variables, and file system.\n\nBecause Server Actions are built on native HTML form submission, they work as **progressive enhancement** — the form submits correctly even if JavaScript fails to load or execute. With JavaScript enabled, React intercepts the submission and calls the action without a full page reload. Without JavaScript, the browser submits the form normally and the server responds with a redirect. This dual behaviour is automatic and requires no extra code.',
             codeExample: `// app/actions.ts — a module of Server Actions\n'use server'\nimport { db } from '@/lib/db'\nimport { revalidatePath } from 'next/cache'\n\nexport async function createPost(formData: FormData) {\n  const title = formData.get('title') as string\n  const body  = formData.get('body')  as string\n\n  if (!title || !body) {\n    return { error: 'Title and body are required.' }\n  }\n\n  await db.posts.create({ data: { title, body } })\n  revalidatePath('/posts')          // bust cache so list refreshes\n  return { success: true }\n}\n\n// Can also define inline in a Server Component:\nexport default function Page() {\n  async function deleteItem(id: string) {\n    'use server'            // inline Server Action\n    await db.items.delete({ where: { id } })\n    revalidatePath('/items')\n  }\n  return <DeleteButton action={deleteItem} />\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📮',
+              title: 'Step 0 — What are Server Actions: the postal box',
+              text: [
+                'A postal box: you drop a letter in and it is processed by the postal service on the other side. No direct access to their machinery.',
+                'Server Actions are async functions with `\'use server\'`. Call them from a form `action` or button `onClick`. They run on the server with full DB access.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -12272,7 +14373,14 @@ function validate(data: unknown) {
             text: "Pass a Server Action directly to a form's `action` prop — no `onSubmit`, no `e.preventDefault()`, no `fetch()`. The browser POSTs the FormData to the Server Action. This works even with **JavaScript disabled** — a progressive enhancement. In React 19+, you can also pass Server Actions to `<button formAction={...}>` to handle multiple actions per form.",
             expandedText: 'The `"use server"` directive can be placed at the top of an entire file (making all exports Server Actions) or inline inside an async function inside a Server Component. When a Server Action file is imported by a Client Component, Next.js replaces the import with a generated **RPC stub** — a client-side function that makes a `fetch` POST to the framework-generated endpoint. The actual function body runs only on the server and is never sent to the browser.\n\nServer Actions must be `async` functions and must be called with `await` from Client Components or used as the `action` prop of a form. They can return any serialisable value — strings, objects, arrays — which becomes available in Client Components after the call resolves. Returning `null` or `undefined` is valid for mutations that only have side effects. The return value is the primary channel for communicating success, validation errors, and redirect instructions back to the client.',
             codeExample: `// app/new-post/page.tsx — Server Component\nimport { createPost } from '../actions'\n\nexport default function NewPostPage() {\n  return (\n    <form action={createPost}>\n      <input\n        name="title"\n        placeholder="Post title"\n        required\n        className="border rounded px-3 py-2 w-full"\n      />\n      <textarea\n        name="body"\n        placeholder="Post body"\n        rows={6}\n        className="border rounded px-3 py-2 w-full mt-2"\n      />\n      <button\n        type="submit"\n        className="mt-3 px-6 py-2 bg-blue-600 text-white rounded"\n      >\n        Publish\n      </button>\n    </form>\n  )\n  // formData.get('title') and formData.get('body') in the action\n  // Works without JavaScript — pure HTML form with server-side handling\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📋',
+              title: 'Step 1 — Form actions: the official form',
+              text: [
+                'An official government form: fill it in, submit it. The form data is processed by the office, not by you.',
+                'Pass a Server Action to `<form action={createUser}>`. Next.js serialises FormData and sends it to the server. Works without JS (progressive enhancement).',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -12281,7 +14389,14 @@ function validate(data: unknown) {
             text: '`useActionState` (React 19) wraps a Server Action with pending/error state in a Client Component. It returns `[state, action, isPending]`. The `action` replaces the raw Server Action — pass it to the form. `isPending` is `true` while the action runs — use it to disable the submit button and show a spinner. The `state` holds the return value of the last call.',
             expandedText: 'Forms that use Server Actions as their `action` prop receive the `FormData` object as the action argument. Unlike API-based approaches, no client-side event handler is needed — React handles the form submission lifecycle automatically. The `useFormStatus` hook (imported from `react-dom`) provides `pending` state that is `true` while the Server Action is executing, enabling the submit button to show a loading state without any additional state management.\n\n`useActionState` (React 19) manages the full action lifecycle including return values. The hook takes `(action, initialState)` and returns `[state, dispatch, isPending]`. The action receives `(previousState, formData)` — note `previousState` is the first argument. The `state` from the hook is the return value of the most recent action call, which can include validation errors, success flags, or any other structured data. This pattern replaces `useState` for `loading`, `error`, and `data` with a single hook.',
             codeExample: `'use client'\nimport { useActionState } from 'react'\nimport { createPost } from './actions'\n\nexport default function NewPostForm() {\n  const [state, action, isPending] = useActionState(createPost, null)\n\n  return (\n    <form action={action}>\n      <input name="title" placeholder="Title" required />\n      <textarea name="body" rows={5} required />\n\n      {/* Show error returned from the Server Action */}\n      {state?.error && (\n        <p className="text-red-500 text-sm mt-1">{state.error}</p>\n      )}\n\n      <button\n        type="submit"\n        disabled={isPending}\n        className="mt-3 px-6 py-2 bg-blue-600 text-white rounded disabled:opacity-50"\n      >\n        {isPending ? 'Publishing…' : 'Publish'}\n      </button>\n    </form>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🔄',
+              title: 'Step 2 — Revalidation: the cache refresh',
+              text: [
+                'After mailing a change-of-address form, the post office updates their records. Future mail goes to the new address.',
+                'After a mutation, call `revalidatePath(\'/dashboard\')` or `revalidateTag(\'users\')` inside the Server Action to invalidate cached data and trigger a re-fetch.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -12290,7 +14405,14 @@ function validate(data: unknown) {
             text: 'Server Actions can be called programmatically from Client Components — not just from forms. Import the action and call it like any async function. Use `useTransition` to get a `isPending` flag without tying it to a form. This pattern is useful for delete buttons, toggle actions, and any non-form mutation.',
             expandedText: 'After a mutation in a Server Action, **cache revalidation** is the mechanism for updating the rendered output. `revalidatePath(path)` marks all cached data for that path as stale, so the next request to that URL re-fetches and re-renders. `revalidateTag(tag)` invalidates all `fetch` calls tagged with that tag. The `redirect(url)` function (from `next/navigation`) performs a server-side redirect after the action completes — it throws internally, so it must be called after all database operations, not inside a try-catch.\n\n`redirect()` inside a Server Action results in a **303 See Other** redirect response for GET navigations and an internal redirect for form submissions. The distinction matters for proper browser history behaviour. For post-submission navigation where you want the user to land on a confirmation or list page without the Back button re-submitting the form, `redirect()` is the correct tool. For navigation that should be reversible, return a success state from the action and use `router.push()` in the Client Component.',
             codeExample: `'use client'\nimport { useTransition } from 'react'\nimport { deletePost, toggleLike } from './actions'\n\nexport function PostActions({ postId, liked }) {\n  const [isPending, startTransition] = useTransition()\n\n  function handleDelete() {\n    if (!confirm('Delete this post?')) return\n    startTransition(async () => {\n      await deletePost(postId)\n    })\n  }\n\n  function handleLike() {\n    startTransition(async () => {\n      await toggleLike(postId)\n    })\n  }\n\n  return (\n    <div className="flex gap-2">\n      <button onClick={handleLike} disabled={isPending}>\n        {liked ? '❤️ Liked' : '🤍 Like'}\n      </button>\n      <button\n        onClick={handleDelete}\n        disabled={isPending}\n        className="text-red-500"\n      >\n        {isPending ? 'Deleting…' : 'Delete'}\n      </button>\n    </div>\n  )\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🛡️',
+              title: 'Step 3 — Security: the gated post room',
+              text: [
+                'Mail arriving at a corporate post room is checked before reaching the recipient. The gate enforces access control.',
+                'Server Actions should validate and authenticate. Use `session` or `auth()` to verify the caller before processing. Never trust the client-sent payload alone.',
+              ],
+            },
           },
         ],
       },
@@ -12371,7 +14493,14 @@ function validate(data: unknown) {
             text: 'Create a `route.ts` file inside `app/api/` to define HTTP endpoints. Export named functions for each method: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`. The file uses the standard Web `Request` and `Response` APIs — no Express, no custom `req/res` objects. Route Handlers can be async and can access databases and secrets just like Server Components.',
             expandedText: '**Route Handlers** (`route.ts` files in the App Router) replace the `pages/api/` convention from the Pages Router with a more modern API based on the **Web Fetch API** — the same `Request` and `Response` objects used in service workers and edge runtimes. This portability means Route Handlers can run on Node.js, edge runtimes (Cloudflare Workers, Vercel Edge Functions), and be tested with standard `fetch` in any JavaScript environment without framework-specific mocks.\n\nRoute Handlers are the right tool for serving external clients — mobile apps, third-party integrations, public APIs — and for requests that require non-React response types: files, streams, images, or XML. For first-party data access from Server Components and Server Actions, the App Router enables direct database access without an API layer. Adding a Route Handler as an intermediary for internal use is unnecessary boilerplate that the App Router is specifically designed to eliminate.',
             codeExample: `// app/api/posts/route.ts\n\nimport { db } from '@/lib/db'\nimport { NextResponse } from 'next/server'\n\n// GET /api/posts\nexport async function GET() {\n  const posts = await db.posts.findMany()\n  return NextResponse.json(posts)\n}\n\n// POST /api/posts\nexport async function POST(request: Request) {\n  const body = await request.json()\n  const { title, body: postBody } = body\n\n  if (!title) {\n    return NextResponse.json({ error: 'Title required' }, { status: 400 })\n  }\n\n  const post = await db.posts.create({ data: { title, body: postBody } })\n  return NextResponse.json(post, { status: 201 })\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📡',
+              title: 'Step 0 — route.ts: the API endpoint file',
+              text: [
+                'A customer service phone line: a specific number you call for a specific purpose. The handler picks up and responds.',
+                '\'app/api/users/route.ts\' creates an API endpoint at `/api/users`. Export named functions `GET`, `POST`, `PUT`, `DELETE` to handle each HTTP method.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -12380,7 +14509,14 @@ function validate(data: unknown) {
             text: 'Route Handlers receive a standard `Request` object. Use `request.json()` for JSON bodies, `request.formData()` for form submissions, `request.headers` for headers, and `new URL(request.url)` to parse query parameters. Use `NextRequest` from `next/server` for extra utilities like `cookies()` and `nextUrl` (with `searchParams`).',
             expandedText: 'A `route.ts` file exports named functions matching HTTP method names: `GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `HEAD`, `OPTIONS`. Next.js routes incoming requests to the matching export based on the HTTP method. Exporting a `GET` function handles GET requests; exporting `POST` handles POST requests. A 405 Method Not Allowed response is returned automatically for methods that are not exported.\n\nRoute Handlers receive a `Request` object and optional `{ params }` from dynamic segments. The `params` object works identically to page params: a handler at `app/api/users/[id]/route.ts` receives `params.id` from the URL. In Next.js 15, `params` is a Promise in Route Handlers too — `const { id } = await params`. The `Request` object provides `request.json()`, `request.formData()`, `request.text()`, and `request.headers` for reading the request body and metadata.',
             codeExample: `import { NextRequest, NextResponse } from 'next/server'\nimport { cookies } from 'next/headers'\n\n// GET /api/search?q=hello&limit=10\nexport async function GET(request: NextRequest) {\n  const { searchParams } = request.nextUrl\n  const q     = searchParams.get('q') ?? ''\n  const limit = Number(searchParams.get('limit') ?? 10)\n\n  const results = await db.posts.findMany({\n    where: { title: { contains: q } },\n    take: limit,\n  })\n\n  return NextResponse.json({ results, total: results.length })\n}\n\n// POST with JSON body\nexport async function POST(request: Request) {\n  const body = await request.json()\n  // Read headers\n  const authHeader = request.headers.get('authorization')\n  if (!authHeader?.startsWith('Bearer ')) {\n    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })\n  }\n  // Read cookies\n  const cookieStore = await cookies()\n  const sessionId = cookieStore.get('session')?.value\n  return NextResponse.json({ ok: true })\n}`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '📨',
+              title: 'Step 1 — Request and Response: the letter exchange',
+              text: [
+                'You send a letter (request) with a question and details. The office replies (response) with the answer and status.',
+                '\'export async function GET(request: Request)\'. Use `request.json()` for body, `new URL(request.url).searchParams` for query params. Return `Response.json({}, { status: 200 })`.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -12389,7 +14525,14 @@ function validate(data: unknown) {
             text: 'Use **Server Actions** (preferred) for mutations triggered by forms and buttons in your own UI — no API layer needed. Use **Route Handlers** when you need a proper HTTP API: webhooks from third parties (Stripe, GitHub), consumption by mobile apps or external clients, or when you need to return custom status codes and headers. Route Handlers cannot be called directly from React components the way Server Actions can.',
             expandedText: 'The `Response` constructor creates the reply with a `body`, `status`, and `headers`. `Response.json(data, { status: 200 })` is the idiomatic way to return JSON — it sets the `Content-Type: application/json` header automatically. `NextResponse` from `next/server` extends the standard `Response` with Next.js-specific helpers like `NextResponse.redirect(url)` and `NextResponse.next()`. For most use cases the standard `Response` is sufficient and more portable.\n\n**Authentication** in Route Handlers is manual — there is no built-in auth middleware. Read the session cookie or Authorization header from `request.headers`, validate it, and return a 401 or 403 if invalid. The `cookies()` function from `next/headers` provides access to request and response cookies. The `headers()` function reads incoming headers. Both are server-only APIs that run in the Route Handler Node.js environment, not in the browser.',
             codeExample: `// ✅ Use Server Action — called from your own React UI\n'use server'\nexport async function createPost(formData) {\n  await db.posts.create({ data: { title: formData.get('title') } })\n  revalidatePath('/posts')\n}\n// Called from: <form action={createPost}> or useTransition\n\n// ✅ Use Route Handler — consumed by external clients / webhooks\n// app/api/webhooks/stripe/route.ts\nexport async function POST(request: Request) {\n  const sig = request.headers.get('stripe-signature')!\n  const body = await request.text()          // stripe needs raw body\n  const event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_SECRET!)\n\n  if (event.type === 'payment_intent.succeeded') {\n    await fulfillOrder(event.data.object)\n  }\n\n  return new Response('OK', { status: 200 })\n}\n// Called from: Stripe dashboard webhook URL`,
-            language: 'jsx',
+            language: 'jsx',            analogy: {
+              icon: '🔒',
+              title: 'Step 2 — Authentication in handlers: the security desk',
+              text: [
+                'A visitor must sign in at the security desk before accessing the office. The handler checks credentials before processing.',
+                'Read a session cookie or Authorization header, verify it, and return 401 if invalid. Route Handlers run on the server so credentials stay safe.',
+              ],
+            },
           },
         ],
       },
@@ -12468,14 +14611,28 @@ function validate(data: unknown) {
             icon: '🤔',
             heading: 'The problem: who has the latest version?',
             text: 'When multiple developers work on the same project, files get emailed, overwritten, or lost. Version control solves this by giving every change a history — so you always know what changed, when, and why.',
-            expandedText: 'Without **version control**, sharing code means emailing files or sharing network drives — each change risks overwriting a teammate work, and there is no record of what changed or why. **Git** gives every developer a complete copy of the project history. Every change is recorded as a **commit** with a timestamp, author, and message. You can see exactly what changed, who changed it, and why — the history is the audit trail. Crucially, every developer can work independently on their own copy without interfering with others.\n\nGit is a **distributed** version control system — unlike older centralised systems (CVS, Subversion), every clone is a full repository with complete history. There is no single server that holds the "real" history; GitHub is just a convenient shared remote, not the authoritative copy. This means you can work completely offline, commit, branch, and merge, then synchronise with the remote when you reconnect.',
+            expandedText: 'Without **version control**, sharing code means emailing files or sharing network drives — each change risks overwriting a teammate work, and there is no record of what changed or why. **Git** gives every developer a complete copy of the project history. Every change is recorded as a **commit** with a timestamp, author, and message. You can see exactly what changed, who changed it, and why — the history is the audit trail. Crucially, every developer can work independently on their own copy without interfering with others.\n\nGit is a **distributed** version control system — unlike older centralised systems (CVS, Subversion), every clone is a full repository with complete history. There is no single server that holds the "real" history; GitHub is just a convenient shared remote, not the authoritative copy. This means you can work completely offline, commit, branch, and merge, then synchronise with the remote when you reconnect.',            analogy: {
+              icon: '📸',
+              title: 'Step 0 — What is Git: the time machine',
+              text: [
+                'A time machine that saves snapshots of your project. Travel back to any snapshot at any time.',
+                'Git is a version control system. It tracks every change to your files and lets you revert, branch, and collaborate. Every project should use it from day one.',
+              ],
+            },
           },
           {
             animationStep: 1,
             icon: '📚',
             heading: 'Working Directory',
             text: 'Your local files on disk. This is where you write and edit code. Git watches this folder but does not automatically save anything — you decide what gets tracked.',
-            expandedText: 'A **repository** is a directory that contains a hidden `.git` folder storing the entire history of the project. Every commit is a **snapshot** of the entire project at a moment in time — not just the changed files, but every file. Git stores these snapshots efficiently by hashing file contents and deduplicating identical content across commits, so storing thousands of commits takes much less space than thousands of full copies.\n\nEach commit is identified by a **SHA-1 hash** — a 40-character hexadecimal string derived from the commit content, parent hash, author, timestamp, and message. This makes commits tamper-evident: changing any bit of any committed file changes its hash, which changes all subsequent commit hashes. The chain of hashes from the latest commit back to the initial commit is cryptographically linked, making the history immutable and trustworthy.',
+            expandedText: 'A **repository** is a directory that contains a hidden `.git` folder storing the entire history of the project. Every commit is a **snapshot** of the entire project at a moment in time — not just the changed files, but every file. Git stores these snapshots efficiently by hashing file contents and deduplicating identical content across commits, so storing thousands of commits takes much less space than thousands of full copies.\n\nEach commit is identified by a **SHA-1 hash** — a 40-character hexadecimal string derived from the commit content, parent hash, author, timestamp, and message. This makes commits tamper-evident: changing any bit of any committed file changes its hash, which changes all subsequent commit hashes. The chain of hashes from the latest commit back to the initial commit is cryptographically linked, making the history immutable and trustworthy.',            analogy: {
+              icon: '🗃️',
+              title: 'Step 1 — Repository: the project archive',
+              text: [
+                'A filing cabinet dedicated to one project, with every version of every document ever filed.',
+                'A repository (repo) is a folder tracked by Git. `git init` creates one. A hidden `.git/` folder stores all history. Never delete `.git/`.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -12484,7 +14641,14 @@ function validate(data: unknown) {
             text: 'A holding area for changes you want to include in the next snapshot. Use `git add` to move files here. You can stage some files and leave others out — giving you precise control over what you commit.',
             expandedText: '`git init` creates a new repository by creating a `.git` directory in the current folder. `git clone URL` copies a remote repository to your machine, creating a local directory with the full history and setting up `origin` as the remote alias automatically. Cloning is idempotent — you can clone the same repository multiple times and get identical results; each clone is an independent copy.\n\nAfter `git init`, the repository has no commits and no branches yet — `HEAD` points to an unborn `main` branch. The first `git commit` creates the initial snapshot and materialises the `main` branch. A common mistake is running `git init` inside a directory that is already inside another git repository, creating a nested repository. Run `git status` first to confirm you are in the right directory and not already inside a repository.',
             codeExample: 'git add index.html\ngit add style.css\n# or add everything:\ngit add .',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '📷',
+              title: 'Step 2 — Commit: the saved checkpoint',
+              text: [
+                'A video game checkpoint. Reach it and you can always reload from there if you fail.',
+                'A commit is a snapshot of all tracked files at a point in time. It has a message and a unique hash (SHA). `git commit -m \'add login page\'`.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -12493,14 +14657,28 @@ function validate(data: unknown) {
             text: 'The `.git` folder on your machine stores the full project history. Every commit is a permanent snapshot. You can always travel back to any previous state — nothing is ever truly lost.',
             expandedText: 'The **three areas** model is the most important mental model for understanding Git commands. The **working directory** is the actual files on disk — where you edit code. The **staging area** (also called the index) is a proposed next commit — `git add` moves changes from the working directory to staging. The **repository** (`.git/commits`) is the committed history — `git commit` saves the staged snapshot permanently.\n\nCommands move changes between these areas: `git add file.txt` stages a file; `git restore file.txt` discards working directory changes (restores from the last commit); `git restore --staged file.txt` unstages a file (moves it back to the working directory without discarding changes); `git commit` snapshots the staging area into the repository. Understanding which area each command affects prevents the common confusion of "why is my change gone?"',
             codeExample: 'git commit -m "add navigation menu"\n# creates a permanent snapshot in history',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '🌿',
+              title: 'Step 3 — Branch: the parallel timeline',
+              text: [
+                'A parallel universe where you can experiment freely. Merge universes when the experiment succeeds; discard it if it fails.',
+                'A branch is a pointer to a commit. Work on `feature/login` in isolation. Merge it to `main` when done. Branches are cheap — create freely.',
+              ],
+            },
           },
           {
             animationStep: 4,
             icon: '🌐',
             heading: 'All 4 areas together',
             text: 'The full Git flow: Working Directory → Staging Area → Local Repo → Remote Repo. Changes move forward through these areas and can flow back (`git checkout`, `git pull`) when needed.',
-            expandedText: '`git add` has several useful forms. `git add file.txt` stages a specific file; `git add src/` stages all changes in a directory; `git add -p` (patch mode) interactively stages individual **hunks** of changes within a file, allowing you to commit related changes together even if the file has unrelated modifications. Patch mode is the professional way to keep commits focused and meaningful.\n\n`git commit -m "message"` creates the commit with a one-line message. For multi-line messages, `git commit` (without `-m`) opens the configured editor. A good commit message has a **concise subject line** (under 72 characters) describing what changed, an optional blank line, and a body explaining why the change was made. The subject line is what appears in `git log --oneline` and pull request summaries — it should be meaningful in that context.',
+            expandedText: '`git add` has several useful forms. `git add file.txt` stages a specific file; `git add src/` stages all changes in a directory; `git add -p` (patch mode) interactively stages individual **hunks** of changes within a file, allowing you to commit related changes together even if the file has unrelated modifications. Patch mode is the professional way to keep commits focused and meaningful.\n\n`git commit -m "message"` creates the commit with a one-line message. For multi-line messages, `git commit` (without `-m`) opens the configured editor. A good commit message has a **concise subject line** (under 72 characters) describing what changed, an optional blank line, and a body explaining why the change was made. The subject line is what appears in `git log --oneline` and pull request summaries — it should be meaningful in that context.',            analogy: {
+              icon: '☁️',
+              title: 'Step 4 — Remote: the cloud copy',
+              text: [
+                'A cloud backup of your local filing cabinet. Push new filings to the cloud; pull updates from collaborators.',
+                'A remote is a hosted copy of the repo (GitHub, GitLab). `git push origin main` uploads commits. `git pull` downloads updates.',
+              ],
+            },
           },
         ],
       },
@@ -12578,7 +14756,14 @@ function validate(data: unknown) {
             icon: '🔄',
             heading: 'The daily Git loop',
             text: 'Every day in a development team follows the same pattern: get the latest code, create a branch, make changes, stage them, commit, then push to share with the team.',
-            expandedText: 'The **feature branch workflow** is the standard collaborative development pattern. The `main` branch always contains deployable code — it is never broken, never contains work in progress. Every new feature, bug fix, or experiment gets its own branch created from the latest `main`. Work happens on the feature branch; when done and reviewed, it is merged back to `main` via a pull request. This keeps `main` stable and gives every developer an isolated workspace.\n\nThe workflow prevents the chaos of everyone committing directly to `main` simultaneously. Without branches, a half-finished feature from one developer blocks everyone else because `main` is broken. With branches, multiple developers work in parallel without interfering. The feature branch also provides a natural unit for code review: the pull request shows all changes from the branch in one place, and reviewers can comment on the work before it reaches `main`.',
+            expandedText: 'The **feature branch workflow** is the standard collaborative development pattern. The `main` branch always contains deployable code — it is never broken, never contains work in progress. Every new feature, bug fix, or experiment gets its own branch created from the latest `main`. Work happens on the feature branch; when done and reviewed, it is merged back to `main` via a pull request. This keeps `main` stable and gives every developer an isolated workspace.\n\nThe workflow prevents the chaos of everyone committing directly to `main` simultaneously. Without branches, a half-finished feature from one developer blocks everyone else because `main` is broken. With branches, multiple developers work in parallel without interfering. The feature branch also provides a natural unit for code review: the pull request shows all changes from the branch in one place, and reviewers can comment on the work before it reaches `main`.',            analogy: {
+              icon: '🔄',
+              title: 'Step 0 — The cycle: stage commit push',
+              text: [
+                'Packing a shipment: collect items (stage), seal the box (commit), hand to courier (push).',
+                'The core loop: `git add` stages changes, `git commit` saves them as a snapshot, `git push` uploads to the remote. Repeat for every logical unit of work.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -12587,7 +14772,14 @@ function validate(data: unknown) {
             text: 'For a brand new project use `git init`. To work on an existing project, `git clone` downloads the full history. You only do this once per project.',
             expandedText: '`git checkout -b feature/login` (or `git switch -c feature/login`) creates a new branch and switches to it in one command. Branch names are free-form strings — the `feature/`, `bugfix/`, `chore/` prefix convention communicates purpose at a glance in long branch lists. Branches are lightweight in Git — creating a branch just creates a new pointer to a commit, consuming negligible space and time. Delete branches freely without losing any history.\n\nA branch is just a **named pointer** to a commit. When you commit on a branch, the pointer advances to the new commit. When you switch branches, Git updates the working directory to match the commit the branch points to. **`HEAD`** is the special pointer that tracks which branch you are currently on. `git log --oneline --graph --all` visualises the branch topology — which branches share history and where they diverged.',
             codeExample: '# New project\ngit init\n\n# Existing project\ngit clone https://github.com/user/repo.git',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '📦',
+              title: 'Step 1 — Staging area: the packing table',
+              text: [
+                'A packing table between your workshop and shipping. Items sit here ready for the box — not yet shipped but committed to go.',
+                '\'git add file.txt\' moves changes to the staging area. `git add .` stages everything. `git status` shows what is staged vs unstaged.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -12596,7 +14788,14 @@ function validate(data: unknown) {
             text: 'Always work in a branch — never directly on `main`. A branch is an isolated copy of the codebase. Your changes stay contained until you decide to merge them back.',
             expandedText: 'The most effective commit strategy is **small, frequent, focused commits** — each commit does one thing and the message describes what and why. Small commits are easier to review, easier to revert, and easier to cherry-pick (apply a specific fix to another branch). Commit when a logical unit of work is complete, even if the feature is not finished — `git stash` or draft PRs handle incomplete work.\n\nThe commit message **subject line** should complete the sentence "This commit will..." — "Add login form validation", "Fix null pointer in CartService", "Refactor API client to use axios". Avoid vague messages like "fix bug", "update files", or "WIP". Teammates reading `git log` on `main` months later should understand what each commit did from the subject alone. The body can explain the motivation and any non-obvious decisions.',
             codeExample: '# Create and switch to new branch\ngit checkout -b feature/navigation\n\n# List all branches\ngit branch',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '📝',
+              title: 'Step 2 — Commit messages: the post-it note',
+              text: [
+                'A post-it on a box explaining what is inside and why it was packed.',
+                'Good commit messages: short summary line, then optional detail. Use present tense: `fix login redirect` not `fixed`. `git log --oneline` shows the history.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -12605,7 +14804,14 @@ function validate(data: unknown) {
             text: 'Make changes, stage the relevant files, then `git commit` with a descriptive message. Commit often — small commits are easier to review, understand, and revert if something goes wrong.',
             expandedText: '`git push origin feature/login` uploads the branch to GitHub. The first push requires `-u` to set the **upstream tracking branch**: `git push -u origin feature/login`. After that, `git push` and `git pull` on that branch work without specifying the remote and branch name. The upstream link also enables `git status` to report how many commits the local branch is ahead of or behind the remote.\n\n**Opening a pull request** on GitHub starts the code review process. The PR title and description should explain what the changes do and why they are needed — this context helps reviewers understand the intent and surfaces design questions early. Link to the related issue (GitHub closes issues automatically when a PR with "Fixes #123" in the description is merged). Request reviews from specific teammates who have context on the changed code.',
             codeExample: 'git add src/nav.js\ngit commit -m "add responsive navigation menu"',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '🌿',
+              title: 'Step 3 — Branch workflow: the feature lane',
+              text: [
+                'A motorway construction adds a temporary parallel lane while the main lane stays open for traffic.',
+                'Create: `git checkout -b feature/login`. Work and commit. Push: `git push -u origin feature/login`. Open a PR. Merge after review.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -12614,7 +14820,14 @@ function validate(data: unknown) {
             text: 'Push your branch to the remote repository so teammates can see it. The `-u` flag sets the upstream so future pushes just need `git push`.',
             expandedText: 'After a PR is merged, **update your local `main`** with `git checkout main && git pull`. Then delete the merged branch locally: `git branch -d feature/login`. The `-d` flag (lowercase) refuses to delete branches with unmerged changes as a safety net; `-D` forces deletion. Delete the remote branch via the GitHub UI or with `git push origin --delete feature/login`.\n\nStarting the next feature from an up-to-date `main` minimises future merge conflicts. If your feature branch has been open for several days while `main` received new commits, **rebase onto `main`**: `git rebase origin/main` replays your commits on top of the latest `main`. This keeps the branch current and produces a clean history without merge commits. Push with `--force-with-lease` after a rebase (not `--force`) to safely update the remote branch.',
             codeExample: '# First push from a new branch\ngit push -u origin feature/navigation\n\n# Subsequent pushes\ngit push',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '⚡',
+              title: 'Step 4 — Pull before push: sync first',
+              text: [
+                'Before adding items to a shared drawer, check what others put in while you were away. Avoid collisions.',
+                'Always `git pull` before starting work and before pushing. If the remote has commits you do not, pull → merge/rebase → then push.',
+              ],
+            },
           },
         ],
       },
@@ -12692,7 +14905,14 @@ function validate(data: unknown) {
             icon: '🙈',
             heading: 'Without .gitignore — everything gets committed',
             text: 'Run `git add .` without a `.gitignore` and you\'ll accidentally commit `node_modules` (200MB+), your `.env` secrets, and build output. Once in git history, they\'re hard to remove completely.',
-            expandedText: 'Generated files like `node_modules/`, build output, compiled binaries, and IDE configuration files do not belong in version control. They can be reconstructed from source files and committed instructions (`package.json`, build scripts), and tracking them bloats the repository with hundreds of megabytes of unnecessary data.\n\n**Secret files** — `.env` files containing API keys, database passwords, and private keys — must never be committed. Once a secret is committed to a repository, it is in the history forever, even if you delete the file in a subsequent commit. Anyone with repository access can read it from history. Use `.gitignore` to prevent `.env` from ever being tracked, and rotate any secrets that were accidentally committed.',
+            expandedText: 'Generated files like `node_modules/`, build output, compiled binaries, and IDE configuration files do not belong in version control. They can be reconstructed from source files and committed instructions (`package.json`, build scripts), and tracking them bloats the repository with hundreds of megabytes of unnecessary data.\n\n**Secret files** — `.env` files containing API keys, database passwords, and private keys — must never be committed. Once a secret is committed to a repository, it is in the history forever, even if you delete the file in a subsequent commit. Anyone with repository access can read it from history. Use `.gitignore` to prevent `.env` from ever being tracked, and rotate any secrets that were accidentally committed.',            analogy: {
+              icon: '🚫',
+              title: 'Step 0 — What is .gitignore: the do-not-file list',
+              text: [
+                'A do-not-file list on the cabinet: `node_modules`, receipts from last year, private notes. These never go in the cabinet.',
+                '\'.gitignore\' lists files and patterns Git should never track. Once in `.gitignore`, matching files are invisible to `git add` and `git status`.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -12701,7 +14921,14 @@ function validate(data: unknown) {
             text: 'Add a file named `.gitignore` in the root of your project. List what to ignore — Git will never stage or commit those files. Commit the `.gitignore` itself so teammates get the same rules.',
             expandedText: 'A `.gitignore` file lists **patterns** of files and directories that Git should not track. Patterns are matched against paths relative to the `.gitignore` file location. A leading `/` anchors the pattern to the repository root: `/dist` ignores only the root-level `dist` directory, not `packages/ui/dist`. A trailing `/` restricts matching to directories: `dist/` ignores any directory named `dist` anywhere in the tree. Patterns without either are matched everywhere.\n\nThe `.gitignore` file itself should be committed — it is source code that describes the project intentional exclusions. A global `~/.gitignore` (configured with `git config --global core.excludesFile`) handles per-machine patterns like `.DS_Store` on macOS and IDE settings directories, separating personal preferences from project-level rules.',
             codeExample: '# at the project root\ntouch .gitignore',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '🗂️',
+              title: 'Step 1 — Common patterns: what to ignore',
+              text: [
+                'Standard categories to always exclude: generated output, dependencies, secrets, OS files, editor config.',
+                'node_modules/, dist/, .env, *.log, .DS_Store — these are universal ignores. Use gitignore.io to generate a language-specific template.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -12710,7 +14937,14 @@ function validate(data: unknown) {
             text: 'Each line is a pattern. Use `/` to match directories, `*` as a wildcard, `!` to un-ignore something specific. Patterns are matched from the project root.',
             expandedText: 'Pattern **wildcards** provide flexible matching. `*` matches any string within a single path component (not across `/`); `**` matches any number of path components: `**/logs` matches `logs/`, `build/logs/`, and `packages/api/logs/`. `?` matches any single character. Negation with `!` un-ignores a pattern: `!src/generated-important-file.ts` re-includes a file excluded by a broader pattern.\n\nA common pattern for Node.js projects: ignore `node_modules/`, the `dist/` or `build/` directory, `.env` files but allow `.env.example`, log files, and OS metadata files. GitHub provides a collection of standard `.gitignore` templates at `github.com/github/gitignore` for every language and framework. Running `npx gitignore node` generates the standard Node.js `.gitignore` using the gitignore.io API.',
             codeExample: 'node_modules/   # ignore this folder\n.env            # ignore this file\n*.log           # ignore all .log files\ndist/           # ignore build output\n!.env.example   # but keep this one',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '🔓',
+              title: 'Step 2 — Untracking already-tracked files: the undo stamp',
+              text: [
+                'A document already filed must be removed from the cabinet AND put on the do-not-file list. Adding to the list alone does not remove it from the cabinet.',
+                '\'git rm --cached file.txt\' stops tracking without deleting the file. Then add the pattern to `.gitignore`. Commit the removal. The file stays locally.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -12719,7 +14953,14 @@ function validate(data: unknown) {
             text: 'After adding `.gitignore`, `git add .` only stages your actual source files. Secrets stay local, `node_modules` stays off GitHub, and your repo stays lean and clean.',
             expandedText: '**Already-tracked files** are not affected by `.gitignore` rules. If a file was committed before the ignore rule was added, Git continues tracking it. To stop tracking a file without deleting it from disk, run `git rm --cached path/to/file`. This stages a deletion of the file from the repository while leaving it in the working directory. Commit the deletion along with the updated `.gitignore` rule, and future changes to the file will be ignored.\n\nA common scenario: a developer accidentally commits `.env` before adding it to `.gitignore`. The correct remediation is `git rm --cached .env` followed by adding `.env` to `.gitignore` and committing. Then rotate all secrets that were in the file — they have been exposed in the history. If the repository is private and access is controlled, the risk is lower, but if the repository ever becomes public or access is compromised, all committed secrets must be considered exposed.',
             codeExample: '# Check what Git currently ignores:\ngit check-ignore -v node_modules\n\n# See untracked (not ignored) files:\ngit status',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '🌐',
+              title: 'Step 3 — Global gitignore: the personal do-not-file list',
+              text: [
+                'Your personal rule: never file sticky notes from your desk. Applies to every project, not just one.',
+                '\'git config --global core.excludesfile ~/.gitignore_global\' sets a personal global ignore. Put OS files (.DS_Store, Thumbs.db) and editor files here.',
+              ],
+            },
           },
         ],
       },
@@ -12797,28 +15038,56 @@ function validate(data: unknown) {
             icon: '☁️',
             heading: 'Git ≠ GitHub',
             text: 'Git is a command-line tool that runs on your machine. GitHub is a website that hosts Git repositories online. You can use Git without GitHub, but GitHub needs Git. Think of Git as the engine and GitHub as the garage.',
-            expandedText: 'A **local Git repository** exists only on your machine. GitHub provides a **remote** — a shared copy of the repository hosted on GitHub servers — that enables collaboration, backup, and integration with CI/CD pipelines and deployment services. The remote is not required for Git to function; Git is fully capable without a remote. GitHub adds the collaboration layer: pull requests, code review, issue tracking, Actions, and access controls on top of the Git protocol.\n\nGitHub is the dominant hosting platform but not the only one. **GitLab** provides the same features with strong self-hosting support. **Bitbucket** integrates deeply with the Atlassian toolchain (Jira, Confluence). **Forgejo** and **Gitea** are self-hosted open-source alternatives. The underlying protocol is the same: `git push`, `git pull`, and `git clone` work identically across all providers.',
+            expandedText: 'A **local Git repository** exists only on your machine. GitHub provides a **remote** — a shared copy of the repository hosted on GitHub servers — that enables collaboration, backup, and integration with CI/CD pipelines and deployment services. The remote is not required for Git to function; Git is fully capable without a remote. GitHub adds the collaboration layer: pull requests, code review, issue tracking, Actions, and access controls on top of the Git protocol.\n\nGitHub is the dominant hosting platform but not the only one. **GitLab** provides the same features with strong self-hosting support. **Bitbucket** integrates deeply with the Atlassian toolchain (Jira, Confluence). **Forgejo** and **Gitea** are self-hosted open-source alternatives. The underlying protocol is the same: `git push`, `git pull`, and `git clone` work identically across all providers.',            analogy: {
+              icon: '☁️',
+              title: 'Step 0 — GitHub vs Git: the warehouse and the truck',
+              text: [
+                'Git is the truck — it moves your items. GitHub is the warehouse — it stores them remotely for collaboration.',
+                'Git is local software. GitHub is a hosting platform with a web UI, PRs, issues, CI/CD. Push your Git repo to GitHub to share it.',
+              ],
+            },
           },
           {
             animationStep: 1,
             icon: '🌐',
             heading: 'Remote repository',
             text: 'GitHub stores a copy of your repository in the cloud. Every team member clones it once, then uses `git pull` to get the latest changes and `git push` to share their work. The remote is the single source of truth.',
-            expandedText: '`git remote add origin URL` registers the GitHub repository as a remote named `origin`. **`origin`** is a convention — the name could be anything — but it is so universally used that deviating from it confuses teammates and tools. After adding the remote, `git remote -v` shows the fetch and push URLs. Multiple remotes are allowed: `upstream` is the common name for the original repository when working with forks, allowing `git fetch upstream` to get changes from the upstream project.\n\nThe remote URL can use **HTTPS** (`https://github.com/user/repo.git`) or **SSH** (`git@github.com:user/repo.git`). HTTPS requires a GitHub personal access token (not your password) for push operations; SSH uses a key pair stored on your machine. SSH is more convenient for regular use because it does not prompt for credentials on every push. GitHub CLI (`gh`) can authenticate for HTTPS automatically and configure the credential helper.',
+            expandedText: '`git remote add origin URL` registers the GitHub repository as a remote named `origin`. **`origin`** is a convention — the name could be anything — but it is so universally used that deviating from it confuses teammates and tools. After adding the remote, `git remote -v` shows the fetch and push URLs. Multiple remotes are allowed: `upstream` is the common name for the original repository when working with forks, allowing `git fetch upstream` to get changes from the upstream project.\n\nThe remote URL can use **HTTPS** (`https://github.com/user/repo.git`) or **SSH** (`git@github.com:user/repo.git`). HTTPS requires a GitHub personal access token (not your password) for push operations; SSH uses a key pair stored on your machine. SSH is more convenient for regular use because it does not prompt for credentials on every push. GitHub CLI (`gh`) can authenticate for HTTPS automatically and configure the credential helper.',            analogy: {
+              icon: '🔀',
+              title: 'Step 1 — Pull Requests: the review queue',
+              text: [
+                'Before a report reaches the executive, it sits in a review queue. Colleagues comment, suggest changes, approve.',
+                'A PR proposes merging a branch into main. Team members review, comment, request changes. Merge only after approval. The conversation is logged forever.',
+              ],
+            },
           },
           {
             animationStep: 2,
             icon: '🔄',
             heading: 'Pull Requests',
             text: 'A Pull Request (PR) is a GitHub feature that lets you propose merging a branch into main. Before merging, teammates can review the code, leave comments, request changes, and approve. This keeps the main branch clean and reviewed.',
-            expandedText: '`git push origin branch-name` uploads the branch and all its commits to GitHub. The `-u` flag (short for `--set-upstream`) links the local branch to the remote branch, enabling `git push` and `git pull` without arguments on subsequent uses. After the first push with `-u`, `git status` also reports the tracking relationship: "Your branch is 1 commit ahead of `origin/main`".\n\n`git pull` is shorthand for `git fetch` followed by `git merge`. `git fetch origin` downloads new commits from the remote without modifying your working directory or current branch — it updates the `origin/main` remote-tracking branch. `git merge origin/main` (or `git rebase origin/main`) then integrates those changes. Many developers prefer explicit `git fetch` plus `git rebase` over `git pull` because it provides more control and avoids accidental merge commits.',
+            expandedText: '`git push origin branch-name` uploads the branch and all its commits to GitHub. The `-u` flag (short for `--set-upstream`) links the local branch to the remote branch, enabling `git push` and `git pull` without arguments on subsequent uses. After the first push with `-u`, `git status` also reports the tracking relationship: "Your branch is 1 commit ahead of `origin/main`".\n\n`git pull` is shorthand for `git fetch` followed by `git merge`. `git fetch origin` downloads new commits from the remote without modifying your working directory or current branch — it updates the `origin/main` remote-tracking branch. `git merge origin/main` (or `git rebase origin/main`) then integrates those changes. Many developers prefer explicit `git fetch` plus `git rebase` over `git pull` because it provides more control and avoids accidental merge commits.',            analogy: {
+              icon: '🐛',
+              title: 'Step 2 — Issues: the bug tracker',
+              text: [
+                'A maintenance request board: each card is a problem (bug, feature, question). Assign, label, track to completion.',
+                'GitHub Issues track bugs and features. Reference issues in commits: `fix #42` auto-closes the issue on merge. Use labels (bug, enhancement) and milestones.',
+              ],
+            },
           },
           {
             animationStep: 3,
             icon: '🍴',
             heading: 'Forking & open source',
             text: 'Fork creates your own copy of someone else\'s repository. You can make changes freely, then open a PR back to the original. This is how millions of developers contribute to open-source projects without needing direct access.',
-            expandedText: '**GitHub Issues** provide structured issue tracking integrated with the repository. Labels categorise issues (`bug`, `enhancement`, `documentation`); milestones group issues by release or sprint; assignees clarify ownership. The **closing keyword** syntax — `Fixes #42`, `Closes #17`, `Resolves #8` — in a PR description or commit message automatically closes the referenced issue when the PR is merged to the default branch.\n\n**Pull Requests** are the collaborative code review mechanism. A PR shows all commits on the branch, a unified diff of all changes, and a comment thread for review feedback. GitHub Actions can be configured to run CI checks (tests, linting, type-checking) on every PR and block merging until all checks pass. The required reviewers feature prevents merging without explicit approval, enforcing the "no unreviewed code on main" policy.',
+            expandedText: '**GitHub Issues** provide structured issue tracking integrated with the repository. Labels categorise issues (`bug`, `enhancement`, `documentation`); milestones group issues by release or sprint; assignees clarify ownership. The **closing keyword** syntax — `Fixes #42`, `Closes #17`, `Resolves #8` — in a PR description or commit message automatically closes the referenced issue when the PR is merged to the default branch.\n\n**Pull Requests** are the collaborative code review mechanism. A PR shows all commits on the branch, a unified diff of all changes, and a comment thread for review feedback. GitHub Actions can be configured to run CI checks (tests, linting, type-checking) on every PR and block merging until all checks pass. The required reviewers feature prevents merging without explicit approval, enforcing the "no unreviewed code on main" policy.',            analogy: {
+              icon: '⚡',
+              title: 'Step 3 — GitHub Actions: the automated factory',
+              text: [
+                'A fully automated factory line that builds, tests, and packages every time a new batch arrives.',
+                '\'.github/workflows/ci.yml\' defines automation. Triggers on push or PR. Runs: install, lint, test, build. Green badge = safe to merge.',
+              ],
+            },
           },
         ],
       },
@@ -12898,7 +15167,14 @@ function validate(data: unknown) {
             text: 'Start on GitHub: create a new repository, then go to Settings → Collaborators → Add people. Teammates receive an email invite — they must accept before they can push. For organisations, use Teams to manage access at scale.',
             expandedText: '**Git configuration** identifies who you are to the history. `git config --global user.name "Your Name"` and `git config --global user.email "you@example.com"` set the identity that appears in every commit you make. The email should match your GitHub account email for contribution graph credit and author matching in code review tools. Run `git config --list` to see all active settings and which config file they come from.\n\nThe `--global` flag applies the setting to all repositories on your machine. The `--local` flag (or no flag) applies only to the current repository. Local config overrides global config, enabling per-project identity — useful for using a work email for professional repositories and a personal email for open-source projects. `git config --global core.editor code` configures VS Code as the editor for commit messages and interactive rebase.',
             codeExample: '# After being added, teammates clone once:\ngit clone https://github.com/team/project.git\ncd project',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '🔑',
+              title: 'Step 0 — SSH keys: the key-lock pair',
+              text: [
+                'You create a padlock (public key) and give it to the server. You keep the key (private key). Only your key opens the padlock.',
+                'Generate: `ssh-keygen -t ed25519`. Add `~/.ssh/id_ed25519.pub` to GitHub Settings → SSH Keys. Now `git push` authenticates automatically.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -12907,14 +15183,28 @@ function validate(data: unknown) {
             text: 'Every team member runs `git clone` once. This downloads the full history and sets `origin` as the remote name automatically. From then on they use `git pull` to sync and `git push` to share.',
             expandedText: '**SSH keys** authenticate your machine to GitHub without entering a password on every `git push`. Generate a key pair with `ssh-keygen -t ed25519 -C "you@example.com"` — the private key stays on your machine (never share it), the public key (`~/.ssh/id_ed25519.pub`) is added to GitHub under Settings > SSH and GPG keys. `ssh -T git@github.com` verifies the connection — a "successfully authenticated" response confirms the key is set up correctly.\n\nOnce SSH is configured, use SSH clone URLs (`git@github.com:user/repo.git`) instead of HTTPS. For repositories already cloned with HTTPS, update the remote URL: `git remote set-url origin git@github.com:user/repo.git`. The SSH agent handles key management — `ssh-add ~/.ssh/id_ed25519` adds the key to the agent so you are not prompted for the passphrase on every operation. macOS Keychain integrates with the SSH agent automatically.',
             codeExample: 'git clone https://github.com/team/project.git\n\n# Check your remote:\ngit remote -v\n# origin  https://github.com/team/project.git (fetch)\n# origin  https://github.com/team/project.git (push)',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '🍴',
+              title: 'Step 1 — Fork: the personal copy',
+              text: [
+                'Photocopying a library book you do not own. You can write in your copy freely without affecting the original.',
+                'A fork creates a personal copy of someone else\'s repo on GitHub. Experiment freely, then submit a PR to propose merging changes upstream.',
+              ],
+            },
           },
           {
             animationStep: 2,
             icon: '🛡️',
             heading: 'Protect main — require Pull Request reviews',
             text: 'Go to Settings → Branches → Add branch protection rule for main. Enable "Require a pull request before merging" and "Require approvals". This prevents anyone from pushing directly to main — all changes must go through a reviewed PR.',
-            expandedText: '**Branch protection rules** on GitHub enforce team practices at the repository level. The "Require pull request reviews before merging" rule prevents pushing directly to `main` and requires at least one approving review. The "Require status checks to pass before merging" rule blocks merging if CI tests are failing. These rules cannot be bypassed by individual contributors (unless they have admin access), making them a reliable enforcement mechanism for team standards.\n\nConfiguring protection rules is a one-time setup that pays dividends for the lifetime of the project. Common rule sets: require 1-2 approving reviews, require the test suite to pass, require branches to be up to date before merging (prevents "it passed CI on the branch but broke on main" scenarios), and optionally require signed commits. The rules apply to everyone including the repository owner, which prevents the "I am in a hurry" rationalisation for skipping review.',
+            expandedText: '**Branch protection rules** on GitHub enforce team practices at the repository level. The "Require pull request reviews before merging" rule prevents pushing directly to `main` and requires at least one approving review. The "Require status checks to pass before merging" rule blocks merging if CI tests are failing. These rules cannot be bypassed by individual contributors (unless they have admin access), making them a reliable enforcement mechanism for team standards.\n\nConfiguring protection rules is a one-time setup that pays dividends for the lifetime of the project. Common rule sets: require 1-2 approving reviews, require the test suite to pass, require branches to be up to date before merging (prevents "it passed CI on the branch but broke on main" scenarios), and optionally require signed commits. The rules apply to everyone including the repository owner, which prevents the "I am in a hurry" rationalisation for skipping review.',            analogy: {
+              icon: '📥',
+              title: 'Step 2 — Clone: downloading the repo',
+              text: [
+                'Downloading the library book to your device. You now have your own offline copy to read and annotate.',
+                '\'git clone git@github.com:user/repo.git\' copies the repo locally. Sets up `origin` remote automatically. Start working immediately.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -12923,7 +15213,14 @@ function validate(data: unknown) {
             text: 'Every feature or fix follows the same cycle: `git pull` latest `main`, create a branch, commit your work, push the branch, open a PR, get a review, then merge. Small focused PRs are easier to review and less likely to conflict.',
             expandedText: '**Forking** creates a complete copy of a repository under your GitHub account. You have full write access to your fork; you push changes there and open a pull request to the original (upstream) repository. This model enables contribution without requiring direct write access to the upstream repository — anyone can fork a public repository and contribute. The fork-and-PR model is how open-source contribution works on GitHub.\n\nTo keep your fork up to date with the upstream repository, add `upstream` as a second remote: `git remote add upstream https://github.com/original-owner/repo.git`. Then `git fetch upstream` downloads new commits from the original, and `git rebase upstream/main` replays your branch on top of the latest upstream `main`. Push your updated branch to your fork with `git push --force-with-lease origin feature/my-contribution`. This workflow is standard for all open-source contribution on GitHub.',
             codeExample: 'git pull origin main          # sync first\ngit checkout -b feat/login    # new branch\n# ... code ...\ngit add . && git commit -m "add login form"\ngit push origin feat/login    # push branch\n# → open PR on GitHub',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '🔗',
+              title: 'Step 3 — Upstream remote: staying in sync with the source',
+              text: [
+                'A translator keeps a live feed to the original author\'s updates so translations stay current.',
+                'After forking, add the original: `git remote add upstream git@github.com:original/repo.git`. `git fetch upstream; git merge upstream/main` keeps your fork current.',
+              ],
+            },
           },
         ],
       },
@@ -13001,7 +15298,14 @@ function validate(data: unknown) {
             icon: '⚠️',
             heading: 'Conflicts happen when two branches edit the same line',
             text: 'When you merge a branch and both sides modified the same part of a file, Git can\'t decide automatically which version to keep. It pauses the merge and asks you to resolve it manually.',
-            expandedText: '**Merge conflicts** occur when Git cannot automatically merge two branches because they both modified the same lines of a file differently. Git merges non-conflicting changes automatically — only the lines that both branches touched require manual resolution. Conflicts are a normal part of collaborative development, not a sign that something went wrong. They occur more frequently when branches are long-lived, when multiple developers work in the same area of the codebase, or when a large refactoring changes many files.\n\nConflicts appear during `git merge`, `git rebase`, and `git cherry-pick`. The conflict is not committed to history — it is an in-progress state that you must resolve before completing the operation. `git status` shows which files have conflicts; `git merge --abort` or `git rebase --abort` cancels the operation and returns to the pre-merge state if you need time to think through the resolution.',
+            expandedText: '**Merge conflicts** occur when Git cannot automatically merge two branches because they both modified the same lines of a file differently. Git merges non-conflicting changes automatically — only the lines that both branches touched require manual resolution. Conflicts are a normal part of collaborative development, not a sign that something went wrong. They occur more frequently when branches are long-lived, when multiple developers work in the same area of the codebase, or when a large refactoring changes many files.\n\nConflicts appear during `git merge`, `git rebase`, and `git cherry-pick`. The conflict is not committed to history — it is an in-progress state that you must resolve before completing the operation. `git status` shows which files have conflicts; `git merge --abort` or `git rebase --abort` cancels the operation and returns to the pre-merge state if you need time to think through the resolution.',            analogy: {
+              icon: '⚔️',
+              title: 'Step 0 — What is a conflict: the same sentence edited twice',
+              text: [
+                'Two editors correct the same sentence differently. Now there are two versions and someone must choose.',
+                'A conflict occurs when two branches edit the same line of the same file. Git cannot auto-merge and marks the file with conflict markers.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -13010,7 +15314,14 @@ function validate(data: unknown) {
             text: 'Git marks the conflict directly in the file with `<<<<<<<` (your branch), `=======` (separator), and `>>>>>>>` (the incoming branch). Everything between the markers is the content in conflict.',
             expandedText: 'Git marks conflicts with **conflict markers** in the affected file. The section between `<<<<<<< HEAD` and `=======` is the version from the current branch. The section between `=======` and `>>>>>>> branch-name` is the version from the incoming branch. Both sections show the conflicting content, and you must edit the file to produce the desired final state — which might be one version, the other, or a combination of both.\n\nThe markers themselves are not valid code — the file will not compile until they are removed. Tools like VS Code built-in merge editor, GitLens, or IntelliJ diff view provide a visual three-way merge interface that shows "ours", "theirs", and "base" (the common ancestor) simultaneously, making it easier to understand the intent of both changes. After resolution, save the file; the markers must be completely removed.',
             codeExample: '<<<<<<< HEAD\n  color: blue;\n=======\n  color: red;\n>>>>>>> feature',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '🗂️',
+              title: 'Step 1 — Conflict markers: the highlighted diff',
+              text: [
+                'An editor uses track changes: your version in green, their version in red. You accept one or combine them.',
+                'Git inserts: `<<<< HEAD` (your changes), `====` (separator), `>>>> branch-name` (their changes). Edit the file to your desired result and remove all markers.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -13019,7 +15330,14 @@ function validate(data: unknown) {
             text: 'Open the file in your editor. Decide what to keep — your version, their version, or a combination. Delete all three marker lines completely. Most editors (VS Code) show a visual conflict resolver with one-click options.',
             expandedText: 'After editing the conflicted file to the desired state, **stage the resolution** with `git add path/to/file`. Staging a previously-conflicted file tells Git that the conflict has been resolved. After staging all conflicted files, `git commit` (for merge) or `git rebase --continue` (for rebase) completes the operation. `git status` after staging shows "All conflicts fixed but you are still merging" as confirmation that all conflicts are resolved and the merge can be committed.\n\nThe resolution commit message for a merge is auto-generated as "Merge branch X into Y" and is usually left as-is. For rebases, there is no merge commit — each replayed commit is amended with the resolved conflicts, and the operation continues commit by commit. If a rebase has multiple conflicting commits, you may need to resolve conflicts, run `git rebase --continue`, resolve again, and continue — once per conflicting commit in the replay sequence.',
             codeExample: '# VS Code shows buttons:\n# "Accept Current" | "Accept Incoming" | "Accept Both"\n\n# After choosing, the file should have NO markers:\n  color: blue;   # or red, or a new value',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '✅',
+              title: 'Step 2 — Resolving: accept and commit',
+              text: [
+                'After the editors agree on the correct sentence, they re-print the final version and sign off.',
+                'Edit the file to the resolved state. `git add file.txt` marks it resolved. `git commit` (or `git merge --continue`) finalises the merge.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -13028,7 +15346,14 @@ function validate(data: unknown) {
             text: 'After editing all conflicted files, stage them to tell Git they\'re resolved, then run `git commit`. Git creates the merge commit automatically with a default message.',
             expandedText: '**Rebasing** replays your branch commits on top of the latest `main` one by one, as if you had created the branch from the current `main`. The result is a **linear history** without merge commits. `git rebase origin/main` is the standard command; `git rebase --interactive` (or `-i`) allows reordering, squashing, editing, and dropping commits. Interactive rebase is the professional tool for cleaning up a branch history before opening a pull request.\n\n**Rebasing rewrites commit hashes** because the parent hash changes. After rebasing a branch that has already been pushed to GitHub, the remote and local histories diverge — a normal `git push` is rejected. Use `git push --force-with-lease` instead of `git push --force`. The `--force-with-lease` flag checks that the remote has not received new commits since you last fetched, preventing you from accidentally overwriting a teammate push to the same branch.',
             codeExample: '# Mark as resolved by staging:\ngit add style.css\n\n# Finish the merge:\ngit commit\n# (Git writes the merge commit message for you)',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '🛡️',
+              title: 'Step 3 — Preventing conflicts: the short-lived branch',
+              text: [
+                'Short meetings produce fewer contradictions than month-long committees. Small, focused branches conflict less.',
+                'Pull frequently from main, keep feature branches short-lived, and avoid editing the same files as teammates. Good branch hygiene minimises conflicts.',
+              ],
+            },
           },
         ],
       },
@@ -13103,7 +15428,14 @@ function validate(data: unknown) {
             icon: '↩️',
             heading: '3 tools for undoing in Git',
             text: 'Git gives you different undo tools depending on where in the workflow you are. `git restore` discards uncommitted edits, `git reset` moves the `HEAD` pointer back, and `git revert` is the safe option for shared branches.',
-            expandedText: '**Undoing mistakes** is one of Git most valuable features. Which command to use depends on where the changes are in the three-area model: unstaged (working directory), staged (index), committed but not pushed, or already pushed. Understanding this categorisation maps directly to the correct undo command. For most everyday mistakes, there is a safe undo that does not rewrite history and cannot cause data loss for teammates.\n\n`git status` is the first step before any undo operation — it shows which area changes are in and suggests the relevant undo commands. Reading the status output carefully before running `git restore`, `git reset`, or `git revert` prevents accidental data loss from using the wrong command. Git will not stop you from discarding uncommitted changes with `git restore` — unlike committed history, uncommitted changes are not recoverable once discarded.',
+            expandedText: '**Undoing mistakes** is one of Git most valuable features. Which command to use depends on where the changes are in the three-area model: unstaged (working directory), staged (index), committed but not pushed, or already pushed. Understanding this categorisation maps directly to the correct undo command. For most everyday mistakes, there is a safe undo that does not rewrite history and cannot cause data loss for teammates.\n\n`git status` is the first step before any undo operation — it shows which area changes are in and suggests the relevant undo commands. Reading the status output carefully before running `git restore`, `git reset`, or `git revert` prevents accidental data loss from using the wrong command. Git will not stop you from discarding uncommitted changes with `git restore` — unlike committed history, uncommitted changes are not recoverable once discarded.',            analogy: {
+              icon: '↩️',
+              title: 'Step 0 — git restore: the undo button',
+              text: [
+                'Ctrl+Z in a text editor — discards your last edit and returns to the saved state.',
+                '\'git restore file.txt\' discards unstaged changes. `git restore --staged file.txt` unstages without discarding. Destructive: changes are gone.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -13112,7 +15444,14 @@ function validate(data: unknown) {
             text: 'Throws away all edits to a file and restores it to its last committed state. Use `--staged` to unstage without discarding changes. Warning: this cannot be undone.',
             expandedText: '`git restore path/to/file` discards all unstaged changes to that file, restoring it to the last committed version. This is **irreversible for uncommitted changes** — unlike committed history, working directory changes that have never been committed cannot be recovered. `git restore --staged path/to/file` moves staged changes back to the working directory without discarding them — the changes remain on disk but are no longer staged.\n\n`git restore .` discards all unstaged changes in the repository — use this carefully. A safer alternative is `git stash` which saves the changes to a temporary stack before discarding them from the working directory. `git stash pop` restores them. The stash stack is persistent across Git operations and can hold multiple entries, making it useful for temporarily setting aside work-in-progress to investigate a bug on a clean working tree.',
             codeExample: '# Discard changes in a file:\ngit restore app.js\n\n# Discard ALL changes:\ngit restore .\n\n# Unstage (keep the changes, just unstage):\ngit restore --staged .',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '📦',
+              title: 'Step 1 — git stash: the temporary drawer',
+              text: [
+                'Quickly shoving your desk papers into a drawer before a meeting. Pull them out again when the meeting ends.',
+                '\'git stash\' saves uncommitted changes and returns to a clean working tree. `git stash pop` re-applies them. `git stash list` shows all stashes.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -13121,7 +15460,14 @@ function validate(data: unknown) {
             text: '`git stash` saves your uncommitted changes on a stack and gives you a clean working directory. Perfect when you need to switch branches mid-work without losing anything.',
             expandedText: '`git revert COMMIT_HASH` creates a **new commit** that undoes the changes from the specified commit. It does not modify history — it adds a new commit to the end of the branch. This is the **safe undo for pushed commits** because it does not rewrite history that other developers may have based their work on. The revert commit is public and auditable; anyone pulling the branch will receive the undo as a normal commit.\n\nRevert works well for undoing a specific bug-introducing commit even if subsequent commits have been made after it. Git creates a reverse-patch of the target commit and applies it to the current state. If the subsequent changes conflict with the revert, Git will ask you to resolve conflicts — the same process as a merge conflict. `git revert --no-commit HASH` stages the revert without committing, allowing you to combine multiple reverts into one commit.',
             codeExample: '# Save current changes:\ngit stash\n\n# Get them back:\ngit stash pop\n\n# See all stashes:\ngit stash list',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '🔙',
+              title: 'Step 2 — git revert: the polite undo',
+              text: [
+                'Publishing a public correction to a newspaper article. The original article stays in the archive; the correction is on top.',
+                '\'git revert <hash>\' creates a new commit that undoes a previous one. Safe for shared branches because it preserves history.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -13130,7 +15476,14 @@ function validate(data: unknown) {
             text: '`git revert` creates a new commit that undoes a previous commit. It never rewrites history, so it\'s safe to use on `main` or any branch others are working on.',
             expandedText: '`git reset HASH` moves the branch pointer backward to the specified commit. The three modes differ in what happens to the discarded commits changes. **`--soft`** keeps all changes staged — useful for combining multiple commits into one (`git reset --soft HEAD~3` followed by `git commit`). **`--mixed`** (the default) keeps changes in the working directory but unstages them. **`--hard`** discards the changes entirely — they are gone from the working directory and cannot be recovered.\n\n`git reset` is **safe only for commits that have not been pushed**. Resetting a pushed branch rewrites its history; any developer who has pulled the branch now has commits that no longer exist on the remote, and their next `git push` will fail with a non-fast-forward error. Use `git revert` for pushed commits. If a reset of a pushed branch is truly necessary, use `git push --force-with-lease` and immediately notify all teammates who may have pulled the branch.',
             codeExample: '# Undo a specific commit by its hash:\ngit revert abc1234\n\n# Git creates a new commit:\n# "Revert \\"add broken navbar\\""\n\n# Unlike reset, history stays intact',
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '⚠️',
+              title: 'Step 3 — git reset: the hard rollback',
+              text: [
+                'Shredding all documents after a checkpoint. Nothing after that point survives.',
+                '\'git reset --hard HEAD~1\' deletes the last commit AND discards changes. `--soft` keeps changes staged. Never hard-reset shared branches.',
+              ],
+            },
           },
         ],
       },
@@ -13211,7 +15564,14 @@ function validate(data: unknown) {
             text: 'In Tailwind, you style elements by composing small single-purpose classes directly on the element rather than writing custom CSS. Each class does exactly one thing: `p-4` adds padding, `text-blue-500` sets color, `flex` enables flexbox. No naming of CSS classes required.',
             expandedText: 'Each **Tailwind class** applies exactly one CSS rule. Composing many small classes gives complete control without writing custom selectors. There are no naming decisions, no context switching between HTML and CSS files, and no specificity conflicts.\n\nTailwind generates only the classes **used in your source files**, producing a minimal CSS bundle. A production Tailwind build is typically 5–20KB gzipped, compared to hundreds of KB for full CSS frameworks like Bootstrap.',
             codeExample: `<!-- Traditional CSS approach -->\n<div class="card">...</div>\n<style>.card { padding: 1rem; background: white; border-radius: 0.5rem; }</style>\n\n<!-- Tailwind utility approach -->\n<div class="p-4 bg-white rounded-lg shadow">...</div>`,
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '🧩',
+              title: 'Step 0 — Utility-first: building with pre-made bricks',
+              text: [
+                'Lego provides pre-made bricks. You combine them to build — no custom moulding for common shapes.',
+                'Instead of `.card { padding: 16px }`, Tailwind gives you `p-4` directly in HTML. Each class does one thing. Combine classes to build designs.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -13220,7 +15580,14 @@ function validate(data: unknown) {
             text: 'Raw CSS has pain points: repetitive rules, naming conventions (BEM), and maintaining media queries across a large codebase. Utility-first frameworks solve this by applying single-purpose classes directly in HTML — no naming decisions, no context-switching between files.',
             expandedText: '**Writing custom CSS for every component** requires naming classes, switching files, and managing specificity. Utility-first CSS eliminates these decisions by applying small single-purpose classes directly in HTML.\n\nThe tradeoff is longer class lists in HTML. This can be managed by extracting reusable patterns into framework components (React, Vue, Svelte) rather than creating custom CSS classes. The component becomes the abstraction, not the CSS selector.',
             codeExample: `<!-- BEM approach: lots of CSS context switching -->\n<div class="card card--featured">\n  <h2 class="card__title card__title--large">Title</h2>\n</div>\n\n<!-- Tailwind approach: everything in HTML -->\n<div class="rounded-xl shadow-lg border border-gray-100 p-6">\n  <h2 class="text-2xl font-bold text-gray-900">Title</h2>\n</div>`,
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '🏗️',
+              title: 'Step 1 — CSS frameworks: standard scaffolding',
+              text: [
+                'Construction companies use standard scaffolding they have deployed hundreds of times. No custom fabrication for standard problems.',
+                'CSS frameworks solve the same repetitive problems: spacing, typography, responsive breakpoints. Tailwind provides building blocks — no hidden design decisions.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -13229,7 +15596,14 @@ function validate(data: unknown) {
             text: 'For quick prototyping, add the CDN Play script to your HTML. For production, install via npm and use a PostCSS plugin or the Vite/CLI integration — this enables purging unused styles and customizing the design system via `tailwind.config.js`.',
             expandedText: 'The `tailwind.config.js` file extends or **overrides the default design system**. Custom colors, spacing values, fonts, and breakpoints replace or supplement the defaults. `theme.extend` adds to the defaults; `theme` replaces them entirely.\n\nThe JIT (Just-In-Time) compiler scans `content` paths for class names and generates only those classes. This enables **arbitrary value** syntax like `w-[347px]` — the JIT generates the CSS for that specific value on demand, keeping the bundle small.',
             codeExample: `<!-- CDN (prototyping only) -->\n<!-- Add script src from cdn.tailwindcss.com to your HTML -->\n\n<!-- npm setup -->\n<!-- npm install -D tailwindcss -->\n<!-- npx tailwindcss init -->\n<!-- Add @tailwind directives to CSS:\n  @tailwind base;\n  @tailwind components;\n  @tailwind utilities;\n-->`,
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '⚙️',
+              title: 'Step 2 — Setup: CDN vs npm',
+              text: [
+                'Online version for quick demos (CDN — no setup). Install locally for production (npm — version-locked, tree-shaken).',
+                'CDN: add one script tag, works immediately. npm: install tailwindcss, configure, run build. Good for production — removes unused styles.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -13238,7 +15612,14 @@ function validate(data: unknown) {
             text: 'Tailwind covers spacing (`p-*`, `m-*`), sizing (`w-*`, `h-*`), typography (`text-*`, `font-*`), colors (`bg-*`, `text-*`, `border-*`), flexbox/grid (`flex`, `grid`, `items-*`, `justify-*`), borders (`rounded-*`, `border-*`), and effects (`shadow-*`, `opacity-*`). The full list is in the official docs.',
             expandedText: 'The Tailwind **design scale** provides a consistent system: colors have 10 shades (50, 100, 200...900), spacing uses a 4px base unit (p-1=4px, p-2=8px, p-4=16px), and border-radius, shadows, and font sizes all follow predefined scales.\n\nArbitrary values in square brackets (`w-[347px]`, `bg-[#1da1f2]`) provide an escape hatch for one-off design specifications. Use them sparingly — every arbitrary value is a departure from the design system\'s consistency guarantees.',
             codeExample: `<button class="\n  px-6 py-3\n  bg-indigo-600 text-white\n  font-semibold text-sm\n  rounded-lg shadow\n  hover:bg-indigo-700\n  transition-colors duration-200\n">\n  Save changes\n</button>`,
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '🎨',
+              title: 'Step 3 — Common utility classes: the standard palette',
+              text: [
+                'A standard colour palette: primary blue, neutral grey, semantic red and green. Everyone uses the same tokens.',
+                'Core classes: spacing (`p-4`, `m-2`, `gap-3`), sizing (`w-full`, `h-screen`), colours (`bg-blue-500`), typography (`text-lg`, `font-bold`). These cover 80% of every design.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -13247,7 +15628,14 @@ function validate(data: unknown) {
             text: 'Tailwind is mobile-first. Unprefixed classes apply to all screen sizes; breakpoint prefixes apply from that width upward. Breakpoints: `sm:` 640px · `md:` 768px · `lg:` 1024px · `xl:` 1280px · `2xl:` 1536px. Stack prefixes to build fully responsive layouts without writing a single media query.',
             expandedText: 'Tailwind is **mobile-first**: unprefixed classes apply to all screen sizes, and breakpoint prefixes apply from that width upward. `text-sm md:text-base lg:text-xl` means small text on mobile, base on tablet, large on desktop.\n\nBreakpoint prefixes compose with state variants: `md:hover:bg-blue-600` applies only on hover on medium screens. `dark:md:text-white` applies only in dark mode on medium screens. The prefix order is always responsive variant first, then state variant.',
             codeExample: `<!-- 1 col on mobile, 2 on md, 3 on lg -->\n<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">\n  <div class="p-4 bg-white rounded">Card</div>\n</div>\n\n<!-- Text grows at each breakpoint -->\n<p class="text-sm md:text-base lg:text-xl font-medium text-gray-700">\n  Responsive text\n</p>`,
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '📱',
+              title: 'Step 4 — Responsive breakpoints: the automatic floor plan switch',
+              text: [
+                'A smart office that rearranges itself based on the number of occupants.',
+                'Tailwind breakpoints are prefix-based: `md:grid-cols-2` applies only at 768px+. Mobile-first: unprefixed classes apply to all sizes; prefixed classes override at that breakpoint.',
+              ],
+            },
           },
         ],
       },
@@ -13347,7 +15735,14 @@ function validate(data: unknown) {
             text: 'Tailwind uses a consistent 4px base unit. `p-1` = 4px, `p-2` = 8px, `p-4` = 16px, `p-8` = 32px. All padding, margin, gap, and sizing utilities follow the same scale, so everything aligns naturally. Use `px-*` / `py-*` for horizontal/vertical padding, `mx-*` / `my-*` for margins. `space-x-*` and `space-y-*` add gap between children without touching the parent.',
             expandedText: 'The **4px spacing scale** produces harmonious layouts without arbitrary values. All padding, margin, gap, and sizing utilities use the same scale — this is why Tailwind layouts "just align" without manual calculation.\n\n`space-x-4` and `space-y-4` add margin between children using CSS sibling selectors (`> * + *`). Unlike `gap`, `space-*` works on any display type, not just flex and grid. However, `gap` is preferred for flex and grid containers because it does not add space at the edges.',
             codeExample: `<!-- Consistent spacing scale -->\n<div class="p-4">16px padding all sides</div>\n<div class="px-6 py-3">24px horizontal, 12px vertical</div>\n<div class="mt-8 mb-4">32px top, 16px bottom margin</div>\n\n<!-- Gap between children -->\n<div class="flex space-x-4">\n  <span>A</span>\n  <span>B</span>  <!-- 16px gap between each -->\n  <span>C</span>\n</div>`,
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '📏',
+              title: 'Step 0 — Spacing scale: the standard ruler',
+              text: [
+                'An architect ruler has fixed increments. You always pick from the ruler — consistency is built into the tool.',
+                'Tailwind spacing is based on 4px increments: `p-1` = 4px, `p-4` = 16px, `p-8` = 32px. The scale creates visual rhythm.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -13356,7 +15751,14 @@ function validate(data: unknown) {
             text: '`w-full` makes an element 100% wide, `w-1/2` is 50%, `w-64` is 256px. Use `max-w-*` to cap width: `max-w-sm` (384px), `max-w-md` (448px), `max-w-xl` (576px), `max-w-screen-lg` (1024px). The classic centering pattern is `max-w-*` + `mx-auto`. Heights: `h-screen` fills the viewport, `h-full` fills the parent.',
             expandedText: '`max-w-*` values follow the spacing scale but use larger steps for page-level containers. `max-w-prose` (65ch) is specifically designed for optimal reading line length — the `ch` unit equals the width of the "0" character.\n\n`mx-auto` centers a block element horizontally by setting equal auto margins on both sides. This only works when the element has a width less than its container. `w-full max-w-2xl mx-auto` is the standard responsive page container pattern.',
             codeExample: `<!-- Centered container pattern -->\n<div class="max-w-2xl mx-auto px-4">\n  Page content centered and capped at 672px\n</div>\n\n<!-- Fixed & percentage widths -->\n<div class="w-full">Full width</div>\n<div class="w-1/2">Half width</div>\n<div class="w-64">256px fixed</div>\n\n<!-- Min/max constraints -->\n<div class="min-h-screen flex flex-col">\n  Full-height page layout\n</div>`,
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '📦',
+              title: 'Step 1 — Sizing and centering: the display cabinet',
+              text: [
+                'A display cabinet centred in the room, sized to fit the wall but not fill it.',
+                '\'w-full max-w-screen-lg mx-auto\' — full width up to a max, centred. `h-screen` fills viewport height. `min-h-screen` sets minimum without capping.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -13365,7 +15767,14 @@ function validate(data: unknown) {
             text: 'Add `flex` to activate flexbox. `items-center` aligns children vertically, `justify-between` spreads them apart, `gap-*` controls spacing. `flex-wrap` lets children wrap to the next line. `flex-1` makes an item grow to fill available space — useful for sidebars and main content areas.',
             expandedText: '**Flexbox in Tailwind** maps exactly to CSS flexbox properties. `flex` = `display: flex`, `items-center` = `align-items: center`, `justify-between` = `justify-content: space-between`.\n\n`flex-1` is shorthand for `flex: 1 1 0` — the item can grow and shrink with no base size. `shrink-0` prevents an item from shrinking below its content size — essential for fixed-width sidebars that must not compress when viewport narrows.',
             codeExample: `<!-- Navbar pattern -->\n<nav class="flex items-center justify-between px-6 py-4">\n  <span class="font-bold">Logo</span>\n  <div class="flex items-center gap-4">\n    <a href="#">Home</a>\n    <a href="#">About</a>\n    <button class="px-4 py-2 bg-blue-600 text-white rounded">Sign in</button>\n  </div>\n</nav>\n\n<!-- Sidebar + main -->\n<div class="flex h-screen">\n  <aside class="w-64 shrink-0">Sidebar</aside>\n  <main class="flex-1 overflow-auto">Content</main>\n</div>`,
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '↔️',
+              title: 'Step 2 — Flexbox in Tailwind: the flex command set',
+              text: [
+                'Enable flex, set direction, distribute items, align items, add gaps. Five classes replace a block of CSS.',
+                '\'flex items-center justify-between gap-4\' — horizontal row, vertically centred, space between items, 16px gaps. Navbar layout in one line.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -13374,7 +15783,14 @@ function validate(data: unknown) {
             text: '`grid` + `grid-cols-*` creates column layouts. `grid-cols-3` = three equal columns. `col-span-2` stretches an item across two columns. `gap-*` controls both row and column gap. Combine with responsive prefixes for layouts that adapt: `grid-cols-1 md:grid-cols-2 lg:grid-cols-3`.',
             expandedText: '`grid-cols-*` sets the number of equal columns. `grid-cols-[1fr_2fr_1fr]` uses arbitrary value syntax for a custom column template. `col-span-full` spans all columns.\n\nCombining responsive prefixes with grid: `grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6` creates a responsive gallery. No custom media queries needed — Tailwind generates the responsive CSS from the class names.',
             codeExample: `<!-- Responsive card grid -->\n<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">\n  <div class="rounded-xl bg-white shadow p-6">Card</div>\n  <div class="rounded-xl bg-white shadow p-6">Card</div>\n  <div class="rounded-xl bg-white shadow p-6">Card</div>\n</div>\n\n<!-- Featured item spanning columns -->\n<div class="grid grid-cols-3 gap-4">\n  <div class="col-span-2 bg-blue-100 p-4">Wide item</div>\n  <div class="bg-gray-100 p-4">Narrow item</div>\n</div>`,
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '▦',
+              title: 'Step 3 — Grid in Tailwind: the auto-responding layout',
+              text: [
+                'Shelf system that automatically adjusts columns based on available width.',
+                '\'grid grid-cols-1 md:grid-cols-3 gap-6\' — 1-column mobile, 3-column at md. `grid-cols-[repeat(auto-fill,minmax(200px,1fr))]` for fully fluid responsive grid.',
+              ],
+            },
           },
         ],
       },
@@ -13497,7 +15913,14 @@ function validate(data: unknown) {
   type="email"
   class="border invalid:border-red-500 focus:invalid:border-red-500"
 />`,
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '🖱️',
+              title: 'Step 0 — State variants: the mood-sensitive button',
+              text: [
+                'A button that changes appearance based on what you do: darker on hover, depressed on click, dimmed when disabled.',
+                'Tailwind state variants are prefixes: `hover:bg-blue-600`, `focus:ring-2`, `active:scale-95`, `disabled:opacity-50`.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -13505,7 +15928,14 @@ function validate(data: unknown) {
             heading: 'Dark Mode',
             text: 'Enable dark mode by adding `darkMode: \'class\'` to `tailwind.config.js`. Then toggle the `dark` class on the `<html>` element (via JavaScript). Any class prefixed with `dark:` activates only when the `dark` class is present on a parent — letting you theme your entire app with a single toggle.',
             codeExample: `// tailwind.config.js\nmodule.exports = { darkMode: 'class', content: ['./src/**/*.{html,js}'] }\n\n// Toggle dark mode\ndocument.documentElement.classList.toggle('dark');\n\n<!-- In your HTML -->\n<div class="bg-white dark:bg-gray-900 text-black dark:text-white p-6">\n  <p class="text-gray-700 dark:text-gray-300">Content</p>\n</div>`,
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '🌙',
+              title: 'Step 1 — Dark mode: the light switch for the whole room',
+              text: [
+                'A smart home that switches all lights to a warm dim setting at sunset. One trigger changes the whole environment.',
+                'Add `darkMode: class` in config. Toggle the `dark` class on `<html>`. Then: `bg-white dark:bg-gray-900`. System preference: `darkMode: media`.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -13536,7 +15966,14 @@ function validate(data: unknown) {
   <input type="radio" class="checked:accent-indigo-500" />
   Google Pay
 </label>`,
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '👥',
+              title: 'Step 2 — group and peer: the conductor signals the orchestra',
+              text: [
+                'The conductor raises the baton and every musician responds accordingly based on the conductor signal.',
+                '\'group\' marks a parent. Children respond: `group-hover:opacity-100`. `peer` marks a sibling. Following siblings respond: `peer-focus:border-blue-500`.',
+              ],
+            },
           },
         ],
       },
@@ -13636,7 +16073,14 @@ function validate(data: unknown) {
             heading: 'Arbitrary Values',
             text: 'When you need an exact value outside the design system, use square bracket syntax. Works on any utility property: widths, colors, spacing, grid templates, even CSS `calc()` expressions. Use sparingly — prefer design tokens for consistency across the project.',
             codeExample: `<!-- Arbitrary pixel value -->\n<div class="w-[347px] h-[200px]">\n\n<!-- Arbitrary hex color -->\n<div class="bg-[#1da1f2] text-[#ffffff]">\n\n<!-- Arbitrary calc -->\n<div class="mt-[calc(100vh-4rem)]">\n\n<!-- Arbitrary grid template -->\n<div class="grid grid-cols-[1fr_2fr_1fr]">`,
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '🎯',
+              title: 'Step 0 — Arbitrary values: the custom bracket',
+              text: [
+                'When the standard ruler does not have your measurement, you grab a pencil and write it in.',
+                '\'w-[342px]\', `bg-[#1e3a5f]` — square brackets allow any valid CSS value. Use sparingly — frequent arbitrary values suggest a token should be added to the config.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -13644,7 +16088,14 @@ function validate(data: unknown) {
             heading: '@layer & @apply',
             text: '`@layer` organises your CSS into three buckets: `base` (global resets), `components` (reusable UI patterns), `utilities` (single-purpose custom classes). `@apply` lets you compose Tailwind utilities into a custom class — useful when a pattern repeats across many elements but you still want Tailwind\'s design tokens.',
             codeExample: `/* In your main CSS file */\n@layer base {\n  h1 { @apply text-3xl font-bold text-gray-900; }\n  a  { @apply text-blue-600 hover:underline; }\n}\n\n@layer components {\n  .btn-primary {\n    @apply flex items-center gap-2 px-4 py-2\n           rounded-lg bg-blue-500 text-white\n           hover:bg-blue-600 transition-colors;\n  }\n}\n\n@layer utilities {\n  .scrollbar-hidden { scrollbar-width: none; }\n}`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🏗️',
+              title: 'Step 1 — @layer and @apply: the organised extension drawer',
+              text: [
+                'A desk with labelled drawers: base styles in one, component styles in another, utility overrides in the third.',
+                '\'@layer base\' for HTML resets, `@layer components` for reusable patterns, `@layer utilities` for custom utilities. Tailwind specificity order is preserved.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -13676,7 +16127,14 @@ function validate(data: unknown) {
 
 /* Usage in HTML: */
 /* <h1 class="font-display text-brand-500 3xl:text-7xl animate-fade-in"> */`,
-            language: 'css',
+            language: 'css',            analogy: {
+              icon: '🎨',
+              title: 'Step 2 — @theme: the design token vault v4',
+              text: [
+                'A vault where every design decision is stored. Change one entry and every reference updates.',
+                'Tailwind v4 replaces `tailwind.config.js` with CSS-first `@theme { --color-brand: #3b82f6 }`. Tokens become CSS custom properties.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -13705,7 +16163,14 @@ function validate(data: unknown) {
 <div class="@container/sidebar">
   <div class="@md/sidebar:hidden">Collapsed content</div>
 </div>`,
-            language: 'html',
+            language: 'html',            analogy: {
+              icon: '📱',
+              title: 'Step 3 — Container queries: the element-aware designer',
+              text: [
+                'A designer who adapts layout based on the card own width — not the page width.',
+                '\'@container\' queries respond to a parent element size, not the viewport. `<div class=@container>` enables it. Children use `@sm:flex-row`.',
+              ],
+            },
           },
         ],
       },
@@ -13805,7 +16270,14 @@ function validate(data: unknown) {
             text: 'Tests are automated checks that verify your code behaves correctly. Without them, every change risks breaking something silently. A good test suite gives you confidence to refactor, catches regressions before they reach production, and acts as executable documentation showing how the code is meant to be used.',
             expandedText: '**Automated testing** is the practice of writing code that verifies other code behaves correctly. Without automated tests, the only verification is manual testing — clicking through the UI or calling APIs by hand. Manual testing does not scale: as the codebase grows, the time required to verify all existing functionality grows proportionally, making it impossible to test everything before every release. Automated tests run in milliseconds and cover every code path consistently, making regressions visible immediately.\n\nTests also serve as **executable documentation**. A test case like `it("returns null for unknown user IDs")` communicates intent more precisely than a comment and stays accurate because it fails when the behaviour changes. New team members reading the test suite understand how the system is supposed to behave. Tests that are read first — writing the test before the implementation — are the clearest form of specification.',
             codeExample: `// A bug slips in: double-applying VAT for non-UK customers\nexport const calculateTotal = (net: number, country: string) => {\n  if (country !== 'UK') {\n    return net * 1.2 * 1.2  // 💥 applied twice!\n  }\n  return net * 1.2\n}\n\n// With a test, it's caught immediately:\ntest('FR: applies VAT once', () => {\n  expect(calculateTotal(100, 'FR')).toBe(120)  // fails — got 144\n})`,
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🔬',
+              title: 'Step 0 — What is testing: the quality inspector',
+              text: [
+                'A factory quality inspector checks every unit against a standard before it ships. If it fails the check, it does not leave the factory.',
+                'Tests are automated quality checks. They run a piece of code with known inputs and assert the output matches expectations. Failures block bugs from shipping.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -13814,7 +16286,14 @@ function validate(data: unknown) {
             text: 'Group tests by scope and cost. Unit tests (base) isolate a single function — fast, cheap, write many. Integration tests exercise collaboration between modules (e.g. React + API). End-to-End tests (top) click through a real browser — slow and brittle, keep few. The wider base means: write many cheap unit tests, fewer integration tests, very few E2E tests.',
             expandedText: '**Unit tests** verify a single function, class, or module in complete isolation. All dependencies are replaced with controlled substitutes (mocks or stubs). A unit test for a `calculateTotal` function provides input values directly and asserts on the output — it does not make network requests, touch the database, or render UI. Unit tests are fast (milliseconds each), reliable (no flakiness from external state), and precise (a failing test points to the exact function).\n\nThe tradeoff is that unit tests do not verify that units work correctly together. Two units can each have 100% test coverage and still fail when combined if their interfaces do not match. **Mocking** external dependencies in unit tests trades integration confidence for isolation speed. The practical guideline is to use unit tests for pure business logic — calculations, transformations, validations — and use integration tests for the boundaries between units.',
             codeExample: `// Unit test — isolates one function, runs in milliseconds\ntest('sum adds two numbers', () => {\n  expect(sum(2, 3)).toBe(5)\n})\n\n// Integration test — React component + fetch + state\ntest('shows posts from API', async () => {\n  render(<PostList />)\n  await screen.findByText('My First Post')\n})\n\n// E2E test (Playwright/Cypress) — real browser\nawait page.goto('/login')\nawait page.fill('[name=email]', 'user@test.com')\nawait page.click('button[type=submit]')\nawait expect(page).toHaveURL('/dashboard')`,
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🧱',
+              title: 'Step 1 — Unit tests: testing one brick',
+              text: [
+                'Testing one LEGO brick in isolation: does this 2x4 brick have the correct dimensions and stud height?',
+                'A unit test exercises one function or module in isolation, often mocking dependencies. Fast to run, pinpoints exact failures.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -13823,7 +16302,14 @@ function validate(data: unknown) {
             text: 'Vitest is a Vite-native test runner — it reuses your `vite.config.ts` so aliases and plugins work in tests too. Install it as a dev dependency, add a test script, and Vitest will auto-discover any `*.test.ts` or `*.spec.ts` files. Add `vitest run` to your build script so tests block the production build on failure.',
             expandedText: '**Integration tests** verify that multiple components work together as a system. Rather than testing a data-access function in isolation (a unit test), an integration test runs the function against a real database (or a realistic in-memory alternative) and verifies the complete round trip. Integration tests catch bugs that unit tests cannot: a SQL query that is syntactically correct but returns the wrong data, a serialisation mismatch between a service and its client, or a middleware that drops authentication headers.\n\nIntegration tests are **slower** than unit tests because they involve real I/O. They are also **more complex** to set up — you need a test database, seed data, and teardown logic. The practical strategy is to write integration tests for the most critical paths through the system and unit tests for the edge cases within each unit. The combination gives both breadth (integration) and depth (unit) of coverage.',
             codeExample: `# Install\nnpm install -D vitest\n\n# package.json\n{\n  "scripts": {\n    "test":  "vitest",                      // watch mode\n    "build": "tsc && vitest run && vite build" // CI: type-check → test → build\n  }\n}\n\n# vite.config.ts — no extra config needed for basic use\nimport { defineConfig } from 'vite'\nexport default defineConfig({\n  test: { environment: 'node' },  // or 'jsdom' for DOM tests\n})`,
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '🔗',
+              title: 'Step 2 — Integration tests: testing the assembly',
+              text: [
+                'Assembling two components and checking they connect correctly — not the individual bricks, but the joint.',
+                'Integration tests verify that multiple units work together: a function that calls a database, or a service calling another service.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -13832,7 +16318,14 @@ function validate(data: unknown) {
             text: '`describe()` groups related tests. `test()` (alias: `it()`) defines a single case. `expect()` creates an assertion — it compares the actual result against the expected value. A test passes when all assertions pass and fails when any throws. Name tests with plain English: what does it do, under what condition.',
             expandedText: '**End-to-end (E2E) tests** drive a real browser through complete user workflows. Playwright or Cypress launches a browser, navigates to the application URL, clicks buttons, fills forms, and asserts on what appears in the DOM — exactly as a user would. E2E tests catch problems that only appear in the full stack: broken deployments, misconfigured API proxies, JavaScript errors in production builds, and integration issues between the frontend and backend.\n\nE2E tests are the **slowest** and most **brittle** of the three types. They depend on the full environment running correctly — the database, the API server, the frontend server, and the browser. Network flakiness, race conditions, and environment differences between CI and development cause intermittent failures. The test pyramid recommends a small number of E2E tests covering the critical user journeys (login, purchase, core workflow) backed by a larger number of integration and unit tests.',
             codeExample: `import { describe, test, it, expect } from 'vitest'\nimport { sum, isPalindrome } from './utils'\n\ndescribe('math utils', () => {\n  test('adds two numbers', () => {\n    expect(sum(2, 3)).toBe(5)           // strict equality (Object.is)\n  })\n\n  it('handles negative numbers', () => {  // it() is an alias for test()\n    expect(sum(-1, -2)).toBe(-3)\n  })\n})\n\ndescribe('string utils', () => {\n  it('detects palindromes', () => {\n    expect(isPalindrome('madam')).toBeTruthy()\n    expect(isPalindrome('hello')).toBeFalsy()\n  })\n\n  it('matches a regex pattern', () => {\n    expect('WBS Coding School').toMatch(/Coding/)\n  })\n})`,
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🌐',
+              title: 'Step 3 — End-to-end tests: the customer journey',
+              text: [
+                'A mystery shopper visits the store, browses, adds to cart, pays, and confirms the receipt arrives. The full journey, exactly as a customer experiences it.',
+                'E2E tests drive a real browser through user flows. Playwright or Cypress click buttons and assert what appears on screen. Slow but highest confidence.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -13841,7 +16334,14 @@ function validate(data: unknown) {
             text: 'Vitest ships with Jest-compatible matchers. `toBe` uses `Object.is` (strict) — use it for primitives. `toEqual` does deep equality — use it for objects and arrays. `toContain` checks array membership. `resolves`/`rejects` handle async assertions. `.not` inverts any matcher.',
             expandedText: 'The **test pyramid** is a framework for balancing test types by their cost-to-value ratio. Many **unit tests** (fast, cheap, precise) at the base; fewer **integration tests** (slower, more realistic) in the middle; a small number of **E2E tests** (slowest, most realistic, most expensive to maintain) at the top. The pyramid shape reflects the optimal investment: more tests where each test is cheapest to write and run, fewer tests where each test is expensive.\n\nThe **inverted pyramid** (few unit tests, many E2E tests) is a common antipattern. E2E tests take minutes to run while unit tests take milliseconds — a suite of 200 E2E tests can take 30 minutes, making developers avoid running tests locally and delaying feedback loops. The **testing trophy** (popularised by Kent C. Dodds) shifts emphasis to integration tests as the most valuable layer — they test enough of the real system to catch integration bugs while being fast enough for developer feedback.',
             codeExample: `// Primitives\nexpect(2 + 2).toBe(4)\nexpect('hello').not.toBe('world')\n\n// Objects / arrays (deep equality)\nexpect({ a: 1 }).toEqual({ a: 1 })\nexpect([1, 2, 3]).toContain(2)\nexpect([1, 2, 3]).toHaveLength(3)\n\n// Truthiness\nexpect(null).toBeNull()\nexpect(undefined).toBeUndefined()\nexpect(1).toBeTruthy()\nexpect(0).toBeFalsy()\n\n// Numbers\nexpect(0.1 + 0.2).toBeCloseTo(0.3)   // floating point safe\nexpect(5).toBeGreaterThan(3)\n\n// Errors\nexpect(() => JSON.parse('bad')).toThrow()\n\n// Async\nawait expect(fetchUser(1)).resolves.toHaveProperty('name')\nawait expect(fetchUser(-1)).rejects.toThrow('Not found')`,
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🏆',
+              title: 'Step 4 — The testing pyramid: invest at the right level',
+              text: [
+                'A factory tests components cheaply in bulk (unit), tests key assemblies in medium numbers (integration), and does a few full-product acceptance tests (E2E).',
+                'Unit tests: many, fast, cheap. Integration: fewer, moderate speed. E2E: fewest, slow, expensive. Over-investing in E2E is brittle and slow.',
+              ],
+            },
           },
         ],
       },
@@ -13923,7 +16423,14 @@ function validate(data: unknown) {
             text: 'RTL\'s guiding principle: "The more your tests resemble how your software is used, the more confidence they give you." Query the DOM the way a real user would — by accessible role, label text, or visible content — not by class names or component internals. This makes tests resilient to refactors that leave behavior unchanged.',
             expandedText: '**React Testing Library** (RTL) is built on the principle that tests should resemble how users interact with the application, not how the implementation works. Testing internal implementation details — that a state variable has a specific name, that a component method was called, that an internal prop was passed — creates **brittle tests** that fail on refactoring even when the user-facing behaviour is unchanged. RTL discourages these patterns by providing only user-centric queries.\n\nThe guiding question for every assertion is: **"Can the user see this or do this?"** If the answer is no — if you are asserting on an internal state variable or a mock call count — consider whether the test is testing the right thing. User-centric tests survive refactoring because they test outcomes, not mechanisms. A component can be completely rewritten internally and RTL tests continue to pass as long as the user-visible behaviour is the same.',
             codeExample: `npm install -D vitest @testing-library/react @testing-library/dom @testing-library/jest-dom jsdom\n\n# vitest.setup.ts\nimport '@testing-library/jest-dom'\n\n# vite.config.ts\nexport default defineConfig({\n  test: {\n    environment: 'jsdom',\n    setupFiles: ['./src/vitest.setup.ts'],\n  },\n})`,
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '🎭',
+              title: 'Step 0 — Testing Library: testing from the user lens',
+              text: [
+                'Evaluating a play by sitting in the audience, not by inspecting the stage machinery.',
+                'React Testing Library renders components and queries them the way users would: by role, label, text. `getByRole(\'button\', { name: \'Submit\' })` — no internal details.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -13932,7 +16439,14 @@ function validate(data: unknown) {
             text: 'RTL provides three query families. `getBy*` throws if not found (use for elements that must exist). `queryBy*` returns `null` (use to assert absence). `findBy*` is async — awaits element appearance. The preferred query is `ByRole` — it uses ARIA roles and mirrors how screen readers navigate. `ByLabelText` and `ByText` are next in priority.',
             expandedText: '`render` from RTL mounts the component in a simulated DOM environment (jsdom) and returns a set of query functions for finding elements. The query naming convention encodes the assertion behaviour: `getBy...` throws if the element is not found (asserts presence), `queryBy...` returns `null` if not found (useful for asserting absence), `findBy...` returns a Promise that resolves when the element appears (for async rendering).\n\nThe **`screen` object** provides the same queries without destructuring from `render`, and it is the recommended approach because it is consistent and readable: `screen.getByRole("button", { name: "Submit" })` rather than `const { getByRole } = render(...)`. The `screen` queries always target the most recently rendered component, which is simpler than tracking the return value of `render`.',
             codeExample: `import { render, screen } from '@testing-library/react'\n\nrender(<LoginForm />)\n\n// ByRole — preferred (mirrors screen reader navigation)\nscreen.getByRole('button', { name: /submit/i })\nscreen.getByRole('textbox', { name: /email/i })\nscreen.getByRole('heading', { level: 1 })\n\n// ByLabelText — great for form inputs\nscreen.getByLabelText('Password')\n\n// ByText — for visible content\nscreen.getByText(/welcome back/i)  // regex = case-insensitive\n\n// findBy — async (returns Promise)\nconst item = await screen.findByText('Loaded!')\n\n// queryBy — won't throw if missing\nexpect(screen.queryByText('Error')).not.toBeInTheDocument()`,
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🧾',
+              title: 'Step 1 — render and query: serve and ask',
+              text: [
+                'Serve a customer their dish (render), then ask them to describe what they see (query).',
+                '\'render(<Button label=\'Save\' />)\' mounts the component. `screen.getByText(\'Save\')` finds elements. `screen.queryBy` returns null instead of throwing.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -13941,7 +16455,14 @@ function validate(data: unknown) {
             text: 'Use `fireEvent` for simple, synchronous DOM events. For more realistic user interactions (typing, clicking, tabbing), prefer `@testing-library/user-event` — it fires the same sequence of events a real browser would. Always `await` userEvent actions. Test what users can do, not how the DOM is structured.',
             expandedText: '`screen.getByRole` finds elements by their **ARIA role** — the accessibility role that screen readers and browser accessibility APIs expose. Roles come from native HTML semantics (`<button>` is `button`, `<h1>` is `heading`, `<input>` is `textbox`) or from explicit `role` attributes. The `name` option filters by the accessible name — the label text, button text, or `aria-label` value. Querying by role simultaneously verifies the element exists AND is accessible.\n\nThe **priority order** for RTL queries is: role (most preferred) > label text > placeholder text > display text > test ID (least preferred). Queries high in the priority order test accessibility as a side effect of testing functionality. Avoid `getByTestId` except as a last resort — using test IDs as the primary selector allows inaccessible markup to pass tests. If you cannot find an element with a role query, it is a signal that the markup may have an accessibility issue.',
             codeExample: `import { render, screen, fireEvent } from '@testing-library/react'\nimport userEvent from '@testing-library/user-event'\n\ntest('counter increments on click', async () => {\n  render(<Counter />)\n  const button = screen.getByRole('button', { name: /increment/i })\n\n  // fireEvent — simple, synchronous\n  fireEvent.click(button)\n  expect(screen.getByText('Count: 1')).toBeInTheDocument()\n\n  // userEvent — realistic, async (preferred)\n  const user = userEvent.setup()\n  await user.click(button)\n  expect(screen.getByText('Count: 2')).toBeInTheDocument()\n})\n\ntest('typing in a search box', async () => {\n  render(<SearchBox />)\n  const user = userEvent.setup()\n  const input = screen.getByRole('searchbox')\n  await user.type(input, 'react testing')\n  expect(input).toHaveValue('react testing')\n})`,
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🕹️',
+              title: 'Step 2 — userEvent and fireEvent: the remote control',
+              text: [
+                'A remote control sends button presses to the TV. The test fires the same events as real user interaction.',
+                '\'userEvent.click(button)\' simulates a real click with pointer events. `fireEvent.click` is lower-level. Prefer `userEvent` for realistic interaction simulation.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -13950,7 +16471,14 @@ function validate(data: unknown) {
             text: '`vi.fn()` creates a spy — a function that records calls. Use it to replace dependencies (`fetch`, callbacks, modules) with controlled stand-ins. `vi.stubGlobal()` replaces globals like `fetch`. `beforeEach` sets up the mock fresh for each test; `afterEach` with `vi.restoreAllMocks()` cleans up. Check calls with `toHaveBeenCalledWith`.',
             expandedText: '`@testing-library/user-event` simulates **real browser input sequences** rather than firing individual DOM events. `userEvent.click(button)` fires `pointerover`, `pointerenter`, `mouseover`, `mouseenter`, `pointermove`, `mousemove`, `pointerdown`, `mousedown`, `focus`, `pointerup`, `mouseup`, `click` in sequence — the same sequence a real browser fires. `userEvent.type(input, "hello")` types each character individually, firing `keydown`, `keypress`, `input`, and `keyup` for each. This realism catches bugs that `fireEvent.click` misses.\n\nThe `userEvent.setup()` pattern initialises a user-event instance before interacting: `const user = userEvent.setup(); await user.click(button)`. Always `await` user events because they are asynchronous and may trigger state updates that need to settle. Using `userEvent` rather than `fireEvent` is strongly recommended — the extra realism catches subtle bugs in event handler logic and prevents tests from passing in ways that the real browser would not.',
             codeExample: `import { vi, beforeEach, afterEach, describe, it, expect } from 'vitest'\nimport { render, screen, waitFor } from '@testing-library/react'\nimport UserList from './UserList'\n\nconst mockUsers = [\n  { id: 1, name: 'Ada Lovelace' },\n  { id: 2, name: 'Alan Turing' },\n]\n\nbeforeEach(() => {\n  vi.stubGlobal('fetch', vi.fn().mockResolvedValue({\n    ok: true,\n    json: () => Promise.resolve(mockUsers),\n  }))\n})\nafterEach(() => vi.restoreAllMocks())\n\nit('renders users from API', async () => {\n  render(<UserList />)\n  // Loading state first:\n  expect(screen.getByText(/loading/i)).toBeInTheDocument()\n  // Data appears:\n  await waitFor(() => {\n    expect(screen.getByText('Ada Lovelace')).toBeInTheDocument()\n  })\n  expect(global.fetch).toHaveBeenCalledTimes(1)\n})\n\nit('shows error on network failure', async () => {\n  vi.mocked(global.fetch).mockResolvedValueOnce({ ok: false } as Response)\n  render(<UserList />)\n  await screen.findByText(/failed to fetch/i)\n})`,
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '⏳',
+              title: 'Step 3 — async queries: waiting for the result',
+              text: [
+                'Ordering a dish and waiting. The waiter returns when the dish is ready — you do not grab the empty plate.',
+                '\'await screen.findByText(\'Loaded\')\' waits up to 1s for the element. Use `findBy` for async rendering, `waitFor` for arbitrary assertions after async updates.',
+              ],
+            },
           },
           {
             animationStep: 4,
@@ -13959,7 +16487,14 @@ function validate(data: unknown) {
             text: 'Integration tests render a component together with its real dependencies (hooks, context, router) and test end-to-end flows. Wrap the component in any providers it needs. Use `waitFor()` to wait for async state updates. Test the full user journey — form fill → submit → success message — not isolated pieces.',
             expandedText: '`act()` is the utility that ensures all state updates, effects, and re-renders complete before assertions run. RTL `render`, `fireEvent`, and all `userEvent` functions wrap their operations in `act()` automatically. Manual `act()` is needed when you have state updates triggered by code outside RTL control: timers (`jest.runAllTimers()`), custom hooks tested with `renderHook`, or native event listeners attached outside React. Forgetting `act()` in these cases produces the warning "An update to Component inside a test was not wrapped in act()".\n\nFor asynchronous operations — data fetching, timers, animations — RTL provides `waitFor(callback)`, `findBy...` queries, and `waitForElementToBeRemoved`. `waitFor` retries the callback until it does not throw, with a configurable timeout. Use `findBy...` for the simple case of waiting for an element to appear. Use `waitFor(() => { expect(screen.getByText("Loaded")).toBeInTheDocument() })` for more complex async assertions involving multiple elements.',
             codeExample: `import { render, screen, waitFor } from '@testing-library/react'\nimport userEvent from '@testing-library/user-event'\nimport { QueryClientProvider, QueryClient } from '@tanstack/react-query'\nimport { MemoryRouter } from 'react-router'\nimport LoginPage from './LoginPage'\n\nconst wrapper = ({ children }: { children: React.ReactNode }) => (\n  <MemoryRouter>\n    <QueryClientProvider client={new QueryClient()}>\n      {children}\n    </QueryClientProvider>\n  </MemoryRouter>\n)\n\ntest('user can log in', async () => {\n  const user = userEvent.setup()\n  render(<LoginPage />, { wrapper })\n\n  await user.type(screen.getByLabelText(/email/i), 'ada@test.com')\n  await user.type(screen.getByLabelText(/password/i), 'secret')\n  await user.click(screen.getByRole('button', { name: /log in/i }))\n\n  await waitFor(() => {\n    expect(screen.getByText(/welcome, ada/i)).toBeInTheDocument()\n  })\n})`,
-            language: 'typescript',
+            language: 'typescript',            analogy: {
+              icon: '🪆',
+              title: 'Step 4 — Mocking and wrapping: the fake environment',
+              text: [
+                'A flight simulator does not fly a real plane. It creates a controlled environment matching real flight conditions.',
+                'Mock API calls with `jest.fn()` or `msw`. Wrap components in providers: `render(<App />, { wrapper: ThemeProvider })`. Isolate what you test.',
+              ],
+            },
           },
         ],
       },
@@ -14042,7 +16577,14 @@ function validate(data: unknown) {
             text: 'Coverage measures which lines, branches, and functions your tests actually execute. Vitest uses `v8` or `istanbul` to collect it. Run with `--coverage` to see a report. A high number does not guarantee correctness — you still need meaningful assertions — but it highlights untested paths that may hide bugs.',
             expandedText: '**Continuous Integration** automates the feedback loop between writing code and knowing it works. Without CI, tests run only when developers remember to run them locally — a human process that is inconsistently followed under deadline pressure. CI enforces a consistent, automated process: every push triggers a pipeline that runs tests, linting, and type-checking. A failing check blocks the pull request from being merged, making "the tests were passing before I merged" a verifiable fact rather than an assumption.\n\nCI also **democratises the test suite** — every developer sees the same results regardless of their local environment. A test that passes on one developer Mac but fails on another Linux is caught by CI consistent environment. CI runs on every branch, so failures are caught on feature branches before they reach `main`, keeping the main branch deployable at all times.',
             codeExample: `# Install coverage provider\nnpm install -D @vitest/coverage-v8\n\n# Run with coverage\nnpx vitest run --coverage\n\n# vite.config.ts — add thresholds\nexport default defineConfig({\n  test: {\n    coverage: {\n      provider: 'v8',\n      reporter: ['text', 'html', 'lcov'],\n      thresholds: {\n        lines:     80,\n        functions: 80,\n        branches:  70,\n        statements: 80,\n      },\n    },\n  },\n})`,
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '🏭',
+              title: 'Step 0 — What is CI: the automated assembly line',
+              text: [
+                'An assembly line runs quality checks automatically at every production stage. No item passes without inspection.',
+                'Continuous Integration runs your test suite automatically on every push or PR. Catch regressions before they reach main.',
+              ],
+            },
           },
           {
             animationStep: 1,
@@ -14051,7 +16593,14 @@ function validate(data: unknown) {
             text: 'The text report shows four metrics per file. `Stmts`: percentage of statements executed. `Branch`: percentage of `if`/`else` paths taken (most important — reveals dead conditional branches). `Funcs`: percentage of functions called. `Lines`: percentage of source lines hit. Uncovered lines are shown in the rightmost column — start there.',
             expandedText: 'A **CI pipeline** is defined in a YAML workflow file committed to the repository (`.github/workflows/ci.yml` for GitHub Actions). The file specifies when to run (on push, on pull request), which operating system and Node.js version to use, and the sequence of steps: checkout the code, install dependencies, run linting, run type-checking, run tests. Each step is a shell command; a non-zero exit code fails the step and stops the pipeline.\n\nGitHub Actions uses a **runner** — a virtual machine provisioned on demand — to execute the workflow. Runners are isolated and ephemeral: each run starts fresh with no state from previous runs. This isolation is what makes CI reliable — it cannot be contaminated by previous builds or local developer state. **Caching** `node_modules` between runs (using the `actions/cache` action keyed on `package-lock.json`) significantly reduces pipeline duration by skipping the dependency installation step when `package-lock.json` has not changed.',
             codeExample: `# Example output after: npx vitest run --coverage\n\n File          | % Stmts | % Branch | % Funcs | % Lines | Uncovered Lines\n--------------|---------|----------|---------|---------|----------------\n checkout.ts   |   90.00 |    75.00 |  100.00 |   90.00 | 14-16\n utils/math.ts |  100.00 |   100.00 |  100.00 |  100.00 |\n utils/str.ts  |   66.67 |    50.00 |   66.67 |   66.67 | 8,12\n\n# Lines 14-16 of checkout.ts are not covered by any test.\n# The 50% branch coverage in str.ts means some if/else paths were never taken.`,
-            language: 'bash',
+            language: 'bash',            analogy: {
+              icon: '🚦',
+              title: 'Step 1 — GitHub Actions workflow: the recipe',
+              text: [
+                'A production recipe card: list ingredients (dependencies), specify steps (install, lint, test), define triggers (on push).',
+                '\'.github/workflows/ci.yml\' defines the pipeline. `on: push` triggers it. Steps: `npm ci`, `npm test`, `npm run build`. Fail fast on first error.',
+              ],
+            },
           },
           {
             animationStep: 2,
@@ -14060,7 +16609,14 @@ function validate(data: unknown) {
             text: 'Continuous Integration runs your test suite automatically on every push or pull request. GitHub Actions reads a YAML workflow file from `.github/workflows/`. Define the trigger (`on:`), the environment (`runs-on:`), and the steps (install → test → build → deploy). A failed test step aborts the rest of the pipeline.',
             expandedText: '**Test coverage** measures the percentage of source code lines, branches, functions, and statements executed by the test suite. Coverage is reported by tools like Istanbul (built into Jest and Vitest) and visualised as annotated source files where uncovered lines are highlighted. A coverage report is a map of untested code — useful for identifying blind spots rather than as a target metric to optimise.\n\n**100% coverage does not guarantee correctness.** A test can execute a line without asserting anything about its output, satisfying coverage while providing no safety net. The quality of assertions matters more than the percentage of lines touched. Coverage requirements (enforced in CI with a minimum threshold) prevent coverage from degrading over time but should be combined with mutation testing or code review of test quality for meaningful confidence.',
             codeExample: `# .github/workflows/ci.yml\nname: CI\n\non:\n  push:\n    branches: [main]\n  pull_request:\n    branches: [main]\n\njobs:\n  test-and-build:\n    runs-on: ubuntu-latest\n\n    steps:\n      - name: Checkout code\n        uses: actions/checkout@v4\n\n      - name: Set up Node.js\n        uses: actions/setup-node@v4\n        with:\n          node-version: 22\n          cache: npm\n\n      - name: Install dependencies\n        run: npm ci\n\n      - name: Run type-check\n        run: npx tsc --noEmit\n\n      - name: Run tests with coverage\n        run: npx vitest run --coverage\n\n      - name: Build\n        run: npm run build`,
-            language: 'yaml',
+            language: 'yaml',            analogy: {
+              icon: '🔒',
+              title: 'Step 2 — Branch protection: the quality gate',
+              text: [
+                'A shipping dock that physically blocks the door until the quality certificate is issued.',
+                'In GitHub Settings → Branch Protection, require the CI workflow to pass before merging. PRs show red X or green tick. Enforced automatically.',
+              ],
+            },
           },
           {
             animationStep: 3,
@@ -14069,7 +16625,14 @@ function validate(data: unknown) {
             text: 'Add a deploy step to publish the Vite production build to GitHub Pages automatically after tests pass. Set `base` in `vite.config.ts` to your repo name. The `actions/deploy-pages` action handles uploading the `dist/` folder. After merging to `main`, your site is live within minutes — zero manual steps.',
             expandedText: '**Mocking external services** in CI tests is essential for two reasons: reliability and speed. Real external APIs are subject to rate limits, outages, and network latency — all of which cause intermittent CI failures that erode confidence in the test suite. A test suite that occasionally fails for reasons unrelated to the code is a test suite that developers learn to ignore. Mock the HTTP layer with **MSW (Mock Service Worker)** or `jest.mock` to intercept fetch calls and return controlled responses.\n\nThe **test environment** in CI should be configured to fail loudly on missing environment variables rather than silently using default values. Use a `.env.test` file committed to the repository (without secrets) for test-specific configuration, and validate required variables at the start of the test run. Tests that accidentally connect to production APIs or databases in CI are a security risk — the mock layer prevents this by default while also making tests run faster and deterministically.',
             codeExample: `# .github/workflows/ci.yml (additions)\npermissions:\n  contents: read\n  pages: write\n  id-token: write\n\njobs:\n  test-and-build:\n    # ... (previous steps) ...\n\n      - name: Upload Pages artifact\n        uses: actions/upload-pages-artifact@v3\n        with:\n          path: dist\n\n  deploy:\n    needs: test-and-build\n    runs-on: ubuntu-latest\n    environment:\n      name: github-pages\n      url: ${'$'}{{ steps.deployment.outputs.page_url }}\n    steps:\n      - name: Deploy to GitHub Pages\n        id: deployment\n        uses: actions/deploy-pages@v4\n\n# vite.config.ts: add base for GitHub Pages\nexport default defineConfig({\n  base: '/my-repo-name/',\n  // ...\n})`,
-            language: 'yaml',
+            language: 'yaml',            analogy: {
+              icon: '📊',
+              title: 'Step 3 — Coverage reports: the inspection scorecard',
+              text: [
+                'A factory scorecard: 95% of units passed inspection. Tracking the number highlights where to invest in more tests.',
+                'Jest outputs coverage percentages. Upload to Codecov with `codecov/codecov-action`. Coverage thresholds in Jest config fail the build if coverage drops below target.',
+              ],
+            },
           },
         ],
       },

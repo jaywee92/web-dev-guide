@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step Card Redesign — Weitere Optionen</title>
+<style>
+  :root{--bg:#0f1117;--surface:#1a1d27;--sb:#222633;--border:#2e3348;
+    --text:#e2e4ed;--tm:#8b8fa7;--tf:#555a73;--mono:'JetBrains Mono','Fira Code',monospace;--c:#5b9cf5}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;padding:32px 24px 80px}
+  h1{font-size:22px;font-weight:800;margin-bottom:6px}
+  .sub{font-size:13px;color:var(--tm);margin-bottom:36px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1200px}
+  @media(max-width:800px){.grid{grid-template-columns:1fr}}
+
+  .opt{border-radius:14px;border:2px solid transparent;padding:16px;cursor:pointer;transition:border-color .2s,background .2s}
+  .opt:hover{background:#ffffff05;border-color:var(--c)30}
+  .opt.sel{border-color:var(--c);background:var(--c)08}
+  .opt-label{display:flex;align-items:center;gap:8px;margin-bottom:12px;
+    font-size:10px;font-family:var(--mono);font-weight:800;letter-spacing:.12em;color:var(--tf);text-transform:uppercase}
+  .letter{width:20px;height:20px;border-radius:5px;background:var(--c)18;border:1px solid var(--c)44;
+    color:var(--c);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .opt.sel .letter{background:var(--c);color:#0f1117;border-color:var(--c)}
+  .badge{font-size:8px;background:#fb923c15;border:1px solid #fb923c40;color:#fb923c;
+    border-radius:4px;padding:1px 6px;font-family:var(--mono);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+
+  code{font-family:var(--mono);font-size:11px;background:var(--c)14;border:1px solid var(--c)33;border-radius:3px;padding:1px 5px;color:var(--c)}
+  b{color:var(--text);font-weight:650}
+  .pill{display:inline-block;font-size:9px;font-family:var(--mono);font-weight:800;letter-spacing:.1em;
+    padding:2px 7px;border-radius:20px;background:var(--c)2e;border:1px solid var(--c)66;color:var(--c);text-transform:uppercase}
+  .icon{width:36px;height:36px;border-radius:9px;background:var(--c)33;border:1px solid var(--c)73;
+    display:flex;align-items:center;justify-content:center;font-size:17px;
+    box-shadow:0 0 12px var(--c)2e;flex-shrink:0}
+  .shared-card{border-radius:13px;border:1px solid var(--c)4d;overflow:hidden;position:relative;
+    background:linear-gradient(90deg,var(--c)0a 0%,var(--surface) 110px);box-shadow:0 4px 24px var(--c)10}
+  .shared-card .ab{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c)}
+  .shared-card .hd{display:flex;align-items:center;gap:12px;padding:13px 16px 11px 20px;
+    background:linear-gradient(135deg,var(--c)1e 0%,var(--c)08 100%);border-bottom:1px solid var(--c)26}
+  .shared-card .bd{padding:12px 16px 14px 20px;display:flex;flex-direction:column;gap:10px}
+  .shared-card .mt{font-size:13px;color:var(--tm);line-height:1.75}
+
+  /* ── E: Tab Panel ── */
+  .tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin:0 -16px 0 -20px;padding:0 20px}
+  .tab{padding:7px 14px;font-size:11px;font-family:var(--mono);font-weight:700;
+    color:var(--tf);border:none;background:none;cursor:pointer;
+    border-bottom:2px solid transparent;transition:color .15s,border-color .15s;letter-spacing:.04em}
+  .tab.active{color:var(--c);border-bottom-color:var(--c)}
+  .tab-content{display:none;flex-direction:column;gap:7px;padding-top:4px}
+  .tab-content.active{display:flex}
+  .tab-content p{font-size:12.5px;color:var(--tm);line-height:1.72}
+
+  /* ── F: Concept Chips ── */
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{padding:5px 11px;border-radius:20px;font-size:11px;font-family:var(--mono);font-weight:600;
+    background:var(--c)10;border:1px solid var(--c)30;color:var(--c);cursor:pointer;
+    transition:background .15s,border-color .15s}
+  .chip.open{background:var(--c)22;border-color:var(--c)66}
+  .chip-body{display:none;background:var(--c)08;border:1px solid var(--c)20;border-radius:8px;
+    padding:10px 13px;font-size:12.5px;color:var(--tm);line-height:1.7}
+  .chip-body.show{display:block}
+  .chip-hint{font-size:11px;color:var(--tf);font-style:italic}
+
+  /* ── G: Side Annotation ── */
+  .annot-wrap{display:flex;gap:10px;align-items:stretch}
+  .annot-bar{width:3px;border-radius:2px;background:linear-gradient(180deg,var(--c)80,var(--c)20);flex-shrink:0}
+  .annot-body{display:flex;flex-direction:column;gap:6px}
+  .annot-label{font-size:9px;font-family:var(--mono);font-weight:700;letter-spacing:.1em;
+    color:var(--c)70;text-transform:uppercase}
+  .annot-body p{font-size:12.5px;color:var(--tm);line-height:1.7}
+  .annot-tog{background:none;border:none;padding:0;font-size:11px;color:var(--c)90;
+    font-weight:600;font-family:inherit;cursor:pointer;align-self:flex-start}
+
+  /* ── H: Numbered Breakdown ── */
+  .steps-list{display:flex;flex-direction:column;gap:0}
+  .step-item{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--border)}
+  .step-item:last-child{border-bottom:none;padding-bottom:0}
+  .step-num{width:22px;height:22px;border-radius:50%;background:var(--c)15;border:1px solid var(--c)30;
+    color:var(--c);font-size:11px;font-weight:800;font-family:var(--mono);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .step-item p{font-size:12.5px;color:var(--tm);line-height:1.7}
+  .step-title{font-size:11px;font-weight:700;color:var(--text);margin-bottom:3px}
+  .num-tog{background:none;border:none;padding:0;font-size:11px;color:var(--c)90;
+    font-weight:600;font-family:inherit;cursor:pointer;align-self:flex-start}
+
+  #bar{position:fixed;bottom:0;left:0;right:0;padding:13px 24px;
+    background:#0d0f18ee;border-top:1px solid var(--border);backdrop-filter:blur(14px);
+    display:flex;align-items:center;justify-content:center;gap:12px;font-size:13px;color:var(--tm)}
+  #bar b{color:var(--c)}
+  .prev-link{display:inline-block;margin-bottom:12px;font-size:12px;color:var(--c);
+    text-decoration:none;font-family:var(--mono);font-weight:600}
+</style>
+</head>
+<body>
+
+<a class="prev-link" href="preview-step-redesign.html">← Optionen A–D</a>
+<h1>Weitere Optionen — E bis H</h1>
+<p class="sub">4 zusätzliche Designansätze für den aufklappbaren Bereich. Klicke eine Karte zum Auswählen.</p>
+
+<div class="grid">
+
+<!-- ══ E: TAB PANEL ══ -->
+<div class="opt" onclick="sel(this,'E')">
+  <div class="opt-label"><div class="letter">E</div> Tab Panel &nbsp;<span class="badge">Neu</span></div>
+  <div class="shared-card">
+    <div class="ab"></div>
+    <div class="hd">
+      <div class="icon">⚡</div>
+      <div style="display:flex;flex-direction:column;gap:3px">
+        <span class="pill">INFO 02</span>
+        <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:2px">fetch() returns a Promise</h3>
+      </div>
+    </div>
+    <div class="bd">
+      <p class="mt">The request is sent immediately but the response arrives later. <code>fetch()</code> returns a <b>Promise</b> that resolves when the server responds.</p>
+
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab(event,'e','summary')">Summary</button>
+        <button class="tab" onclick="switchTab(event,'e','detail')">Deep Dive</button>
+        <button class="tab" onclick="switchTab(event,'e','example')">Example</button>
+      </div>
+
+      <div id="e-summary" class="tab-content active">
+        <p>A <code>fetch()</code> call returns a <b>Promise</b> resolving to a <code>Response</code> when headers arrive. Call <code>.json()</code> to parse the body.</p>
+      </div>
+      <div id="e-detail" class="tab-content">
+        <p>A <code>fetch()</code> call goes through <b>two stages</b>. First it resolves to a <code>Response</code> object when headers arrive. Then you call <code>.json()</code> or <code>.text()</code> to get another Promise that resolves when the full body is parsed.</p>
+        <p>The two-stage design lets you inspect headers and decide whether to stream the body — you can use <code>response.body</code> as a <code>ReadableStream</code> to process large files chunk by chunk.</p>
+      </div>
+      <div id="e-example" class="tab-content">
+        <div style="background:#0d0f1a;border-radius:7px;padding:11px 13px;font-family:var(--mono);font-size:12px;line-height:1.8;color:var(--tm)">
+          <span style="color:#f7df1e">const</span> <span style="color:var(--text)">res</span> <span style="color:var(--c)">=</span> <span style="color:#4ade80">await</span> <span style="color:var(--text)">fetch</span>(<span style="color:#fb923c">'/api/data'</span>)<br>
+          <span style="color:var(--tf)">// Stage 1: headers available</span><br>
+          <span style="color:#f7df1e">console</span>.<span style="color:#4ade80">log</span>(<span style="color:var(--text)">res</span>.<span style="color:var(--c)">status</span>) <span style="color:var(--tf)">// 200</span><br>
+          <span style="color:var(--tf)">// Stage 2: read body</span><br>
+          <span style="color:#f7df1e">const</span> <span style="color:var(--text)">data</span> <span style="color:var(--c)">=</span> <span style="color:#4ade80">await</span> <span style="color:var(--text)">res</span>.<span style="color:#4ade80">json</span>()
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ F: CONCEPT CHIPS ══ -->
+<div class="opt" onclick="sel(this,'F')">
+  <div class="opt-label"><div class="letter">F</div> Concept Chips &nbsp;<span class="badge">Neu</span></div>
+  <div class="shared-card">
+    <div class="ab"></div>
+    <div class="hd">
+      <div class="icon">⚡</div>
+      <div style="display:flex;flex-direction:column;gap:3px">
+        <span class="pill">INFO 02</span>
+        <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:2px">fetch() returns a Promise</h3>
+      </div>
+    </div>
+    <div class="bd">
+      <p class="mt">The request is sent immediately but the response arrives later. <code>fetch()</code> returns a <b>Promise</b> that resolves when the server responds.</p>
+
+      <p class="chip-hint">Klicke ein Konzept um mehr zu erfahren:</p>
+      <div class="chips">
+        <button class="chip" onclick="toggleChip(event,'f1')">Two-stage Promise</button>
+        <button class="chip" onclick="toggleChip(event,'f2')">Response object</button>
+        <button class="chip" onclick="toggleChip(event,'f3')">ReadableStream</button>
+      </div>
+      <div id="f1" class="chip-body">
+        A <code>fetch()</code> call goes through <b>two stages</b>: first the <code>Response</code> headers resolve, then a second <code>.json()</code> or <code>.text()</code> call resolves with the body. Both are async Promises.
+      </div>
+      <div id="f2" class="chip-body show">
+        The <code>Response</code> object carries <b>status</b>, <b>headers</b>, and methods like <code>.json()</code>, <code>.text()</code>, <code>.blob()</code>. Inspect <code>res.ok</code> (true for 200–299) before reading the body to avoid parsing error pages.
+      </div>
+      <div id="f3" class="chip-body">
+        <code>response.body</code> is a <code>ReadableStream</code> — perfect for <b>large file downloads</b> or <b>live data</b>. Read it chunk by chunk via <code>reader.read()</code> instead of waiting for the entire response to buffer in memory.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ G: SIDE ANNOTATION ══ -->
+<div class="opt" onclick="sel(this,'G')">
+  <div class="opt-label"><div class="letter">G</div> Side Annotation &nbsp;<span class="badge">Neu</span></div>
+  <div class="shared-card">
+    <div class="ab"></div>
+    <div class="hd">
+      <div class="icon">⚡</div>
+      <div style="display:flex;flex-direction:column;gap:3px">
+        <span class="pill">INFO 02</span>
+        <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:2px">fetch() returns a Promise</h3>
+      </div>
+    </div>
+    <div class="bd">
+      <p class="mt">The request is sent immediately but the response arrives later. <code>fetch()</code> returns a <b>Promise</b> that resolves when the server responds.</p>
+
+      <div class="annot-wrap">
+        <div class="annot-bar"></div>
+        <div class="annot-body">
+          <span class="annot-label">📖 &nbsp;Deeper explanation</span>
+          <p>A <code>fetch()</code> call returns a <b>Promise</b> going through two stages. First it resolves to a <code>Response</code> object when headers arrive — then <code>.json()</code> or <code>.text()</code> reads the body as a second async step.</p>
+          <p>This two-stage approach lets you check <code>response.status</code> or stream the body via <code>response.body</code> as a <code>ReadableStream</code> without buffering the full response in memory.</p>
+          <button class="annot-tog">↑ Show less</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ H: NUMBERED BREAKDOWN ══ -->
+<div class="opt" onclick="sel(this,'H')">
+  <div class="opt-label"><div class="letter">H</div> Numbered Breakdown &nbsp;<span class="badge">Neu</span></div>
+  <div class="shared-card">
+    <div class="ab"></div>
+    <div class="hd">
+      <div class="icon">⚡</div>
+      <div style="display:flex;flex-direction:column;gap:3px">
+        <span class="pill">INFO 02</span>
+        <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:2px">fetch() returns a Promise</h3>
+      </div>
+    </div>
+    <div class="bd">
+      <p class="mt">The request is sent immediately but the response arrives later. <code>fetch()</code> returns a <b>Promise</b> that resolves when the server responds.</p>
+
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Request sent → Promise returned</div>
+            <p><code>fetch('/api/data')</code> fires the HTTP request immediately and returns a <b>pending Promise</b> — your code does not block.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">Headers arrive → Response resolves</div>
+            <p>The Promise resolves to a <code>Response</code> object when the <b>status + headers</b> arrive. Body is not yet read — check <code>res.ok</code> here.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Body parsed → second await</div>
+            <p>Call <code>await res.json()</code> or <code>res.text()</code> to get a second Promise that resolves with the <b>full body</b>. Or stream via <code>res.body</code>.</p>
+          </div>
+        </div>
+      </div>
+      <button class="num-tog">↑ Show less</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div id="bar">Wähle eine Option: &nbsp;<b id="pick">noch nichts ausgewählt</b></div>
+
+<script>
+function sel(el,name){
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'))
+  el.classList.add('sel')
+  document.getElementById('pick').textContent='Option '+name+' ausgewählt ✓'
+}
+function switchTab(e,prefix,name){
+  e.stopPropagation()
+  const card=e.target.closest('.bd')
+  card.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'))
+  e.target.classList.add('active')
+  card.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'))
+  document.getElementById(prefix+'-'+name).classList.add('active')
+}
+function toggleChip(e,id){
+  e.stopPropagation()
+  const btn=e.target
+  const body=document.getElementById(id)
+  const open=body.classList.toggle('show')
+  btn.classList.toggle('open',open)
+}
+</script>
+</body>
+</html>

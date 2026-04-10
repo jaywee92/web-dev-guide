@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sidebar Options Preview</title>
+<style>
+  :root {
+    --bg: #0f1117; --surface: #1a1d27; --surface-bright: #222633;
+    --border: #2e3348; --text: #e2e4ed; --text-muted: #8b8fa7; --text-faint: #555a73;
+    --radius: 12px; --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+    --color: #5b9cf5; --color2: #a78bfa;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: var(--font-body); background: var(--bg); color: var(--text); }
+
+  /* ── Top nav ── */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    height: 52px; display: flex; align-items: center; gap: 0;
+    background: #0d0f18f0; backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono); font-size: 11px;
+    padding: 0 16px;
+  }
+  .topbar-label { color: var(--text-faint); margin-right: 16px; white-space: nowrap; }
+  .tab-btn {
+    padding: 6px 14px; border: none; background: none;
+    color: var(--text-faint); font-family: var(--font-mono); font-size: 11px;
+    cursor: pointer; border-radius: 6px; transition: all .18s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--text); background: var(--surface); }
+  .tab-btn.active { color: var(--color); background: #5b9cf515; }
+
+  /* ── Scenes ── */
+  .scene { display: none; }
+  .scene.active { display: flex; }
+
+  /* ── Shared layout shell ── */
+  .shell {
+    display: flex; min-height: 100vh; padding-top: 52px;
+    position: relative;
+  }
+
+  /* ── Sidebar base ── */
+  .sidebar {
+    flex-shrink: 0; position: sticky; top: 52px;
+    height: calc(100vh - 52px); overflow-y: auto; overflow-x: hidden;
+    border-right: 1px solid var(--border);
+    padding: 24px 0; scrollbar-width: none;
+    display: flex; flex-direction: column;
+    transition: width .35s cubic-bezier(.4,0,.2,1);
+  }
+  .sidebar::-webkit-scrollbar { display: none; }
+
+  /* ── Sidebar nav items ── */
+  .tech-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 16px 10px 14px; border: none; cursor: pointer;
+    background: none; width: 100%; border-left: 3px solid transparent;
+    transition: background .2s;
+  }
+  .tech-header.active {
+    background: #5b9cf508; border-left-color: var(--color);
+  }
+  .tech-header:hover:not(.active) { background: var(--surface); }
+  .tech-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+    transition: background .2s, box-shadow .2s;
+  }
+  .tech-title {
+    font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+    letter-spacing: .04em; color: var(--text);
+  }
+  .tech-header.active .tech-title { color: var(--color); }
+  .tech-header.active .tech-dot {
+    background: var(--color) !important;
+    box-shadow: 0 0 8px #5b9cf590;
+  }
+
+  .cat-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 7px 16px 7px 26px; border: none; cursor: pointer;
+    background: none; width: 100%; border-left: 2px solid transparent;
+    transition: background .15s;
+  }
+  .cat-row.active { background: #5b9cf510; border-left-color: var(--color); }
+  .cat-badge {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+    letter-spacing: .08em; padding: 1px 6px; border-radius: 3px;
+    background: var(--surface-bright); border: 1px solid var(--border);
+    color: var(--text-muted); text-transform: uppercase;
+  }
+  .cat-row.active .cat-badge {
+    background: #5b9cf520; border-color: #5b9cf540; color: var(--color);
+  }
+
+  .topic-row {
+    display: block; width: 100%; text-align: left;
+    padding: 6px 16px 6px 36px; border: none; cursor: pointer;
+    background: none; color: var(--text-muted); font-size: 13px;
+    border-left: 2px solid transparent; transition: color .12s, background .12s;
+  }
+  .topic-row:hover { color: var(--text); }
+  .topic-row.active {
+    background: #5b9cf514; color: var(--color); font-weight: 600;
+    border-left-color: var(--color);
+  }
+
+  /* on-this-page */
+  .otp-section {
+    border-top: 1px solid var(--border); padding: 14px 0 0; margin-top: 8px;
+  }
+  .otp-label {
+    font-size: 10px; font-family: var(--font-mono); font-weight: 700;
+    letter-spacing: .1em; color: var(--text-faint); padding: 0 16px; margin-bottom: 8px;
+  }
+  .otp-link {
+    display: block; width: 100%; text-align: left;
+    padding: 6px 16px 6px 20px; background: none; border: none;
+    color: var(--text-faint); font-size: 12px; cursor: pointer;
+    transition: color .15s;
+  }
+  .otp-link:hover { color: var(--text-muted); }
+
+  /* ── Main content ── */
+  .main {
+    flex: 1; min-width: 0; padding: 40px 40px 80px; max-width: 1100px;
+  }
+
+  /* ── Step blocks ── */
+  .steps-grid {
+    display: grid; grid-template-columns: minmax(0, 38fr) minmax(0, 62fr);
+    gap: 48px; align-items: start;
+  }
+  .anim-panel {
+    position: sticky; top: 72px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 24px;
+    min-height: 280px; display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 16px;
+  }
+  .anim-dots { display: flex; gap: 6px; align-items: center; }
+  .anim-dot {
+    height: 8px; border-radius: 4px; border: none; cursor: pointer; padding: 0;
+    transition: all .25s; background: var(--border);
+  }
+  .anim-dot.active { width: 24px; background: var(--color); }
+  .anim-dot:not(.active) { width: 8px; }
+
+  .step-card {
+    border-radius: 13px; border: 1px solid var(--border); overflow: hidden;
+    background: var(--surface); position: relative; margin-bottom: 16px;
+    opacity: .3; transition: all .3s; cursor: pointer;
+  }
+  .step-card.active {
+    opacity: 1; border-color: #5b9cf54d;
+    box-shadow: 0 4px 28px #5b9cf512;
+    background: linear-gradient(90deg, #5b9cf50a 0%, var(--surface) 100px);
+  }
+  .step-accent {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: #5b9cf530; transition: background .3s;
+  }
+  .step-card.active .step-accent { background: var(--color); }
+  .step-header {
+    display: flex; align-items: center; gap: 13px;
+    padding: 14px 18px 12px 21px;
+    background: linear-gradient(135deg, #5b9cf50f 0%, #5b9cf504 100%);
+    border-bottom: 1px solid #5b9cf50f; transition: background .3s;
+  }
+  .step-card.active .step-header {
+    background: linear-gradient(135deg, #5b9cf51e 0%, #5b9cf508 100%);
+    border-bottom-color: #5b9cf526;
+  }
+  .step-icon {
+    width: 38px; height: 38px; flex-shrink: 0; border-radius: 9px;
+    background: #5b9cf51a; border: 1px solid #5b9cf533;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; transition: background .3s;
+  }
+  .step-card.active .step-icon {
+    background: #5b9cf533; border-color: #5b9cf573;
+    box-shadow: 0 0 14px #5b9cf52e;
+  }
+  .step-badge {
+    display: inline-flex; align-self: flex-start;
+    font-family: var(--font-mono); font-size: 9px; font-weight: 800;
+    letter-spacing: .1em; padding: 2px 7px; border-radius: 20px;
+    background: #5b9cf51a; border: 1px solid #5b9cf52e;
+    color: #5b9cf58c; text-transform: uppercase;
+    transition: all .3s;
+  }
+  .step-card.active .step-badge { background: #5b9cf52e; border-color: #5b9cf566; color: var(--color); }
+  .step-body { padding: 13px 18px 15px 21px; }
+  .step-lead { font-size: 14px; color: var(--text); line-height: 1.8; }
+
+  /* section heading */
+  .section-heading {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 32px;
+  }
+  .section-label {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--text-faint);
+  }
+  .section-rule { flex: 1; height: 1px; background: var(--border); }
+
+  /* intro */
+  .topic-title { font-size: 36px; font-weight: 800; margin: 12px 0 8px; }
+  .topic-desc {
+    font-size: 15px; line-height: 1.65; margin-bottom: 24px;
+    padding: 12px 16px; border-radius: 10px;
+    background: #5b9cf50a; border-left: 3px solid #5b9cf544;
+    color: var(--text);
+  }
+
+  /* ─────────────────────────────────────────
+     OPTION-SPECIFIC STYLES
+  ───────────────────────────────────────── */
+
+  /* Option A: always visible full sidebar */
+  #opt-a .sidebar { width: 248px; }
+
+  /* Option B: always visible + step progress highlight in sidebar */
+  #opt-b .sidebar { width: 248px; }
+  .step-progress-section {
+    border-top: 1px solid var(--border); padding: 14px 0 0; margin-top: 8px;
+  }
+  .sp-label {
+    font-size: 10px; font-family: var(--font-mono); font-weight: 700;
+    letter-spacing: .1em; color: var(--text-faint); padding: 0 16px; margin-bottom: 10px;
+  }
+  .sp-step {
+    display: flex; align-items: center; gap: 10px;
+    padding: 6px 16px 6px 16px; cursor: pointer; border: none;
+    background: none; width: 100%; border-left: 2px solid transparent;
+    transition: all .2s;
+  }
+  .sp-step.active { background: #5b9cf50d; border-left-color: var(--color); }
+  .sp-dot {
+    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+    background: var(--border); transition: all .2s;
+  }
+  .sp-step.active .sp-dot {
+    background: var(--color); box-shadow: 0 0 6px #5b9cf580;
+    width: 8px; height: 8px;
+  }
+  .sp-text {
+    font-size: 11.5px; color: var(--text-faint); white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; transition: color .2s;
+  }
+  .sp-step.active .sp-text { color: var(--color); font-weight: 600; }
+  .sp-num {
+    font-family: var(--font-mono); font-size: 9px; color: var(--text-faint);
+    flex-shrink: 0; margin-left: auto; transition: color .2s;
+  }
+  .sp-step.active .sp-num { color: var(--color); }
+
+  /* Option C: compact sidebar (180px) during explanation */
+  #opt-c .sidebar { width: 180px; }
+  #opt-c .tech-title { font-size: 12px; }
+  #opt-c .topic-row { font-size: 12px; padding: 5px 10px 5px 24px; }
+  #opt-c .cat-row { padding: 6px 10px 6px 18px; }
+  #opt-c .otp-label { font-size: 9px; }
+  #opt-c .otp-link { font-size: 11px; padding: 5px 10px 5px 14px; }
+
+  /* Option D: full sidebar + floating right panel */
+  #opt-d .sidebar { width: 248px; }
+  .floating-toc {
+    position: fixed; right: 24px; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 6px; z-index: 100;
+    align-items: flex-end;
+  }
+  .ftoc-item {
+    display: flex; align-items: center; gap: 8px;
+    cursor: pointer; opacity: .5; transition: all .2s;
+  }
+  .ftoc-item:hover, .ftoc-item.active { opacity: 1; }
+  .ftoc-label {
+    font-size: 10px; font-family: var(--font-mono); color: var(--text-muted);
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 3px 8px; border-radius: 4px;
+    transition: all .2s; white-space: nowrap; pointer-events: none;
+    opacity: 0; transform: translateX(8px);
+  }
+  .ftoc-item:hover .ftoc-label, .ftoc-item.active .ftoc-label {
+    opacity: 1; transform: translateX(0);
+  }
+  .ftoc-item.active .ftoc-label { color: var(--color); border-color: #5b9cf540; }
+  .ftoc-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--border); transition: all .2s; flex-shrink: 0;
+  }
+  .ftoc-item.active .ftoc-dot { background: var(--color); box-shadow: 0 0 6px #5b9cf580; width: 8px; height: 8px; }
+
+  /* Option E: A + E combined (always visible + step progress integrated) */
+  #opt-e .sidebar { width: 248px; }
+
+  /* ── Anim placeholder ── */
+  .anim-placeholder {
+    width: 100%; height: 180px; border-radius: 10px;
+    background: linear-gradient(135deg, #5b9cf50d, #5b9cf503);
+    border: 1px dashed #5b9cf530;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 11px; color: var(--text-faint);
+  }
+
+  /* ── Badge pill ── */
+  .option-badge {
+    display: inline-flex; align-items: center;
+    font-family: var(--font-mono); font-size: 9px; font-weight: 700;
+    letter-spacing: .08em; padding: 2px 8px; border-radius: 20px;
+    border: 1px solid; margin-left: 8px; vertical-align: middle;
+    text-transform: uppercase;
+  }
+  .badge-recommended {
+    background: #34d39920; border-color: #34d39940; color: #34d399;
+  }
+</style>
+</head>
+<body>
+
+<!-- Top tab bar -->
+<div class="topbar">
+  <span class="topbar-label">Sidebar Optionen:</span>
+  <button class="tab-btn active" onclick="switchTab('a')">A — Immer sichtbar</button>
+  <button class="tab-btn" onclick="switchTab('b')">B — Step-Progress</button>
+  <button class="tab-btn" onclick="switchTab('c')">C — Kompakt (180px)</button>
+  <button class="tab-btn" onclick="switchTab('d')">D — Floating rechts</button>
+  <button class="tab-btn" onclick="switchTab('e')">
+    E — A + E kombiniert
+    <span class="option-badge badge-recommended">Empfohlen</span>
+  </button>
+</div>
+
+<!-- ════════════════════════════════════════
+     OPTION A — Immer sichtbar, keine Änderung
+═════════════════════════════════════════ -->
+<div id="opt-a" class="scene active">
+  <div class="shell">
+    <aside class="sidebar">
+      <div style="flex:1">
+        <!-- JS group -->
+        <div style="margin-bottom:2px">
+          <button class="tech-header active">
+            <div style="display:flex;align-items:center;gap:9px">
+              <div class="tech-dot" style="background:var(--color)"></div>
+              <span class="tech-title">JavaScript</span>
+            </div>
+            <span style="font-size:11px;color:var(--color)">▾</span>
+          </button>
+          <div style="padding-bottom:4px">
+            <button class="cat-row active">
+              <span class="cat-badge">Core</span>
+              <span style="font-size:11px;opacity:.5">▾</span>
+            </button>
+            <button class="topic-row active">Variables &amp; Scope</button>
+            <button class="topic-row">Functions</button>
+            <button class="topic-row">Arrays</button>
+            <button class="topic-row">Objects</button>
+          </div>
+        </div>
+        <!-- CSS group -->
+        <div style="margin-bottom:2px">
+          <button class="tech-header">
+            <div style="display:flex;align-items:center;gap:9px">
+              <div class="tech-dot" style="background:var(--text-faint)"></div>
+              <span class="tech-title" style="color:var(--text-muted)">CSS</span>
+            </div>
+            <span style="font-size:11px;color:var(--text-faint)">▸</span>
+          </button>
+        </div>
+        <div style="margin-bottom:2px">
+          <button class="tech-header">
+            <div style="display:flex;align-items:center;gap:9px">
+              <div class="tech-dot" style="background:var(--text-faint)"></div>
+              <span class="tech-title" style="color:var(--text-muted)">React</span>
+            </div>
+            <span style="font-size:11px;color:var(--text-faint)">▸</span>
+          </button>
+        </div>
+      </div>
+      <!-- On This Page -->
+      <div class="otp-section">
+        <div class="otp-label">ON THIS PAGE</div>
+        <button class="otp-link">What is Variables &amp; Scope?</button>
+        <button class="otp-link">How it works</button>
+        <button class="otp-link">Cheat Sheet</button>
+        <button class="otp-link">Playground</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div id="intro" style="margin-bottom:48px">
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px">← JavaScript Core</p>
+        <h1 class="topic-title">Variables &amp; Scope</h1>
+        <p class="topic-desc">
+          Variables sind benannte Container für Werte. Scope bestimmt, wo im Code eine Variable sichtbar und zugänglich ist.
+        </p>
+      </div>
+
+      <div id="explanation">
+        <div class="section-heading">
+          <span class="section-label">How it works</span>
+          <div class="section-rule"></div>
+        </div>
+        <div class="steps-grid">
+          <div>
+            <div class="anim-panel">
+              <div class="anim-placeholder">Animation Panel</div>
+              <div class="anim-dots">
+                <button class="anim-dot active" onclick="setStep('a',0)"></button>
+                <button class="anim-dot" onclick="setStep('a',1)"></button>
+                <button class="anim-dot" onclick="setStep('a',2)"></button>
+                <button class="anim-dot" onclick="setStep('a',3)"></button>
+              </div>
+            </div>
+          </div>
+          <div id="steps-a">
+            <div class="step-card active" onclick="setStep('a',0)">
+              <div class="step-accent"></div>
+              <div class="step-header">
+                <div class="step-icon">📦</div>
+                <div>
+                  <div class="step-badge">INFO 01</div>
+                  <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Deklaration mit let, const, var</h3>
+                </div>
+              </div>
+              <div class="step-body">
+                <p class="step-lead">Mit <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">let</code> und <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">const</code> deklarierst du Variablen mit Block-Scope. <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">var</code> ist veraltet und hat Function-Scope.</p>
+              </div>
+            </div>
+            <div class="step-card" onclick="setStep('a',1)">
+              <div class="step-accent"></div>
+              <div class="step-header">
+                <div class="step-icon">🔒</div>
+                <div>
+                  <div class="step-badge">INFO 02</div>
+                  <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Block Scope</h3>
+                </div>
+              </div>
+              <div class="step-body">
+                <p class="step-lead">Jeder Block <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">{}</code> erzeugt einen neuen Scope. Variablen mit <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">let</code>/<code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">const</code> sind außerhalb nicht sichtbar.</p>
+              </div>
+            </div>
+            <div class="step-card" onclick="setStep('a',2)">
+              <div class="step-accent"></div>
+              <div class="step-header">
+                <div class="step-icon">📈</div>
+                <div>
+                  <div class="step-badge">INFO 03</div>
+                  <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Closure</h3>
+                </div>
+              </div>
+              <div class="step-body">
+                <p class="step-lead">Funktionen merken sich den Scope, in dem sie erstellt wurden — auch nach deren Ausführung.</p>
+              </div>
+            </div>
+            <div class="step-card" onclick="setStep('a',3)">
+              <div class="step-accent"></div>
+              <div class="step-header">
+                <div class="step-icon">🌍</div>
+                <div>
+                  <div class="step-badge">INFO 04</div>
+                  <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Global Scope</h3>
+                </div>
+              </div>
+              <div class="step-body">
+                <p class="step-lead">Variablen außerhalb aller Funktionen und Blöcke sind global. Vermeide globale Variablen — sie können zu unerwarteten Konflikten führen.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     OPTION B — Step Progress in Sidebar
+═════════════════════════════════════════ -->
+<div id="opt-b" class="scene">
+  <div class="shell">
+    <aside class="sidebar">
+      <div style="flex:1">
+        <div style="margin-bottom:2px">
+          <button class="tech-header active">
+            <div style="display:flex;align-items:center;gap:9px">
+              <div class="tech-dot" style="background:var(--color)"></div>
+              <span class="tech-title">JavaScript</span>
+            </div>
+            <span style="font-size:11px;color:var(--color)">▾</span>
+          </button>
+          <div style="padding-bottom:4px">
+            <button class="cat-row active">
+              <span class="cat-badge">Core</span>
+              <span style="font-size:11px;opacity:.5">▾</span>
+            </button>
+            <button class="topic-row active">Variables &amp; Scope</button>
+            <button class="topic-row">Functions</button>
+            <button class="topic-row">Arrays</button>
+          </div>
+        </div>
+        <div style="margin-bottom:2px">
+          <button class="tech-header">
+            <div style="display:flex;align-items:center;gap:9px">
+              <div class="tech-dot" style="background:var(--text-faint)"></div>
+              <span class="tech-title" style="color:var(--text-muted)">CSS</span>
+            </div>
+            <span style="font-size:11px;color:var(--text-faint)">▸</span>
+          </button>
+        </div>
+      </div>
+      <!-- On This Page -->
+      <div class="otp-section">
+        <div class="otp-label">ON THIS PAGE</div>
+        <button class="otp-link">What is Variables?</button>
+        <button class="otp-link" style="color:var(--color)">How it works</button>
+        <button class="otp-link">Cheat Sheet</button>
+      </div>
+      <!-- Step Progress (new) -->
+      <div class="step-progress-section">
+        <div class="sp-label">HOW IT WORKS — STEPS</div>
+        <button class="sp-step active" onclick="setStep('b',0)">
+          <div class="sp-dot"></div>
+          <span class="sp-text">Deklaration</span>
+          <span class="sp-num">01</span>
+        </button>
+        <button class="sp-step" onclick="setStep('b',1)">
+          <div class="sp-dot"></div>
+          <span class="sp-text">Block Scope</span>
+          <span class="sp-num">02</span>
+        </button>
+        <button class="sp-step" onclick="setStep('b',2)">
+          <div class="sp-dot"></div>
+          <span class="sp-text">Closure</span>
+          <span class="sp-num">03</span>
+        </button>
+        <button class="sp-step" onclick="setStep('b',3)">
+          <div class="sp-dot"></div>
+          <span class="sp-text">Global Scope</span>
+          <span class="sp-num">04</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div style="margin-bottom:48px">
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px">← JavaScript Core</p>
+        <h1 class="topic-title">Variables &amp; Scope</h1>
+        <p class="topic-desc">Variables sind benannte Container für Werte. Scope bestimmt, wo im Code eine Variable sichtbar ist.</p>
+      </div>
+      <div>
+        <div class="section-heading">
+          <span class="section-label">How it works</span>
+          <div class="section-rule"></div>
+        </div>
+        <div class="steps-grid">
+          <div>
+            <div class="anim-panel">
+              <div class="anim-placeholder">Animation Panel</div>
+              <div class="anim-dots">
+                <button class="anim-dot active" onclick="setStep('b',0)"></button>
+                <button class="anim-dot" onclick="setStep('b',1)"></button>
+                <button class="anim-dot" onclick="setStep('b',2)"></button>
+                <button class="anim-dot" onclick="setStep('b',3)"></button>
+              </div>
+            </div>
+          </div>
+          <div id="steps-b">
+            <div class="step-card active" onclick="setStep('b',0)"><div class="step-accent"></div><div class="step-header"><div class="step-icon">📦</div><div><div class="step-badge">INFO 01</div><h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Deklaration mit let, const, var</h3></div></div><div class="step-body"><p class="step-lead">Mit <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">let</code> und <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">const</code> deklarierst du Variablen mit Block-Scope.</p></div></div>
+            <div class="step-card" onclick="setStep('b',1)"><div class="step-accent"></div><div class="step-header"><div class="step-icon">🔒</div><div><div class="step-badge">INFO 02</div><h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Block Scope</h3></div></div><div class="step-body"><p class="step-lead">Jeder Block <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">{}</code> erzeugt einen neuen Scope.</p></div></div>
+            <div class="step-card" onclick="setStep('b',2)"><div class="step-accent"></div><div class="step-header"><div class="step-icon">📈</div><div><div class="step-badge">INFO 03</div><h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Closure</h3></div></div><div class="step-body"><p class="step-lead">Funktionen merken sich den Scope, in dem sie erstellt wurden.</p></div></div>
+            <div class="step-card" onclick="setStep('b',3)"><div class="step-accent"></div><div class="step-header"><div class="step-icon">🌍</div><div><div class="step-badge">INFO 04</div><h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Global Scope</h3></div></div><div class="step-body"><p class="step-lead">Variablen außerhalb aller Blöcke sind global — vermeide sie.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     OPTION C — Compact Sidebar (180px)
+═════════════════════════════════════════ -->
+<div id="opt-c" class="scene">
+  <div class="shell">
+    <aside class="sidebar">
+      <div style="flex:1">
+        <div style="margin-bottom:2px">
+          <button class="tech-header active" style="padding:8px 12px 8px 10px">
+            <div style="display:flex;align-items:center;gap:7px">
+              <div class="tech-dot" style="background:var(--color)"></div>
+              <span class="tech-title">JavaScript</span>
+            </div>
+            <span style="font-size:10px;color:var(--color)">▾</span>
+          </button>
+          <div style="padding-bottom:4px">
+            <button class="cat-row active">
+              <span class="cat-badge">Core</span>
+              <span style="font-size:10px;opacity:.5">▾</span>
+            </button>
+            <button class="topic-row active">Variables &amp; Scope</button>
+            <button class="topic-row">Functions</button>
+            <button class="topic-row">Arrays</button>
+          </div>
+        </div>
+        <div style="margin-bottom:2px">
+          <button class="tech-header" style="padding:8px 12px 8px 10px">
+            <div style="display:flex;align-items:center;gap:7px">
+              <div class="tech-dot" style="background:var(--text-faint)"></div>
+              <span class="tech-title" style="color:var(--text-muted)">CSS</span>
+            </div>
+            <span style="font-size:10px;color:var(--text-faint)">▸</span>
+          </button>
+        </div>
+        <div style="margin-bottom:2px">
+          <button class="tech-header" style="padding:8px 12px 8px 10px">
+            <div style="display:flex;align-items:center;gap:7px">
+              <div class="tech-dot" style="background:var(--text-faint)"></div>
+              <span class="tech-title" style="color:var(--text-muted)">React</span>
+            </div>
+            <span style="font-size:10px;color:var(--text-faint)">▸</span>
+          </button>
+        </div>
+      </div>
+      <div class="otp-section">
+        <div class="otp-label">ON THIS PAGE</div>
+        <button class="otp-link">What is Variables?</button>
+        <button class="otp-link">How it works</button>
+        <button class="otp-link">Cheat Sheet</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div style="margin-bottom:48px">
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px">← JavaScript Core</p>
+        <h1 class="topic-title">Variables &amp; Scope</h1>
+        <p class="topic-desc">Variables sind benannte Container für Werte. Scope bestimmt, wo im Code eine Variable sichtbar ist.</p>
+      </div>
+      <div>
+        <div class="section-heading">
+          <span class="section-label">How it works</span>
+          <div class="section-rule"></div>
+        </div>
+        <div class="steps-grid">
+          <div>
+            <div class="anim-panel">
+              <div class="anim-placeholder">Animation Panel</div>
+              <div class="anim-dots">
+                <button class="anim-dot active" onclick="setStep('c',0)"></button>
+                <button class="anim-dot" onclick="setStep('c',1)"></button>
+                <button class="anim-dot" onclick="setStep('c',2)"></button>
+                <button class="anim-dot" onclick="setStep('c',3)"></button>
+              </div>
+            </div>
+          </div>
+          <div id="steps-c">
+            <div class="step-card active" onclick="setStep('c',0)"><div class="step-accent"></div><div class="step-header"><div class="step-icon">📦</div><div><div class="step-badge">INFO 01</div><h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Deklaration</h3></div></div><div class="step-body"><p class="step-lead">Mit <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">let</code>/<code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">const</code> deklarierst du Variablen mit Block-Scope.</p></div></div>
+            <div class="step-card" onclick="setStep('c',1)"><div class="step-accent"></div><div class="step-header"><div class="step-icon">🔒</div><div><div class="step-badge">INFO 02</div><h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Block Scope</h3></div></div><div class="step-body"><p class="step-lead">Jeder Block <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">{}</code> erzeugt einen neuen Scope.</p></div></div>
+            <div class="step-card" onclick="setStep('c',2)"><div class="step-accent"></div><div class="step-header"><div class="step-icon">📈</div><div><div class="step-badge">INFO 03</div><h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Closure</h3></div></div><div class="step-body"><p class="step-lead">Funktionen merken sich den Scope, in dem sie erstellt wurden.</p></div></div>
+            <div class="step-card" onclick="setStep('c',3)"><div class="step-accent"></div><div class="step-header"><div class="step-icon">🌍</div><div><div class="step-badge">INFO 04</div><h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Global Scope</h3></div></div><div class="step-body"><p class="step-lead">Variablen außerhalb aller Blöcke sind global — vermeide sie.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     OPTION D — Floating TOC rechts
+═════════════════════════════════════════ -->
+<div id="opt-d" class="scene">
+  <div class="shell">
+    <aside class="sidebar">
+      <div style="flex:1">
+        <div style="margin-bottom:2px">
+          <button class="tech-header active">
+            <div style="display:flex;align-items:center;gap:9px">
+              <div class="tech-dot" style="background:var(--color)"></div>
+              <span class="tech-title">JavaScript</span>
+            </div>
+            <span style="font-size:11px;color:var(--color)">▾</span>
+          </button>
+          <div style="padding-bottom:4px">
+            <button class="cat-row active">
+              <span class="cat-badge">Core</span>
+              <span style="font-size:11px;opacity:.5">▾</span>
+            </button>
+            <button class="topic-row active">Variables &amp; Scope</button>
+            <button class="topic-row">Functions</button>
+            <button class="topic-row">Arrays</button>
+          </div>
+        </div>
+        <div style="margin-bottom:2px">
+          <button class="tech-header">
+            <div style="display:flex;align-items:center;gap:9px">
+              <div class="tech-dot" style="background:var(--text-faint)"></div>
+              <span class="tech-title" style="color:var(--text-muted)">CSS</span>
+            </div>
+          </button>
+        </div>
+      </div>
+      <div class="otp-section">
+        <div class="otp-label">ON THIS PAGE</div>
+        <button class="otp-link">What is Variables?</button>
+        <button class="otp-link">How it works</button>
+        <button class="otp-link">Cheat Sheet</button>
+      </div>
+    </aside>
+
+    <!-- Floating right TOC (visible in this scene only) -->
+    <div class="floating-toc" id="ftoc-d">
+      <div class="ftoc-item active" onclick="setStep('d',0)">
+        <span class="ftoc-label">Deklaration</span>
+        <div class="ftoc-dot"></div>
+      </div>
+      <div class="ftoc-item" onclick="setStep('d',1)">
+        <span class="ftoc-label">Block Scope</span>
+        <div class="ftoc-dot"></div>
+      </div>
+      <div class="ftoc-item" onclick="setStep('d',2)">
+        <span class="ftoc-label">Closure</span>
+        <div class="ftoc-dot"></div>
+      </div>
+      <div class="ftoc-item" onclick="setStep('d',3)">
+        <span class="ftoc-label">Global Scope</span>
+        <div class="ftoc-dot"></div>
+      </div>
+    </div>
+
+    <main class="main">
+      <div style="margin-bottom:48px">
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px">← JavaScript Core</p>
+        <h1 class="topic-title">Variables &amp; Scope</h1>
+        <p class="topic-desc">Variables sind benannte Container für Werte. Scope bestimmt, wo im Code eine Variable sichtbar ist.</p>
+      </div>
+      <div>
+        <div class="section-heading">
+          <span class="section-label">How it works</span>
+          <div class="section-rule"></div>
+        </div>
+        <div class="steps-grid">
+          <div>
+            <div class="anim-panel">
+              <div class="anim-placeholder">Animation Panel</div>
+              <div class="anim-dots">
+                <button class="anim-dot active" onclick="setStep('d',0)"></button>
+                <button class="anim-dot" onclick="setStep('d',1)"></button>
+                <button class="anim-dot" onclick="setStep('d',2)"></button>
+                <button class="anim-dot" onclick="setStep('d',3)"></button>
+              </div>
+            </div>
+          </div>
+          <div id="steps-d">
+            <div class="step-card active" onclick="setStep('d',0)"><div class="step-accent"></div><div class="step-header"><div class="step-icon">📦</div><div><div class="step-badge">INFO 01</div><h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Deklaration</h3></div></div><div class="step-body"><p class="step-lead">Mit <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">let</code>/<code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">const</code> deklarierst du Variablen mit Block-Scope.</p></div></div>
+            <div class="step-card" onclick="setStep('d',1)"><div class="step-accent"></div><div class="step-header"><div class="step-icon">🔒</div><div><div class="step-badge">INFO 02</div><h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Block Scope</h3></div></div><div class="step-body"><p class="step-lead">Jeder Block <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">{}</code> erzeugt einen neuen Scope.</p></div></div>
+            <div class="step-card" onclick="setStep('d',2)"><div class="step-accent"></div><div class="step-header"><div class="step-icon">📈</div><div><div class="step-badge">INFO 03</div><h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Closure</h3></div></div><div class="step-body"><p class="step-lead">Funktionen merken sich den Scope, in dem sie erstellt wurden.</p></div></div>
+            <div class="step-card" onclick="setStep('d',3)"><div class="step-accent"></div><div class="step-header"><div class="step-icon">🌍</div><div><div class="step-badge">INFO 04</div><h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Global Scope</h3></div></div><div class="step-body"><p class="step-lead">Variablen außerhalb aller Blöcke sind global — vermeide sie.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     OPTION E — A + E kombiniert (Empfohlen)
+═════════════════════════════════════════ -->
+<div id="opt-e" class="scene">
+  <div class="shell">
+    <aside class="sidebar">
+      <div style="flex:1">
+        <div style="margin-bottom:2px">
+          <button class="tech-header active">
+            <div style="display:flex;align-items:center;gap:9px">
+              <div class="tech-dot" style="background:var(--color)"></div>
+              <span class="tech-title">JavaScript</span>
+            </div>
+            <span style="font-size:11px;color:var(--color)">▾</span>
+          </button>
+          <div style="padding-bottom:4px">
+            <button class="cat-row active">
+              <span class="cat-badge">Core</span>
+              <span style="font-size:11px;opacity:.5">▾</span>
+            </button>
+            <button class="topic-row active">Variables &amp; Scope</button>
+            <button class="topic-row">Functions</button>
+            <button class="topic-row">Arrays</button>
+          </div>
+        </div>
+        <div style="margin-bottom:2px">
+          <button class="tech-header">
+            <div style="display:flex;align-items:center;gap:9px">
+              <div class="tech-dot" style="background:var(--text-faint)"></div>
+              <span class="tech-title" style="color:var(--text-muted)">CSS</span>
+            </div>
+            <span style="font-size:11px;color:var(--text-faint)">▸</span>
+          </button>
+        </div>
+        <div style="margin-bottom:2px">
+          <button class="tech-header">
+            <div style="display:flex;align-items:center;gap:9px">
+              <div class="tech-dot" style="background:var(--text-faint)"></div>
+              <span class="tech-title" style="color:var(--text-muted)">React</span>
+            </div>
+            <span style="font-size:11px;color:var(--text-faint)">▸</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- On This Page -->
+      <div class="otp-section">
+        <div class="otp-label">ON THIS PAGE</div>
+        <button class="otp-link">What is Variables?</button>
+        <button class="otp-link" style="color:var(--color)">How it works</button>
+        <button class="otp-link">Cheat Sheet</button>
+        <button class="otp-link">Playground</button>
+      </div>
+
+      <!-- Step Progress integrated -->
+      <div class="step-progress-section">
+        <div style="display:flex;align-items:center;gap:8px;padding:0 16px;margin-bottom:10px">
+          <div class="sp-label" style="padding:0;margin:0">STEPS</div>
+          <!-- progress bar -->
+          <div style="flex:1;height:2px;background:var(--border);border-radius:2px;overflow:hidden">
+            <div id="e-progress-bar" style="height:100%;width:25%;background:var(--color);border-radius:2px;transition:width .3s ease"></div>
+          </div>
+          <span id="e-progress-label" style="font-family:var(--font-mono);font-size:9px;color:var(--text-faint)">1/4</span>
+        </div>
+        <button class="sp-step active" onclick="setStep('e',0)" id="e-sp-0">
+          <div class="sp-dot"></div>
+          <span class="sp-text">Deklaration</span>
+          <span class="sp-num">01</span>
+        </button>
+        <button class="sp-step" onclick="setStep('e',1)" id="e-sp-1">
+          <div class="sp-dot"></div>
+          <span class="sp-text">Block Scope</span>
+          <span class="sp-num">02</span>
+        </button>
+        <button class="sp-step" onclick="setStep('e',2)" id="e-sp-2">
+          <div class="sp-dot"></div>
+          <span class="sp-text">Closure</span>
+          <span class="sp-num">03</span>
+        </button>
+        <button class="sp-step" onclick="setStep('e',3)" id="e-sp-3">
+          <div class="sp-dot"></div>
+          <span class="sp-text">Global Scope</span>
+          <span class="sp-num">04</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div style="margin-bottom:48px">
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:8px">← JavaScript Core</p>
+        <h1 class="topic-title">Variables &amp; Scope</h1>
+        <p class="topic-desc">Variables sind benannte Container für Werte. Scope bestimmt, wo im Code eine Variable sichtbar ist.</p>
+      </div>
+      <div>
+        <div class="section-heading">
+          <span class="section-label">How it works</span>
+          <div class="section-rule"></div>
+        </div>
+        <div class="steps-grid">
+          <div>
+            <div class="anim-panel">
+              <div class="anim-placeholder">Animation Panel</div>
+              <div class="anim-dots">
+                <button class="anim-dot active" onclick="setStep('e',0)"></button>
+                <button class="anim-dot" onclick="setStep('e',1)"></button>
+                <button class="anim-dot" onclick="setStep('e',2)"></button>
+                <button class="anim-dot" onclick="setStep('e',3)"></button>
+              </div>
+            </div>
+          </div>
+          <div id="steps-e">
+            <div class="step-card active" onclick="setStep('e',0)"><div class="step-accent"></div><div class="step-header"><div class="step-icon">📦</div><div><div class="step-badge">INFO 01</div><h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Deklaration mit let, const, var</h3></div></div><div class="step-body"><p class="step-lead">Mit <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">let</code> und <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">const</code> deklarierst du Variablen mit Block-Scope. <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">var</code> ist veraltet und hat Function-Scope.</p></div></div>
+            <div class="step-card" onclick="setStep('e',1)"><div class="step-accent"></div><div class="step-header"><div class="step-icon">🔒</div><div><div class="step-badge">INFO 02</div><h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Block Scope</h3></div></div><div class="step-body"><p class="step-lead">Jeder Block <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">{}</code> erzeugt einen neuen Scope. Variablen mit <code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">let</code>/<code style="font-family:var(--font-mono);font-size:11px;background:#5b9cf514;border:1px solid #5b9cf533;border-radius:3px;padding:1px 5px;color:var(--color)">const</code> sind außerhalb nicht sichtbar.</p></div></div>
+            <div class="step-card" onclick="setStep('e',2)"><div class="step-accent"></div><div class="step-header"><div class="step-icon">📈</div><div><div class="step-badge">INFO 03</div><h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Closure</h3></div></div><div class="step-body"><p class="step-lead">Funktionen merken sich den Scope, in dem sie erstellt wurden — auch nach deren Ausführung.</p></div></div>
+            <div class="step-card" onclick="setStep('e',3)"><div class="step-accent"></div><div class="step-header"><div class="step-icon">🌍</div><div><div class="step-badge">INFO 04</div><h3 style="font-size:15px;font-weight:700;color:var(--text);margin-top:3px">Global Scope</h3></div></div><div class="step-body"><p class="step-lead">Variablen außerhalb aller Funktionen und Blöcke sind global. Vermeide globale Variablen — sie können zu unerwarteten Konflikten führen.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  const TOTAL = 4
+
+  function switchTab(id) {
+    document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'))
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
+    document.getElementById('opt-' + id).classList.add('active')
+    document.querySelectorAll('.tab-btn')[['a','b','c','d','e'].indexOf(id)].classList.add('active')
+  }
+
+  function setStep(scene, idx) {
+    // Update step cards
+    const steps = document.querySelectorAll('#steps-' + scene + ' .step-card')
+    steps.forEach((c, i) => c.classList.toggle('active', i === idx))
+
+    // Update anim dots — find within the scene
+    const sceneDots = document.querySelectorAll('#opt-' + scene + ' .anim-dot')
+    sceneDots.forEach((d, i) => d.classList.toggle('active', i === idx))
+
+    // Option B: sidebar step progress
+    if (scene === 'b') {
+      document.querySelectorAll('#opt-b .sp-step').forEach((s, i) => s.classList.toggle('active', i === idx))
+    }
+
+    // Option D: floating toc
+    if (scene === 'd') {
+      document.querySelectorAll('#ftoc-d .ftoc-item').forEach((s, i) => s.classList.toggle('active', i === idx))
+    }
+
+    // Option E: sidebar step progress + progress bar
+    if (scene === 'e') {
+      for (let i = 0; i < TOTAL; i++) {
+        document.getElementById('e-sp-' + i)?.classList.toggle('active', i === idx)
+      }
+      const pct = Math.round(((idx + 1) / TOTAL) * 100)
+      document.getElementById('e-progress-bar').style.width = pct + '%'
+      document.getElementById('e-progress-label').textContent = (idx + 1) + '/' + TOTAL
+    }
+  }
+</script>
+</body>
+</html>

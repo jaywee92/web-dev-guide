@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step Block Upgrade — Preview</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface-bright: #1e2230;
+    --border: #2e3348;
+    --text: #e2e4ed;
+    --tm: #8b8fa7;
+    --tf: #555a73;
+    --mono: 'JetBrains Mono', 'Fira Code', monospace;
+    --c: #fbbf24;
+    --radius: 13px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    padding: 40px 24px 100px;
+  }
+
+  h1 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+  .sub { font-size: 13px; color: var(--tm); margin-bottom: 48px; }
+
+  .section-label {
+    font-size: 9px;
+    font-family: var(--mono);
+    font-weight: 800;
+    letter-spacing: .15em;
+    color: var(--tf);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: 1100px; margin-bottom: 56px; }
+  @media (max-width: 780px) { .cols { grid-template-columns: 1fr; } }
+
+  .col-label {
+    font-size: 9px;
+    font-family: var(--mono);
+    letter-spacing: .12em;
+    color: var(--tf);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .col-label .tag {
+    padding: 2px 7px;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 8px;
+  }
+  .tag-before { background: #3b4263; color: #8b9cd4; border: 1px solid #3b4263; }
+  .tag-after  { background: var(--c)18; color: var(--c); border: 1px solid var(--c)50; }
+
+  /* ─── Shared card shell ─── */
+  .card {
+    border-radius: var(--radius);
+    border: 1px solid var(--c)4d;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(90deg, var(--c)0a 0%, var(--surface) 110px);
+    box-shadow: 0 4px 28px var(--c)12;
+  }
+  .card .accent { position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--c); }
+  .card .hd {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 18px 12px 21px;
+    background: linear-gradient(135deg, var(--c)1e 0%, var(--c)08 100%);
+    border-bottom: 1px solid var(--c)26;
+  }
+  .card .icon-box {
+    width: 38px; height: 38px; flex-shrink: 0; border-radius: 9px;
+    background: var(--c)33; border: 1px solid var(--c)73;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; box-shadow: 0 0 14px var(--c)2e;
+  }
+  .pill {
+    display: inline-flex; align-self: flex-start;
+    font-family: var(--mono); font-size: 9px; font-weight: 800; letter-spacing: .1em;
+    padding: 2px 7px; border-radius: 20px;
+    background: var(--c)2e; border: 1px solid var(--c)66;
+    color: var(--c); text-transform: uppercase; margin-bottom: 3px;
+  }
+  .card h3 { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.25; }
+  .card .bd { padding: 13px 18px 15px 21px; display: flex; flex-direction: column; gap: 10px; }
+
+
+  /* ─── BEFORE: description ─── */
+  .desc-before {
+    font-size: 13px;
+    color: var(--tm);
+    line-height: 1.75;
+  }
+  code.before {
+    font-family: var(--mono); font-size: 11px;
+    background: var(--c)14; border: 1px solid var(--c)33;
+    border-radius: 3px; padding: 1px 5px; color: var(--c);
+  }
+
+  /* ─── AFTER: description ─── */
+  .desc-after {
+    font-size: 14px;
+    color: #c5cae0;
+    line-height: 1.85;
+    letter-spacing: .01em;
+  }
+  code.after {
+    font-family: var(--mono); font-size: 12px;
+    background: var(--c)1c; border: 1px solid var(--c)44;
+    border-radius: 4px; padding: 2px 7px; color: var(--c);
+    font-weight: 600;
+  }
+
+
+  /* ─── BEFORE: insight cards ─── */
+  .insights-before { display: flex; flex-direction: column; gap: 7px; border-top: 1px solid var(--c)18; padding-top: 10px; }
+  .ic-before {
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface-bright);
+    padding: 9px 12px;
+  }
+  .ic-label-before {
+    font-size: 9px; font-family: var(--mono); font-weight: 700;
+    letter-spacing: .1em; color: var(--c)99;
+    text-transform: uppercase; margin-bottom: 4px;
+  }
+  .ic-text-before { font-size: 12.5px; color: var(--tm); line-height: 1.65; }
+
+  /* ─── AFTER: insight cards ─── */
+  .insights-after { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--c)18; padding-top: 12px; }
+  .ic-after {
+    border-radius: 8px;
+    border: 1px solid var(--c)20;
+    background: linear-gradient(135deg, var(--c)06 0%, var(--surface) 100%);
+    padding: 10px 12px 10px 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ic-after::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--c)70;
+    border-radius: 2px;
+  }
+  .ic-label-after {
+    display: inline-flex;
+    font-size: 8px; font-family: var(--mono); font-weight: 800;
+    letter-spacing: .1em; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 20px;
+    background: var(--c)18; border: 1px solid var(--c)44;
+    color: var(--c); margin-bottom: 5px;
+  }
+  .ic-text-after { font-size: 12.5px; color: #b0b5cc; line-height: 1.7; }
+  .ic-text-after code {
+    font-family: var(--mono); font-size: 11.5px;
+    background: var(--c)1c; border: 1px solid var(--c)40;
+    border-radius: 3px; padding: 1px 5px; color: var(--c);
+  }
+
+
+  /* ─── BEFORE: codeblock ─── */
+  .cb-before {
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .cb-before pre {
+    background: var(--surface);
+    padding: 14px 16px;
+    font-size: 13px;
+    line-height: 1.6;
+    font-family: var(--mono);
+    color: var(--text);
+    overflow-x: auto;
+    margin: 0;
+  }
+
+  /* ─── AFTER: codeblock ─── */
+  .cb-after {
+    border-radius: 8px;
+    border: 1px solid var(--c)28;
+    border-top: 2px solid var(--c)50;
+    overflow: hidden;
+    box-shadow: 0 2px 16px var(--c)0d;
+  }
+  .cb-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 7px 12px;
+    background: linear-gradient(90deg, var(--c)0c 0%, var(--surface-bright) 100%);
+    border-bottom: 1px solid var(--c)20;
+  }
+  .cb-lang {
+    font-family: var(--mono); font-size: 9px; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase;
+    color: var(--c)99;
+  }
+  .cb-dots { display: flex; gap: 5px; }
+  .cb-dots span {
+    width: 7px; height: 7px; border-radius: 50%;
+  }
+  .cb-dots .d1 { background: #f87171; opacity: .6; }
+  .cb-dots .d2 { background: #fbbf24; opacity: .6; }
+  .cb-dots .d3 { background: #4ade80; opacity: .6; }
+  .copy-btn {
+    font-family: var(--mono); font-size: 9px; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 5px;
+    background: var(--c)12; border: 1px solid var(--c)33;
+    color: var(--c)bb; cursor: pointer;
+    transition: background .15s, color .15s;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .copy-btn:hover { background: var(--c)22; color: var(--c); }
+  .copy-btn.copied { background: #4ade8018; border-color: #4ade8044; color: #4ade80; }
+  .cb-after pre {
+    background: #13151f;
+    padding: 14px 16px;
+    font-size: 12px;
+    line-height: 1.7;
+    font-family: var(--mono);
+    color: #e2e8f0;
+    overflow-x: auto;
+    margin: 0;
+  }
+  /* syntax highlight simulation */
+  .kw  { color: #c792ea; }
+  .cn  { color: #80cbc4; }
+  .str { color: #c3e88d; }
+  .num { color: #f78c6c; }
+  .cm  { color: #546e7a; font-style: italic; }
+  .fn  { color: #82aaff; }
+
+  /* ─── learn more button ─── */
+  .lm-before {
+    background: none; border: none; cursor: pointer; padding: 0;
+    font-size: 12px; color: var(--c)b3; font-weight: 600;
+    align-self: flex-start; font-family: inherit;
+  }
+  .lm-after {
+    background: var(--c)0e; border: 1px solid var(--c)28; cursor: pointer;
+    padding: 5px 13px; border-radius: 6px;
+    font-size: 11px; color: var(--c)bb; font-weight: 700;
+    font-family: var(--mono); letter-spacing: .06em; text-transform: uppercase;
+    align-self: flex-start;
+    display: flex; align-items: center; gap: 5px;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .lm-after:hover { background: var(--c)1c; color: var(--c); border-color: var(--c)55; }
+
+  /* ─── separator ─── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 20px 0 48px; max-width: 1100px; }
+</style>
+</head>
+<body>
+
+<h1>Step Block — Upgrade Preview</h1>
+<p class="sub">Vergleich: aktueller Stand (links) vs. aufgewertetes Design (rechts)</p>
+
+<!-- ─── 1. BESCHREIBUNGSTEXT ─── -->
+<div class="section-label">01 — Beschreibungstext</div>
+<div class="cols">
+
+  <div>
+    <div class="col-label"><span class="tag tag-before">Vorher</span> font-size 13, line-height 1.75</div>
+    <div class="card">
+      <div class="accent"></div>
+      <div class="hd">
+        <div class="icon-box">📦</div>
+        <div>
+          <div class="pill">INFO 01</div>
+          <h3>var — der alte Weg</h3>
+        </div>
+      </div>
+      <div class="bd">
+        <p class="desc-before">
+          <code class="before">var</code> ist <b>function-scoped</b> — nicht block-scoped. Das bedeutet, dass eine Variable, die innerhalb eines <code class="before">if</code>-Blocks deklariert wird, auch außerhalb dieses Blocks existiert. Außerdem wird <code class="before">var</code> an den Anfang seiner Funktion <b>gehoisted</b>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="col-label"><span class="tag tag-after">Nachher</span> font-size 14, line-height 1.85, stärkere Code-Chips</div>
+    <div class="card">
+      <div class="accent"></div>
+      <div class="hd">
+        <div class="icon-box">📦</div>
+        <div>
+          <div class="pill">INFO 01</div>
+          <h3>var — der alte Weg</h3>
+        </div>
+      </div>
+      <div class="bd">
+        <p class="desc-after">
+          <code class="after">var</code> ist <b>function-scoped</b> — nicht block-scoped. Das bedeutet, dass eine Variable, die innerhalb eines <code class="after">if</code>-Blocks deklariert wird, auch außerhalb dieses Blocks existiert. Außerdem wird <code class="after">var</code> an den Anfang seiner Funktion <b>gehoisted</b>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>
+<hr>
+
+<!-- ─── 2. EXPANDED / INSIGHT CARDS ─── -->
+<div class="section-label">02 — Expanded / Insight Cards</div>
+<div class="cols">
+
+  <div>
+    <div class="col-label"><span class="tag tag-before">Vorher</span> plain border, text label</div>
+    <div class="card">
+      <div class="accent"></div>
+      <div class="hd">
+        <div class="icon-box">📦</div>
+        <div>
+          <div class="pill">INFO 01</div>
+          <h3>var — der alte Weg</h3>
+        </div>
+      </div>
+      <div class="bd">
+        <p class="desc-before"><code class="before">var</code> ist <b>function-scoped</b> und wird an den Anfang seiner Funktion gehoisted.</p>
+        <div class="insights-before">
+          <div class="ic-before">
+            <div class="ic-label-before">Hoisting</div>
+            <p class="ic-text-before">JavaScript verschiebt <code class="before">var</code>-Deklarationen still und leise an den Anfang der Funktion — der Wert bleibt jedoch an Ort und Stelle. Das kann zu unerwartetem <code class="before">undefined</code> führen.</p>
+          </div>
+          <div class="ic-before">
+            <div class="ic-label-before">Best Practice</div>
+            <p class="ic-text-before">Vermeide <code class="before">var</code> in modernem JS. Nutze <code class="before">let</code> für veränderliche und <code class="before">const</code> für unveränderliche Werte.</p>
+          </div>
+        </div>
+        <button class="lm-before">Weniger anzeigen ↑</button>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="col-label"><span class="tag tag-after">Nachher</span> farbige Akzentlinie, Pill-Label, Gradient, styled toggle</div>
+    <div class="card">
+      <div class="accent"></div>
+      <div class="hd">
+        <div class="icon-box">📦</div>
+        <div>
+          <div class="pill">INFO 01</div>
+          <h3>var — der alte Weg</h3>
+        </div>
+      </div>
+      <div class="bd">
+        <p class="desc-after"><code class="after">var</code> ist <b>function-scoped</b> und wird an den Anfang seiner Funktion gehoisted.</p>
+        <div class="insights-after">
+          <div class="ic-after">
+            <div class="ic-label-after">Hoisting</div>
+            <p class="ic-text-after">JavaScript verschiebt <code>var</code>-Deklarationen still und leise an den Anfang der Funktion — der Wert bleibt jedoch an Ort und Stelle. Das kann zu unerwartetem <code>undefined</code> führen.</p>
+          </div>
+          <div class="ic-after">
+            <div class="ic-label-after">Best Practice</div>
+            <p class="ic-text-after">Vermeide <code>var</code> in modernem JS. Nutze <code>let</code> für veränderliche und <code>const</code> für unveränderliche Werte.</p>
+          </div>
+        </div>
+        <button class="lm-after">↑ Weniger anzeigen</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<hr>
+
+<!-- ─── 3. CODEBLOCK ─── -->
+<div class="section-label">03 — Code Block</div>
+<div class="cols">
+
+  <div>
+    <div class="col-label"><span class="tag tag-before">Vorher</span> plain border, kein Header</div>
+    <div class="card">
+      <div class="accent"></div>
+      <div class="hd">
+        <div class="icon-box">📦</div>
+        <div>
+          <div class="pill">INFO 01</div>
+          <h3>var — der alte Weg</h3>
+        </div>
+      </div>
+      <div class="bd">
+        <p class="desc-before"><code class="before">var</code> ist function-scoped — nicht block-scoped.</p>
+        <div class="cb-before">
+          <pre>var x = 1
+if (true) {
+  var x = 2   // gleiche Variable!
+}
+console.log(x)   // 2</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="col-label"><span class="tag tag-after">Nachher</span> farbiger Top-Border, Header-Bar, Copy-Button, Syntax-Highlighting</div>
+    <div class="card">
+      <div class="accent"></div>
+      <div class="hd">
+        <div class="icon-box">📦</div>
+        <div>
+          <div class="pill">INFO 01</div>
+          <h3>var — der alte Weg</h3>
+        </div>
+      </div>
+      <div class="bd">
+        <p class="desc-after"><code class="after">var</code> ist function-scoped — nicht block-scoped.</p>
+        <div class="cb-after">
+          <div class="cb-header">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="cb-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+              <span class="cb-lang">javascript</span>
+            </div>
+            <button class="copy-btn" onclick="
+              navigator.clipboard.writeText('var x = 1\nif (true) {\n  var x = 2\n}\nconsole.log(x)');
+              this.classList.add('copied');
+              this.textContent = '✓ Kopiert';
+              setTimeout(() => { this.classList.remove('copied'); this.textContent = '⎘ Kopieren'; }, 1800);
+            ">⎘ Kopieren</button>
+          </div>
+          <pre><span class="kw">var</span> x = <span class="num">1</span>
+<span class="kw">if</span> (<span class="kw">true</span>) {
+  <span class="kw">var</span> x = <span class="num">2</span>   <span class="cm">// gleiche Variable!</span>
+}
+<span class="fn">console</span>.<span class="fn">log</span>(x)   <span class="cm">// 2</span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<hr>
+
+<!-- ─── 4. ALLES ZUSAMMEN ─── -->
+<div class="section-label">04 — Vollständiges Upgrade (alle drei Bereiche kombiniert)</div>
+<div style="max-width: 560px;">
+  <div class="card">
+    <div class="accent"></div>
+    <div class="hd">
+      <div class="icon-box">📦</div>
+      <div>
+        <div class="pill">INFO 01</div>
+        <h3>var — der alte Weg</h3>
+      </div>
+    </div>
+    <div class="bd">
+      <!-- Upgraded description -->
+      <p class="desc-after">
+        <code class="after">var</code> ist <b>function-scoped</b> — nicht block-scoped. Eine Variable, die in einem <code class="after">if</code>-Block deklariert wird, ist auch außerhalb sichtbar. Zusätzlich wird <code class="after">var</code> an den Anfang seiner Funktion <b>gehoisted</b>.
+      </p>
+
+      <!-- Upgraded insight cards -->
+      <div class="insights-after">
+        <div class="ic-after">
+          <div class="ic-label-after">Hoisting</div>
+          <p class="ic-text-after">JavaScript verschiebt <code>var</code>-Deklarationen an den Funktionsanfang — der Wert bleibt an Ort und Stelle. Das führt zu unerwartetem <code>undefined</code> bei frühem Zugriff.</p>
+        </div>
+        <div class="ic-after">
+          <div class="ic-label-after">Best Practice</div>
+          <p class="ic-text-after">Modernes JS: nutze <code>let</code> für veränderliche, <code>const</code> für unveränderliche Werte. <code>var</code> nur in Legacy-Projekten.</p>
+        </div>
+      </div>
+      <button class="lm-after">↑ Weniger anzeigen</button>
+
+      <!-- Upgraded code block -->
+      <div class="cb-after">
+        <div class="cb-header">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div class="cb-dots"><span class="d1"></span><span class="d2"></span><span class="d3"></span></div>
+            <span class="cb-lang">javascript</span>
+          </div>
+          <button class="copy-btn" onclick="
+            navigator.clipboard.writeText('var x = 1\nif (true) {\n  var x = 2\n}\nconsole.log(x)');
+            this.classList.add('copied');
+            this.textContent = '✓ Kopiert';
+            setTimeout(() => { this.classList.remove('copied'); this.textContent = '⎘ Kopieren'; }, 1800);
+          ">⎘ Kopieren</button>
+        </div>
+        <pre><span class="kw">var</span> x = <span class="num">1</span>
+<span class="kw">if</span> (<span class="kw">true</span>) {
+  <span class="kw">var</span> x = <span class="num">2</span>   <span class="cm">// gleiche Variable!</span>
+}
+<span class="fn">console</span>.<span class="fn">log</span>(x)   <span class="cm">// 2</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
