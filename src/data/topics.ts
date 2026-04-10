@@ -9012,7 +9012,7 @@ for (let i = 0; i < 5; i++) {
     category: 'typescript',
     color: '#a78bfa',
     estimatedMinutes: 8,
-    animationComponent: undefined,
+    animationComponent: 'TsArraysViz',
     bannerComponent: undefined,
     playgroundType: 'monaco' as const,
     sections: [
@@ -9137,7 +9137,7 @@ for (let i = 0; i < 5; i++) {
     category: 'typescript-oop',
     color: '#a78bfa',
     estimatedMinutes: 12,
-    animationComponent: undefined,
+    animationComponent: 'ClassesViz',
     bannerComponent: undefined,
     playgroundType: 'monaco' as const,
     sections: [
@@ -9272,7 +9272,7 @@ for (let i = 0; i < 5; i++) {
     category: 'typescript-oop',
     color: '#a78bfa',
     estimatedMinutes: 8,
-    animationComponent: undefined,
+    animationComponent: 'EnumsViz',
     bannerComponent: undefined,
     playgroundType: 'monaco' as const,
     sections: [
@@ -9395,7 +9395,7 @@ for (let i = 0; i < 5; i++) {
     category: 'typescript-oop',
     color: '#a78bfa',
     estimatedMinutes: 6,
-    animationComponent: undefined,
+    animationComponent: 'TypeAssertionViz',
     bannerComponent: undefined,
     playgroundType: 'monaco' as const,
     sections: [
@@ -9509,7 +9509,7 @@ for (let i = 0; i < 5; i++) {
     category: 'typescript-advanced',
     color: '#a78bfa',
     estimatedMinutes: 14,
-    animationComponent: undefined,
+    animationComponent: 'TsReactViz',
     bannerComponent: undefined,
     playgroundType: 'monaco' as const,
     sections: [
@@ -9656,7 +9656,7 @@ for (let i = 0; i < 5; i++) {
     category: 'typescript-advanced',
     color: '#c4b5fd',
     estimatedMinutes: 10,
-    animationComponent: undefined,
+    animationComponent: 'ZodViz',
     bannerComponent: undefined,
     playgroundType: 'monaco' as const,
     sections: [
