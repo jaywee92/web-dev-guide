@@ -60,6 +60,7 @@ const lazyRegistry: Record<string, () => Promise<{ default: AnimComp }>> = {
   GitCollabSetupViz: () => import('./git/GitCollabSetupViz'),
   GitConflictViz:    () => import('./git/GitConflictViz'),
   GitUndoViz:      () => import('./git/GitUndoViz'),
+  NextjsBasicsViz: () => import('./nextjs/NextjsBasicsViz'),
 }
 
 // Synchronous cache
