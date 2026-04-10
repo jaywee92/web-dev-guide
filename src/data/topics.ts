@@ -11069,6 +11069,40 @@ function validate(data: unknown) {
         'Forgetting to add a remote — a local git repo has no connection to GitHub until you git remote add origin <url>',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Pushing directly to main on a shared repository',
+        why: 'Committing and pushing to main without a PR skips code review and can introduce bugs directly into production. Other team members who pull will immediately get the broken code.',
+        fixLabel: 'Fix — always push to a feature branch and open a PR',
+        fixCode: '# ❌ Wrong — pushing directly to main\ngit checkout main\ngit add . && git commit -m "add payment form"\ngit push origin main\n\n# ✅ Right — feature branch + PR\ngit checkout main && git pull origin main\ngit checkout -b feature/payment-form\ngit add . && git commit -m "feat: add Stripe payment form"\ngit push origin feature/payment-form\ngh pr create --title "Add payment form" --base main',
+      },
+      {
+        title: 'Mixing up git pull and git fetch — merging when you only wanted to download',
+        why: 'git pull immediately fetches AND merges the remote branch into your current branch. If you are mid-feature, this creates an unexpected merge commit and may introduce conflicts you were not ready to handle.',
+        fixLabel: 'Fix — use git fetch to inspect before merging',
+        fixCode: '# ❌ Wrong — git pull merges immediately without review\ngit pull origin main\n# This merges origin/main into your current branch right now\n\n# ✅ Right — fetch first, then decide how to integrate\ngit fetch origin\n# Inspect what changed:\ngit log HEAD..origin/main --oneline\n# Rebase your feature branch cleanly:\ngit rebase origin/main',
+      },
+      {
+        title: 'Cloning with HTTPS and hitting credential prompts on every push',
+        why: 'HTTPS authentication requires a personal access token on every push when no credential helper is configured. This causes repeated prompts or lockouts, slowing down the development flow.',
+        fixLabel: 'Fix — use SSH clone URLs for password-free authentication',
+        fixCode: '# ❌ Wrong — HTTPS clone may prompt for credentials on every push\ngit clone https://github.com/team/repo.git\n\n# ✅ Right — SSH clone (no prompts after key setup)\n# First, generate a key and add the public key to GitHub Settings > SSH keys\nssh-keygen -t ed25519 -C "you@example.com"\n# Copy ~/.ssh/id_ed25519.pub to GitHub\n\n# Then clone with SSH:\ngit clone git@github.com:team/repo.git\n# Verify the connection:\nssh -T git@github.com',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Open source contribution',
+        heading: 'Fork, clone, and contribute to an open-source project',
+        description: 'Fork the repo to your account, clone your fork, add the original as upstream, and submit a PR from your fork. This is the standard open-source contribution flow.',
+        code: '# 1. Fork on GitHub (click the Fork button)\n# 2. Clone your fork\ngit clone git@github.com:YOU/project.git\ncd project\n\n# 3. Add the original as upstream remote\ngit remote add upstream git@github.com:original-owner/project.git\ngit remote -v\n\n# 4. Keep your fork in sync with upstream\ngit fetch upstream\ngit rebase upstream/main\n\n# 5. Create branch, commit, push to your fork\ngit checkout -b fix/typo-in-readme\ngit commit -m "fix: correct typo in README"\ngit push origin fix/typo-in-readme\n\n# 6. Open PR on GitHub from your fork to the original repo',
+      },
+      {
+        context: 'CI/CD integration',
+        heading: 'Blocking PRs until GitHub Actions checks pass',
+        description: 'Use branch protection rules requiring status checks to pass before merging. This ensures no broken code ever lands on main without a green CI run.',
+        code: '# .github/workflows/ci.yml\n# on:\n#   pull_request:\n#     branches: [main]\n# jobs:\n#   test:\n#     runs-on: ubuntu-latest\n#     steps:\n#       - uses: actions/checkout@v4\n#       - uses: actions/setup-node@v4\n#         with: { node-version: 20 }\n#       - run: npm ci\n#       - run: npm test\n\n# On GitHub:\n# Settings > Branches > Add branch protection rule for main\n# ✅ Require status checks to pass before merging\n# ✅ Require pull request reviews (1 approver)',
+      },
+    ],
   },
   // ─── Git Collaboration ────────────────────────────────────────────────────
   {
@@ -11141,6 +11175,40 @@ function validate(data: unknown) {
         'Forgetting to pull before branching — always git pull origin main first, otherwise your branch starts from stale code',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Every developer pushing directly to main without branch protection',
+        why: 'Without branch protection, any developer can bypass code review with a direct push. A single mistaken push to main breaks the build for the entire team immediately.',
+        fixLabel: 'Fix — enable branch protection on main before the first team commit',
+        fixCode: '# ❌ Wrong — no protection, anyone can push to main\ngit checkout main\ngit push origin main  # breaks CI for everyone\n\n# ✅ Right — enforce protection rules on GitHub:\n# Settings > Branches > Add rule > Branch name: main\n# ✅ Require a pull request before merging\n# ✅ Require approvals: 1\n# ✅ Require status checks to pass\n# Now direct pushes to main are rejected by GitHub',
+      },
+      {
+        title: 'Keeping feature branches open for days or weeks',
+        why: 'Long-lived branches diverge from main with every commit that lands. The longer a branch lives, the larger the merge conflict explosion when it finally tries to rejoin main.',
+        fixLabel: 'Fix — open small, focused PRs that can be merged within a day',
+        fixCode: '# ❌ Wrong — one massive branch open for 2 weeks\ngit checkout -b feature/entire-checkout-redesign\n# 3 weeks of commits... 40 files changed\n# Merge is a conflict nightmare\n\n# ✅ Right — break work into shippable slices\ngit checkout -b feat/checkout-address-form\n# ... focus on one piece ...\ngit push && gh pr create  # merge in 1-2 days\n\ngit checkout -b feat/checkout-payment-step\n# ... next slice ...\ngit push && gh pr create',
+      },
+      {
+        title: 'Not setting up SSH keys — team members pull but cannot push',
+        why: 'Developers who clone with HTTPS without a credential helper are blocked every time they push, requiring manual token entry or getting authentication errors that look like permission denials.',
+        fixLabel: 'Fix — set up SSH keys once during onboarding',
+        fixCode: '# ❌ Wrong — no SSH setup, HTTPS clone causes auth friction\ngit clone https://github.com/team/project.git\ngit push origin feature/login\n# Username for github.com: ???\n# Password: personal access token (not your password)\n\n# ✅ Right — SSH setup during onboarding (done once)\nssh-keygen -t ed25519 -C "dev@company.com"\ncat ~/.ssh/id_ed25519.pub  # add to GitHub Settings > SSH keys\n\n# Use SSH clone URL for all team repos:\ngit clone git@github.com:team/project.git\ngit push origin feature/login  # no prompts',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Team onboarding',
+        heading: 'Setting up a new developer on a shared project',
+        description: 'Walk new developers through SSH setup, cloning the repo, and understanding the branch workflow so they can contribute without friction from day one.',
+        code: '# Step 1 — SSH setup (once per machine)\nssh-keygen -t ed25519 -C "dev@company.com"\n# Paste ~/.ssh/id_ed25519.pub into GitHub > Settings > SSH keys\nssh -T git@github.com  # verify: "Hi username! You\'ve successfully authenticated"\n\n# Step 2 — Clone and configure\ngit clone git@github.com:team/project.git\ncd project\ngit config user.name "Dev Name"\ngit config user.email "dev@company.com"\n\n# Step 3 — Start first task\ngit pull origin main\ngit checkout -b feat/first-task\n# ... implement ...\ngit push -u origin feat/first-task\ngh pr create --title "feat: implement first task" --base main',
+      },
+      {
+        context: 'Daily standup cycle',
+        heading: 'The pull-branch-PR loop every developer follows each day',
+        description: 'Every morning: pull latest main, create a branch for the day\'s task, commit throughout the day, push and open a PR at end of day.',
+        code: '# Morning: sync up\ngit checkout main\ngit pull origin main\n\n# Start the day\'s task\ngit checkout -b feat/user-profile-page\n\n# Work and commit often\ngit add src/pages/Profile.tsx\ngit commit -m "feat: add profile page skeleton"\ngit add src/api/users.ts\ngit commit -m "feat: fetch user data on profile load"\n\n# End of day: push and open PR for review\ngit push -u origin feat/user-profile-page\ngh pr create --title "feat: user profile page" --body "Closes #42"',
+      },
+    ],
   },
   {
     id: 'git-merge-conflicts',
@@ -11210,6 +11278,40 @@ function validate(data: unknown) {
         'Panicking and git merge --abort unnecessarily — conflicts look scary but are just a text edit; take it step by step',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Leaving conflict markers in the file and committing',
+        why: 'The <<<<<, =====, and >>>>> lines are not valid code. Committing a file with markers still inside will break the build or cause a runtime error, and the mistake reaches main undetected if there are no CI checks.',
+        fixLabel: 'Fix — always verify markers are fully removed before staging',
+        fixCode: '# ❌ Wrong — committing with markers still present\ngit add style.css\ngit commit -m "resolve conflict"\n# style.css still contains <<<<<<< HEAD ... >>>>>>> feature\n\n# ✅ Right — search for remaining markers first\ngrep -r "<<<<<<" src/\ngrep -r "=======" src/\ngrep -r ">>>>>>>" src/\n# Only when grep finds nothing:\ngit add style.css\ngit commit\n# VS Code also highlights markers in red — check visually',
+      },
+      {
+        title: 'Running git commit before staging all resolved conflict files',
+        why: 'Git tracks each conflicted file individually. Committing before staging every resolved file leaves the merge in progress. Git will refuse to complete the merge commit until all conflicts are marked resolved.',
+        fixLabel: 'Fix — use git status to confirm all conflicts are staged before committing',
+        fixCode: '# ❌ Wrong — forgetting to stage one of the conflicted files\ngit add src/components/Header.tsx  # staged\n# forgot: src/styles/header.css is still "both modified"\ngit commit  # Git says: error, unresolved conflicts\n\n# ✅ Right — check status before committing\ngit status\n# "both modified" entries are still unresolved\n# Fix and stage each one:\ngit add src/styles/header.css\n# Now status shows: "All conflicts fixed but you are still merging"\ngit commit  # creates the merge commit',
+      },
+      {
+        title: 'Resolving the wrong side — keeping "theirs" when you should keep "ours"',
+        why: 'In a high-pressure conflict resolution, developers sometimes accept the incoming change without understanding what the other developer intended. The result is silently deleted logic that compiles fine but behaves incorrectly.',
+        fixLabel: 'Fix — understand both sides before choosing; use a three-way diff tool',
+        fixCode: '# ❌ Wrong — blindly accepting one side without reading both\n# VS Code: click "Accept Incoming" without reading current\n  color: blue;  # your team\'s brand colour — accidentally discarded\n\n# ✅ Right — read both versions carefully\n# <<<<<<< HEAD (your branch):\n  color: #1a73e8;  # brand blue from design system\n# =======\n  color: red;  # colleague was testing a different colour\n# >>>>>>> feature/alert-styles\n# Correct resolution: keep brand blue\n  color: #1a73e8;\n\n# Use git log to understand each side\'s intent:\ngit log --oneline HEAD...feature/alert-styles',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Team workflow',
+        heading: 'Resolving a conflict during a PR merge',
+        description: 'Two developers both edited the same component. Walk through the full resolution process: identify, edit, stage, and complete the merge.',
+        code: '# PR is blocked: "This branch has conflicts that must be resolved"\n# Resolve locally:\ngit checkout main && git pull origin main\ngit checkout feature/checkout\ngit merge main\n\n# Git pauses: CONFLICT (content): Merge conflict in src/Cart.tsx\ngit status\n# both modified: src/Cart.tsx\n\n# Open in VS Code — use the merge editor\n# Choose Accept Current / Accept Incoming / Edit manually\n# Remove ALL conflict markers\n\n# Verify no markers remain\ngrep -r "<<<<<<" src/\n\n# Stage and complete\ngit add src/Cart.tsx\ngit commit\ngit push origin feature/checkout\n# PR is now mergeable',
+      },
+      {
+        context: 'Rebase workflow',
+        heading: 'Rebasing a feature branch and resolving conflicts commit by commit',
+        description: 'When rebasing onto main, each commit is replayed individually. You may need to resolve conflicts multiple times — once per conflicting commit in the branch.',
+        code: '# Rebase feature branch onto latest main\ngit fetch origin\ngit checkout feature/user-settings\ngit rebase origin/main\n\n# Conflict on first commit:\n# CONFLICT: src/api/users.ts\n# Fix the conflict in your editor, then:\ngit add src/api/users.ts\ngit rebase --continue\n\n# Conflict on second commit (same file, different hunk):\n# Fix again, then:\ngit add src/api/users.ts\ngit rebase --continue\n\n# Rebase complete — push with force-with-lease\ngit push --force-with-lease origin feature/user-settings',
+      },
+    ],
   },
   {
     id: 'git-undo-stash',
@@ -11823,6 +11925,40 @@ function validate(data: unknown) {
         'Testing implementation details — test behaviour (inputs → outputs), not internals (private variables, hooks logic)',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Forgetting await on async assertions',
+        why: 'Without await, the Promise resolves after the test has already exited. The assertion never runs, so the test passes even when the async operation would have failed.',
+        fixLabel: 'Fix — always await resolves/rejects assertions',
+        fixCode: '// ❌ Wrong — test exits before the promise settles\ntest(\'fetches user\', () => {\n  expect(fetchUser(1)).resolves.toHaveProperty(\'name\')  // never checked!\n})\n\n// ✅ Right — await ensures the assertion runs\ntest(\'fetches user\', async () => {\n  await expect(fetchUser(1)).resolves.toHaveProperty(\'name\')\n})',
+      },
+      {
+        title: 'Using toBe for object or array equality',
+        why: 'toBe uses Object.is which checks reference identity, not value equality. Two objects with identical properties are still different references and toBe will fail.',
+        fixLabel: 'Fix — use toEqual for deep value comparison',
+        fixCode: '// ❌ Wrong — different object references, always fails\nexpect(getUser()).toBe({ id: 1, name: \'Ada\' })  // fails even if values match\n\n// ✅ Right — toEqual does recursive deep comparison\nexpect(getUser()).toEqual({ id: 1, name: \'Ada\' })',
+      },
+      {
+        title: 'Not resetting state between tests — shared mutable state bleeds across tests',
+        why: 'Module-level variables or singleton caches persist between test runs. A test that passes in isolation can corrupt state seen by later tests, causing unpredictable failures.',
+        fixLabel: 'Fix — create fresh state in beforeEach',
+        fixCode: '// ❌ Wrong — cart persists between tests\nconst cart = new Cart()\n\ntest(\'adds item\', () => { cart.add(\'apple\'); expect(cart.count()).toBe(1) })\ntest(\'starts empty\', () => { expect(cart.count()).toBe(0) })  // fails — count is still 1!\n\n// ✅ Right — fresh instance per test\nlet cart: Cart\nbeforeEach(() => { cart = new Cart() })\n\ntest(\'adds item\', () => { cart.add(\'apple\'); expect(cart.count()).toBe(1) })\ntest(\'starts empty\', () => { expect(cart.count()).toBe(0) })  // passes',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Vitest',
+        heading: 'Testing a pure utility with edge cases',
+        description: 'Group related cases under describe and cover the happy path, edge cases, and error throws separately.',
+        code: 'import { describe, test, expect } from \'vitest\'\nimport { formatCurrency } from \'./formatCurrency\'\n\ndescribe(\'formatCurrency\', () => {\n  test(\'formats a positive amount with symbol\', () => {\n    expect(formatCurrency(1234.5, \'EUR\')).toBe(\'€1,234.50\')\n  })\n\n  test(\'formats zero correctly\', () => {\n    expect(formatCurrency(0, \'USD\')).toBe(\'$0.00\')\n  })\n\n  test(\'throws on negative input\', () => {\n    expect(() => formatCurrency(-10, \'USD\')).toThrow(\'Amount must be non-negative\')\n  })\n\n  test(\'rounds to two decimal places\', () => {\n    expect(formatCurrency(9.999, \'GBP\')).toBe(\'£10.00\')\n  })\n})',
+      },
+      {
+        context: 'Vitest',
+        heading: 'TDD — write the failing test first, then make it pass',
+        description: 'Red-Green-Refactor: describe the desired behaviour as a test, write the minimum code to pass, then clean up safely with the safety net in place.',
+        code: '// Step 1 — RED: write the failing test\ntest(\'isPrime returns true for 7\', () => {\n  expect(isPrime(7)).toBe(true)  // ReferenceError: isPrime is not defined\n})\n\n// Step 2 — GREEN: minimal implementation\nexport function isPrime(n: number): boolean {\n  if (n < 2) return false\n  for (let i = 2; i <= Math.sqrt(n); i++) {\n    if (n % i === 0) return false\n  }\n  return true\n}\n\n// Step 3 — REFACTOR: extend with more edge-case tests,\n// then improve the implementation — tests stay green throughout',
+      },
+    ],
   },
   {
     id: 'testing-react',
@@ -11908,6 +12044,40 @@ function validate(data: unknown) {
         'Rendering without providers — if a component uses Context or Router, wrap it in the same providers as your real app',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Using getBy* for async elements that haven\'t rendered yet',
+        why: 'getBy* queries throw immediately if the element isn\'t in the DOM. For elements that appear after an async operation (fetch, timer), use findBy* which retries until it appears or times out.',
+        fixLabel: 'Fix — use findByText / findByRole for async content',
+        fixCode: '// ❌ Wrong — getByText throws before data loads\nrender(<UserList />)\nconst item = screen.getByText(\'Ada Lovelace\')  // throws immediately\n\n// ✅ Right — findByText waits for the element\nrender(<UserList />)\nconst item = await screen.findByText(\'Ada Lovelace\')  // waits up to 1s',
+      },
+      {
+        title: 'Using queryBy* to assert element presence',
+        why: 'queryBy* returns null instead of throwing when an element is missing — it is meant for asserting absence. Using it for presence checks silently passes when the element is not found.',
+        fixLabel: 'Fix — use getBy* for presence, queryBy* only for absence',
+        fixCode: '// ❌ Wrong — queryBy returns null; test passes even if element is missing\nconst btn = screen.queryByRole(\'button\', { name: /submit/i })\nbtn.click()  // TypeError: Cannot read properties of null\n\n// ✅ Right — getBy throws a helpful error if not found\nconst btn = screen.getByRole(\'button\', { name: /submit/i })\nawait user.click(btn)\n\n// queryBy is correct only for asserting absence:\nexpect(screen.queryByText(\'Error\')).not.toBeInTheDocument()',
+      },
+      {
+        title: 'Not calling vi.restoreAllMocks() after stubbing fetch or globals',
+        why: 'Stubs set with vi.stubGlobal or vi.fn() persist until explicitly restored. If one test leaves a mock in place, later tests pick up the stale stub and produce confusing, order-dependent failures.',
+        fixLabel: 'Fix — restore all mocks in afterEach',
+        fixCode: '// ❌ Wrong — mock bleeds into subsequent tests\nbeforeEach(() => {\n  vi.stubGlobal(\'fetch\', vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve([]) }))\n})\n// No afterEach cleanup — later tests inherit this fetch mock!\n\n// ✅ Right — always restore mocks after each test\nbeforeEach(() => {\n  vi.stubGlobal(\'fetch\', vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve([]) }))\n})\nafterEach(() => vi.restoreAllMocks())',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Vitest + RTL',
+        heading: 'Testing a form submission',
+        description: 'Use userEvent to simulate real user interactions including typing and clicking.',
+        code: 'import { render, screen } from \'@testing-library/react\'\nimport userEvent from \'@testing-library/user-event\'\nimport LoginForm from \'./LoginForm\'\n\nit(\'submits with correct credentials\', async () => {\n  const onSubmit = vi.fn()\n  render(<LoginForm onSubmit={onSubmit} />)\n\n  await userEvent.type(screen.getByLabelText(/email/i), \'user@example.com\')\n  await userEvent.type(screen.getByLabelText(/password/i), \'secret123\')\n  await userEvent.click(screen.getByRole(\'button\', { name: /login/i }))\n\n  expect(onSubmit).toHaveBeenCalledWith({\n    email: \'user@example.com\',\n    password: \'secret123\',\n  })\n})',
+      },
+      {
+        context: 'Vitest + RTL',
+        heading: 'Testing async data loading with loading and error states',
+        description: 'Stub fetch globally, render the component, assert on the loading state first, then wait for the data or error to appear.',
+        code: 'import { render, screen } from \'@testing-library/react\'\nimport { vi, beforeEach, afterEach, it, expect } from \'vitest\'\nimport PostList from \'./PostList\'\n\nbeforeEach(() => {\n  vi.stubGlobal(\'fetch\', vi.fn().mockResolvedValue({\n    ok: true,\n    json: () => Promise.resolve([{ id: 1, title: \'Hello World\' }]),\n  }))\n})\nafterEach(() => vi.restoreAllMocks())\n\nit(\'shows loading then renders posts\', async () => {\n  render(<PostList />)\n  expect(screen.getByText(/loading/i)).toBeInTheDocument()\n  await screen.findByText(\'Hello World\')\n  expect(screen.queryByText(/loading/i)).not.toBeInTheDocument()\n})\n\nit(\'shows error message on fetch failure\', async () => {\n  vi.mocked(global.fetch).mockResolvedValueOnce({ ok: false } as Response)\n  render(<PostList />)\n  await screen.findByText(/failed to load/i)\n})',
+      },
+    ],
   },
   {
     id: 'testing-ci',
@@ -11983,6 +12153,40 @@ function validate(data: unknown) {
         'Running tests without --coverage flag — without it, no report is generated and thresholds are not checked',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Coverage thresholds failing CI silently when the flag is omitted',
+        why: 'Without --coverage, Vitest runs the tests but never evaluates thresholds. Coverage can silently fall to 0% and CI will still pass because no report was generated.',
+        fixLabel: 'Fix — always include --coverage in CI commands',
+        fixCode: '# ❌ Wrong — thresholds are never checked\nnpx vitest run\n\n# ✅ Right — coverage report is generated and thresholds enforced\nnpx vitest run --coverage\n\n# Also ensure @vitest/coverage-v8 is installed:\nnpm install -D @vitest/coverage-v8',
+      },
+      {
+        title: 'Using npm install instead of npm ci in CI pipelines',
+        why: 'npm install may update package-lock.json, introducing non-deterministic dependency versions. npm ci always installs from the lockfile, giving reproducible builds.',
+        fixLabel: 'Fix — replace npm install with npm ci in workflow steps',
+        fixCode: '# ❌ Wrong — may silently install different versions\n- run: npm install\n\n# ✅ Right — installs exactly what is in the lockfile\n- run: npm ci\n\n# Also: make sure package-lock.json is committed to the repo,\n# otherwise npm ci will fail with a lockfile error.',
+      },
+      {
+        title: 'Not caching node_modules — reinstalling all dependencies on every CI run',
+        why: 'Without caching, the install step downloads and unpacks every package from scratch on each run, adding 1–3 minutes to every pipeline. This slows feedback and wastes CI minutes.',
+        fixLabel: 'Fix — add cache: npm to the setup-node step',
+        fixCode: '# ❌ Wrong — no caching, full reinstall every run\n- uses: actions/setup-node@v4\n  with:\n    node-version: 22\n\n# ✅ Right — caches node_modules keyed on package-lock.json\n- uses: actions/setup-node@v4\n  with:\n    node-version: 22\n    cache: npm  # ← this one line cuts install time by ~80%',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'GitHub Actions',
+        heading: 'Complete CI pipeline — type-check, test, build',
+        description: 'A minimal but complete GitHub Actions workflow that runs on every push and PR to main, with dependency caching and coverage reporting.',
+        code: '# .github/workflows/ci.yml\nname: CI\n\non:\n  push:\n    branches: [main]\n  pull_request:\n    branches: [main]\n\njobs:\n  ci:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: 22\n          cache: npm\n      - run: npm ci\n      - run: npx tsc --noEmit\n      - run: npx vitest run --coverage\n      - run: npm run build',
+      },
+      {
+        context: 'Vitest',
+        heading: 'Enforcing coverage thresholds to block merges on regressions',
+        description: 'Configure minimum coverage thresholds in vite.config.ts so CI fails automatically if coverage drops below the agreed floor.',
+        code: '// vite.config.ts\nimport { defineConfig } from \'vite\'\n\nexport default defineConfig({\n  test: {\n    coverage: {\n      provider: \'v8\',\n      reporter: [\'text\', \'html\', \'lcov\'],\n      thresholds: {\n        lines:      80,\n        functions:  80,\n        branches:   70,\n        statements: 80,\n      },\n      // Only measure coverage on your source files, not test files\n      include: [\'src/**/*.{ts,tsx}\'],\n      exclude: [\'src/**/*.test.{ts,tsx}\', \'src/**/*.spec.{ts,tsx}\'],\n    },\n  },\n})\n\n// CI command — fails if any threshold is breached:\n// npx vitest run --coverage',
+      },
+    ],
   },
 ]
 
