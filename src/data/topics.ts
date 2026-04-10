@@ -4549,6 +4549,7 @@ scheduleUpdate(() => updateCounter(2))
     estimatedMinutes: 8,
     animationComponent: 'VariablesViz',
     bannerComponent: 'VariablesBanner',
+    analogyComponent: 'VariablesAnalogyViz',
     playgroundType: 'monaco',
     sections: [
       { id: 'intro', type: 'intro', steps: [] },
@@ -8507,7 +8508,7 @@ for (let i = 0; i < 5; i++) {
     color: '#f472b6',
     estimatedMinutes: 10,
     animationComponent: 'ReactIntroViz',
-    bannerComponent: undefined,
+    bannerComponent: 'ReactIntroBanner',
     playgroundType: 'none' as const,
     sections: [
       { id: 'intro', type: 'intro' as const, steps: [] },
