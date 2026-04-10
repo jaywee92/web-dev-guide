@@ -9562,6 +9562,40 @@ function validate(data: unknown) {
         'Using one giant context for unrelated state — split into focused contexts (CartContext, AuthContext, ThemeContext) so unrelated updates don\'t trigger unnecessary re-renders',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Passing an object literal directly as the context value',
+        why: 'An inline object literal creates a new reference on every render of the Provider parent. All context consumers re-render even when the data has not changed, because reference equality fails every time.',
+        fixLabel: 'Fix — memoize the context value with useMemo so the reference is stable',
+        fixCode: '// ❌ Wrong — new object reference on every render\n<UserContext.Provider value={{ user, logout }}>\n  {children}\n</UserContext.Provider>\n\n// ✅ Right — memoized, only changes when user or logout changes\nconst value = useMemo(() => ({ user, logout }), [user, logout])\n<UserContext.Provider value={value}>\n  {children}\n</UserContext.Provider>',
+      },
+      {
+        title: 'Calling useContext outside its Provider',
+        why: 'When a component calls useContext but has no Provider ancestor, it receives the default value passed to createContext — often null — causing silent runtime errors.',
+        fixLabel: 'Fix — throw a clear error in the custom hook if the context is null',
+        fixCode: '// ❌ Wrong — no guard, returns null silently\nexport function useCart() {\n  return useContext(CartContext) // could be null!\n}\n\n// ✅ Right — custom hook throws a clear error\nexport function useCart() {\n  const ctx = useContext(CartContext)\n  if (!ctx) throw new Error(\'useCart must be used inside <CartProvider>\')\n  return ctx\n}',
+      },
+      {
+        title: 'Putting high-frequency state (scroll, mouse position) in context',
+        why: 'Every context value change re-renders all consumers. High-frequency updates such as mouse coordinates or scroll position trigger dozens of re-renders per second across the entire consumer subtree.',
+        fixLabel: 'Fix — use a ref or a dedicated state library (Zustand, Jotai) for high-frequency values',
+        fixCode: '// ❌ Wrong — every mousemove re-renders all context consumers\nconst MouseContext = createContext({ x: 0, y: 0 })\nfunction Tracker() {\n  const [pos, setPos] = useState({ x: 0, y: 0 })\n  return (\n    <MouseContext.Provider value={pos}>\n      <div onMouseMove={e => setPos({ x: e.clientX, y: e.clientY })}>\n        {children}\n      </div>\n    </MouseContext.Provider>\n  )\n}\n\n// ✅ Right — use a ref for high-frequency values\nconst posRef = useRef({ x: 0, y: 0 })\nonMouseMove={e => { posRef.current = { x: e.clientX, y: e.clientY } }}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Authentication context with a custom hook',
+        description: 'An AuthProvider manages the current user and exposes login/logout via a useAuth hook. The custom hook throws a clear error if called outside the provider.',
+        code: 'interface AuthContextType {\n  user: User | null\n  login: (email: string, password: string) => Promise<void>\n  logout: () => void\n}\n\nconst AuthContext = createContext<AuthContextType | null>(null)\n\nexport function AuthProvider({ children }: { children: React.ReactNode }) {\n  const [user, setUser] = useState<User | null>(null)\n  const login  = async (email: string, password: string) => setUser(await api.login(email, password))\n  const logout = () => setUser(null)\n  const value  = useMemo(() => ({ user, login, logout }), [user])\n  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>\n}\n\nexport function useAuth(): AuthContextType {\n  const ctx = useContext(AuthContext)\n  if (!ctx) throw new Error(\'useAuth must be inside <AuthProvider>\')\n  return ctx\n}',
+      },
+      {
+        context: 'React',
+        heading: 'Shopping cart with useReducer + context',
+        description: 'A CartProvider combines useReducer for state management with context for distribution. Any component in the tree can add items or clear the cart without prop drilling.',
+        code: 'type CartAction =\n  | { type: \'ADD_ITEM\'; payload: CartItem }\n  | { type: \'REMOVE_ITEM\'; payload: number }\n  | { type: \'CLEAR\' }\n\nfunction cartReducer(state: CartItem[], action: CartAction): CartItem[] {\n  switch (action.type) {\n    case \'ADD_ITEM\':\n      return [...state, action.payload]\n    case \'REMOVE_ITEM\':\n      return state.filter(i => i.id !== action.payload)\n    case \'CLEAR\':\n      return []\n    default:\n      return state\n  }\n}\n\nexport function CartProvider({ children }: { children: React.ReactNode }) {\n  const [items, dispatch] = useReducer(cartReducer, [])\n  const value = useMemo(() => ({ items, dispatch }), [items])\n  return <CartContext.Provider value={value}>{children}</CartContext.Provider>\n}',
+      },
+    ],
     playgroundExamples: [
       {
         label: 'createContext & useContext',
@@ -9682,6 +9716,40 @@ function validate(data: unknown) {
         'Forgetting that after an action runs, loaders automatically revalidate — do not manually refetch',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Using a native <form> instead of React Router\'s <Form>',
+        why: 'A native HTML form performs a full browser navigation and reloads the page. React Router\'s <Form> intercepts the submit, calls the matching action function, and keeps the app in client-side routing mode.',
+        fixLabel: 'Fix — import Form from react-router and use it for mutations',
+        fixCode: '// ❌ Wrong — native form causes full page reload\n<form method="post">\n  <input name="title" />\n  <button type="submit">Add</button>\n</form>\n\n// ✅ Right — React Router Form calls the clientAction\nimport { Form } from "react-router"\n<Form method="post">\n  <input name="title" />\n  <button type="submit">Add</button>\n</Form>',
+      },
+      {
+        title: 'Accessing server-only resources inside clientLoader',
+        why: 'clientLoader runs in the browser. Any server-only module you import (database driver, file system, secret environment variables) will be bundled into the client JavaScript and exposed to users.',
+        fixLabel: 'Fix — use loader (not clientLoader) for server-side data access',
+        fixCode: '// ❌ Wrong — database driver ends up in the client bundle\nexport async function clientLoader({ params }) {\n  return await db.users.findById(params.id) // ships to browser!\n}\n\n// ✅ Right — loader runs only on the server\nexport async function loader({ params }) {\n  return await db.users.findById(params.id) // safe — server only\n}',
+      },
+      {
+        title: 'Awaiting all promises in a loader instead of deferring slow ones',
+        why: 'Awaiting all promises blocks the entire page render until every request completes. Returning un-awaited promises with defer() lets critical data render immediately while slower data streams in progressively.',
+        fixLabel: 'Fix — defer slow non-critical data and wrap consumers in <Suspense>',
+        fixCode: '// ❌ Wrong — page blocked until both requests resolve\nexport async function loader({ params }) {\n  const user = await fetchUser(params.id) // 100ms\n  const recs = await fetchRecs(params.id) // 800ms — blocks!\n  return { user, recs }\n}\n\n// ✅ Right — defer slow data, render critical data immediately\nimport { defer } from "react-router"\nexport async function loader({ params }) {\n  const user = await fetchUser(params.id) // await critical data\n  const recs = fetchRecs(params.id)       // do NOT await\n  return defer({ user, recs })\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React Router v7',
+        heading: 'Route module with clientLoader and error boundary',
+        description: 'A complete route module that fetches data in the browser, shows a skeleton on first visit, and catches load errors with a co-located ErrorBoundary.',
+        code: '// app/routes/post.$id.tsx\nexport async function clientLoader({ params }: { params: { id: string } }) {\n  const res = await fetch(`/api/posts/${params.id}`)\n  if (!res.ok) throw new Error(`Post ${params.id} not found`)\n  return res.json()\n}\n\nexport function HydrateFallback() {\n  return <div className="animate-pulse h-20 bg-gray-100 rounded" />\n}\n\nexport default function PostPage({ loaderData }: { loaderData: Post }) {\n  return (\n    <article>\n      <h1>{loaderData.title}</h1>\n      <p>{loaderData.body}</p>\n    </article>\n  )\n}\n\nexport function ErrorBoundary() {\n  return <p className="text-red-600">Could not load this post.</p>\n}',
+      },
+      {
+        context: 'React Router v7',
+        heading: 'Form action with validation and redirect',
+        description: 'A todo route that handles creation via a clientAction. Invalid input returns an error object the component displays inline. On success the action redirects to the list.',
+        code: 'import { Form, redirect } from "react-router"\n\nexport async function clientAction({ request }: { request: Request }) {\n  const data  = await request.formData()\n  const title = String(data.get("title") ?? "").trim()\n  if (!title) return { error: "Title is required" }\n  await fetch("/api/todos", {\n    method: "POST",\n    body: JSON.stringify({ title }),\n    headers: { "Content-Type": "application/json" },\n  })\n  return redirect("/todos")\n}\n\nexport default function NewTodo({ actionData }: { actionData?: { error?: string } }) {\n  return (\n    <Form method="post">\n      <input name="title" placeholder="What needs doing?" />\n      {actionData?.error && <p className="text-red-500">{actionData.error}</p>}\n      <button type="submit">Add</button>\n    </Form>\n  )\n}',
+      },
+    ],
     playgroundExamples: [
       {
         label: 'Loader data',
@@ -11383,6 +11451,40 @@ function validate(data: unknown) {
         'Losing stashes — git stash drop removes a stash permanently; use git stash list to confirm before dropping',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Using git reset --hard on already-pushed commits',
+        why: 'git reset rewrites history — the commits disappear from your local branch. Any teammate who already pulled those commits now has diverged history. Their next git push will be rejected, and sorting out the divergence is painful.',
+        fixLabel: 'Fix — use git revert for any commit that has been pushed',
+        fixCode: '# ❌ Wrong — resetting a pushed commit\ngit reset --hard HEAD~1\ngit push origin main\n# Rejected: non-fast-forward — you\'ve rewritten history\n# Teammates who pulled are now stuck with orphaned commits\n\n# ✅ Right — revert creates a new undo commit\ngit revert abc1234\ngit push origin main\n# History stays intact; the undo is auditable in the log',
+      },
+      {
+        title: 'Running git restore . and losing uncommitted work permanently',
+        why: 'git restore . permanently discards all unstaged edits. Unlike committed history, discarded working directory changes have no safety net — they cannot be recovered once gone.',
+        fixLabel: 'Fix — stash first if unsure, or review git status before restoring',
+        fixCode: '# ❌ Wrong — discarding changes without reviewing them\ngit restore .\n# All your work is gone — no undo\n\n# ✅ Right — stash to keep them temporarily\ngit status              # see what will be discarded\ngit diff                # read the changes\ngit stash               # save them safely\ngit stash pop           # get them back when ready\n\n# Or discard only a specific file:\ngit restore src/debug-scratch.ts',
+      },
+      {
+        title: 'Forgetting stashed changes and starting duplicate work',
+        why: 'git stash silently saves changes and clears the working directory. Developers often stash, get distracted, and then rewrite the same work from scratch — only discovering the original stash weeks later.',
+        fixLabel: 'Fix — name your stashes and check git stash list regularly',
+        fixCode: '# ❌ Wrong — anonymous stash, forgotten immediately\ngit stash\n# ... days pass, you rewrite the same code ...\ngit stash list\n# stash@{0}: WIP on main: 3a8f2b1 ...\n# The work was here the whole time\n\n# ✅ Right — name your stashes so they\'re memorable\ngit stash push -m "wip: half-finished form validation"\n\n# List and apply by name:\ngit stash list\n# stash@{0}: On feature/login: wip: half-finished form validation\ngit stash pop stash@{0}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Mid-task interruption',
+        heading: 'Stashing work-in-progress to fix an urgent bug',
+        description: 'You are halfway through a feature when a P1 bug comes in. Stash your current work, fix the bug on a clean branch, then return to the feature.',
+        code: '# You\'re on feature/dashboard with half-done changes\ngit stash push -m "wip: dashboard chart component"\n\n# Clean working directory — fix the urgent bug\ngit checkout main && git pull origin main\ngit checkout -b fix/login-crash\n# ... fix ...\ngit add . && git commit -m "fix: prevent null dereference on login"\ngit push && gh pr create --title "fix: login crash"\n\n# Bug fixed — return to your feature\ngit checkout feature/dashboard\ngit stash pop\n# Your half-finished work is restored',
+      },
+      {
+        context: 'Incident response',
+        heading: 'Safely reverting a bad commit on a shared branch',
+        description: 'A commit that broke the build was pushed to main. Use git revert to add an undo commit that is safe for all teammates who have already pulled.',
+        code: '# Find the bad commit\ngit log --oneline -5\n# a3f9b12 feat: add analytics script\n# 9d1c4e8 fix: update button styles  ← broke the build\n# 2b7a1f3 chore: update dependencies\n\n# Revert it — creates a new commit undoing the change\ngit revert 9d1c4e8\n# Git opens the editor for the revert message\n# Save and close\n\n# Push normally — no force push needed\ngit push origin main\n\n# Teammates git pull and get the undo automatically\n# The bad commit stays in history (auditable) but its effect is reversed',
+      },
+    ],
   },
   {
     id: 'css-tailwind',
