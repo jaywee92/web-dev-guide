@@ -1886,6 +1886,40 @@ export const TOPICS: Topic[] = [
         '!important breaks the cascade and leads to specificity wars — it\'s a last resort, not a default',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Style not applying due to specificity',
+        why: 'A type selector like p has specificity (0,0,1). A class like .text has (0,1,0). The class always wins, even if the type rule appears later in the file.',
+        fixLabel: 'Fix — use a class selector instead of a type selector',
+        fixCode: '/* ❌ Wrong — type selector loses to class */\np { color: red; }\n.text { color: blue; } /* .text wins */\n\n/* ✅ Right — use consistent class selectors */\n.paragraph { color: red; }\n.text { color: blue; }',
+      },
+      {
+        title: 'Using !important to force overrides',
+        why: '!important overrides all specificity rules. Once used, the only way to override it is another !important, leading to specificity wars that are impossible to maintain.',
+        fixLabel: 'Fix — increase selector specificity or restructure the CSS',
+        fixCode: '/* ❌ Wrong — !important cascade war */\n.btn { color: blue !important; }\n.nav .btn { color: red !important; }\n\n/* ✅ Right — higher specificity selector */\n.nav .btn { color: red; }\n.btn { color: blue; }',
+      },
+      {
+        title: 'Forgetting the cascade: later rules win on equal specificity',
+        why: 'When two selectors have the same specificity score, the one that appears later in the stylesheet wins. This surprises developers who expect the "more specific" rule to win regardless of order.',
+        fixLabel: 'Fix — order rules intentionally, or differentiate specificity',
+        fixCode: '/* ❌ Wrong — overridden by later same-specificity rule */\n.text { color: blue; }\n.text { color: red; } /* red wins — later */\n\n/* ✅ Right — remove duplicate or make order intentional */\n.text { color: blue; }',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'className vs style prop',
+        description: 'In React, use className for CSS classes (external stylesheets or CSS Modules). Reserve the style prop for truly dynamic values computed at runtime.',
+        code: '// ❌ Avoid — inline style for static values\n<p style={{ color: \'blue\', fontWeight: \'bold\' }}>Hello</p>\n\n// ✅ Prefer — className for static styling\n<p className="text-blue font-bold">Hello</p>\n\n// ✅ OK — inline style for dynamic runtime values\n<p style={{ color: userColor }}>Hello</p>',
+      },
+      {
+        context: 'Vanilla CSS',
+        heading: 'Applying a CSS reset',
+        description: 'Add a minimal reset at the top of your stylesheet to neutralise browser defaults and make box-sizing predictable across all elements.',
+        code: '/* style.css — place at the very top */\n*, *::before, *::after {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nbody {\n  font-family: system-ui, sans-serif;\n  line-height: 1.6;\n}',
+      },
+    ],
   },
   {
     id: 'css-box-model',
@@ -1962,6 +1996,40 @@ export const TOPICS: Topic[] = [
         'Margin collapse: adjacent vertical margins merge (the larger wins) — not a bug, expected behavior',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Forgetting box-sizing: border-box',
+        why: 'By default, box-sizing is content-box, meaning padding and border are added on top of the set width. A 200px element with 20px padding becomes 240px wide, breaking layout.',
+        fixLabel: 'Fix — set box-sizing: border-box globally',
+        fixCode: '/* ❌ Wrong — element overflows its container */\n.box { width: 200px; padding: 20px; } /* actual width: 240px */\n\n/* ✅ Right — padding included in width */\n*, *::before, *::after { box-sizing: border-box; }\n.box { width: 200px; padding: 20px; } /* actual width: 200px */',
+      },
+      {
+        title: 'Using margin: auto to center vertically',
+        why: 'margin: auto only distributes available horizontal space for block elements. Vertical auto margins collapse to zero unless the element is in a flex or grid container.',
+        fixLabel: 'Fix — use flexbox to center vertically',
+        fixCode: '/* ❌ Wrong — margin: auto does not work vertically for blocks */\n.container { height: 400px; }\n.child { margin: auto; } /* only centers horizontally */\n\n/* ✅ Right — flexbox centers both axes */\n.container { height: 400px; display: flex; align-items: center; justify-content: center; }',
+      },
+      {
+        title: 'Not understanding margin collapse',
+        why: 'Adjacent vertical margins between block siblings merge into the larger of the two. A 24px bottom margin touching a 16px top margin becomes 24px, not 40px. This is intentional CSS behavior.',
+        fixLabel: 'Fix — use padding or gap instead of stacking margins',
+        fixCode: '/* ❌ Unexpected — gap between elements is 24px, not 40px */\n.first { margin-bottom: 24px; }\n.second { margin-top: 16px; }\n\n/* ✅ Right — use gap in a flex parent to avoid collapse */\n.parent { display: flex; flex-direction: column; gap: 24px; }',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Box model in CSS Modules',
+        description: 'Always add box-sizing: border-box in your global reset so component widths are predictable when you add padding in CSS Modules.',
+        code: '/* globals.css */\n*, *::before, *::after { box-sizing: border-box; }\n\n/* Card.module.css */\n.card {\n  width: 320px;\n  padding: 24px; /* does NOT add to 320px — stays 320px */\n  border: 1px solid #e5e7eb;\n  border-radius: 8px;\n}',
+      },
+      {
+        context: 'Vanilla CSS',
+        heading: 'Centering a modal with flexbox',
+        description: 'Use a flex overlay to center modal dialogs both horizontally and vertically, replacing the old margin: auto + top: 50% translate hack.',
+        code: '.overlay {\n  position: fixed;\n  inset: 0;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: rgba(0, 0, 0, 0.5);\n}\n\n.modal {\n  width: 480px;\n  max-width: 90vw;\n  padding: 32px;\n  background: white;\n  border-radius: 12px;\n}',
+      },
+    ],
   },
   {
     id: 'css-flexbox',
@@ -2041,6 +2109,40 @@ export const TOPICS: Topic[] = [
         'Using margin instead of gap — gap avoids double spacing at edges that margin causes',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Applying flex properties on the wrong element',
+        why: 'Properties like justify-content, align-items, flex-direction, and gap belong on the flex container. Properties like flex, align-self, and order belong on flex children. Mixing them up produces no visible effect.',
+        fixLabel: 'Fix — put layout props on the container, sizing props on children',
+        fixCode: '/* ❌ Wrong — justify-content on the child */\n.child { justify-content: center; } /* no effect */\n\n/* ✅ Right — justify-content on the flex container */\n.container { display: flex; justify-content: center; }\n.child { flex: 1; }',
+      },
+      {
+        title: 'Expecting align-items and justify-content to swap on column axis',
+        why: 'In flex-direction: row, justify-content controls horizontal and align-items controls vertical. In flex-direction: column, the axes swap — justify-content goes vertical and align-items goes horizontal.',
+        fixLabel: 'Fix — remember that justify is always the main axis',
+        fixCode: '/* ❌ Wrong — expecting justify-content to center horizontally in column */\n.container { display: flex; flex-direction: column; justify-content: center; }\n/* This centers vertically in column, not horizontally */\n\n/* ✅ Right — use align-items for cross-axis (horizontal in column) */\n.container { display: flex; flex-direction: column; align-items: center; }',
+      },
+      {
+        title: 'Using flex: 1 and expecting a minimum width',
+        why: 'flex: 1 expands the item to fill remaining space, but also sets flex-shrink: 1 with no minimum width. Content can shrink narrower than expected. Add min-width: 0 for text truncation to work.',
+        fixLabel: 'Fix — add min-width: 0 when text truncation is needed',
+        fixCode: '/* ❌ Wrong — long text overflows or does not truncate */\n.item { flex: 1; }\n.item span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }\n\n/* ✅ Right — min-width: 0 allows the flex item to shrink below content size */\n.item { flex: 1; min-width: 0; }\n.item span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Navbar with space-between',
+        description: 'A classic responsive navbar uses a flex container with justify-content: space-between to push logo to the left and nav links to the right.',
+        code: 'function Navbar() {\n  return (\n    <nav style={{ display: \'flex\', justifyContent: \'space-between\', alignItems: \'center\', padding: \'0 24px\', height: 64 }}>\n      <Logo />\n      <div style={{ display: \'flex\', gap: 24 }}>\n        <a href="/about">About</a>\n        <a href="/pricing">Pricing</a>\n      </div>\n    </nav>\n  )\n}',
+      },
+      {
+        context: 'Tailwind',
+        heading: 'Flex row that wraps on mobile',
+        description: 'Use flex-wrap with a gap so items form a row on desktop and wrap to a column on small screens without media queries.',
+        code: '<div class="flex flex-wrap gap-4">\n  <div class="flex-1 min-w-[200px] bg-white p-4 rounded shadow">Card 1</div>\n  <div class="flex-1 min-w-[200px] bg-white p-4 rounded shadow">Card 2</div>\n  <div class="flex-1 min-w-[200px] bg-white p-4 rounded shadow">Card 3</div>\n</div>',
+      },
+    ],
   },
   {
     id: 'css-grid',
@@ -2119,6 +2221,40 @@ export const TOPICS: Topic[] = [
         'Confusing auto-fill vs auto-fit — auto-fit collapses empty tracks, auto-fill preserves them',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Applying grid-column/row on the container instead of children',
+        why: 'grid-template-columns and grid-template-rows define the grid structure on the container. grid-column and grid-row place individual items and must be on child elements.',
+        fixLabel: 'Fix — put track definitions on the container, placement on children',
+        fixCode: '/* ❌ Wrong — grid-column on the container does nothing */\n.container { display: grid; grid-column: 1 / 3; }\n\n/* ✅ Right — grid-template on container, placement on child */\n.container { display: grid; grid-template-columns: repeat(3, 1fr); }\n.featured { grid-column: 1 / 3; }',
+      },
+      {
+        title: 'Confusing fr units with percentage',
+        why: 'fr distributes leftover space after fixed/auto tracks are placed. 1fr in a grid with a 200px sidebar takes up the remaining space, not a third of the total width. % is always relative to the container width.',
+        fixLabel: 'Fix — use fr for flexible tracks, px/rem for fixed ones',
+        fixCode: '/* ❌ Wrong — percentage shrinks sidebar as container grows */\n.layout { display: grid; grid-template-columns: 25% 75%; }\n\n/* ✅ Right — sidebar is fixed, content fills remaining space */\n.layout { display: grid; grid-template-columns: 240px 1fr; }',
+      },
+      {
+        title: 'Not using minmax for responsive column widths',
+        why: 'A fixed column width like repeat(3, 200px) overflows on small screens. Wrapping with minmax(200px, 1fr) and auto-fill allows columns to shrink gracefully.',
+        fixLabel: 'Fix — use minmax with auto-fill for intrinsically responsive grids',
+        fixCode: '/* ❌ Wrong — overflows on narrow screens */\n.grid { display: grid; grid-template-columns: repeat(3, 200px); }\n\n/* ✅ Right — wraps automatically when container is too narrow */\n.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Next.js',
+        heading: 'Responsive blog post grid',
+        description: 'Use CSS Grid with auto-fill and minmax to create a card grid that automatically adjusts column count without media queries.',
+        code: '/* PostGrid.module.css */\n.grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));\n  gap: 24px;\n}\n\n/* PostGrid.tsx */\nexport function PostGrid({ posts }) {\n  return (\n    <div className={styles.grid}>\n      {posts.map(post => <PostCard key={post.id} {...post} />)}\n    </div>\n  )\n}',
+      },
+      {
+        context: 'Tailwind',
+        heading: 'Holy Grail layout',
+        description: 'Build a header/sidebar/main/footer layout with CSS Grid. Tailwind\'s grid utilities cover this pattern cleanly.',
+        code: '<div class="grid grid-rows-[auto_1fr_auto] grid-cols-[240px_1fr] min-h-screen">\n  <header class="col-span-2 bg-gray-900 text-white p-4">Header</header>\n  <aside class="bg-gray-100 p-4">Sidebar</aside>\n  <main class="p-6">Main content</main>\n  <footer class="col-span-2 bg-gray-800 text-white p-4">Footer</footer>\n</div>',
+      },
+    ],
   },
   {
     id: 'css-selectors',
@@ -2225,6 +2361,40 @@ export const TOPICS: Topic[] = [
         '.nav a matches ALL nested links; .nav > a only direct children — easy to confuse',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Overusing ID selectors in CSS',
+        why: 'ID selectors have specificity (1,0,0) — far higher than classes (0,1,0). This makes them nearly impossible to override without adding more IDs or using !important. IDs are better used for JavaScript hooks, not styling.',
+        fixLabel: 'Fix — use classes for styling, IDs only for JS and accessibility',
+        fixCode: '/* ❌ Wrong — #header is hard to override */\n#header { background: blue; }\n.header-dark { background: navy; } /* loses to #header */\n\n/* ✅ Right — classes are easy to compose and override */\n.header { background: blue; }\n.header-dark { background: navy; } /* wins if it comes later */',
+      },
+      {
+        title: 'Confusing descendant (space) and child (>) combinators',
+        why: '.nav a matches every <a> anywhere inside .nav, including deeply nested ones. .nav > a only matches direct children. Using the wrong combinator causes unintended elements to receive styles.',
+        fixLabel: 'Fix — use > when you want only direct children',
+        fixCode: '/* ❌ Unintended — styles all <a> inside .nav, including inside .dropdown */\n.nav a { color: white; }\n\n/* ✅ Right — only direct <a> children of .nav */\n.nav > a { color: white; }\n.nav .dropdown a { color: black; }',
+      },
+      {
+        title: 'Using attribute selectors without quotes',
+        why: 'Some attribute values (like those containing spaces or special characters) break the selector when unquoted. While simple values like [type=text] work, quoting is always safer.',
+        fixLabel: 'Fix — always quote attribute values in selectors',
+        fixCode: '/* ❌ Wrong — may fail for complex attribute values */\n[data-variant=primary-large] { }\n\n/* ✅ Right — quoted value, always safe */\n[data-variant="primary-large"] { }\n[type="email"] { }',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'CSS Modules class composition',
+        description: 'CSS Modules scope class names locally. Use the composes keyword or combine module classes to apply multiple styles without specificity conflicts.',
+        code: '/* Button.module.css */\n.base {\n  padding: 8px 16px;\n  border-radius: 6px;\n  font-weight: 600;\n}\n.primary {\n  composes: base;\n  background: #3b82f6;\n  color: white;\n}\n\n/* Button.tsx */\n<button className={styles.primary}>Submit</button>',
+      },
+      {
+        context: 'Vanilla CSS',
+        heading: ':has() parent selector for form validation',
+        description: 'The modern :has() selector lets you style a parent based on its children\'s state — for example, highlighting a form group when its input is invalid.',
+        code: '/* Style the label red when sibling input is invalid */\n.field:has(input:invalid) label {\n  color: #ef4444;\n}\n\n.field:has(input:focus) {\n  outline: 2px solid #3b82f6;\n  border-radius: 6px;\n}',
+      },
+    ],
   },
   {
     id: 'css-colors-units',
@@ -2312,6 +2482,40 @@ export const TOPICS: Topic[] = [
         'Forgetting rgba for overlays — use rgba(0,0,0,0.5) not a semi-transparent gray hex.',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Using px for font sizes instead of rem',
+        why: 'px font sizes ignore the user\'s browser font-size preference. If a user sets their browser to 20px base (common for accessibility), px-based text stays at the hardcoded size. rem scales relative to the root font size.',
+        fixLabel: 'Fix — use rem for font sizes, px only for borders and shadows',
+        fixCode: '/* ❌ Wrong — ignores user font-size preferences */\nbody { font-size: 16px; }\n.text { font-size: 14px; }\n\n/* ✅ Right — scales with browser preferences */\nbody { font-size: 1rem; } /* = browser default, usually 16px */\n.text { font-size: 0.875rem; } /* = 14px at default size */',
+      },
+      {
+        title: 'Nesting em units and getting unexpected compounding',
+        why: 'em is relative to the current element\'s font-size. In nested elements, em compounds: a 0.8em element inside a 0.8em parent renders at 0.64em of the root size. rem avoids compounding by always referencing the root.',
+        fixLabel: 'Fix — use rem by default; reserve em for intentional relative sizing',
+        fixCode: '/* ❌ Wrong — compounding: 0.8 × 0.8 = 0.64rem at root */\n.parent { font-size: 0.8em; }\n.child { font-size: 0.8em; } /* 64% of root, not 80% */\n\n/* ✅ Right — rem always relative to root, no compounding */\n.parent { font-size: 0.8rem; }\n.child { font-size: 0.8rem; } /* 80% of root */',
+      },
+      {
+        title: 'Hardcoding colors as hex with no design token',
+        why: 'Repeating #3b82f6 across dozens of files makes theme changes require a global search-and-replace. CSS custom properties provide a single source of truth that can be updated in one place.',
+        fixLabel: 'Fix — define colors as CSS custom properties on :root',
+        fixCode: '/* ❌ Wrong — color duplicated everywhere */\n.btn { background: #3b82f6; }\n.link { color: #3b82f6; }\n\n/* ✅ Right — single token, update once */\n:root { --color-primary: #3b82f6; }\n.btn { background: var(--color-primary); }\n.link { color: var(--color-primary); }',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Next.js',
+        heading: 'Responsive type scale with clamp()',
+        description: 'Use clamp() to create fluid typography that scales smoothly between viewport widths without breakpoints.',
+        code: '/* globals.css */\nh1 { font-size: clamp(1.75rem, 4vw + 1rem, 3.5rem); }\nh2 { font-size: clamp(1.375rem, 3vw + 0.75rem, 2.5rem); }\n\n/* The heading grows from 1.75rem on mobile\n   to 3.5rem on wide screens, linearly. */',
+      },
+      {
+        context: 'Tailwind',
+        heading: 'oklch colors in Tailwind v4',
+        description: 'Tailwind v4 uses oklch color values in @theme. oklch has perceptually uniform lightness, making it easier to build accessible color scales.',
+        code: '/* main.css */\n@theme {\n  --color-brand-500: oklch(0.60 0.22 250);\n  --color-brand-400: oklch(0.72 0.20 250);\n}\n\n/* Usage: bg-brand-500, text-brand-400 */',
+      },
+    ],
   },
   {
     id: 'css-typography',
@@ -2398,6 +2602,40 @@ export const TOPICS: Topic[] = [
         'Overusing text-align: justify — creates uneven spacing between words, hurts readability',
       ],
     },
+    commonErrors: [
+      {
+        title: 'No generic fallback in font-family',
+        why: 'Custom web fonts can fail to load (network error, ad blocker, typo in URL). Without a generic fallback, the browser picks an arbitrary system font. Always end font-family stacks with a generic: serif, sans-serif, or monospace.',
+        fixLabel: 'Fix — always end with a generic font family',
+        fixCode: '/* ❌ Wrong — no fallback if Inter fails to load */\nbody { font-family: \'Inter\'; }\n\n/* ✅ Right — fallback chain ending in generic */\nbody { font-family: \'Inter\', \'Helvetica Neue\', Arial, sans-serif; }',
+      },
+      {
+        title: 'Using px for line-height',
+        why: 'A px line-height does not scale when font-size changes. If you increase font-size, the fixed px line-height may become smaller than the text, causing lines to overlap.',
+        fixLabel: 'Fix — use unitless line-height values',
+        fixCode: '/* ❌ Wrong — line-height does not scale with font-size */\n.text { font-size: 1rem; line-height: 24px; }\n.large { font-size: 2rem; line-height: 24px; } /* too tight */\n\n/* ✅ Right — unitless: always proportional to font-size */\n.text { font-size: 1rem; line-height: 1.5; }\n.large { font-size: 2rem; line-height: 1.5; } /* 3rem, correct */',
+      },
+      {
+        title: 'Missing font-display: swap for web fonts',
+        why: 'Without font-display: swap, the browser may show invisible text (FOIT) while the font loads. swap tells the browser to show a fallback font immediately, then swap in the custom font when ready.',
+        fixLabel: 'Fix — add font-display: swap to @font-face declarations',
+        fixCode: '/* ❌ Wrong — text invisible during font load */\n@font-face {\n  font-family: \'Inter\';\n  src: url(\'inter.woff2\') format(\'woff2\');\n}\n\n/* ✅ Right — fallback text shows immediately */\n@font-face {\n  font-family: \'Inter\';\n  src: url(\'inter.woff2\') format(\'woff2\');\n  font-display: swap;\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Next.js',
+        heading: 'Loading Google Fonts via next/font',
+        description: 'next/font/google loads fonts at build time with automatic font-display: swap and zero layout shift. No external network request at runtime.',
+        code: 'import { Inter } from \'next/font/google\'\n\nconst inter = Inter({\n  subsets: [\'latin\'],\n  display: \'swap\',\n  variable: \'--font-inter\',\n})\n\nexport default function RootLayout({ children }) {\n  return (\n    <html className={inter.variable}>\n      <body>{children}</body>\n    </html>\n  )\n}',
+      },
+      {
+        context: 'Vanilla CSS',
+        heading: 'Truncating long text with ellipsis',
+        description: 'Three properties must work together to truncate overflowing text with an ellipsis. Missing any one of them breaks the effect.',
+        code: '/* All three are required */\n.truncate {\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}\n\n/* For multi-line truncation (modern browsers) */\n.clamp-3 {\n  display: -webkit-box;\n  -webkit-line-clamp: 3;\n  -webkit-box-orient: vertical;\n  overflow: hidden;\n}',
+      },
+    ],
   },
   {
     id: 'css-backgrounds-gradients',
@@ -2477,6 +2715,40 @@ export const TOPICS: Topic[] = [
         'Using an image when a gradient would do — gradients load instantly and are resolution-independent',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Forgetting background-size: cover for full-bleed images',
+        why: 'Without background-size, a background image renders at its natural size and tiles. background-size: cover scales the image to fill the element while preserving aspect ratio, cropping edges if needed.',
+        fixLabel: 'Fix — use background-size: cover with background-position: center',
+        fixCode: '/* ❌ Wrong — image tiles or shows with gaps */\n.hero { background-image: url(\'hero.jpg\'); }\n\n/* ✅ Right — image fills the element, centered */\n.hero {\n  background-image: url(\'hero.jpg\');\n  background-size: cover;\n  background-position: center;\n  background-repeat: no-repeat;\n}',
+      },
+      {
+        title: 'No fallback color behind background images',
+        why: 'If a background image fails to load (slow network, 404), the element has no visible background. Adding a background-color provides a meaningful fallback that also shows while the image is loading.',
+        fixLabel: 'Fix — add a background-color as a fallback',
+        fixCode: '/* ❌ Wrong — blank/transparent if image fails */\n.hero { background-image: url(\'hero.jpg\'); }\n\n/* ✅ Right — color shows while image loads or if it fails */\n.hero {\n  background-color: #1e293b;\n  background-image: url(\'hero.jpg\');\n  background-size: cover;\n}',
+      },
+      {
+        title: 'Gradient direction confusion with deg vs to keyword',
+        why: 'In linear-gradient, 0deg points upward (to top). The to keyword is more readable: to right, to bottom right. Mixing the two without understanding the coordinate system causes unexpected directions.',
+        fixLabel: 'Fix — use the to keyword for readable gradient directions',
+        fixCode: '/* ❌ Confusing — 90deg is left-to-right, not top-to-bottom */\n.bg { background: linear-gradient(90deg, blue, purple); }\n\n/* ✅ Right — explicit direction with to keyword */\n.bg { background: linear-gradient(to right, blue, purple); }\n.bg-diagonal { background: linear-gradient(to bottom right, blue, purple); }',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Hero section with gradient overlay',
+        description: 'Layer a semi-transparent gradient over a background image to keep text readable regardless of image brightness.',
+        code: '<div\n  style={{\n    backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.7)), url(\'/hero.jpg\')`,\n    backgroundSize: \'cover\',\n    backgroundPosition: \'center\',\n    minHeight: \'60vh\',\n  }}\n>\n  <h1 style={{ color: \'white\' }}>Hero Title</h1>\n</div>',
+      },
+      {
+        context: 'Tailwind',
+        heading: 'Gradient button',
+        description: 'Use Tailwind\'s bg-gradient-to-* utilities to create a smooth gradient button with hover transition.',
+        code: '<button class="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold px-6 py-2 rounded-lg transition-all duration-200">\n  Get started\n</button>',
+      },
+    ],
   },
   {
     id: 'css-shadows',
@@ -2565,6 +2837,40 @@ export const TOPICS: Topic[] = [
         'Forgetting that spread-radius 0 is still required when using rgba colors',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Animating box-shadow directly (not GPU-composited)',
+        why: 'box-shadow triggers layout and paint on every frame when animated. This can cause jank on low-powered devices. Instead, animate the opacity of a pseudo-element with the shadow, which runs on the compositor thread.',
+        fixLabel: 'Fix — use a pseudo-element or filter: drop-shadow for animated shadows',
+        fixCode: '/* ❌ Wrong — triggers repaint every frame */\n.card { transition: box-shadow 0.2s; }\n.card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.2); }\n\n/* ✅ Right — only opacity changes, GPU-composited */\n.card { position: relative; }\n.card::after {\n  content: \'\';\n  position: absolute; inset: 0;\n  box-shadow: 0 8px 24px rgba(0,0,0,0.2);\n  opacity: 0;\n  transition: opacity 0.2s;\n}\n.card:hover::after { opacity: 1; }',
+      },
+      {
+        title: 'Using box-shadow for SVG or irregular shapes',
+        why: 'box-shadow follows the rectangular border-box of an element, not its visual shape. For SVGs or elements with transparent areas, filter: drop-shadow() follows the actual rendered pixels.',
+        fixLabel: 'Fix — use filter: drop-shadow() for non-rectangular shapes',
+        fixCode: '/* ❌ Wrong — shadow follows rectangle, not the SVG path */\n.icon { box-shadow: 2px 4px 8px rgba(0,0,0,0.3); }\n\n/* ✅ Right — shadow follows the SVG shape */\n.icon { filter: drop-shadow(2px 4px 8px rgba(0,0,0,0.3)); }',
+      },
+      {
+        title: 'Stacking too many box-shadows without purpose',
+        why: 'Multiple box-shadows paint on top of each other and all affect rendering cost. Layered shadows are a technique for realism, but random stacking adds complexity without visual benefit.',
+        fixLabel: 'Fix — use layered shadows intentionally or stick to one well-crafted shadow',
+        fixCode: '/* ❌ Wrong — arbitrary stacking, heavy paint cost */\n.card { box-shadow: 0 1px 2px black, 0 4px 8px gray, 0 16px 32px silver; }\n\n/* ✅ Right — two-layer shadow for depth */\n.card {\n  box-shadow:\n    0 1px 3px rgba(0,0,0,0.08),\n    0 4px 16px rgba(0,0,0,0.12);\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Elevation system with CSS variables',
+        description: 'Define named shadow tokens as CSS custom properties so components reference consistent elevation levels rather than raw values.',
+        code: ':root {\n  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);\n  --shadow-md: 0 4px 12px rgba(0,0,0,0.10);\n  --shadow-lg: 0 8px 24px rgba(0,0,0,0.15);\n}\n\n.card { box-shadow: var(--shadow-sm); }\n.card:hover { box-shadow: var(--shadow-md); transition: box-shadow 0.2s; }\n.modal { box-shadow: var(--shadow-lg); }',
+      },
+      {
+        context: 'Tailwind',
+        heading: 'Tailwind shadow utilities',
+        description: 'Tailwind ships a shadow scale from shadow-sm to shadow-2xl. Use ring utilities for focus-state outlines that don\'t shift layout.',
+        code: '<!-- Card with hover shadow -->\n<div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6">\n  Card content\n</div>\n\n<!-- Focus ring instead of box-shadow for inputs -->\n<input class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />',
+      },
+    ],
   },
   {
     id: 'css-overflow',
@@ -2643,6 +2949,40 @@ export const TOPICS: Topic[] = [
         'Forgetting that overflow: hidden clips the child box-shadow and border-radius effects',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Missing white-space: nowrap for text-overflow: ellipsis',
+        why: 'text-overflow: ellipsis requires three properties to work together: overflow: hidden, white-space: nowrap, and text-overflow: ellipsis. If white-space is not set, the text wraps instead of truncating.',
+        fixLabel: 'Fix — always pair text-overflow: ellipsis with overflow: hidden and white-space: nowrap',
+        fixCode: '/* ❌ Wrong — text wraps instead of truncating */\n.label { overflow: hidden; text-overflow: ellipsis; }\n\n/* ✅ Right — all three required */\n.label {\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}',
+      },
+      {
+        title: 'overflow: hidden on body breaking position: fixed elements',
+        why: 'Setting overflow: hidden on the body element to prevent scroll can clip position: fixed children in some browsers. Use overscroll-behavior or a wrapper element instead.',
+        fixLabel: 'Fix — use overscroll-behavior or a wrapper instead of overflow: hidden on body',
+        fixCode: '/* ❌ Wrong — may clip fixed headers/modals */\nbody { overflow: hidden; }\n\n/* ✅ Right — prevent body scroll without affecting fixed children */\nbody { overscroll-behavior: none; }\n/* Or for modal open state: */\n.body-scroll-locked { overflow: hidden; height: 100%; }',
+      },
+      {
+        title: 'Not adding overflow: hidden to clip children at border-radius',
+        why: 'border-radius on a container does not automatically clip child elements. If a child has a background or image that extends to the corner, you must also add overflow: hidden to the container.',
+        fixLabel: 'Fix — add overflow: hidden to the container with border-radius',
+        fixCode: '/* ❌ Wrong — image corners visible outside rounded container */\n.card { border-radius: 12px; }\n.card img { width: 100%; }\n\n/* ✅ Right — overflow: hidden clips the image to rounded corners */\n.card { border-radius: 12px; overflow: hidden; }\n.card img { width: 100%; display: block; }',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Scroll-lock when modal is open',
+        description: 'Prevent the page from scrolling behind an open modal by toggling a class on the body that sets overflow: hidden.',
+        code: 'import { useEffect } from \'react\'\n\nfunction Modal({ isOpen, onClose, children }) {\n  useEffect(() => {\n    if (isOpen) {\n      document.body.classList.add(\'overflow-hidden\')\n    }\n    return () => document.body.classList.remove(\'overflow-hidden\')\n  }, [isOpen])\n\n  if (!isOpen) return null\n  return <div className="modal">{children}</div>\n}',
+      },
+      {
+        context: 'Tailwind',
+        heading: 'Scrollable sidebar with fixed header',
+        description: 'Use overflow-y-auto on a flex child with a fixed height to create a scrollable sidebar that stays within the viewport.',
+        code: '<div class="flex h-screen">\n  <aside class="w-64 shrink-0 overflow-y-auto border-r">\n    <!-- long nav list -->\n  </aside>\n  <main class="flex-1 overflow-y-auto p-6">\n    <!-- page content -->\n  </main>\n</div>',
+      },
+    ],
   },
   {
     id: 'css-display-positioning',
@@ -2727,6 +3067,40 @@ export const TOPICS: Topic[] = [
         'z-index not working — it only applies to positioned elements (relative, absolute, fixed, sticky)',
       ],
     },
+    commonErrors: [
+      {
+        title: 'position: absolute without a positioned ancestor',
+        why: 'An absolutely positioned element is placed relative to its nearest ancestor with position: relative, absolute, fixed, or sticky. If no such ancestor exists, it falls back to the viewport, which is rarely the intent.',
+        fixLabel: 'Fix — add position: relative to the intended containing parent',
+        fixCode: '/* ❌ Wrong — badge positions relative to viewport */\n.card { /* no position */ }\n.badge { position: absolute; top: 8px; right: 8px; }\n\n/* ✅ Right — badge positions relative to .card */\n.card { position: relative; }\n.badge { position: absolute; top: 8px; right: 8px; }',
+      },
+      {
+        title: 'z-index not working on static elements',
+        why: 'z-index only applies to elements with a position value other than static (the default). A z-index: 999 on a static element does nothing. You must set position: relative (or another positioned value) to activate z-index.',
+        fixLabel: 'Fix — add position: relative to enable z-index',
+        fixCode: '/* ❌ Wrong — z-index has no effect on static elements */\n.tooltip { z-index: 100; } /* static by default */\n\n/* ✅ Right — position: relative activates z-index */\n.tooltip { position: relative; z-index: 100; }',
+      },
+      {
+        title: 'Using display: none for visually hidden (accessibility)',
+        why: 'display: none removes the element from both the visual and accessibility tree. Screen readers cannot find it. For content that should be hidden visually but remain accessible, use a visually-hidden utility class.',
+        fixLabel: 'Fix — use a visually-hidden class for screen-reader-only content',
+        fixCode: '/* ❌ Wrong — hidden from screen readers too */\n.sr-only { display: none; }\n\n/* ✅ Right — visually hidden but readable by screen readers */\n.sr-only {\n  position: absolute;\n  width: 1px; height: 1px;\n  padding: 0; margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  white-space: nowrap;\n  border: 0;\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Badge on an avatar',
+        description: 'Position a notification badge on the corner of an avatar icon using position: absolute with a relatively-positioned wrapper.',
+        code: 'function Avatar({ src, count }) {\n  return (\n    <div style={{ position: \'relative\', display: \'inline-block\' }}>\n      <img src={src} style={{ width: 40, height: 40, borderRadius: \'50%\' }} />\n      {count > 0 && (\n        <span style={{\n          position: \'absolute\', top: -4, right: -4,\n          background: \'#ef4444\', color: \'white\',\n          borderRadius: \'9999px\', fontSize: 11,\n          padding: \'2px 5px\',\n        }}>{count}</span>\n      )}\n    </div>\n  )\n}',
+      },
+      {
+        context: 'Tailwind',
+        heading: 'Sticky header that stays on scroll',
+        description: 'Use sticky with top-0 and a z-index to keep a header visible as the user scrolls, without removing it from the document flow.',
+        code: '<header class="sticky top-0 z-50 bg-white border-b shadow-sm">\n  <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">\n    <span class="font-bold text-lg">Logo</span>\n    <div class="flex gap-6">Links</div>\n  </nav>\n</header>',
+      },
+    ],
   },
   {
     id: 'css-responsive',
@@ -2809,6 +3183,40 @@ export const TOPICS: Topic[] = [
         'Too many custom breakpoints — stick to 3–4 consistent breakpoints across the project',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Using max-width queries (desktop-first) instead of min-width (mobile-first)',
+        why: 'Desktop-first CSS starts with a complex layout and overrides it for smaller screens. Mobile-first starts simple and adds complexity as the screen grows — this is easier to maintain and aligns with how most users browse.',
+        fixLabel: 'Fix — write base styles for mobile, use min-width to enhance',
+        fixCode: '/* ❌ Wrong — desktop-first requires overrides for every smaller size */\n.grid { grid-template-columns: repeat(3, 1fr); }\n@media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }\n\n/* ✅ Right — mobile-first: start simple, enhance upward */\n.grid { grid-template-columns: 1fr; }\n@media (min-width: 768px) { .grid { grid-template-columns: repeat(3, 1fr); } }',
+      },
+      {
+        title: 'Missing the viewport meta tag',
+        why: 'Without <meta name="viewport" content="width=device-width, initial-scale=1">, mobile browsers render the page at 980px and scale it down, making CSS breakpoints ineffective.',
+        fixLabel: 'Fix — add the viewport meta tag to every HTML page',
+        fixCode: '<!-- ❌ Wrong — no viewport meta, breakpoints ignored on mobile -->\n<head>\n  <link rel="stylesheet" href="style.css">\n</head>\n\n<!-- ✅ Right — viewport meta required for responsive CSS -->\n<head>\n  <meta name="viewport" content="width=device-width, initial-scale=1">\n  <link rel="stylesheet" href="style.css">\n</head>',
+      },
+      {
+        title: 'Using px widths in layouts instead of fluid units',
+        why: 'Fixed px widths break at unexpected viewport sizes. Use %, fr, min(), max(), or clamp() so layout columns adapt smoothly without requiring a breakpoint for every possible screen size.',
+        fixLabel: 'Fix — use fluid units and max-width for layout containers',
+        fixCode: '/* ❌ Wrong — breaks at sizes not covered by breakpoints */\n.container { width: 1200px; }\n\n/* ✅ Right — fluid with a sensible maximum */\n.container {\n  width: 100%;\n  max-width: 1200px;\n  margin-inline: auto;\n  padding-inline: 1rem;\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Next.js',
+        heading: 'Responsive layout with CSS Grid',
+        description: 'Use a fluid grid with auto-fill and minmax to build a responsive card layout that requires zero breakpoints.',
+        code: '/* layout.module.css */\n.grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));\n  gap: 1.5rem;\n}\n\n/* Works on any screen size — no @media needed */',
+      },
+      {
+        context: 'Tailwind',
+        heading: 'Responsive typography and spacing',
+        description: 'Tailwind\'s responsive prefix applies utilities from a breakpoint upward. Stack multiple prefixes to build a complete responsive design.',
+        code: '<div class="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">\n  <h1 class="text-2xl md:text-4xl lg:text-6xl font-bold">\n    Responsive Heading\n  </h1>\n  <p class="text-base md:text-lg mt-4 md:mt-6 text-gray-600">\n    Subheading text\n  </p>\n</div>',
+      },
+    ],
   },
   {
     id: 'css-images',
@@ -2890,6 +3298,40 @@ export const TOPICS: Topic[] = [
         'Using border-radius on the img element inside a container — also set overflow: hidden on the container',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Not adding height: auto alongside max-width: 100%',
+        why: 'If an <img> has a height attribute set in HTML (e.g. height="400"), max-width: 100% alone will not preserve the aspect ratio — the image will squash. Adding height: auto overrides the HTML attribute.',
+        fixLabel: 'Fix — always pair max-width: 100% with height: auto',
+        fixCode: '/* ❌ Wrong — squished if HTML height attribute present */\nimg { max-width: 100%; }\n\n/* ✅ Right — maintains aspect ratio at all sizes */\nimg {\n  max-width: 100%;\n  height: auto;\n  display: block; /* removes inline gap */\n}',
+      },
+      {
+        title: 'Using object-fit without a defined container height',
+        why: 'object-fit: cover crops the image to fill its box, but only when the box has a defined height. Without it, the container collapses and object-fit has nothing to fill.',
+        fixLabel: 'Fix — define height on the container or use aspect-ratio',
+        fixCode: '/* ❌ Wrong — container collapses, object-fit ineffective */\n.card-img { object-fit: cover; }\n\n/* ✅ Right — explicit height or aspect-ratio gives the box to fill */\n.card-img {\n  width: 100%;\n  height: 200px; /* or: aspect-ratio: 16 / 9 */\n  object-fit: cover;\n  object-position: center;\n}',
+      },
+      {
+        title: 'Forgetting alt text on images',
+        why: 'alt text is required for accessibility and SEO. Screen readers announce it. If the image fails to load, alt text is the fallback. An empty alt="" is valid only for purely decorative images.',
+        fixLabel: 'Fix — always add descriptive alt text; use alt="" only for decorative images',
+        fixCode: '<!-- ❌ Wrong — missing alt attribute -->\n<img src="team-photo.jpg" />\n\n<!-- ✅ Right — descriptive alt for informative images -->\n<img src="team-photo.jpg" alt="Engineering team at 2025 offsite" />\n\n<!-- ✅ OK — empty alt for decorative icons -->\n<img src="decorative-wave.svg" alt="" />',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Next.js',
+        heading: 'Responsive images with next/image',
+        description: 'The Next.js Image component handles lazy loading, responsive srcsets, and WebP conversion automatically. Always provide width and height to prevent CLS.',
+        code: 'import Image from \'next/image\'\n\nexport function PostCover({ src, alt }) {\n  return (\n    <div style={{ position: \'relative\', aspectRatio: \'16/9\' }}>\n      <Image\n        src={src}\n        alt={alt}\n        fill\n        style={{ objectFit: \'cover\' }}\n        sizes="(max-width: 768px) 100vw, 50vw"\n      />\n    </div>\n  )\n}',
+      },
+      {
+        context: 'Vanilla CSS',
+        heading: 'Responsive image with aspect-ratio',
+        description: 'Use aspect-ratio on the container and object-fit on the image to create a responsive image that never distorts.',
+        code: '.card-image-wrapper {\n  aspect-ratio: 16 / 9;\n  overflow: hidden;\n  border-radius: 8px;\n}\n\n.card-image-wrapper img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n  object-position: center;\n  display: block;\n}',
+      },
+    ],
   },
   {
     id: 'css-custom-properties',
@@ -2933,6 +3375,40 @@ export const TOPICS: Topic[] = [
         'Overusing custom properties for one-off values — they are for shared, reusable tokens',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Forgetting the -- prefix on custom property names',
+        why: 'CSS custom properties require exactly two dashes as a prefix: --my-color. Without the prefix, the browser treats it as an unknown property and ignores it silently — no error in the console.',
+        fixLabel: 'Fix — always prefix custom property names with --',
+        fixCode: '/* ❌ Wrong — not a valid custom property, silently ignored */\n:root { primary-color: blue; }\n.btn { background: var(primary-color); }\n\n/* ✅ Right */\n:root { --primary-color: blue; }\n.btn { background: var(--primary-color); }',
+      },
+      {
+        title: 'Using var() without a fallback in critical properties',
+        why: 'If a custom property is undefined (e.g., a component is used outside the expected tree), var(--missing) produces an invalid value and the property is ignored. A fallback in var() prevents invisible or broken UI.',
+        fixLabel: 'Fix — always provide a fallback in var() for safety',
+        fixCode: '/* ❌ Wrong — if --card-bg is not defined, background becomes invalid */\n.card { background: var(--card-bg); }\n\n/* ✅ Right — fallback ensures the component still renders */\n.card { background: var(--card-bg, #ffffff); }',
+      },
+      {
+        title: 'Defining variables in a component selector instead of :root',
+        why: 'Custom properties defined on a specific selector are only available to that element and its descendants. Defining shared tokens on :root makes them globally available across the entire document.',
+        fixLabel: 'Fix — define global design tokens on :root; scope component-specific vars to the component',
+        fixCode: '/* ❌ Wrong — --brand not available outside .navbar */\n.navbar { --brand: #3b82f6; }\n.footer { color: var(--brand); } /* undefined here */\n\n/* ✅ Right — global tokens on :root */\n:root { --brand: #3b82f6; }\n.navbar { background: var(--brand); }\n.footer { color: var(--brand); }',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Dynamic theming with CSS variables',
+        description: 'Pass theme values from React state to CSS custom properties on the :root element. CSS responds immediately without re-rendering components.',
+        code: 'function ThemeProvider({ theme, children }) {\n  useEffect(() => {\n    const root = document.documentElement\n    root.style.setProperty(\'--color-primary\', theme.primary)\n    root.style.setProperty(\'--color-bg\', theme.background)\n  }, [theme])\n\n  return <>{children}</>\n}',
+      },
+      {
+        context: 'Vanilla CSS',
+        heading: 'Design token system',
+        description: 'Define all design tokens as custom properties on :root. Reference them everywhere — colors, spacing, radii, shadows all come from the same source.',
+        code: ':root {\n  --color-primary: #3b82f6;\n  --color-text: #1e293b;\n  --color-bg: #f8fafc;\n  --space-4: 1rem;\n  --space-8: 2rem;\n  --radius-md: 8px;\n  --radius-lg: 16px;\n}',
+      },
+    ],
   },
   {
     id: 'css-variables-theming',
@@ -3010,6 +3486,40 @@ export const TOPICS: Topic[] = [
         'Not providing a fallback value for variables that might not be defined',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Not scoping variables for component themes',
+        why: 'Defining all custom properties on :root works for global tokens, but component-level overrides need to be scoped to the component selector. Overriding a global variable in :root for one component breaks every other component using it.',
+        fixLabel: 'Fix — scope overrides to the component selector, not :root',
+        fixCode: '/* ❌ Wrong — overrides global --color-primary for all components */\n:root { --color-primary: #10b981; } /* now everything is green */\n\n/* ✅ Right — scope the override to the component */\n.sidebar { --color-primary: #10b981; }\n/* Sidebar links use green; rest of app still uses original */',
+      },
+      {
+        title: 'Dark mode toggle not updating CSS variables',
+        why: 'A dark mode implementation that only swaps class names without updating CSS variable values forces every property to have a dark: variant. Redefining variables under a .dark class is cleaner and requires zero changes to component CSS.',
+        fixLabel: 'Fix — redefine CSS custom property values under .dark or prefers-color-scheme',
+        fixCode: '/* ❌ Wrong — separate properties everywhere */\n.text { color: #1e293b; }\n.dark .text { color: #f1f5f9; }\n\n/* ✅ Right — only tokens change, components need no changes */\n:root { --color-text: #1e293b; }\n.dark { --color-text: #f1f5f9; }\n.text { color: var(--color-text); }',
+      },
+      {
+        title: 'Using CSS variables in media queries directly',
+        why: 'CSS custom properties cannot be used as values in @media breakpoints — @media (max-width: var(--bp-md)) is invalid. Breakpoint values must be hardcoded in media queries.',
+        fixLabel: 'Fix — hardcode breakpoint values in @media; use container queries for component-level responsiveness',
+        fixCode: '/* ❌ Wrong — custom property in @media does not work */\n:root { --bp-md: 768px; }\n@media (min-width: var(--bp-md)) { } /* INVALID */\n\n/* ✅ Right — hardcoded breakpoint in @media */\n@media (min-width: 768px) { }\n\n/* ✅ Alternative — container query */\n.card-container { container-type: inline-size; }\n@container (min-width: 400px) { .card { flex-direction: row; } }',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Next.js',
+        heading: 'Dark mode with next-themes',
+        description: 'Use next-themes to manage dark/light mode. It sets a data-theme attribute on <html> which triggers CSS variable swaps without any component changes.',
+        code: '/* globals.css */\n:root { --bg: #ffffff; --text: #1e293b; }\n[data-theme=\'dark\'] { --bg: #0f172a; --text: #f1f5f9; }\nbody { background: var(--bg); color: var(--text); }\n\n/* _app.tsx */\nimport { ThemeProvider } from \'next-themes\'\nexport default function App({ Component, pageProps }) {\n  return (\n    <ThemeProvider attribute="data-theme" defaultTheme="system">\n      <Component {...pageProps} />\n    </ThemeProvider>\n  )\n}',
+      },
+      {
+        context: 'Vanilla CSS',
+        heading: 'System dark mode with prefers-color-scheme',
+        description: 'Respect the user\'s OS dark mode preference using the prefers-color-scheme media query to swap CSS variable values.',
+        code: ':root {\n  --bg: #ffffff;\n  --text: #1e293b;\n  --border: #e2e8f0;\n}\n\n@media (prefers-color-scheme: dark) {\n  :root {\n    --bg: #0f172a;\n    --text: #f1f5f9;\n    --border: #334155;\n  }\n}',
+      },
+    ],
   },
   {
     id: 'css-transforms',
@@ -3054,6 +3564,40 @@ export const TOPICS: Topic[] = [
         'Using px for translate on fluid layouts — use % to translate relative to the element itself',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Confusing transform with position — expecting it to affect layout',
+        why: 'CSS transform is a visual-only operation. It moves, rotates, or scales the rendered pixels but does not change the element\'s position in the document flow. Adjacent elements do not reflow when a transform changes.',
+        fixLabel: 'Fix — use transform for visual effects; use position changes to affect layout',
+        fixCode: '/* ❌ Wrong expectation — transform does not push other elements */\n.box { transform: translateX(100px); }\n/* siblings remain in their original positions */\n\n/* ✅ Right — position: relative + left/top changes layout flow */\n.box { position: relative; left: 100px; }',
+      },
+      {
+        title: 'Transform functions applied in wrong order',
+        why: 'Transform functions are applied right-to-left. rotate(45deg) translate(100px, 0) translates along the rotated axis — very different from translate(100px, 0) rotate(45deg), which translates along the original axis.',
+        fixLabel: 'Fix — understand the order: last function applies first',
+        fixCode: '/* ❌ Unexpected — translation along rotated axis */\n.a { transform: rotate(45deg) translate(100px, 0); }\n\n/* ✅ Intended — translate along original axis, then rotate */\n.b { transform: translate(100px, 0) rotate(45deg); }',
+      },
+      {
+        title: 'Using transform without will-change for heavy animations',
+        why: 'For elements that animate frequently (carousel, parallax), adding will-change: transform hints to the browser to promote the element to its own compositor layer, preventing repaints on every frame.',
+        fixLabel: 'Fix — add will-change: transform on frequently-animated elements',
+        fixCode: '/* ❌ May repaint every frame for complex elements */\n.panel { transition: transform 0.4s; }\n\n/* ✅ Better for heavy or frequently-animated elements */\n.panel {\n  will-change: transform;\n  transition: transform 0.4s;\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Centering an element with transform',
+        description: 'Use position: absolute with translate(-50%, -50%) to precisely center an element relative to its containing block, regardless of its own dimensions.',
+        code: 'function Centered({ children }) {\n  return (\n    <div style={{ position: \'relative\', height: 400, background: \'#f8fafc\' }}>\n      <div style={{\n        position: \'absolute\',\n        top: \'50%\',\n        left: \'50%\',\n        transform: \'translate(-50%, -50%)\',\n      }}>\n        {children}\n      </div>\n    </div>\n  )\n}',
+      },
+      {
+        context: 'Tailwind',
+        heading: 'Flip card with rotateY',
+        description: 'Build a flip card effect using CSS 3D transforms. Tailwind\'s rotate and backface-hidden utilities cover the key properties.',
+        code: '<div class="group [perspective:1000px] w-48 h-64">\n  <div class="relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">\n    <div class="absolute inset-0 bg-white rounded-xl [backface-visibility:hidden] p-4">Front</div>\n    <div class="absolute inset-0 bg-blue-600 text-white rounded-xl p-4 [transform:rotateY(180deg)] [backface-visibility:hidden]">Back</div>\n  </div>\n</div>',
+      },
+    ],
   },
   {
     id: 'css-transitions',
@@ -3098,6 +3642,40 @@ export const TOPICS: Topic[] = [
         'Animating layout properties (width, height) — animate transform and opacity; they are GPU-accelerated',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Putting transition on :hover instead of the base element',
+        why: 'A transition placed only on :hover plays when hovering in, but the return (hover-out) snaps back instantly because the non-hovered state has no transition. Always put transition on the base selector.',
+        fixLabel: 'Fix — place transition on the base element, not the :hover rule',
+        fixCode: '/* ❌ Wrong — hover-out snaps instantly */\n.btn:hover { background: navy; transition: background 0.3s; }\n\n/* ✅ Right — transition plays in both directions */\n.btn { background: blue; transition: background 0.3s; }\n.btn:hover { background: navy; }',
+      },
+      {
+        title: 'Using transition: all',
+        why: 'transition: all listens for changes to every CSS property. This triggers transitions on properties you never intended to animate (like color changes from :focus or opacity from disabled state). List only the properties you want.',
+        fixLabel: 'Fix — list specific properties in transition',
+        fixCode: '/* ❌ Wrong — transitions unintended property changes too */\n.btn { transition: all 0.2s; }\n\n/* ✅ Right — only background and transform animate */\n.btn { transition: background-color 0.2s, transform 0.15s; }',
+      },
+      {
+        title: 'Transitioning layout-triggering properties',
+        why: 'Animating width, height, margin, padding, or top/left causes the browser to recalculate layout on every frame (reflow + repaint). Animate transform: scale() or opacity instead, which run on the GPU compositor.',
+        fixLabel: 'Fix — animate transform and opacity instead of layout properties',
+        fixCode: '/* ❌ Wrong — reflow every frame, janky on low-end devices */\n.panel { transition: height 0.3s; }\n.panel.open { height: 300px; }\n\n/* ✅ Right — GPU-composited, no reflow */\n.panel { transition: transform 0.3s, opacity 0.3s; transform: scaleY(0); transform-origin: top; opacity: 0; }\n.panel.open { transform: scaleY(1); opacity: 1; }',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Button press micro-interaction',
+        description: 'Add a subtle scale-down transform on active state to give a tactile click feeling. Combine with a short transition for polish.',
+        code: 'function Button({ children, onClick }) {\n  return (\n    <button\n      onClick={onClick}\n      style={{\n        transition: \'background-color 0.15s, transform 0.1s\',\n        transform: \'scale(1)\',\n      }}\n      onMouseDown={e => e.currentTarget.style.transform = \'scale(0.97)\'}\n      onMouseUp={e => e.currentTarget.style.transform = \'scale(1)\'}\n    >\n      {children}\n    </button>\n  )\n}',
+      },
+      {
+        context: 'Tailwind',
+        heading: 'Hover card lift effect',
+        description: 'Combine translate-y and shadow on hover to create a card lift effect. Both properties transition smoothly with Tailwind\'s transition utilities.',
+        code: '<div class="bg-white rounded-xl shadow-sm p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-md cursor-pointer">\n  <h3 class="font-semibold text-gray-900">Card Title</h3>\n  <p class="text-gray-500 text-sm mt-1">Description</p>\n</div>',
+      },
+    ],
   },
   {
     id: 'css-animations',
@@ -3142,6 +3720,40 @@ export const TOPICS: Topic[] = [
         'Not setting animation-iteration-count when you want it to loop (default is 1)',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Forgetting animation-fill-mode: forwards',
+        why: 'By default, an animation resets to its original state when it ends. animation-fill-mode: forwards retains the final keyframe styles after the animation completes. Without it, an element fades in then instantly reappears at full opacity.',
+        fixLabel: 'Fix — add animation-fill-mode: forwards to keep the end state',
+        fixCode: '/* ❌ Wrong — element snaps back to original state after animation */\n@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }\n.element { animation: fadeIn 0.5s; }\n\n/* ✅ Right — element stays visible after fading in */\n.element { animation: fadeIn 0.5s forwards; }',
+      },
+      {
+        title: 'Animating layout-triggering properties',
+        why: 'Animating width, height, margin, or top/left forces layout recalculation on every frame. For smooth 60fps animations, only animate transform and opacity — they run on the GPU compositor.',
+        fixLabel: 'Fix — replace layout-property animations with transform equivalents',
+        fixCode: '/* ❌ Wrong — layout thrashing, janky on low-end devices */\n@keyframes slide { from { left: -100%; } to { left: 0; } }\n.drawer { position: absolute; animation: slide 0.3s; }\n\n/* ✅ Right — GPU-composited, smooth 60fps */\n@keyframes slide { from { transform: translateX(-100%); } to { transform: translateX(0); } }\n.drawer { animation: slide 0.3s; }',
+      },
+      {
+        title: 'Not respecting prefers-reduced-motion',
+        why: 'Users with vestibular disorders or motion sensitivity can enable reduced motion in their OS settings. Ignoring this causes physical discomfort. Wrapping animations in a media query is a basic accessibility requirement.',
+        fixLabel: 'Fix — wrap animations in a prefers-reduced-motion check',
+        fixCode: '/* ❌ Wrong — always animates, ignores user preference */\n.spinner { animation: spin 1s linear infinite; }\n\n/* ✅ Right — animates only if user has no motion preference */\n.spinner { animation: spin 1s linear infinite; }\n@media (prefers-reduced-motion: reduce) {\n  .spinner { animation: none; }\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Loading skeleton with shimmer',
+        description: 'Use a CSS @keyframes shimmer animation on a pseudo-element to create a loading skeleton effect without JavaScript.',
+        code: '/* skeleton.module.css */\n@keyframes shimmer {\n  from { transform: translateX(-100%); }\n  to { transform: translateX(100%); }\n}\n.skeleton {\n  position: relative;\n  overflow: hidden;\n  background: #e2e8f0;\n  border-radius: 4px;\n}\n.skeleton::after {\n  content: \'\';\n  position: absolute; inset: 0;\n  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);\n  animation: shimmer 1.5s infinite;\n}',
+      },
+      {
+        context: 'Tailwind',
+        heading: 'Entrance animation with Tailwind animate utilities',
+        description: 'Tailwind ships animate-spin, animate-ping, animate-bounce, and animate-pulse. For custom animations, use @keyframes in your CSS and reference them with the animate-[name] arbitrary value syntax.',
+        code: '<!-- Pulse loading indicator -->\n<div class="w-4 h-4 bg-blue-500 rounded-full animate-pulse"></div>\n\n<!-- Bounce notification badge -->\n<span class="animate-bounce inline-block text-xl">🔔</span>\n\n<!-- Custom entrance with arbitrary animation -->\n<div class="animate-[fadeIn_0.5s_ease_forwards] opacity-0">\n  Content fades in\n</div>',
+      },
+    ],
   },
   {
     id: 'js-oop',
@@ -8734,13 +9346,13 @@ for (let i = 0; i < 5; i++) {
         context: 'React',
         heading: 'Generic data-fetching hook',
         description: 'A generic useFetch hook returns typed data for any endpoint — write the hook once and reuse it everywhere.',
-        code: 'import { useState, useEffect } from \'react\'\n\nfunction useFetch<T>(url: string) {\n  const [data, setData]     = useState<T | null>(null)\n  const [loading, setLoading] = useState(true)\n  const [error, setError]   = useState<string | null>(null)\n\n  useEffect(() => {\n    let cancelled = false\n    fetch(url)\n      .then(r => r.json() as Promise<T>)\n      .then(d => { if (!cancelled) setData(d) })\n      .catch((e: Error) => { if (!cancelled) setError(e.message) })\n      .finally(() => { if (!cancelled) setLoading(false) })\n    return () => { cancelled = true }\n  }, [url])\n\n  return { data, loading, error }\n}\n\ntype User = { id: number; name: string }\nconst { data: users } = useFetch<User[]>('/api/users')  // data is User[] | null',
+        code: 'import { useState, useEffect } from \'react\'\n\nfunction useFetch<T>(url: string) {\n  const [data, setData]     = useState<T | null>(null)\n  const [loading, setLoading] = useState(true)\n  const [error, setError]   = useState<string | null>(null)\n\n  useEffect(() => {\n    let cancelled = false\n    fetch(url)\n      .then(r => r.json() as Promise<T>)\n      .then(d => { if (!cancelled) setData(d) })\n      .catch((e: Error) => { if (!cancelled) setError(e.message) })\n      .finally(() => { if (!cancelled) setLoading(false) })\n    return () => { cancelled = true }\n  }, [url])\n\n  return { data, loading, error }\n}\n\ntype User = { id: number; name: string }\nconst { data: users } = useFetch<User[]>(\'/api/users\')  // data is User[] | null',
       },
       {
         context: 'Next.js',
         heading: 'Generic paginated response interface',
         description: 'A single generic interface covers all paginated API endpoints — change the item type and everything stays consistent.',
-        code: 'interface Paginated<T> {\n  items: T[]\n  total: number\n  page: number\n  pageSize: number\n  hasNext: boolean\n}\n\ntype Post = { id: number; title: string; slug: string }\ntype User = { id: number; name: string; email: string }\n\nasync function fetchPaginated<T>(\n  path: string,\n  page: number\n): Promise<Paginated<T>> {\n  const res = await fetch(`${path}?page=${page}&size=20`)\n  return res.json() as Promise<Paginated<T>>\n}\n\nconst posts = await fetchPaginated<Post>('/api/posts', 1)\n// posts.items is Post[]',
+        code: 'interface Paginated<T> {\n  items: T[]\n  total: number\n  page: number\n  pageSize: number\n  hasNext: boolean\n}\n\ntype Post = { id: number; title: string; slug: string }\ntype User = { id: number; name: string; email: string }\n\nasync function fetchPaginated<T>(\n  path: string,\n  page: number\n): Promise<Paginated<T>> {\n  const res = await fetch(`${path}?page=${page}&size=20`)\n  return res.json() as Promise<Paginated<T>>\n}\n\nconst posts = await fetchPaginated<Post>(\'/api/posts\', 1)\n// posts.items is Post[]',
       },
     ],
   },
@@ -12675,6 +13287,40 @@ function validate(data: unknown) {
         code: '<!-- 🎯 State Variants: hover, focus, active, disabled -->\n\n<!-- Hover button --><button class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded transition-colors duration-200">Hover me</button>\n\n<!-- Focus ring --><input class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Type here" />\n\n<!-- Disabled --><button class="bg-gray-300 text-gray-500 px-4 py-2 rounded cursor-not-allowed opacity-50" disabled>Disabled</button>\n\n<!-- Group hover --><div class="group flex items-center gap-3 p-3 rounded hover:bg-gray-100 cursor-pointer"><span class="text-gray-700 group-hover:text-blue-600 font-medium">Menu item</span><span class="opacity-0 group-hover:opacity-100 transition-opacity">→</span></div>',
       },
     ],
+    commonErrors: [
+      {
+        title: 'Constructing dynamic class names with string concatenation',
+        why: 'Tailwind scans source files for complete class strings at build time. Dynamic strings like "bg-" + color are never detected and the classes are not included in the output CSS. Always use full class names.',
+        fixLabel: 'Fix — use full class name strings; use a lookup object for dynamic classes',
+        fixCode: '// ❌ Wrong — Tailwind cannot detect partial class names\nconst cls = `bg-${color}-500` // never included in build\n\n// ✅ Right — full class names are detectable\nconst colorMap = {\n  blue: \'bg-blue-500\',\n  red: \'bg-red-500\',\n  green: \'bg-green-500\',\n}\nconst cls = colorMap[color]',
+      },
+      {
+        title: 'Forgetting that Tailwind is mobile-first (no prefix = all screens)',
+        why: 'In Tailwind, a class without a prefix applies to all screen sizes. Adding sm: means "from 640px upward". A common mistake is using responsive prefixes thinking they set a max-width, not a min-width.',
+        fixLabel: 'Fix — write base mobile styles without a prefix; add prefixes for larger breakpoints',
+        fixCode: '<!-- ❌ Wrong — md: is min-width, not max-width — desktop-first thinking -->\n<div class="grid-cols-3 md:grid-cols-1">...</div>\n<!-- On mobile: 3 cols. On desktop: 1 col. (inverted) -->\n\n<!-- ✅ Right — mobile-first: 1 col base, 3 cols from md up -->\n<div class="grid-cols-1 md:grid-cols-3">...</div>',
+      },
+      {
+        title: 'Confusing Tailwind\'s spacing scale (p-4 = 16px, not 4px)',
+        why: 'Tailwind\'s spacing scale uses 4px increments: 1 unit = 4px. So p-4 = 16px, p-8 = 32px, p-1 = 4px. Developers from other frameworks often expect p-4 to be 4px, leading to over-padding or under-padding.',
+        fixLabel: 'Fix — remember: Tailwind spacing number × 4 = pixels',
+        fixCode: '<!-- Scale: 1=4px, 2=8px, 4=16px, 6=24px, 8=32px -->\n\n<!-- ❌ Wrong expectation — p-4 is NOT 4px -->\n<div class="p-4">Padded (actually 16px)</div>\n\n<!-- ✅ Right — p-1 for 4px, p-2 for 8px -->\n<button class="px-4 py-2 rounded">Button (px=16px, py=8px)</button>',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Component with conditional Tailwind classes',
+        description: 'Use the clsx library to conditionally apply full Tailwind class names. Never construct partial class name strings.',
+        code: 'import clsx from \'clsx\'\n\nfunction Badge({ variant = \'default\', children }) {\n  return (\n    <span className={clsx(\n      \'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium\',\n      {\n        \'bg-blue-100 text-blue-800\': variant === \'info\',\n        \'bg-green-100 text-green-800\': variant === \'success\',\n        \'bg-red-100 text-red-800\': variant === \'error\',\n      }\n    )}>\n      {children}\n    </span>\n  )\n}',
+      },
+      {
+        context: 'Next.js',
+        heading: 'Tailwind with CSS Modules for complex styles',
+        description: 'Use CSS Modules for complex component styles that would require many Tailwind classes, while keeping Tailwind for layout and spacing utilities.',
+        code: '// Card.module.css\n.card {\n  background: linear-gradient(135deg, #667eea, #764ba2);\n  backdrop-filter: blur(10px);\n}\n\n// Card.tsx\nimport styles from \'./Card.module.css\'\nfunction Card({ children }) {\n  return (\n    <div className={`${styles.card} rounded-xl p-6 text-white shadow-lg`}>\n      {children}\n    </div>\n  )\n}',
+      },
+    ],
   },
   {
     id: 'css-tailwind-layout',
@@ -12768,6 +13414,40 @@ function validate(data: unknown) {
       {
         label: 'Spacing & sizing',
         code: '<!-- 🎯 Spacing System — Based on 4px Steps (1 unit = 4px) -->\n\n<!-- p-1=4px, p-2=8px, p-4=16px, p-6=24px, p-8=32px -->\n\n<!-- Consistent card spacing --><div class="p-6 mb-4 rounded-xl bg-white shadow"><h3 class="text-lg font-semibold mb-2">Card title</h3><p class="text-gray-600 mb-4">Description text</p><button class="px-4 py-2 bg-blue-600 text-white rounded">Action</button></div>\n\n<!-- Max-width containers --><div class="max-w-sm">Small (384px)</div><div class="max-w-2xl mx-auto">Centered medium (672px)</div><div class="max-w-7xl mx-auto px-4">Full page wrapper</div>\n\n<!-- Viewport-based heights --><div class="h-screen">Full viewport height</div><div class="h-64">Fixed h-64 = 256px</div><div class="min-h-0 flex-1">Fills remaining flex space</div>',
+      },
+    ],
+    commonErrors: [
+      {
+        title: 'Using w-full on a flex child when flex-1 is more appropriate',
+        why: 'w-full sets width: 100%, which always fills 100% of the parent. flex-1 (flex: 1 1 0%) fills remaining space after other children are sized. Using w-full in a flex row can cause overflow if siblings also have widths.',
+        fixLabel: 'Fix — use flex-1 on flexible children, w-full only for single-child containers',
+        fixCode: '<!-- ❌ Wrong — two w-full children overflow a flex row -->\n<div class="flex">\n  <div class="w-full">Child A</div>\n  <div class="w-full">Child B</div>\n</div>\n\n<!-- ✅ Right — flex-1 splits remaining space equally -->\n<div class="flex gap-4">\n  <div class="flex-1">Child A</div>\n  <div class="flex-1">Child B</div>\n</div>',
+      },
+      {
+        title: 'Forgetting shrink-0 on fixed-width sidebars',
+        why: 'Flex children shrink by default (flex-shrink: 1). A sidebar with w-64 inside a flex row can shrink below 256px when the container is narrow. Adding shrink-0 prevents this.',
+        fixLabel: 'Fix — add shrink-0 on flex children that must not shrink',
+        fixCode: '<!-- ❌ Wrong — sidebar shrinks below w-64 on small screens -->\n<div class="flex">\n  <aside class="w-64 bg-gray-100">Sidebar</aside>\n  <main class="flex-1">Content</main>\n</div>\n\n<!-- ✅ Right — sidebar stays 256px wide -->\n<div class="flex">\n  <aside class="w-64 shrink-0 bg-gray-100">Sidebar</aside>\n  <main class="flex-1">Content</main>\n</div>',
+      },
+      {
+        title: 'Using margin for spacing between grid/flex children instead of gap',
+        why: 'Margin applied to individual children creates double spacing at edges. gap is applied by the container and avoids all edge cases.',
+        fixLabel: 'Fix — use gap on the flex/grid container',
+        fixCode: '<!-- ❌ Wrong — inconsistent spacing, hard to override -->\n<div class="flex">\n  <div class="mr-4">A</div>\n  <div class="mr-4">B</div>\n  <div>C</div>\n</div>\n\n<!-- ✅ Right — uniform spacing, no edge issues -->\n<div class="flex gap-4">\n  <div>A</div>\n  <div>B</div>\n  <div>C</div>\n</div>',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Dashboard layout with Tailwind Grid',
+        description: 'Build a responsive dashboard with a fixed sidebar and scrollable main area using Tailwind Grid utilities.',
+        code: 'function Dashboard() {\n  return (\n    <div className="grid grid-cols-[240px_1fr] h-screen">\n      <aside className="overflow-y-auto border-r bg-gray-50 p-4">\n        <nav>...</nav>\n      </aside>\n      <main className="overflow-y-auto p-6">\n        <div className="max-w-4xl mx-auto">\n          {/* page content */}\n        </div>\n      </main>\n    </div>\n  )\n}',
+      },
+      {
+        context: 'Next.js',
+        heading: 'Responsive card grid with Tailwind',
+        description: 'Combine Tailwind responsive prefixes with grid utilities to create a card grid that stacks on mobile and expands on desktop.',
+        code: '<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">\n  {items.map(item => (\n    <div key={item.id}\n      className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition-shadow">\n      <h3 className="font-semibold text-gray-900">{item.title}</h3>\n    </div>\n  ))}\n</div>',
       },
     ],
   },
@@ -12895,6 +13575,40 @@ function validate(data: unknown) {
       {
         label: 'group & peer',
         code: '<!-- 🎯 group / peer — Parent and Sibling State -->\n\n<!-- group: style children based on parent hover --><div class="group flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors"><div class="w-10 h-10 rounded-full bg-blue-500 group-hover:scale-110 transition-transform"></div><div><p class="font-medium text-gray-900 group-hover:text-blue-600">Alice Johnson</p><p class="text-sm text-gray-500">alice@example.com</p></div></div>\n\n<!-- peer: style next sibling based on a peer\'s state --><input type="checkbox" class="peer hidden" id="toggle" /><label for="toggle" class="cursor-pointer px-4 py-2 rounded border border-gray-300 peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600">Toggle</label>\n\n<!-- has: parent reacts to descendant state --><div class="border-2 border-gray-200 rounded-lg p-4 has-[:checked]:border-blue-500"><input type="checkbox" class="mr-2" /><span>Check to highlight parent</span></div>',
+      },
+    ],
+    commonErrors: [
+      {
+        title: 'Forgetting to add group or peer class to the ancestor/sibling',
+        why: 'group-hover: and peer-checked: only work when the ancestor/preceding sibling has the group or peer class itself. Without it, the state variant has nothing to listen to and never activates.',
+        fixLabel: 'Fix — add group to the parent element; add peer to the sibling element',
+        fixCode: '<!-- ❌ Wrong — group-hover: never fires because parent lacks group -->\n<div>\n  <span class="group-hover:text-blue-600">Never changes</span>\n</div>\n\n<!-- ✅ Right — group on parent enables group-hover: on descendants -->\n<div class="group cursor-pointer p-3 rounded hover:bg-gray-100">\n  <span class="group-hover:text-blue-600">Changes on hover</span>\n</div>',
+      },
+      {
+        title: 'Using focus: instead of focus-visible: for keyboard navigation styles',
+        why: 'focus: styles apply on every focus — including mouse clicks. focus-visible: only applies when the browser determines keyboard navigation is active, hiding the focus ring from mouse users and showing it for keyboard users.',
+        fixLabel: 'Fix — prefer focus-visible: for focus ring styles',
+        fixCode: '<!-- ❌ Wrong — focus ring shows on mouse clicks too -->\n<button class="focus:ring-2 focus:ring-blue-500">Button</button>\n\n<!-- ✅ Right — ring only shows on keyboard navigation -->\n<button class="focus-visible:ring-2 focus-visible:ring-blue-500 focus:outline-none">Button</button>',
+      },
+      {
+        title: 'Applying dark: classes without enabling dark mode',
+        why: 'In Tailwind v3, dark: variants require darkMode to be configured in tailwind.config.js. In v4, dark mode uses prefers-color-scheme by default. Using dark: classes without the right setup has no effect.',
+        fixLabel: 'Fix — configure darkMode in tailwind.config.js (v3) or use @variant dark (v4)',
+        fixCode: '// ❌ Wrong (v3) — dark: classes silently inactive without config\n\n// ✅ Right (v3) — set darkMode in tailwind.config.js\nmodule.exports = { darkMode: \'class\' }\n// Toggle: document.documentElement.classList.toggle(\'dark\')\n\n/* ✅ Right (v4) — override dark variant in CSS */\n@import \'tailwindcss\';\n@variant dark (&:where(.dark, .dark *));',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Accessible input with peer error state',
+        description: 'Use Tailwind\'s peer utility to show an error message below an input when the input has a data-invalid attribute, without any JavaScript toggle logic.',
+        code: 'function FormField({ label, error, ...props }) {\n  return (\n    <div>\n      <input\n        {...props}\n        data-invalid={error ? true : undefined}\n        className="peer border rounded-lg px-3 py-2 w-full focus-visible:ring-2 focus-visible:ring-blue-500 data-[invalid]:border-red-500"\n      />\n      <p className="hidden peer-data-[invalid]:block text-red-600 text-sm mt-1">\n        {error}\n      </p>\n    </div>\n  )\n}',
+      },
+      {
+        context: 'Tailwind',
+        heading: 'Dark mode card',
+        description: 'Build a card that adapts to dark mode using Tailwind\'s dark: prefix. All color changes are handled in markup — no JavaScript needed.',
+        code: '<div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-sm">\n  <h3 class="font-semibold text-gray-900 dark:text-white">\n    Card Title\n  </h3>\n  <p class="text-gray-500 dark:text-gray-400 text-sm mt-2">Description</p>\n  <button class="mt-4 bg-blue-600 dark:bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-400">\n    Action\n  </button>\n</div>',
       },
     ],
   },
@@ -13029,6 +13743,40 @@ function validate(data: unknown) {
       {
         label: '@theme (v4)',
         code: '/* 🎯 Tailwind v4 — @theme CSS-First Config */\n\n@import "tailwindcss";\n\n@theme {\n  /* Custom colors → auto-generates bg-brand-*, text-brand-*, etc. */\n  --color-brand-400: oklch(0.72 0.20 250);\n  --color-brand-500: oklch(0.60 0.22 250);\n  --color-brand-600: oklch(0.50 0.22 250);\n\n  /* Custom font → font-display class */\n  --font-display: "Satoshi", "Inter", sans-serif;\n\n  /* Custom spacing → p-18, m-18, etc. */\n  --spacing-18: 4.5rem;\n\n  /* Custom breakpoint → 3xl: prefix */\n  --breakpoint-3xl: 120rem;\n}\n\n/* Usage: */\n/* <h1 class="font-display text-brand-500">Brand heading</h1> */\n/* <div class="p-18 3xl:max-w-screen-3xl">Wide layout</div> */',
+      },
+    ],
+    commonErrors: [
+      {
+        title: 'Using @apply everywhere instead of just for repeated patterns',
+        why: '@apply extracts Tailwind utilities into a CSS class, but it recreates the maintenance problem of regular CSS — styles are decoupled from markup, making it hard to see what a component looks like without checking a separate file. Reserve @apply for truly repeated patterns.',
+        fixLabel: 'Fix — use @apply only for component patterns reused many times; keep utilities in markup',
+        fixCode: '/* ❌ Wrong — @apply for a one-off class */\n@layer components {\n  .page-title { @apply text-3xl font-bold text-gray-900 mb-4; }\n}\n\n/* ✅ Right — utilities directly in markup for one-off styles */\n/* <h1 class="text-3xl font-bold text-gray-900 mb-4">Title</h1> */\n\n/* ✅ OK — @apply for a widely-reused button pattern */\n.btn-primary { @apply px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700; }',
+      },
+      {
+        title: 'Using tailwind.config.js in Tailwind v4',
+        why: 'Tailwind v4 is CSS-first. The JS config file is no longer the primary configuration mechanism. Custom tokens, colors, and breakpoints are defined with @theme in your CSS file.',
+        fixLabel: 'Fix — use @theme in CSS for v4 configuration',
+        fixCode: '// ❌ Wrong (v4) — tailwind.config.js is deprecated\nmodule.exports = {\n  theme: { extend: { colors: { brand: \'#3b82f6\' } } }\n}\n\n/* ✅ Right (v4) — CSS-first @theme */\n@import \'tailwindcss\';\n@theme {\n  --color-brand: #3b82f6;\n  /* Now bg-brand, text-brand, border-brand work */\n}',
+      },
+      {
+        title: 'Mixing viewport-based responsive (md:) and container queries (@md:)',
+        why: 'md: responds to the viewport width. @md: responds to the nearest container with container-type set. They serve different purposes — viewport queries for page-level breakpoints, container queries for component-level responsiveness.',
+        fixLabel: 'Fix — use md: for page layout, @md: for component internals',
+        fixCode: '<!-- ❌ Confusing — @md: requires a container-type ancestor -->\n<div>  <!-- no @container on this wrapper -->\n  <div class="@md:flex-row">Never switches to row</div>\n</div>\n\n<!-- ✅ Right — @container on the wrapper enables @md: -->\n<div class="@container">\n  <div class="flex flex-col @md:flex-row gap-4">\n    <aside class="w-full @md:w-64">Sidebar</aside>\n    <main class="flex-1">Content</main>\n  </div>\n</div>',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Reusable Button with @apply',
+        description: 'Define a .btn base class using @apply in your global CSS, then extend it with variant classes. This keeps JSX clean while centralizing the button pattern.',
+        code: '/* globals.css */\n@layer components {\n  .btn {\n    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-semibold\n           transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-offset-2\n           focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed;\n  }\n  .btn-primary { @apply btn bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500; }\n  .btn-ghost { @apply btn bg-transparent text-gray-700 hover:bg-gray-100; }\n}\n\n// Button.tsx\n// <button className="btn-primary">Save changes</button>',
+      },
+      {
+        context: 'Next.js',
+        heading: 'Tailwind v4 with custom design tokens',
+        description: 'Define a complete design token system in @theme. All generated utilities (bg-*, text-*, p-*, etc.) automatically reflect the custom values.',
+        code: '/* app/globals.css */\n@import \'tailwindcss\';\n\n@theme {\n  --font-sans: \'Inter\', system-ui, sans-serif;\n  --color-primary-500: oklch(0.60 0.22 250);\n  --color-primary-600: oklch(0.50 0.22 250);\n  --color-surface: oklch(0.98 0 0);\n  --radius-card: 12px;\n  --spacing-section: 5rem;\n}\n\n/* auto-generates font-sans, bg-primary-500, text-primary-600, bg-surface */',
       },
     ],
   },

@@ -17,16 +17,6 @@ const stepLabels = [
   'Real-world: RBAC roles',
 ]
 
-const codeBlock = (compact: boolean): React.CSSProperties => ({
-  fontFamily: 'var(--font-mono)',
-  fontSize: compact ? 11 : 13,
-  background: 'var(--surface-bright)',
-  borderRadius: 8,
-  padding: compact ? '10px 14px' : '14px 20px',
-  lineHeight: 1.8,
-  display: 'inline-block',
-  textAlign: 'left',
-})
 
 function KVRow({ k, v, color, delay, compact }: { k: string; v: string | number; color: string; delay: number; compact: boolean }) {
   return (

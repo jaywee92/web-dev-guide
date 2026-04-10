@@ -15,7 +15,7 @@ function toRefKey(name: string): string {
 interface Props {
   entry: ReferenceEntry
   accentColor: string
-  type: 'html' | 'css'
+  type: string
 }
 
 export default function ReferenceCard({ entry, accentColor, type }: Props) {

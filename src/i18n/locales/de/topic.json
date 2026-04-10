@@ -4,5 +4,7 @@
   "whatIs": "Was ist {{title}}?",
   "howItWorks": "Wie es funktioniert",
   "stepOf": "Schritt {{current}} von {{total}}",
-  "keyTakeaways": "Wichtigste Erkenntnisse"
+  "keyTakeaways": "Wichtigste Erkenntnisse",
+  "learnMore": "+ Mehr erfahren",
+  "showLess": "▲ Weniger anzeigen"
 }

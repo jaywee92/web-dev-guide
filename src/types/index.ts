@@ -2,7 +2,7 @@ export type PlaygroundType = 'visual-controls' | 'monaco' | 'none' | 'gradient' 
 export type ThemeMode = 'dark' | 'light'
 export type CategoryId = 'html-core' | 'html-structure' | 'html-interactive'
   | 'css-basics' | 'css-layout' | 'css-modern' | 'css-frameworks'
-  | 'javascript' | 'javascript-oop' | 'javascript-async' | 'typescript' | 'typescript-oop' | 'typescript-advanced' | 'react' | 'react-ecosystem' | 'webapis' | 'http' | 'postgresql' | 'nextjs'
+  | 'javascript' | 'javascript-oop' | 'javascript-async' | 'typescript' | 'typescript-oop' | 'typescript-advanced' | 'react' | 'react-ecosystem' | 'webapis' | 'http' | 'postgresql' | 'nextjs' | 'nextjs-rendering' | 'nextjs-data'
   | 'git' | 'git-collab' | 'testing'
 
 export interface Category {
@@ -69,6 +69,7 @@ export interface ExplanationStep {
   icon?: string        // emoji shown in the story card visual header
   codeExample?: string
   language?: string
+  expandedText?: string  // deeper explanation, shown on demand via "+ Learn more"
   analogy?: {
     icon: string     // emoji, e.g. "🎒"
     title: string    // shown in analogy panel header

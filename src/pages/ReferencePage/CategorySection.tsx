@@ -5,7 +5,7 @@ import ReferenceCard from './ReferenceCard'
 interface Props {
   category: ReferenceCategory
   id: string
-  type: 'html' | 'css'
+  type: string
 }
 
 export default function CategorySection({ category, id, type }: Props) {

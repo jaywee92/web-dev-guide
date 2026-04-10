@@ -6,8 +6,16 @@ import { CSS_REFERENCE } from '@/data/cssReference'
 import PageWrapper from '@/components/layout/PageWrapper'
 import CategorySection from './CategorySection'
 
+export type RefType = 'html' | 'css' | 'javascript' | 'typescript' | 'react' | 'tailwind' | 'nextjs' | 'webapis' | 'postgresql' | 'git' | 'testing'
+
+export interface SelectedEntry {
+  entry: import('@/types').ReferenceEntry
+  color: string
+  categoryTitle: string
+}
+
 interface Props {
-  type: 'html' | 'css'
+  type: RefType
 }
 
 const META = {
@@ -31,7 +39,7 @@ const META = {
 
 export default function ReferencePage({ type }: Props) {
   const { t } = useTranslation('reference')
-  const meta = META[type]
+  const meta = META[type as 'html' | 'css'] ?? META.html
   const [activeCategory, setActiveCategory] = useState(meta.data[0]?.id ?? '')
 
   useEffect(() => {
