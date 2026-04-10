@@ -4565,7 +4565,7 @@ export default defineConfig({
   {
     id: 'http-ssr-csr',
     category: 'http',
-    animationComponent: undefined,
+    animationComponent: 'SsrCsrViz',
     bannerComponent: 'SsrCsrBanner',
     nextTopicId: 'http-status',
     title: 'SSR vs CSR',
@@ -4724,7 +4724,7 @@ export default defineConfig({
   {
     id: 'db-intro',
     category: 'postgresql',
-    animationComponent: undefined,
+    animationComponent: 'DbIntroViz',
     bannerComponent: 'DbIntroBanner',
     nextTopicId: 'postgres-queries',
     title: 'Databases & SQL Intro',
@@ -8313,7 +8313,7 @@ function validate(data: unknown) {
     category: 'testing',
     color: '#34d399',
     estimatedMinutes: 12,
-    animationComponent: undefined,
+    animationComponent: 'TestingBasicsViz',
     bannerComponent: 'VitestBanner',
     playgroundType: 'none' as const,
     sections: [
@@ -8392,7 +8392,7 @@ function validate(data: unknown) {
     category: 'testing',
     color: '#34d399',
     estimatedMinutes: 14,
-    animationComponent: undefined,
+    animationComponent: 'TestingReactViz',
     bannerComponent: 'ReactTestingBanner',
     playgroundType: 'none' as const,
     sections: [
@@ -8472,7 +8472,7 @@ function validate(data: unknown) {
     category: 'testing',
     color: '#34d399',
     estimatedMinutes: 10,
-    animationComponent: undefined,
+    animationComponent: 'CiViz',
     bannerComponent: 'CoverageCIBanner',
     playgroundType: 'none' as const,
     sections: [
