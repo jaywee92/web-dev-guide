@@ -84,6 +84,11 @@ const lazyRegistry: Record<string, () => Promise<{ default: AnimComp }>> = {
   NextjsDataFetchingViz:      () => import('./nextjs/NextjsDataFetchingViz'),
   NextjsServerActionsViz:     () => import('./nextjs/NextjsServerActionsViz'),
   NextjsRouteHandlersViz:     () => import('./nextjs/NextjsRouteHandlersViz'),
+  TestingBasicsViz:           () => import('./testing/TestingBasicsViz'),
+  TestingReactViz:            () => import('./testing/TestingReactViz'),
+  CiViz:                      () => import('./testing/CiViz'),
+  SsrCsrViz:                  () => import('./http/SsrCsrViz'),
+  DbIntroViz:                 () => import('./postgresql/DbIntroViz'),
 }
 
 // Synchronous cache
