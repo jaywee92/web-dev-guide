@@ -7968,6 +7968,40 @@ for (let i = 0; i < 5; i++) {
         'Writing class components in new projects — Hooks are the modern standard; class components are only needed for error boundaries',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Using Create React App in a new project',
+        why: 'CRA is deprecated and unmaintained. Its webpack-based build is 10-50x slower than Vite and produces larger bundles. New projects started with CRA inherit years of accumulated tech debt.',
+        fixLabel: 'Fix -- scaffold with Vite instead',
+        fixCode: '// ❌ Wrong -- CRA is deprecated\nnpx create-react-app my-app\n\n// ✅ Right -- use Vite for SPAs\nnpm create vite@latest my-app -- --template react-ts\n\n// ✅ Or Next.js for SSR / full-stack\nnpx create-next-app@latest my-app',
+      },
+      {
+        title: 'Writing class components in new code',
+        why: 'Class components require more boilerplate, cannot use hooks, and make logic reuse awkward. The React team recommends hooks for all new code; class components are only needed for error boundaries.',
+        fixLabel: 'Fix -- convert to a function component with hooks',
+        fixCode: '// ❌ Wrong -- class component\nclass Counter extends React.Component {\n  state = { count: 0 }\n  render() {\n    return <button onClick={() => this.setState({ count: this.state.count + 1 })}>{this.state.count}</button>\n  }\n}\n\n// ✅ Right -- function component\nfunction Counter() {\n  const [count, setCount] = useState(0)\n  return <button onClick={() => setCount(c => c + 1)}>{count}</button>\n}',
+      },
+      {
+        title: 'Confusing React Server Components with traditional SSR',
+        why: 'Traditional SSR runs the same component code on both server and client. React Server Components run only on the server and never ship their source code or dependencies to the browser.',
+        fixLabel: 'Fix -- keep heavy dependencies in Server Components; "use client" marks the bundle boundary',
+        fixCode: '// ❌ Wrong -- importing a heavy library inside a Client Component\n"use client"\nimport { parseMarkdown } from "heavy-md-parser" // ships to browser!\n\n// ✅ Right -- parse in a Server Component (no "use client")\nexport default async function Page() {\n  const html = parseMarkdown(content) // never sent to browser\n  return <ClientShell html={html} />\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Vite SPA scaffold with TypeScript',
+        description: 'Bootstrap a React SPA with Vite and TypeScript. The template gives you HMR and a minimal setup that teaches exactly which React APIs you are using without framework magic.',
+        code: 'npm create vite@latest my-app -- --template react-ts\n// cd my-app && npm install && npm run dev\n\n// src/main.tsx\nimport { StrictMode } from "react"\nimport { createRoot } from "react-dom/client"\nimport App from "./App"\n\ncreateRoot(document.getElementById("root")!).render(\n  <StrictMode><App /></StrictMode>,\n)',
+      },
+      {
+        context: 'Next.js',
+        heading: 'Server Component fetching from a database',
+        description: 'A Server Component that queries a database directly. No useEffect, no API route needed -- the query runs on the server and only HTML reaches the browser.',
+        code: '// app/products/page.tsx -- Server Component (no "use client")\nimport { db } from "@/lib/db"\n\nexport default async function ProductsPage() {\n  const products = await db.query("SELECT id, name, price FROM products LIMIT 20")\n  return (\n    <ul>\n      {products.map(p => (\n        <li key={p.id}>{p.name} -- ${p.price}</li>\n      ))}\n    </ul>\n  )\n}',
+      },
+    ],
   },
   {
     id: 'react-components',
@@ -8081,6 +8115,40 @@ for (let i = 0; i < 5; i++) {
         'Calling a component as a plain function — always render as JSX (<MyComp />) not as a function call (MyComp()), otherwise React cannot track its lifecycle',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Using array index as the key prop',
+        why: 'Index keys cause React to misidentify elements when the list reorders or items are removed, resulting in stale state, wrong focus, and incorrect animations.',
+        fixLabel: 'Fix -- use a stable unique ID from your data as the key',
+        fixCode: '// ❌ Wrong -- index as key breaks when list reorders\n{items.map((item, i) => (\n  <TodoItem key={i} item={item} />\n))}\n\n// ✅ Right -- stable ID from the data\n{items.map(item => (\n  <TodoItem key={item.id} item={item} />\n))}',
+      },
+      {
+        title: 'Mutating props inside a component',
+        why: "Props are read-only. Mutating them does not trigger a re-render and causes the parent and child to silently diverge, producing hard-to-trace bugs.",
+        fixLabel: 'Fix -- copy the prop value into local state if you need to modify it',
+        fixCode: "// ❌ Wrong -- mutating a prop directly\nfunction TagList({ tags }: { tags: string[] }) {\n  tags.push('new') // mutates the parent's array!\n  return <ul>{tags.map(t => <li key={t}>{t}</li>)}</ul>\n}\n\n// ✅ Right -- copy into local state\nfunction TagList({ tags }: { tags: string[] }) {\n  const [localTags, setLocalTags] = useState([...tags])\n  return <ul>{localTags.map(t => <li key={t}>{t}</li>)}</ul>\n}",
+      },
+      {
+        title: 'Starting a component name with a lowercase letter',
+        why: 'React distinguishes HTML elements from components by capitalisation. A lowercase name like <myButton /> is treated as an unknown HTML element and renders nothing useful.',
+        fixLabel: 'Fix -- always start component names with a capital letter',
+        fixCode: '// ❌ Wrong -- lowercase treated as HTML element\nfunction myButton({ label }: { label: string }) {\n  return <button>{label}</button>\n}\n// <myButton label="Click" /> renders <mybutton> in the DOM\n\n// ✅ Right -- capital letter = React component\nfunction MyButton({ label }: { label: string }) {\n  return <button>{label}</button>\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Reusable Button component with TypeScript props',
+        description: 'A typed, composable button that accepts variant, size, and children. Exported as a named component so it can be used throughout the app without repeating class names.',
+        code: 'interface ButtonProps {\n  variant?: "primary" | "secondary" | "danger"\n  size?: "sm" | "md" | "lg"\n  disabled?: boolean\n  onClick?: () => void\n  children: React.ReactNode\n}\n\nexport function Button({\n  variant = "primary",\n  size = "md",\n  disabled = false,\n  onClick,\n  children,\n}: ButtonProps) {\n  return (\n    <button\n      className={`btn btn-${variant} btn-${size}`}\n      disabled={disabled}\n      onClick={onClick}\n    >\n      {children}\n    </button>\n  )\n}',
+      },
+      {
+        context: 'React',
+        heading: 'Card layout component using the children prop',
+        description: 'A Card wrapper that uses children for flexible content projection. Any JSX can be placed inside it without the card needing to know about the content structure.',
+        code: 'interface CardProps {\n  title: string\n  children: React.ReactNode\n  footer?: React.ReactNode\n}\n\nexport function Card({ title, children, footer }: CardProps) {\n  return (\n    <div className="rounded-xl border p-4 shadow-sm">\n      <h2 className="mb-2 text-lg font-semibold">{title}</h2>\n      <div className="space-y-2">{children}</div>\n      {footer && <div className="mt-4 border-t pt-3">{footer}</div>}\n    </div>\n  )\n}',
+      },
+    ],
     playgroundExamples: [
       {
         label: 'Component & props',
@@ -8207,6 +8275,40 @@ for (let i = 0; i < 5; i++) {
         'Storing derived values in state — if a value can be computed from existing state or props, compute it during render instead of keeping a separate useState',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Mutating state directly instead of calling setState',
+        why: "React's re-render is triggered by calling setState. If you mutate the existing state object or array directly, React sees the same reference and skips the re-render -- the UI stays stale.",
+        fixLabel: 'Fix -- always return a new object or array from the setter',
+        fixCode: "// ❌ Wrong -- direct mutation, React won't re-render\nconst [items, setItems] = useState(['a', 'b'])\nitems.push('c') // React never sees this change\n\n// ✅ Right -- new array reference triggers re-render\nsetItems(prev => [...prev, 'c'])\n\n// ❌ Wrong -- mutating object state\nconst [user, setUser] = useState({ name: 'Alice', age: 30 })\nuser.name = 'Bob' // silent bug\n\n// ✅ Right -- spread to a new object\nsetUser(prev => ({ ...prev, name: 'Bob' }))",
+      },
+      {
+        title: 'Not using the functional updater when state depends on previous value',
+        why: 'React batches updates. If you call setState(count + 1) multiple times in the same event, all calls read the same stale count from the closure and produce only one increment instead of many.',
+        fixLabel: 'Fix -- use the prev => newValue form whenever new state depends on old state',
+        fixCode: '// ❌ Wrong -- both calls read the same stale count\nfunction handleDoubleClick() {\n  setCount(count + 1) // reads count = 0\n  setCount(count + 1) // still reads count = 0 -- only increments by 1\n}\n\n// ✅ Right -- each call sees the latest queued value\nfunction handleDoubleClick() {\n  setCount(prev => prev + 1) // 0 -> 1\n  setCount(prev => prev + 1) // 1 -> 2\n}',
+      },
+      {
+        title: 'Calling a Hook inside a condition or loop',
+        why: 'React relies on the order of Hook calls being identical on every render. Placing useState inside an if block or loop breaks this order when the condition changes, causing a crash.',
+        fixLabel: 'Fix -- always call Hooks unconditionally at the top level of the component',
+        fixCode: '// ❌ Wrong -- Hook inside a condition\nfunction Profile({ isLoggedIn }: { isLoggedIn: boolean }) {\n  if (isLoggedIn) {\n    const [name, setName] = useState(\'\') // breaks on toggle!\n  }\n  return <div />\n}\n\n// ✅ Right -- unconditional Hook call at top level\nfunction Profile({ isLoggedIn }: { isLoggedIn: boolean }) {\n  const [name, setName] = useState(\'\')\n  if (!isLoggedIn) return <Login />\n  return <div>{name}</div>\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Controlled form with object state',
+        description: 'Use a single useState holding a form object. Spread the previous state on every field change so unrelated fields are preserved.',
+        code: 'interface LoginForm {\n  email: string\n  password: string\n}\n\nfunction LoginPage() {\n  const [form, setForm] = useState<LoginForm>({ email: \'\', password: \'\' })\n\n  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {\n    const { name, value } = e.target\n    setForm(prev => ({ ...prev, [name]: value }))\n  }\n\n  return (\n    <form>\n      <input name="email"    value={form.email}    onChange={handleChange} />\n      <input name="password" value={form.password} onChange={handleChange} />\n    </form>\n  )\n}',
+      },
+      {
+        context: 'React',
+        heading: 'Todo list with immutable array operations',
+        description: 'Add, toggle, and remove todos from a useState array using map and filter. Each operation returns a new array so React detects the change and re-renders.',
+        code: 'interface Todo { id: number; text: string; done: boolean }\n\nfunction TodoApp() {\n  const [todos, setTodos] = useState<Todo[]>([])\n\n  const add    = (text: string) =>\n    setTodos(prev => [...prev, { id: Date.now(), text, done: false }])\n\n  const toggle = (id: number) =>\n    setTodos(prev => prev.map(t => t.id === id ? { ...t, done: !t.done } : t))\n\n  const remove = (id: number) =>\n    setTodos(prev => prev.filter(t => t.id !== id))\n\n  return (\n    <ul>\n      {todos.map(t => (\n        <li key={t.id}>\n          <button onClick={() => toggle(t.id)}>{t.text}</button>\n          <button onClick={() => remove(t.id)}>✕</button>\n        </li>\n      ))}\n    </ul>\n  )\n}',
+      },
+    ],
     playgroundExamples: [
       {
         label: 'useState basics',
@@ -8324,6 +8426,40 @@ for (let i = 0; i < 5; i++) {
         'Putting an async function directly in useEffect — useEffect cannot return a Promise; wrap async code in an inner async function and call it',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Missing a dependency in the deps array (stale closure)',
+        why: 'When the effect uses a prop or state variable that is not in the dependency array, the effect closes over the initial value and never sees updates -- a stale closure bug.',
+        fixLabel: 'Fix -- include every value from the component scope that the effect reads',
+        fixCode: '// ❌ Wrong -- count is used but missing from deps\nuseEffect(() => {\n  const id = setInterval(() => {\n    console.log(count) // always logs 0 -- stale closure!\n  }, 1000)\n  return () => clearInterval(id)\n}, []) // should be [count]\n\n// ✅ Right -- count in deps array\nuseEffect(() => {\n  const id = setInterval(() => console.log(count), 1000)\n  return () => clearInterval(id)\n}, [count])',
+      },
+      {
+        title: 'Forgetting to return a cleanup function',
+        why: 'Effects that set up subscriptions, event listeners, or timers without a cleanup function leak resources and can call setState on unmounted components, causing React warnings.',
+        fixLabel: 'Fix -- always return a cleanup function from effects that set up persistent resources',
+        fixCode: '// ❌ Wrong -- event listener leaks after unmount\nuseEffect(() => {\n  window.addEventListener(\'resize\', handleResize)\n}, []) // no cleanup!\n\n// ✅ Right -- remove the listener on unmount\nuseEffect(() => {\n  window.addEventListener(\'resize\', handleResize)\n  return () => window.removeEventListener(\'resize\', handleResize)\n}, [])',
+      },
+      {
+        title: 'Making the useEffect callback itself async',
+        why: 'useEffect expects the callback to return either undefined or a cleanup function. An async function always returns a Promise, which React cannot use as a cleanup -- it silently ignores it and the cleanup never runs.',
+        fixLabel: 'Fix -- define an inner async function and call it immediately inside the effect',
+        fixCode: '// ❌ Wrong -- async useEffect returns a Promise, not a cleanup\nuseEffect(async () => {\n  const data = await fetchUser(id)\n  setUser(data)\n}, [id])\n\n// ✅ Right -- inner async function called immediately\nuseEffect(() => {\n  let cancelled = false\n  async function load() {\n    const data = await fetchUser(id)\n    if (!cancelled) setUser(data)\n  }\n  load()\n  return () => { cancelled = true }\n}, [id])',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Data fetching with race condition fix',
+        description: 'Fetch user data whenever the userId prop changes. The cleanup flag prevents a slow earlier request from overwriting the result of a faster newer one.',
+        code: 'function UserProfile({ userId }: { userId: number }) {\n  const [user, setUser] = useState<User | null>(null)\n  const [loading, setLoading] = useState(true)\n\n  useEffect(() => {\n    let cancelled = false\n    setLoading(true)\n\n    async function load() {\n      const res  = await fetch(`/api/users/${userId}`)\n      const data: User = await res.json()\n      if (!cancelled) {\n        setUser(data)\n        setLoading(false)\n      }\n    }\n\n    load()\n    return () => { cancelled = true }\n  }, [userId])\n\n  if (loading) return <Spinner />\n  return <div>{user?.name}</div>\n}',
+      },
+      {
+        context: 'React',
+        heading: 'Window event listener with cleanup',
+        description: 'Subscribe to window keyboard events on mount and remove the listener on unmount. The empty dependency array ensures the effect runs once and the cleanup prevents leaks.',
+        code: 'function KeyboardShortcuts() {\n  const [lastKey, setLastKey] = useState<string | null>(null)\n\n  useEffect(() => {\n    function handleKeyDown(e: KeyboardEvent) {\n      setLastKey(e.key)\n    }\n\n    window.addEventListener(\'keydown\', handleKeyDown)\n    return () => window.removeEventListener(\'keydown\', handleKeyDown)\n  }, []) // empty deps -- register once on mount\n\n  return <p>Last key: {lastKey ?? \'none\'}</p>\n}',
+      },
+    ],
     playgroundExamples: [
       {
         label: 'useEffect basics',
@@ -9818,6 +9954,40 @@ function validate(data: unknown) {
         'Assuming useParams values are numbers — URL params are always strings; parse with parseInt or Number() before using as a numeric ID',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Using <a href> instead of <Link> for internal navigation',
+        why: 'A native anchor tag causes a full page reload, resetting all React state and re-downloading the app bundle. Link intercepts the click and performs a client-side navigation instead.',
+        fixLabel: 'Fix -- import Link from react-router-dom for all internal links',
+        fixCode: '// ❌ Wrong -- full page reload, React state lost\n<a href="/about">About</a>\n\n// ✅ Right -- client-side navigation, state preserved\nimport { Link } from "react-router-dom"\n<Link to="/about">About</Link>',
+      },
+      {
+        title: 'Forgetting BrowserRouter at the app root',
+        why: 'All React Router hooks (useNavigate, useParams, useLocation) read from the nearest Router context. Without a Router ancestor they throw: "useNavigate() may be used only in the context of a <Router> component".',
+        fixLabel: 'Fix -- wrap the app root with BrowserRouter in main.tsx',
+        fixCode: '// ❌ Wrong -- no Router context, hooks throw\nReactDOM.createRoot(root).render(<App />)\n\n// ✅ Right -- wrap with BrowserRouter\nimport { BrowserRouter } from "react-router-dom"\nReactDOM.createRoot(root).render(\n  <BrowserRouter>\n    <App />\n  </BrowserRouter>\n)',
+      },
+      {
+        title: 'Forgetting <Outlet /> in a layout route component',
+        why: "If the layout component renders shared UI (Navbar, Sidebar) but omits <Outlet />, child routes match the URL correctly but their component never appears -- you see the layout with an empty content area.",
+        fixLabel: 'Fix -- add <Outlet /> to the layout component where child routes should render',
+        fixCode: '// ❌ Wrong -- no Outlet, child content never renders\nfunction AppLayout() {\n  return (\n    <div>\n      <Navbar />\n      {/* child route matched but nothing shows */}\n    </div>\n  )\n}\n\n// ✅ Right -- Outlet renders the matched child\nimport { Outlet } from "react-router-dom"\nfunction AppLayout() {\n  return (\n    <div>\n      <Navbar />\n      <Outlet /> {/* Dashboard, Settings etc. render here */}\n    </div>\n  )\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'App shell with nested layout routes',
+        description: 'A root layout renders the Navbar and wraps all authenticated pages. Child routes render inside the Outlet. A wildcard route catches unknown URLs and shows a 404 page.',
+        code: 'import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom"\n\nfunction AppLayout() {\n  return (\n    <>\n      <Navbar />\n      <main className="p-4"><Outlet /></main>\n    </>\n  )\n}\n\nfunction App() {\n  return (\n    <BrowserRouter>\n      <Routes>\n        <Route element={<AppLayout />}>\n          <Route index element={<Home />} />\n          <Route path="products" element={<Products />} />\n          <Route path="products/:id" element={<ProductDetail />} />\n        </Route>\n        <Route path="*" element={<NotFound />} />\n      </Routes>\n    </BrowserRouter>\n  )\n}',
+      },
+      {
+        context: 'React',
+        heading: 'Protected route with useNavigate after login',
+        description: 'A PrivateRoute component redirects unauthenticated users to the login page. After successful login the form navigates to the dashboard, replacing the login entry in browser history.',
+        code: 'import { Navigate, useNavigate } from "react-router-dom"\n\nfunction PrivateRoute({ children }: { children: React.ReactNode }) {\n  const { user } = useAuth()\n  if (!user) return <Navigate to="/login" replace />\n  return <>{children}</>\n}\n\nfunction LoginForm() {\n  const navigate = useNavigate()\n\n  async function handleSubmit(e: React.FormEvent) {\n    e.preventDefault()\n    const form = new FormData(e.currentTarget as HTMLFormElement)\n    await login(form.get(\'email\') as string, form.get(\'password\') as string)\n    navigate(\'/dashboard\', { replace: true })\n  }\n\n  return <form onSubmit={handleSubmit}>...</form>\n}',
+      },
+    ],
     playgroundExamples: [
       {
         label: 'Link & navigation',
@@ -10221,6 +10391,40 @@ function validate(data: unknown) {
         'One Suspense boundary for independent data slices — one slow request blocks all; use separate boundaries per slice',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Awaiting the promise before passing it to Suspense',
+        why: 'If you await a promise before handing it to a component that calls use(), the promise is already resolved. The component never suspends -- the Suspense boundary never shows its fallback and there is no performance benefit.',
+        fixLabel: 'Fix -- start the fetch and pass the un-awaited promise to the component',
+        fixCode: '// ❌ Wrong -- promise already resolved, component never suspends\nasync function Page() {\n  const post = await fetchPost(id) // awaited here\n  return <Post promise={Promise.resolve(post)} /> // too late!\n}\n\n// ✅ Right -- promise in flight, component suspends until it resolves\nfunction Page() {\n  const postPromise = fetchPost(id) // start fetch, do NOT await\n  return (\n    <Suspense fallback={<Spinner />}>\n      <Post promise={postPromise} />\n    </Suspense>\n  )\n}',
+      },
+      {
+        title: 'Fetching inside the render function without useEffect',
+        why: 'Calling fetch() directly inside a component body triggers a new request on every render. Each setState re-render fires another fetch, producing an infinite loop.',
+        fixLabel: 'Fix -- put fetch calls inside useEffect, a router loader, or a data-fetching library',
+        fixCode: '// ❌ Wrong -- fetch fires on every render (infinite loop!)\nfunction Posts() {\n  const [data, setData] = useState(null)\n  fetch(\'/api/posts\').then(r => r.json()).then(setData) // triggers re-render!\n  return <div>{data}</div>\n}\n\n// ✅ Right -- wrapped in useEffect\nfunction Posts() {\n  const [data, setData] = useState(null)\n  useEffect(() => {\n    fetch(\'/api/posts\').then(r => r.json()).then(setData)\n  }, [])\n  return <div>{data}</div>\n}',
+      },
+      {
+        title: 'Wrapping all parallel data slices in a single Suspense boundary',
+        why: 'A single Suspense boundary blocks all sibling components until every promise resolves. One slow request delays all visible content. Separate boundaries let fast data render while slow data is still loading.',
+        fixLabel: 'Fix -- use a separate Suspense boundary for each independently loadable section',
+        fixCode: '// ❌ Wrong -- slowest request delays everything\n<Suspense fallback={<Spinner />}>\n  <UserStats />    {/* fast: 100ms */}\n  <RecentOrders /> {/* slow: 800ms -- blocks UserStats */}\n</Suspense>\n\n// ✅ Right -- each section renders independently\n<>\n  <Suspense fallback={<Skeleton />}><UserStats /></Suspense>\n  <Suspense fallback={<Skeleton />}><RecentOrders /></Suspense>\n</>',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Parallel data fetch with Suspense and use()',
+        description: 'Start two fetches simultaneously at the page level before any component mounts. Each feeds its own Suspense boundary so they render independently as data arrives.',
+        code: 'import { use, Suspense } from "react"\n\nfunction Post({ promise }: { promise: Promise<Post> }) {\n  const post = use(promise)\n  return <article><h1>{post.title}</h1><p>{post.body}</p></article>\n}\n\nfunction Comments({ promise }: { promise: Promise<Comment[]> }) {\n  const comments = use(promise)\n  return <ul>{comments.map(c => <li key={c.id}>{c.body}</li>)}</ul>\n}\n\nfunction PostPage({ id }: { id: number }) {\n  const postP     = fetchPost(id)     // do NOT await\n  const commentsP = fetchComments(id) // do NOT await\n  return (\n    <>\n      <Suspense fallback={<Skeleton />}><Post promise={postP} /></Suspense>\n      <Suspense fallback={<Skeleton />}><Comments promise={commentsP} /></Suspense>\n    </>\n  )\n}',
+      },
+      {
+        context: 'React Router v7',
+        heading: 'Loader with parallel fetches using Promise.all',
+        description: 'A React Router loader fetches two resources in parallel with Promise.all. By the time the component renders, both are available with no loading state needed in the component.',
+        code: 'export async function loader({ params }: LoaderFunctionArgs) {\n  const [user, posts] = await Promise.all([\n    fetch(`/api/users/${params.id}`).then(r => r.json()),\n    fetch(`/api/users/${params.id}/posts`).then(r => r.json()),\n  ])\n  return { user, posts }\n}\n\nexport default function ProfilePage({ loaderData }: { loaderData: { user: User; posts: Post[] } }) {\n  const { user, posts } = loaderData\n  return (\n    <div>\n      <h1>{user.name}</h1>\n      <ul>{posts.map(p => <li key={p.id}>{p.title}</li>)}</ul>\n    </div>\n  )\n}',
+      },
+    ],
     playgroundExamples: [
       {
         label: 'useEffect fetch',
@@ -10329,6 +10533,40 @@ function validate(data: unknown) {
         'Using ErrorBoundary for expected validation errors — use useActionState for per-field feedback and ErrorBoundary only for unexpected failures',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Calling useFormStatus in the form component itself instead of a child',
+        why: 'useFormStatus reads the pending state of the nearest ancestor <form> with a React 19 action. Called in the component that renders the form, it cannot see its own form and always returns pending: false.',
+        fixLabel: 'Fix -- extract the submit button into its own child component',
+        fixCode: '// ❌ Wrong -- useFormStatus has no ancestor form to read\nfunction ContactForm() {\n  const { pending } = useFormStatus() // always pending: false!\n  return (\n    <form action={submitContact}>\n      <button disabled={pending}>Send</button>\n    </form>\n  )\n}\n\n// ✅ Right -- SubmitButton is a child of the form\nfunction SubmitButton() {\n  const { pending } = useFormStatus() // reads the parent form correctly\n  return <button type="submit" disabled={pending}>{pending ? \'Sending...\':\'Send\'}</button>\n}\nfunction ContactForm() {\n  return (\n    <form action={submitContact}>\n      <SubmitButton />\n    </form>\n  )\n}',
+      },
+      {
+        title: 'Getting the action signature wrong in useActionState',
+        why: 'The action passed to useActionState receives (previousState, formData) -- previousState is the first argument. If you write (formData) only, previousState silently fills that slot and formData is undefined.',
+        fixLabel: 'Fix -- always declare previousState as the first argument in the action function',
+        fixCode: '// ❌ Wrong -- formData is undefined because previousState fills the first slot\nasync function signupAction(formData: FormData) {\n  const email = formData.get(\'email\') // TypeError: formData is previousState!\n}\nconst [state, action] = useActionState(signupAction, { errors: {} })\n\n// ✅ Right -- correct two-argument signature\nasync function signupAction(previousState: FormState, formData: FormData) {\n  const email = formData.get(\'email\') // works correctly\n}',
+      },
+      {
+        title: 'Using onSubmit + e.preventDefault() alongside the React 19 action prop',
+        why: 'Adding both onSubmit with preventDefault and the action prop means the native submit event is cancelled before React can process it, so the action function never fires.',
+        fixLabel: 'Fix -- remove onSubmit and preventDefault when using the action prop',
+        fixCode: '// ❌ Wrong -- onSubmit with preventDefault cancels the submit event\n<form\n  onSubmit={e => e.preventDefault()} // prevents action from firing!\n  action={myAction}\n>\n\n// ✅ Right -- action prop is all you need\n<form action={myAction}>\n  <input name="email" />\n  <SubmitButton />\n</form>',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Login form with useActionState for per-field errors',
+        description: 'useActionState wraps the login action and exposes the latest result as state. Validation errors render inline next to the relevant fields without any useState needed in the component.',
+        code: 'import { useActionState } from "react"\nimport { useFormStatus } from "react-dom"\n\ntype LoginState = { errors: { email?: string; password?: string }; success?: boolean }\n\nasync function loginAction(prev: LoginState, formData: FormData): Promise<LoginState> {\n  const email    = String(formData.get(\'email\') ?? \'\')\n  const password = String(formData.get(\'password\') ?? \'\')\n  const errors: LoginState[\'errors\'] = {}\n  if (!email.includes(\'@\')) errors.email    = \'Valid email required\'\n  if (password.length < 8)  errors.password = \'At least 8 characters\'\n  if (Object.keys(errors).length) return { errors }\n  await signIn(email, password)\n  return { errors: {}, success: true }\n}\n\nfunction SubmitButton() {\n  const { pending } = useFormStatus()\n  return <button type="submit" disabled={pending}>{pending ? \'Signing in...\':\'Sign in\'}</button>\n}\n\nfunction LoginForm() {\n  const [state, action] = useActionState(loginAction, { errors: {} })\n  return (\n    <form action={action} className="space-y-4">\n      <div>\n        <input name="email" type="email" placeholder="Email" />\n        {state.errors.email && <p className="text-red-500 text-sm">{state.errors.email}</p>}\n      </div>\n      <div>\n        <input name="password" type="password" placeholder="Password" />\n        {state.errors.password && <p className="text-red-500 text-sm">{state.errors.password}</p>}\n      </div>\n      <SubmitButton />\n    </form>\n  )\n}',
+      },
+      {
+        context: 'React',
+        heading: 'File upload form using FormData',
+        description: 'A file upload form uses the action prop and reads the File object from FormData. The SubmitButton uses useFormStatus to disable during upload.',
+        code: 'import { useFormStatus } from "react-dom"\n\nasync function uploadAction(formData: FormData) {\n  const file = formData.get(\'avatar\') as File\n  if (!file || file.size === 0) return\n  const body = new FormData()\n  body.append(\'avatar\', file)\n  await fetch(\'/api/upload\', { method: \'POST\', body })\n}\n\nfunction SubmitButton() {\n  const { pending } = useFormStatus()\n  return <button type="submit" disabled={pending}>{pending ? \'Uploading...\':\'Upload\'}</button>\n}\n\nfunction AvatarUpload() {\n  return (\n    <form action={uploadAction}>\n      <input type="file" name="avatar" accept="image/*" />\n      <SubmitButton />\n    </form>\n  )\n}',
+      },
+    ],
     playgroundExamples: [
       {
         label: 'useTransition',
@@ -10437,6 +10675,40 @@ function validate(data: unknown) {
         'Setting staleTime: Infinity globally and then wondering why data never updates when it changes on the server',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Not including query variables in queryKey',
+        why: "TanStack Query uses the queryKey as a cache address. If two components fetch different users but both use queryKey: ['user'], they share the same cache entry. The second user always returns the first user's cached data.",
+        fixLabel: 'Fix -- include every variable the queryFn uses as part of the queryKey array',
+        fixCode: "// ❌ Wrong -- all users share one cache entry\nconst { data } = useQuery({\n  queryKey: ['user'],\n  queryFn: () => fetchUser(userId), // userId not in key!\n})\n\n// ✅ Right -- each userId has its own cache slot\nconst { data } = useQuery({\n  queryKey: ['user', userId], // userId is part of the key\n  queryFn: () => fetchUser(userId),\n})",
+      },
+      {
+        title: 'Forgetting to invalidate queries after a mutation',
+        why: "After creating, updating, or deleting a resource, the related query cache still holds the old data. Without invalidation the UI shows stale results until the next natural background refetch.",
+        fixLabel: "Fix -- call queryClient.invalidateQueries in the mutation's onSuccess callback",
+        fixCode: "// ❌ Wrong -- posts list stays stale after creating a post\nconst { mutate } = useMutation({\n  mutationFn: createPost,\n})\n\n// ✅ Right -- invalidate so the list refetches immediately\nconst queryClient = useQueryClient()\nconst { mutate } = useMutation({\n  mutationFn: createPost,\n  onSuccess: () => {\n    queryClient.invalidateQueries({ queryKey: ['posts'] })\n  },\n})",
+      },
+      {
+        title: 'Using isFetching to show a full-screen spinner on background refetches',
+        why: 'isLoading is true only on the first fetch when there is no cached data. isFetching is true for every request including background refetches. Showing a full spinner on isFetching causes disruptive UI resets during routine refreshes.',
+        fixLabel: 'Fix -- use isLoading for initial skeletons and isFetching for subtle progress indicators',
+        fixCode: '// ❌ Wrong -- replaces entire UI with spinner on every background refetch\nconst { data, isFetching } = useQuery({ queryKey: [\'posts\'], queryFn: fetchPosts })\nif (isFetching) return <FullScreenSpinner /> // shows on EVERY refetch\n\n// ✅ Right -- skeleton only when cache is empty, subtle indicator otherwise\nconst { data, isLoading, isFetching } = useQuery({ queryKey: [\'posts\'], queryFn: fetchPosts })\nif (isLoading) return <PostsSkeleton />\nreturn (\n  <div>\n    {isFetching && <span className="text-xs opacity-50">Refreshing...</span>}\n    {data?.map(p => <PostCard key={p.id} post={p} />)}\n  </div>\n)',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'TanStack Query',
+        heading: 'User profile query with staleTime and error handling',
+        description: 'A UserProfile component uses useQuery with a per-query staleTime so the profile is only refetched when it is more than 5 minutes old. All three states are handled.',
+        code: 'interface User { id: number; name: string; email: string; avatarUrl: string }\n\nfunction UserProfile({ userId }: { userId: number }) {\n  const { data: user, isLoading, isError, error } = useQuery<User>({\n    queryKey: [\'user\', userId],\n    queryFn: async () => {\n      const res = await fetch(`/api/users/${userId}`)\n      if (!res.ok) throw new Error(`Failed to load user ${userId}`)\n      return res.json()\n    },\n    staleTime: 5 * 60 * 1000, // 5 minutes\n  })\n\n  if (isLoading) return <div className="animate-pulse h-20 rounded bg-gray-200" />\n  if (isError)   return <p className="text-red-500">{error.message}</p>\n\n  return (\n    <div className="flex items-center gap-3">\n      <img src={user.avatarUrl} alt={user.name} className="h-12 w-12 rounded-full" />\n      <div>\n        <p className="font-semibold">{user.name}</p>\n        <p className="text-sm text-gray-500">{user.email}</p>\n      </div>\n    </div>\n  )\n}',
+      },
+      {
+        context: 'TanStack Query',
+        heading: 'Create post mutation with cache invalidation',
+        description: 'A mutation that creates a new post and then invalidates the posts cache so the list refetches automatically. The submit button is disabled while the mutation is in flight.',
+        code: 'function NewPostForm() {\n  const queryClient = useQueryClient()\n\n  const { mutate, isPending } = useMutation({\n    mutationFn: (postData: Omit<Post, \'id\'>) =>\n      fetch(\'/api/posts\', {\n        method: \'POST\',\n        body: JSON.stringify(postData),\n        headers: { \'Content-Type\': \'application/json\' },\n      }).then(r => r.json()),\n    onSuccess: () => {\n      queryClient.invalidateQueries({ queryKey: [\'posts\'] })\n    },\n  })\n\n  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {\n    e.preventDefault()\n    const form = new FormData(e.currentTarget)\n    mutate({ title: String(form.get(\'title\')), body: String(form.get(\'body\')) })\n  }\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <input name="title" placeholder="Post title" />\n      <textarea name="body" placeholder="Post body" />\n      <button disabled={isPending}>{isPending ? \'Saving...\':\'Publish\'}</button>\n    </form>\n  )\n}',
+      },
+    ],
     playgroundExamples: [
       {
         label: 'useQuery basics',
