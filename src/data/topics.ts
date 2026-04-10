@@ -10732,7 +10732,7 @@ function validate(data: unknown) {
     category: 'nextjs',
     color: '#a3b4c6',
     estimatedMinutes: 20,
-    animationComponent: undefined,
+    animationComponent: 'NextjsBasicsViz',
     bannerComponent: undefined,
     playgroundType: 'monaco',
     nextTopicId: 'nextjs-routing',
