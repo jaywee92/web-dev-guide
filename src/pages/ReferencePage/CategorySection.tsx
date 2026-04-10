@@ -1,14 +1,15 @@
 import { motion } from 'framer-motion'
-import type { ReferenceCategory } from '@/types'
+import type { ReferenceCategory, ReferenceEntry } from '@/types'
 import ReferenceCard from './ReferenceCard'
 
 interface Props {
   category: ReferenceCategory
   id: string
   type: string
+  onSelectEntry?: (entry: ReferenceEntry) => void
 }
 
-export default function CategorySection({ category, id, type }: Props) {
+export default function CategorySection({ category, id, type, onSelectEntry }: Props) {
   return (
     <section id={id} style={{ marginBottom: 64 }}>
       {/* Category header */}
@@ -71,7 +72,7 @@ export default function CategorySection({ category, id, type }: Props) {
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.3, delay: i * 0.04 }}
           >
-            <ReferenceCard entry={entry} accentColor={category.color} type={type} />
+            <ReferenceCard entry={entry} accentColor={category.color} type={type} onClick={onSelectEntry ? () => onSelectEntry(entry) : undefined} />
           </motion.div>
         ))}
       </div>

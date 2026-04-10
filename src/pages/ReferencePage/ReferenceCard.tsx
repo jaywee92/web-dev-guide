@@ -16,12 +16,14 @@ interface Props {
   entry: ReferenceEntry
   accentColor: string
   type: string
+  onClick?: () => void
 }
 
-export default function ReferenceCard({ entry, accentColor, type }: Props) {
+export default function ReferenceCard({ entry, accentColor, type, onClick }: Props) {
   const { t } = useTranslation('reference')
   return (
     <div
+      onClick={onClick}
       style={{
         background: 'var(--surface)',
         border: '1px solid var(--border)',
@@ -30,6 +32,7 @@ export default function ReferenceCard({ entry, accentColor, type }: Props) {
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
+        cursor: onClick ? 'pointer' : 'default',
       }}
     >
       {/* Header */}

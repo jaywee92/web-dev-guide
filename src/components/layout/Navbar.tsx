@@ -181,8 +181,17 @@ export default function Navbar() {
               zIndex: 60,
             }}>
               {[
-                { label: t('htmlReference'), path: '/reference/html', color: '#4ade80' },
-                { label: t('cssReference'),  path: '/reference/css',  color: '#5b9cf5' },
+                { label: t('htmlReference'),       path: '/reference/html',       color: '#f97316' },
+                { label: t('cssReference'),        path: '/reference/css',        color: '#5b9cf5' },
+                { label: t('jsReference'),         path: '/reference/javascript', color: '#fbbf24' },
+                { label: t('tsReference'),         path: '/reference/typescript', color: '#3b82f6' },
+                { label: t('reactReference'),      path: '/reference/react',      color: '#61dafb' },
+                { label: t('tailwindReference'),   path: '/reference/tailwind',   color: '#38bdf8' },
+                { label: t('nextjsReference'),     path: '/reference/nextjs',     color: '#e2e8f0' },
+                { label: t('webapisReference'),    path: '/reference/webapis',    color: '#a78bfa' },
+                { label: t('postgresReference'),   path: '/reference/postgresql', color: '#06b6d4' },
+                { label: t('gitReference'),        path: '/reference/git',        color: '#fb923c' },
+                { label: t('testingReference'),    path: '/reference/testing',    color: '#4ade80' },
               ].map(item => (
                 <button
                   key={item.path}

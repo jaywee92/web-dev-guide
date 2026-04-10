@@ -43,6 +43,15 @@ export default function App() {
               <Route path="/guestbook" element={<GuestbookPage />} />
               <Route path="/reference/html" element={<ReferencePage type="html" />} />
               <Route path="/reference/css" element={<ReferencePage type="css" />} />
+              <Route path="/reference/javascript" element={<ReferencePage type="javascript" />} />
+              <Route path="/reference/typescript" element={<ReferencePage type="typescript" />} />
+              <Route path="/reference/react" element={<ReferencePage type="react" />} />
+              <Route path="/reference/tailwind" element={<ReferencePage type="tailwind" />} />
+              <Route path="/reference/nextjs" element={<ReferencePage type="nextjs" />} />
+              <Route path="/reference/webapis" element={<ReferencePage type="webapis" />} />
+              <Route path="/reference/postgresql" element={<ReferencePage type="postgresql" />} />
+              <Route path="/reference/git" element={<ReferencePage type="git" />} />
+              <Route path="/reference/testing" element={<ReferencePage type="testing" />} />
             </Routes>
           </AnimatePresence>
         </main>
