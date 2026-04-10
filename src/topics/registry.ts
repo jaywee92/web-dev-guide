@@ -118,6 +118,28 @@ export async function preloadAnimation(name: string | undefined): Promise<void> 
 }
 
 
+// ─── Analogy registry ─────────────────────────────────────────────────────
+
+type AnalogyComp = ComponentType<{ step: number }>
+
+const analogyLazyRegistry: Record<string, () => Promise<{ default: AnalogyComp }>> = {
+  VariablesAnalogyViz: () => import('./javascript/VariablesAnalogyViz'),
+}
+
+const loadedAnalogyRegistry: Record<string, AnalogyComp> = {}
+
+export function getAnalogyComponent(name: string | undefined): AnalogyComp | null {
+  if (!name) return null
+  return loadedAnalogyRegistry[name] ?? null
+}
+
+export async function preloadAnalogyAnimation(name: string | undefined): Promise<void> {
+  if (!name || loadedAnalogyRegistry[name] || !analogyLazyRegistry[name]) return
+  const mod = await analogyLazyRegistry[name]()
+  loadedAnalogyRegistry[name] = mod.default
+}
+
+
 // ─── Banner registry ───────────────────────────────────────────────────────
 
 type BannerComp = ComponentType<Record<string, never>>
@@ -174,6 +196,7 @@ const bannerLazyRegistry: Record<string, () => Promise<{ default: BannerComp }>>
   NarrowingBanner:    () => import('./banners/typescript/NarrowingBanner'),
   UtilityTypesBanner: () => import('./banners/typescript/UtilityTypesBanner'),
   // React
+  ReactIntroBanner: () => import('./banners/react/ReactIntroBanner'),
   ComponentsBanner: () => import('./banners/react/ComponentsBanner'),
   StateBanner:      () => import('./banners/react/StateBanner'),
   UseEffectBanner:  () => import('./banners/react/UseEffectBanner'),
