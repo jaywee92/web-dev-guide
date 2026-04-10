@@ -6272,7 +6272,7 @@ export default defineConfig({
     category: 'typescript',
     color: '#a78bfa',
     estimatedMinutes: 8,
-    animationComponent: undefined,
+    animationComponent: 'TsArraysViz',
     bannerComponent: undefined,
     playgroundType: 'monaco' as const,
     sections: [
@@ -6345,7 +6345,7 @@ export default defineConfig({
     category: 'typescript-oop',
     color: '#a78bfa',
     estimatedMinutes: 12,
-    animationComponent: undefined,
+    animationComponent: 'ClassesViz',
     bannerComponent: undefined,
     playgroundType: 'monaco' as const,
     sections: [
@@ -6427,7 +6427,7 @@ export default defineConfig({
     category: 'typescript-oop',
     color: '#a78bfa',
     estimatedMinutes: 8,
-    animationComponent: undefined,
+    animationComponent: 'EnumsViz',
     bannerComponent: undefined,
     playgroundType: 'monaco' as const,
     sections: [
@@ -6498,7 +6498,7 @@ export default defineConfig({
     category: 'typescript-oop',
     color: '#a78bfa',
     estimatedMinutes: 6,
-    animationComponent: undefined,
+    animationComponent: 'TypeAssertionViz',
     bannerComponent: undefined,
     playgroundType: 'monaco' as const,
     sections: [
@@ -6561,7 +6561,7 @@ export default defineConfig({
     category: 'typescript-advanced',
     color: '#a78bfa',
     estimatedMinutes: 14,
-    animationComponent: undefined,
+    animationComponent: 'TsReactViz',
     bannerComponent: undefined,
     playgroundType: 'monaco' as const,
     sections: [
@@ -6654,7 +6654,7 @@ export default defineConfig({
     category: 'typescript-advanced',
     color: '#c4b5fd',
     estimatedMinutes: 10,
-    animationComponent: undefined,
+    animationComponent: 'ZodViz',
     bannerComponent: undefined,
     playgroundType: 'monaco' as const,
     sections: [
