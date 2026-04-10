@@ -10823,6 +10823,40 @@ function validate(data: unknown) {
         "Placing 'use server' in a Client Component file — Server Functions must live in separate files or in Server Components",
       ],
     },
+    commonErrors: [
+      {
+        title: 'Using useState in a Server Component',
+        why: 'Server Components run only on the server and have no client-side lifecycle. Hooks like useState and useEffect require a browser runtime and will throw an error in Server Components.',
+        fixLabel: 'Fix — add \'use client\' at the top of the file',
+        fixCode: '// ❌ Wrong — useState in a Server Component\nexport default function Counter() {\n  const [count, setCount] = useState(0)  // Error!\n  return <button>{count}</button>\n}\n\n// ✅ Right — mark as Client Component\n\'use client\'\nimport { useState } from \'react\'\nexport default function Counter() {\n  const [count, setCount] = useState(0)\n  return <button onClick={() => setCount(c => c + 1)}>{count}</button>\n}',
+      },
+      {
+        title: 'Forgetting revalidatePath() after a Server Action mutation',
+        why: 'Next.js caches page data aggressively. Without revalidatePath() or revalidateTag() after a write, the page continues to show the old data until the cache expires or the app rebuilds.',
+        fixLabel: 'Fix — call revalidatePath() or revalidateTag() inside the Server Action after every mutation',
+        fixCode: '// ❌ Wrong — mutation with no cache bust\n\'use server\'\nexport async function createPost(formData: FormData) {\n  await db.posts.create({ data: { title: formData.get(\'title\') } })\n  // Page still shows old posts!\n}\n\n// ✅ Right — revalidate after mutation\n\'use server\'\nimport { revalidatePath } from \'next/cache\'\nexport async function createPost(formData: FormData) {\n  await db.posts.create({ data: { title: formData.get(\'title\') } })\n  revalidatePath(\'/posts\')  // page now shows fresh data\n}',
+      },
+      {
+        title: 'Awaiting a promise before passing it to a Client Component for streaming',
+        why: 'If you await the promise in the Server Component, the entire component blocks until data resolves. Streaming only works when you pass the raw unawaited Promise to a Client Component that uses use() to suspend.',
+        fixLabel: 'Fix — pass the raw Promise; let the Client Component use() it',
+        fixCode: '// ❌ Wrong — awaiting kills streaming\nexport default async function Page() {\n  const posts = await getPosts()  // blocks the whole page\n  return <PostsList posts={posts} />\n}\n\n// ✅ Right — pass unawaited promise for streaming\nimport { Suspense } from \'react\'\nexport default function Page() {\n  const postsPromise = getPosts()  // fire but do NOT await\n  return (\n    <Suspense fallback={<Skeleton />}>\n      <PostsList postsPromise={postsPromise} />\n    </Suspense>\n  )\n}\n// PostsList is a Client Component that calls use(postsPromise)',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Next.js App Router',
+        heading: 'Full-stack post page with Server Component + Client interaction',
+        description: 'A Server Component fetches a post from the database and renders it. A small Client Component handles the like button — only the interactive part ships JavaScript.',
+        code: '// app/posts/[id]/page.tsx (Server Component)\nimport { LikeButton } from \'@/components/LikeButton\'\nimport { db } from \'@/lib/db\'\n\nexport default async function PostPage({ params }: { params: Promise<{ id: string }> }) {\n  const { id } = await params\n  const post = await db.posts.findUnique({ where: { id } })\n  if (!post) notFound()\n  return (\n    <article>\n      <h1>{post.title}</h1>\n      <p>{post.body}</p>\n      <LikeButton postId={post.id} initialLikes={post.likes} />\n    </article>\n  )\n}\n\n// components/LikeButton.tsx (Client Component)\n\'use client\'\nimport { useState } from \'react\'\nexport function LikeButton({ postId, initialLikes }: { postId: string; initialLikes: number }) {\n  const [likes, setLikes] = useState(initialLikes)\n  return <button onClick={() => setLikes(l => l + 1)}>❤️ {likes}</button>\n}',
+      },
+      {
+        context: 'Next.js App Router',
+        heading: 'Server Action form with useActionState',
+        description: 'A Server Action creates a post and revalidates the cache. A Client Component wraps it with useActionState to show pending state and validation errors without any extra API route.',
+        code: '// app/actions.ts\n\'use server\'\nimport { revalidatePath } from \'next/cache\'\nimport { db } from \'@/lib/db\'\n\nexport async function createPost(_prev: unknown, formData: FormData) {\n  const title = formData.get(\'title\') as string\n  if (!title) return { error: \'Title is required.\' }\n  await db.posts.create({ data: { title } })\n  revalidatePath(\'/posts\')\n  return { success: true }\n}\n\n// components/NewPostForm.tsx\n\'use client\'\nimport { useActionState } from \'react\'\nimport { createPost } from \'@/app/actions\'\n\nexport function NewPostForm() {\n  const [state, action, isPending] = useActionState(createPost, null)\n  return (\n    <form action={action}>\n      <input name="title" placeholder="Post title" required />\n      {state?.error && <p className="text-red-500">{state.error}</p>}\n      <button disabled={isPending}>{isPending ? \'Saving…\' : \'Publish\'}</button>\n    </form>\n  )\n}',
+      },
+    ],
     playgroundExamples: [
       {
         label: 'Server Component',
@@ -10918,6 +10952,40 @@ function validate(data: unknown) {
         'Naming the catch-all file incorrectly — it must be [...slug] not [slug] to match multiple segments',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Reading params without awaiting in Next.js 15+',
+        why: 'In Next.js 15, params is a Promise in Server Components and Route Handlers. Accessing params.id without await returns a Promise object, not the string value.',
+        fixLabel: 'Fix — await params before destructuring',
+        fixCode: '// ❌ Wrong — params is a Promise in Next.js 15+\nexport default function PostPage({ params }: { params: { id: string } }) {\n  const { id } = params  // params is a Promise, id is undefined!\n  return <h1>{id}</h1>\n}\n\n// ✅ Right — await the params Promise\nexport default async function PostPage({ params }: { params: Promise<{ id: string }> }) {\n  const { id } = await params\n  const post = await getPost(id)\n  return <h1>{post.title}</h1>\n}',
+      },
+      {
+        title: 'Creating a folder without page.tsx',
+        why: 'A folder inside app/ is only a route segment if it contains a page.tsx. A folder with only layout.tsx, loading.tsx, or other special files does not produce a publicly accessible URL.',
+        fixLabel: 'Fix — add a page.tsx file inside every route folder that should render a page',
+        fixCode: '// ❌ Wrong — app/settings/ has layout.tsx but no page.tsx\n// Navigating to /settings returns 404\napp/settings/\n  layout.tsx  ← applies the layout\n  // No page.tsx!\n\n// ✅ Right — add page.tsx to make /settings a real route\napp/settings/\n  layout.tsx\n  page.tsx    ← renders at /settings\n  profile/\n    page.tsx  ← renders at /settings/profile',
+      },
+      {
+        title: 'Using a static segment folder name when a dynamic one is needed',
+        why: 'A folder named "id" creates the literal route /posts/id, not a dynamic segment. Dynamic segments require square brackets: [id] matches /posts/anything.',
+        fixLabel: 'Fix — wrap the folder name in square brackets to create a dynamic segment',
+        fixCode: '// ❌ Wrong — "id" is a literal folder name, not dynamic\napp/posts/id/page.tsx  →  only matches /posts/id\n\n// ✅ Right — [id] is a dynamic segment\napp/posts/[id]/page.tsx  →  matches /posts/1, /posts/hello, /posts/any-value\n\n// In the page:\nexport default async function PostPage({ params }) {\n  const { id } = await params  // the captured URL value\n  const post = await getPost(id)\n  return <h1>{post.title}</h1>\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Next.js App Router',
+        heading: 'Blog with dynamic slugs and not-found handling',
+        description: 'A dynamic [slug] route fetches a post by slug and calls notFound() if it does not exist. generateStaticParams pre-renders all known posts at build time.',
+        code: '// app/blog/[slug]/page.tsx\nimport { notFound } from \'next/navigation\'\nimport { getPost, getAllPostSlugs } from \'@/lib/posts\'\n\nexport async function generateStaticParams() {\n  const slugs = await getAllPostSlugs()\n  return slugs.map(slug => ({ slug }))\n}\n\nexport async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {\n  const { slug } = await params\n  const post = await getPost(slug)\n  return { title: post?.title ?? \'Not Found\' }\n}\n\nexport default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {\n  const { slug } = await params\n  const post = await getPost(slug)\n  if (!post) notFound()\n  return (\n    <article>\n      <h1>{post.title}</h1>\n      <div dangerouslySetInnerHTML={{ __html: post.html }} />\n    </article>\n  )\n}',
+      },
+      {
+        context: 'Next.js App Router',
+        heading: 'Route groups for multiple layouts at the same URL level',
+        description: 'A (marketing) group shares a public layout and a (dashboard) group shares an authenticated layout — both at the root URL level without affecting the URL structure.',
+        code: 'app/\n├── (marketing)/\n│   ├── layout.tsx   // public navbar + footer\n│   ├── page.tsx     // /\n│   ├── about/page.tsx   // /about\n│   └── pricing/page.tsx // /pricing\n└── (dashboard)/\n    ├── layout.tsx   // sidebar + auth guard\n    ├── feed/page.tsx    // /feed\n    └── settings/page.tsx // /settings\n\n// (dashboard)/layout.tsx\nimport { redirect } from \'next/navigation\'\nimport { getSession } from \'@/lib/auth\'\n\nexport default async function DashboardLayout({ children }: { children: React.ReactNode }) {\n  const session = await getSession()\n  if (!session) redirect(\'/login\')\n  return (\n    <div className="flex">\n      <Sidebar />\n      <main className="flex-1">{children}</main>\n    </div>\n  )\n}',
+      },
+    ],
   },
   // ─── Next.js — Layouts ────────────────────────────────────────────────────
   {
@@ -10993,6 +11061,40 @@ function validate(data: unknown) {
         'Overusing template.tsx — unlike layout, it re-mounts on every navigation which can hurt performance',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Forgetting <html> and <body> in the root layout',
+        why: 'The root app/layout.tsx must include <html> and <body> tags. Without them Next.js throws a build error: "The root layout must contain a <html> and <body> tag."',
+        fixLabel: 'Fix — always include <html lang="en"> and <body> in app/layout.tsx',
+        fixCode: '// ❌ Wrong — missing html and body\nexport default function RootLayout({ children }) {\n  return (\n    <div>\n      <Navbar />\n      {children}\n    </div>\n  )\n}\n\n// ✅ Right — root layout must have html + body\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n  return (\n    <html lang="en">\n      <body>\n        <Navbar />\n        {children}\n      </body>\n    </html>\n  )\n}',
+      },
+      {
+        title: 'Using error.tsx as a Server Component',
+        why: 'error.tsx must be a Client Component because it uses the reset() callback, which relies on browser-side React error boundary APIs not available on the server.',
+        fixLabel: 'Fix — add \'use client\' as the first line of every error.tsx file',
+        fixCode: '// ❌ Wrong — error.tsx without "use client"\nexport default function Error({ error, reset }) {\n  // reset() won\'t work — this is a Server Component!\n  return <button onClick={reset}>Retry</button>\n}\n\n// ✅ Right — error.tsx must be a Client Component\n\'use client\'\nexport default function Error({\n  error,\n  reset,\n}: {\n  error: Error & { digest?: string }\n  reset: () => void\n}) {\n  return (\n    <div>\n      <h2>Something went wrong</h2>\n      <button onClick={reset}>Try again</button>\n    </div>\n  )\n}',
+      },
+      {
+        title: 'Trying to read layout-level data in a child page via layout props',
+        why: 'Layouts cannot pass arbitrary props to their child pages — the children prop is opaque. There is no way to pass data from layout to page through the React tree without a context provider.',
+        fixLabel: 'Fix — use a React context provider in the layout to share data with child pages',
+        fixCode: '// ❌ Wrong — layouts cannot pass props to child pages\nexport default async function DashboardLayout({ children }) {\n  const user = await getUser()\n  return (\n    <div>\n      <Sidebar />\n      {/* user cannot be passed into children here */}\n      {React.cloneElement(children, { user })}  // Error!\n    </div>\n  )\n}\n\n// ✅ Right — use a context provider\n// components/UserContext.tsx\n\'use client\'\nimport { createContext, useContext } from \'react\'\nconst UserContext = createContext(null)\nexport const useUser = () => useContext(UserContext)\nexport function UserProvider({ user, children }) {\n  return <UserContext.Provider value={user}>{children}</UserContext.Provider>\n}\n\n// app/dashboard/layout.tsx\nexport default async function DashboardLayout({ children }) {\n  const user = await getUser()\n  return <UserProvider user={user}>{children}</UserProvider>\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Next.js App Router',
+        heading: 'Nested layout with sidebar and metadata',
+        description: 'A dashboard layout fetches the current user, renders a sidebar, and provides user data via context. Each nested page exports its own metadata using the template pattern from the root layout.',
+        code: '// app/layout.tsx (root)\nexport const metadata = {\n  title: { default: \'My App\', template: \'%s | My App\' },\n}\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n  return (\n    <html lang="en">\n      <body className="min-h-screen">{children}</body>\n    </html>\n  )\n}\n\n// app/dashboard/layout.tsx\nimport { getUser } from \'@/lib/auth\'\nimport { redirect } from \'next/navigation\'\nexport default async function DashboardLayout({ children }: { children: React.ReactNode }) {\n  const user = await getUser()\n  if (!user) redirect(\'/login\')\n  return (\n    <div className="flex">\n      <Sidebar user={user} />\n      <main className="flex-1 p-6">{children}</main>\n    </div>\n  )\n}\n\n// app/dashboard/settings/page.tsx\nexport const metadata = { title: \'Settings\' }  // → "Settings | My App"\nexport default function SettingsPage() {\n  return <h1>Settings</h1>\n}',
+      },
+      {
+        context: 'Next.js App Router',
+        heading: 'Dynamic metadata with Open Graph image',
+        description: 'A blog post page generates metadata dynamically from the database, including an Open Graph image for social sharing previews.',
+        code: '// app/blog/[slug]/page.tsx\nimport { notFound } from \'next/navigation\'\nimport type { Metadata } from \'next\'\n\nexport async function generateMetadata(\n  { params }: { params: Promise<{ slug: string }> }\n): Promise<Metadata> {\n  const { slug } = await params\n  const post = await getPost(slug)\n  if (!post) return { title: \'Not Found\' }\n  return {\n    title: post.title,\n    description: post.excerpt,\n    openGraph: {\n      title: post.title,\n      description: post.excerpt,\n      images: [{ url: post.coverImage, width: 1200, height: 630 }],\n      type: \'article\',\n    },\n  }\n}\n\nexport default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {\n  const { slug } = await params\n  const post = await getPost(slug)\n  if (!post) notFound()\n  return <article><h1>{post.title}</h1></article>\n}',
+      },
+    ],
   },
   // ─── Next.js — Navigation ─────────────────────────────────────────────────
   {
@@ -11068,6 +11170,40 @@ function validate(data: unknown) {
         'Forgetting that redirect() throws — any code after redirect() will not execute',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Using <a href> instead of <Link> for internal navigation',
+        why: 'A native <a href> causes a full page reload, discarding all React state, re-downloading the entire app bundle, and losing the benefits of client-side routing.',
+        fixLabel: 'Fix — import Link from next/link and use it for all internal navigation',
+        fixCode: '// ❌ Wrong — full page reload, React state lost\n<a href="/dashboard">Dashboard</a>\n\n// ✅ Right — client-side navigation, prefetching included\nimport Link from \'next/link\'\n<Link href="/dashboard">Dashboard</Link>\n\n// Dynamic links:\n<Link href={`/posts/${post.id}`}>{post.title}</Link>',
+      },
+      {
+        title: 'Calling useRouter in a Server Component',
+        why: 'useRouter from next/navigation is a Client Component hook. Calling it in a Server Component throws: "useRouter only works in Client Components." Use redirect() or notFound() from next/navigation in Server Components instead.',
+        fixLabel: 'Fix — use redirect() in Server Components, reserve useRouter for Client Components',
+        fixCode: '// ❌ Wrong — useRouter in a Server Component\nimport { useRouter } from \'next/navigation\'\nexport default async function Page() {\n  const router = useRouter()  // Error!\n  if (!session) router.push(\'/login\')\n}\n\n// ✅ Right — redirect() works in Server Components\nimport { redirect } from \'next/navigation\'\nexport default async function Page() {\n  const session = await getSession()\n  if (!session) redirect(\'/login\')  // works in Server Components\n  return <Dashboard />\n}\n\n// useRouter for Client Components only:\n\'use client\'\nimport { useRouter } from \'next/navigation\'\nexport function LogoutButton() {\n  const router = useRouter()\n  return <button onClick={async () => { await logout(); router.push(\'/login\') }}>Log out</button>\n}',
+      },
+      {
+        title: 'Using useSearchParams without wrapping in Suspense',
+        why: 'useSearchParams() causes the component to opt into dynamic rendering. Without a Suspense boundary, Next.js cannot statically generate the page and will throw a build error about missing Suspense.',
+        fixLabel: 'Fix — wrap any component using useSearchParams in a <Suspense> boundary',
+        fixCode: '// ❌ Wrong — useSearchParams without Suspense causes a build error\nexport default function SearchPage() {\n  const q = useSearchParams().get(\'q\')  // Error at build time!\n  return <Results query={q} />\n}\n\n// ✅ Right — wrap in Suspense\nimport { Suspense } from \'react\'\nfunction SearchResults() {\n  \'use client\'\n  const q = useSearchParams().get(\'q\')\n  return <Results query={q ?? \'\'} />\n}\nexport default function SearchPage() {\n  return (\n    <Suspense fallback={<p>Loading…</p>}>\n      <SearchResults />\n    </Suspense>\n  )\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Next.js App Router',
+        heading: 'Active navigation links with usePathname',
+        description: 'A Client Component reads the current pathname to highlight active nav links, while the rest of the nav bar is server-rendered.',
+        code: '// components/NavLink.tsx\n\'use client\'\nimport Link from \'next/link\'\nimport { usePathname } from \'next/navigation\'\n\nexport function NavLink({ href, children }: { href: string; children: React.ReactNode }) {\n  const pathname = usePathname()\n  const isActive = pathname === href || pathname.startsWith(href + \'/\')\n  return (\n    <Link\n      href={href}\n      className={[\n        \'px-3 py-2 rounded transition-colors\',\n        isActive\n          ? \'bg-blue-100 text-blue-700 font-medium\'\n          : \'text-gray-600 hover:text-gray-900\',\n      ].join(\' \')}\n    >\n      {children}\n    </Link>\n  )\n}\n\n// app/layout.tsx (Server Component)\nexport default function RootLayout({ children }) {\n  return (\n    <html lang="en"><body>\n      <nav className="flex gap-2 p-4 border-b">\n        <NavLink href="/">Home</NavLink>\n        <NavLink href="/blog">Blog</NavLink>\n        <NavLink href="/about">About</NavLink>\n      </nav>\n      <main>{children}</main>\n    </body></html>\n  )\n}',
+      },
+      {
+        context: 'Next.js App Router',
+        heading: 'Programmatic redirect after form submission',
+        description: 'A login form uses a Server Action for the submission and useRouter in the Client Component to navigate on success, replacing the login entry in browser history.',
+        code: '// app/login/actions.ts\n\'use server\'\nimport { createSession } from \'@/lib/auth\'\n\nexport async function loginAction(_prev: unknown, formData: FormData) {\n  const email = formData.get(\'email\') as string\n  const password = formData.get(\'password\') as string\n  const ok = await createSession(email, password)\n  if (!ok) return { error: \'Invalid email or password.\' }\n  return { success: true }\n}\n\n// app/login/page.tsx\n\'use client\'\nimport { useActionState, useEffect } from \'react\'\nimport { useRouter } from \'next/navigation\'\nimport { loginAction } from \'./actions\'\n\nexport default function LoginPage() {\n  const router = useRouter()\n  const [state, action, isPending] = useActionState(loginAction, null)\n\n  useEffect(() => {\n    if (state?.success) router.replace(\'/dashboard\')\n  }, [state, router])\n\n  return (\n    <form action={action} className="max-w-sm mx-auto p-6 space-y-4">\n      <input name="email" type="email" placeholder="Email" required />\n      <input name="password" type="password" placeholder="Password" required />\n      {state?.error && <p className="text-red-500 text-sm">{state.error}</p>}\n      <button disabled={isPending}>{isPending ? \'Signing in…\' : \'Sign in\'}</button>\n    </form>\n  )\n}',
+      },
+    ],
   },
   // ─── Next.js — Server Components ──────────────────────────────────────────
   {
@@ -11141,6 +11277,40 @@ function validate(data: unknown) {
         "Importing a heavy client-side library in a Server Component — it still won't be in the bundle, but check that it supports server environments",
       ],
     },
+    commonErrors: [
+      {
+        title: 'Using useState or event handlers in a Server Component',
+        why: 'Server Components run exclusively on the server and have no browser lifecycle. React hooks and event handlers require a client runtime and will throw at build or request time if used in a Server Component.',
+        fixLabel: 'Fix — extract the interactive part into a separate Client Component file',
+        fixCode: '// ❌ Wrong — useState in a Server Component throws\nexport default async function ProductPage() {\n  const [qty, setQty] = useState(1)  // Error: hooks can only be used in Client Components\n  const product = await getProduct()\n  return <button onClick={() => setQty(q => q + 1)}>{qty}</button>\n}\n\n// ✅ Right — Server Component fetches, Client Component handles state\nexport default async function ProductPage() {\n  const product = await getProduct()\n  return (\n    <div>\n      <h1>{product.name}</h1>\n      <QuantityPicker />  {/* Client Component */}\n    </div>\n  )\n}\n\n// components/QuantityPicker.tsx\n\'use client\'\nexport function QuantityPicker() {\n  const [qty, setQty] = useState(1)\n  return <button onClick={() => setQty(q => q + 1)}>{qty}</button>\n}',
+      },
+      {
+        title: 'Passing a function as a prop to a Client Component',
+        why: 'Props crossing the server-client boundary must be serialisable — strings, numbers, plain objects, arrays. Functions are not serialisable and will cause a "Functions cannot be passed directly to Client Components" error.',
+        fixLabel: 'Fix — use Server Actions for server-side callbacks; pass only serialisable data as props',
+        fixCode: '// ❌ Wrong — function prop crosses the server-client boundary\nexport default async function Page() {\n  async function handleClick() {  // server function\n    \'use server\'\n    await doSomething()\n  }\n  return <ClientButton onClick={handleClick} />  // Error!\n}\n\n// ✅ Right — import and pass a Server Action, or use serialisable data\n// actions.ts\n\'use server\'\nexport async function handleClick() { await doSomething() }\n\n// page.tsx\nimport { handleClick } from \'./actions\'\nexport default async function Page() {\n  return <ClientButton action={handleClick} />  // Server Action reference is OK\n}',
+      },
+      {
+        title: 'Placing a heavy library import in a Server Component that imports browser globals',
+        why: 'Some npm packages access window, document, or navigator at the module level. Importing them in a Server Component throws because these globals do not exist in the Node.js runtime.',
+        fixLabel: 'Fix — import browser-only libraries inside a Client Component or use dynamic import with ssr: false',
+        fixCode: '// ❌ Wrong — browser-only library imported at top level\nimport { Chart } from \'chart.js\'  // accesses window during import\nexport default async function StatsPage() {\n  return <Chart data={stats} />  // Error: window is not defined\n}\n\n// ✅ Right — lazy-load browser-only libraries in a Client Component\n\'use client\'\nimport dynamic from \'next/dynamic\'\nconst Chart = dynamic(() => import(\'chart.js/auto\').then(m => m.Chart), {\n  ssr: false,  // skip server render entirely\n  loading: () => <p>Loading chart…</p>,\n})\nexport function StatsChart({ data }) {\n  return <Chart data={data} />\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Next.js App Router — Server Components',
+        heading: 'Dashboard with parallel database queries',
+        description: 'A Server Component dashboard fetches user, stats, and recent activity in parallel. Heavy server-only dependencies are imported freely without affecting the client bundle.',
+        code: '// app/dashboard/page.tsx\nimport \'server-only\'  // prevents accidental client import\nimport { db } from \'@/lib/db\'\nimport { getSession } from \'@/lib/auth\'\nimport { redirect } from \'next/navigation\'\nimport { StatsGrid } from \'@/components/StatsGrid\'\nimport { ActivityFeed } from \'@/components/ActivityFeed\'\n\nexport default async function DashboardPage() {\n  const session = await getSession()\n  if (!session) redirect(\'/login\')\n\n  // Parallel queries — no waterfall\n  const [user, stats, activity] = await Promise.all([\n    db.users.findUnique({ where: { id: session.userId } }),\n    db.analytics.getStats(session.userId),\n    db.events.findMany({ where: { userId: session.userId }, take: 10 }),\n  ])\n\n  return (\n    <main className="p-6 space-y-8">\n      <h1>Welcome back, {user!.name}</h1>\n      <StatsGrid stats={stats} />\n      <ActivityFeed items={activity} />\n    </main>\n  )\n}',
+      },
+      {
+        context: 'Next.js App Router — Server Components',
+        heading: 'Product page with zero-JS display and isolated Client Component for cart',
+        description: 'The entire product detail page is a Server Component except for the AddToCartButton. Only the cart interaction ships JavaScript to the browser.',
+        code: '// app/products/[id]/page.tsx (Server Component)\nimport { AddToCartButton } from \'@/components/AddToCartButton\'\nimport { getProduct } from \'@/lib/products\'\nimport { notFound } from \'next/navigation\'\n\nexport default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {\n  const { id } = await params\n  const product = await getProduct(id)\n  if (!product) notFound()\n\n  return (\n    <div className="max-w-2xl mx-auto p-6">\n      <img src={product.image} alt={product.name} className="w-full rounded-lg" />\n      <h1 className="text-2xl font-bold mt-4">{product.name}</h1>\n      <p className="text-gray-600 mt-2">{product.description}</p>\n      <p className="text-3xl font-bold mt-4">${product.price}</p>\n      {/* Only this component ships JS to the browser */}\n      <AddToCartButton productId={product.id} price={product.price} />\n    </div>\n  )\n}\n\n// components/AddToCartButton.tsx\n\'use client\'\nexport function AddToCartButton({ productId, price }: { productId: string; price: number }) {\n  const [added, setAdded] = useState(false)\n  return (\n    <button\n      onClick={() => { addToCart(productId); setAdded(true) }}\n      className="mt-6 w-full py-3 bg-blue-600 text-white rounded"\n    >\n      {added ? \'Added to cart!\' : `Add to cart — $${price}`}\n    </button>\n  )\n}',
+      },
+    ],
   },
   // ─── Next.js — Client Components ──────────────────────────────────────────
   {
@@ -11213,6 +11383,40 @@ function validate(data: unknown) {
         "Assuming 'use client' means no server rendering — Client Components ARE server-rendered for the initial HTML; they are just also hydrated on the client",
       ],
     },
+    commonErrors: [
+      {
+        title: 'Making a Client Component async',
+        why: 'async/await is only valid in Server Components. Adding async to a "use client" component causes a TypeScript error and a runtime error because Client Components cannot return Promises as their render output.',
+        fixLabel: 'Fix — remove async from Client Components; use useEffect for side effects or move data fetching to a Server Component',
+        fixCode: '// ❌ Wrong — Client Components cannot be async\n\'use client\'\nexport default async function Profile() {\n  const user = await getUser()  // Error: async in Client Component\n  return <div>{user.name}</div>\n}\n\n// ✅ Right — fetch in a Server Component, pass data as props\nexport default async function ProfilePage() {\n  const user = await getUser()  // Server Component — async is fine\n  return <ProfileCard user={user} />\n}\n\n// components/ProfileCard.tsx\n\'use client\'\nexport function ProfileCard({ user }: { user: User }) {\n  const [isEditing, setIsEditing] = useState(false)\n  return <div onClick={() => setIsEditing(e => !e)}>{user.name}</div>\n}',
+      },
+      {
+        title: 'Placing "use client" too high in the component tree',
+        why: 'The "use client" directive is a module boundary — everything in that file and everything it imports becomes part of the client bundle. A "use client" layout or page pulls all its imports into the browser bundle, eliminating the RSC bundle size benefit.',
+        fixLabel: 'Fix — push "use client" down to the smallest leaf component that actually needs interactivity',
+        fixCode: '// ❌ Wrong — entire page is Client Component just for a search input\n\'use client\'\nimport { HeavyDataTable } from \'./HeavyDataTable\'  // also client now!\nexport default function ProductsPage() {\n  const [query, setQuery] = useState(\'\')\n  const products = useProducts(query)  // client-side fetch with loading state\n  return <HeavyDataTable data={products} />\n}\n\n// ✅ Right — only the search input is a Client Component\n// app/products/page.tsx (Server Component)\nexport default async function ProductsPage({ searchParams }) {\n  const { q = \'\' } = await searchParams\n  const products = await getProducts(q)  // server fetch\n  return (\n    <div>\n      <SearchInput />         {/* small Client Component */}\n      <HeavyDataTable data={products} />  {/* Server Component — no JS */}\n    </div>\n  )\n}',
+      },
+      {
+        title: 'Hydration mismatch from accessing browser APIs during render',
+        why: 'Client Components render on the server for the initial HTML, then hydrate on the client. Accessing window, document, localStorage, or Math.random() during the render phase produces different output on server vs client, causing a hydration error.',
+        fixLabel: 'Fix — read browser-only values inside useEffect, which runs only on the client',
+        fixCode: '// ❌ Wrong — localStorage access during render causes hydration mismatch\n\'use client\'\nexport function ThemePicker() {\n  const [theme, setTheme] = useState(localStorage.getItem(\'theme\') ?? \'light\')  // Error on server!\n  return <div className={theme}>…</div>\n}\n\n// ✅ Right — read browser values in useEffect\n\'use client\'\nexport function ThemePicker() {\n  const [theme, setTheme] = useState(\'light\')  // stable initial value\n  useEffect(() => {\n    const saved = localStorage.getItem(\'theme\')\n    if (saved) setTheme(saved)  // only runs in the browser\n  }, [])\n  return <div className={theme}>…</div>\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Next.js App Router — Client Components',
+        heading: 'Search input as a small Client Component',
+        description: 'A Client Component reads the URL search param on mount and updates the URL on input change. The product list remains a Server Component — no client JS needed for the table.',
+        code: '// components/SearchInput.tsx\n\'use client\'\nimport { useSearchParams, useRouter, usePathname } from \'next/navigation\'\nimport { useTransition } from \'react\'\n\nexport function SearchInput() {\n  const searchParams = useSearchParams()\n  const router = useRouter()\n  const pathname = usePathname()\n  const [isPending, startTransition] = useTransition()\n\n  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {\n    const params = new URLSearchParams(searchParams.toString())\n    if (e.target.value) {\n      params.set(\'q\', e.target.value)\n    } else {\n      params.delete(\'q\')\n    }\n    startTransition(() => {\n      router.replace(`${pathname}?${params.toString()}`)\n    })\n  }\n\n  return (\n    <input\n      defaultValue={searchParams.get(\'q\') ?? \'\'}\n      onChange={handleChange}\n      placeholder="Search products…"\n      className={isPending ? \'opacity-50\' : \'\'}\n    />\n  )\n}',
+      },
+      {
+        context: 'Next.js App Router — Client Components',
+        heading: 'Context provider wrapping server-rendered children',
+        description: 'A Client Component ThemeProvider wraps the app in a context. Its children — including Server Components — are passed as props, so they remain server-rendered and are not pulled into the client bundle.',
+        code: '// components/ThemeProvider.tsx\n\'use client\'\nimport { createContext, useContext, useState } from \'react\'\n\nconst ThemeContext = createContext<{ theme: string; toggle: () => void }>({\n  theme: \'light\',\n  toggle: () => {},\n})\nexport const useTheme = () => useContext(ThemeContext)\n\nexport function ThemeProvider({ children }: { children: React.ReactNode }) {\n  const [theme, setTheme] = useState<\'light\' | \'dark\'>(\'light\')\n  return (\n    <ThemeContext.Provider value={{ theme, toggle: () => setTheme(t => t === \'light\' ? \'dark\' : \'light\') }}>\n      <div data-theme={theme}>{children}</div>\n    </ThemeContext.Provider>\n  )\n}\n\n// app/layout.tsx (Server Component)\nimport { ThemeProvider } from \'@/components/ThemeProvider\'\nexport default function RootLayout({ children }: { children: React.ReactNode }) {\n  return (\n    <html lang="en"><body>\n      {/* children are Server Components — not pulled into client bundle */}\n      <ThemeProvider>{children}</ThemeProvider>\n    </body></html>\n  )\n}',
+      },
+    ],
   },
   // ─── Next.js — Suspense ───────────────────────────────────────────────────
   {
@@ -11278,6 +11482,40 @@ function validate(data: unknown) {
         'Using loading.tsx and manual Suspense on the same route — loading.tsx wraps the whole page; manual Suspense gives you finer control over individual sections',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Awaiting the promise before passing it to a Client Component',
+        why: 'If you await the promise in the Server Component, the entire page blocks until data resolves — there is nothing for Suspense to stream. The raw unawaited Promise must be passed so the Client Component can suspend on it.',
+        fixLabel: 'Fix — pass the raw Promise; do not await it in the Server Component',
+        fixCode: '// ❌ Wrong — awaiting defeats streaming\nexport default async function Page() {\n  const posts = await getPosts()  // page blocks until resolved\n  return (\n    <Suspense fallback={<Skeleton />}>\n      <PostsList posts={posts} />  // posts is already resolved — no streaming\n    </Suspense>\n  )\n}\n\n// ✅ Right — pass unawaited Promise\nexport default function Page() {\n  const postsPromise = getPosts()  // fire but do NOT await\n  return (\n    <Suspense fallback={<Skeleton />}>\n      <PostsList postsPromise={postsPromise} />\n    </Suspense>\n  )\n}\n\n// PostsList.tsx\n\'use client\'\nimport { use } from \'react\'\nexport function PostsList({ postsPromise }) {\n  const posts = use(postsPromise)  // suspends until resolved\n  return <ul>{posts.map(p => <li key={p.id}>{p.title}</li>)}</ul>\n}',
+      },
+      {
+        title: 'Forgetting "use client" on error.tsx',
+        why: 'error.tsx must be a Client Component because it receives and calls the reset() function, which is part of the React error boundary API that only works in the browser.',
+        fixLabel: 'Fix — always add "use client" as the first line of every error.tsx file',
+        fixCode: '// ❌ Wrong — error.tsx without "use client"\nexport default function Error({ reset }) {\n  return <button onClick={reset}>Retry</button>  // onClick won\'t work!\n}\n\n// ✅ Right — error.tsx is always a Client Component\n\'use client\'\nexport default function Error({\n  error,\n  reset,\n}: {\n  error: Error\n  reset: () => void\n}) {\n  return (\n    <div className="text-center py-12">\n      <h2 className="text-red-600">Something went wrong</h2>\n      <p className="text-gray-500 mt-2">{error.message}</p>\n      <button\n        onClick={reset}\n        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded"\n      >\n        Try again\n      </button>\n    </div>\n  )\n}',
+      },
+      {
+        title: 'Not wrapping async Server Components in Suspense',
+        why: 'An async Server Component that fetches data blocks the entire page from streaming until the fetch completes. Without Suspense, users see nothing until all data is ready, even if most of the page is fast.',
+        fixLabel: 'Fix — wrap each slow async component in its own <Suspense> with a skeleton fallback',
+        fixCode: '// ❌ Wrong — no Suspense, slow component blocks the whole page\nexport default function Page() {\n  return (\n    <div>\n      <FastHero />    {/* fast */}\n      <SlowFeed />    {/* slow — blocks FastHero from rendering! */}\n    </div>\n  )\n}\n\n// ✅ Right — Suspense lets FastHero stream immediately\nimport { Suspense } from \'react\'\nexport default function Page() {\n  return (\n    <div>\n      <FastHero />\n      <Suspense fallback={<FeedSkeleton />}>\n        <SlowFeed />\n      </Suspense>\n    </div>\n  )\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Next.js App Router — Streaming',
+        heading: 'Dashboard with independent streaming sections',
+        description: 'A dashboard page streams multiple slow data sections independently. Each section shows a skeleton immediately while its data loads in parallel, giving users instant feedback.',
+        code: '// app/dashboard/page.tsx (Server Component — NOT async)\nimport { Suspense } from \'react\'\nimport { StatsSkeleton, ActivitySkeleton, RecommendationsSkeleton } from \'@/components/skeletons\'\nimport { StatsWidget } from \'@/components/StatsWidget\'\nimport { ActivityFeed } from \'@/components/ActivityFeed\'\nimport { getStats, getActivity } from \'@/lib/data\'\n\nexport default function DashboardPage() {\n  // Fire all fetches simultaneously — do NOT await\n  const statsPromise = getStats()\n  const activityPromise = getActivity()\n\n  return (\n    <main className="grid grid-cols-3 gap-6 p-6">\n      <Suspense fallback={<StatsSkeleton />}>\n        <StatsWidget statsPromise={statsPromise} />\n      </Suspense>\n\n      <div className="col-span-2">\n        <Suspense fallback={<ActivitySkeleton />}>\n          <ActivityFeed activityPromise={activityPromise} />\n        </Suspense>\n      </div>\n    </main>\n  )\n}',
+      },
+      {
+        context: 'Next.js App Router — Streaming',
+        heading: 'Page-level loading.tsx skeleton',
+        description: 'A loading.tsx file provides an automatic Suspense fallback for the entire route segment. The layout and navigation are immediately visible while the page data loads.',
+        code: '// app/posts/loading.tsx — shown while page.tsx renders\nexport default function PostsLoading() {\n  return (\n    <div className="max-w-2xl mx-auto p-6 space-y-6">\n      {Array.from({ length: 5 }).map((_, i) => (\n        <div key={i} className="animate-pulse space-y-3">\n          <div className="h-5 bg-gray-200 rounded w-3/4" />\n          <div className="h-4 bg-gray-100 rounded w-1/2" />\n          <div className="h-4 bg-gray-100 rounded w-2/3" />\n        </div>\n      ))}\n    </div>\n  )\n}\n\n// app/posts/page.tsx — loading.tsx shown during this fetch\nexport default async function PostsPage() {\n  const posts = await db.posts.findMany({ orderBy: { createdAt: \'desc\' } })\n  return (\n    <div className="max-w-2xl mx-auto p-6 space-y-6">\n      {posts.map(post => (\n        <article key={post.id}>\n          <h2 className="text-xl font-bold">{post.title}</h2>\n          <p className="text-gray-600 mt-1">{post.excerpt}</p>\n        </article>\n      ))}\n    </div>\n  )\n}',
+      },
+    ],
   },
   // ─── Next.js — Data Fetching ───────────────────────────────────────────────
   {
@@ -11352,6 +11590,40 @@ function validate(data: unknown) {
         'Forgetting to check res.ok before calling res.json() — a 404 or 500 response returns a non-ok response but does not throw; always check before parsing',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Sequential await causing a data waterfall',
+        why: 'Each sequential await blocks the next fetch from starting. Three 200ms fetches in sequence take 600ms total. Using Promise.all fires them simultaneously and the total time is just the slowest single fetch.',
+        fixLabel: 'Fix — use Promise.all to fire independent fetches in parallel',
+        fixCode: '// ❌ Wrong — sequential: 100ms + 200ms + 150ms = 450ms\nexport default async function Dashboard() {\n  const user   = await getUser()    // 100ms\n  const posts  = await getPosts()   // 200ms — waits for user\n  const stats  = await getStats()   // 150ms — waits for posts\n  return <DashboardUI user={user} posts={posts} stats={stats} />\n}\n\n// ✅ Right — parallel: max(100ms, 200ms, 150ms) = 200ms\nexport default async function Dashboard() {\n  const [user, posts, stats] = await Promise.all([\n    getUser(),\n    getPosts(),\n    getStats(),\n  ])\n  return <DashboardUI user={user} posts={posts} stats={stats} />\n}',
+      },
+      {
+        title: 'Fetching data in a Client Component with useEffect instead of a Server Component',
+        why: 'useEffect fetches run in the browser after hydration, creating a loading flash. They expose any API keys or credentials in the response to the client. Server Components fetch on the server — no loading state, no exposed secrets, no extra round-trip.',
+        fixLabel: 'Fix — move data fetching to a Server Component',
+        fixCode: '// ❌ Wrong — Client Component with useEffect fetch\n\'use client\'\nexport default function UserList() {\n  const [users, setUsers] = useState([])\n  useEffect(() => {\n    fetch(\'/api/users\').then(r => r.json()).then(setUsers)\n  }, [])\n  return <ul>{users.map(u => <li key={u.id}>{u.name}</li>)}</ul>\n  // Shows empty list briefly, then loads — poor UX\n}\n\n// ✅ Right — Server Component fetches directly\nexport default async function UserList() {\n  const users = await db.users.findMany()\n  return <ul>{users.map(u => <li key={u.id}>{u.name}</li>)}</ul>\n  // HTML is fully rendered on server — no flash\n}',
+      },
+      {
+        title: 'Not checking res.ok before calling res.json()',
+        why: 'fetch() does not throw on HTTP error responses (4xx, 5xx). If you call res.json() on a non-ok response, you may parse an error body as data or get a JSON parse error if the server returned HTML.',
+        fixLabel: 'Fix — always check res.ok before parsing; throw or handle the error explicitly',
+        fixCode: '// ❌ Wrong — res.json() on a 500 response may throw or return wrong data\nexport default async function Page() {\n  const res = await fetch(\'/api/posts\')\n  const posts = await res.json()  // may throw if 500 returned HTML\n  return <PostList posts={posts} />\n}\n\n// ✅ Right — check res.ok first\nexport default async function Page() {\n  const res = await fetch(\'/api/posts\', { cache: \'no-store\' })\n  if (!res.ok) {\n    throw new Error(`Failed to fetch posts: ${res.status} ${res.statusText}`)\n    // error.tsx catches this and shows the retry UI\n  }\n  const posts = await res.json()\n  return <PostList posts={posts} />\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Next.js App Router',
+        heading: 'Server Component data fetch',
+        description: 'Fetch data directly in a Server Component — no useEffect, no loading state needed. The fetch is cached and revalidated on a schedule using ISR.',
+        code: '// app/products/page.tsx\nimport type { Metadata } from \'next\'\n\nexport const metadata: Metadata = { title: \'Products\' }\n\nasync function getProducts() {\n  const res = await fetch(\'https://api.example.com/products\', {\n    next: { revalidate: 300 },  // ISR — revalidate every 5 minutes\n  })\n  if (!res.ok) throw new Error(\'Failed to load products\')\n  return res.json() as Promise<Product[]>\n}\n\nexport default async function ProductsPage() {\n  const products = await getProducts()\n  return (\n    <main className="grid grid-cols-3 gap-6 p-6">\n      {products.map(p => (\n        <div key={p.id} className="border rounded-lg p-4">\n          <img src={p.image} alt={p.name} />\n          <h2 className="font-bold mt-2">{p.name}</h2>\n          <p className="text-gray-500">${p.price}</p>\n        </div>\n      ))}\n    </main>\n  )\n}',
+      },
+      {
+        context: 'Next.js App Router',
+        heading: 'On-demand cache revalidation with revalidateTag',
+        description: 'Tag fetches by resource and use revalidateTag in a Server Action to bust the cache precisely after a mutation — no full page rebuild needed.',
+        code: '// lib/data.ts\nexport async function getPost(id: string) {\n  const res = await fetch(`https://api.example.com/posts/${id}`, {\n    next: { tags: [`post-${id}`, \'posts\'] },  // tag for targeted revalidation\n  })\n  if (!res.ok) return null\n  return res.json() as Promise<Post>\n}\n\n// app/actions.ts\n\'use server\'\nimport { revalidateTag, revalidatePath } from \'next/cache\'\nimport { db } from \'@/lib/db\'\n\nexport async function updatePost(id: string, data: Partial<Post>) {\n  await db.posts.update({ where: { id }, data })\n  revalidateTag(`post-${id}`)  // bust only this post\'s cache\n  revalidatePath(\'/posts\')      // refresh the post list page\n  return { success: true }\n}\n\nexport async function deletePost(id: string) {\n  await db.posts.delete({ where: { id } })\n  revalidateTag(\'posts\')  // bust all post-related caches\n}',
+      },
+    ],
   },
   // ─── Next.js — Server Actions ─────────────────────────────────────────────
   {
@@ -11426,6 +11698,40 @@ function validate(data: unknown) {
         "Placing 'use server' in a Client Component file — Server Actions must be in separate files or inline in Server Components",
       ],
     },
+    commonErrors: [
+      {
+        title: 'Forgetting revalidatePath() or revalidateTag() after a mutation',
+        why: 'Next.js caches page data aggressively. Without a revalidation call after a Server Action write, the page continues showing stale data until the cache naturally expires or the app redeploys.',
+        fixLabel: 'Fix — always call revalidatePath() or revalidateTag() inside Server Actions after every database write',
+        fixCode: '// ❌ Wrong — data written but cache not busted\n\'use server\'\nexport async function updateProfile(formData: FormData) {\n  await db.users.update({ where: { id: userId }, data: { name: formData.get(\'name\') } })\n  // Profile page still shows old name!\n}\n\n// ✅ Right — bust the relevant cache entries\n\'use server\'\nimport { revalidatePath } from \'next/cache\'\nexport async function updateProfile(formData: FormData) {\n  await db.users.update({ where: { id: userId }, data: { name: formData.get(\'name\') } })\n  revalidatePath(\'/profile\')  // fresh data on next request\n  return { success: true }\n}',
+      },
+      {
+        title: 'Using a Server Action for data reading instead of an async Server Component',
+        why: 'Server Actions are designed for mutations (create, update, delete). Using them to fetch and return data is an anti-pattern — async Server Components fetch data directly with await, no action needed.',
+        fixLabel: 'Fix — use async Server Components for reads; reserve Server Actions for writes',
+        fixCode: '// ❌ Wrong — Server Action used to fetch data\n\'use server\'\nexport async function getPosts() {\n  return db.posts.findMany()\n}\n// Client Component then calls getPosts() in useEffect — unnecessary round-trip\n\n// ✅ Right — async Server Component fetches directly\nexport default async function PostsPage() {\n  const posts = await db.posts.findMany()  // no action, no API, no round-trip\n  return <PostList posts={posts} />\n}',
+      },
+      {
+        title: 'Placing try/catch around redirect() inside a Server Action',
+        why: 'redirect() from next/navigation works by throwing a special internal error. If you wrap it in a try/catch, you catch the redirect throw and it never executes — the user is not redirected.',
+        fixLabel: 'Fix — call redirect() outside of try/catch, after all error-prone operations complete',
+        fixCode: '// ❌ Wrong — try/catch swallows the redirect\n\'use server\'\nexport async function createPost(formData: FormData) {\n  try {\n    await db.posts.create({ data: { title: formData.get(\'title\') } })\n    revalidatePath(\'/posts\')\n    redirect(\'/posts\')  // Throws! But catch swallows it — no redirect!\n  } catch (e) {\n    console.error(e)  // catches the redirect throw — oops\n  }\n}\n\n// ✅ Right — redirect() outside the try/catch block\n\'use server\'\nexport async function createPost(formData: FormData) {\n  try {\n    await db.posts.create({ data: { title: formData.get(\'title\') } })\n    revalidatePath(\'/posts\')\n  } catch (e) {\n    return { error: \'Failed to create post.\' }\n  }\n  redirect(\'/posts\')  // called after the try/catch — works correctly\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Next.js App Router',
+        heading: 'CRUD form with useActionState and Server Actions',
+        description: 'A form uses a Server Action for submission, useActionState for pending/error UI, and revalidatePath to keep the list fresh — all without a separate API endpoint.',
+        code: '// app/todos/actions.ts\n\'use server\'\nimport { revalidatePath } from \'next/cache\'\nimport { db } from \'@/lib/db\'\n\nexport async function createTodo(_prev: unknown, formData: FormData) {\n  const title = (formData.get(\'title\') as string).trim()\n  if (!title) return { error: \'Title cannot be empty.\' }\n  await db.todos.create({ data: { title, completed: false } })\n  revalidatePath(\'/todos\')\n  return { success: true }\n}\n\n// components/AddTodoForm.tsx\n\'use client\'\nimport { useActionState } from \'react\'\nimport { createTodo } from \'@/app/todos/actions\'\n\nexport function AddTodoForm() {\n  const [state, action, isPending] = useActionState(createTodo, null)\n  return (\n    <form action={action} className="flex gap-2">\n      <input name="title" placeholder="New todo…" required className="flex-1 border rounded px-3 py-2" />\n      {state?.error && <p className="text-red-500 text-sm">{state.error}</p>}\n      <button disabled={isPending} className="px-4 py-2 bg-blue-600 text-white rounded">\n        {isPending ? \'Adding…\' : \'Add\'}\n      </button>\n    </form>\n  )\n}',
+      },
+      {
+        context: 'Next.js App Router',
+        heading: 'Optimistic delete with useTransition',
+        description: 'A delete button calls a Server Action programmatically using useTransition, showing a pending state while the server processes the deletion.',
+        code: '// components/DeletePostButton.tsx\n\'use client\'\nimport { useTransition } from \'react\'\nimport { deletePost } from \'@/app/actions\'\n\nexport function DeletePostButton({ postId }: { postId: string }) {\n  const [isPending, startTransition] = useTransition()\n\n  function handleDelete() {\n    if (!confirm(\'Delete this post? This cannot be undone.\')) return\n    startTransition(async () => {\n      await deletePost(postId)\n    })\n  }\n\n  return (\n    <button\n      onClick={handleDelete}\n      disabled={isPending}\n      className="text-red-500 hover:text-red-700 disabled:opacity-50 transition-colors"\n    >\n      {isPending ? \'Deleting…\' : \'Delete\'}\n    </button>\n  )\n}',
+      },
+    ],
   },
   // ─── Next.js — Route Handlers ─────────────────────────────────────────────
   {
@@ -11491,6 +11797,40 @@ function validate(data: unknown) {
         'Mixing route.ts and page.tsx in the same folder — Next.js will throw an error; API routes and page routes must be in separate folders',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Building Route Handlers for internal UI mutations instead of Server Actions',
+        why: 'Route Handlers require a fetch() call from a Client Component, manual error handling, and an extra HTTP round-trip. Server Actions are simpler and wire directly to forms and useTransition — no API boilerplate needed.',
+        fixLabel: 'Fix — use Server Actions for all mutations triggered from your own React UI',
+        fixCode: '// ❌ Wrong — Route Handler for an internal form mutation\n// app/api/posts/route.ts\nexport async function POST(req: Request) {\n  const { title } = await req.json()\n  await db.posts.create({ data: { title } })\n  return NextResponse.json({ ok: true })\n}\n// Client Component must manually fetch the endpoint — boilerplate!\n\n// ✅ Right — Server Action replaces the Route Handler\n// app/actions.ts\n\'use server\'\nexport async function createPost(formData: FormData) {\n  await db.posts.create({ data: { title: formData.get(\'title\') } })\n  revalidatePath(\'/posts\')\n}\n// Used directly: <form action={createPost}>',
+      },
+      {
+        title: 'Forgetting to return appropriate HTTP status codes',
+        why: 'Route Handlers that return 200 for every response — including validation errors — make it impossible for clients to detect failures programmatically. Always use the correct status code (400 for bad input, 401 for auth errors, 404 for missing resources, 500 for server errors).',
+        fixLabel: 'Fix — always pass a status in NextResponse.json() for non-success responses',
+        fixCode: '// ❌ Wrong — always returns 200 even for errors\nexport async function POST(req: Request) {\n  const { title } = await req.json()\n  if (!title) {\n    return NextResponse.json({ error: \'Title required\' })  // status 200 — wrong!\n  }\n  const post = await db.posts.create({ data: { title } })\n  return NextResponse.json(post)\n}\n\n// ✅ Right — correct HTTP status codes\nexport async function POST(req: Request) {\n  const { title } = await req.json()\n  if (!title) {\n    return NextResponse.json({ error: \'Title required\' }, { status: 400 })\n  }\n  const post = await db.posts.create({ data: { title } })\n  return NextResponse.json(post, { status: 201 })  // 201 Created\n}',
+      },
+      {
+        title: 'Placing route.ts and page.tsx in the same folder',
+        why: 'Next.js does not allow both route.ts (API handler) and page.tsx (page component) in the same folder. This will throw a build error. API handlers and pages must live in separate folders.',
+        fixLabel: 'Fix — move route.ts into a dedicated folder, typically under app/api/',
+        fixCode: '// ❌ Wrong — route.ts and page.tsx in the same folder\napp/posts/\n  page.tsx     // renders /posts\n  route.ts     // Error: cannot coexist with page.tsx!\n\n// ✅ Right — separate folders for pages and API handlers\napp/\n  posts/\n    page.tsx         // renders /posts (page)\n  api/\n    posts/\n      route.ts       // handles /api/posts (API)\n    posts/[id]/\n      route.ts       // handles /api/posts/:id',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Next.js App Router',
+        heading: 'Route handler (API endpoint)',
+        description: 'A RESTful API endpoint with GET and POST handlers. Uses NextRequest for query param parsing and returns proper HTTP status codes.',
+        code: '// app/api/posts/route.ts\nimport { NextRequest, NextResponse } from \'next/server\'\nimport { db } from \'@/lib/db\'\n\nexport async function GET(request: NextRequest) {\n  const { searchParams } = request.nextUrl\n  const page = Number(searchParams.get(\'page\') ?? 1)\n  const limit = Number(searchParams.get(\'limit\') ?? 10)\n\n  const [posts, total] = await Promise.all([\n    db.posts.findMany({ skip: (page - 1) * limit, take: limit, orderBy: { createdAt: \'desc\' } }),\n    db.posts.count(),\n  ])\n\n  return NextResponse.json({ posts, total, page, limit })\n}\n\nexport async function POST(request: Request) {\n  const body = await request.json()\n  const { title, body: content } = body\n\n  if (!title?.trim()) {\n    return NextResponse.json({ error: \'Title is required\' }, { status: 400 })\n  }\n\n  const post = await db.posts.create({ data: { title: title.trim(), body: content } })\n  return NextResponse.json(post, { status: 201 })\n}',
+      },
+      {
+        context: 'Next.js App Router',
+        heading: 'Stripe webhook handler',
+        description: 'A webhook Route Handler verifies the Stripe signature, processes payment events, and fulfils orders — a case where Server Actions cannot be used because Stripe calls the endpoint directly.',
+        code: '// app/api/webhooks/stripe/route.ts\nimport Stripe from \'stripe\'\nimport { db } from \'@/lib/db\'\n\nconst stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)\n\nexport async function POST(request: Request) {\n  const body = await request.text()  // raw body required for signature verification\n  const sig = request.headers.get(\'stripe-signature\')!\n\n  let event: Stripe.Event\n  try {\n    event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET!)\n  } catch (err) {\n    return new Response(`Webhook Error: ${(err as Error).message}`, { status: 400 })\n  }\n\n  if (event.type === \'checkout.session.completed\') {\n    const session = event.data.object as Stripe.Checkout.Session\n    await db.orders.create({\n      data: {\n        stripeSessionId: session.id,\n        userId: session.metadata!.userId,\n        status: \'paid\',\n      },\n    })\n  }\n\n  return new Response(\'OK\', { status: 200 })\n}',
+      },
+    ],
   },
   // ─── Git ──────────────────────────────────────────────────────────────────
   {
