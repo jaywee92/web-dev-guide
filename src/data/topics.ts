@@ -6869,6 +6869,40 @@ for (let i = 0; i < 5; i++) {
         code: '// 🎯 Typed Functions and Callbacks\n\nfunction add(a: number, b: number): number {\n  return a + b\n}\n\nconst multiply = (a: number, b: number): number => a * b\n\nfunction log(msg: string): void {\n  console.log("[LOG]", msg)\n}\n\nfunction runWithLogging(fn: (x: number) => number, value: number): number {\n  log(`calling fn with ${value}`)\n  const result = fn(value)\n  log(`result: ${result}`)\n  return result\n}\n\nconsole.log(add(3, 4))\nconsole.log(runWithLogging(x => x * x, 5))',
       },
     ],
+    commonErrors: [
+      {
+        title: 'Using any defeats the purpose of TypeScript',
+        why: 'Annotating with any disables all type checking for that value. Errors TypeScript would catch at compile time will surface as runtime exceptions instead.',
+        fixLabel: 'Fix — use unknown and narrow the type before use',
+        fixCode: '// ❌ Wrong — any skips all type checking\nfunction process(value: any) {\n  return value.toUpperCase()  // no error even if value is a number\n}\n\n// ✅ Right — unknown forces you to check first\nfunction process(value: unknown) {\n  if (typeof value === \'string\') {\n    return value.toUpperCase()  // safe\n  }\n  throw new Error(\'Expected string\')\n}',
+      },
+      {
+        title: 'Annotating variables TypeScript can already infer',
+        why: 'Writing let name: string = "Alice" is redundant — TypeScript infers the type from the assigned value. Over-annotation adds visual noise without safety benefit.',
+        fixLabel: 'Fix — annotate function signatures, not inferred variable declarations',
+        fixCode: '// ❌ Wrong — redundant annotations clutter the code\nlet name: string = "Alice"\nlet count: number = 0\n\n// ✅ Right — let TypeScript infer from assignment\nlet name = "Alice"    // inferred: string\nlet count = 0         // inferred: number\n\n// DO annotate function parameters and return types:\nfunction greet(name: string): string {\n  return `Hello, ${name}`\n}',
+      },
+      {
+        title: 'Skipping strict mode in tsconfig',
+        why: 'Without strict: true TypeScript misses implicit any parameters, unchecked nullability, and other real bugs — giving a false sense of safety.',
+        fixLabel: 'Fix — enable strict: true in tsconfig.json',
+        fixCode: '// ❌ Wrong — permissive config hides entire bug categories\n// tsconfig.json: { "compilerOptions": { "strict": false } }\nfunction greet(name) {  // implicit any — no error!\n  return "Hello " + name.toUpperCase()\n}\n\n// ✅ Right — strict: true in tsconfig.json\n// { "compilerOptions": { "strict": true } }\nfunction greet(name: string): string {\n  return "Hello " + name.toUpperCase()\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Typing component props',
+        description: 'Define a type for every component props to get autocomplete and compile-time safety at every call site.',
+        code: 'type ButtonProps = {\n  label: string\n  onClick: () => void\n  disabled?: boolean\n  variant?: \'primary\' | \'secondary\' | \'danger\'\n}\n\nfunction Button({ label, onClick, disabled = false, variant = \'primary\' }: ButtonProps) {\n  return (\n    <button\n      onClick={onClick}\n      disabled={disabled}\n      className={`btn btn--${variant}`}\n    >\n      {label}\n    </button>\n  )\n}',
+      },
+      {
+        context: 'Express',
+        heading: 'Typing request bodies',
+        description: 'Use TypeScript types on Express request bodies so handler code is type-checked before reaching production.',
+        code: 'import { Request, Response } from \'express\'\n\ntype CreateUserBody = {\n  name: string\n  email: string\n}\n\nasync function createUser(\n  req: Request<{}, {}, CreateUserBody>,\n  res: Response\n): Promise<void> {\n  const { name, email } = req.body  // fully typed\n  const user = await db.users.create({ name, email })\n  res.status(201).json(user)\n}',
+      },
+    ],
   },
   {
     id: 'webapi-dom',
@@ -8405,6 +8439,40 @@ for (let i = 0; i < 5; i++) {
         code: '// 🎯 Class implementing an Interface\n// implements is a compile-time contract.\n// The class MUST provide all interface members.\n\ninterface Logger {\n  log(msg: string): void\n  error(msg: string): void\n  warn(msg: string): void\n}\n\nclass ConsoleLogger implements Logger {\n  log(msg: string)   { console.log("[LOG]",   msg) }\n  error(msg: string) { console.log("[ERROR]", msg) }\n  warn(msg: string)  { console.log("[WARN]",  msg) }\n}\n\nclass SilentLogger implements Logger {\n  log(_: string)   {}\n  error(_: string) {}\n  warn(_: string)  {}\n}\n\nfunction runJob(logger: Logger) {\n  logger.log("Job started")\n  logger.warn("Disk space low")\n  logger.log("Job finished")\n}\n\nrunJob(new ConsoleLogger())',
       },
     ],
+    commonErrors: [
+      {
+        title: 'Excess property checks fail on object literals',
+        why: 'TypeScript performs excess property checks only on object literals assigned directly to a typed variable. Passing extra properties through a variable bypasses the check.',
+        fixLabel: 'Fix — extract to a variable or remove the extra properties',
+        fixCode: '// ❌ Wrong — excess property error on literal\ninterface Point { x: number; y: number }\nconst p: Point = { x: 1, y: 2, z: 3 }  // Error: unknown property z\n\n// ✅ Right option 1 — assign via variable (bypasses excess check)\nconst raw = { x: 1, y: 2, z: 3 }\nconst p: Point = raw  // OK — structural typing\n\n// ✅ Right option 2 — remove the extra property\nconst p: Point = { x: 1, y: 2 }',
+      },
+      {
+        title: 'Confusing readonly with Object.freeze()',
+        why: 'TypeScript readonly is a compile-time restriction only. The object is still mutable at runtime — any JavaScript code or a type assertion can still modify it.',
+        fixLabel: 'Fix — use Object.freeze() alongside readonly for runtime immutability',
+        fixCode: '// ❌ Wrong — readonly does not prevent runtime mutation\ninterface Config { readonly host: string }\nconst cfg: Config = { host: \'localhost\' }\n// cfg.host = \'prod\'  // TypeScript error — good!\n\n// But a cast bypasses the protection at runtime:\n;(cfg as any).host = \'prod\'  // TypeScript allows this\n\n// ✅ Right — freeze for runtime safety too\nconst cfg = Object.freeze({ host: \'localhost\' })',
+      },
+      {
+        title: 'Using interface where a type union is needed',
+        why: 'Interfaces cannot express union types. Trying to model a discriminated union with interface syntax causes confusing errors — type aliases are the right tool.',
+        fixLabel: 'Fix — use type alias for unions, interface for extensible object shapes',
+        fixCode: '// ❌ Wrong — interface cannot be a union type\n// interface Result = Success | Failure  // syntax error\n\n// ✅ Right — use type alias for unions\ntype Result<T> =\n  | { ok: true; data: T }\n  | { ok: false; error: string }\n\n// Use interface for extendable object shapes:\ninterface User {\n  id: number\n  name: string\n}\ninterface AdminUser extends User {\n  permissions: string[]\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Props interface with optional and required fields',
+        description: 'Model component props with required fields for essential data and optional fields for enhancements — TypeScript enforces the contract at every call site.',
+        code: 'interface CardProps {\n  title: string\n  subtitle?: string\n  variant: \'primary\' | \'secondary\'\n  children: React.ReactNode\n  onDismiss?: () => void\n}\n\nfunction Card({ title, subtitle, variant, children, onDismiss }: CardProps) {\n  return (\n    <div className={`card card--${variant}`}>\n      <h2>{title}</h2>\n      {subtitle && <p>{subtitle}</p>}\n      {children}\n      {onDismiss && <button onClick={onDismiss}>×</button>}\n    </div>\n  )\n}',
+      },
+      {
+        context: 'Next.js',
+        heading: 'Extending a base entity interface',
+        description: 'Define a base Entity interface and extend it for each domain model — shared fields stay in sync automatically.',
+        code: 'interface Entity {\n  id: string\n  createdAt: Date\n  updatedAt: Date\n}\n\ninterface Post extends Entity {\n  title: string\n  body: string\n  authorId: string\n  published: boolean\n}\n\ninterface Comment extends Entity {\n  postId: string\n  authorId: string\n  text: string\n}\n\nasync function getPost(id: string): Promise<Post> {\n  return db.posts.findUnique({ where: { id } }) as Promise<Post>\n}',
+      },
+    ],
   },
   {
     id: 'ts-generics',
@@ -8503,6 +8571,40 @@ for (let i = 0; i < 5; i++) {
       {
         label: 'Generic interfaces',
         code: '// 🎯 Generic Interfaces and Types\n\ninterface ApiResponse<T> {\n  data: T\n  status: number\n  ok: boolean\n  error?: string\n}\n\ninterface Paginated<T> {\n  items: T[]\n  total: number\n  page: number\n  pageSize: number\n  hasNext: boolean\n}\n\ntype User = { id: number; name: string }\n\nconst usersResponse: ApiResponse<Paginated<User>> = {\n  data: {\n    items: [{ id: 1, name: "Alice" }, { id: 2, name: "Bob" }],\n    total: 2, page: 1, pageSize: 10, hasNext: false,\n  },\n  status: 200,\n  ok: true,\n}\n\nconsole.log(usersResponse.data.items.map(u => u.name))',
+      },
+    ],
+    commonErrors: [
+      {
+        title: 'Using any instead of a generic type parameter',
+        why: 'Typing a utility function with any loses the connection between input and output types. The caller receives any back with no autocomplete or type safety.',
+        fixLabel: 'Fix — use a generic type parameter to preserve type information',
+        fixCode: '// ❌ Wrong — any loses type information\nfunction first(arr: any[]): any {\n  return arr[0]\n}\nconst x = first([1, 2, 3])  // x is any — no autocomplete\n\n// ✅ Right — generic preserves the element type\nfunction first<T>(arr: T[]): T | undefined {\n  return arr[0]\n}\nconst n = first([1, 2, 3])    // n is number | undefined\nconst s = first([\'a\', \'b\'])  // s is string | undefined',
+      },
+      {
+        title: 'Over-constraining generics with unnecessary extends',
+        why: 'Adding constraints that are not needed restricts which types callers can use the function with, reducing reusability without any benefit.',
+        fixLabel: 'Fix — only add extends when you access a property that requires it',
+        fixCode: '// ❌ Wrong — unnecessary constraint limits reuse\nfunction wrap<T extends object>(value: T): { value: T } {\n  return { value }  // object constraint is not needed\n}\nwrap(42)  // Error: number is not assignable to object\n\n// ✅ Right — no constraint needed here\nfunction wrap<T>(value: T): { value: T } {\n  return { value }\n}\nwrap(42)        // OK\nwrap(\'hello\')  // OK\nwrap({ id: 1 }) // OK',
+      },
+      {
+        title: 'Forgetting that generic constraints are compile-time only',
+        why: 'A constraint like <T extends { id: number }> only validates at compile time. External data passed as any bypasses the constraint and can crash at runtime.',
+        fixLabel: 'Fix — validate runtime inputs explicitly when the source is external',
+        fixCode: '// ❌ Wrong — constraint only applies at compile time\nfunction getById<T extends { id: number }>(items: T[], id: number) {\n  return items.find(item => item.id === id)\n}\n// Passes with external any-typed data — may crash at runtime\n\n// ✅ Right — validate external data before using generics\nconst raw: unknown[] = JSON.parse(apiResponse)\nconst items = raw.filter((x): x is { id: number } =>\n  typeof x === \'object\' && x !== null && \'id\' in x\n)\ngetById(items, 1)',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Generic data-fetching hook',
+        description: 'A generic useFetch hook returns typed data for any endpoint — write the hook once and reuse it everywhere.',
+        code: 'import { useState, useEffect } from \'react\'\n\nfunction useFetch<T>(url: string) {\n  const [data, setData]     = useState<T | null>(null)\n  const [loading, setLoading] = useState(true)\n  const [error, setError]   = useState<string | null>(null)\n\n  useEffect(() => {\n    let cancelled = false\n    fetch(url)\n      .then(r => r.json() as Promise<T>)\n      .then(d => { if (!cancelled) setData(d) })\n      .catch((e: Error) => { if (!cancelled) setError(e.message) })\n      .finally(() => { if (!cancelled) setLoading(false) })\n    return () => { cancelled = true }\n  }, [url])\n\n  return { data, loading, error }\n}\n\ntype User = { id: number; name: string }\nconst { data: users } = useFetch<User[]>('/api/users')  // data is User[] | null',
+      },
+      {
+        context: 'Next.js',
+        heading: 'Generic paginated response interface',
+        description: 'A single generic interface covers all paginated API endpoints — change the item type and everything stays consistent.',
+        code: 'interface Paginated<T> {\n  items: T[]\n  total: number\n  page: number\n  pageSize: number\n  hasNext: boolean\n}\n\ntype Post = { id: number; title: string; slug: string }\ntype User = { id: number; name: string; email: string }\n\nasync function fetchPaginated<T>(\n  path: string,\n  page: number\n): Promise<Paginated<T>> {\n  const res = await fetch(`${path}?page=${page}&size=20`)\n  return res.json() as Promise<Paginated<T>>\n}\n\nconst posts = await fetchPaginated<Post>('/api/posts', 1)\n// posts.items is Post[]',
       },
     ],
   },
@@ -8607,6 +8709,40 @@ for (let i = 0; i < 5; i++) {
         code: '// 🎯 Custom Type Guard Functions\n// A function that returns "value is Type" is a type guard.\n// TypeScript trusts it to narrow inside the if block.\n\ninterface Cat { kind: "cat"; meow: () => string }\ninterface Dog { kind: "dog"; bark: () => string }\ntype Animal = Cat | Dog\n\nfunction isCat(a: Animal): a is Cat {\n  return a.kind === "cat"\n}\n\nfunction makeSound(animal: Animal) {\n  if (isCat(animal)) {\n    console.log("Cat says:", animal.meow())   // TS knows it\'s Cat\n  } else {\n    console.log("Dog says:", animal.bark())   // TS knows it\'s Dog\n  }\n}\n\nmakeSound({ kind: "cat", meow: () => "Purrrr" })\nmakeSound({ kind: "dog", bark: () => "Woof!"  })',
       },
     ],
+    commonErrors: [
+      {
+        title: 'typeof null === "object" causes false object checks',
+        why: 'JavaScript typeof null returns "object" due to a language quirk. Checking typeof x === "object" to narrow to an object type will silently include null values.',
+        fixLabel: 'Fix — always check for null explicitly before checking typeof for objects',
+        fixCode: '// ❌ Wrong — null slips through the typeof check\nfunction processObj(val: object | null) {\n  if (typeof val === "object") {\n    val.toString()  // TypeError if val is null!\n  }\n}\n\n// ✅ Right — exclude null first\nfunction processObj(val: object | null) {\n  if (val !== null && typeof val === "object") {\n    val.toString()  // safe\n  }\n}',
+      },
+      {
+        title: 'Using as (type assertion) instead of a real type guard',
+        why: 'Type assertions bypass the type system without any runtime verification. If the assertion is wrong the bug surfaces as a runtime crash with no TypeScript warning.',
+        fixLabel: 'Fix — use a type guard function with a type predicate',
+        fixCode: '// ❌ Wrong — assertion blindly trusts you\nconst data = JSON.parse(raw) as User  // no runtime check\ndata.name.toUpperCase()  // crashes if name is undefined\n\n// ✅ Right — validate the shape at runtime\nfunction isUser(val: unknown): val is User {\n  return (\n    typeof val === \'object\' &&\n    val !== null &&\n    typeof (val as any).name === \'string\' &&\n    typeof (val as any).id === \'number\'\n  )\n}\nconst data = JSON.parse(raw)\nif (isUser(data)) {\n  data.name.toUpperCase()  // safe\n}',
+      },
+      {
+        title: 'Missing exhaustiveness check in discriminated union switch',
+        why: 'Without a never check in the default branch, adding a new union member silently falls through to undefined behavior instead of producing a compile error.',
+        fixLabel: 'Fix — add a never assignment in the default branch',
+        fixCode: '// ❌ Wrong — new union members are silently unhandled\ntype Shape = { kind: \"circle\"; r: number } | { kind: \"rect\"; w: number; h: number }\nfunction area(s: Shape): number {\n  switch (s.kind) {\n    case \"circle\": return Math.PI * s.r ** 2\n    // Missing rect — returns undefined silently!\n  }\n}\n\n// ✅ Right — never check catches missing cases at compile time\nfunction area(s: Shape): number {\n  switch (s.kind) {\n    case \"circle\": return Math.PI * s.r ** 2\n    case \"rect\":   return s.w * s.h\n    default: {\n      const _exhaustive: never = s\n      throw new Error(\`Unhandled shape: ${_exhaustive}\`)\n    }\n  }\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Narrowing async state with a discriminated union',
+        description: 'Model loading, success, and error states as a discriminated union so each render branch gets only the properties it needs.',
+        code: 'type FetchState<T> =\n  | { status: \'idle\' }\n  | { status: \'loading\' }\n  | { status: \'success\'; data: T }\n  | { status: \'error\'; message: string }\n\ntype User = { id: number; name: string }\n\nfunction UserProfile({ state }: { state: FetchState<User> }) {\n  if (state.status === \'loading\') return <p>Loading...</p>\n  if (state.status === \'error\')   return <p>{state.message}</p>\n  if (state.status === \'idle\')    return null\n  // TypeScript knows state.data is User here\n  return <h1>{state.data.name}</h1>\n}',
+      },
+      {
+        context: 'Express',
+        heading: 'Narrowing errors in catch blocks',
+        description: 'catch blocks receive unknown — narrow to Error before accessing .message to avoid a second runtime crash on non-Error throws.',
+        code: 'import { Request, Response } from \'express\'\n\nasync function handler(req: Request, res: Response) {\n  try {\n    const user = await db.users.findOrFail(req.params.id)\n    res.json(user)\n  } catch (err) {\n    // err is unknown — narrow before using .message\n    if (err instanceof Error) {\n      res.status(500).json({ error: err.message })\n    } else {\n      res.status(500).json({ error: \'Unknown error\' })\n    }\n  }\n}',
+      },
+    ],
   },
   {
     id: 'ts-utility-types',
@@ -8695,6 +8831,40 @@ for (let i = 0; i < 5; i++) {
       {
         label: 'Exclude & Extract',
         code: '// 🎯 Exclude and Extract on Union Types\ntype Status = "active" | "inactive" | "pending" | "banned"\n\n// Exclude: remove members from a union\ntype ActiveStatus = Exclude<Status, "banned" | "inactive">\n// → "active" | "pending"\n\n// Extract: keep only matching members\ntype BlockedStatus = Extract<Status, "inactive" | "banned">\n// → "inactive" | "banned"\n\n// ReturnType: extract a function\'s return type\nfunction getUser() {\n  return { id: 1, name: "Alice", role: "admin" as const }\n}\ntype UserResult = ReturnType<typeof getUser>\n// → { id: number; name: string; role: "admin" }\n\nconst u: UserResult = { id: 2, name: "Bob", role: "admin" }\nconsole.log(u)',
+      },
+    ],
+    commonErrors: [
+      {
+        title: 'Confusing Exclude (union filter) with Omit (object key removal)',
+        why: 'Exclude operates on union type members. Omit operates on object type keys. Mixing them up produces either a no-op or a type error.',
+        fixLabel: 'Fix — use Omit for object types, Exclude for union types',
+        fixCode: '// ❌ Wrong — Exclude on an object type does nothing useful\ntype User = { id: number; name: string; password: string }\ntype SafeUser = Exclude<User, \"password\">  // still User — wrong tool\n\n// ✅ Right — Omit removes keys from an object type\ntype SafeUser = Omit<User, \"password\">\n// { id: number; name: string }\n\n// Exclude is for union types:\ntype Status = \"active\" | \"inactive\" | \"banned\"\ntype SafeStatus = Exclude<Status, \"banned\">\n// \"active\" | \"inactive\"',
+      },
+      {
+        title: 'Defining a separate partial interface by hand instead of using Partial<T>',
+        why: 'Manually duplicating an interface with optional fields creates two definitions that can drift out of sync when the base type changes.',
+        fixLabel: 'Fix — derive the partial type from the source interface with Partial<T>',
+        fixCode: '// ❌ Wrong — manual duplicate drifts out of sync\ninterface User { id: number; name: string; email: string }\ninterface UserUpdate { id?: number; name?: string; email?: string }\n// Add a field to User → must remember to update UserUpdate too\n\n// ✅ Right — derived type stays in sync automatically\ntype UserUpdate = Partial<Omit<User, \"id\">>\n// Add a field to User → UserUpdate includes it automatically',
+      },
+      {
+        title: 'Using ReturnType on a generic function without providing type arguments',
+        why: 'ReturnType<typeof fn> on a generic function gives the return type with all type parameters replaced by their constraint (usually unknown), not the specific return type expected.',
+        fixLabel: 'Fix — annotate the return type explicitly or define the type separately',
+        fixCode: '// ❌ Wrong — generic function gives unhelpful ReturnType\nfunction first<T>(arr: T[]): T | undefined { return arr[0] }\ntype R = ReturnType<typeof first>  // unknown | undefined — not useful\n\n// ✅ Right — annotate the return type on the specific function\nfunction getUser(): { id: number; name: string } {\n  return { id: 1, name: \"Alice\" }\n}\ntype User = ReturnType<typeof getUser>  // { id: number; name: string }',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Partial update form with Partial<T>',
+        description: 'A settings form that only submits changed fields uses Partial<T> — no need to maintain a separate draft interface.',
+        code: 'type UserProfile = {\n  displayName: string\n  bio: string\n  website: string\n  avatarUrl: string\n}\n\nfunction ProfileForm({ initial }: { initial: UserProfile }) {\n  const [draft, setDraft] = useState<Partial<UserProfile>>({})\n\n  const handleChange =\n    (field: keyof UserProfile) =>\n    (e: React.ChangeEvent<HTMLInputElement>) => {\n      setDraft(prev => ({ ...prev, [field]: e.target.value }))\n    }\n\n  async function handleSubmit() {\n    await patchProfile(draft)  // only sends changed fields\n  }\n\n  return (\n    <form onSubmit={(e) => { e.preventDefault(); handleSubmit() }}>\n      <input defaultValue={initial.displayName} onChange={handleChange(\'displayName\')} />\n    </form>\n  )\n}',
+      },
+      {
+        context: 'Express',
+        heading: 'Role permission map with Record<K, V>',
+        description: 'Model RBAC permissions as a Record to get exhaustive key checking and typed values.',
+        code: 'type Role = \"admin\" | \"editor\" | \"viewer\"\ntype Permission = \"read\" | \"write\" | \"delete\" | \"manage_users\"\n\nconst rolePermissions: Record<Role, Permission[]> = {\n  admin:  [\"read\", \"write\", \"delete\", \"manage_users\"],\n  editor: [\"read\", \"write\"],\n  viewer: [\"read\"],\n}\n// TypeScript errors if a Role key is missing from the object\n\nfunction canPerform(role: Role, action: Permission): boolean {\n  return rolePermissions[role].includes(action)\n}',
       },
     ],
   },
@@ -8786,6 +8956,40 @@ for (let i = 0; i < 5; i++) {
       {
         label: 'Array methods',
         code: '// 🎯 Array Methods with TypeScript\ntype Product = { name: string; price: number; inStock: boolean }\n\nconst products: Product[] = [\n  { name: "Laptop",  price: 999,  inStock: true  },\n  { name: "Mouse",   price: 29,   inStock: true  },\n  { name: "Monitor", price: 399,  inStock: false },\n  { name: "Desk",    price: 249,  inStock: true  },\n]\n\n// filter → Product[]\nconst available = products.filter(p => p.inStock)\nconsole.log("In stock:", available.map(p => p.name))\n\n// find → Product | undefined\nconst laptop = products.find(p => p.name === "Laptop")\nconsole.log("Found:", laptop?.name, laptop?.price)\n\n// reduce → number\nconst total = available.reduce((sum, p) => sum + p.price, 0)\nconsole.log("Total:", total)',
+      },
+    ],
+    commonErrors: [
+      {
+        title: 'Using any[] loses all element type information',
+        why: 'Typing an array as any[] disables all type checking on its elements — mistakes like pushing the wrong type or accessing missing properties are not caught.',
+        fixLabel: 'Fix — use the specific element type instead of any[]',
+        fixCode: '// ❌ Wrong — any[] defeats type safety on elements\nconst items: any[] = []\nconst upper = items.map(x => x.toUpperCase())  // x is any — no error!\n\n// ✅ Right — use the specific type\nconst names: string[] = [\"Alice\", \"Bob\"]\nconst upper = names.map(n => n.toUpperCase())  // n is string — safe\n\n// For genuinely mixed arrays use a union:\nconst mixed: (string | number)[] = [\"Alice\", 1]',
+      },
+      {
+        title: 'Mutating readonly arrays causes compile errors',
+        why: 'readonly T[] prevents push, pop, splice, and index assignment. This is intentional but surprises developers who add readonly to a configuration array they later need to update.',
+        fixLabel: 'Fix — use readonly only for truly immutable data; use plain T[] for mutable collections',
+        fixCode: '// ❌ Wrong — trying to mutate a readonly array\nconst ALLOWED_ROLES: readonly string[] = [\"admin\", \"editor\"]\nALLOWED_ROLES.push(\"viewer\")  // Error: push does not exist on readonly\n\n// ✅ Right — readonly for constants, plain T[] for mutable collections\nconst ALLOWED_ROLES: readonly string[] = [\"admin\", \"editor\"]  // immutable\nconst userRoles: string[] = []  // mutable\nuserRoles.push(\"viewer\")  // OK',
+      },
+      {
+        title: 'Confusing tuples with union arrays',
+        why: '[string, number] is a two-element tuple where each position has a fixed type. (string | number)[] is a variable-length array of mixed types. They are different types that serve different purposes.',
+        fixLabel: 'Fix — use tuple syntax for fixed-length positional data, union array for variable-length mixed data',
+        fixCode: '// ❌ Wrong — union array does not guarantee position types\nconst pair: (string | number)[] = [\"Alice\", 42]\nconst name = pair[0]  // type: string | number — could be either!\n\n// ✅ Right — tuple guarantees each position type\ntype NameAge = [name: string, age: number]\nconst pair: NameAge = [\"Alice\", 42]\nconst name = pair[0]  // type: string — guaranteed\nconst age  = pair[1]  // type: number — guaranteed',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Typed list rendering with array methods',
+        description: 'Type the data array and TypeScript flows the element type through filter, map, and find automatically — no manual type annotations needed in callbacks.',
+        code: 'type Task = {\n  id: number\n  title: string\n  completed: boolean\n  priority: \"low\" | \"medium\" | \"high\"\n}\n\nfunction TaskList({ tasks }: { tasks: Task[] }) {\n  const pending = tasks.filter(t => !t.completed)  // Task[]\n  const high    = pending.filter(t => t.priority === \"high\")  // Task[]\n\n  return (\n    <ul>\n      {high.map(task => (\n        <li key={task.id}>\n          <strong>{task.priority}</strong>: {task.title}\n        </li>\n      ))}\n    </ul>\n  )\n}',
+      },
+      {
+        context: 'React',
+        heading: 'Tuple return type from a custom hook',
+        description: 'Return a labeled tuple from a hook so callers can destructure with their own variable names — exactly like useState.',
+        code: 'import { useState, useCallback } from \'react\'\n\nfunction useToggle(initial = false): [value: boolean, on: () => void, off: () => void] {\n  const [value, setValue] = useState(initial)\n  const on  = useCallback(() => setValue(true), [])\n  const off = useCallback(() => setValue(false), [])\n  return [value, on, off]\n}\n\nfunction Modal() {\n  const [isOpen, openModal, closeModal] = useToggle()\n  return (\n    <>\n      <button onClick={openModal}>Open</button>\n      {isOpen && <div className="modal"><button onClick={closeModal}>Close</button></div>}\n    </>\n  )\n}',
       },
     ],
   },
@@ -8889,6 +9093,40 @@ for (let i = 0; i < 5; i++) {
         code: '// 🎯 TypeScript Getters and Setters\nclass Temperature {\n  private _celsius: number\n\n  constructor(celsius: number) {\n    this._celsius = celsius\n  }\n\n  get celsius(): number { return this._celsius }\n  set celsius(value: number) {\n    if (value < -273.15) throw new Error("Below absolute zero!")\n    this._celsius = value\n  }\n\n  get fahrenheit(): number { return this._celsius * 9/5 + 32 }\n  get kelvin():     number { return this._celsius + 273.15 }\n}\n\nconst t = new Temperature(100)\nconsole.log(`${t.celsius}°C = ${t.fahrenheit}°F = ${t.kelvin}K`)\nt.celsius = 0\nconsole.log(`${t.celsius}°C = ${t.fahrenheit}°F`)\n// t.celsius = -300  // throws!',
       },
     ],
+    commonErrors: [
+      {
+        title: 'Forgetting super() in a subclass constructor',
+        why: 'A subclass constructor must call super() before accessing this. Forgetting it causes a ReferenceError at runtime and a compile error in TypeScript.',
+        fixLabel: 'Fix — call super() as the first statement in every subclass constructor',
+        fixCode: '// ❌ Wrong — accessing this before super()\nclass Dog extends Animal {\n  breed: string\n  constructor(name: string, breed: string) {\n    this.breed = breed  // Error: super() must be called first\n    super(name)\n  }\n}\n\n// ✅ Right — super() before any this access\nclass Dog extends Animal {\n  breed: string\n  constructor(name: string, breed: string) {\n    super(name)         // required first\n    this.breed = breed  // safe\n  }\n}',
+      },
+      {
+        title: 'Using private when protected is needed for subclasses',
+        why: 'TypeScript private members are inaccessible in subclasses — not just externally. Subclass methods that need to read or write a parent property require protected.',
+        fixLabel: 'Fix — use protected for members subclasses legitimately need to access',
+        fixCode: '// ❌ Wrong — private blocks subclass access\nclass Animal {\n  private name: string\n  constructor(name: string) { this.name = name }\n}\nclass Dog extends Animal {\n  bark() { return `${this.name} barks!` }  // Error: name is private\n}\n\n// ✅ Right — protected allows subclass access\nclass Animal {\n  protected name: string\n  constructor(name: string) { this.name = name }\n}\nclass Dog extends Animal {\n  bark() { return `${this.name} barks!` }  // OK\n}',
+      },
+      {
+        title: 'Overusing class-based OOP for simple data containers',
+        why: 'Classes with only a constructor and properties are more verbose than type aliases and carry unnecessary runtime overhead for objects that have no behavior.',
+        fixLabel: 'Fix — use type aliases for plain data; reserve classes for objects with behavior',
+        fixCode: '// ❌ Wrong — class used just to hold data\nclass UserDTO {\n  constructor(\n    public id: number,\n    public name: string,\n    public email: string,\n  ) {}\n}\nconst user = new UserDTO(1, \"Alice\", \"a@b.com\")\n\n// ✅ Right — plain type alias is simpler\ntype User = { id: number; name: string; email: string }\nconst user: User = { id: 1, name: \"Alice\", email: \"a@b.com\" }\n\n// Use a class when methods make sense:\nclass BankAccount {\n  constructor(private balance: number) {}\n  deposit(n: number) { this.balance += n }\n  getBalance() { return this.balance }\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Express',
+        heading: 'Service class with dependency injection',
+        description: 'Encapsulate database operations in a typed service class — easy to swap the database client in tests.',
+        code: 'interface UserRepository {\n  findById(id: number): Promise<User | null>\n  create(data: Omit<User, \"id\">): Promise<User>\n}\n\nclass UserService {\n  constructor(private readonly repo: UserRepository) {}\n\n  async getUser(id: number): Promise<User> {\n    const user = await this.repo.findById(id)\n    if (!user) throw new Error(`User ${id} not found`)\n    return user\n  }\n\n  async createUser(name: string, email: string): Promise<User> {\n    return this.repo.create({ name, email })\n  }\n}',
+      },
+      {
+        context: 'React',
+        heading: 'Abstract base class for domain entities',
+        description: 'Share validation logic across domain entities with an abstract base class — each concrete class implements its own validate method.',
+        code: 'abstract class Entity<T> {\n  protected data: T\n  constructor(data: T) { this.data = data }\n  abstract validate(): string[]\n  isValid(): boolean { return this.validate().length === 0 }\n  getErrors(): string[] { return this.validate() }\n}\n\nclass UserEntity extends Entity<{ name: string; email: string }> {\n  validate(): string[] {\n    const errors: string[] = []\n    if (!this.data.name) errors.push(\"Name is required\")\n    if (!this.data.email.includes(\"@\")) errors.push(\"Invalid email\")\n    return errors\n  }\n}\n\nconst user = new UserEntity({ name: \"Alice\", email: \"alice@example.com\" })\nconsole.log(user.isValid())  // true',
+      },
+    ],
   },
   {
     id: 'ts-enums',
@@ -8978,6 +9216,40 @@ for (let i = 0; i < 5; i++) {
         code: '// 🎯 const enum — Zero Runtime Cost\n// const enum is inlined at compile time — no object is generated.\n\nconst enum HttpStatus {\n  OK         = 200,\n  Created    = 201,\n  BadRequest = 400,\n  NotFound   = 404,\n  ServerError = 500,\n}\n\nfunction handleResponse(status: HttpStatus): void {\n  if (status === HttpStatus.OK || status === HttpStatus.Created) {\n    console.log("Success:", status)\n  } else if (status >= HttpStatus.BadRequest) {\n    console.log("Error:", status)\n  }\n}\n\nhandleResponse(HttpStatus.OK)\nhandleResponse(HttpStatus.NotFound)\nhandleResponse(HttpStatus.ServerError)',
       },
     ],
+    commonErrors: [
+      {
+        title: 'Using numeric enums where values appear in logs or APIs',
+        why: 'Numeric enum values (0, 1, 2) are opaque in log files and API payloads. A developer looking at { status: 2 } has no idea what it means without checking the enum definition.',
+        fixLabel: 'Fix — use string enums for any value that appears outside the codebase',
+        fixCode: '// ❌ Wrong — numeric values in API payloads are meaningless\nenum Status { Active, Inactive, Banned }\nconst user = { name: \"Alice\", status: Status.Active }\nJSON.stringify(user)  // { \"status\": 0 }  ← what is 0?\n\n// ✅ Right — string values are self-documenting\nenum Status {\n  Active   = \"active\",\n  Inactive = \"inactive\",\n  Banned   = \"banned\",\n}\nJSON.stringify({ status: Status.Active })  // { \"status\": \"active\" }',
+      },
+      {
+        title: 'Using enums in React component props',
+        why: 'Importing an enum into every file that renders a component couples that file to the enum definition. String literal unions achieve the same safety with no import.',
+        fixLabel: 'Fix — use string literal unions for component props instead of enums',
+        fixCode: '// ❌ Wrong — callers must import the enum\nimport { ButtonVariant } from \"./enums\"\nenum ButtonVariant { Primary = \"primary\", Secondary = \"secondary\" }\ntype ButtonProps = { variant: ButtonVariant }\n// <Button variant={ButtonVariant.Primary} />  // verbose\n\n// ✅ Right — string union needs no import\ntype ButtonProps = {\n  variant: \"primary\" | \"secondary\" | \"danger\"\n}\n// <Button variant=\"primary\" />  // clean',
+      },
+      {
+        title: 'Forgetting that numeric enums have a two-way mapping',
+        why: 'TypeScript numeric enums compile to an object with both Direction.Up = 0 and Direction[0] = "Up". Iterating Object.keys on the enum gives both numbers and names.',
+        fixLabel: 'Fix — use const enum or string enums to avoid the reverse mapping',
+        fixCode: '// ❌ Unexpected — reverse mapping in numeric enums\nenum Direction { Up, Down, Left, Right }\nObject.keys(Direction)\n// [\"0\", \"1\", \"2\", \"3\", \"Up\", \"Down\", \"Left\", \"Right\"] ← unexpected!\n\n// ✅ Right option 1 — const enum (inlined at compile time)\nconst enum Direction { Up, Down, Left, Right }\n\n// ✅ Right option 2 — string enum (no reverse mapping)\nenum Direction { Up = \"UP\", Down = \"DOWN\", Left = \"LEFT\", Right = \"RIGHT\" }\nObject.keys(Direction)  // [\"Up\", \"Down\", \"Left\", \"Right\"] ← clean',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Express',
+        heading: 'RBAC with string enums and exhaustive checks',
+        description: 'Model user roles as a string enum and use an exhaustive switch to derive permissions — adding a new role forces you to handle it everywhere.',
+        code: 'enum Role { Admin = \"admin\", Editor = \"editor\", Viewer = \"viewer\" }\n\nfunction getPermissions(role: Role): string[] {\n  switch (role) {\n    case Role.Admin:   return [\"read\", \"write\", \"delete\", \"manage\"]\n    case Role.Editor:  return [\"read\", \"write\"]\n    case Role.Viewer:  return [\"read\"]\n    default: {\n      const _: never = role\n      throw new Error(`Unknown role: ${role}`)\n    }\n  }\n}\n\nfunction requirePermission(action: string) {\n  return (req: any, res: any, next: any) => {\n    const perms = getPermissions(req.user.role as Role)\n    if (perms.includes(action)) return next()\n    res.status(403).json({ error: \"Forbidden\" })\n  }\n}',
+      },
+      {
+        context: 'React',
+        heading: 'Order status badge with string enum',
+        description: 'Map a string enum to display properties using a typed config object — the Record ensures every status has a color and label.',
+        code: 'enum OrderStatus {\n  Pending   = \"pending\",\n  Confirmed = \"confirmed\",\n  Shipped   = \"shipped\",\n  Delivered = \"delivered\",\n  Cancelled = \"cancelled\",\n}\n\nconst statusConfig: Record<OrderStatus, { color: string; label: string }> = {\n  [OrderStatus.Pending]:   { color: \"gray\",   label: \"Pending\"   },\n  [OrderStatus.Confirmed]: { color: \"blue\",   label: \"Confirmed\" },\n  [OrderStatus.Shipped]:   { color: \"orange\", label: \"Shipped\"   },\n  [OrderStatus.Delivered]: { color: \"green\",  label: \"Delivered\" },\n  [OrderStatus.Cancelled]: { color: \"red\",    label: \"Cancelled\" },\n}\n\nfunction StatusBadge({ status }: { status: OrderStatus }) {\n  const { color, label } = statusConfig[status]\n  return <span className={`badge badge--${color}`}>{label}</span>\n}',
+      },
+    ],
   },
   {
     id: 'ts-type-assertion',
@@ -9056,6 +9328,40 @@ for (let i = 0; i < 5; i++) {
       {
         label: 'satisfies operator',
         code: '// 🎯 satisfies — Validate Without Widening\n// satisfies checks a type constraint but preserves the literal type.\n// Introduced in TypeScript 4.9.\n\ntype Color = string | [number, number, number]\n\nconst palette = {\n  red:   [255, 0, 0],\n  green: [0, 255, 0],\n  blue:  "blue",        // string is also valid\n} satisfies Record<string, Color>\n\n// Without satisfies: palette.red is Color (wide)\n// With satisfies: palette.red is [number, number, number] (narrow)\nconsole.log(palette.red[0])   // TS knows it\'s an array\nconsole.log(palette.blue.toUpperCase()) // TS knows it\'s a string\n\n// palette.invalid = "oops"  // Error: not in Record<string, Color>',
+      },
+    ],
+    commonErrors: [
+      {
+        title: 'Using as to silence TypeScript errors instead of fixing them',
+        why: 'Type assertions bypass the type system without any runtime verification. Using as to suppress a legitimate error means the bug is still there — TypeScript just stops warning about it.',
+        fixLabel: 'Fix — resolve the type mismatch properly instead of asserting it away',
+        fixCode: '// ❌ Wrong — silencing a valid type error with as\nconst user = getUser() as User  // hides the fact that getUser() can return null\nuser.name.toUpperCase()          // crashes if user is actually null\n\n// ✅ Right — handle the null case properly\nconst user = getUser()\nif (user === null) throw new Error(\"User not found\")\nuser.name.toUpperCase()  // safe — null is ruled out',
+      },
+      {
+        title: 'Overusing the non-null assertion operator (!)',
+        why: 'Each ! is a runtime promise that crashes with TypeError if the value is actually null or undefined. Developers often add ! to silence errors without verifying the value exists.',
+        fixLabel: 'Fix — use optional chaining (?.) or null checks instead of !',
+        fixCode: '// ❌ Wrong — ! crashes if the element is absent from the DOM\nconst btn = document.querySelector(\"#submit\")!\nbtn.addEventListener(\"click\", handler)  // TypeError if btn is null\n\n// ✅ Right — guard with a null check\nconst btn = document.querySelector(\"#submit\")\nif (!btn) throw new Error(\"Submit button not found\")\nbtn.addEventListener(\"click\", handler)  // safe\n\n// Or use optional chaining for non-critical access:\ndocument.querySelector(\"#submit\")?.addEventListener(\"click\", handler)',
+      },
+      {
+        title: 'Double assertion (as unknown as T) as a workaround',
+        why: 'Double assertion breaks all type safety — it tells TypeScript to accept any conversion, even completely incompatible ones. It always signals a design problem.',
+        fixLabel: 'Fix — fix the underlying type mismatch with proper generics or type guards',
+        fixCode: '// ❌ Wrong — double assertion bypasses all checks\nconst value = getResponse() as unknown as SpecificType\n\n// ✅ Right option 1 — use a generic utility function\nasync function fetchTyped<T>(url: string): Promise<T> {\n  const res = await fetch(url)\n  return res.json() as T  // single assertion — acceptable for API boundaries\n}\n\n// ✅ Right option 2 — validate with a type guard\nfunction isSpecificType(val: unknown): val is SpecificType {\n  return typeof val === \"object\" && val !== null && \"expectedField\" in val\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Typing DOM element refs with useRef and as',
+        description: 'Use useRef<T>(null) with the HTML element type — TypeScript narrows ref.current to that element for full property and method access.',
+        code: 'import { useEffect, useRef } from \"react\"\n\nfunction VideoPlayer({ src }: { src: string }) {\n  const ref = useRef<HTMLVideoElement>(null)\n\n  useEffect(() => {\n    const video = ref.current\n    if (!video) return  // handle null before using\n    video.src = src\n    video.play().catch(console.error)\n  }, [src])\n\n  return <video ref={ref} controls />\n}\n\n// Manual DOM selection with as:\nconst canvas = document.querySelector(\"#myCanvas\") as HTMLCanvasElement\nconst ctx = canvas.getContext(\"2d\")!',
+      },
+      {
+        context: 'Next.js',
+        heading: 'as const for route config objects',
+        description: 'Use as const to narrow string literals in configuration objects so TypeScript knows the exact values, not just string.',
+        code: 'const routes = {\n  home:    \"/\",\n  users:   \"/users\",\n  profile: \"/users/profile\",\n} as const\n\ntype RoutePath = typeof routes[keyof typeof routes]\n// \"/\" | \"/users\" | \"/users/profile\"\n\nfunction navigate(path: RoutePath) {\n  window.location.href = path\n}\n\nnavigate(routes.home)  // OK\nnavigate(\"/about\")   // Error: not a valid route path',
       },
     ],
   },
@@ -9168,6 +9474,40 @@ for (let i = 0; i < 5; i++) {
       {
         label: 'useRef & children',
         code: '// 🎯 useRef and ReactNode Types\n\n// useRef for DOM elements:\n// const inputRef = useRef<HTMLInputElement>(null)\n// inputRef.current?.focus()\n\n// useRef for mutable value (no re-render):\n// const timerRef = useRef<ReturnType<typeof setInterval>>(undefined)\n// timerRef.current = setInterval(tick, 1000)\n// return () => clearInterval(timerRef.current)\n\n// Children type:\ntype LayoutProps = {\n  children: string  // React.ReactNode in real code\n  className?: string\n}\n\nfunction layout({ children, className = "" }: LayoutProps) {\n  console.log(`<div class="${className}">${children}</div>`)\n}\nlayout({ children: "<p>Hello World</p>", className: "container" })',
+      },
+    ],
+    commonErrors: [
+      {
+        title: 'Letting useState infer from null — losing the full type',
+        why: 'useState(null) infers the type as null, not User | null. Every attempt to call setUser with a real User object then fails with a type error.',
+        fixLabel: 'Fix — always pass the explicit generic when initial state is null or an empty array',
+        fixCode: '// ❌ Wrong — inferred type is null, not User | null\nconst [user, setUser] = useState(null)\nsetUser({ id: 1, name: \"Alice\" })  // Error: not assignable to null\n\n// ✅ Right — explicit generic captures the full type\nconst [user, setUser] = useState<User | null>(null)\nsetUser({ id: 1, name: \"Alice\" })  // OK\nsetUser(null)                        // OK\n\n// Same pattern for arrays:\nconst [posts, setPosts] = useState<Post[]>([])  // not just never[]',
+      },
+      {
+        title: 'Skipping types on useRef — getting any for current',
+        why: 'An untyped useRef produces any for ref.current. This loses all autocomplete and type checking on DOM properties and methods.',
+        fixLabel: 'Fix — always pass the HTML element type as the generic argument',
+        fixCode: '// ❌ Wrong — ref.current is any\nconst inputRef = useRef(null)\ninputRef.current?.focus()   // no type checking\ninputRef.current?.value     // any — could be anything\n\n// ✅ Right — ref.current is HTMLInputElement\nconst inputRef = useRef<HTMLInputElement>(null)\ninputRef.current?.focus()   // typed method\ninputRef.current?.value     // string — typed property\ninputRef.current?.select()  // typed method',
+      },
+      {
+        title: 'Using interface for props — risk of accidental declaration merging',
+        why: 'Two interface declarations with the same name in the same scope silently merge. For component props this can add unexpected required properties and cause cryptic type errors.',
+        fixLabel: 'Fix — use type alias (not interface) for component props',
+        fixCode: '// ❌ Wrong — interface declarations can silently merge\ninterface ButtonProps { label: string }\ninterface ButtonProps { onClick: () => void }  // merges!\n// ButtonProps now requires both label AND onClick\n\n// ✅ Right — type alias cannot merge\ntype ButtonProps = {\n  label: string\n  onClick: () => void\n  disabled?: boolean\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Fully typed data-fetching component',
+        description: 'Combine useState generics, useEffect, and typed API responses to build a safe, complete data-loading pattern.',
+        code: 'type Post = { id: number; title: string; body: string }\n\nfunction PostList() {\n  const [posts, setPosts]     = useState<Post[]>([])\n  const [loading, setLoading] = useState(true)\n  const [error, setError]     = useState<string | null>(null)\n\n  useEffect(() => {\n    let cancelled = false\n    fetch(\"/api/posts\")\n      .then(r => r.json() as Promise<Post[]>)\n      .then(data => { if (!cancelled) setPosts(data) })\n      .catch((e: Error) => { if (!cancelled) setError(e.message) })\n      .finally(() => { if (!cancelled) setLoading(false) })\n    return () => { cancelled = true }\n  }, [])\n\n  if (loading) return <p>Loading...</p>\n  if (error)   return <p>Error: {error}</p>\n  return <ul>{posts.map(p => <li key={p.id}>{p.title}</li>)}</ul>\n}',
+      },
+      {
+        context: 'React',
+        heading: 'Typed useReducer with discriminated action union',
+        description: 'A typed reducer with a discriminated union for actions — adding a new action type without handling it produces a compile error.',
+        code: 'type State = { count: number; status: \"idle\" | \"busy\" }\ntype Action =\n  | { type: \"increment\" }\n  | { type: \"decrement\" }\n  | { type: \"set\"; value: number }\n  | { type: \"setBusy\"; busy: boolean }\n\nfunction reducer(state: State, action: Action): State {\n  switch (action.type) {\n    case \"increment\": return { ...state, count: state.count + 1 }\n    case \"decrement\": return { ...state, count: state.count - 1 }\n    case \"set\":       return { ...state, count: action.value }\n    case \"setBusy\":   return { ...state, status: action.busy ? \"busy\" : \"idle\" }\n    default: {\n      const _: never = action\n      throw new Error(\"Unhandled action\")\n    }\n  }\n}\n\nconst [state, dispatch] = useReducer(reducer, { count: 0, status: \"idle\" })',
       },
     ],
   },
@@ -9337,6 +9677,40 @@ function validate(data: unknown) {
       {
         label: 'z.infer pattern',
         code: '// 🎯 Derive TypeScript Types from Zod Schemas\n// z.infer keeps your TS type in sync with the schema automatically.\n\n// import { z } from "zod"\n// const ProductSchema = z.object({\n//   id:       z.number().int().positive(),\n//   name:     z.string().min(1).max(100),\n//   price:    z.number().positive(),\n//   category: z.enum(["electronics", "clothing", "food"]),\n//   tags:     z.array(z.string()).optional(),\n// })\n// type Product = z.infer<typeof ProductSchema>\n// ↑ Always in sync — change the schema, type updates automatically\n\n// ❌ Bad: maintain types manually (can drift)\n// type Product = { id: number; name: string; ... }\n\n// Simulating z.infer behavior:\nconst ProductSchema = {\n  fields: { id: "number", name: "string", price: "number", category: "string" },\n  inferredType: "Product"\n}\nconsole.log("Schema fields:", ProductSchema.fields)\nconsole.log("Inferred type:", ProductSchema.inferredType, "← always in sync")',
+      },
+    ],
+    commonErrors: [
+      {
+        title: 'Using as User instead of parsing with Zod',
+        why: 'Type assertions are promises to the compiler with no runtime verification. If the API changes shape the assertion silently passes and the bug surfaces as a runtime crash.',
+        fixLabel: 'Fix — always parse external data with the Zod schema',
+        fixCode: '// ❌ Wrong — as User skips all runtime validation\nconst res  = await fetch(\"/api/user\")\nconst user = await res.json() as User  // no actual check\nuser.name.toUpperCase()  // crashes if name is missing or wrong type\n\n// ✅ Right — parse with Zod to validate the shape\nconst raw  = await fetch(\"/api/user\").then(r => r.json())\nconst user = UserSchema.parse(raw)   // throws ZodError if invalid\nuser.name.toUpperCase()  // safe — Zod guarantees name is a string',
+      },
+      {
+        title: 'Calling parse() instead of safeParse() in request handlers',
+        why: 'parse() throws a ZodError on invalid input. Uncaught in a React component or API handler this crashes the UI or returns a 500 with a confusing stack trace.',
+        fixLabel: 'Fix — use safeParse() to handle validation errors gracefully',
+        fixCode: '// ❌ Wrong — parse() throws, crashing the handler\nasync function handleSubmit(formData: unknown) {\n  const data = LoginSchema.parse(formData)  // throws ZodError on bad input!\n  await login(data.email, data.password)\n}\n\n// ✅ Right — safeParse() returns a result object\nasync function handleSubmit(formData: unknown) {\n  const result = LoginSchema.safeParse(formData)\n  if (!result.success) {\n    const errors = result.error.flatten().fieldErrors\n    return { ok: false, errors }\n  }\n  await login(result.data.email, result.data.password)\n  return { ok: true }\n}',
+      },
+      {
+        title: 'Writing a separate TypeScript type alongside the Zod schema',
+        why: 'Maintaining a hand-written TypeScript type AND a Zod schema for the same data creates two definitions that can drift out of sync when the API changes.',
+        fixLabel: 'Fix — derive the TypeScript type from the schema using z.infer',
+        fixCode: '// ❌ Wrong — two definitions that can drift apart\ntype User = { id: number; name: string; email: string }\nconst UserSchema = z.object({\n  id:    z.number(),\n  name:  z.string(),\n  // Forgot to add email here after adding it to the type above\n})\n\n// ✅ Right — single source of truth\nconst UserSchema = z.object({\n  id:    z.number(),\n  name:  z.string(),\n  email: z.string().email(),\n})\ntype User = z.infer<typeof UserSchema>  // always in sync',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Form validation with Zod and react-hook-form',
+        description: 'Define a Zod schema once and use it for both TypeScript types and runtime form validation via react-hook-form.',
+        code: 'import { z } from \"zod\"\nimport { useForm } from \"react-hook-form\"\nimport { zodResolver } from \"@hookform/resolvers/zod\"\n\nconst loginSchema = z.object({\n  email:    z.string().email(\"Invalid email address\"),\n  password: z.string().min(8, \"At least 8 characters\"),\n})\n\ntype LoginForm = z.infer<typeof loginSchema>\n\nfunction LoginPage() {\n  const { register, handleSubmit, formState: { errors } } =\n    useForm<LoginForm>({ resolver: zodResolver(loginSchema) })\n\n  const onSubmit = async (data: LoginForm) => {\n    await login(data.email, data.password)\n  }\n\n  return (\n    <form onSubmit={handleSubmit(onSubmit)}>\n      <input {...register(\"email\")} />\n      {errors.email && <p>{errors.email.message}</p>}\n      <input type=\"password\" {...register(\"password\")} />\n      {errors.password && <p>{errors.password.message}</p>}\n      <button type=\"submit\">Login</button>\n    </form>\n  )\n}',
+      },
+      {
+        context: 'Next.js',
+        heading: 'Validated API route with Zod',
+        description: 'Parse and validate the request body in a Next.js API route — return structured validation errors instead of crashing.',
+        code: 'import { z } from \"zod\"\nimport type { NextApiRequest, NextApiResponse } from \"next\"\n\nconst createPostSchema = z.object({\n  title:   z.string().min(1).max(200),\n  body:    z.string().min(1),\n  tags:    z.array(z.string()).max(5).optional(),\n  publish: z.boolean().default(false),\n})\n\ntype CreatePostInput = z.infer<typeof createPostSchema>\n\nexport default async function handler(\n  req: NextApiRequest,\n  res: NextApiResponse\n) {\n  if (req.method !== \"POST\") return res.status(405).end()\n\n  const result = createPostSchema.safeParse(req.body)\n  if (!result.success) {\n    return res.status(400).json({ errors: result.error.flatten().fieldErrors })\n  }\n\n  const post = await db.posts.create(result.data)  // typed as CreatePostInput\n  res.status(201).json(post)\n}',
       },
     ],
   },
@@ -10922,6 +11296,40 @@ function validate(data: unknown) {
         'Thinking git saves automatically — nothing is saved until you explicitly git add and git commit',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Running git init inside an existing repository',
+        why: 'Creates a nested .git folder, causing Git to track two separate repositories in the same directory tree. Commands behave unpredictably and files may appear untracked for no obvious reason.',
+        fixLabel: 'Fix — check for an existing repo before running git init',
+        fixCode: '# ❌ Wrong — running init without checking first\ngit init\n# Now you have a nested .git — confusing and error-prone\n\n# ✅ Right — verify you\'re not already in a repo\ngit status\n# If it says "not a git repository", then:\ngit init',
+      },
+      {
+        title: 'Staging everything with git add . without reviewing changes first',
+        why: 'Using git add . without reviewing what changed can include temporary debug code, console.log statements, or accidentally modified files in the commit, polluting the project history.',
+        fixLabel: 'Fix — always review with git status and git diff before staging',
+        fixCode: '# ❌ Wrong — blindly staging everything\ngit add .\ngit commit -m "stuff"\n\n# ✅ Right — review first, stage deliberately\ngit status\ngit diff\ngit add src/components/Navbar.tsx\ngit add src/styles/nav.css\ngit commit -m "feat: add responsive navigation menu"',
+      },
+      {
+        title: 'Writing vague or empty commit messages',
+        why: 'Messages like "fix", "update", or "WIP" make it impossible to understand what changed when reviewing history later. A year from now, no one — including you — will know what that commit did.',
+        fixLabel: 'Fix — write a clear imperative subject line describing what changed',
+        fixCode: '# ❌ Wrong — useless messages\ngit commit -m "fix"\ngit commit -m "asdf"\ngit commit -m "changes"\n\n# ✅ Right — describe what and why\ngit commit -m "fix: resolve null pointer when cart is empty"\ngit commit -m "feat: add dark mode toggle to Navbar"\ngit commit -m "refactor: extract auth logic into useAuth hook"',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'New project setup',
+        heading: 'Initialising a project with Git from scratch',
+        description: 'Start every project with git init, make an initial commit, and connect to a GitHub remote so work is backed up and shareable from day one.',
+        code: 'mkdir my-app && cd my-app\nnpm create vite@latest . -- --template react-ts\ngit init\ngit add .\ngit commit -m "chore: initial Vite + React + TypeScript setup"\n# Create repo on GitHub, then:\ngit remote add origin git@github.com:you/my-app.git\ngit push -u origin main',
+      },
+      {
+        context: 'Daily development',
+        heading: 'The inspect-stage-commit loop',
+        description: 'Use git status and git diff before every commit to review exactly what you are about to save. Stage only the files relevant to the current change.',
+        code: '# After editing files:\ngit status                    # see what changed\ngit diff src/Button.tsx       # review specific file\ngit add src/Button.tsx        # stage only that file\ngit commit -m "feat: add loading spinner to Button"\n\n# Use patch mode for granular control:\ngit add -p                    # stage individual hunks interactively',
+      },
+    ],
   },
   {
     id: 'git-workflow',
@@ -11002,6 +11410,40 @@ function validate(data: unknown) {
         'Giant commits — commit small logical units of work; it\'s easier to review and safer to revert',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Committing directly to main instead of a feature branch',
+        why: 'Pushing directly to main bypasses code review and can break the shared codebase for all team members. It also makes it harder to revert specific features.',
+        fixLabel: 'Fix — always create a feature branch first',
+        fixCode: '# ❌ Wrong — working directly on main\ngit checkout main\n# ... make changes ...\ngit commit -m "add feature"\ngit push origin main\n\n# ✅ Right — use feature branch\ngit checkout -b feature/user-auth\n# ... make changes ...\ngit commit -m "feat: add user authentication"\ngit push origin feature/user-auth\n# Then open a Pull Request',
+      },
+      {
+        title: 'Forgetting to pull before creating a new branch',
+        why: 'If you branch from a stale main, your branch starts from old code. When you later try to merge back, you will encounter conflicts with changes that were already merged weeks ago.',
+        fixLabel: 'Fix — always pull main before branching',
+        fixCode: '# ❌ Wrong — branching from stale main\ngit checkout main\ngit checkout -b feature/payments\n# Your branch is already behind — conflicts ahead\n\n# ✅ Right — sync first, then branch\ngit checkout main\ngit pull origin main\ngit checkout -b feature/payments\n# Branch starts from the latest code',
+      },
+      {
+        title: 'Making one giant commit instead of small focused commits',
+        why: 'A 2000-line commit is impossible to review meaningfully. If anything in it breaks, you must revert the entire thing — including the parts that worked fine.',
+        fixLabel: 'Fix — commit each logical unit of work separately',
+        fixCode: '# ❌ Wrong — one massive commit covering multiple concerns\ngit add .\ngit commit -m "added login, fixed nav, updated styles, refactored API"\n\n# ✅ Right — small focused commits\ngit add src/auth/\ngit commit -m "feat: add JWT login endpoint"\n\ngit add src/components/Navbar.tsx\ngit commit -m "fix: correct mobile nav overflow"\n\ngit add src/styles/\ngit commit -m "style: update button colour tokens"',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Team workflow',
+        heading: 'Feature branch workflow',
+        description: 'Create a branch per feature, push it, and open a PR. This keeps main stable and enables code review before any change reaches production.',
+        code: '# Start new feature\ngit checkout main && git pull origin main\ngit checkout -b feature/shopping-cart\n\n# Work, commit often\ngit add src/cart.ts\ngit commit -m "feat: add cart component"\ngit add src/cart.test.ts\ngit commit -m "test: add cart unit tests"\n\n# Push and open PR\ngit push -u origin feature/shopping-cart\ngh pr create --title "Add shopping cart" --base main',
+      },
+      {
+        context: 'Daily sync',
+        heading: 'Keeping your branch up to date with rebase',
+        description: 'Rebase onto the latest main regularly to avoid large merge conflicts accumulating. Use --force-with-lease when pushing a rebased branch.',
+        code: '# Fetch latest without merging\ngit fetch origin\n\n# Rebase your feature branch onto latest main\ngit checkout feature/checkout-flow\ngit rebase origin/main\n\n# If conflicts arise, resolve them then:\ngit add .\ngit rebase --continue\n\n# Push the rebased branch safely\ngit push --force-with-lease origin feature/checkout-flow',
+      },
+    ],
   },
   {
     id: 'git-gitignore',
@@ -11073,6 +11515,40 @@ function validate(data: unknown) {
         'Adding .gitignore rules after the files are already tracked — git ignores only untracked files; already-committed files need git rm --cached first',
       ],
     },
+    commonErrors: [
+      {
+        title: 'Accidentally committing .env secrets before setting up .gitignore',
+        why: 'Once a secret is committed, it lives in the repository history forever — even after deletion. Anyone with repo access can read it by checking an old commit, even months later.',
+        fixLabel: 'Fix — untrack the file, rotate the secret, then ignore it',
+        fixCode: '# ❌ Wrong — .env was committed before .gitignore existed\ngit add .\ngit commit -m "initial commit"\n# .env is now in history — the secret is exposed\n\n# ✅ Fix — stop tracking and rotate credentials\ngit rm --cached .env\necho ".env" >> .gitignore\ngit add .gitignore\ngit commit -m "chore: untrack .env and add to .gitignore"\n# IMPORTANT: rotate the leaked API keys immediately',
+      },
+      {
+        title: 'Ignoring a directory without the trailing slash',
+        why: 'Without a trailing slash, the pattern matches both files and directories with that name. Writing "dist" without a slash may not behave as expected if Git finds an ambiguous match.',
+        fixLabel: 'Fix — use trailing slash for directories',
+        fixCode: '# ❌ Wrong — ambiguous patterns (no trailing slash)\nnode_modules\ndist\nbuild\n\n# ✅ Right — trailing slash makes intent explicit\nnode_modules/\ndist/\nbuild/\n# This ensures only the directory is ignored, not a file with that name',
+      },
+      {
+        title: 'Creating .gitignore after the first commit — rules have no effect on already-tracked files',
+        why: 'Git only ignores untracked files. If node_modules or .env was committed even once, subsequent .gitignore rules do nothing — Git keeps tracking them until you explicitly untrack them.',
+        fixLabel: 'Fix — create .gitignore before the first git add',
+        fixCode: '# ❌ Wrong — committing first, ignoring second\ngit add .\ngit commit -m "initial"\n# Now add .gitignore — too late, those files are already tracked\n\n# ✅ Right — .gitignore is step one, before anything else\nnpx gitignore node   # generate standard Node.js .gitignore\n# verify node_modules/ and .env are listed, then:\ngit add .gitignore\ngit add src/ package.json tsconfig.json\ngit commit -m "chore: initial project setup"',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'Project initialisation',
+        heading: 'Setting up .gitignore for a Node.js/TypeScript project',
+        description: 'Use a generated template as a starting point, then add project-specific entries. Commit .gitignore as the very first file before staging anything else.',
+        code: 'cd my-project\nnpm create vite@latest . -- --template react-ts\n\n# Generate standard Node.js ignore rules\nnpx gitignore node\n\n# Add project-specific entries\necho "# Local env files" >> .gitignore\necho ".env" >> .gitignore\necho ".env.local" >> .gitignore\n\n# Commit ignore rules first\ngit add .gitignore\ngit commit -m "chore: add .gitignore"\ngit add .\ngit commit -m "chore: initial project setup"',
+      },
+      {
+        context: 'Incident recovery',
+        heading: 'Removing an accidentally committed secret from tracking',
+        description: 'If a secret reaches the remote, untrack it, rotate the credential immediately, and add the file to .gitignore so it cannot happen again.',
+        code: '# Step 1 — stop tracking and add rule\ngit rm --cached .env\necho ".env" >> .gitignore\ngit add .gitignore\ngit commit -m "chore: remove .env from tracking"\ngit push\n\n# Step 2 — rotate the compromised secret in your provider\n# (AWS IAM, Stripe dashboard, GitHub tokens, etc.)\n# Do this immediately — treat the old key as compromised\n\n# Step 3 — verify .env is now ignored\ngit check-ignore -v .env\n# output: .gitignore:1:.env  .env',
+      },
+    ],
   },
   {
     id: 'git-github',
