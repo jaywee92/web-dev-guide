@@ -31,13 +31,27 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Inline style", "note": "Highest specificity — avoid for general styling" },
-        { "label": "Internal <style>", "note": "Single-file use only" },
-        { "label": "External <link>", "note": "Best practice — use this" },
-        { "label": "Specificity order", "note": "Higher wins; equal spec → later wins" }
+        {
+          "label": "Inline style",
+          "note": "Highest specificity — avoid for general styling"
+        },
+        {
+          "label": "Internal <style>",
+          "note": "Single-file use only"
+        },
+        {
+          "label": "External <link>",
+          "note": "Best practice — use this"
+        },
+        {
+          "label": "Specificity order",
+          "note": "Higher wins; equal spec → later wins"
+        }
       ],
       "patterns": [
-        { "title": "CSS reset at top of external stylesheet" }
+        {
+          "title": "CSS reset at top of external stylesheet"
+        }
       ],
       "whenToUse": "Always use an external stylesheet for real projects. Inline styles only for values set dynamically by JavaScript. Internal <style> for HTML email or single-file demos.",
       "commonMistakes": [
@@ -89,16 +103,39 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Type", "note": "All h1 elements" },
-        { "label": "Class", "note": "class=\"card\"" },
-        { "label": "ID", "note": "id=\"main\" — unique per page" },
-        { "label": "Attribute", "note": "Attribute matching" },
-        { "label": "Descendant / Child", "note": "Nesting" },
-        { "label": "Pseudo-class", "note": "State or position" },
-        { "label": "Pseudo-element", "note": "Virtual sub-elements" }
+        {
+          "label": "Type",
+          "note": "All h1 elements"
+        },
+        {
+          "label": "Class",
+          "note": "class=\"card\""
+        },
+        {
+          "label": "ID",
+          "note": "id=\"main\" — unique per page"
+        },
+        {
+          "label": "Attribute",
+          "note": "Attribute matching"
+        },
+        {
+          "label": "Descendant / Child",
+          "note": "Nesting"
+        },
+        {
+          "label": "Pseudo-class",
+          "note": "State or position"
+        },
+        {
+          "label": "Pseudo-element",
+          "note": "Virtual sub-elements"
+        }
       ],
       "patterns": [
-        { "title": "Specificity order (low → high)" }
+        {
+          "title": "Specificity order (low → high)"
+        }
       ],
       "whenToUse": "Prefer class selectors for styling. Use ID selectors only as JavaScript hooks, not for CSS. Avoid over-qualifying selectors (div.card can just be .card).",
       "commonMistakes": [
@@ -140,17 +177,42 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "HEX", "note": "Most common format" },
-        { "label": "RGB / RGBA", "note": "Use rgba for transparency" },
-        { "label": "HSL / HSLA", "note": "Best for palettes" },
-        { "label": "px", "note": "Absolute, pixel-precise" },
-        { "label": "rem", "note": "Relative to root — use for font & spacing" },
-        { "label": "em", "note": "Relative to parent font-size" },
-        { "label": "%", "note": "Relative to parent dimension" }
+        {
+          "label": "HEX",
+          "note": "Most common format"
+        },
+        {
+          "label": "RGB / RGBA",
+          "note": "Use rgba for transparency"
+        },
+        {
+          "label": "HSL / HSLA",
+          "note": "Best for palettes"
+        },
+        {
+          "label": "px",
+          "note": "Absolute, pixel-precise"
+        },
+        {
+          "label": "rem",
+          "note": "Relative to root — use for font & spacing"
+        },
+        {
+          "label": "em",
+          "note": "Relative to parent font-size"
+        },
+        {
+          "label": "%",
+          "note": "Relative to parent dimension"
+        }
       ],
       "patterns": [
-        { "title": "CSS custom properties for a color palette" },
-        { "title": "Responsive typography scale" }
+        {
+          "title": "CSS custom properties for a color palette"
+        },
+        {
+          "title": "Responsive typography scale"
+        }
       ],
       "whenToUse": "Use rem for font sizes and spacing (scales with user preferences), px for borders and fine details, % for layout widths. Prefer HSL when building color systems — it's easy to create tints and shades by adjusting lightness.",
       "commonMistakes": [
@@ -187,16 +249,38 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "box-sizing", "note": "Reset (apply globally)" },
-        { "label": "padding", "note": "Inner spacing" },
-        { "label": "margin", "note": "Outer spacing" },
-        { "label": "border", "note": "Border + rounding" },
-        { "label": "width / height", "note": "Sizing" },
-        { "label": "overflow", "note": "Content overflow" }
+        {
+          "label": "box-sizing",
+          "note": "Reset (apply globally)"
+        },
+        {
+          "label": "padding",
+          "note": "Inner spacing"
+        },
+        {
+          "label": "margin",
+          "note": "Outer spacing"
+        },
+        {
+          "label": "border",
+          "note": "Border + rounding"
+        },
+        {
+          "label": "width / height",
+          "note": "Sizing"
+        },
+        {
+          "label": "overflow",
+          "note": "Content overflow"
+        }
       ],
       "patterns": [
-        { "title": "Center a page container" },
-        { "title": "Card with correct box model" }
+        {
+          "title": "Center a page container"
+        },
+        {
+          "title": "Card with correct box model"
+        }
       ],
       "whenToUse": "The box model is foundational — every layout issue traces back to it. Always set box-sizing: border-box globally as the first rule in your stylesheet.",
       "commonMistakes": [
@@ -238,18 +322,46 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "font-family", "note": "Always add fallback" },
-        { "label": "font shorthand", "note": "weight size/line-height family" },
-        { "label": "text-align", "note": "Horizontal alignment" },
-        { "label": "text-decoration", "note": "Underline / strikethrough" },
-        { "label": "text-transform", "note": "Case transformation" },
-        { "label": "line-height", "note": "Line spacing" },
-        { "label": "letter-spacing", "note": "Character spacing" },
-        { "label": "text-shadow", "note": "Drop shadow on text" }
+        {
+          "label": "font-family",
+          "note": "Always add fallback"
+        },
+        {
+          "label": "font shorthand",
+          "note": "weight size/line-height family"
+        },
+        {
+          "label": "text-align",
+          "note": "Horizontal alignment"
+        },
+        {
+          "label": "text-decoration",
+          "note": "Underline / strikethrough"
+        },
+        {
+          "label": "text-transform",
+          "note": "Case transformation"
+        },
+        {
+          "label": "line-height",
+          "note": "Line spacing"
+        },
+        {
+          "label": "letter-spacing",
+          "note": "Character spacing"
+        },
+        {
+          "label": "text-shadow",
+          "note": "Drop shadow on text"
+        }
       ],
       "patterns": [
-        { "title": "Import and use a Google Font" },
-        { "title": "Link states — remove underline, add on hover" }
+        {
+          "title": "Import and use a Google Font"
+        },
+        {
+          "title": "Link states — remove underline, add on hover"
+        }
       ],
       "whenToUse": "Set font-family, font-size, and line-height on body as a baseline — everything inherits from it. Use rem for font sizes. Set line-height to 1.5–1.7 for body text, tighter (1.1–1.3) for headings.",
       "commonMistakes": [
@@ -291,16 +403,38 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "background shorthand", "note": "color image repeat position / size" },
-        { "label": "background-size", "note": "cover vs contain" },
-        { "label": "linear-gradient", "note": "angle, color stops" },
-        { "label": "radial-gradient", "note": "shape at position" },
-        { "label": "conic-gradient", "note": "Sweeps around a center point" },
-        { "label": "multiple backgrounds", "note": "Stack: first on top" }
+        {
+          "label": "background shorthand",
+          "note": "color image repeat position / size"
+        },
+        {
+          "label": "background-size",
+          "note": "cover vs contain"
+        },
+        {
+          "label": "linear-gradient",
+          "note": "angle, color stops"
+        },
+        {
+          "label": "radial-gradient",
+          "note": "shape at position"
+        },
+        {
+          "label": "conic-gradient",
+          "note": "Sweeps around a center point"
+        },
+        {
+          "label": "multiple backgrounds",
+          "note": "Stack: first on top"
+        }
       ],
       "patterns": [
-        { "title": "Hero with image + dark overlay" },
-        { "title": "Gradient button" }
+        {
+          "title": "Hero with image + dark overlay"
+        },
+        {
+          "title": "Gradient button"
+        }
       ],
       "whenToUse": "Use background-color for solid fills, linear-gradient for directional transitions (buttons, hero sections), radial-gradient for spotlight/glow effects. Always add background-color as a fallback when using background-image.",
       "commonMistakes": [
@@ -342,15 +476,34 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "box-shadow", "note": "spread optional; positive = outward" },
-        { "label": "multiple shadows", "note": "Comma-separated, first renders on top" },
-        { "label": "inset", "note": "Shadow inside the box" },
-        { "label": "text-shadow", "note": "Same syntax, no spread" },
-        { "label": "glow", "note": "Zero offset + large blur = glow" }
+        {
+          "label": "box-shadow",
+          "note": "spread optional; positive = outward"
+        },
+        {
+          "label": "multiple shadows",
+          "note": "Comma-separated, first renders on top"
+        },
+        {
+          "label": "inset",
+          "note": "Shadow inside the box"
+        },
+        {
+          "label": "text-shadow",
+          "note": "Same syntax, no spread"
+        },
+        {
+          "label": "glow",
+          "note": "Zero offset + large blur = glow"
+        }
       ],
       "patterns": [
-        { "title": "Layered card shadow" },
-        { "title": "Focus ring (accessibility)" }
+        {
+          "title": "Layered card shadow"
+        },
+        {
+          "title": "Focus ring (accessibility)"
+        }
       ],
       "whenToUse": "Use box-shadow for depth, hover states, and focus rings. Prefer it over border for focus indicators (doesn't affect layout). Use text-shadow sparingly — only for hero headings or glow effects.",
       "commonMistakes": [
@@ -392,15 +545,34 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "responsive image", "note": "Always include this reset" },
-        { "label": "object-fit", "note": "How image fills container" },
-        { "label": "object-position", "note": "Crop anchor point" },
-        { "label": "aspect-ratio", "note": "Lock proportions" },
-        { "label": "border-radius", "note": "Rounding" }
+        {
+          "label": "responsive image",
+          "note": "Always include this reset"
+        },
+        {
+          "label": "object-fit",
+          "note": "How image fills container"
+        },
+        {
+          "label": "object-position",
+          "note": "Crop anchor point"
+        },
+        {
+          "label": "aspect-ratio",
+          "note": "Lock proportions"
+        },
+        {
+          "label": "border-radius",
+          "note": "Rounding"
+        }
       ],
       "patterns": [
-        { "title": "Avatar with circle crop" },
-        { "title": "Card image with fixed ratio" }
+        {
+          "title": "Avatar with circle crop"
+        },
+        {
+          "title": "Card image with fixed ratio"
+        }
       ],
       "whenToUse": "Always add max-width: 100% and height: auto to images globally. Use object-fit: cover + aspect-ratio for thumbnails and cards. Use border-radius: 50% for avatars. Add display: block to remove the inline gap below images.",
       "commonMistakes": [
@@ -442,16 +614,38 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "display values", "note": "Core display values" },
-        { "label": "position: relative", "note": "Anchor + nudge" },
-        { "label": "position: absolute", "note": "Out of flow" },
-        { "label": "position: fixed", "note": "Relative to viewport" },
-        { "label": "position: sticky", "note": "Scroll then stick" },
-        { "label": "z-index", "note": "Stacking order (higher = on top)" }
+        {
+          "label": "display values",
+          "note": "Core display values"
+        },
+        {
+          "label": "position: relative",
+          "note": "Anchor + nudge"
+        },
+        {
+          "label": "position: absolute",
+          "note": "Out of flow"
+        },
+        {
+          "label": "position: fixed",
+          "note": "Relative to viewport"
+        },
+        {
+          "label": "position: sticky",
+          "note": "Scroll then stick"
+        },
+        {
+          "label": "z-index",
+          "note": "Stacking order (higher = on top)"
+        }
       ],
       "patterns": [
-        { "title": "Badge / tooltip anchored to a card" },
-        { "title": "Full-cover overlay" }
+        {
+          "title": "Badge / tooltip anchored to a card"
+        },
+        {
+          "title": "Full-cover overlay"
+        }
       ],
       "whenToUse": "Use block/inline-block for document flow, flexbox for 1D layouts, grid for 2D layouts. Use relative + absolute together for overlays, badges, and tooltips. Use fixed for navbars and modals. Use sticky for sidebars.",
       "commonMistakes": [
@@ -488,17 +682,41 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Container", "note": "Parent properties" },
-        { "label": "justify-content", "note": "Main axis alignment" },
-        { "label": "align-items", "note": "Cross axis alignment" },
-        { "label": "flex (child)", "note": "Child sizing shorthand" },
-        { "label": "flex-wrap", "note": "Wrapping" },
-        { "label": "gap", "note": "Space between items" }
+        {
+          "label": "Container",
+          "note": "Parent properties"
+        },
+        {
+          "label": "justify-content",
+          "note": "Main axis alignment"
+        },
+        {
+          "label": "align-items",
+          "note": "Cross axis alignment"
+        },
+        {
+          "label": "flex (child)",
+          "note": "Child sizing shorthand"
+        },
+        {
+          "label": "flex-wrap",
+          "note": "Wrapping"
+        },
+        {
+          "label": "gap",
+          "note": "Space between items"
+        }
       ],
       "patterns": [
-        { "title": "Navbar: logo left, links right" },
-        { "title": "Full-viewport center" },
-        { "title": "Responsive card row that wraps" }
+        {
+          "title": "Navbar: logo left, links right"
+        },
+        {
+          "title": "Full-viewport center"
+        },
+        {
+          "title": "Responsive card row that wraps"
+        }
       ],
       "whenToUse": "Flexbox is for one-dimensional layouts — a row or a column. Use it for navbars, button groups, vertically centering content. Use CSS Grid for two-dimensional layouts.",
       "commonMistakes": [
@@ -535,16 +753,38 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Container", "note": "Basic 3-column grid" },
-        { "label": "fr unit", "note": "Fractional unit" },
-        { "label": "repeat()", "note": "Repeat shorthand" },
-        { "label": "grid-column", "note": "Child column placement" },
-        { "label": "grid-row", "note": "Child row placement" },
-        { "label": "grid-template-areas", "note": "Named areas" }
+        {
+          "label": "Container",
+          "note": "Basic 3-column grid"
+        },
+        {
+          "label": "fr unit",
+          "note": "Fractional unit"
+        },
+        {
+          "label": "repeat()",
+          "note": "Repeat shorthand"
+        },
+        {
+          "label": "grid-column",
+          "note": "Child column placement"
+        },
+        {
+          "label": "grid-row",
+          "note": "Child row placement"
+        },
+        {
+          "label": "grid-template-areas",
+          "note": "Named areas"
+        }
       ],
       "patterns": [
-        { "title": "Responsive auto-fill card grid" },
-        { "title": "Page layout with sidebar" }
+        {
+          "title": "Responsive auto-fill card grid"
+        },
+        {
+          "title": "Page layout with sidebar"
+        }
       ],
       "whenToUse": "Use Grid for two-dimensional layouts (rows AND columns simultaneously). For a single row or column, Flexbox is simpler. Grid excels at page-level layouts and equal-height card grids.",
       "commonMistakes": [
@@ -586,14 +826,30 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "media query", "note": "Common breakpoints" },
-        { "label": "clamp()", "note": "Fluid with limits" },
-        { "label": "min() / max()", "note": "Shorthand for constrained widths" },
-        { "label": "viewport units", "note": "vw, vh, vmin, vmax" }
+        {
+          "label": "media query",
+          "note": "Common breakpoints"
+        },
+        {
+          "label": "clamp()",
+          "note": "Fluid with limits"
+        },
+        {
+          "label": "min() / max()",
+          "note": "Shorthand for constrained widths"
+        },
+        {
+          "label": "viewport units",
+          "note": "vw, vh, vmin, vmax"
+        }
       ],
       "patterns": [
-        { "title": "Mobile-first responsive grid" },
-        { "title": "Fluid container" }
+        {
+          "title": "Mobile-first responsive grid"
+        },
+        {
+          "title": "Fluid container"
+        }
       ],
       "whenToUse": "Always build mobile-first — write base styles for small screens, enhance with min-width media queries. Common breakpoints: 480px (large phone), 768px (tablet), 1024px (laptop), 1280px (desktop). Use clamp() for fluid typography.",
       "commonMistakes": [
@@ -630,14 +886,30 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "overflow", "note": "Sets both x and y" },
-        { "label": "overflow-x / overflow-y", "note": "Control axes independently" },
-        { "label": "text-overflow", "note": "All three required for \"...\"" },
-        { "label": "scroll-behavior", "note": "Smooth scrolling for anchor links" }
+        {
+          "label": "overflow",
+          "note": "Sets both x and y"
+        },
+        {
+          "label": "overflow-x / overflow-y",
+          "note": "Control axes independently"
+        },
+        {
+          "label": "text-overflow",
+          "note": "All three required for \"...\""
+        },
+        {
+          "label": "scroll-behavior",
+          "note": "Smooth scrolling for anchor links"
+        }
       ],
       "patterns": [
-        { "title": "Single-line truncate" },
-        { "title": "Multi-line truncate (WebKit)" }
+        {
+          "title": "Single-line truncate"
+        },
+        {
+          "title": "Multi-line truncate (WebKit)"
+        }
       ],
       "whenToUse": "Use overflow: hidden to contain absolutely positioned children or clip images. Use auto for scrollable containers. Use ellipsis for card titles that might be too long.",
       "commonMistakes": [
@@ -679,10 +951,21 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Declare variable", "note": ":root = global scope" },
-        { "label": "Use variable" },
-        { "label": "Fallback value", "note": "Second arg = fallback if not set" },
-        { "label": "Override in scope", "note": "Only affects children of .dark" }
+        {
+          "label": "Declare variable",
+          "note": ":root = global scope"
+        },
+        {
+          "label": "Use variable"
+        },
+        {
+          "label": "Fallback value",
+          "note": "Second arg = fallback if not set"
+        },
+        {
+          "label": "Override in scope",
+          "note": "Only affects children of .dark"
+        }
       ],
       "whenToUse": "Use custom properties for any value repeated 3+ times, or any value that changes between themes or contexts.",
       "commonMistakes": [
@@ -719,14 +1002,30 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Define variable", "note": ":root = highest scope (html element)" },
-        { "label": "Use variable" },
-        { "label": "Fallback", "note": "Second arg used if var is undefined" },
-        { "label": "Dark override", "note": "Redefine in scope, all consumers update" },
-        { "label": "System preference", "note": "Auto-detect OS dark mode" }
+        {
+          "label": "Define variable",
+          "note": ":root = highest scope (html element)"
+        },
+        {
+          "label": "Use variable"
+        },
+        {
+          "label": "Fallback",
+          "note": "Second arg used if var is undefined"
+        },
+        {
+          "label": "Dark override",
+          "note": "Redefine in scope, all consumers update"
+        },
+        {
+          "label": "System preference",
+          "note": "Auto-detect OS dark mode"
+        }
       ],
       "patterns": [
-        { "title": "Token system" }
+        {
+          "title": "Token system"
+        }
       ],
       "whenToUse": "Always define colors as CSS variables, not raw values. Pair with prefers-color-scheme for automatic dark mode. Use class-based toggling when you need a user-controlled switch.",
       "commonMistakes": [
@@ -768,11 +1067,26 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Translate", "note": "translateX() / translateY() also work" },
-        { "label": "Rotate", "note": "Positive = clockwise" },
-        { "label": "Scale", "note": "scaleX() / scaleY() for one axis" },
-        { "label": "Combined", "note": "Order matters!" },
-        { "label": "Transform origin", "note": "Default is center center" }
+        {
+          "label": "Translate",
+          "note": "translateX() / translateY() also work"
+        },
+        {
+          "label": "Rotate",
+          "note": "Positive = clockwise"
+        },
+        {
+          "label": "Scale",
+          "note": "scaleX() / scaleY() for one axis"
+        },
+        {
+          "label": "Combined",
+          "note": "Order matters!"
+        },
+        {
+          "label": "Transform origin",
+          "note": "Default is center center"
+        }
       ],
       "whenToUse": "Use transforms for hover effects, animations, and positioning UI elements. Prefer transform over margin/top/left for animated movement — it is GPU-accelerated.",
       "commonMistakes": [
@@ -819,10 +1133,21 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Single property", "note": "property duration timing" },
-        { "label": "Multiple" },
-        { "label": "All properties", "note": "Convenient but avoid for performance" },
-        { "label": "With delay", "note": "Last value = delay before starting" }
+        {
+          "label": "Single property",
+          "note": "property duration timing"
+        },
+        {
+          "label": "Multiple"
+        },
+        {
+          "label": "All properties",
+          "note": "Convenient but avoid for performance"
+        },
+        {
+          "label": "With delay",
+          "note": "Last value = delay before starting"
+        }
       ],
       "whenToUse": "Use transitions for state changes driven by CSS pseudo-classes (:hover, :focus, :checked) or class toggles. For complex timed sequences use animation instead.",
       "commonMistakes": [
@@ -869,11 +1194,24 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "@keyframes" },
-        { "label": "Apply shorthand", "note": "name duration timing fill-mode" },
-        { "label": "Loop forever" },
-        { "label": "Bounce (alternate)", "note": "Plays fwd then backward" },
-        { "label": "With delay", "note": "Fourth value = delay" }
+        {
+          "label": "@keyframes"
+        },
+        {
+          "label": "Apply shorthand",
+          "note": "name duration timing fill-mode"
+        },
+        {
+          "label": "Loop forever"
+        },
+        {
+          "label": "Bounce (alternate)",
+          "note": "Plays fwd then backward"
+        },
+        {
+          "label": "With delay",
+          "note": "Fourth value = delay"
+        }
       ],
       "whenToUse": "Use @keyframes for looping effects (spinners, pulses), entrance animations (fade-in, slide-in), or multi-step sequences. Use transitions for simple two-state changes.",
       "commonMistakes": [
@@ -950,20 +1288,44 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Padding / Margin" },
-        { "label": "Flex layout" },
-        { "label": "Responsive prefix" },
-        { "label": "State variants" },
-        { "label": "group (parent → child)" },
-        { "label": "peer (sibling)" },
-        { "label": "@theme (v4)" },
-        { "label": "Container query" }
+        {
+          "label": "Padding / Margin"
+        },
+        {
+          "label": "Flex layout"
+        },
+        {
+          "label": "Responsive prefix"
+        },
+        {
+          "label": "State variants"
+        },
+        {
+          "label": "group (parent → child)"
+        },
+        {
+          "label": "peer (sibling)"
+        },
+        {
+          "label": "@theme (v4)"
+        },
+        {
+          "label": "Container query"
+        }
       ],
       "patterns": [
-        { "title": "Interactive button" },
-        { "title": "Card" },
-        { "title": "Hover card with group" },
-        { "title": "Custom theme (v4)" }
+        {
+          "title": "Interactive button"
+        },
+        {
+          "title": "Card"
+        },
+        {
+          "title": "Hover card with group"
+        },
+        {
+          "title": "Custom theme (v4)"
+        }
       ],
       "whenToUse": "Use Tailwind when you want fast iteration without switching between HTML and CSS files. Especially powerful in component-based frameworks (React, Vue, Svelte) where class lists live next to component logic.",
       "commonMistakes": [
@@ -972,6 +1334,164 @@
         "Using arbitrary values too often (`w-[347px]`) — prefer spacing scale values for consistency across the design system.",
         "Using group/peer without marking the parent/sibling — the group/peer class must be on the ancestor/preceding element, not the styled child.",
         "Using tailwind.config.js in v4 — Tailwind v4 is CSS-first; use @theme in your CSS file instead of a JS config."
+      ]
+    }
+  },
+  "css-tailwind-layout": {
+    "title": "Tailwind: Layout & Spacing",
+    "description": "Master Tailwind's spacing scale, sizing utilities, and layout primitives — flex and grid without writing a single line of custom CSS.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "The Spacing Scale",
+        "text": "Tailwind uses a consistent 4px base unit. `p-1` = 4px, `p-2` = 8px, `p-4` = 16px, `p-8` = 32px. All padding, margin, gap, and sizing utilities share the same scale — spatial consistency across the whole UI with zero effort."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Sizing & Centering",
+        "text": "`w-full` makes an element 100% wide, `w-1/2` is 50%, `w-64` is 256px. Use `max-w-*` to cap width: `max-w-sm` (384px), `max-w-xl` (576px), `max-w-screen-lg` (1024px). Center a block with `mx-auto`."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Flexbox in Tailwind",
+        "text": "Add `flex` to activate flexbox. `items-center` aligns children vertically, `justify-between` spreads them apart, `gap-*` sets spacing between items. Combine `flex-wrap` with `flex-1` for responsive layouts that fill available space."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Grid in Tailwind",
+        "text": "`grid` + `grid-cols-*` creates column layouts. `grid-cols-3` = three equal columns. `col-span-2` stretches an item across two columns. Use `gap-*` for gutters. Responsive grid: `grid-cols-1 md:grid-cols-2 lg:grid-cols-3`."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        {
+          "label": "p-4 / m-4",
+          "note": "16px padding / margin"
+        },
+        {
+          "label": "w-full / max-w-xl",
+          "note": "100% width / capped at 576px"
+        },
+        {
+          "label": "flex items-center justify-between",
+          "note": "Horizontal navbar layout"
+        },
+        {
+          "label": "grid grid-cols-3 gap-4",
+          "note": "3-column grid with 16px gap"
+        },
+        {
+          "label": "mx-auto",
+          "note": "Centre a block element"
+        }
+      ],
+      "whenToUse": "Use Tailwind layout utilities whenever you would otherwise write custom Flexbox or Grid CSS. The spacing scale keeps your design consistent without a separate design token file.",
+      "commonMistakes": [
+        "Using px values instead of spacing scale — break the 4px grid and the design looks inconsistent",
+        "Forgetting `max-w-*` on container elements — content stretches to full viewport on large screens",
+        "Using `gap` on non-flex/non-grid parents — `gap` only works inside flex or grid contexts"
+      ]
+    }
+  },
+  "css-tailwind-states": {
+    "title": "Tailwind: States & Interactivity",
+    "description": "Style elements based on hover, focus, and form states. Use group and peer to react to parent/sibling state without JavaScript.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "State Variants",
+        "text": "Prefix any utility with a state variant to apply it conditionally. `hover:`, `focus:`, `active:` cover mouse/keyboard interactions. `disabled:` and `checked:` target form states. `focus-visible:` only activates on keyboard focus — great for accessible outlines. Variants stack: `hover:disabled:opacity-50`."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Dark Mode",
+        "text": "Enable dark mode by adding `darkMode: 'class'` to `tailwind.config.js`. Then toggle the `dark` class on the `<html>` element via JavaScript. Any class prefixed with `dark:` activates only when the `dark` class is present on a parent."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        {
+          "label": "hover:bg-blue-600",
+          "note": "Background on hover"
+        },
+        {
+          "label": "focus:ring-2 focus:ring-blue-500",
+          "note": "Focus ring"
+        },
+        {
+          "label": "dark:bg-gray-900",
+          "note": "Dark mode background"
+        },
+        {
+          "label": "group-hover:opacity-100",
+          "note": "Child reacts to parent hover"
+        },
+        {
+          "label": "peer-checked:text-green-600",
+          "note": "Sibling reacts to checkbox state"
+        }
+      ],
+      "whenToUse": "Use state variants instead of JavaScript for pure CSS interactions. Use group/peer to wire up parent-to-child or sibling state changes without adding event listeners.",
+      "commonMistakes": [
+        "Using `group` without marking the parent element with the `group` class",
+        "Using `peer` on an element that follows the styled sibling — peer must come BEFORE the target in the DOM",
+        "Forgetting `darkMode: 'class'` in config — dark: variants have no effect without it"
+      ]
+    }
+  },
+  "css-tailwind-advanced": {
+    "title": "Tailwind: Advanced & v4",
+    "description": "Escape the design system with arbitrary values, organise styles with @layer, define custom tokens with @theme (v4), and build container-aware components.",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Arbitrary Values",
+        "text": "When you need an exact value outside the design system, use square bracket syntax. Works on any utility: `w-[347px]`, `bg-[#1e1e2e]`, `grid-cols-[1fr_2fr]`. Use CSS variables: `bg-[var(--brand)]`. Use sparingly — prefer design tokens for consistency."
+      },
+      {
+        "animationStep": 1,
+        "heading": "@layer & @apply",
+        "text": "`@layer` organises your CSS into three buckets: `base` (global resets), `components` (reusable UI patterns), `utilities` (single-purpose classes). `@apply` composes Tailwind utilities into a custom class — useful when a pattern repeats across many elements."
+      },
+      {
+        "animationStep": 2,
+        "heading": "@theme — Custom Design Tokens (v4)",
+        "text": "Tailwind v4 replaces `tailwind.config.js` with a CSS-first approach. Define custom design tokens in `@theme` — Tailwind automatically generates matching utility classes. Use `--color-*` for colors, `--font-*` for fonts, `--breakpoint-*` for responsive variants."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Container Queries",
+        "text": "Container queries let a component respond to its own container's size — not the viewport. Mark a parent with `@container`, then prefix child classes with `@sm:`, `@md:`, `@lg:`. Creates truly reusable components that adapt regardless of placement."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        {
+          "label": "w-[347px]",
+          "note": "Arbitrary fixed width"
+        },
+        {
+          "label": "bg-[#1e1e2e]",
+          "note": "Arbitrary hex color"
+        },
+        {
+          "label": "@layer components { .btn { @apply ... } }",
+          "note": "Reusable component class"
+        },
+        {
+          "label": "@theme { --color-brand: #3b82f6; }",
+          "note": "Custom design token (v4)"
+        },
+        {
+          "label": "@container + @sm:",
+          "note": "Container query breakpoint"
+        }
+      ],
+      "whenToUse": "Use arbitrary values for one-off values that fall outside the design system. Use @layer/@apply for repeated UI patterns that need a named class. Use @theme (v4) as the single source of truth for design tokens.",
+      "commonMistakes": [
+        "Using tailwind.config.js in Tailwind v4 — v4 is CSS-first, use @theme instead",
+        "Overusing @apply — it defeats the purpose of utility-first and makes CSS harder to maintain",
+        "Forgetting spaces in arbitrary grid values — use underscore: `grid-cols-[1fr_2fr]` not `grid-cols-[1fr 2fr]`"
       ]
     }
   }

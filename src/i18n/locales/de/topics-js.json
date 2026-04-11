@@ -1511,17 +1511,37 @@
       },
       {
         "animationStep": 9,
+        "heading": "Funktionale Array-Methoden",
+        "text": "JavaScript hat dedizierte Methoden, wo Python eingebaute Funktionen oder Generator-Ausdrücke nutzt. `map()` transformiert jedes Element, `filter()` behält passende Elemente und `reduce()` kombiniert Elemente zu einem einzigen Wert."
+      },
+      {
+        "animationStep": 10,
         "heading": "Fehlerbehandlung",
         "text": "Pythons try-Block hat eine einzigartige else-Klausel, die nur ausgeführt wird, wenn kein Fehler aufgetreten ist. JavaScript hat kein Äquivalent — diesen Code einfach am Ende des try-Blocks oder nach dem catch platzieren."
       }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Variablen", "note": "Python: kein Schlüsselwort. JS: const/let" },
-        { "label": "Funktionen", "note": "Python: def. JS: function oder =>" },
-        { "label": "Schleifen", "note": "Python: for-in. JS: for-of" },
-        { "label": "None / null", "note": "Python: is None. JS: === null" },
-        { "label": "Boolean-Literale", "note": "Python schreibt groß, JS klein" }
+        {
+          "label": "Variablen",
+          "note": "Python: kein Schlüsselwort. JS: const/let"
+        },
+        {
+          "label": "Funktionen",
+          "note": "Python: def. JS: function oder =>"
+        },
+        {
+          "label": "Schleifen",
+          "note": "Python: for-in. JS: for-of"
+        },
+        {
+          "label": "None / null",
+          "note": "Python: is None. JS: === null"
+        },
+        {
+          "label": "Boolean-Literale",
+          "note": "Python schreibt groß, JS klein"
+        }
       ],
       "whenToUse": "Nutze diese Referenz beim Wechsel zwischen Python und JavaScript — die Semantik ist ähnlich, die Syntax unterscheidet sich jedoch an wichtigen Stellen.",
       "commonMistakes": [

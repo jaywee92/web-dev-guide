@@ -212,6 +212,11 @@
         "animationStep": 3,
         "heading": "Hybride Ansätze",
         "text": "Moderne Meta-Frameworks kombinieren SSR und CSR pro Route. SSG (Static Site Generation) erstellt HTML zur Build-Zeit — schnellstmöglich, kein Server nötig (Astro, Next.js). ISR (Incremental Static Regeneration) erstellt Seiten auf Abruf oder nach Zeitplan neu. Islands Architecture verwendet SSR für die Hülle mit selektiver CSR-Hydration für interaktive Teile. Next.js, Nuxt und SvelteKit ermöglichen die Wahl von SSR/CSR/SSG pro Route."
+      },
+      {
+        "animationStep": 4,
+        "heading": "React Server Components (RSC)",
+        "text": "RSC ist eine React-spezifische Strategie aus React 19. Komponenten können Server- oder Client-Komponenten sein. Server Components holen Daten, rendern HTML und senden ein kompaktes JSON-Payload an den Browser — für sie wird kein JavaScript ausgeliefert. Client Components (markiert mit 'use client') übernehmen die Interaktivität. RSC reduziert die Bundle-Größe erheblich. Next.js 15 ist das Haupt-Framework, das RSC heute implementiert."
       }
     ],
     "cheatSheet": {
@@ -2798,11 +2803,21 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Statische Route" },
-        { "label": "Dynamisches Segment" },
-        { "label": "Route Group" },
-        { "label": "Catch-all" },
-        { "label": "Optionaler Catch-all" }
+        {
+          "label": "Statische Route"
+        },
+        {
+          "label": "Dynamisches Segment"
+        },
+        {
+          "label": "Route Group"
+        },
+        {
+          "label": "Catch-all"
+        },
+        {
+          "label": "Optionaler Catch-all"
+        }
       ],
       "whenToUse": "File-based Routing als primäre Routing-Strategie verwenden — keine Konfiguration nötig. Route Groups nutzen, um Layouts zu teilen ohne die URL zu beeinflussen. Dynamische Segmente für inhaltsorientierte Seiten wie Blog-Posts und Produktseiten.",
       "commonMistakes": [
@@ -2839,12 +2854,24 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Layout-Datei" },
-        { "label": "Loading UI" },
-        { "label": "Error Boundary" },
-        { "label": "Not Found" },
-        { "label": "Statische Metadata" },
-        { "label": "Dynamische Metadata" }
+        {
+          "label": "Layout-Datei"
+        },
+        {
+          "label": "Loading UI"
+        },
+        {
+          "label": "Error Boundary"
+        },
+        {
+          "label": "Not Found"
+        },
+        {
+          "label": "Statische Metadata"
+        },
+        {
+          "label": "Dynamische Metadata"
+        }
       ],
       "whenToUse": "Layouts für persistente UI verwenden (Nav, Sidebar, Footer). loading.tsx nutzen, um Layout-Verschiebungen während Datenabrufen zu vermeiden. Die Metadata API statt manueller Head-Tags verwenden — sie übernimmt Deduplizierung und Vererbung automatisch.",
       "commonMistakes": [
@@ -2881,12 +2908,30 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Link", "note": "Prefetcht beim Hover — statt <a> verwenden" },
-        { "label": "useRouter", "note": "Nur Client-Komponenten" },
-        { "label": "usePathname", "note": "Für aktive Link-Hervorhebung" },
-        { "label": "useSearchParams", "note": "Liest ?key=value Query-String" },
-        { "label": "redirect()", "note": "Wirft intern — kein Code danach wird ausgeführt" },
-        { "label": "notFound()", "note": "Rendert nächste not-found.tsx" }
+        {
+          "label": "Link",
+          "note": "Prefetcht beim Hover — statt <a> verwenden"
+        },
+        {
+          "label": "useRouter",
+          "note": "Nur Client-Komponenten"
+        },
+        {
+          "label": "usePathname",
+          "note": "Für aktive Link-Hervorhebung"
+        },
+        {
+          "label": "useSearchParams",
+          "note": "Liest ?key=value Query-String"
+        },
+        {
+          "label": "redirect()",
+          "note": "Wirft intern — kein Code danach wird ausgeführt"
+        },
+        {
+          "label": "notFound()",
+          "note": "Rendert nächste not-found.tsx"
+        }
       ],
       "whenToUse": "Link für alle Navigationen in JSX verwenden. useRouter für Navigation durch Nicht-Link-Interaktionen. redirect() und notFound() in Server-Komponenten und Server-Actions für Auth-Prüfungen und fehlende Ressourcen.",
       "commonMistakes": [
@@ -2923,10 +2968,18 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Server-Komponente (Standard)" },
-        { "label": "Direkter DB-Zugriff" },
-        { "label": "Parallele Datenabrufe" },
-        { "label": "Daten an Client übergeben" }
+        {
+          "label": "Server-Komponente (Standard)"
+        },
+        {
+          "label": "Direkter DB-Zugriff"
+        },
+        {
+          "label": "Parallele Datenabrufe"
+        },
+        {
+          "label": "Daten an Client übergeben"
+        }
       ],
       "whenToUse": "Server-Komponenten für alles verwenden, was Daten abruft, statische Inhalte anzeigt oder nicht zum Browser-Bundle beitragen soll. Nur zu Client-Komponenten wechseln, wenn Interaktivität, State oder Browser-APIs benötigt werden.",
       "commonMistakes": [
@@ -2963,9 +3016,15 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "'use client'-Direktive" },
-        { "label": "Wann verwenden" },
-        { "label": "Grenzen zu den Blättern verschieben" }
+        {
+          "label": "'use client'-Direktive"
+        },
+        {
+          "label": "Wann verwenden"
+        },
+        {
+          "label": "Grenzen zu den Blättern verschieben"
+        }
       ],
       "whenToUse": "'use client' nur hinzufügen, wenn Hooks, Events oder Browser-APIs benötigt werden. Die Grenze so tief wie möglich im Baum halten — Daten in Server-Komponenten abrufen, dann an Client-Blattkomponenten für Interaktion übergeben.",
       "commonMistakes": [
@@ -2997,11 +3056,21 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "loading.tsx" },
-        { "label": "Manuelles Suspense" },
-        { "label": "use() in Client-Komponente" },
-        { "label": "error.tsx" },
-        { "label": "not-found.tsx" }
+        {
+          "label": "loading.tsx"
+        },
+        {
+          "label": "Manuelles Suspense"
+        },
+        {
+          "label": "use() in Client-Komponente"
+        },
+        {
+          "label": "error.tsx"
+        },
+        {
+          "label": "not-found.tsx"
+        }
       ],
       "whenToUse": "loading.tsx für seitenseitige Ladezustände verwenden. Manuelles Suspense für das Streaming mehrerer unabhängiger Datenbereiche auf einer Seite. error.tsx für elegante Fehlerwiederherstellung.",
       "commonMistakes": [
@@ -3038,11 +3107,21 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Einfacher Abruf" },
-        { "label": "No-store (dynamisch)" },
-        { "label": "Revalidierung (ISR)" },
-        { "label": "Tag revalidieren" },
-        { "label": "Paralleles Abrufen" }
+        {
+          "label": "Einfacher Abruf"
+        },
+        {
+          "label": "No-store (dynamisch)"
+        },
+        {
+          "label": "Revalidierung (ISR)"
+        },
+        {
+          "label": "Tag revalidieren"
+        },
+        {
+          "label": "Paralleles Abrufen"
+        }
       ],
       "whenToUse": "Daten direkt in Server-Komponenten abrufen — keine API-Routen, kein useEffect. Paralleles Abrufen für alle unabhängigen Daten. Zeitgesteuerte Revalidierung für sich gelegentlich ändernde Daten, no-store für Echtzeit-Daten.",
       "commonMistakes": [
@@ -3079,11 +3158,21 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Server Action definieren" },
-        { "label": "Formular-Action" },
-        { "label": "useActionState" },
-        { "label": "Programmatischer Aufruf" },
-        { "label": "Nach Mutation" }
+        {
+          "label": "Server Action definieren"
+        },
+        {
+          "label": "Formular-Action"
+        },
+        {
+          "label": "useActionState"
+        },
+        {
+          "label": "Programmatischer Aufruf"
+        },
+        {
+          "label": "Nach Mutation"
+        }
       ],
       "whenToUse": "Server Actions für alle Datenmutationen verwenden — Erstellen, Aktualisieren, Löschen. Formular-Actions für Formulare (Progressive Enhancement) bevorzugen. useActionState für Formulare mit Fehler/Pending-UI. useTransition für Nicht-Formular-Mutationen wie Löschen-Buttons.",
       "commonMistakes": [
@@ -3115,11 +3204,21 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "GET-Handler" },
-        { "label": "POST-Handler" },
-        { "label": "Dynamische Route" },
-        { "label": "Query-Parameter" },
-        { "label": "Fehler-Antwort" }
+        {
+          "label": "GET-Handler"
+        },
+        {
+          "label": "POST-Handler"
+        },
+        {
+          "label": "Dynamische Route"
+        },
+        {
+          "label": "Query-Parameter"
+        },
+        {
+          "label": "Fehler-Antwort"
+        }
       ],
       "whenToUse": "Route Handler für Webhooks, öffentliche APIs für externe Clients und Fälle verwenden, in denen benutzerdefinierte HTTP-Status-Codes oder Header benötigt werden. Für alle Mutationen aus der eigenen React-UI Server Actions bevorzugen.",
       "commonMistakes": [

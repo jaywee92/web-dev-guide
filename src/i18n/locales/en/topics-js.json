@@ -68,8 +68,12 @@
         }
       ],
       "patterns": [
-        { "title": "Swapping variables" },
-        { "title": "Default destructuring" }
+        {
+          "title": "Swapping variables"
+        },
+        {
+          "title": "Default destructuring"
+        }
       ],
       "whenToUse": "Use const by default for every variable; switch to let only when you need to reassign. Use destructuring to pull values out of objects/arrays cleanly, and template literals for any string that embeds a variable.",
       "commonMistakes": [
@@ -185,8 +189,12 @@
         }
       ],
       "patterns": [
-        { "title": "Chain map + filter" },
-        { "title": "Immutable push (React-safe)" }
+        {
+          "title": "Chain map + filter"
+        },
+        {
+          "title": "Immutable push (React-safe)"
+        }
       ],
       "whenToUse": "Prefer map/filter/reduce for transformations — they are declarative and do not mutate the original. Use push/pop only when mutation is intentional and safe (not in React state). Reach for flat/flatMap when working with nested arrays.",
       "commonMistakes": [
@@ -290,15 +298,29 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "if / else if / else" },
-        { "label": "switch" },
-        { "label": "for loop" },
-        { "label": "while loop" },
-        { "label": "break / continue" }
+        {
+          "label": "if / else if / else"
+        },
+        {
+          "label": "switch"
+        },
+        {
+          "label": "for loop"
+        },
+        {
+          "label": "while loop"
+        },
+        {
+          "label": "break / continue"
+        }
       ],
       "patterns": [
-        { "title": "Early return guard" },
-        { "title": "Loop with index" }
+        {
+          "title": "Early return guard"
+        },
+        {
+          "title": "Loop with index"
+        }
       ],
       "whenToUse": "Use if/else for binary decisions, switch for many discrete values, for loops for counted iterations, and while for condition-driven loops.",
       "commonMistakes": [
@@ -340,15 +362,29 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Class definition" },
-        { "label": "Instantiation" },
-        { "label": "Inheritance" },
-        { "label": "Static method" },
-        { "label": "Prototype chain" }
+        {
+          "label": "Class definition"
+        },
+        {
+          "label": "Instantiation"
+        },
+        {
+          "label": "Inheritance"
+        },
+        {
+          "label": "Static method"
+        },
+        {
+          "label": "Prototype chain"
+        }
       ],
       "patterns": [
-        { "title": "Factory pattern via class" },
-        { "title": "super() call" }
+        {
+          "title": "Factory pattern via class"
+        },
+        {
+          "title": "super() call"
+        }
       ],
       "whenToUse": "Use classes when you need multiple instances that share behavior, and inheritance when one type extends another.",
       "commonMistakes": [
@@ -380,15 +416,29 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "setTimeout" },
-        { "label": "clearTimeout" },
-        { "label": "setInterval" },
-        { "label": "clearInterval" },
-        { "label": "Nested setTimeout (poll)" }
+        {
+          "label": "setTimeout"
+        },
+        {
+          "label": "clearTimeout"
+        },
+        {
+          "label": "setInterval"
+        },
+        {
+          "label": "clearInterval"
+        },
+        {
+          "label": "Nested setTimeout (poll)"
+        }
       ],
       "patterns": [
-        { "title": "Debounce pattern" },
-        { "title": "Self-clearing interval" }
+        {
+          "title": "Debounce pattern"
+        },
+        {
+          "title": "Self-clearing interval"
+        }
       ],
       "whenToUse": "Use setTimeout for one-off delays, setInterval for repeating actions, and always store the ID so you can cancel with clearTimeout/clearInterval.",
       "commonMistakes": [
@@ -463,8 +513,12 @@
         }
       ],
       "patterns": [
-        { "title": "async/await with error handling" },
-        { "title": "Promise.all — parallel requests" }
+        {
+          "title": "async/await with error handling"
+        },
+        {
+          "title": "Promise.all — parallel requests"
+        }
       ],
       "whenToUse": "Understand the event loop whenever code behaves unexpectedly with async operations — it explains why setTimeout(fn, 0) still runs after .then() callbacks, and why blocking the main thread freezes the UI.",
       "commonMistakes": [
@@ -520,8 +574,12 @@
         }
       ],
       "patterns": [
-        { "title": "Factory function with private state" },
-        { "title": "Module pattern with IIFE" }
+        {
+          "title": "Factory function with private state"
+        },
+        {
+          "title": "Module pattern with IIFE"
+        }
       ],
       "whenToUse": "Use closures to encapsulate private state, create factory functions that generate configured callbacks, and implement the module pattern. They are the foundation of many React hooks like useState.",
       "commonMistakes": [
@@ -589,15 +647,29 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Named export" },
-        { "label": "Default export" },
-        { "label": "Named import" },
-        { "label": "Default import" },
-        { "label": "npm install" }
+        {
+          "label": "Named export"
+        },
+        {
+          "label": "Default export"
+        },
+        {
+          "label": "Named import"
+        },
+        {
+          "label": "Default import"
+        },
+        {
+          "label": "npm install"
+        }
       ],
       "patterns": [
-        { "title": "Re-export barrel" },
-        { "title": "Dynamic import" }
+        {
+          "title": "Re-export barrel"
+        },
+        {
+          "title": "Dynamic import"
+        }
       ],
       "whenToUse": "Use ESM (import/export) for all new projects. Use npm to install packages, then import them the same way.",
       "commonMistakes": [
@@ -637,21 +709,127 @@
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Install dependency" },
-        { "label": "Install devDependency" },
-        { "label": "Run script" },
-        { "label": "Clean install (CI)" },
-        { "label": "Audit packages" }
+        {
+          "label": "Install dependency"
+        },
+        {
+          "label": "Install devDependency"
+        },
+        {
+          "label": "Run script"
+        },
+        {
+          "label": "Clean install (CI)"
+        },
+        {
+          "label": "Audit packages"
+        }
       ],
       "patterns": [
-        { "title": "Vite project bootstrap" },
-        { "title": "package.json scripts" }
+        {
+          "title": "Vite project bootstrap"
+        },
+        {
+          "title": "package.json scripts"
+        }
       ],
       "whenToUse": "Use npm to manage dependencies and Vite for new projects. Commit package-lock.json, never commit node_modules.",
       "commonMistakes": [
         "Committing node_modules — add it to .gitignore instead.",
         "Not committing package-lock.json — teammates get different resolved versions.",
         "Installing devDependencies without -D — they end up in the production bundle."
+      ]
+    }
+  },
+  "js-vs-python": {
+    "title": "JavaScript vs Python",
+    "description": "Side-by-side syntax comparison: variables, functions, loops, dicts, async and more",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "Variables",
+        "text": "Python does not require a keyword — just write `name = \"Alice\"`. JavaScript uses `const` for values that do not change and `let` for values that can be reassigned. Avoid `var` in modern JS."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Functions",
+        "text": "Python uses the `def` keyword followed by a colon. JavaScript uses the `function` keyword or the concise arrow function syntax (`=>`). Both languages support default parameters."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Control flow",
+        "text": "Python uses indentation to define code blocks — no braces. JavaScript uses curly braces `{}` to delimit blocks and requires parentheses around `if` conditions."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Data types",
+        "text": "Both languages have strings, numbers, booleans, and a \"nothing\" value. Key differences: Python capitalises `True`/`False`/`None`; JavaScript uses lowercase `true`/`false`/`null`. JS also has `undefined`."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Loops",
+        "text": "Python's for loop iterates directly over items: `for item in list`. JavaScript uses `for...of` for the same pattern. JavaScript also has `for...in` for object keys and classic index-based `for` loops."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Dicts vs Objects",
+        "text": "Python dicts and JavaScript objects both store key-value pairs. In Python keys must be quoted and accessed with bracket notation. In JS, keys can be unquoted and accessed with dot notation or optional chaining (`?.`)."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Async / await",
+        "text": "Both languages use the `async`/`await` syntax for asynchronous code. The keywords look almost identical. The main difference: Python requires `asyncio`; JavaScript's async is built into the browser and Node.js event loop."
+      },
+      {
+        "animationStep": 7,
+        "heading": "String methods",
+        "text": "Most string method names differ slightly between Python and JavaScript. Both languages treat strings as immutable — methods always return a new string. Python uses f-strings; JavaScript uses template literals with backticks."
+      },
+      {
+        "animationStep": 8,
+        "heading": "List / Array methods",
+        "text": "Python lists and JavaScript arrays have similar capabilities but different method names. Important behavior difference: Python's `.sort()` mutates in place; JavaScript's `.sort()` also mutates but needs a comparator function for numbers."
+      },
+      {
+        "animationStep": 9,
+        "heading": "Functional Array Methods",
+        "text": "JavaScript has dedicated methods where Python uses built-ins or generator expressions. `map()` transforms every element, `filter()` keeps matching elements, and `reduce()` combines elements into a single value."
+      },
+      {
+        "animationStep": 10,
+        "heading": "Error handling",
+        "text": "Both languages use `try`/`except` (Python) or `try`/`catch` (JS) with a `finally` block. Python has a unique `else` clause that runs only when no exception is thrown. JavaScript uses `throw`; Python uses `raise`."
+      }
+    ],
+    "cheatSheet": {
+      "syntax": [
+        {
+          "label": "Variables",
+          "note": "Python: no keyword. JS: const/let"
+        },
+        {
+          "label": "Functions",
+          "note": "Python: def. JS: function or =>"
+        },
+        {
+          "label": "Loops",
+          "note": "Python: for-in. JS: for-of"
+        },
+        {
+          "label": "None / null",
+          "note": "Python: is None. JS: === null"
+        },
+        {
+          "label": "Boolean literals",
+          "note": "Python capitalises, JS lowercase"
+        }
+      ],
+      "whenToUse": "Use this reference when switching between Python and JavaScript — the semantics are similar but syntax differs at key points.",
+      "commonMistakes": [
+        "Writing True/False in JavaScript — JS uses lowercase true/false",
+        "Using Python indentation as blocks in JS — JavaScript needs curly braces",
+        "Forgetting parentheses around if conditions in JS — must be if (age > 18)",
+        "Using elif in JavaScript — JS uses else if (two words)"
       ]
     }
   }

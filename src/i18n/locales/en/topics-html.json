@@ -27,20 +27,52 @@
         "animationStep": 4,
         "heading": "Attributes",
         "text": "Attributes go inside the opening tag and provide extra information. They come in name=\"value\" pairs. Common ones: href (link URL), src (image source), alt (alt text), id (unique name), class (styling group)."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Global attributes",
+        "text": "Several attributes work on any HTML element. `id` gives a unique name (used for CSS, JS, and anchor links). `class` groups elements for shared styling. `style` adds inline CSS (avoid for reusable styles). `data-*` stores custom data. `lang` sets the language. `title` adds a tooltip."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Boolean attributes",
+        "text": "Some attributes are boolean — their presence means true, their absence means false. You never write `disabled='true'` or `required='false'` — just `disabled` or no attribute at all. Common booleans: `disabled`, `required`, `checked`, `readonly`, `multiple`, `autoplay`."
       }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Basic element", "note": "Opening tag · content · closing tag" },
-        { "label": "Void element", "note": "No closing tag — no content" },
-        { "label": "id", "note": "Unique per page — used for JS & anchor links" },
-        { "label": "class", "note": "Multiple classes separated by spaces" },
-        { "label": "href", "note": "Link destination" },
-        { "label": "src + alt", "note": "alt is required for accessibility & SEO" }
+        {
+          "label": "Basic element",
+          "note": "Opening tag · content · closing tag"
+        },
+        {
+          "label": "Void element",
+          "note": "No closing tag — no content"
+        },
+        {
+          "label": "id",
+          "note": "Unique per page — used for JS & anchor links"
+        },
+        {
+          "label": "class",
+          "note": "Multiple classes separated by spaces"
+        },
+        {
+          "label": "href",
+          "note": "Link destination"
+        },
+        {
+          "label": "src + alt",
+          "note": "alt is required for accessibility & SEO"
+        }
       ],
       "patterns": [
-        { "title": "Linked image" },
-        { "title": "Input with label" }
+        {
+          "title": "Linked image"
+        },
+        {
+          "title": "Input with label"
+        }
       ],
       "whenToUse": "Use the most specific semantic element for each job. Choose <button> over <div onclick>, <a> over <span onclick>, <strong> over <b> for importance.",
       "commonMistakes": [
@@ -78,19 +110,49 @@
         "animationStep": 4,
         "heading": "Block quotes and code",
         "text": "<blockquote> wraps content quoted from another source. <code> displays inline code in monospace. <pre> preserves whitespace and line breaks — combined with <code> for multi-line snippets."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Semantic annotation elements",
+        "text": "`<abbr>` marks abbreviations — the `title` attribute provides the expansion on hover. `<time>` marks dates and times with a machine-readable `datetime` attribute, helping search engines understand temporal content. `<cite>` wraps the title of a referenced creative work."
+      },
+      {
+        "animationStep": 6,
+        "heading": "HTML entities",
+        "text": "Some characters cannot be typed in HTML directly because they would be interpreted as markup. HTML entities encode them: `&lt;` for `<`, `&gt;` for `>`, `&amp;` for `&`, `&nbsp;` for a non-breaking space, `&copy;` for ©, `&mdash;` for —."
       }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "Headings", "note": "h1 once per page; never skip levels" },
-        { "label": "Paragraph", "note": "Block element — adds vertical spacing" },
-        { "label": "<strong> / <em>", "note": "Semantic: importance / emphasis" },
-        { "label": "<mark> / <del> / <ins>", "note": "Annotation and revision markers" },
-        { "label": "<sub> / <sup>", "note": "Subscript / superscript" },
-        { "label": "<pre><code>", "note": "Multi-line code block preserving whitespace" }
+        {
+          "label": "Headings",
+          "note": "h1 once per page; never skip levels"
+        },
+        {
+          "label": "Paragraph",
+          "note": "Block element — adds vertical spacing"
+        },
+        {
+          "label": "<strong> / <em>",
+          "note": "Semantic: importance / emphasis"
+        },
+        {
+          "label": "<mark> / <del> / <ins>",
+          "note": "Annotation and revision markers"
+        },
+        {
+          "label": "<sub> / <sup>",
+          "note": "Subscript / superscript"
+        },
+        {
+          "label": "<pre><code>",
+          "note": "Multi-line code block preserving whitespace"
+        }
       ],
       "patterns": [
-        { "title": "Article with headings" }
+        {
+          "title": "Article with headings"
+        }
       ],
       "whenToUse": "Use headings to create a logical document outline, not to control font size (use CSS for that). Always prefer semantic elements: <strong> over <b>, <em> over <i>.",
       "commonMistakes": [
@@ -128,19 +190,49 @@
         "animationStep": 4,
         "heading": "Why alt text matters",
         "text": "Alt text is read aloud by screen readers for blind users. It also appears when the image fails to load. Describe what is in the image, not just its file name. For decorative images, use an empty alt=\"\" so screen readers skip it."
+      },
+      {
+        "animationStep": 5,
+        "heading": "srcset — responsive images",
+        "text": "The `srcset` attribute provides multiple image versions at different resolutions. The browser picks the most appropriate one based on screen density and viewport size. Use `sizes` to tell the browser how wide the image will be displayed at each breakpoint."
+      },
+      {
+        "animationStep": 6,
+        "heading": "loading=\"lazy\"",
+        "text": "The `loading='lazy'` attribute defers loading of images that are below the viewport. They only load when the user scrolls near them — reducing initial page load time and bandwidth. Supported in all modern browsers. Use on below-the-fold images; keep `loading='eager'` (default) for hero images."
       }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "<a href>", "note": "href is required for a real link" },
-        { "label": "New tab", "note": "rel=\"noopener\" prevents tab-jacking" },
-        { "label": "Anchor link", "note": "In-page navigation" },
-        { "label": "<img>", "note": "width/height prevent layout shift" },
-        { "label": "Linked image", "note": "Wrap img in a to make it clickable" },
-        { "label": "HTML comment", "note": "Invisible to users, visible in source" }
+        {
+          "label": "<a href>",
+          "note": "href is required for a real link"
+        },
+        {
+          "label": "New tab",
+          "note": "rel=\"noopener\" prevents tab-jacking"
+        },
+        {
+          "label": "Anchor link",
+          "note": "In-page navigation"
+        },
+        {
+          "label": "<img>",
+          "note": "width/height prevent layout shift"
+        },
+        {
+          "label": "Linked image",
+          "note": "Wrap img in a to make it clickable"
+        },
+        {
+          "label": "HTML comment",
+          "note": "Invisible to users, visible in source"
+        }
       ],
       "patterns": [
-        { "title": "Navigation list" }
+        {
+          "title": "Navigation list"
+        }
       ],
       "whenToUse": "Use <a> for all navigation. Use alt=\"\" (empty) for purely decorative images. Set width/height on every <img> to prevent content layout shift (CLS).",
       "commonMistakes": [
@@ -178,19 +270,49 @@
         "animationStep": 4,
         "heading": "<div> and <span>",
         "text": "<div> is a generic block container — no semantic meaning, just grouping. <span> is a generic inline container. Use them for styling hooks or JavaScript targets when no semantic element fits. Prefer semantic elements when possible."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Description lists",
+        "text": "`<dl>` (description list) pairs terms with their definitions. `<dt>` is the term, `<dd>` is the description. Use it for glossaries, metadata panels, and FAQ pages — anywhere you have a term and its explanation."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Custom list markers",
+        "text": "CSS `list-style-type` changes bullet or number style: `disc`, `circle`, `decimal`, `lower-alpha`, and more. `list-style: none` removes markers entirely — used in navigation menus. `list-style-image` uses a custom image as the bullet."
       }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "<ul>", "note": "Unordered (bullets) — order irrelevant" },
-        { "label": "<ol>", "note": "Ordered (numbers) — sequence matters" },
-        { "label": "Nested list", "note": "Nested <ul>/<ol> inside <li>" },
-        { "label": "<div>", "note": "Generic block container, no meaning" },
-        { "label": "<span>", "note": "Generic inline container, no meaning" },
-        { "label": "Description list", "note": "<dl>/<dt>/<dd> for term-definition pairs" }
+        {
+          "label": "<ul>",
+          "note": "Unordered (bullets) — order irrelevant"
+        },
+        {
+          "label": "<ol>",
+          "note": "Ordered (numbers) — sequence matters"
+        },
+        {
+          "label": "Nested list",
+          "note": "Nested <ul>/<ol> inside <li>"
+        },
+        {
+          "label": "<div>",
+          "note": "Generic block container, no meaning"
+        },
+        {
+          "label": "<span>",
+          "note": "Generic inline container, no meaning"
+        },
+        {
+          "label": "Description list",
+          "note": "<dl>/<dt>/<dd> for term-definition pairs"
+        }
       ],
       "patterns": [
-        { "title": "Navigation menu" }
+        {
+          "title": "Navigation menu"
+        }
       ],
       "whenToUse": "Navigation menus should always be <ul> lists. Steps and procedures use <ol>. Use <div> and <span> only when no semantic element fits — they carry zero meaning.",
       "commonMistakes": [
@@ -223,21 +345,66 @@
         "animationStep": 3,
         "heading": "Text is a node too",
         "text": "Every piece of text content between tags is its own text node in the tree."
+      },
+      {
+        "animationStep": 4,
+        "heading": "Selecting elements",
+        "text": "`querySelector()` returns the first element matching a CSS selector. `querySelectorAll()` returns all matches as a NodeList. `getElementById()` is faster but limited to ID selectors. Prefer `querySelector` for consistency with CSS syntax."
+      },
+      {
+        "animationStep": 5,
+        "heading": "Reading and modifying content",
+        "text": "`textContent` safely reads and writes plain text — no HTML parsing, no security risk. Always prefer `textContent` for user-generated content. `innerHTML` parses HTML but opens XSS vulnerabilities if set with untrusted content. `setAttribute()` adds or updates any attribute."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Creating and inserting elements",
+        "text": "`document.createElement()` creates a new element in memory. Set its properties, then insert it with `appendChild()` or `insertBefore()`. `remove()` deletes an element. `cloneNode(true)` makes a deep copy including all children."
+      },
+      {
+        "animationStep": 7,
+        "heading": "Events",
+        "text": "Events let you react to user actions. `addEventListener('click', handler)` attaches a handler to an element. The `event` object contains details like `event.target` (the clicked element). `removeEventListener` cancels the subscription."
       }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "querySelector", "note": "CSS selector → first match" },
-        { "label": "querySelectorAll", "note": "All matches → NodeList" },
-        { "label": "createElement", "note": "Create element" },
-        { "label": "appendChild", "note": "Insert into DOM" },
-        { "label": "textContent", "note": "Set text safely" },
-        { "label": "setAttribute", "note": "Read/write attributes" },
-        { "label": "classList", "note": "Manage CSS classes" }
+        {
+          "label": "querySelector",
+          "note": "CSS selector → first match"
+        },
+        {
+          "label": "querySelectorAll",
+          "note": "All matches → NodeList"
+        },
+        {
+          "label": "createElement",
+          "note": "Create element"
+        },
+        {
+          "label": "appendChild",
+          "note": "Insert into DOM"
+        },
+        {
+          "label": "textContent",
+          "note": "Set text safely"
+        },
+        {
+          "label": "setAttribute",
+          "note": "Read/write attributes"
+        },
+        {
+          "label": "classList",
+          "note": "Manage CSS classes"
+        }
       ],
       "patterns": [
-        { "title": "Query → modify → append" },
-        { "title": "Create a list from data" }
+        {
+          "title": "Query → modify → append"
+        },
+        {
+          "title": "Create a list from data"
+        }
       ],
       "whenToUse": "Use DOM APIs when dynamically changing the page without a framework. In React or Vue apps, prefer state + JSX to drive UI instead.",
       "commonMistakes": [
@@ -275,20 +442,53 @@
         "animationStep": 4,
         "heading": "The full picture",
         "text": "With semantic HTML, browsers, search engines, and assistive technologies all understand your page structure — no CSS classes required for meaning."
+      },
+      {
+        "animationStep": 5,
+        "heading": "section, aside, and figure",
+        "text": "`<section>` groups related content with its own heading — a chapter within a main area. `<aside>` holds tangentially related content: sidebars, pull quotes, related links. `<figure>` and `<figcaption>` pair an image with its caption."
+      },
+      {
+        "animationStep": 6,
+        "heading": "time, address, and details/summary",
+        "text": "`<time>` marks a date/time with a machine-readable `datetime` attribute. `<address>` provides contact info for the nearest `<article>` or the whole document. `<details>` and `<summary>` create a native expandable widget without JavaScript."
       }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "<header>", "note": "Site or section header" },
-        { "label": "<nav>", "note": "Navigation links" },
-        { "label": "<main>", "note": "Primary content — one per page" },
-        { "label": "<article>", "note": "Self-contained content" },
-        { "label": "<section>", "note": "Thematic group — needs a heading" },
-        { "label": "<aside>", "note": "Tangential content / sidebar" },
-        { "label": "<footer>", "note": "Closing info" }
+        {
+          "label": "<header>",
+          "note": "Site or section header"
+        },
+        {
+          "label": "<nav>",
+          "note": "Navigation links"
+        },
+        {
+          "label": "<main>",
+          "note": "Primary content — one per page"
+        },
+        {
+          "label": "<article>",
+          "note": "Self-contained content"
+        },
+        {
+          "label": "<section>",
+          "note": "Thematic group — needs a heading"
+        },
+        {
+          "label": "<aside>",
+          "note": "Tangential content / sidebar"
+        },
+        {
+          "label": "<footer>",
+          "note": "Closing info"
+        }
       ],
       "patterns": [
-        { "title": "Standard page skeleton" }
+        {
+          "title": "Standard page skeleton"
+        }
       ],
       "whenToUse": "Always prefer semantic elements over generic div. They improve accessibility (screen readers), SEO ranking, and code readability at zero extra cost.",
       "commonMistakes": [
@@ -336,23 +536,64 @@
         "animationStep": 6,
         "heading": "Constraint validation API",
         "text": "For custom error messages or real-time feedback, use the Constraint Validation API. setCustomValidity() overrides the browser message. checkValidity() returns true/false without submitting."
+      },
+      {
+        "animationStep": 7,
+        "heading": "fieldset and legend",
+        "text": "`<fieldset>` groups related inputs. `<legend>` labels the group. Screen readers read the legend before each input in the group — essential for radio and checkbox groups."
+      },
+      {
+        "animationStep": 8,
+        "heading": "Specialized input types",
+        "text": "HTML5 added many `<input>` types beyond text: `date` shows a date picker, `color` shows a color wheel, `range` renders a slider, `number` limits to numeric input, `email` validates email format. Mobile keyboards adapt to the type automatically."
       }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "<form>", "note": "Wraps all inputs" },
-        { "label": "<input>", "note": "type: text/email/password/number/checkbox/radio" },
-        { "label": "label + for", "note": "for= links to input id=" },
-        { "label": "<select>", "note": "Dropdown menu" },
-        { "label": "<textarea>", "note": "Multi-line text" },
-        { "label": "<button>", "note": "type: submit / button / reset" },
-        { "label": "required", "note": "Blocks form submit if empty" },
-        { "label": "pattern", "note": "Regex — browser validates on submit" },
-        { "label": "minlength / maxlength", "note": "Character count limits" }
+        {
+          "label": "<form>",
+          "note": "Wraps all inputs"
+        },
+        {
+          "label": "<input>",
+          "note": "type: text/email/password/number/checkbox/radio"
+        },
+        {
+          "label": "label + for",
+          "note": "for= links to input id="
+        },
+        {
+          "label": "<select>",
+          "note": "Dropdown menu"
+        },
+        {
+          "label": "<textarea>",
+          "note": "Multi-line text"
+        },
+        {
+          "label": "<button>",
+          "note": "type: submit / button / reset"
+        },
+        {
+          "label": "required",
+          "note": "Blocks form submit if empty"
+        },
+        {
+          "label": "pattern",
+          "note": "Regex — browser validates on submit"
+        },
+        {
+          "label": "minlength / maxlength",
+          "note": "Character count limits"
+        }
       ],
       "patterns": [
-        { "title": "Read form data in JS" },
-        { "title": "Controlled input with React" }
+        {
+          "title": "Read form data in JS"
+        },
+        {
+          "title": "Controlled input with React"
+        }
       ],
       "whenToUse": "Use native form elements for all user input — they have built-in accessibility, keyboard support, and validation for free. Use FormData to read values on submit.",
       "commonMistakes": [
@@ -392,20 +633,52 @@
         "animationStep": 4,
         "heading": "ARIA roles and live regions",
         "text": "role= overrides the element's implicit role. ARIA live regions announce dynamic content changes to screen readers. aria-live='polite' waits for silence, 'assertive' interrupts immediately."
+      },
+      {
+        "animationStep": 5,
+        "heading": "aria-expanded and aria-controls",
+        "text": "When a button toggles a panel (accordion, dropdown, modal), ARIA attributes communicate the open/closed state. `aria-expanded='false'` tells screen readers the panel is collapsed. `aria-controls` points to the element being controlled by ID. Update these with JavaScript as the state changes."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Color contrast and visual accessibility",
+        "text": "Color contrast is the ratio between text color and background color. WCAG AA requires 4.5:1 for normal text, 3:1 for large text. Low contrast affects colorblind users, users on bright screens, and older users. Never convey information with color alone — always add a shape, icon, or text label."
       }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "aria-label", "note": "Overrides button text for screen readers" },
-        { "label": "aria-labelledby", "note": "References another element's text" },
-        { "label": "aria-describedby", "note": "Links to helper/error text" },
-        { "label": "role", "note": "Override implicit semantic role" },
-        { "label": "tabindex", "note": "Never use tabindex > 0" },
-        { "label": "aria-hidden", "note": "Hides from screen readers (decorative)" }
+        {
+          "label": "aria-label",
+          "note": "Overrides button text for screen readers"
+        },
+        {
+          "label": "aria-labelledby",
+          "note": "References another element's text"
+        },
+        {
+          "label": "aria-describedby",
+          "note": "Links to helper/error text"
+        },
+        {
+          "label": "role",
+          "note": "Override implicit semantic role"
+        },
+        {
+          "label": "tabindex",
+          "note": "Never use tabindex > 0"
+        },
+        {
+          "label": "aria-hidden",
+          "note": "Hides from screen readers (decorative)"
+        }
       ],
       "patterns": [
-        { "title": "Skip link" },
-        { "title": "Accessible icon button" }
+        {
+          "title": "Skip link"
+        },
+        {
+          "title": "Accessible icon button"
+        }
       ],
       "whenToUse": "Use semantic HTML first — <button>, <a>, <input>, headings, landmarks. Add ARIA only when HTML semantics aren't enough. 'No ARIA is better than bad ARIA.'",
       "commonMistakes": [
@@ -444,19 +717,49 @@
         "animationStep": 4,
         "heading": "<code> and <pre>",
         "text": "<code> displays inline code in monospace font. Wrap it in <pre> to preserve whitespace and newlines for multi-line snippets. This is how documentation sites, READMEs, and tech blogs show code examples."
+      },
+      {
+        "animationStep": 5,
+        "heading": "loading=\"lazy\" for images and iframes",
+        "text": "The `loading='lazy'` attribute defers images and iframes until they near the viewport. The browser only fetches them when the user scrolls close — reducing initial page load. Works natively without JavaScript."
+      },
+      {
+        "animationStep": 6,
+        "heading": "Video autoplay rules",
+        "text": "Browsers block autoplay video with sound by default. To autoplay, the video must be `muted`. Add `loop` for background videos that repeat silently. Use `playsinline` on iOS to prevent full-screen takeover."
       }
     ],
     "cheatSheet": {
       "syntax": [
-        { "label": "<iframe>", "note": "Always set title for accessibility" },
-        { "label": "<video>", "note": "controls attribute shows UI" },
-        { "label": "<audio>", "note": "Multiple sources for browser compat" },
-        { "label": "<picture>", "note": "<img> fallback is required" },
-        { "label": "<pre><code>", "note": "Preserves whitespace + line breaks" },
-        { "label": "Video autoplay", "note": "muted required for autoplay in browsers" }
+        {
+          "label": "<iframe>",
+          "note": "Always set title for accessibility"
+        },
+        {
+          "label": "<video>",
+          "note": "controls attribute shows UI"
+        },
+        {
+          "label": "<audio>",
+          "note": "Multiple sources for browser compat"
+        },
+        {
+          "label": "<picture>",
+          "note": "<img> fallback is required"
+        },
+        {
+          "label": "<pre><code>",
+          "note": "Preserves whitespace + line breaks"
+        },
+        {
+          "label": "Video autoplay",
+          "note": "muted required for autoplay in browsers"
+        }
       ],
       "patterns": [
-        { "title": "Responsive video wrapper" }
+        {
+          "title": "Responsive video wrapper"
+        }
       ],
       "whenToUse": "Use <video>/<audio> for self-hosted media. Use <iframe> for third-party embeds (YouTube, Maps). Use <picture> when you need different images for different screen sizes or format support.",
       "commonMistakes": [
