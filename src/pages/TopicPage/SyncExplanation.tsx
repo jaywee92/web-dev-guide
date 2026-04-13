@@ -141,6 +141,20 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
   )
 }
 
+// ── Expanded card type system ──────────────────────────────────────────────
+const CARD_STYLES: Record<string, { bg: string; border: string; accent: string }> = {
+  '📜': { bg: '#141319', border: '#a78bfa28', accent: '#a78bfa' },
+  '💡': { bg: '#1b1a0e', border: '#fbbf2428', accent: '#fbbf24' },
+  '⚠️': { bg: '#1b120a', border: '#f9731628', accent: '#f97316' },
+  '🔬': { bg: '#0f1420', border: '#7c8cf828', accent: '#7c8cf8' },
+  '✅': { bg: '#0d1a12', border: '#22c55e28', accent: '#22c55e' },
+  '📖': { bg: 'var(--surface-bright)', border: 'var(--border)', accent: '' },
+}
+
+function detectCardEmoji(text: string): string | null {
+  return Object.keys(CARD_STYLES).find(e => text.startsWith(e)) ?? null
+}
+
 function renderInlineText(text: string, color: string): React.ReactNode {
   const parts = text.split(/(`[^`]+`|\*\*[^*]+\*\*)/)
   return parts.map((part, i) => {
@@ -254,37 +268,52 @@ function StepBlock({ step, index, active, onActivate, color }: {
 
       {/* Body */}
       <div style={{ padding: '13px 18px 15px 21px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <p style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1.75, margin: 0 }}>
+        <p style={{ fontSize: 13.5, color: '#c5c8d8', lineHeight: 1.8, margin: 0, letterSpacing: '-0.01em' }}>
           {renderInlineText(step.text, color)}
         </p>
 
         {/* Expanded deeper explanation — Insight Cards */}
         {step.expandedText && expanded && (
-          <div style={{ borderTop: `1px solid ${color}18`, paddingTop: 10, display: 'flex', flexDirection: 'column', gap: 7 }}>
+          <div style={{
+            borderTop: `1px solid ${color}18`,
+            paddingTop: 10,
+            display: 'flex', flexDirection: 'column', gap: 8,
+          }}>
             {step.expandedText.split(/\n\n+/).map((para, i) => {
               const trimmed = para.trim()
-              // Only use label if bold appears early (first 40 chars) — avoids mid-sentence extractions
-              const earlyBoldMatch = trimmed.match(/^\*\*([^*]+)\*\*|^.{0,40}\*\*([^*]+)\*\*/)
-              const label = earlyBoldMatch ? (earlyBoldMatch[1] ?? earlyBoldMatch[2]) : null
+              const emoji = detectCardEmoji(trimmed)
+              const bodyText = emoji ? trimmed.slice(emoji.length).trimStart() : trimmed
+              const cardStyle = emoji ? CARD_STYLES[emoji] : CARD_STYLES['📖']
+              const accent = emoji ? cardStyle.accent : color
+              const boldMatch = bodyText.match(/^\*\*([^*]+)\*\*|^.{0,40}\*\*([^*]+)\*\*/)
+              const label = boldMatch ? (boldMatch[1] ?? boldMatch[2]) : null
               return (
                 <div key={i} style={{
-                  borderRadius: 8,
-                  border: `1px solid var(--border)`,
-                  background: 'var(--surface-bright)',
-                  padding: '9px 12px',
+                  borderRadius: 10,
+                  border: `1px solid ${cardStyle.border}`,
+                  background: cardStyle.bg,
+                  padding: '11px 14px',
+                  display: 'flex', gap: 11, alignItems: 'flex-start',
                 }}>
-                  {label && (
-                    <div style={{
-                      fontSize: 9, fontFamily: 'var(--font-mono)', fontWeight: 700,
-                      letterSpacing: '0.1em', color: `${color}99`,
-                      textTransform: 'uppercase', marginBottom: 4,
-                    }}>
-                      {label}
-                    </div>
+                  {emoji && (
+                    <span style={{ fontSize: 16, lineHeight: 1, flexShrink: 0, marginTop: 1 }}>
+                      {emoji}
+                    </span>
                   )}
-                  <p style={{ fontSize: 12.5, color: 'var(--text-muted)', lineHeight: 1.65, margin: 0 }}>
-                    {renderInlineText(trimmed, color)}
-                  </p>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    {label && (
+                      <div style={{
+                        fontSize: 8.5, fontFamily: 'var(--font-mono)', fontWeight: 800,
+                        letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 5,
+                        color: accent ? `${accent}aa` : `${color}99`,
+                      }}>
+                        {label}
+                      </div>
+                    )}
+                    <p style={{ fontSize: 12.5, lineHeight: 1.68, margin: 0, color: 'var(--text-muted)' }}>
+                      {renderInlineText(bodyText, accent || color)}
+                    </p>
+                  </div>
                 </div>
               )
             })}
