@@ -449,7 +449,8 @@
       {
         "animationStep": 0,
         "heading": "Das Div-Suppen-Problem",
-        "text": "Wenn man nur <div>-Elemente verwendet, teilt das Browsern und Screenreadern nichts über die Struktur der Seite mit. Jede Box sieht gleich aus."
+        "text": "Wenn man nur <div>-Elemente verwendet, teilt das Browsern und Screenreadern nichts über die Struktur der Seite mit. Jede Box sieht gleich aus.",
+        "expandedText": "Eine Seite kann **mehrere `<header>`-Elemente** haben — eines für den seitenweiten Header und eines innerhalb jedes `<article>` oder `<section>`. Das oberste `<header>` wird auf ARIA `role=\"banner\"` (ein Landmark) abgebildet; Header innerhalb von Abschnitten erhalten diese Landmark-Rolle nicht.\n\nDas `<header>`-Element ist für sichtbaren Seiteninhalt gedacht. Verwechsle es nicht mit dem `<head>`-Element, das unsichtbare Metadaten enthält. `<header>` kann das Logo, Navigation, Suche und Autorhinweise enthalten — alle Inhalte, die den Abschnitt einleiten oder kontextualisieren."
       },
       {
         "animationStep": 1,
