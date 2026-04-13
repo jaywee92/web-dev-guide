@@ -6,27 +6,32 @@
       {
         "animationStep": 0,
         "heading": "Der Client sendet eine Anfrage",
-        "text": "Dein Browser (der Client) sendet eine HTTP-Anfrage an einen Server. Sie enthält die Methode (`GET`, `POST`), die URL und Header."
+        "text": "Dein Browser (der Client) sendet eine HTTP-Anfrage an einen Server. Sie enthält die Methode (`GET`, `POST`), die URL und Header.",
+        "expandedText": "Jede Web-Interaktion beginnt damit, dass der **Client** (Browser, Mobile-App oder CLI) eine **HTTP-Anfrage** an einen Server sendet. Die Anfrage enthält eine **Methode** (GET, POST, PUT, DELETE), eine **URL**, **Header** (Content-Type, Auth-Token, akzeptierte Kodierungen) und einen optionalen **Body** bei POST/PUT.\n\nDer Client hat noch keine direkte Verbindung – er muss zunächst DNS-Auflösung, TCP-Handshake und (bei HTTPS) TLS-Aushandlung durchlaufen. Dieses mehrstufige Setup erklärt, warum die **erste Anfrage** langsamer ist als folgende und warum **Connection-Reuse** (HTTP Keep-Alive, HTTP/2-Multiplexing) eine wichtige Performance-Optimierung ist."
       },
       {
         "animationStep": 1,
         "heading": "DNS-Auflösung",
-        "text": "Der Domainname wird von einem DNS-Server in eine IP-Adresse aufgelöst. Wie eine Telefonbuchsuche."
+        "text": "Der Domainname wird von einem DNS-Server in eine IP-Adresse aufgelöst. Wie eine Telefonbuchsuche.",
+        "expandedText": "**DNS** (Domain Name System) übersetzt einen Hostnamen wie `api.example.com` in eine IP-Adresse (`203.0.113.42`), die Router zum Weiterleiten von Paketen verwenden. Die Suche kaskadiert: Browser-Cache → OS-Cache → lokaler DNS-Resolver → Root-Nameserver → TLD-Nameserver → autoritative Nameserver.\n\nJeder Eintrag hat eine **TTL** (Time-to-Live), die die Cache-Dauer steuert. Eine niedrige TTL ermöglicht schnelles Failover; eine hohe TTL reduziert die Lookup-Latenz. **DNS-Prefetching** (`<link rel=\"dns-prefetch\" href=\"//api.example.com\">`) weist den Browser an, eine Domain im Hintergrund aufzulösen, bevor eine Ressource angefordert wird – das reduziert die wahrgenommene Latenz bei Drittanbieter-API-Aufrufen."
       },
       {
         "animationStep": 2,
         "heading": "Der Server verarbeitet",
-        "text": "Der Server empfängt die Anfrage, führt deinen Anwendungscode aus (Flask, Node.js) und kann eine Datenbank abfragen."
+        "text": "Der Server empfängt die Anfrage, führt deinen Anwendungscode aus (Flask, Node.js) und kann eine Datenbank abfragen.",
+        "expandedText": "**TCP** stellt eine zuverlässige Verbindung über einen **Drei-Wege-Handshake** her: Client sendet SYN, Server antwortet mit SYN-ACK, Client sendet ACK. Erst danach können Daten fließen. **HTTPS** fügt einen **TLS-Handshake** obenauf, der die Verschlüsselung aushandelt, bevor Anwendungsdaten übertragen werden.\n\n**HTTP/2** multiplext mehrere Anfrage-/Antwort-Paare über eine einzelne TCP-Verbindung und beseitigt Head-of-Line-Blocking. **HTTP/3** ersetzt TCP durch **QUIC** (UDP-basiert) und kombiniert Transport- und TLS-Handshakes in einen einzigen Round-Trip – wichtig für Mobile-Clients in Hochlatenz-Netzwerken. Die meisten CDNs und Server unterstützen HTTP/2 heute standardmäßig."
       },
       {
         "animationStep": 3,
         "heading": "Datenbankabfrage",
-        "text": "Die App fragt die Datenbank (PostgreSQL, SQLite) ab und wartet auf Ergebnisse."
+        "text": "Die App fragt die Datenbank (PostgreSQL, SQLite) ab und wartet auf Ergebnisse.",
+        "expandedText": "Eine **HTTP-Anfrage** hat vier Teile: die **Anfragezeile** (Methode + URL + HTTP-Version), **Header** (Schlüssel-Wert-Metadaten), eine Leerzeile und einen optionalen **Body**. Gängige Header: `Content-Type` (Body-Format), `Authorization` (Bearer-Token), `Accept` (akzeptierte Antwortformate) und `Cookie` (Session-Daten).\n\n**HTTPS** verschlüsselt die gesamte Anfrage – Header, Body und URL-Pfad – sodass Angreifer nur den Hostnamen (aus TLS SNI) und das Datenvolumen sehen. Sensible Daten wie API-Schlüssel dürfen selbst über HTTPS niemals in URL-Query-Strings erscheinen – immer Header oder POST-Body verwenden, wo der Inhalt verschlüsselt und nicht in Server-Zugriffs-Logs protokolliert wird."
       },
       {
         "animationStep": 4,
         "heading": "Antwort zurückgesendet",
-        "text": "Der Server sendet eine HTTP-Antwort: Statuscode (200 OK, 404 Not Found), Header und den Body (HTML, JSON)."
+        "text": "Der Server sendet eine HTTP-Antwort: Statuscode (200 OK, 404 Not Found), Header und den Body (HTML, JSON).",
+        "expandedText": "Eine **HTTP-Antwort** hat eine **Statuszeile** (HTTP-Version + Statuscode + Reason-Phrase), **Header** (Content-Type, Cache-Control, Set-Cookie, CORS-Header), eine Leerzeile und den **Body** (HTML, JSON, Binärdaten). `Content-Type` teilt dem Client mit, wie der Body zu parsen ist.\n\n**Caching-Header** beeinflussen die Performance erheblich: `Cache-Control: max-age=3600` erlaubt Clients und CDNs, Inhalte eine Stunde zu cachen. `ETag` liefert einen Fingerabdruck für bedingte Anfragen – der Server kann mit `304 Not Modified` und leerem Body antworten, wenn sich der Inhalt nicht geändert hat. Gut gestaltetes Caching reduziert die Serverlast um Größenordnungen und verbessert die wahrgenommene Performance für wiederkehrende Besucher."
       }
     ],
     "cheatSheet": {
@@ -68,22 +73,26 @@
       {
         "animationStep": 0,
         "heading": "REST — Ressourcen als URLs",
-        "text": "REST (Representational State Transfer) ist eine Konvention für das Entwerfen von APIs. Ressourcen werden als URLs dargestellt, und HTTP-Methoden drücken die Aktion aus."
+        "text": "REST (Representational State Transfer) ist eine Konvention für das Entwerfen von APIs. Ressourcen werden als URLs dargestellt, und HTTP-Methoden drücken die Aktion aus.",
+        "expandedText": "**REST** (Representational State Transfer) ist ein **Architekturstil** für APIs, kein Protokoll. Kernidee: Serverseitige Daten als **Ressourcen** an stabilen URLs behandeln (`/users`, `/users/42`). HTTP-Verben drücken die Aktion aus – GET ruft ab, POST erstellt, PUT/PATCH aktualisiert, DELETE entfernt. URLs sollten Ressourcen benennen (Substantive), keine Aktionen (Verben).\n\nEine RESTful API ist **zustandslos**: jede Anfrage trägt alle Informationen, die der Server benötigt – kein Session-State wird zwischen Anfragen gespeichert. Das macht REST-APIs **horizontal skalierbar** und cachefähig. Authentifizierung erfolgt über `Authorization`-Header bei jeder Anfrage statt über serverseitig gespeicherte Sessions."
       },
       {
         "animationStep": 1,
         "heading": "GET — Daten abrufen",
-        "text": "`GET` fragt Daten vom Server ab. `GET`-Anfragen sollten sicher (keine Seiteneffekte) und idempotent (gleiches Ergebnis jedes Mal) sein. Kein Anfrage-Body."
+        "text": "`GET` fragt Daten vom Server ab. `GET`-Anfragen sollten sicher (keine Seiteneffekte) und idempotent (gleiches Ergebnis jedes Mal) sein. Kein Anfrage-Body.",
+        "expandedText": "`GET` ist das **sichere und idempotente** Leseverb – es beliebig oft aufzurufen erzeugt dasselbe Ergebnis ohne serverseitige Änderungen. Browser, CDNs und Caches nutzen das aus, indem sie `GET`-Antworten cachen. Verwende `GET` nie für Operationen, die den Zustand ändern – die URL könnte von Browsern oder Sicherheitsscannern vorab abgerufen werden.\n\n`GET`-Anfragen haben keinen Body. Query-Parameter (`?page=2&limit=10`) übergeben Filterung und Paginierung. Da URLs gespeichert und geteilt werden können, ist `GET` korrekt für alles, worauf ein Benutzer verlinken möchte. Wenn ein CDN eine `GET`-Antwort cached, werden Folge-Anfragen beantwortet, ohne den Anwendungsserver zu treffen – ein enormer Performance-Gewinn."
       },
       {
         "animationStep": 2,
         "heading": "POST — eine Ressource erstellen",
-        "text": "`POST` sendet Daten, um eine neue Ressource zu erstellen. Der Server gibt die erstellte Ressource mit Status 201 Created zurück."
+        "text": "`POST` sendet Daten, um eine neue Ressource zu erstellen. Der Server gibt die erstellte Ressource mit Status 201 Created zurück.",
+        "expandedText": "`POST` ist **nicht idempotent**: zweifaches Aufrufen erstellt zwei Ressourcen. Verwende es zum Erstellen neuer serverseitiger Ressourcen – der Request-Body enthält die Daten und der Server vergibt die ID. Antworte mit `201 Created` plus einem `Location`-Header, der auf die neue Ressourcen-URL zeigt.\n\n`POST` wird auch für **Aktionen** verwendet, die nicht ins CRUD-Schema passen: Passwort-Resets, Datei-Uploads, komplexe Suchanfragen oder Hintergrundaufgaben. Schütze `POST`-Endpunkte immer mit Authentifizierung. Für Browser-Clients sollten CSRF-Tokens verwendet werden, um Cross-Site-Request-Forgery-Angriffe zu verhindern, bei denen eine bösartige Seite den authentifizierten Browser des Nutzers zu unbeabsichtigten Anfragen veranlasst."
       },
       {
         "animationStep": 3,
         "heading": "PUT und PATCH",
-        "text": "`PUT` ersetzt die gesamte Ressource. `PATCH` aktualisiert nur die angegebenen Felder. Beide zielen auf eine bestimmte Ressource per ID in der URL ab."
+        "text": "`PUT` ersetzt die gesamte Ressource. `PATCH` aktualisiert nur die angegebenen Felder. Beide zielen auf eine bestimmte Ressource per ID in der URL ab.",
+        "expandedText": "**HTTP-Statuscodes** ermöglichen es Clients, Ergebnisse programmgesteuert zu behandeln. `200 OK` – allgemeiner Erfolg. `201 Created` – Ressource erstellt. `204 No Content` – Erfolg, kein Body. `400 Bad Request` – ungültige Daten. `401 Unauthorized` – nicht authentifiziert. `403 Forbidden` – fehlende Berechtigung. `404 Not Found`. `422 Unprocessable` – Validierung fehlgeschlagen. `500 Internal Server Error`.\n\nDie richtigen Codes zu verwenden macht deine API **selbstdokumentierend**. Ein Client kann bei `401` weiterleiten, bei `503` mit Backoff erneut versuchen und bei `422` einen Validierungsfehler anzeigen, ohne etwas Spezifisches über den Endpunkt zu wissen. Gib immer konsistente Fehlerformate zurück (`{ error: { code, message } }`), damit Clients hilfreiche Rückmeldungen anzeigen können."
       },
       {
         "animationStep": 4,
@@ -134,27 +143,32 @@
       {
         "animationStep": 0,
         "heading": "Jede Antwort hat einen Statuscode",
-        "text": "HTTP-Statuscodes sind dreistellige Zahlen, die nach Kategorien gruppiert sind. Die erste Ziffer zeigt Erfolg, Weiterleitung oder Fehler an."
+        "text": "HTTP-Statuscodes sind dreistellige Zahlen, die nach Kategorien gruppiert sind. Die erste Ziffer zeigt Erfolg, Weiterleitung oder Fehler an.",
+        "expandedText": "**HTTP-Statuscodes** sind dreistellige Zahlen, die Maschinen nutzen, um Request-Ergebnisse zu verstehen, ohne den Response-Body zu parsen. Sie werden nach der ersten Ziffer gruppiert: **1xx** informativ, **2xx** Erfolg, **3xx** Weiterleitung, **4xx** Client-Fehler, **5xx** Server-Fehler.\n\nDen richtigen Code zu verwenden macht APIs **selbstdokumentierend** und ermöglicht generisches Client-Verhalten: eine freundliche Meldung für jeden `404` anzeigen, bei `503` mit Backoff erneut versuchen oder bei `301` Weiterleitungen folgen – ohne etwas Spezifisches über die API zu wissen. `200 OK` mit einem Fehler-Body zurückzugeben (ein häufiger Fehler) bricht Tooling, Logging und Monitoring, die sich auf den Statuscode verlassen."
       },
       {
         "animationStep": 1,
         "heading": "2xx — Erfolg",
-        "text": "200 OK ist die Standard-Erfolgsantwort. 201 Created wird nach einem erfolgreichen POST zurückgegeben. 204 No Content bedeutet Erfolg ohne Body."
+        "text": "200 OK ist die Standard-Erfolgsantwort. 201 Created wird nach einem erfolgreichen POST zurückgegeben. 204 No Content bedeutet Erfolg ohne Body.",
+        "expandedText": "**`200 OK`** ist der generische Erfolgscode für `GET`-, `PUT`- und `PATCH`-Anfragen, die einen Body zurückgeben. **`201 Created`** sollte einem `POST` folgen, der eine Ressource erstellt – ein `Location`-Header sollte auf die neue URL zeigen. **`204 No Content`** signalisiert Erfolg ohne Body, verwendet nach `DELETE` oder einem `PUT` ohne Rückgabedaten.\n\n**`202 Accepted`** ist für asynchrone Operationen: Die Anfrage wurde empfangen und wird später verarbeitet – verwendet für Hintergrundaufgaben und Warteschlangen. Dokumentiere immer, ob Operationen synchron (`200`/`201`) oder asynchron (`202`) sind, damit Konsumenten wissen, ob sie einen Status-Endpunkt pollen oder direkt auf die Antwort warten sollen."
       },
       {
         "animationStep": 2,
         "heading": "3xx — Weiterleitung",
-        "text": "301 Moved Permanently teilt dem Client mit, dass die Ressource eine neue URL hat. 302 Found ist eine temporäre Weiterleitung."
+        "text": "301 Moved Permanently teilt dem Client mit, dass die Ressource eine neue URL hat. 302 Found ist eine temporäre Weiterleitung.",
+        "expandedText": "**`301 Moved Permanently`** teilt Clients und Suchmaschinen mit, dass sich eine URL dauerhaft geändert hat – Browser und Crawler cachen dies und verwenden bei allen zukünftigen Anfragen die neue URL. **`302 Found`** ist eine temporäre Weiterleitung; Clients folgen ihr, behalten aber die ursprüngliche URL.\n\n**`304 Not Modified`** wird mit Caching verwendet: Wenn ein Client `If-None-Match` sendet und sich die Ressource nicht geändert hat, antwortet der Server mit `304` ohne Body – spart Bandbreite. **`307`** und **`308`** sind moderne Entsprechungen von `302` und `301`, die garantieren, dass die HTTP-**Methode** bei der Weiterleitung erhalten bleibt (ein `POST` bleibt ein `POST`), im Gegensatz zum mehrdeutigen ursprünglichen `302`-Verhalten."
       },
       {
         "animationStep": 3,
         "heading": "4xx — Client-Fehler",
-        "text": "4xx-Fehler bedeuten, dass der Client einen Fehler gemacht hat. 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found."
+        "text": "4xx-Fehler bedeuten, dass der Client einen Fehler gemacht hat. 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found.",
+        "expandedText": "**`400 Bad Request`** bedeutet, dass der Server die Anfrage nicht parsen oder validieren konnte – fehlende Felder, ungültiges JSON oder Werte außerhalb des gültigen Bereichs. Liefere einen hilfreichen Fehler-Body mit. **`401 Unauthorized`** bedeutet, dass die Authentifizierung fehlt oder ungültig ist. **`403 Forbidden`** bedeutet authentifiziert, aber ohne Berechtigung – verrate nicht, ob die Ressource existiert.\n\n**`422 Unprocessable Entity`** ist für semantische Validierungsfehler bevorzugt (E-Mail bereits vergeben), wo `400` zu generisch ist. **`429 Too Many Requests`** signalisiert Rate-Limiting – `Retry-After` einschließen. **`409 Conflict`** zeigt eine Zustandskollision an: Erstellen einer bereits vorhandenen Ressource oder ein veraltetes Optimistic-Lock-Update."
       },
       {
         "animationStep": 4,
         "heading": "5xx — Server-Fehler",
-        "text": "5xx-Fehler bedeuten, dass auf der Serverseite etwas schief gelaufen ist — nicht der Fehler des Clients."
+        "text": "5xx-Fehler bedeuten, dass auf der Serverseite etwas schief gelaufen ist — nicht der Fehler des Clients.",
+        "expandedText": "**`500 Internal Server Error`** ist der generische Auffangcode für unbehandelte Server-Ausnahmen. **`502 Bad Gateway`** bedeutet, dass der Server eine ungültige Antwort von einem vorgelagerten Dienst erhalten hat. **`503 Service Unavailable`** bedeutet, dass der Server vorübergehend überlastet oder in Wartung ist – ein `Retry-After`-Header sollte mitgegeben werden.\n\n**`504 Gateway Timeout`** tritt auf, wenn ein vorgelagerter Dienst zu lange braucht, häufig wenn eine Datenbankabfrage das konfigurierte Timeout überschreitet. Anders als 4xx-Codes sind 5xx-Fehler Serverfehler, nicht Clientfehler. Gut gestaltete APIs geben detaillierte Fehlerobjekte zum Debuggen zurück, lecken aber in Produktion niemals Stack-Traces oder interne Details an nicht vertrauenswürdige Clients."
       }
     ],
     "cheatSheet": {
@@ -196,17 +210,20 @@
       {
         "animationStep": 0,
         "heading": "Server-Side Rendering (SSR)",
-        "text": "Bei SSR generiert der Server für jede Anfrage vollständiges HTML und sendet eine sofort darstellbare Seite an den Browser. Der Browser empfängt das vollständige Markup sofort — es wird kaum JavaScript benötigt, um Inhalte anzuzeigen. Beispiele: PHP, Django-Templates, Ruby on Rails, Next.js mit getServerSideProps. Vorteile: schneller First Paint, hervorragendes SEO, funktioniert ohne JS. Nachteile: vollständiger Server-Aufruf pro Navigation, langsamere Folgeübergänge."
+        "text": "Bei SSR generiert der Server für jede Anfrage vollständiges HTML und sendet eine sofort darstellbare Seite an den Browser. Der Browser empfängt das vollständige Markup sofort — es wird kaum JavaScript benötigt, um Inhalte anzuzeigen. Beispiele: PHP, Django-Templates, Ruby on Rails, Next.js mit getServerSideProps. Vorteile: schneller First Paint, hervorragendes SEO, funktioniert ohne JS. Nachteile: vollständiger Server-Aufruf pro Navigation, langsamere Folgeübergänge.",
+        "expandedText": "**Server-Side Rendering** bedeutet, dass der Server bei jeder Anfrage das vollständige HTML aufbaut und es fertig zum Anzeigen sendet. Der Benutzer sieht Inhalte sofort beim ersten Paint, ohne auf JavaScript warten zu müssen. SSR ist **SEO-freundlich** – Suchmaschinen-Crawler erhalten vollständig gerendertes HTML mit allen Metadaten.\n\nDer Nachteil sind **Serverkosten**: Jede Anfrage erfordert Rechenarbeit (App ausführen, Datenbank abfragen). Frameworks wie **Next.js** (React), **Nuxt** (Vue) und **SvelteKit** unterstützen SSR. SSR ist die richtige Wahl für Seiten, deren Inhalt pro Anfrage variiert, crawlbar sein muss oder Daten ohne Ladezustand anzeigen muss – redaktionelle Seiten, E-Commerce-Produktseiten und authentifizierte Dashboards."
       },
       {
         "animationStep": 1,
         "heading": "Client-Side Rendering (CSR)",
-        "text": "Bei CSR sendet der Server eine minimale HTML-Hülle plus ein JavaScript-Bundle. Der Browser lädt das JS herunter, parst und führt es aus, woraufhin die vollständige Benutzeroberfläche gerendert wird. Beispiele: Create React App, Vue SPA, Angular — jede Single-Page-Applikation. Vorteile: schnelle Navigation nach dem ersten Laden, reichhaltige Interaktionen, günstiges statisches Hosting. Nachteile: langsames erstes Laden, SEO erfordert zusätzliche Konfiguration."
+        "text": "Bei CSR sendet der Server eine minimale HTML-Hülle plus ein JavaScript-Bundle. Der Browser lädt das JS herunter, parst und führt es aus, woraufhin die vollständige Benutzeroberfläche gerendert wird. Beispiele: Create React App, Vue SPA, Angular — jede Single-Page-Applikation. Vorteile: schnelle Navigation nach dem ersten Laden, reichhaltige Interaktionen, günstiges statisches Hosting. Nachteile: langsames erstes Laden, SEO erfordert zusätzliche Konfiguration.",
+        "expandedText": "**CSR** verlagert das gesamte Rendering in den Browser. Der Server sendet ein minimales HTML-Gerüst plus ein JavaScript-Bundle. Der Browser führt das Bundle aus, ruft Daten via API ab und rendert die UI. Der initiale Paint zeigt einen leeren oder Skeleton-Screen, während JavaScript lädt – langsameres **Time to First Meaningful Paint** als SSR.\n\nCSR eignet sich hervorragend für **hochinteraktive, app-ähnliche Erlebnisse** – Dashboards, Editoren, Admin-Panels – wo Benutzer nach dem initialen Laden clientseitig navigieren und Folgenavigation sofort erfolgt. CSR ist auch einfacher als statische Dateien auf einem CDN zu deployen. Die Nachteile: schlechte SEO für Inhaltsseiten und ein langsames erstes Erlebnis auf Low-End-Geräten oder in langsamen Netzwerken."
       },
       {
         "animationStep": 2,
         "heading": "Direkter Vergleich",
-        "text": "SSR und CSR treffen unterschiedliche Kompromisse. SSR gewinnt bei der Geschwindigkeit des ersten Seitenaufbaus und SEO, benötigt aber für jede Seitenanfrage einen Server. CSR gewinnt bei der Navigationsgeschwindigkeit nach dem ersten Laden und den Hosting-Kosten, hat aber Probleme bei der Ladezeit und der Suchmaschinenindexierung. Keines ist universell besser — wähle basierend auf den Prioritäten deiner App."
+        "text": "SSR und CSR treffen unterschiedliche Kompromisse. SSR gewinnt bei der Geschwindigkeit des ersten Seitenaufbaus und SEO, benötigt aber für jede Seitenanfrage einen Server. CSR gewinnt bei der Navigationsgeschwindigkeit nach dem ersten Laden und den Hosting-Kosten, hat aber Probleme bei der Ladezeit und der Suchmaschinenindexierung. Keines ist universell besser — wähle basierend auf den Prioritäten deiner App.",
+        "expandedText": "**React Server Components** (RSC) laufen bei Anfrage oder Build-Zeit auf dem Server, holen Daten direkt und senden **serialisiertes HTML + ein JSON-Payload** an den Client – für die Server-Komponente selbst wird kein JavaScript ausgeliefert. Nur `\"use client\"`-Komponenten schicken JavaScript an den Browser.\n\nRSC beseitigt den klassischen Waterfall: kein `useEffect`-Datenabruf, keine Lade-Spinner für initiale Daten. Die Grenze ist **kompositionell**: Eine Server-Komponente kann Client-Komponenten rendern, und Client-Komponenten können Server-Komponenten über `children` einbetten. **Next.js App Router** (Next.js 13+) basiert auf RSC – alle Komponenten sind standardmäßig Server-Komponenten; mit `\"use client\"` wechselt man zur Client-Interaktivität."
       },
       {
         "animationStep": 3,
@@ -254,27 +271,32 @@
       {
         "animationStep": 0,
         "heading": "Was ist eine Datenbank?",
-        "text": "Eine Datenbank ist eine organisierte Sammlung strukturierter Daten, die von einem Datenbankmanagementsystem (DBMS) verwaltet wird. Kernkomponenten: die Daten selbst, ein Schema (Strukturdefinition), die DBMS-Engine, Abfragen und Benutzer. Im Gegensatz zu einfachen Dateien unterstützen Datenbanken gleichzeitigen Zugriff, komplexe Abfragen, referenzielle Integrität und Transaktionen."
+        "text": "Eine Datenbank ist eine organisierte Sammlung strukturierter Daten, die von einem Datenbankmanagementsystem (DBMS) verwaltet wird. Kernkomponenten: die Daten selbst, ein Schema (Strukturdefinition), die DBMS-Engine, Abfragen und Benutzer. Im Gegensatz zu einfachen Dateien unterstützen Datenbanken gleichzeitigen Zugriff, komplexe Abfragen, referenzielle Integrität und Transaktionen.",
+        "expandedText": "Eine **Datenbank** ist nicht nur eine Datei – es ist ein verwaltetes System, das gleichzeitigen Zugriff, Indizierung, Abfrageoptimierung und Crash-Recovery bietet. Das **DBMS** kümmert sich um all das, sodass dein Anwendungscode nur ausdrücken muss, *welche* Daten er haben möchte, nicht *wie* man sie abruft.\n\nDie vier Säulen relationaler Datenbanken sind **ACID**: Atomarität stellt sicher, dass eine Transaktion alles-oder-nichts ist, Konsistenz hält Daten jederzeit gültig, Isolation verhindert, dass gleichzeitige Transaktionen sich gegenseitig stören, und Dauerhaftigkeit garantiert, dass committete Daten Abstürze überleben. Diese Garantien sind der Grund, warum relationale Datenbanken die Standardwahl für Geschäftsdaten bleiben."
       },
       {
         "animationStep": 1,
         "heading": "Relationale Datenbanken",
-        "text": "Relationale Datenbanken speichern Daten in Tabellen — Zeilen sind Datensätze, Spalten sind typisierte Attribute. Ein Primärschlüssel identifiziert jede Zeile eindeutig (oft SERIAL oder AUTO_INCREMENT). ACID-Garantien sichern die Datenintegrität: Atomizität (alles oder nichts), Konsistenz (immer gültiger Zustand), Isolation (konkurrenzsicher), Dauerhaftigkeit (Committed = permanent). Beispiele: PostgreSQL, MySQL, SQLite."
+        "text": "Relationale Datenbanken speichern Daten in Tabellen — Zeilen sind Datensätze, Spalten sind typisierte Attribute. Ein Primärschlüssel identifiziert jede Zeile eindeutig (oft SERIAL oder AUTO_INCREMENT). ACID-Garantien sichern die Datenintegrität: Atomizität (alles oder nichts), Konsistenz (immer gültiger Zustand), Isolation (konkurrenzsicher), Dauerhaftigkeit (Committed = permanent). Beispiele: PostgreSQL, MySQL, SQLite.",
+        "expandedText": "Eine **relationale Datenbank** organisiert Daten in Tabellen. Jede Spalte hat einen deklarierten Typ (`TEXT`, `INTEGER`, `BOOLEAN`, `TIMESTAMPTZ`), und Constraints wie `NOT NULL` und `UNIQUE` erzwingen Korrektheit auf Datenbankebene – bevor Anwendungscode den Wert überhaupt sehen kann.\n\n`SERIAL PRIMARY KEY` erstellt eine automatisch inkrementierende Integer-Spalte, die jede Zeile eindeutig identifiziert. **Fremdschlüssel** (`REFERENCES`) erstellen harte Verknüpfungen zwischen Tabellen: Die Datenbank verweigert das Einfügen einer Zeile, deren Fremdschlüssel auf eine nicht vorhandene übergeordnete Zeile zeigt, und verhindert so verwaiste Daten."
       },
       {
         "animationStep": 2,
         "heading": "NoSQL-Datenbanken",
-        "text": "NoSQL-Datenbanken tauschen starre Schemata gegen Flexibilität und Skalierbarkeit. Vier Haupttypen: Document Stores (MongoDB) — JSON-ähnliche Dokumente mit verschachtelten Daten. Key-Value (Redis) — ultraschneller In-Memory-Speicher, ideal für Caching. Graph (Neo4j) — Knoten und Kanten für beziehungsintensive Abfragen. Column-oriented (Cassandra) — hoher Schreibdurchsatz für Zeitreihendaten und Analysen."
+        "text": "NoSQL-Datenbanken tauschen starre Schemata gegen Flexibilität und Skalierbarkeit. Vier Haupttypen: Document Stores (MongoDB) — JSON-ähnliche Dokumente mit verschachtelten Daten. Key-Value (Redis) — ultraschneller In-Memory-Speicher, ideal für Caching. Graph (Neo4j) — Knoten und Kanten für beziehungsintensive Abfragen. Column-oriented (Cassandra) — hoher Schreibdurchsatz für Zeitreihendaten und Analysen.",
+        "expandedText": "**NoSQL** umfasst mehrere unterschiedliche Speichermodelle. **Document-Stores** wie MongoDB halten zusammengehörige Daten in einem JSON-ähnlichen Dokument zusammen – gut, wenn die Datenstruktur je Datensatz variiert. **Key-Value-Stores** wie Redis sind nur eine Hash-Map im Speicher – Mikrosekunden-Lesezugriffe machen sie ideal für Caching und Sessions.\n\n**Graph-Datenbanken** wie Neo4j behandeln Beziehungen als Erstklassige-Bürger – effizient für soziale Netzwerke oder Empfehlungs-Engines. **Column-Family-Stores** wie Cassandra optimieren für massiven Schreibdurchsatz, indem sie Spalten auf der Festplatte zusammenfassen. Die meisten Produktionssysteme verwenden beides: eine relationale Datenbank für dauerhafte Daten und Redis als schnelle Cache-Schicht."
       },
       {
         "animationStep": 3,
         "heading": "SQL vs. NoSQL: Wann was nutzen?",
-        "text": "Verwende SQL, wenn: Daten klare Beziehungen haben, ACID-Garantien erforderlich sind oder komplexe JOIN-Abfragen und Reports benötigt werden. Verwende NoSQL, wenn: die Datenstruktur variabel oder verschachtelt ist, massive horizontale Skalierung nötig ist oder der Workload schreibintensiv ist. In der Praxis nutzen viele Systeme beides — PostgreSQL für persistente Daten, Redis für Caching."
+        "text": "Verwende SQL, wenn: Daten klare Beziehungen haben, ACID-Garantien erforderlich sind oder komplexe JOIN-Abfragen und Reports benötigt werden. Verwende NoSQL, wenn: die Datenstruktur variabel oder verschachtelt ist, massive horizontale Skalierung nötig ist oder der Workload schreibintensiv ist. In der Praxis nutzen viele Systeme beides — PostgreSQL für persistente Daten, Redis für Caching.",
+        "expandedText": "Verwende **SQL** (PostgreSQL, MySQL), wenn Daten klare Beziehungen haben, du `JOIN`-Abfragen benötigst oder dich auf `ACID`-Transaktionen verlässt – beispielsweise Finanzdaten, Benutzerkonten und Bestellsysteme. Verwende **NoSQL**, wenn die Datenform stark variiert, du horizontale Skalierung über viele Server benötigst oder einen Cache oder eine Analytics-Pipeline aufbaust.\n\nIn der Praxis ergänzen sich die beiden Modelle. Eine typische Web-App verwendet PostgreSQL als Source of Truth für persistente Daten und Redis als schnelle Cache-Schicht. Zu verstehen, wann jeder Datenbanktyp glänzt, verhindert kostspielige Architekturfehlentscheidungen früh in einem Projekt."
       },
       {
         "animationStep": 4,
         "heading": "SQL-Syntax-Primer",
-        "text": "SQL (Structured Query Language) ist der Standard für relationale Datenbanken. CREATE TABLE definiert das Schema einer Tabelle mit Spaltennamen, Typen und Constraints. Häufige Datentypen: SERIAL (Auto-Increment-Integer), VARCHAR(n) (Zeichenkette bis n Zeichen), INT, BOOLEAN, TIMESTAMP, TEXT (unbegrenzte Zeichenkette), DECIMAL(p,s). Constraints: PRIMARY KEY, NOT NULL, UNIQUE, DEFAULT, FOREIGN KEY."
+        "text": "SQL (Structured Query Language) ist der Standard für relationale Datenbanken. CREATE TABLE definiert das Schema einer Tabelle mit Spaltennamen, Typen und Constraints. Häufige Datentypen: SERIAL (Auto-Increment-Integer), VARCHAR(n) (Zeichenkette bis n Zeichen), INT, BOOLEAN, TIMESTAMP, TEXT (unbegrenzte Zeichenkette), DECIMAL(p,s). Constraints: PRIMARY KEY, NOT NULL, UNIQUE, DEFAULT, FOREIGN KEY.",
+        "expandedText": "SQL ist eine **deklarative** Sprache – du beschreibst das gewünschte Ergebnis, nicht die Schritte dorthin. `CREATE TABLE` definiert ein Schema mit typisierten Spalten und Constraints. `SERIAL` ist PostgreSQL-Kurzschreibweise für eine automatisch inkrementierende `INTEGER`-Spalte, perfekt für Primärschlüssel.\n\nConstraints erzwingen Datenintegrität auf Datenbankebene: `PRIMARY KEY` sichert Eindeutigkeit und ermöglicht schnelle Lookups, `NOT NULL` lehnt fehlende Werte ab, `UNIQUE` verhindert Duplikate, `DEFAULT` liefert einen Fallback, und `REFERENCES` erzwingt referentielle Integrität zwischen Tabellen. Gutes Schema-Design verlagert Validierung aus dem Anwendungscode in die Datenbank-Engine."
       }
     ],
     "cheatSheet": {
@@ -312,52 +334,62 @@
       {
         "animationStep": 0,
         "heading": "Tabellen speichern Datenzeilen",
-        "text": "Eine Datenbanktabelle ist wie eine Tabellenkalkulation — Zeilen sind Datensätze, Spalten sind Felder. Jede Tabelle hat ein definiertes Schema."
+        "text": "Eine Datenbanktabelle ist wie eine Tabellenkalkulation — Zeilen sind Datensätze, Spalten sind Felder. Jede Tabelle hat ein definiertes Schema.",
+        "expandedText": "Jede PostgreSQL-**Tabelle** ist ein strukturiertes Raster typisierter Spalten. Das **Schema** – Spaltennamen und -typen – wird einmalig bei der Erstellung der Tabelle definiert. Jede hinzugefügte Zeile muss diesem Schema entsprechen – die Datenbank-Engine lehnt Zeilen ab, die Typen oder Constraints verletzen.\n\nDie `id`-Spalte ist typischerweise ein `SERIAL PRIMARY KEY`: `SERIAL` inkrementiert automatisch, sodass man sie nie angeben muss, und `PRIMARY KEY` erstellt einen eindeutigen Index für schnelle Lookups. Betrachte den Primärschlüssel als permanente Adresse einer Zeile – andere Tabellen referenzieren ihn über **Fremdschlüssel**."
       },
       {
         "animationStep": 1,
         "heading": "SELECT",
-        "text": "`SELECT` ruft Daten ab. `*` bedeutet alle Spalten. Du kannst Spaltennamen angeben, um nur das zurückzugeben, was du benötigst."
+        "text": "`SELECT` ruft Daten ab. `*` bedeutet alle Spalten. Du kannst Spaltennamen angeben, um nur das zurückzugeben, was du benötigst.",
+        "expandedText": "`SELECT` ist die meistverwendete SQL-Anweisung. `SELECT *` gibt jede Spalte zurück – nützlich in der Entwicklung, aber in Produktion teuer, da es Spalten überträgt, die man möglicherweise nicht benötigt. Bestimmte Spalten zu benennen reduziert den Netzwerkverkehr und macht die Abfrage selbstdokumentierend.\n\nSpalten-Aliase (`AS`) benennen Spalten im Ergebnissatz um, ohne die Tabelle zu ändern. Sie sind unverzichtbar, wenn zwei verknüpfte Tabellen einen Spaltennamen teilen, oder wenn ein Ausdruck sonst mit einem automatisch generierten Label erscheinen würde. Liste immer nur die Spalten auf, die deine Anwendung tatsächlich verwendet – das schützt auch vor Brüchen bei Schema-Erweiterungen."
       },
       {
         "animationStep": 2,
         "heading": "WHERE — Zeilen filtern",
-        "text": "`WHERE` fügt Bedingungen hinzu, um zu filtern, welche Zeilen zurückgegeben werden. Verwende `AND` und `OR` für mehrere Bedingungen."
+        "text": "`WHERE` fügt Bedingungen hinzu, um zu filtern, welche Zeilen zurückgegeben werden. Verwende `AND` und `OR` für mehrere Bedingungen.",
+        "expandedText": "`WHERE` ist das Herzstück der SQL-Filterung. Bedingungen können Gleichheit (`=`), Vergleich (`>`, `<`, `>=`, `<=`), Negation (`!=`), Musterabgleich (`LIKE`, `ILIKE`) und Mengenzugehörigkeit (`IN`, `NOT IN`) testen. Bedingungen mit `AND` und `OR` kombinieren; Klammern zur Steuerung der Präzedenz verwenden.\n\n`NULL`-Vergleiche erfordern besondere Syntax: `IS NULL` und `IS NOT NULL` – der Vergleich mit `= NULL` gibt in SQL immer false zurück. `BETWEEN low AND high` als Kurzschreibweise für Bereichsprüfungen verwenden. Immer **parametrierte Abfragen** (`$1`, `$2`) statt String-Interpolation verwenden, um SQL-Injection zu verhindern."
       },
       {
         "animationStep": 3,
         "heading": "ORDER BY — Ergebnisse sortieren",
-        "text": "`ORDER BY` sortiert das Ergebnis. `ASC` ist aufsteigend (Standard), `DESC` ist absteigend. Nach mehreren Spalten sortieren möglich."
+        "text": "`ORDER BY` sortiert das Ergebnis. `ASC` ist aufsteigend (Standard), `DESC` ist absteigend. Nach mehreren Spalten sortieren möglich.",
+        "expandedText": "`ORDER BY` sortiert die Ergebniszeilen, bevor sie zurückgegeben werden. Die Standardrichtung ist `ASC` (aufsteigend, kleinste zuerst). `DESC` kehrt sie um. Man kann nach mehreren Spalten sortieren: Die zweite Spalte wird als Tiebreaker verwendet, wenn die erste Spalte gleiche Werte hat.\n\nSortierung erfolgt **nach** dem Filtern (`WHERE`) und **nach** dem Gruppieren (`GROUP BY`), aber **vor** `LIMIT`. Ohne `ORDER BY` garantiert PostgreSQL keine bestimmte Zeilenreihenfolge – selbst wenn Ergebnisse heute geordnet aussehen, müssen sie es nach einem Table-Rewrite oder Vacuum nicht mehr sein."
       },
       {
         "animationStep": 4,
         "heading": "LIMIT — Ergebnisanzahl steuern",
-        "text": "`LIMIT` begrenzt die Anzahl der zurückgegebenen Zeilen. In Kombination mit `OFFSET` implementiert es Paginierung."
+        "text": "`LIMIT` begrenzt die Anzahl der zurückgegebenen Zeilen. In Kombination mit `OFFSET` implementiert es Paginierung.",
+        "expandedText": "`LIMIT n` stoppt die Rückgabe von Zeilen nach `n` Ergebnissen – kritisch für die Performance bei großen Tabellen. `OFFSET k` überspringt die ersten `k` Zeilen und ermöglicht **Paginierung**: Seite 1 ist `LIMIT 10 OFFSET 0`, Seite 2 ist `LIMIT 10 OFFSET 10` und so weiter.\n\nBei großen Datensätzen verlangsamt `OFFSET`-basierte Paginierung, wenn der Offset wächst, da PostgreSQL die übersprungenen Zeilen trotzdem lesen und verwerfen muss. **Keyset-Paginierung** (mit `WHERE id > last_seen_id ORDER BY id LIMIT 10`) ist schneller für tiefe Seiten, da sie direkt den Primärschlüssel-Index nutzt."
       },
       {
         "animationStep": 5,
         "heading": "SELECT mit WHERE und ORDER BY",
-        "text": "`WHERE` filtert Zeilen, die eine Bedingung erfüllen. Du kannst mehrere Bedingungen mit `AND` und `OR` kombinieren. `ORDER BY` sortiert Ergebnisse — `ASC` (Standard) für aufsteigend, `DESC` für absteigend. Alias immer mehrdeutige Spalten in Multi-Tabellen-Abfragen."
+        "text": "`WHERE` filtert Zeilen, die eine Bedingung erfüllen. Du kannst mehrere Bedingungen mit `AND` und `OR` kombinieren. `ORDER BY` sortiert Ergebnisse — `ASC` (Standard) für aufsteigend, `DESC` für absteigend. Alias immer mehrdeutige Spalten in Multi-Tabellen-Abfragen.",
+        "expandedText": "`WHERE` und `ORDER BY` sind die Arbeitstiere jeder `SELECT`-Abfrage. Bevorzuge in Produktion immer spezifische Spaltenlisten gegenüber `SELECT *`: Spalten zu benennen dokumentiert die Absicht, reduziert den Datentransfer und schützt vor Brüchen, wenn neue Spalten hinzugefügt werden.\n\nVerwende **parametrierte Abfragen** (`$1`, `$2` in PostgreSQL), wenn ein Wert aus Benutzereingaben oder externen Daten stammt – interpoliere Variablen niemals direkt in SQL-Strings. Das ist die wichtigste Praxis zur Verhinderung von SQL-Injection-Angriffen. Die meisten ORM-Bibliotheken und der `pg`-Node.js-Treiber erledigen das automatisch."
       },
       {
         "animationStep": 6,
         "heading": "Aggregatfunktionen: COUNT, SUM, AVG",
-        "text": "Aggregatfunktionen berechnen ein einzelnes Ergebnis aus einer Menge von Zeilen. `COUNT(*)` zählt Zeilen, `SUM` addiert numerische Werte, `AVG` berechnet den Durchschnitt, `MIN`/`MAX` finden Extremwerte. Sie werden typischerweise mit `GROUP BY` kombiniert."
+        "text": "Aggregatfunktionen berechnen ein einzelnes Ergebnis aus einer Menge von Zeilen. `COUNT(*)` zählt Zeilen, `SUM` addiert numerische Werte, `AVG` berechnet den Durchschnitt, `MIN`/`MAX` finden Extremwerte. Sie werden typischerweise mit `GROUP BY` kombiniert.",
+        "expandedText": "**Aggregatfunktionen** verdichten viele Zeilen zu einem einzigen Zusammenfassungswert. `COUNT(*)` zählt alle Zeilen in der Gruppe. `COUNT(column)` zählt nur Nicht-NULL-Werte. `SUM` addiert Zahlen auf. `AVG` dividiert die Summe durch die Anzahl. `MIN` und `MAX` finden die Extremwerte.\n\nAggregate werden fast immer mit `GROUP BY` verwendet, um Zusammenfassungen pro Kategorie, Benutzer oder Zeitraum zu berechnen. Ohne `GROUP BY` verdichtet das Aggregat den gesamten Ergebnissatz auf eine Zeile. In der SELECT-Liste können nur Spalten referenziert werden, die in `GROUP BY` erscheinen oder in einem Aggregat eingebettet sind – jede andere Spaltenreferenz ist ein SQL-Fehler."
       },
       {
         "animationStep": 7,
         "heading": "GROUP BY und HAVING",
-        "text": "`GROUP BY` fasst Zeilen, die denselben Wert in einer Spalte teilen, zu einer einzelnen Zeile zusammen, sodass Aggregate pro Gruppe operieren. `HAVING` filtert Gruppen nach der Aggregation — wie `WHERE`, aber für Gruppen."
+        "text": "`GROUP BY` fasst Zeilen, die denselben Wert in einer Spalte teilen, zu einer einzelnen Zeile zusammen, sodass Aggregate pro Gruppe operieren. `HAVING` filtert Gruppen nach der Aggregation — wie `WHERE`, aber für Gruppen.",
+        "expandedText": "`GROUP BY` partitioniert Zeilen in Buckets basierend auf den Werten in den angegebenen Spalten und wendet dann Aggregatfunktionen separat auf jeden Bucket an. Jede eindeutige Kombination von gruppierten Spaltenwerten wird zu einer Ausgabezeile.\n\n`HAVING` ist wie `WHERE`, arbeitet aber auf dem Ergebnis der Aggregation statt auf einzelnen Zeilen. Verwende `WHERE`, um Zeilen **vor** dem Gruppieren zu filtern (das ist schneller – weniger Zeilen zu aggregieren), und `HAVING`, um Gruppen **nach** der Aggregation zu filtern, wenn deine Bedingung ein Aggregat wie `COUNT(*)` oder `SUM(price)` beinhaltet."
       },
       {
         "animationStep": 8,
         "heading": "HAVING vs. WHERE",
-        "text": "`WHERE` filtert einzelne Zeilen, bevor `GROUP BY` ausgeführt wird. `HAVING` filtert Gruppen nach `GROUP BY` — es kann auf Aggregatfunktionen verweisen. Faustregel: Wenn deine Bedingung `COUNT`, `SUM` oder `AVG` verwendet, nutze `HAVING`; andernfalls `WHERE`. Beide können in derselben Abfrage vorkommen."
+        "text": "`WHERE` filtert einzelne Zeilen, bevor `GROUP BY` ausgeführt wird. `HAVING` filtert Gruppen nach `GROUP BY` — es kann auf Aggregatfunktionen verweisen. Faustregel: Wenn deine Bedingung `COUNT`, `SUM` oder `AVG` verwendet, nutze `HAVING`; andernfalls `WHERE`. Beide können in derselben Abfrage vorkommen.",
+        "expandedText": "Das mentale Modell: SQL verarbeitet Klauseln in dieser Reihenfolge – `FROM` (welche Tabellen), `WHERE` (Zeilen filtern), `GROUP BY` (Gruppen bilden), `HAVING` (Gruppen filtern), `SELECT` (Ausgabespalten berechnen), `ORDER BY` (sortieren), `LIMIT`/`OFFSET` (paginieren). Diese Reihenfolge erklärt jeden \"Spalte nicht gefunden\"- oder \"Aggregat in WHERE\"-Fehler, dem man begegnen wird.\n\n`HAVING COUNT(*) > 5` ist gültig, weil `COUNT` in der `GROUP BY`-Phase läuft, bevor `HAVING` auswertet. `WHERE COUNT(*) > 5` ist ungültig, weil `WHERE` vor dem Gruppieren läuft. Diese Pipeline im Kopf zu behalten macht die meisten SQL-Rätsel straightforward."
       },
       {
         "animationStep": 9,
         "heading": "Subqueries",
-        "text": "Eine Subquery ist ein `SELECT`, das innerhalb einer anderen Abfrage verschachtelt ist. Die innere Abfrage wird zuerst ausgeführt; ihr Ergebnis wird von der äußeren Abfrage verwendet. Skalare Subqueries geben einen einzelnen Wert zurück (verwendbar in `WHERE`). `IN`-Subqueries geben eine Werteliste zurück. Korrelierte Subqueries referenzieren Spalten der äußeren Abfrage — mächtig, aber sie laufen einmal pro äußerer Zeile; bevorzuge `JOIN`s für große Datensätze."
+        "text": "Eine Subquery ist ein `SELECT`, das innerhalb einer anderen Abfrage verschachtelt ist. Die innere Abfrage wird zuerst ausgeführt; ihr Ergebnis wird von der äußeren Abfrage verwendet. Skalare Subqueries geben einen einzelnen Wert zurück (verwendbar in `WHERE`). `IN`-Subqueries geben eine Werteliste zurück. Korrelierte Subqueries referenzieren Spalten der äußeren Abfrage — mächtig, aber sie laufen einmal pro äußerer Zeile; bevorzuge `JOIN`s für große Datensätze.",
+        "expandedText": "Eine **Unterabfrage** ist ein vollständiges `SELECT`, das in einer anderen SQL-Anweisung verschachtelt ist. Die Datenbank führt die innere Abfrage zuerst aus und gibt ihr Ergebnis an die äußere weiter. **Skalare Unterabfragen** geben genau einen Wert zurück und können in `WHERE` oder `SELECT` erscheinen. **`IN`-Unterabfragen** geben eine Spalte mit Werten zurück und funktionieren wie ein dynamischer Mengenzugehörigkeitstest.\n\n**Korrelierte Unterabfragen** referenzieren Spalten aus der äußeren Abfrage – sie werden einmal pro äußerer Zeile neu ausgeführt, was sie bei großen Tabellen potenziell langsam macht. Bevorzuge einen `JOIN`, wenn dasselbe Ergebnis so ausgedrückt werden kann. Unterabfragen verwenden, wenn die Logik als verschachtelte Frage am klarsten formuliert ist."
       }
     ],
     "cheatSheet": {
@@ -402,27 +434,32 @@
       {
         "animationStep": 0,
         "heading": "Daten leben in separaten Tabellen",
-        "text": "In einer relationalen Datenbank sind Daten auf Tabellen verteilt, um Duplikate zu vermeiden. Eine users-Tabelle und eine posts-Tabelle sind durch einen Fremdschlüssel verknüpft."
+        "text": "In einer relationalen Datenbank sind Daten auf Tabellen verteilt, um Duplikate zu vermeiden. Eine users-Tabelle und eine posts-Tabelle sind durch einen Fremdschlüssel verknüpft.",
+        "expandedText": "**Normalisierung** ist die Praxis, jede Tatsache genau einmal zu speichern. Statt einen Benutzernamen in jeder Post-Zeile zu wiederholen, speichert man den Namen einmal in einer `users`-Tabelle und legt in jedem Post nur die `user_id` ab. Das eliminiert Update-Anomalien: Wenn ein Benutzer seinen Namen ändert, korrigiert ein einziges `UPDATE` automatisch jeden Post.\n\nDie Kosten sind, dass das Lesen zusammengehöriger Daten das Verknüpfen von Tabellen erfordert. Die Datenbank-Engine optimiert diesen Join, besonders wenn beide Seiten Indizes auf der Join-Spalte haben. Das Normalisierungs-Tradeoff zu verstehen erklärt, warum Fremdschlüssel und Joins existieren."
       },
       {
         "animationStep": 1,
         "heading": "Fremdschlüssel verknüpfen Tabellen",
-        "text": "Der Fremdschlüssel ist eine Spalte, die auf den Primärschlüssel einer anderen Tabelle verweist. So werden Beziehungen definiert."
+        "text": "Der Fremdschlüssel ist eine Spalte, die auf den Primärschlüssel einer anderen Tabelle verweist. So werden Beziehungen definiert.",
+        "expandedText": "Eine **Fremdschlüssel**-Spalte enthält den Primärschlüsselwert einer verwandten Zeile in einer anderen Tabelle. Die Deklaration mit `REFERENCES table(column)` weist PostgreSQL an, referentielle Integrität zu erzwingen: Das Einfügen einer `user_id`, die nicht in `users` existiert, wird mit einem Constraint-Verletzungsfehler abgelehnt.\n\nDiese serverseitige Durchsetzung ist weitaus zuverlässiger als Prüfungen auf Anwendungsebene. Wenn zwei Anwendungen dieselbe Datenbank teilen oder ein Migrationsskript direkt läuft, schützt der Constraint die Daten trotzdem. Das Weglassen von Fremdschlüsseln ist ein häufiger früher Fehler, der zu verwaisten Zeilen und Daten-Inkonsistenzen führt, die später teuer zu bereinigen sind."
       },
       {
         "animationStep": 2,
         "heading": "INNER JOIN",
-        "text": "INNER JOIN gibt Zeilen zurück, bei denen in beiden Tabellen eine Übereinstimmung vorliegt. Wenn ein Benutzer keine Beiträge hat, erscheint er nicht im Ergebnis."
+        "text": "INNER JOIN gibt Zeilen zurück, bei denen in beiden Tabellen eine Übereinstimmung vorliegt. Wenn ein Benutzer keine Beiträge hat, erscheint er nicht im Ergebnis.",
+        "expandedText": "`INNER JOIN` ist der häufigste Join. Er erzeugt eine Zeile in der Ausgabe für jedes Paar von Zeilen aus den beiden Tabellen, bei dem die `ON`-Bedingung wahr ist. Zeilen aus beiden Tabellen, die keine Entsprechung haben, werden stillschweigend aus dem Ergebnis ausgeschlossen.\n\nDie `ON`-Klausel vergleicht typischerweise den Fremdschlüssel mit dem Primärschlüssel: `ON users.id = posts.user_id`. Wenn ein Benutzer drei Posts hat, erscheint er auf drei Ausgabezeilen – eine pro Post. Das ist erwartet und kann mit Aggregation (`GROUP BY`) adressiert werden, wenn man eine Zusammenfassungszeile pro Benutzer möchte."
       },
       {
         "animationStep": 3,
         "heading": "LEFT JOIN",
-        "text": "LEFT JOIN gibt alle Zeilen aus der linken Tabelle zurück, mit NULL für fehlende Übereinstimmungen. Verwende dies, wenn du Ergebnisse möchtest, auch wenn keine Übereinstimmung existiert."
+        "text": "LEFT JOIN gibt alle Zeilen aus der linken Tabelle zurück, mit NULL für fehlende Übereinstimmungen. Verwende dies, wenn du Ergebnisse möchtest, auch wenn keine Übereinstimmung existiert.",
+        "expandedText": "`LEFT JOIN` bedeutet \"linke Tabelle gewinnt.\" Jede Zeile aus der linken (ersten) Tabelle erscheint in der Ausgabe, auch wenn keine passende Zeile in der rechten Tabelle existiert. Für nicht übereinstimmende Zeilen auf der rechten Seite werden alle Spalten der rechten Seite mit `NULL` gefüllt.\n\nDas ist der bevorzugte Join, wenn man zählen möchte, wie viele verwandte Datensätze existieren, einschließlich null. Ein Benutzer ohne Posts erscheint trotzdem – mit `NULL` in den Post-Spalten. Um Benutzer ohne Posts zu finden, `WHERE posts.id IS NULL` hinzufügen – das NULL in einer Fremdschlüsselspalte ist das Signal, dass keine Übereinstimmung gefunden wurde."
       },
       {
         "animationStep": 4,
         "heading": "Aliase und mehrere Joins",
-        "text": "Verwende Aliase, um Tabellennamen zu kürzen. Du kannst mehrere JOINs verketten, um drei oder mehr Tabellen zu kombinieren."
+        "text": "Verwende Aliase, um Tabellennamen zu kürzen. Du kannst mehrere JOINs verketten, um drei oder mehr Tabellen zu kombinieren.",
+        "expandedText": "Tabellen-**Aliase** (z.B. `FROM users u`) verkürzen repetitive qualifizierte Spaltennamen wie `users.name` zu `u.name`. Sie sind erforderlich, wenn eine Tabelle mit sich selbst verknüpft wird (Self-Join), weil beide Seiten unterschiedliche Namen benötigen, um eindeutig zu sein.\n\nMehrere `JOIN`s zu verketten kombiniert drei oder mehr Tabellen in einer einzigen Abfrage. Die Datenbank verarbeitet Joins von links nach rechts und baut bei jedem Schritt ein Zwischenergebnissatz auf. Das Indizieren von Join-Spalten – besonders Fremdschlüssel – ist kritisch: Nicht indizierte Joins bei großen Tabellen führen für jede Zeile einen Full-Table-Scan durch, was katastrophal langsam sein kann."
       }
     ],
     "cheatSheet": {
@@ -467,27 +504,32 @@
       {
         "animationStep": 0,
         "heading": "CREATE TABLE",
-        "text": "`CREATE TABLE` definiert die Struktur (Schema) einer Tabelle: Spaltennamen, Typen und Constraints."
+        "text": "`CREATE TABLE` definiert die Struktur (Schema) einer Tabelle: Spaltennamen, Typen und Constraints.",
+        "expandedText": "`CREATE TABLE` ist eine **DDL**-Anweisung (Data Definition Language) – sie ändert die Datenbankstruktur statt die Daten. Spaltentypen schränken ein, welche Werte gespeichert werden können: `TEXT` für Zeichenketten variabler Länge, `INTEGER` für ganze Zahlen, `DECIMAL(p, s)` für Festkommazahlen wie Geldbeträge, `BOOLEAN` für true/false und `TIMESTAMPTZ` für Zeitstempel mit Zeitzone.\n\n`NOT NULL` verhindert, dass eine Spalte den Abwesenheitswert enthält. Nur dann `NULL` erlauben, wenn das Fehlen eines Werts für diese Spalte wirklich sinnvoll ist. `UNIQUE` erstellt einen Index und verhindert doppelte Werte – unverzichtbar für E-Mail-Adressen, Benutzernamen und andere natürliche Schlüssel."
       },
       {
         "animationStep": 1,
         "heading": "INSERT — Zeilen hinzufügen",
-        "text": "`INSERT INTO` fügt neue Zeilen hinzu. Du kannst eine oder mehrere Zeilen in einer einzigen Anweisung einfügen."
+        "text": "`INSERT INTO` fügt neue Zeilen hinzu. Du kannst eine oder mehrere Zeilen in einer einzigen Anweisung einfügen.",
+        "expandedText": "`INSERT INTO` ist das SQL-Verb zum Erstellen von Zeilen. Spaltennamen explizit aufzulisten (statt sich auf die Positionsreihenfolge zu verlassen) schützt die Abfrage davor, zu brechen, wenn Spalten umsortiert werden oder neue Spalten mit Defaults hinzugefügt werden.\n\n`RETURNING` verwandelt ein `INSERT` in eine kombinierte Schreib-und-Lese-Operation: Die Datenbank führt das Einfügen durch und gibt sofort die angegebenen Spalten der neuen Zeile zurück. Das vermeidet eine zweite Round-Trip-Abfrage, um die automatisch generierte `id` oder den serverseitig gesetzten `created_at`-Wert abzurufen. Mindestens `RETURNING id` immer verwenden, damit die Anwendung sofort den Primärschlüssel der neuen Zeile kennt."
       },
       {
         "animationStep": 2,
         "heading": "UPDATE — Zeilen ändern",
-        "text": "`UPDATE` ändert bestehende Zeilen. Verwende immer `WHERE` — ohne es wird jede Zeile in der Tabelle aktualisiert."
+        "text": "`UPDATE` ändert bestehende Zeilen. Verwende immer `WHERE` — ohne es wird jede Zeile in der Tabelle aktualisiert.",
+        "expandedText": "`UPDATE` ändert bestehende Zeilen. Die `WHERE`-Klausel bestimmt, welche Zeilen betroffen sind. **Das Weglassen von `WHERE` aktualisiert jede einzelne Zeile in der Tabelle** – das ist einer der häufigsten und destruktivsten SQL-Fehler. Vor dem Ausführen eines `UPDATE` in Produktion immer prüfen, dass `WHERE` vorhanden ist.\n\n`RETURNING *` (oder spezifische Spalten) veranlasst `UPDATE`, die geänderten Zeilen zurückzugeben, was wiederum ein folgendes `SELECT` vermeidet. Parametrierte Abfragen (`$1`, `$2`) für alle Werte verwenden. In Node.js mit dem `pg`-Treiber: `pool.query(\"UPDATE users SET name=$1 WHERE id=$2 RETURNING *\", [name, id])`."
       },
       {
         "animationStep": 3,
         "heading": "DELETE — Zeilen entfernen",
-        "text": "`DELETE` entfernt Zeilen. Verwende immer `WHERE` — ohne es werden alle Zeilen gelöscht."
+        "text": "`DELETE` entfernt Zeilen. Verwende immer `WHERE` — ohne es werden alle Zeilen gelöscht.",
+        "expandedText": "`DELETE FROM table WHERE condition` entfernt übereinstimmende Zeilen dauerhaft. Wie bei `UPDATE` **löscht das Weglassen von `WHERE` jede Zeile** in der Tabelle – die Tabellenstruktur bleibt, aber alle Daten sind weg. Es gibt kein Rückgängigmachen, es sei denn, es gibt eine offene Transaktion oder ein Backup.\n\n`RETURNING id` (oder andere Spalten) berichtet, welche Zeilen gelöscht wurden – nützlich für Logging oder zur Bestätigung der Operation. Für Soft-Deletes (historische Daten behalten) bevorzugt man `UPDATE ... SET deleted_at = NOW()` und filtert in Abfragen mit `WHERE deleted_at IS NULL`. Hard-Deletes entfernen die Zeile vollständig aus der Tabelle."
       },
       {
         "animationStep": 4,
         "heading": "Constraints schützen Daten",
-        "text": "Constraints erzwingen Regeln auf Datenbankebene. `PRIMARY KEY`, `NOT NULL`, `UNIQUE` und `FOREIGN KEY` verhindern, dass ungültige Daten gespeichert werden."
+        "text": "Constraints erzwingen Regeln auf Datenbankebene. `PRIMARY KEY`, `NOT NULL`, `UNIQUE` und `FOREIGN KEY` verhindern, dass ungültige Daten gespeichert werden.",
+        "expandedText": "**Constraints** sind deklarative Regeln, die von der Datenbank-Engine erzwungen werden. `PRIMARY KEY` macht eine Spalte zur eindeutigen Kennung jeder Zeile und erstellt automatisch einen Index. `NOT NULL` lehnt `NULL`-Werte ab. `UNIQUE` verhindert Duplikate und erstellt einen Index. `REFERENCES` (Fremdschlüssel) lehnt Werte ab, die nicht in der referenzierten Tabelle existieren. `DEFAULT` füllt einen Wert ein, wenn die Spalte im `INSERT` weggelassen wird.\n\n`ON CONFLICT` ermöglicht **Upsert**-Logik: `INSERT ... ON CONFLICT (col) DO UPDATE SET ...` fügt entweder eine neue Zeile ein oder aktualisiert die kollidierende atomar. Das ist weitaus sauberer als eine Read-Then-Write-Prüfung im Anwendungscode, die Race Conditions haben kann."
       }
     ],
     "cheatSheet": {
@@ -619,47 +661,56 @@
       {
         "animationStep": 0,
         "heading": "DOM-Baumstruktur",
-        "text": "Das DOM repräsentiert dein HTML als Baum von Knoten. Das `document`-Objekt ist die Wurzel. HTML-Elemente sind Element-Knoten; Text darin sind Text-Knoten. JavaScript kann diesen Baum über Eltern-, Kind- und Geschwisterbeziehungen traversieren."
+        "text": "Das DOM repräsentiert dein HTML als Baum von Knoten. Das `document`-Objekt ist die Wurzel. HTML-Elemente sind Element-Knoten; Text darin sind Text-Knoten. JavaScript kann diesen Baum über Eltern-, Kind- und Geschwisterbeziehungen traversieren.",
+        "expandedText": "Das **DOM** ist die lebendige In-Memory-Darstellung deines HTML-Dokuments im Browser. Es wird beim Parsen des HTML aufgebaut und existiert als Baum miteinander verbundener Objekte. Jedes HTML-Element wird zu einem Objekt mit Eigenschaften und Methoden. Änderungen am DOM spiegeln sich sofort auf dem Bildschirm wider – das DOM ist, was der Benutzer sieht, nicht die ursprüngliche HTML-Datei.\n\nDas `document`-Objekt ist der Einstiegspunkt in den gesamten Baum. Die Navigation im Baum erfolgt über Eigenschaften wie `parentNode`, `childNodes`, `firstElementChild` und `nextElementSibling`. Das Verständnis der Baumstruktur erklärt, warum `appendChild` ein Element verschiebt (ein Knoten kann nur an einem Ort existieren), warum das Entfernen eines Elternelements alle Kinder entfernt und warum Textknoten separate Objekte von Elementknoten sind."
       },
       {
         "animationStep": 1,
         "heading": "Elemente auswählen",
-        "text": "`querySelector` gibt das erste Element zurück, das einem CSS-Selektor entspricht. `querySelectorAll` gibt eine NodeList aller Übereinstimmungen zurück. `getElementById` und `getElementsByClassName` sind ältere Alternativen — `querySelector` ist flexibler und wird bevorzugt."
+        "text": "`querySelector` gibt das erste Element zurück, das einem CSS-Selektor entspricht. `querySelectorAll` gibt eine NodeList aller Übereinstimmungen zurück. `getElementById` und `getElementsByClassName` sind ältere Alternativen — `querySelector` ist flexibler und wird bevorzugt.",
+        "expandedText": "`querySelector` ist die vielseitigste Auswahlmethode, da sie **jeden CSS-Selektor** akzeptiert – Elementnamen, Klassen (`.menu-item`), IDs (`#submit`), Attribute (`[type=\"submit\"]`), Pseudo-Klassen (`:first-child`) und Kombinatoren. Sie gibt das erste übereinstimmende Element zurück oder `null`, wenn nichts passt.\n\n`querySelectorAll` gibt eine **NodeList** zurück – einen Snapshot aller übereinstimmenden Elemente zum Zeitpunkt des Aufrufs. Prüfe immer auf `null` nach `querySelector`, bevor du auf Eigenschaften zugreifst. In TypeScript eine Typzusicherung (`as HTMLInputElement`) oder die generische Überladung (`document.querySelector<HTMLInputElement>(\"#email\")`) verwenden, um auf elementspezifische Eigenschaften wie `.value` zuzugreifen."
       },
       {
         "animationStep": 2,
         "heading": "Elemente erstellen und einfügen",
-        "text": "`createElement(tag)` erstellt ein losgelöstes Element. Setze seine Eigenschaften (`textContent`, `className` usw.) und füge es dann mit `appendChild`, `prepend` oder `insertBefore` in das DOM ein. Das Element erscheint auf der Seite erst nach dem Einfügen."
+        "text": "`createElement(tag)` erstellt ein losgelöstes Element. Setze seine Eigenschaften (`textContent`, `className` usw.) und füge es dann mit `appendChild`, `prepend` oder `insertBefore` in das DOM ein. Das Element erscheint auf der Seite erst nach dem Einfügen.",
+        "expandedText": "`createElement(tagName)` erstellt einen neuen Elementknoten, der **von** dem Dokument **losgelöst** ist. Er existiert im Speicher, ist aber unsichtbar, bis er in den DOM-Baum eingefügt wird. Man kann das Element vollständig konfigurieren – Text, Attribute, Klassen, Event-Listener setzen – bevor man es anhängt.\n\n`appendChild(child)` verschiebt den Knoten ans Ende der Kindelemente des Elternteils. Wenn der Knoten bereits im DOM vorhanden ist, wird er verschoben (nicht kopiert). `prepend()`, `append()` und `insertBefore()` bieten feinere Platzierung. Für das Einfügen neben einem vorhandenen Element ist `insertAdjacentElement(\"beforeend\", el)` die ausdrucksstärkste API."
       },
       {
         "animationStep": 3,
         "heading": "Element-Eigenschaften lesen und ändern",
-        "text": "Verwende `textContent`, um Text sicher zu lesen oder zu setzen. `classList` bietet `add`, `remove`, `toggle` und `contains` für das CSS-Klassen-Management. `setAttribute` / `getAttribute` lesen und schreiben HTML-Attribute. `style` ermöglicht das direkte Setzen von Inline-CSS."
+        "text": "Verwende `textContent`, um Text sicher zu lesen oder zu setzen. `classList` bietet `add`, `remove`, `toggle` und `contains` für das CSS-Klassen-Management. `setAttribute` / `getAttribute` lesen und schreiben HTML-Attribute. `style` ermöglicht das direkte Setzen von Inline-CSS.",
+        "expandedText": "`textContent` setzt oder liest den kombinierten Text eines Elements und all seiner Nachkommen, wobei alle Markierungen ignoriert werden. Es ist **XSS-sicher**: Die Zuweisung `el.textContent = userInput` behandelt die Eingabe immer als Klartext, nie als HTML. `textContent` für jeden dynamischen Text aus Benutzereingaben verwenden.\n\n`classList` ist der bevorzugte Weg, CSS-Klassen zu verwalten. Bevorzuge es gegenüber `className` (das den gesamten Klassen-String ersetzt), wenn einzelne Klassen umgeschaltet werden. `style` setzt Inline-Styles – bei dynamisch berechneten Werten verwenden, aber lieber CSS-Klassen für vordefinierte visuelle Zustände hinzufügen/entfernen. `innerHTML` für benutzerseitige Inhalte vermeiden – es parst HTML und kann eingeschleuste Scripts ausführen."
       },
       {
         "animationStep": 4,
         "heading": "DOM-Interfaces",
-        "text": "Das DOM ist als Hierarchie von Interfaces aufgebaut. `Document` ist der Einstiegspunkt. `Node` ist die Basis für alle DOM-Knoten (Elemente, Text, Kommentare). `Element` erweitert `Node` und fügt HTML-spezifische Methoden hinzu. Dieses Hierarchieverständnis erklärt, welche Methoden auf welchen Objekten verfügbar sind."
+        "text": "Das DOM ist als Hierarchie von Interfaces aufgebaut. `Document` ist der Einstiegspunkt. `Node` ist die Basis für alle DOM-Knoten (Elemente, Text, Kommentare). `Element` erweitert `Node` und fügt HTML-spezifische Methoden hinzu. Dieses Hierarchieverständnis erklärt, welche Methoden auf welchen Objekten verfügbar sind.",
+        "expandedText": "Die DOM-Typhierarchie ist wichtig, wenn elementspezifische Eigenschaften benötigt werden. Auf `Node`-Ebene gibt es `parentNode`, `childNodes` und `textContent`. Auf `Element`-Ebene kommen `getAttribute`, `setAttribute`, `classList` und `querySelector` (zur Suche darin) hinzu. Bei `HTMLElement` kommen `style`, `dataset` und Event-Handler hinzu.\n\nSpezifischere Elementtypen (`HTMLInputElement`, `HTMLFormElement`, `HTMLCanvasElement`) fügen elementspezifische Eigenschaften hinzu: `.value`, `.elements`, `.getContext`. In TypeScript Typzusicherung (`as HTMLInputElement`) oder Generics (`document.querySelector<HTMLInputElement>(\"#email\")`) verwenden, um auf diese Eigenschaften ohne Fehler zuzugreifen."
       },
       {
         "animationStep": 5,
         "heading": "Erweiterte Abfragen",
-        "text": "Neben `querySelector` sind zwei Traversal-Methoden besonders nützlich: `closest()` durchläuft die Vorfahrenkette nach oben und gibt das erste passende Element zurück — ideal für Event-Delegation. `matches()` prüft, ob ein Element einem Selektor entspricht — nützlich in Event-Handlern zum Filtern von Zielelementen."
+        "text": "Neben `querySelector` sind zwei Traversal-Methoden besonders nützlich: `closest()` durchläuft die Vorfahrenkette nach oben und gibt das erste passende Element zurück — ideal für Event-Delegation. `matches()` prüft, ob ein Element einem Selektor entspricht — nützlich in Event-Handlern zum Filtern von Zielelementen.",
+        "expandedText": "`closest(selector)` ist die Umkehrung von `querySelector`: Statt Nachkommen zu durchsuchen, läuft es **aufwärts** in der Vorfahrenkette und gibt den ersten übereinstimmenden Vorfahren (oder das Element selbst) zurück. Das ist unverzichtbar für **Event-Delegation** – wenn man einen Click-Listener an einen Container hängt und identifizieren muss, welches Kind geklickt wurde und was sein Container ist.\n\n`matches(selector)` testet, ob ein Element einem CSS-Selektor entspricht, ohne irgendwo traversiert zu werden. Zusammen sind `closest` und `matches` die zwei nützlichsten Werkzeuge für Event-Delegation-Muster: `e.target.matches(\".delete-btn\")` identifiziert das geklickte Element und `e.target.closest(\"li\")` findet seine umschließende Zeile."
       },
       {
         "animationStep": 6,
         "heading": "NodeList vs. Array",
-        "text": "`querySelectorAll` gibt eine NodeList zurück, die einem Array ähnelt, aber keine Array-Methoden (`map`, `filter`, `reduce`) besitzt. Konvertiere sie mit `Array.from()` oder Spread-Syntax. Außerdem: `getElementsByClassName` und `getElementsByTagName` geben live HTMLCollections zurück, die sich automatisch aktualisieren; `querySelectorAll` gibt einen statischen Snapshot zurück."
+        "text": "`querySelectorAll` gibt eine NodeList zurück, die einem Array ähnelt, aber keine Array-Methoden (`map`, `filter`, `reduce`) besitzt. Konvertiere sie mit `Array.from()` oder Spread-Syntax. Außerdem: `getElementsByClassName` und `getElementsByTagName` geben live HTMLCollections zurück, die sich automatisch aktualisieren; `querySelectorAll` gibt einen statischen Snapshot zurück.",
+        "expandedText": "`querySelectorAll` gibt eine **statische NodeList** zurück – einen Snapshot, der zum Zeitpunkt des Aufrufs gemacht wurde. Das nachträgliche Hinzufügen oder Entfernen von Elementen aus dem DOM ändert die NodeList nicht. `getElementsByClassName` und `getElementsByTagName` geben **live HTMLCollections** zurück, die sich automatisch aktualisieren – das Iterieren über eine Live-Collection während der DOM-Modifikation kann zu Endlosschleifen oder übersprungenen Elementen führen.\n\nFür die meisten Anwendungsfälle ist der statische Snapshot von `querySelectorAll` sicherer und vorhersehbarer. Das Konvertieren in ein echtes Array mit `Array.from(nodeList)` oder `[...nodeList]` ermöglicht die gesamte Palette an Array-Methoden (`map`, `filter`, `reduce`). `NodeList` selbst unterstützt nativ nur `forEach` und Index-Zugriff."
       },
       {
         "animationStep": 7,
         "heading": "classList Erweiterte Methoden",
-        "text": "`classList.toggle(class, force)` erzwingt das Hinzufügen (`true`) oder Entfernen (`false`) ohne `if/else`. `classList.replace('alt', 'neu')` tauscht atomisch. `.add()` und `.remove()` akzeptieren mehrere Klassen."
+        "text": "`classList.toggle(class, force)` erzwingt das Hinzufügen (`true`) oder Entfernen (`false`) ohne `if/else`. `classList.replace('alt', 'neu')` tauscht atomisch. `.add()` und `.remove()` akzeptieren mehrere Klassen.",
+        "expandedText": "`classList.toggle(class, force)` ist der prägnanteste Weg, eine Klasse bedingt hinzuzufügen oder zu entfernen. Der `force`-Boolean macht daraus ein bedingtes `add` oder `remove`: `el.classList.toggle(\"active\", isLoggedIn)` entspricht einem if/else, aber in einer Zeile. Das ist besonders sauber für die Synchronisierung des Klassen-Zustands mit dem Anwendungs-Zustand.\n\n`classList.replace(oldClass, newClass)` führt einen atomaren Austausch durch – es entfernt die alte Klasse und fügt die neue in einer einzigen Operation hinzu. Das vermeidet den vorübergehenden Zustand, in dem keine Klasse vorhanden ist, was einen kurzen visuellen Blitz verursachen kann, wenn beide Klassen dieselbe CSS-Eigenschaft beeinflussen."
       },
       {
         "animationStep": 8,
         "heading": "data-* Attribute",
-        "text": "`data-*` Attribute speichern benutzerdefinierte Daten auf HTML-Elementen. Zugriff über `el.dataset` — Kebab-Case wird zu CamelCase: `data-user-id` → `el.dataset.userId`. Schreiben auf `dataset` setzt das HTML-Attribut."
+        "text": "`data-*` Attribute speichern benutzerdefinierte Daten auf HTML-Elementen. Zugriff über `el.dataset` — Kebab-Case wird zu CamelCase: `data-user-id` → `el.dataset.userId`. Schreiben auf `dataset` setzt das HTML-Attribut.",
+        "expandedText": "`data-*`-Attribute sind der Standardweg, benutzerdefinierte Metadaten in HTML-Elementen einzubetten. Sie vermeiden die Überlastung des `class`-Attributs mit semantischen Informationen und halten JavaScript-IDs von CSS-Klassennamen getrennt. Die `dataset`-Eigenschaft bietet eine JavaScript-Objektschnittstelle mit automatischer Kebab-zu-CamelCase-Konvertierung.\n\nDie mächtigste Verwendung von `data-*` ist **Event-Delegation**: Einen Listener an einen Container hängen und die Data-Attribute des geklickten Elements lesen, um zu bestimmen, welche Aktion ausgeführt werden soll. `data-action=\"delete\"` und `data-id=\"42\"` an einem Button geben dem Event-Handler alles, was er benötigt, ohne zusätzliche Elemente abzufragen oder separate JavaScript-State-Maps zu pflegen."
       }
     ],
     "cheatSheet": {
@@ -703,52 +754,62 @@
       {
         "animationStep": 0,
         "heading": "Die Fetch API",
-        "text": "`fetch()` ist die moderne Browser-API für HTTP-Anfragen. Sie ersetzt `XMLHttpRequest` und gibt ein Promise zurück."
+        "text": "`fetch()` ist die moderne Browser-API für HTTP-Anfragen. Sie ersetzt `XMLHttpRequest` und gibt ein Promise zurück.",
+        "expandedText": "`fetch()` ist eine **Promise-basierte** API – sie gibt ein `Promise<Response>` zurück, das sich auflöst, wenn der Server antwortet. Der Browser sendet die Anfrage im Hintergrund, während das andere JavaScript weiter läuft. Dieses nicht-blockierende Modell ist der Grund, warum Web-Apps auch bei langsamen Netzwerk-Aufrufen reaktionsfähig bleiben.\n\nDie `fetch`-API ersetzte `XMLHttpRequest`. Anders als `XMLHttpRequest`, das Callbacks verwendete und eine verbose API hatte, integriert sich `fetch` sauber mit `async`/`await`. Dieselbe API funktioniert in allen modernen Browsern und in Node.js 18+ nativ – keine Bibliothek erforderlich."
       },
       {
         "animationStep": 1,
         "heading": "fetch() gibt ein Promise zurück",
-        "text": "Die Anfrage wird sofort gesendet, aber die Antwort kommt später. `fetch()` gibt ein Promise zurück, das aufgelöst wird, wenn der Server antwortet."
+        "text": "Die Anfrage wird sofort gesendet, aber die Antwort kommt später. `fetch()` gibt ein Promise zurück, das aufgelöst wird, wenn der Server antwortet.",
+        "expandedText": "Ein `fetch()`-Aufruf gibt ein **`Promise`** zurück, das zwei Phasen durchläuft. Zuerst löst es sich zu einem `Response`-Objekt auf, wenn die Header eintreffen. Dann ruft man `response.json()` (oder `.text()`, `.blob()`) auf, um ein weiteres Promise zu erhalten, das sich auflöst, wenn der vollständige Body geparst ist.\n\nDas zweistufige Design ermöglicht es, Header zu inspizieren und zu entscheiden, ob der Body weitergelesen werden soll. Es ermöglicht auch das Streamen großer Antworten – man kann eine große Datei Stück für Stück über `response.body` als `ReadableStream` verarbeiten, ohne auf den vollständigen Download zu warten."
       },
       {
         "animationStep": 2,
         "heading": "Das Response-Objekt",
-        "text": "Der aufgelöste Wert ist eine Response. Sie enthält Status, Header und den Body — der Body muss jedoch explizit geparst werden."
+        "text": "Der aufgelöste Wert ist eine Response. Sie enthält Status, Header und den Body — der Body muss jedoch explizit geparst werden.",
+        "expandedText": "Das `Response`-Objekt ist das Gateway zu allem, was der Server zurückgeschickt hat. `status` ist der HTTP-Code (200, 404, 500). `ok` ist `true` für Codes 200–299. `headers` ist ein `Headers`-Objekt mit den Methoden `get(name)` und `has(name)`. `url` spiegelt die endgültige URL nach Weiterleitungen wider.\n\n`response.ok` ist die wichtigste zu prüfende Eigenschaft. `fetch()` lehnt das Promise nur bei **Netzwerkfehlern** ab (keine Verbindung, DNS-Fehler). Ein HTTP-404 oder -500 löst sich normal mit `ok: false` auf. Immer `if (!response.ok) throw new Error(...)` prüfen, bevor der Body gelesen wird."
       },
       {
         "animationStep": 3,
         "heading": "Den Antwort-Body parsen",
-        "text": "`response.json()` parst den Body als JSON und gibt ein weiteres Promise zurück. `response.text()` gibt rohen Text zurück."
+        "text": "`response.json()` parst den Body als JSON und gibt ein weiteres Promise zurück. `response.text()` gibt rohen Text zurück.",
+        "expandedText": "`response.json()` liest den gesamten Response-Body und parst ihn als JSON, wobei ein weiteres Promise zurückgegeben wird. Dieses zweistufige Muster (`await fetch` dann `await response.json()`) ist die Standard-Redewendung für REST-APIs. Wenn der Body kein gültiges JSON ist, lehnt `json()` mit einem `SyntaxError` ab.\n\nAndere Body-Lesemethoden: `response.text()` gibt den rohen String zurück, `response.blob()` gibt Binärdaten zurück (für Bilder/Dateien), `response.arrayBuffer()` liefert rohe Bytes. Den Body kann man nur einmal lesen – das Aufrufen von `json()` nach `text()` auf derselben Antwort wirft einen Fehler, weil der Stream bereits verbraucht ist."
       },
       {
         "animationStep": 4,
         "heading": "async/await-Syntax",
-        "text": "`async/await` lässt `fetch`-Code wie synchronen Code aussehen. Immer in `try/catch` einwickeln für Fehlerbehandlung."
+        "text": "`async/await` lässt `fetch`-Code wie synchronen Code aussehen. Immer in `try/catch` einwickeln für Fehlerbehandlung.",
+        "expandedText": "`async`/`await` lässt Fetch-Ketten wie sequenziellen, synchronen Code lesen, bleibt aber nicht-blockierend. Das `await`-Schlüsselwort pausiert die Ausführung der `async`-Funktion, bis das Promise aufgelöst ist, und gibt dann den aufgelösten Wert zurück. Kein `.then()`-Verschachteln erforderlich.\n\nFetch-Code immer in einem `try`/`catch`-Block einhüllen. Netzwerkfehler und nicht-ok-Antworten müssen beide behandelt werden. Ein gutes Muster: `response.ok` innerhalb von `try` prüfen und einen benutzerdefinierten Fehler mit dem Statuscode werfen, sodass der `catch`-Block zwischen Netzwerkfehlern und API-Fehlern unterscheiden kann."
       },
       {
         "animationStep": 5,
         "heading": "GET — Eine Antwort lesen",
-        "text": "`fetch()` gibt ein Promise zurück, das zu einem Response-Objekt aufgelöst wird. Rufe `response.json()` auf, um den Body als JSON zu parsen (auch async). Prüfe immer `response.ok` oder `response.status`, bevor du den Daten vertraust."
+        "text": "`fetch()` gibt ein Promise zurück, das zu einem Response-Objekt aufgelöst wird. Rufe `response.json()` auf, um den Body als JSON zu parsen (auch async). Prüfe immer `response.ok` oder `response.status`, bevor du den Daten vertraust.",
+        "expandedText": "`fetch()` **lehnt** sein Promise nur bei einem Netzwerkfehler ab – DNS-Lookup-Fehler, Offline, CORS-Block oder Verbindung verweigert. Ein HTTP-Fehler wie 404 oder 500 **löst sich** mit `ok: false` auf. Das überrascht die meisten Entwickler, die erwarten, dass fehlgeschlagene Statuscodes sich wie Fehler verhalten.\n\nDie Konsequenz: Ein einfaches `try`/`catch` ohne `ok`-Prüfung wird für 404s und 500s still erfolgreich sein. Die Fehlerbehandlung muss explizit `response.ok` prüfen und einen geeigneten Fehler werfen. Viele Codebasen kapseln `fetch` in einer Utility-Funktion, die `ok` automatisch prüft, was die Wiederholung über jeden API-Aufruf hinweg reduziert."
       },
       {
         "animationStep": 6,
         "heading": "POST / PUT / DELETE mit Body",
-        "text": "Um Daten zu senden, übergib ein Options-Objekt als zweites Argument an `fetch`. Setze die Methode, einen `Content-Type`-Header und serialisiere den Body zu JSON mit `JSON.stringify`."
+        "text": "Um Daten zu senden, übergib ein Options-Objekt als zweites Argument an `fetch`. Setze die Methode, einen `Content-Type`-Header und serialisiere den Body zu JSON mit `JSON.stringify`.",
+        "expandedText": "Um eine `POST`- oder `PUT`-Anfrage zu senden, übergibt man `fetch()` ein zweites Argument mit `method`, `headers` und `body`. Der Body muss ein String sein – `JSON.stringify(data)` verwenden, um ein Objekt zu serialisieren. Immer `Content-Type: application/json` in den Headern setzen, damit der Server weiß, wie der Body geparst werden soll.\n\n`PATCH`-Anfragen folgen demselben Muster, senden aber typischerweise nur die geänderten Felder statt des vollständigen Objekts. `DELETE`-Anfragen haben selten einen Body. `GET`-Anfragen dürfen keinen Body haben – Parameter in den URL-Query-String schreiben. `URLSearchParams` für die sichere Erstellung von Query-Strings ohne manuelle String-Konkatenation verwenden."
       },
       {
         "animationStep": 7,
         "heading": "RESTful API-Prinzipien",
-        "text": "REST verwendet HTTP-Methoden semantisch: `GET` liest, `POST` erstellt, `PUT`/`PATCH` aktualisiert, `DELETE` entfernt. Jeder Endpunkt repräsentiert eine Ressource (z. B. `/posts`, `/posts/1`). Antworten tragen HTTP-Statuscodes — 2xx für Erfolg, 4xx für Client-Fehler, 5xx für Server-Fehler."
+        "text": "REST verwendet HTTP-Methoden semantisch: `GET` liest, `POST` erstellt, `PUT`/`PATCH` aktualisiert, `DELETE` entfernt. Jeder Endpunkt repräsentiert eine Ressource (z. B. `/posts`, `/posts/1`). Antworten tragen HTTP-Statuscodes — 2xx für Erfolg, 4xx für Client-Fehler, 5xx für Server-Fehler.",
+        "expandedText": "HTTP-**Methoden** tragen semantische Bedeutung. `GET` ist schreibgeschützt und idempotent – mehrfaches Aufrufen hat keinen Nebeneffekt. `POST` erstellt eine neue Ressource und ist nicht idempotent. `PUT` ersetzt eine Ressource vollständig. `PATCH` führt eine Teilaktualisierung durch. `DELETE` entfernt eine Ressource.\n\nREST-Konventionen zu befolgen macht die API vorhersehbar und ermöglicht es Clients (Browsern, Mobile-Apps, CLI-Tools), das korrekte Caching- und Wiederholungsverhalten zu verwenden. `GET`-Anfragen werden vom Browser gecached; `POST`-Anfragen nicht. Idempotente Methoden (`GET`, `PUT`, `DELETE`) können automatisch wiederholt werden; `POST` nicht, da das Wiederholen einer Erstellung Daten duplizieren kann."
       },
       {
         "animationStep": 8,
         "heading": "Fehlerbehandlungs-Muster",
-        "text": "`fetch()` lehnt nur bei **Netzwerkfehlern** ab. Eine `404` oder `500` löst trotzdem auf — `res.ok` ist `false`. `try/catch` für Netzwerkfehler, `if (!res.ok) throw` für HTTP-Fehler verwenden."
+        "text": "`fetch()` lehnt nur bei **Netzwerkfehlern** ab. Eine `404` oder `500` löst trotzdem auf — `res.ok` ist `false`. `try/catch` für Netzwerkfehler, `if (!res.ok) throw` für HTTP-Fehler verwenden.",
+        "expandedText": "`fetch()` löst sich auf (lehnt nicht ab) für HTTP-Fehlercodes wie 404 und 500 – nur Netzwerkfehler verursachen eine Ablehnung. Das ist der häufigste `fetch`-Fallstrick. Die Lösung ist eine Utility-Wrapper-Funktion, die `response.ok` prüft und bei Fehlern wirft:\n\nEin Wrapper wie `async function apiFetch(url, opts) { const r = await fetch(url, opts); if (!r.ok) throw new Error(r.status); return r.json(); }` standardisiert die Fehlerbehandlung in der gesamten Codebasis. Mit einem globalen Error-Boundary oder einem `toast`-Benachrichtigungssystem kombinieren, damit jeder API-Fehler konsistent behandelt wird, ohne try/catch in jeder Komponente zu wiederholen."
       },
       {
         "animationStep": 9,
         "heading": "AbortController",
-        "text": "`{ signal: controller.signal }` an `fetch()` übergeben. `controller.abort()` bricht die Anfrage ab. In React `useEffect` im Cleanup `abort()` aufrufen, um State-Updates nach dem Unmount zu verhindern."
+        "text": "`{ signal: controller.signal }` an `fetch()` übergeben. `controller.abort()` bricht die Anfrage ab. In React `useEffect` im Cleanup `abort()` aufrufen, um State-Updates nach dem Unmount zu verhindern.",
+        "expandedText": "`AbortController` ist die Browser-API zum Abbrechen laufender Anfragen. Einen Controller erstellen, dessen `signal` an `fetch` übergeben, dann `controller.abort()` aufrufen, wenn die Anfrage abgebrochen werden soll. Das fetch-Promise lehnt mit einem `AbortError` ab, den man im `catch`-Block von echten Netzwerkfehlern unterscheiden kann.\n\nDer wichtigste Anwendungsfall ist **Cleanup in React-Effects**: Die Anfrage abbrechen, wenn die Komponente ausgehängt wird oder sich Abhängigkeiten ändern. Ohne Cleanup wird eine langsame Antwort, die nach dem Aushängen eintrifft, versuchen, `setState` auf einer ausgehängten Komponente aufzurufen. `AbortController` innerhalb von `useEffect` mit einer Cleanup-Funktion ist die idiomatische Lösung."
       }
     ],
     "cheatSheet": {
@@ -793,47 +854,56 @@
       {
         "animationStep": 0,
         "heading": "Events sind Benutzeraktionen",
-        "text": "Der Browser löst Events aus, wenn Benutzer interagieren — klicken, tippen, scrollen, hovern. JavaScript kann zuhören und reagieren."
+        "text": "Der Browser löst Events aus, wenn Benutzer interagieren — klicken, tippen, scrollen, hovern. JavaScript kann zuhören und reagieren.",
+        "expandedText": "Der Browser ist **ereignisgesteuert**: Statt dass dein Code auf Benutzeraktionen pollt, löst der Browser Ereignisse aus und ruft deine Listener-Funktionen auf, wenn etwas passiert. Ereignisse decken Benutzereingaben (click, keydown, submit), den Browser-Lebenszyklus (DOMContentLoaded, load, beforeunload) und Netzwerkaktivität (online, offline) ab.\n\nEreignisse sind Objekte mit Eigenschaften, die die Aktion beschreiben – was passiert ist, wo, wann und mit welchen Modifikatoren. Das Ereignissystem zu verstehen entsperrt interaktive UIs, Formularverarbeitung, Tastaturkürzel, Drag-and-Drop und benutzerdefinierte komponentenübergreifende Kommunikation – alles ohne Framework."
       },
       {
         "animationStep": 1,
         "heading": "addEventListener",
-        "text": "`addEventListener` hängt eine Callback-Funktion an ein Element. Der Callback wird jedes Mal ausgeführt, wenn das Event ausgelöst wird."
+        "text": "`addEventListener` hängt eine Callback-Funktion an ein Element. Der Callback wird jedes Mal ausgeführt, wenn das Event ausgelöst wird.",
+        "expandedText": "`addEventListener(type, handler)` hängt eine Funktion an, die aufgerufen wird, wenn ein Ereignis auf dem Element ausgelöst wird. Das dritte Argument (Capture-Phase) ist standardmäßig `false` – Ereignisse bubbling standardmäßig. Man kann mehrere Listener an dasselbe Element und denselben Ereignistyp hängen; sie werden alle in der Reihenfolge aufgerufen, in der sie hinzugefügt wurden.\n\n`removeEventListener` erfordert **genau dieselbe Funktionsreferenz**, die in `addEventListener` verwendet wurde – Inline-Arrow-Funktionen können nicht entfernt werden, weil jede Definition ein neues Objekt erstellt. Den Handler in einer Variablen speichern, wenn er entfernt werden muss. Das Ablösen von Listenern verhindert Speicherlecks, besonders in Single-Page-Apps, wo Elemente wiederholt erstellt und zerstört werden."
       },
       {
         "animationStep": 2,
         "heading": "Das Event-Objekt",
-        "text": "Der Callback erhält ein Event-Objekt mit Informationen über das Geschehene: das Zielelement, Mausposition, gedrückte Taste und mehr."
+        "text": "Der Callback erhält ein Event-Objekt mit Informationen über das Geschehene: das Zielelement, Mausposition, gedrückte Taste und mehr.",
+        "expandedText": "Jeder Event-Listener empfängt ein **`Event`-Objekt** als erstes Argument. Das Basis-`Event` hat `type`, `target`, `currentTarget`, `timeStamp`, `bubbles` und `cancelable`. Spezifischere Ereignis-Interfaces fügen eigene Eigenschaften hinzu: `MouseEvent` hat `clientX`/`clientY` und `button`. `KeyboardEvent` hat `key`, `code` und Modifier-Flags. `InputEvent` und `SubmitEvent` haben formularbezogene Eigenschaften.\n\n`event.target` ist das Element, auf dem das Ereignis seinen Ursprung hat – was tatsächlich geklickt oder in das getippt wurde. `event.currentTarget` ist das Element, an dem der Listener hängt. In bubbling Event-Handlern sind diese oft unterschiedlich: `target` ist ein Button, `currentTarget` ist das Formular, an dem der Listener hängt."
       },
       {
         "animationStep": 3,
         "heading": "Event-Bubbling",
-        "text": "Events blubbern standardmäßig den DOM-Baum hinauf. Ein Klick auf ein inneres Element löst auch auf allen Vorfahren aus — außer er wird gestoppt."
+        "text": "Events blubbern standardmäßig den DOM-Baum hinauf. Ein Klick auf ein inneres Element löst auch auf allen Vorfahren aus — außer er wird gestoppt.",
+        "expandedText": "**Event-Bubbling** bedeutet, dass das Ereignis zuerst auf dem Zielelement, dann auf seinem Elternteil, dann auf dem Großelternteil ausgelöst wird, den ganzen Weg bis zu `document` und `window`. Jedes Vorfahrenelement, das einen Listener für denselben Ereignistyp hat, wird der Reihe nach aufgerufen.\n\nBubbling ermöglicht **Event-Delegation** – eines der wichtigsten DOM-Muster. Einen einzigen Listener an einen Eltern-Container hängen statt an jedes Kind. `event.target` verwenden, um zu identifizieren, welches Kind geklickt wurde. Das ist effizienter (ein Listener vs. viele) und behandelt automatisch dynamisch hinzugefügte Kinder – neue Elemente, die später hinzugefügt werden, werden vom Eltern-Listener ohne zusätzliches Setup abgedeckt."
       },
       {
         "animationStep": 4,
         "heading": "stopPropagation und preventDefault",
-        "text": "`stopPropagation()` stoppt das Bubbling des Events. `preventDefault()` bricht die Standard-Browseraktion ab (z. B. einem Link folgen, ein Formular absenden)."
+        "text": "`stopPropagation()` stoppt das Bubbling des Events. `preventDefault()` bricht die Standard-Browseraktion ab (z. B. einem Link folgen, ein Formular absenden).",
+        "expandedText": "`stopPropagation()` verhindert, dass das Ereignis weiter im DOM-Baum nach oben (oder in der Capture-Phase nach unten) wandert. Verwende es, wenn ein verschachteltes Element das Ereignis unabhängig behandeln soll und das Elternteil nicht auch reagieren soll – beispielsweise ein Button innerhalb einer klickbaren Karte.\n\n`preventDefault()` bricht die Standard-Browser-Aktion für das Ereignis ab. Für Formular-Submit-Ereignisse ist der Standard die Navigation zur Formular-`action`-URL – durch Aufrufen von `preventDefault()` erhält JavaScript die volle Kontrolle. Für Links verhindert es die Navigation. Für `keydown` kann es die Zeicheneingabe blockieren. Die beiden Methoden sind unabhängig: man kann eine, beide oder keine aufrufen."
       },
       {
         "animationStep": 5,
         "heading": "EventTarget und addEventListener",
-        "text": "Jedes DOM-Element implementiert das EventTarget-Interface und gibt ihm `addEventListener(type, handler, options)`. Du kannst mehrere Listener für denselben Event-Typ anhängen. Verwende immer `addEventListener` statt Inline-Handlern für eine bessere Trennung von Belangen."
+        "text": "Jedes DOM-Element implementiert das EventTarget-Interface und gibt ihm `addEventListener(type, handler, options)`. Du kannst mehrere Listener für denselben Event-Typ anhängen. Verwende immer `addEventListener` statt Inline-Handlern für eine bessere Trennung von Belangen.",
+        "expandedText": "Jedes DOM-Element implementiert das `EventTarget`-Interface, das `addEventListener`, `removeEventListener` und `dispatchEvent` bereitstellt. Sogar Nicht-Element-Objekte wie `window`, `document` und `XMLHttpRequest` implementieren `EventTarget`, wodurch dasselbe Muster überall funktioniert.\n\n`dispatchEvent(new Event(type))` löst ein synthetisches Ereignis programmatisch aus – nützlich für Tests, benutzerdefinierte Komponenten-APIs und das Auslösen eingebauter Browser-Verhaltensweisen wie Formularvalidierung. Mit `CustomEvent` kombinieren, um beliebige Daten an synthetische Ereignisse anzuhängen und zwischen lose gekoppelten Teilen der Anwendung zu kommunizieren."
       },
       {
         "animationStep": 6,
         "heading": "Event-Propagation: Bubbling und Capturing",
-        "text": "Events wandern zuerst den DOM-Baum von der Wurzel zum Ziel hinunter (Capture-Phase), dann blubbern sie vom Ziel zur Wurzel hinauf (Bubble-Phase). Standardmäßig laufen Listener in der Bubble-Phase. Rufe `event.stopPropagation()` auf, um das Event am Weiterreisen zu hindern."
+        "text": "Events wandern zuerst den DOM-Baum von der Wurzel zum Ziel hinunter (Capture-Phase), dann blubbern sie vom Ziel zur Wurzel hinauf (Bubble-Phase). Standardmäßig laufen Listener in der Bubble-Phase. Rufe `event.stopPropagation()` auf, um das Event am Weiterreisen zu hindern.",
+        "expandedText": "Ereignisse durchlaufen drei Phasen. **Capture** (top-down): Das Ereignis wandert von `window` nach unten zum Ziel. **Target**: Das Ereignis wird auf dem Zielelement ausgelöst. **Bubble** (bottom-up): Das Ereignis wandert vom Ziel zurück zu `window`. Listener, die mit `addEventListener(type, fn, true)` hinzugefügt werden, laufen in der Capture-Phase; der Standard ist die Bubble-Phase.\n\nCapture-Phase-Listener werden in Anwendungscode selten benötigt. Sie sind nützlich, wenn ein Ereignis abgefangen werden muss, bevor ein Bubble-Phase-Listener auf einem Vorfahren läuft – beispielsweise um bestimmte Tastenkombinationen global zu blockieren, bevor ein anderer Handler sie verarbeiten kann."
       },
       {
         "animationStep": 7,
         "heading": "Custom Events",
-        "text": "`new CustomEvent(name, { detail })` erstellt ein benutzerdefiniertes Event. `element.dispatchEvent(event)` feuert es ab. `bubbles: true` setzen, damit Elternelemente es abfangen können."
+        "text": "`new CustomEvent(name, { detail })` erstellt ein benutzerdefiniertes Event. `element.dispatchEvent(event)` feuert es ab. `bubbles: true` setzen, damit Elternelemente es abfangen können.",
+        "expandedText": "`CustomEvent` ist der Standardweg, um Ereignisse auf Anwendungsebene zu erstellen. Die `detail`-Eigenschaft trägt beliebige Daten vom Ereignis-Sender zu seinen Listenern. `bubbles: true` lässt das Ereignis im DOM nach oben bubbling, sodass entfernte Vorfahren lauschen können.\n\nBenutzerdefinierte Ereignisse entkoppeln Produzenten und Konsumenten: Eine tief verschachtelte Kindkomponente kann `new CustomEvent(\"item-added\", { detail: item, bubbles: true })` dispatchen, ohne über ihre Elternkomponenten Bescheid zu wissen. Jeder Vorfahre hängt `addEventListener(\"item-added\", ...)` an, um es zu empfangen. Dieses Muster ist eine leichtgewichtige Alternative zu State-Management-Bibliotheken für komponentenübergreifende Kommunikation."
       },
       {
         "animationStep": 8,
         "heading": "Event Delegation",
-        "text": "Einen Listener am Elternelement statt N Listener an Kindelementen anbringen. `event.target.closest(selector)` nutzen, um zu erkennen welches Kind das Event ausgelöst hat. Funktioniert auch für nachträglich hinzugefügte Elemente."
+        "text": "Einen Listener am Elternelement statt N Listener an Kindelementen anbringen. `event.target.closest(selector)` nutzen, um zu erkennen welches Kind das Event ausgelöst hat. Funktioniert auch für nachträglich hinzugefügte Elemente.",
+        "expandedText": "**Event-Delegation** ist eines der praktischsten DOM-Muster. Statt einen Listener an jedes Element in einer Liste zu hängen, hängt man einen Listener an den Container. Wenn ein Kind geklickt wird, bubbling das Ereignis zum Container-Listener. `event.target` und `event.target.matches(selector)` oder `event.target.closest(selector)` verwenden, um das richtige Kind zu identifizieren und darauf zu reagieren.\n\nDelegation reduziert die Anzahl der Listener drastisch (Hunderte vs. einer), verbessert die Speichernutzung und behandelt automatisch dynamisch hinzugefügte oder entfernte Kinder – neue Elemente, die der Liste hinzugefügt werden, sind sofort abgedeckt, ohne zusätzlichen Setup-Code."
       }
     ],
     "cheatSheet": {
@@ -878,47 +948,56 @@
       {
         "animationStep": 0,
         "heading": "Browser-Speicher",
-        "text": "Browser bieten eingebauten Schlüssel-Wert-Speicher, der ohne Server funktioniert. Nützlich für Einstellungen, gecachte Daten und Offline-Zustand."
+        "text": "Browser bieten eingebauten Schlüssel-Wert-Speicher, der ohne Server funktioniert. Nützlich für Einstellungen, gecachte Daten und Offline-Zustand.",
+        "expandedText": "`localStorage` und `sessionStorage` sind **synchrone, nur-String**-Key-Value-Stores, die in den Browser eingebaut sind. Sie speichern Daten zwischen Seitenladevorgängen ohne Server und eignen sich ideal für Benutzerpräferenzen, gecachte API-Antworten und Anwendungszustand, der einen Refresh überleben soll.\n\nBeide APIs sind synchron – Lesen und Schreiben blockiert den Haupt-Thread kurz. Für große Datenmengen oder häufige Schreibvorgänge sollte `IndexedDB` (async, unterstützt Binärdaten und Indizes) oder ein Service-Worker-Cache in Betracht gezogen werden. Für flüchtigen In-Memory-Zustand, der nur einen Re-Render (nicht einen Refresh) überleben muss, sind JavaScript-Variablen oder React-State einfacher."
       },
       {
         "animationStep": 1,
         "heading": "setItem",
-        "text": "`setItem(key, value)` speichert einen String-Wert. Nicht-String-Werte müssen mit `JSON.stringify` serialisiert werden."
+        "text": "`setItem(key, value)` speichert einen String-Wert. Nicht-String-Werte müssen mit `JSON.stringify` serialisiert werden.",
+        "expandedText": "`localStorage.setItem(key, value)` speichert einen **String**. Nicht-String-Werte werden umgewandelt: Zahlen und Booleans werden zu ihren String-Darstellungen, aber Objekte werden zu `\"[object Object]\"`. Immer `JSON.stringify` verwenden, wenn Objekte oder Arrays gespeichert werden, und `JSON.parse` beim Zurücklesen.\n\nAuch Keys sind Strings. Keys mit einem Präfix versehen (`myapp:theme`, `myapp:cart`), um Kollisionen mit Drittanbieter-Scripts oder Bibliotheken zu vermeiden, die ebenfalls `localStorage` verwenden. Der Speicherplatz ist typischerweise 5–10 MB pro Origin (variiert je nach Browser). Das Überschreiten des Kontingents wirft einen `QuotaExceededError`."
       },
       {
         "animationStep": 2,
         "heading": "getItem",
-        "text": "`getItem(key)` ruft den gespeicherten Wert ab. Gibt `null` zurück, wenn der Schlüssel nicht existiert. JSON-Werte mit `JSON.parse` parsen."
+        "text": "`getItem(key)` ruft den gespeicherten Wert ab. Gibt `null` zurück, wenn der Schlüssel nicht existiert. JSON-Werte mit `JSON.parse` parsen.",
+        "expandedText": "`getItem(key)` gibt den gespeicherten Wert als **String** zurück oder `null`, wenn der Key nicht existiert. Sowohl \"Wert nicht gesetzt\" als auch \"Wert wurde explizit auf null gesetzt\" geben `null` zurück – es gibt keine Möglichkeit, sie über die API zu unterscheiden. Ein Sentinel-Wert oder JSON-Kodierung verwenden, um Abwesenheit explizit zu verfolgen.\n\nImmer den Null-Fall behandeln, bevor geparst wird: `const raw = localStorage.getItem(\"user\"); const user = raw ? JSON.parse(raw) : null`. Den Null-Check weglassen und `null` an `JSON.parse` übergeben wirft in manchen Browsern einen `SyntaxError`. Storage-Lesevorgänge in try/catch einhüllen, um beschädigte gespeicherte Daten elegant zu behandeln."
       },
       {
         "animationStep": 3,
         "heading": "localStorage ist persistent",
-        "text": "Daten in `localStorage` überleben Seitenaktualisierungen, Tab-Schließungen und Browser-Neustarts. Sie bleiben bestehen, bis sie explizit gelöscht werden."
+        "text": "Daten in `localStorage` überleben Seitenaktualisierungen, Tab-Schließungen und Browser-Neustarts. Sie bleiben bestehen, bis sie explizit gelöscht werden.",
+        "expandedText": "`localStorage` ist **persistent**: Daten überleben Tab-Schließungen, Browser-Neustarts und Geräteneustarts. Es ist auf den **Origin** beschränkt (Protokoll + Domain + Port) – `localStorage` auf `http://localhost:3000` ist von `https://example.com` getrennt. Diese Abgrenzung bietet Isolation, bedeutet aber auch, dass Daten nicht zwischen Subdomains ohne explizites Kopieren geteilt werden können.\n\nDas `storage`-Ereignis wird auf anderen offenen Tabs ausgelöst (nicht dem aktuellen), wenn sich `localStorage` ändert. Es verwenden, um den Zustand über Tabs zu synchronisieren: Ein Benutzer, der sich in einem Tab ausloggt, kann in anderen Tabs über das Storage-Ereignis einen Logout auslösen. Mit `window.addEventListener(\"storage\", handler)` lauschen."
       },
       {
         "animationStep": 4,
         "heading": "sessionStorage — Tab-scoped",
-        "text": "`sessionStorage` hat dieselbe API wie `localStorage`, wird aber gelöscht, wenn der Tab oder das Fenster geschlossen wird."
+        "text": "`sessionStorage` hat dieselbe API wie `localStorage`, wird aber gelöscht, wenn der Tab oder das Fenster geschlossen wird.",
+        "expandedText": "`sessionStorage` hat genau dieselbe API wie `localStorage`, aber eine andere Lebensdauer. Daten werden **gelöscht, wenn der Tab oder das Browser-Fenster geschlossen wird**. Jeder Tab bekommt sein eigenes isoliertes `sessionStorage` – zwei Tabs auf demselben Origin können keine `sessionStorage`-Daten teilen.\n\n`sessionStorage` für Daten verwenden, die nicht zwischen Browsersitzungen persistieren sollen: Wizard-Formular-Zustand, Einmalig-Fehlermeldungen, temporäre Auswahlen oder Navigations-Verlauf innerhalb eines Flows. `sessionStorage` gegenüber `localStorage` für alles Sicherheitssensible bevorzugen, das nicht persistieren soll, da `localStorage`-Daten von jedem Script auf demselben Origin auf unbestimmte Zeit zugänglich sind."
       },
       {
         "animationStep": 5,
         "heading": "localStorage vs. sessionStorage",
-        "text": "Beide speichern Schlüssel-Wert-String-Paare im Browser, aber `localStorage` bleibt über Browser-Sitzungen hinweg bestehen, während `sessionStorage` beim Schließen des Tabs gelöscht wird. Keines sollte sensible Daten speichern — sie sind für alle Skripte auf der Seite zugänglich."
+        "text": "Beide speichern Schlüssel-Wert-String-Paare im Browser, aber `localStorage` bleibt über Browser-Sitzungen hinweg bestehen, während `sessionStorage` beim Schließen des Tabs gelöscht wird. Keines sollte sensible Daten speichern — sie sind für alle Skripte auf der Seite zugänglich.",
+        "expandedText": "`localStorage` persistiert bis explizit gelöscht; `sessionStorage` wird beim Tab-Schließen gelöscht. `localStorage` wird über alle Tabs und Fenster desselben Origins geteilt; `sessionStorage` ist per Tab isoliert. Beide verwenden dieselbe synchrone String-API.\n\nFür Daten, die dauerhaft über Sitzungen hinweg bestehen sollen (Benutzerpräferenzen, gecachte Inhalte), `localStorage` verwenden. Für Daten, die an eine einzelne Browsersitzung gebunden sind (temporärer Formular-Zustand, einmaliger UI-Zustand), `sessionStorage` verwenden. Für Daten, die mit jeder HTTP-Anfrage gesendet werden sollen (Authentifizierung), Cookies mit den Flags `HttpOnly` und `Secure` verwenden – Web-Storage-Werte werden nicht automatisch an den Server gesendet."
       },
       {
         "animationStep": 6,
         "heading": "setItem / getItem / removeItem / clear",
-        "text": "Die Web Storage API ist ein einfacher Schlüssel-Wert-Speicher. Alle Werte werden als Strings gespeichert — verwende `JSON.stringify` und `JSON.parse`, um Objekte zu speichern und abzurufen."
+        "text": "Die Web Storage API ist ein einfacher Schlüssel-Wert-Speicher. Alle Werte werden als Strings gespeichert — verwende `JSON.stringify` und `JSON.parse`, um Objekte zu speichern und abzurufen.",
+        "expandedText": "Web Storage speichert alles als **Strings**. Das Standardmuster ist, es in ein typisiertes Utility einzuhüllen: eine `storage.get(key, defaultValue)`-Funktion, die liest, JSON parst, Fehler abfängt und den Standard zurückgibt, wenn der Key fehlt oder die Daten beschädigt sind. Mit einer `storage.set(key, value)`-Funktion paaren, die stringifiziert.\n\nDiese Kapselung macht es auch einfach, das Storage-Backend später auszutauschen – beispielsweise von `localStorage` zu `IndexedDB` – ohne alle Aufrufstellen zu ändern. In React-Anwendungen baut ein `useLocalStorage`-Custom-Hook auf diesem Muster auf, um einen zustandsbehafteten Wert zu liefern, der sich bei jeder Aktualisierung automatisch mit `localStorage` synchronisiert."
       },
       {
         "animationStep": 7,
         "heading": "Sicheres Lesen mit Fallback",
-        "text": "`localStorage.getItem` + `JSON.parse` in `try/catch` einwickeln. Einen typisierten Fallback zurückgeben, wenn der Key `null` oder das JSON ungültig ist. Verhindert Abstürze durch beschädigte oder fehlende Daten."
+        "text": "`localStorage.getItem` + `JSON.parse` in `try/catch` einwickeln. Einen typisierten Fallback zurückgeben, wenn der Key `null` oder das JSON ungültig ist. Verhindert Abstürze durch beschädigte oder fehlende Daten.",
+        "expandedText": "`JSON.parse` wirft einen `SyntaxError`, wenn der gespeicherte String kein gültiges JSON ist. Das kann passieren, wenn die Daten ohne `JSON.stringify` gespeichert wurden, wenn ein anderes Script rohen Text in denselben Key geschrieben hat oder wenn der Storage manuell bearbeitet wurde. `JSON.parse` immer in einem `try`/`catch` einwickeln, wenn aus `localStorage` gelesen wird.\n\nEine robuste Lese-Funktion gibt bei jedem Fehler den Standardwert zurück, statt die Exception zu propagieren: `try { return JSON.parse(value) } catch { return defaultValue }`. Den Fehler zu protokollieren hilft bei der Diagnose von Problemen, ohne die Anwendung zu unterbrechen. Beschädigte Storage-Einträge können mit `removeItem(key)` bereinigt oder mit `clear()` vollständig geleert werden."
       },
       {
         "animationStep": 8,
         "heading": "Was NICHT gespeichert werden sollte",
-        "text": "Niemals Passwörter, Auth-Tokens oder Session-IDs in `localStorage` speichern. Jede XSS-Lücke legt alle Daten offen. Für Authentifizierung `httpOnly`-Cookies verwenden — diese sind für JavaScript unzugänglich."
+        "text": "Niemals Passwörter, Auth-Tokens oder Session-IDs in `localStorage` speichern. Jede XSS-Lücke legt alle Daten offen. Für Authentifizierung `httpOnly`-Cookies verwenden — diese sind für JavaScript unzugänglich.",
+        "expandedText": "**Niemals sensible Daten in Web Storage speichern.** Alles in `localStorage` oder `sessionStorage` ist für **jede JavaScript-Datei auf demselben Origin** zugänglich, einschließlich Drittanbieter-Scripts, die über ein CDN geladen werden. Eine einzige XSS-Schwachstelle legt alle gespeicherten Daten sofort offen.\n\nAuthentifizierungs-Tokens gehören in `HttpOnly`-Cookies – diese werden automatisch mit Anfragen gesendet, können aber überhaupt nicht von JavaScript gelesen werden. Web Storage für nicht sensiblen UI-Zustand verwenden: Theme-Präferenz, Spracheinstellung, gecachte öffentliche Inhalte und temporäre Formulardaten. Wenn ein Token im Storage gespeichert werden muss, kurzlebige Tokens verwenden, sie häufig aktualisieren und den Sicherheits-Kompromiss bewusst akzeptieren."
       }
     ],
     "cheatSheet": {
