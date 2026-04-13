@@ -1052,27 +1052,32 @@
       {
         "animationStep": 0,
         "heading": "2013 — JSX & die Komponenten-Idee",
-        "text": "React wurde 2013 von Facebook als Open Source veröffentlicht. Die Kernidee: Benutzeroberflächen aus kleinen, wiederverwendbaren Bausteinen namens Komponenten aufbauen. JSX — eine HTML-ähnliche Syntax in JavaScript — wurde gleichzeitig entwickelt. React konnte von Anfang an auf einem Server laufen, wurde aber hauptsächlich für interaktive SPAs im Browser genutzt."
+        "text": "React wurde 2013 von Facebook als Open Source veröffentlicht. Die Kernidee: Benutzeroberflächen aus kleinen, wiederverwendbaren Bausteinen namens Komponenten aufbauen. JSX — eine HTML-ähnliche Syntax in JavaScript — wurde gleichzeitig entwickelt. React konnte von Anfang an auf einem Server laufen, wurde aber hauptsächlich für interaktive SPAs im Browser genutzt.",
+        "expandedText": "**React** löst das Problem, das DOM mit dem Anwendungszustand synchron zu halten. Vor React riefen Entwickler manuell `document.querySelector` und `element.textContent = ...` für jede Zustandsänderung auf, was zu subtilen Fehlern führte, wenn Zustand und UI auseinanderdrifteten. React führt ein **deklaratives Modell** ein: Man beschreibt, wie die UI bei einem gegebenen Zustand aussehen soll, und React berechnet die minimalen DOM-Mutationen, um diesen Zustand zu erreichen.\n\nDer Motor dahinter ist das **virtuelle DOM** — eine leichtgewichtige JavaScript-Repräsentation des echten DOM-Baums. Wenn sich der Zustand ändert, erstellt React einen neuen virtuellen Baum und **vergleicht** ihn mit dem vorherigen, um dann nur die geänderten Knoten zu aktualisieren. Dieser Reconciliation-Prozess macht React schnell, selbst bei komplexen, häufig aktualisierten UIs."
       },
       {
         "animationStep": 1,
         "heading": "2015 — React überall",
-        "text": "React Native wurde 2015 veröffentlicht und brachte dasselbe Komponentenmodell auf iOS- und Android-Native-Apps. Große Unternehmen — Netflix, Airbnb, Dropbox — adoptierten React. ES6-Klassensyntax wurde der Standard für zustandsbehaftete Komponenten mit Lifecycle-Methoden (componentDidMount, componentDidUpdate, componentWillUnmount)."
+        "text": "React Native wurde 2015 veröffentlicht und brachte dasselbe Komponentenmodell auf iOS- und Android-Native-Apps. Große Unternehmen — Netflix, Airbnb, Dropbox — adoptierten React. ES6-Klassensyntax wurde der Standard für zustandsbehaftete Komponenten mit Lifecycle-Methoden (componentDidMount, componentDidUpdate, componentWillUnmount).",
+        "expandedText": "**React Native** erweiterte das Komponentenmodell über den Webbrowser hinaus auf iOS und Android, indem JSX-Komponenten auf native Plattform-Widgets statt auf DOM-Knoten abgebildet werden. Das gleiche mentale Modell — Komponenten, Props, Zustand — gilt auf jedem Ziel. **ES6-Klassenkomponenten** führten eigentliche Lifecycle-Hooks ein: `componentDidMount` wird nach dem ersten Rendern ausgeführt, `componentDidUpdate` nach nachfolgenden Renders und `componentWillUnmount` bevor die Komponente entfernt wird.\n\nKlassenkomponenten führten auch das Konzept des **lokalen Zustands** ein, der im Konstruktor initialisiert und über `this.setState` aktualisiert wird. Das Muster war ausdrucksstark, litt aber unter der Weitergabe von `this` durch Callback-Funktionen, dem Fehlen einer einfachen Möglichkeit, Logik zwischen Komponenten zu teilen, und den schwer nachvollziehbaren Lifecycle-Methoden, die unzusammenhängenden Code zwangen, in dieselbe Methode zu passen."
       },
       {
         "animationStep": 2,
         "heading": "2019 — Hooks verändern alles",
-        "text": "React 16.8 führte Hooks ein — useState, useEffect und weitere. Hooks ermöglichen es Funktionskomponenten, State und Seiteneffekte ohne Klassensyntax zu verwalten. Sie wurden schnell zum de-facto-Standard. Code wurde kürzer, einfacher zu kombinieren und leichter zu testen. Klassenkomponenten funktionieren noch, werden aber in neuen Projekten kaum noch geschrieben."
+        "text": "React 16.8 führte Hooks ein — useState, useEffect und weitere. Hooks ermöglichen es Funktionskomponenten, State und Seiteneffekte ohne Klassensyntax zu verwalten. Sie wurden schnell zum de-facto-Standard. Code wurde kürzer, einfacher zu kombinieren und leichter zu testen. Klassenkomponenten funktionieren noch, werden aber in neuen Projekten kaum noch geschrieben.",
+        "expandedText": "**Hooks** kamen mit React 16.8 und sind die bedeutendste Änderung am React-Programmiermodell seit der Erstveröffentlichung. `useState` und `useEffect` ersetzen die gesamte Lifecycle-API durch zwei kombinierbare Primitiven. Noch wichtiger: **Custom Hooks** ermöglichen es, zustandsbehaftete Logik in wiederverwendbare Funktionen zu extrahieren, die unabhängig von einer Komponente sind — etwas, das Klassenkomponenten nie sauber konnten.\n\nDie Übernahme war nahezu universell, da Hooks vollständig rückwärtskompatibel sind. Klassenkomponenten funktionieren weiterhin — es gibt keinen Entfernungsplan. Aber neue Codebases und neue Features werden ausschließlich mit Hooks geschrieben. Der entscheidende Unterschied ist die **Kompositionsfähigkeit**: Hooks können andere Hooks aufrufen, sodass komplexes zustandsbehaftetes Verhalten in testbaren, wiederverwendbaren Einheiten zusammengesetzt werden kann."
       },
       {
         "animationStep": 3,
         "heading": "2024 — Zurück zum Server",
-        "text": "React 19 führte Server Components ein. Komponenten können nun auf dem Server laufen, Daten direkt aus einer Datenbank abrufen und HTML + JSON an den Client streamen. Nur \"Client Components\" (mit \"use client\" markiert) senden JavaScript an den Browser. Frameworks wie Next.js 15 und Remix/React Router v7 sind heute der primäre Weg, Server Components zu nutzen."
+        "text": "React 19 führte Server Components ein. Komponenten können nun auf dem Server laufen, Daten direkt aus einer Datenbank abrufen und HTML + JSON an den Client streamen. Nur \"Client Components\" (mit \"use client\" markiert) senden JavaScript an den Browser. Frameworks wie Next.js 15 und Remix/React Router v7 sind heute der primäre Weg, Server Components zu nutzen.",
+        "expandedText": "**React Server Components** (RSC) sind ein neues Primitiv in React 19, bei dem eine Komponente dauerhaft auf dem Server läuft und ihren Quellcode oder ihre Abhängigkeiten nie an den Browser sendet. Dies unterscheidet sich grundlegend vom traditionellen Server-Side-Rendering, bei dem derselbe Komponentencode sowohl auf Server als auch Client ausgeführt wurde — RSCs haben eine harte Grenze, die verhindert, dass serverspezifischer Code in das Client-Bundle gelangt.\n\nDer praktische Einfluss ist dramatisch: Eine Server-Komponente kann eine Datenbankabfrage direkt `await`en, Umgebungsgeheimnisse lesen und schwere Bibliotheken importieren, ohne diese Abhängigkeiten an den Browser zu senden. Next.js App Router baut vollständig auf RSC auf — alle Komponenten sind standardmäßig Server-Komponenten."
       },
       {
         "animationStep": 4,
         "heading": "Heute ein React-Projekt starten",
-        "text": "Zwei Strategien: ein Meta-Framework nutzen (empfohlen für Produktion) oder eigenes Tooling zusammenstellen.\n\nMeta-Frameworks übernehmen Routing, Datenabruf, Bundling und Rendering-Strategie:\n• Next.js 15 — Full-Stack-Web-Apps, dateisystembasiertes Routing, Server Components\n• Remix / React Router v7 — verschachtelte Routen, Server-Mutationen, Progressive Enhancement\n• Expo SDK 52+ — iOS/Android-Native-Apps mit React Native\n\nEigenes Tooling gibt dir volle Kontrolle und vermittelt Grundlagen:\n• Vite (in diesem Kurs verwendet) — sofortiger Dev-Server, Rollup-basierte Builds\n• Parcel — Zero-Config-Bundler\n• Rsbuild + Rspack — Rust-basiert, 5–10× schneller als Webpack"
+        "text": "Zwei Strategien: ein Meta-Framework nutzen (empfohlen für Produktion) oder eigenes Tooling zusammenstellen.\n\nMeta-Frameworks übernehmen Routing, Datenabruf, Bundling und Rendering-Strategie:\n• Next.js 15 — Full-Stack-Web-Apps, dateisystembasiertes Routing, Server Components\n• Remix / React Router v7 — verschachtelte Routen, Server-Mutationen, Progressive Enhancement\n• Expo SDK 52+ — iOS/Android-Native-Apps mit React Native\n\nEigenes Tooling gibt dir volle Kontrolle und vermittelt Grundlagen:\n• Vite (in diesem Kurs verwendet) — sofortiger Dev-Server, Rollup-basierte Builds\n• Parcel — Zero-Config-Bundler\n• Rsbuild + Rspack — Rust-basiert, 5–10× schneller als Webpack",
+        "expandedText": "Die Wahl einer Projektstruktur hängt von einer Frage ab: Braucht man Server-Rendering? Für das **Erlernen der React-Grundlagen** ist `Vite` die beste Wahl — der Dev-Server startet in unter einer Sekunde, und das minimale Scaffolding zeigt genau, welche React-APIs man verwendet. Für **Produktions-Web-Apps** mit SEO, Server-Rendering oder API-Routen empfiehlt sich **Next.js**, das Bundling, Routing und Deployment-Ziele mit sinnvollen Standardwerten behandelt.\n\n**React Router v7** (früher Remix) ist die richtige Wahl für Anwendungen, die feingranulare Kontrolle über Rendering-Strategien pro Route benötigen. Für reine Content-Websites mit minimaler Interaktivität bieten **Astro** oder **Gatsby** noch aggressivere statische Generierungsstrategien. Die React-Community hat sich weitgehend auf den App-Router-Stil des Server-First-Renderings als Standard für neue Produktionsprojekte geeinigt."
       }
     ],
     "cheatSheet": {
@@ -1114,42 +1119,50 @@
       {
         "animationStep": 0,
         "heading": "HTML ist statisches Markup",
-        "text": "Einfaches HTML definiert die Struktur einmalig. Um einen Button wiederzuverwenden, kopierst du das Markup — was schnell schwer zu warten wird."
+        "text": "Einfaches HTML definiert die Struktur einmalig. Um einen Button wiederzuverwenden, kopierst du das Markup — was schnell schwer zu warten wird.",
+        "expandedText": "**Komponentenbasierte Architektur** ist der grundlegende Wandel, den React gegenüber traditionellem HTML-Templating eingeführt hat. In einem Komponentenmodell ist jedes UI-Element eine in sich geschlossene Einheit, die ihre Markup-Struktur, Styles und das Verhalten besitzt. Wenn ein Button geändert werden muss, aktualisiert man eine Datei statt jeder kopierten Instanz zu suchen. Dies entspricht dem Prinzip der **Einzelverantwortung** aus der Softwaretechnik, angewendet auf UI-Elemente.\n\nDer praktische Gewinn zeigt sich bei der Wartung: Eine `Button`-Komponente kapselt ihre Hover-Zustände, Loading-Indikatoren und Klicklogik. Wenn das Designsystem ändert, dass Buttons eine andere Farbe haben sollen, aktualisiert man die Komponente — nicht 200 Stellen im HTML. Tests laufen gegen die Komponente isoliert, ohne die gesamte App zu mounten."
       },
       {
         "animationStep": 1,
         "heading": "JSX — HTML in JavaScript",
-        "text": "`JSX` ermöglicht das Schreiben von HTML-ähnlicher Syntax innerhalb von JavaScript. Es sieht wie HTML aus, wird aber von Babel in `React.createElement`-Aufrufe umgewandelt."
+        "text": "`JSX` ermöglicht das Schreiben von HTML-ähnlicher Syntax innerhalb von JavaScript. Es sieht wie HTML aus, wird aber von Babel in `React.createElement`-Aufrufe umgewandelt.",
+        "expandedText": "**JSX** ist syntaktischer Zucker, der zu `React.createElement`-Aufrufen kompiliert. Der Ausdruck `<h1 className=\"title\">Hello</h1>` ist exakt äquivalent zu `React.createElement(\"h1\", { className: \"title\" }, \"Hello\")`. Das Verständnis dieser Transformation erklärt, warum JSX bestimmte Regeln hat: Es muss ein einziges Wurzelelement geben, `class` wird zu `className`, weil `class` ein reserviertes JavaScript-Schlüsselwort ist, und Ausdrücke müssen in geschweifte Klammern `{}` eingeschlossen werden.\n\nDer Compiler-Schritt macht JSX **sicher** gegenüber XSS-Angriffen: Wenn man einen String in JSX einbettet, wird dieser escaped, bevor er in den DOM eingefügt wird. Eine Variable wie `{userInput}` fügt niemals rohe HTML-Tags ein. Diese sichere Standardeinstellung verhindert eine ganze Klasse von Injection-Angriffen."
       },
       {
         "animationStep": 2,
         "heading": "Eine Komponente ist eine Funktion",
-        "text": "Eine React-Komponente ist eine Funktion, die `props` akzeptiert und `JSX` zurückgibt. Der Funktionsname muss mit einem Großbuchstaben beginnen."
+        "text": "Eine React-Komponente ist eine Funktion, die `props` akzeptiert und `JSX` zurückgibt. Der Funktionsname muss mit einem Großbuchstaben beginnen.",
+        "expandedText": "**Props** sind der primäre Mechanismus zur Weitergabe von Daten zwischen Komponenten. Sie fließen in eine Richtung — vom Elternteil zum Kind — was den Datenfluss leicht nachverfolgbar macht. Eine Komponente deklariert, welche Props sie akzeptiert (normalerweise mit einem TypeScript-Interface), und das Elternteil stellt sie an der Aufrufstelle bereit. Die Kindkomponente ist eine **reine Funktion ihrer Props**: Gleiche Props ergeben immer dasselbe gerenderte Ergebnis.\n\nDiese Unidirektionalität macht Debugging vorhersehbar. Wenn eine Komponente falsch aussieht, gibt es genau einen Ort, an dem die Props herkommen: das Elternteil. Im Gegensatz zu bidirektionalen Datenbindungssystemen, bei denen Daten von überall modifiziert werden können, kann man in React den Wert einer Prop bis zum Root-State zurückverfolgen, indem man den Baum aufwärts geht."
       },
       {
         "animationStep": 3,
         "heading": "Komponenten kombinieren",
-        "text": "Du baust komplexe UIs durch das Verschachteln von Komponenten. Jede Komponente kann andere Komponenten enthalten — und bildet so einen Baum."
+        "text": "Du baust komplexe UIs durch das Verschachteln von Komponenten. Jede Komponente kann andere Komponenten enthalten — und bildet so einen Baum.",
+        "expandedText": "Das **`children`-Prop** ist ein spezielles Prop, das React automatisch mit dem JSX befüllt, das zwischen öffnendem und schließendem Tag einer Komponente platziert wird. Es ist der Mechanismus hinter jeder Wrapper-Komponente: `<Card>`, `<Modal>`, `<Layout>` und `<ErrorBoundary>` verwenden alle `children`, um Inhalte zu rendern, über die sie nichts wissen. Dies wird manchmal als **Inversion of Control**-Muster bezeichnet.\n\nDas `children`-Prop hat den TypeScript-Typ `React.ReactNode`, der Strings, Zahlen, JSX-Elemente, Arrays und `null`/`undefined` umfasst. Wrapper-Komponenten sind typischerweise reiner als man denkt: Sie erhalten unbekannte Kinder und platzieren sie in einer bestimmten Struktur. Eine `<TwoColumnLayout>`-Komponente weiß nicht und sollte nicht wissen, was in jede Spalte gerendert wird — das ist Aufgabe des Aufrufers."
       },
       {
         "animationStep": 4,
         "heading": "Props — Daten fließen nach unten",
-        "text": "`props` sind Argumente, die an Komponenten übergeben werden. Sie fließen nur vom Elternteil zum Kind — niemals umgekehrt."
+        "text": "`props` sind Argumente, die an Komponenten übergeben werden. Sie fließen nur vom Elternteil zum Kind — niemals umgekehrt.",
+        "expandedText": "**Komposition** — das Zusammensetzen kleiner Komponenten zu größeren — ist der Weg, wie React-Anwendungen skalieren. Ein `PageHeader` könnte ein `Logo`, eine `NavBar` und ein `UserMenu` zusammensetzen. Die `NavBar` setzt eine Liste von `NavLink`-Komponenten zusammen. Jede Ebene kennt ihre unmittelbaren Kinder, aber nichts über den breiteren Baum. Dies spiegelt wider, wie Funktionen komponieren: Jede Funktion kennt ihre Argumente, nicht die aufrufende Kette.\n\nKomposition verhindert die **Prop-Drilling**-Falle, bei der Daten durch mehrere Ebenen von Zwischenkomponenten weitergegeben werden, die sie nicht benötigen. Wenn eine Komponente zu viele Props benötigt, um ihre Kinder zu konfigurieren, ist das ein Signal, sie in kleinere Einheiten aufzuteilen oder Kontext für Daten zu verwenden, die viele Kinder benötigen."
       },
       {
         "animationStep": 5,
         "heading": "Events",
-        "text": "React verwendet camelCase-Event-Props (`onClick`, `onChange`, `onSubmit`). Du übergibst eine Funktionsreferenz – keinen Aufruf. React kapselt das native Event in ein SyntheticEvent, das in allen Browsern gleich funktioniert."
+        "text": "React verwendet camelCase-Event-Props (`onClick`, `onChange`, `onSubmit`). Du übergibst eine Funktionsreferenz – keinen Aufruf. React kapselt das native Event in ein SyntheticEvent, das in allen Browsern gleich funktioniert.",
+        "expandedText": "React verwendet **camelCase-Event-Prop-Namen** — `onClick`, `onChange`, `onSubmit`, `onKeyDown` — weil JSX zu JavaScript-Objekten kompiliert, und HTML-Attributnamen mit Bindestrichen wären ungültige JavaScript-Eigenschaftsnamen. Der Event-Handler empfängt ein **synthetisches Event**, das das native Browser-Event normalisiert und Unterschiede zwischen Browsern angleicht. Man kann `e.preventDefault()` und `e.stopPropagation()` wie bei nativen Events aufrufen.\n\nDer entscheidende Unterschied zu HTML-Attributen: React-Event-Handler erhalten eine **Funktion**, keine Zeichenkette. `onClick={handleClick}` — nicht `onClick=\"handleClick()\"`. Anführungszeichen würden die Funktion aufrufen und ihren Rückgabewert zuweisen (wahrscheinlich `undefined`). Um Argumente zu übergeben, verwendet man eine Pfeilfunktion: `onClick={() => handleClick(item.id)}`."
       },
       {
         "animationStep": 6,
         "heading": "Conditional Rendering",
-        "text": "Verwende einfaches JavaScript innerhalb von JSX, um UI bedingt anzuzeigen. Ternary für entweder/oder, && für zeigen-oder-nichts, Early Return für komplexe Verzweigungen."
+        "text": "Verwende einfaches JavaScript innerhalb von JSX, um UI bedingt anzuzeigen. Ternary für entweder/oder, && für zeigen-oder-nichts, Early Return für komplexe Verzweigungen.",
+        "expandedText": "**Bedingtes Rendern** in JSX erfolgt mit JavaScript-Ausdrücken statt Template-Direktiven. Der Kurzschlussoperator `bedingung && <Komponente />` rendert die Komponente, wenn die Bedingung wahr ist — aber Vorsicht: Wenn `bedingung` `0` ist, rendert React die Zahl `0` im DOM statt nichts. Die Verwendung von `!!anzahl && <Komponente />` oder eines ternären Ausdrucks vermeidet dies.\n\nDer **ternäre Ausdruck** `bedingung ? <A /> : <B />` ist der standardmäßige Weg, zwischen zwei Zuständen zu wechseln. Für komplexere Logik mit mehr als zwei Zweigen extrahiert man einen Ausdruck in eine Variable vor dem Return-Statement: `const content = isLoading ? <Skeleton /> : isError ? <Error /> : <Data />`. JSX ist ein Ausdruck — er kann in Variablen gespeichert, von Funktionen zurückgegeben und wie jeder andere JavaScript-Wert übergeben werden."
       },
       {
         "animationStep": 7,
         "heading": "Listen rendern",
-        "text": "Verwende `.map()`, um ein Array in `JSX`-Elemente umzuwandeln. Jedes Element in einer Liste benötigt eine stabile `key`-Prop – React nutzt sie, um Änderungen zu verfolgen. Verwende eine eindeutige ID aus deinen Daten, nie den Array-Index."
+        "text": "Verwende `.map()`, um ein Array in `JSX`-Elemente umzuwandeln. Jedes Element in einer Liste benötigt eine stabile `key`-Prop – React nutzt sie, um Änderungen zu verfolgen. Verwende eine eindeutige ID aus deinen Daten, nie den Array-Index.",
+        "expandedText": "Das Rendern einer Liste in JSX verwendet `Array.prototype.map`, um ein Daten-Array in ein Array von JSX-Elementen zu transformieren. Das **`key`-Prop** ist für jedes Element erforderlich und muss innerhalb der Liste stabil und eindeutig sein — React verwendet es, um zu identifizieren, welche Elemente sich zwischen Renders geändert haben. Ohne Keys rendert React die gesamte Liste bei jeder Änderung neu.\n\nIndex als Key (`key={index}`) ist ein Anti-Pattern, wenn die Liste neu geordnet, gefiltert oder mutiert werden kann, weil der Index nicht stabil bleibt. **Eindeutige IDs** aus den Daten (Datenbankprimärschlüssel, UUID, Slug) sind die richtigen Keys. Das `key`-Prop ist für React intern — es wird nie an die Komponente als Prop übergeben. Wenn man die ID braucht, muss man sie explizit als separates Prop übergeben."
       }
     ],
     "cheatSheet": {
@@ -1198,42 +1211,50 @@
       {
         "animationStep": 0,
         "heading": "State sind dynamische Daten",
-        "text": "State sind Daten, die sich im Laufe der Zeit ändern können und bei Änderungen ein Re-Render der Komponente verursachen. Props kommen von außen; State lebt innen."
+        "text": "State sind Daten, die sich im Laufe der Zeit ändern können und bei Änderungen ein Re-Render der Komponente verursachen. Props kommen von außen; State lebt innen.",
+        "expandedText": "**`useState`** ist der grundlegende Hook zur Verwaltung des lokalen Komponentenzustands. Ohne ihn würden innerhalb einer Funktionskomponente deklarierte Variablen bei jedem Render auf ihren Anfangswert zurückgesetzt, da React die Funktion bei jedem Render frisch aufruft. `useState` speichert den Wert in einem Slot, der zwischen Renders bestehen bleibt, und die **Setter-Funktion** löst ein Re-Render aus, wenn sie aufgerufen wird.\n\nDer Anfangswert von `useState` wird **nur einmal** verwendet — beim ersten Render. Nachfolgende Renders ignorieren das Argument und lesen den aktuellen Zustandswert aus dem Slot. Das Übergeben einer sich ändernden Prop als Anfangszustand — `useState(props.initialCount)` — funktioniert daher nicht wie erwartet: Nach dem ersten Render verfolgt der Zustand Prop-Änderungen nicht mehr."
       },
       {
         "animationStep": 1,
         "heading": "useState",
-        "text": "`useState` ist ein Hook, der den aktuellen Wert und eine Setter-Funktion zurückgibt. React verfolgt den Wert zwischen Renders."
+        "text": "`useState` ist ein Hook, der den aktuellen Wert und eine Setter-Funktion zurückgibt. React verfolgt den Wert zwischen Renders.",
+        "expandedText": "Die **Destrukturierungssyntax** `const [count, setCount] = useState(0)` entpackt das Tupel, das `useState` zurückgibt: `[currentValue, setter]`. Den Setter `set` plus den Variablennamen zu benennen ist eine starke Konvention. Die Tupelstruktur bedeutet, dass beide Werte frei umbenannt werden können, was mehrere unabhängige Zustandsvariablen mit sauberen Namen ermöglicht: `const [name, setName] = useState('')`.\n\nDer **Initialisierungs-Callback** — `useState(() => teureBerechnung())` — wertet den Wert lazy aus, nur beim ersten Render. Dies ist wichtig für teure Berechnungen wie das Parsen von `localStorage`: `useState(() => JSON.parse(localStorage.getItem('cart') ?? '[]'))`. Ohne den Callback würde `JSON.parse` bei jedem Render aufgerufen — das Ergebnis würde ignoriert, aber die Kosten fallen trotzdem an."
       },
       {
         "animationStep": 2,
         "heading": "Den Setter aufrufen löst Re-Render aus",
-        "text": "Wenn du `setCount` aufrufst, plant React ein Re-Render. Die Komponentenfunktion wird erneut mit dem neuen State-Wert ausgeführt."
+        "text": "Wenn du `setCount` aufrufst, plant React ein Re-Render. Die Komponentenfunktion wird erneut mit dem neuen State-Wert ausgeführt.",
+        "expandedText": "React **bündelt mehrere `setState`-Aufrufe** aus demselben Event-Handler in ein einziges Re-Render. Wenn man `setCount(c + 1)` dreimal in einem Click-Handler aufruft, rendert die Komponente einmal mit einem inkrementellen Count — nicht dreimal. Das liegt daran, dass jeder Aufruf denselben veralteten `c`-Wert liest, der im Closure erfasst wurde. Die Lösung ist die **funktionale Aktualisierungsform** `setCount(c => c + 1)`.\n\nSeit React 18 bündelt React Zustandsaktualisierungen aus Promises und `setTimeout`-Callbacks — nicht nur aus React-Event-Handlern — standardmäßig. Dies verbessert die Performance, kann aber unerwartetes Verhalten bei Tests einführen. `flushSync` aus `react-dom` erzwingt synchrones Flushing, wenn ein sofortiges DOM-Update erforderlich ist."
       },
       {
         "animationStep": 3,
         "heading": "State ist lokal für jede Instanz",
-        "text": "Wenn du zwei `<Counter />`-Komponenten renderst, hat jede ihren eigenen unabhängigen `count`. State wird nicht geteilt, außer du hebst ihn hoch."
+        "text": "Wenn du zwei `<Counter />`-Komponenten renderst, hat jede ihren eigenen unabhängigen `count`. State wird nicht geteilt, außer du hebst ihn hoch.",
+        "expandedText": "Die **funktionale Aktualisierungsform** `setState(prev => neuesBerechnen(prev))` garantiert, dass die Funktion immer den **neuesten gereihten Zustand** erhält, nicht den Wert, der durch den umgebenden Closure erfasst wurde. Dies ist besonders wichtig in `useEffect` mit veralteten Abhängigkeiten, in `setTimeout`-Callbacks und in Event-Handlern, die an DOM-Elemente außerhalb der React-Kontrolle gebunden sind.\n\nDie wichtigste Erkenntnis: Wenn man eine Setter-Funktion mit einem Callback aufruft, **stellt React sicher, dass das Argument `prev` der aktuell gebundene Zustand ist**, unabhängig davon, was der Code um den Callback herum sieht. Dies ermöglicht das sichere Schreiben von Closures, die `setState` aufrufen, ohne sich um veraltete Werte zu sorgen."
       },
       {
         "animationStep": 4,
         "heading": "Regeln der Hooks",
-        "text": "Hooks müssen immer auf der obersten Ebene einer Komponente aufgerufen werden — niemals innerhalb von Bedingungen, Schleifen oder verschachtelten Funktionen."
+        "text": "Hooks müssen immer auf der obersten Ebene einer Komponente aufgerufen werden — niemals innerhalb von Bedingungen, Schleifen oder verschachtelten Funktionen.",
+        "expandedText": "**Abgeleiteter Zustand** ist ein Wert, der aus bestehendem Zustand oder Props berechnet werden kann und daher kein eigenes `useState` benötigt. Wenn man `firstName`, `lastName` und `fullName` alle als Zustand speichert, muss man daran denken, `fullName` jedes Mal zu aktualisieren, wenn einer der Namen sich ändert. Leitet man `fullName = firstName + \" \" + lastName` inline während des Renderns ab, ist es immer synchron.\n\n**Abgeleiteter Zustand** hat keine Setter, kann nicht veraltet sein und erfordert kein manuelles Synchronisieren. Wenn man `useState` aufruft, sollte man fragen: Kann dieser Wert aus bestehendem Zustand oder Props berechnet werden? Wenn ja, ist es abgeleiteter Zustand. Die einzige Ausnahme ist, wenn die Berechnung teuer ist — dann kommt `useMemo` ins Spiel."
       },
       {
         "animationStep": 5,
         "heading": "Updater-Funktionen",
-        "text": "Wenn der neue State vom vorherigen Wert abhängt, übergib dem Setter eine Funktion statt eines Wertes. React ruft sie mit dem aktuellsten State auf – selbst wenn mehrere Updates gebatcht wurden."
+        "text": "Wenn der neue State vom vorherigen Wert abhängt, übergib dem Setter eine Funktion statt eines Wertes. React ruft sie mit dem aktuellsten State auf – selbst wenn mehrere Updates gebatcht wurden.",
+        "expandedText": "Das **funktionale Aktualisierungsmuster** ist besonders wichtig, wenn mehrere Zustandsaktualisierungen aus derselben asynchronen Funktion ausgelöst werden. In einem Handler, der `setCount(count + 1)` zweimal aufruft, lesen beide Aufrufe denselben `count` aus dem Closure und planen dieselbe Aktualisierung — das Ergebnis ist eine Erhöhung um eins, nicht zwei. Die Verwendung von `setCount(c => c + 1)` zweimal korrigiert dies.\n\nIn der Praxis ist das funktionale Aktualisierungsmuster immer dann vorzuziehen, wenn die neue Zustandsberechnung vom vorherigen Zustand abhängt. Counter (`c => c + 1`), Toggles (`b => !b`) und Append-Operationen (`arr => [...arr, neuesElement]`) sind gängige Muster. Direktzuweisungen wie `setState(wert)` sind in Ordnung, wenn der neue Wert unabhängig vom vorherigen Zustand ist."
       },
       {
         "animationStep": 6,
         "heading": "State mit Objekten & Arrays",
-        "text": "State niemals direkt mutieren – React erkennt die Änderung nicht. Erstelle immer ein neues Objekt oder Array mit dem Spread-Operator. Für Objekte: spreaden und überschreiben. Für Arrays: map, filter oder spread verwenden."
+        "text": "State niemals direkt mutieren – React erkennt die Änderung nicht. Erstelle immer ein neues Objekt oder Array mit dem Spread-Operator. Für Objekte: spreaden und überschreiben. Für Arrays: map, filter oder spread verwenden.",
+        "expandedText": "React erkennt **keine Änderungen an mutierten Objekten oder Arrays**, weil die Mutation dieselbe Referenz behält. `state.items.push(neuesElement)` gefolgt von `setState(state)` übergibt dieselbe Array-Referenz, sodass React keine Änderung sieht und das Re-Render überspringt. Die Lösung ist immer eine **neue Referenz** zu erstellen: `setState({ ...state, items: [...state.items, neuesElement] })`.\n\nDiese Immutabilitätsanforderung ist beabsichtigt. Sie ermöglicht React, vorherigen und nächsten Zustand mit einem günstigen Referenzgleichheitsvergleich (`===`) statt einem tiefen Vergleich zu vergleichen. Bibliotheken wie **Immer** machen unveränderliche Updates ergonomisch, indem man mutierende Code in einem `produce()`-Callback schreibt, den Immer in ein unveränderliches Update umwandelt. Immer ist in Redux Toolkit enthalten."
       },
       {
         "animationStep": 7,
         "heading": "State hochheben",
-        "text": "Geschwisterkomponenten können State nicht direkt teilen. Hebe den State zum nächsten gemeinsamen Elternteil hoch. Der Elternteil besitzt den State und gibt ihn über Props weiter – zusammen mit dem Setter, damit Kinder Updates auslösen können."
+        "text": "Geschwisterkomponenten können State nicht direkt teilen. Hebe den State zum nächsten gemeinsamen Elternteil hoch. Der Elternteil besitzt den State und gibt ihn über Props weiter – zusammen mit dem Setter, damit Kinder Updates auslösen können.",
+        "expandedText": "**Zustand hochheben** ist das Muster für das Teilen von Zustand zwischen Geschwisterkomponenten. Wenn zwei Kinder denselben Wert lesen müssen, wird der Zustand zum nächsten gemeinsamen Vorfahren verschoben. Der Vorfahre hält den Zustand und gibt ihn als Props nach unten weiter. Wenn ein Kind den geteilten Zustand aktualisieren muss, gibt der Vorfahre die Setter-Funktion als Prop weiter.\n\nZustand hochheben ist nicht kostenlos — jeder `setState`-Aufruf am Vorfahren rendert den Vorfahren und alle seine Kinder neu. Für weit geteilten Zustand, der sich häufig aktualisiert, kann dies ein Performance-Problem werden. Die **Context-API** löst das Transport-Problem (Vermeidung von Prop-Drilling), hilft aber nicht bei Re-Renders. **Zustand** oder **Jotai** bieten Atom-basierten Zustand außerhalb des Komponentenbaums, wodurch Komponenten nur den Zustand abonnieren können, der sie betrifft."
       }
     ],
     "cheatSheet": {
@@ -1278,37 +1299,44 @@
       {
         "animationStep": 0,
         "heading": "Seiteneffekte passieren nach dem Render",
-        "text": "Ein Seiteneffekt ist jede Arbeit, die etwas außerhalb der Komponente beeinflusst: Netzwerkanfragen, Timer, DOM-Manipulation. `useEffect` führt diese nach dem Render aus."
+        "text": "Ein Seiteneffekt ist jede Arbeit, die etwas außerhalb der Komponente beeinflusst: Netzwerkanfragen, Timer, DOM-Manipulation. `useEffect` führt diese nach dem Render aus.",
+        "expandedText": "**`useEffect`** ist der Hook für die Synchronisation einer React-Komponente mit einem externen System — dem Netzwerk, dem DOM, einem Timer, einem WebSocket oder einem anderen Seiteneffekt. React hält die Render-Funktion rein: Sie beschreibt die UI anhand des aktuellen Zustands. Alles, was außerhalb der Komponente greift — Lesen von einem Server, Schreiben ins DOM, Abonnieren von Ereignissen — gehört in einen Effekt.\n\nDer kritische Unterschied zwischen einem Seiteneffekt und einer Render-Berechnung: **Seiteneffekte sind nicht idempotent**. Das Setzen von `document.title` beim ersten und zweiten Render produziert dasselbe Ergebnis. Das Ausführen eines `fetch(url)` zweimal erzeugt zwei Netzwerkanfragen — ein grundlegend anderes Verhalten. React ruft den Render-Body in Strict Mode zweimal auf, um zu entdecken, ob Code fälschlicherweise Seiteneffekte im Render platziert."
       },
       {
         "animationStep": 1,
         "heading": "Leere deps — einmalig ausführen",
-        "text": "Ein leeres Array `[]` als zweites Argument zu übergeben teilt React mit, den Effect nur einmal auszuführen — wenn die Komponente zum ersten Mal mountet."
+        "text": "Ein leeres Array `[]` als zweites Argument zu übergeben teilt React mit, den Effect nur einmal auszuführen — wenn die Komponente zum ersten Mal mountet.",
+        "expandedText": "Das **Abhängigkeits-Array** ist das zweite Argument von `useEffect` und steuert, wann der Effekt erneut ausgeführt wird. Ein **leeres Array `[]`** bedeutet, dass der Effekt einmal nach dem ersten Render ausgeführt wird. Ein **nicht-leeres Array** wie `[userId]` bedeutet, dass der Effekt erneut ausgeführt wird, wann immer sich `userId` ändert. **Kein zweites Argument** bedeutet: nach jedem Render ausführen — selten das, was man will.\n\n**Der häufigste Bug**: Das Abhängigkeits-Array zu lügen — eine Variable zu verwenden, ohne sie aufzulisten. React's ESLint-Regel `exhaustive-deps` erkennt diese Diskrepanz und sollte aktiviert werden. Wenn es wie ein Kampf erscheint, Abhängigkeiten zu entfernen, ist es ein Zeichen, die Logik umzustrukturieren: entweder den Wert aus dem Closure herausbewegen oder das Muster in Frage stellen."
       },
       {
         "animationStep": 2,
         "heading": "Deps-Array — bei Änderung erneut ausführen",
-        "text": "Liste die Werte auf, von denen der Effect abhängt. React führt den Effect neu aus, wenn sich einer dieser Werte ändert."
+        "text": "Liste die Werte auf, von denen der Effect abhängt. React führt den Effect neu aus, wenn sich einer dieser Werte ändert.",
+        "expandedText": "Die **Cleanup-Funktion** wird aus dem Effekt zurückgegeben und läuft, bevor der Effekt das nächste Mal ausgeführt wird und wenn die Komponente ausgehängt wird. Ohne Cleanup hinterlässt eine Komponente, die einen WebSocket abonniert und dann ausgehängt wird, ein aktives Abonnement, das Zustandsaktualisierungen an eine tote Komponente sendet.\n\nDas Cleanup-Muster passt zu jedem Ressource-Akquisitions-Muster: Abonnements, Event-Listener, Timer und Animationsframes benötigen alle eine entsprechende Bereinigung. `clearTimeout(timerId)`, `subscription.unsubscribe()`, `element.removeEventListener(...)` — die Cleanup-Funktion führt den Teardown durch. Ohne sie leckt jede Re-Render-Iteration Ressourcen, die sich im Laufe der Zeit ansammeln."
       },
       {
         "animationStep": 3,
         "heading": "Cleanup-Funktion",
-        "text": "Gib eine Funktion von `useEffect` zurück, um vor dem nächsten Ausführen oder beim Unmount aufzuräumen. Unerlässlich für Timer, Abonnements und Event-Listener."
+        "text": "Gib eine Funktion von `useEffect` zurück, um vor dem nächsten Ausführen oder beim Unmount aufzuräumen. Unerlässlich für Timer, Abonnements und Event-Listener.",
+        "expandedText": "**Datenabruf innerhalb von `useEffect`** ist ein gängiges Muster, hat aber bekannte Einschränkungen. Der Effekt wird nach dem ersten Render ausgeführt, daher gibt es immer ein Render ohne Daten, bevor der Fetch abgeschlossen ist — man muss den anfänglichen `undefined`- oder `null`-Zustand explizit behandeln. Das Muster erfordert drei Zustandsvariablen: `data`, `loading` und `error`.\n\nDie Haupteinschränkungen von `useEffect`-Datenabruf: keine Server-Seitigkeit, kein Caching zwischen Navigationen, keine Deduplication wenn mehrere Komponenten dieselben Daten anfordern, und keine Hintergrund-Aktualisierung. Bibliotheken wie TanStack Query oder SWR beheben alle diese Einschränkungen und sind die empfohlene Lösung für Produktionsanwendungen."
       },
       {
         "animationStep": 4,
         "heading": "Häufige Anwendungsfälle",
-        "text": "`useEffect` ist für alles, was außerhalb des Render-Zyklus passieren muss: Daten fetchen, Abonnements, DOM-Manipulation, Analytics."
+        "text": "`useEffect` ist für alles, was außerhalb des Render-Zyklus passieren muss: Daten fetchen, Abonnements, DOM-Manipulation, Analytics.",
+        "expandedText": "Ein **veralteter Closure** tritt auf, wenn der Effekt einen Wert aus einem vorherigen Render erfasst und ihn verwendet, auch nachdem sich der Wert geändert hat. Da JavaScript-Closures die Variablen im Gültigkeitsbereich zum Zeitpunkt ihrer Erstellung schließen, sieht ein Effekt, der erstellt wurde, als `count` 0 war, `count` immer als 0, es sei denn, `count` ist im Abhängigkeits-Array.\n\nDie Regel der erschöpfenden Abhängigkeiten schützt vor veralteten Closures: Wenn der Effekt auf `count` zugreift, muss `count` im Array sein. Wenn man ein veraltetes Closure bemerkt — ein Effekt liest offensichtlich den falschen Wert — ist fast immer eine fehlende Abhängigkeit der Grund. Das Herausbewegen unveränderlicher Werte und Funktionen aus dem Effekt (oder das Memoieren mit `useCallback`) ist die andere Technik."
       },
       {
         "animationStep": 5,
         "heading": "Fetching & Race Conditions",
-        "text": "Beim Fetching innerhalb von useEffect kann eine schnelle zweite Anfrage vor einer langsamen ersten abgeschlossen werden – und veraltete Daten gewinnen. Lösung: Setze ein ignore-Flag in der Cleanup-Funktion, damit nur die neueste Anfrage den State aktualisiert."
+        "text": "Beim Fetching innerhalb von useEffect kann eine schnelle zweite Anfrage vor einer langsamen ersten abgeschlossen werden – und veraltete Daten gewinnen. Lösung: Setze ein ignore-Flag in der Cleanup-Funktion, damit nur die neueste Anfrage den State aktualisiert.",
+        "expandedText": "Die **Race Condition** in asynchronen Effekten tritt auf, wenn zwei Anfragen gleichzeitig unterwegs sind und die erste Anfrage nach der zweiten aufgelöst wird. Die UI zeigt dann veraltete Daten. Die klassische Lösung ist ein **Cleanup-Flag**: `let cancelled = false` innerhalb des Effekts deklarieren, `if (cancelled) return` nach jedem `await` prüfen und `cancelled = true` in der Cleanup-Funktion setzen.\n\nDie `AbortController`-API ermöglicht das Abbrechen des Fetch selbst, nicht nur das Ignorieren des Ergebnisses — dies verhindert, dass unnötige Netzwerkanfragen abgeschlossen werden, wenn der Benutzer schnell navigiert. `const controller = new AbortController(); fetch(url, { signal: controller.signal })` — die Cleanup-Funktion ruft `controller.abort()` auf."
       },
       {
         "animationStep": 6,
         "heading": "Wann useEffect NICHT verwendet werden sollte",
-        "text": "`useEffect` ist zum Synchronisieren mit externen Systemen gedacht. Vermeide es für: (1) abgeleitete Werte – berechne sie stattdessen beim Rendern; (2) event-gesteuerte Seiteneffekte – platziere sie im Handler; (3) verkettete State-Updates – sie verursachen doppelte Renders."
+        "text": "`useEffect` ist zum Synchronisieren mit externen Systemen gedacht. Vermeide es für: (1) abgeleitete Werte – berechne sie stattdessen beim Rendern; (2) event-gesteuerte Seiteneffekte – platziere sie im Handler; (3) verkettete State-Updates – sie verursachen doppelte Renders.",
+        "expandedText": "**Wann `useEffect` nicht verwendet werden sollte** ist genauso wichtig wie zu wissen, wann es zu verwenden ist. Die React-Dokumentation listet explizit Fälle auf, in denen `useEffect` das falsche Werkzeug ist: Daten für das Rendern transformieren (während des Renderns berechnen oder `useMemo` verwenden), Benutzerereignisse behandeln (Event-Handler verwenden, nicht Effekte), mit einer anderen React-Zustandsvariable synchronisieren (sie während des Renderns ableiten).\n\nÜbermäßige `useEffect`-Verwendung ist ein Zeichen von Überarbeitung. Ein häufiges Anti-Pattern: einen Effekt verwenden, um `setFilteredList(list.filter(item => item.active))` aufzurufen, wenn `list` oder `filter` sich ändern. Das ist abgeleiteter Zustand — man berechnet einfach `const filteredList = list.filter(item => item.active)` direkt im Render. Keine veralteten Werte, kein zweites Render, kein Race-Condition-Risiko."
       }
     ],
     "cheatSheet": {
@@ -1353,37 +1381,44 @@
       {
         "animationStep": 0,
         "heading": "Client-seitiges Routing",
-        "text": "Traditionelle Websites laden bei jeder Navigation eine neue HTML-Seite. React Router fängt die URL-Änderung ab und tauscht Komponenten aus — kein vollständiger Seitenneuladen."
+        "text": "Traditionelle Websites laden bei jeder Navigation eine neue HTML-Seite. React Router fängt die URL-Änderung ab und tauscht Komponenten aus — kein vollständiger Seitenneuladen.",
+        "expandedText": "**Client-seitiges Routing** funktioniert, indem URL-Änderungen abgefangen und der Komponentenbaum ohne einen Roundtrip zum Server neu gerendert werden. React Router verwendet die **History API** — insbesondere `pushState` und `replaceState` — um die URL-Leiste zu aktualisieren und den Browser-History-Stack zu verwalten, ohne einen Seitenneuladen auszulösen. Das Ergebnis ist eine Navigation, die sich sofortig anfühlt.\n\nDer Browser-History-Stack bleibt wie bei normaler Navigation erhalten: Der Zurück-Button funktioniert, der Vorwärts-Button funktioniert und das Aktualisieren der Seite lädt die aktuelle URL neu. Der Vorbehalt: `pushState` funktioniert nur auf demselben Ursprung, und der Server muss `index.html` für alle Pfade bereitstellen, da Benutzer direkt auf tiefe Links gelangen können."
       },
       {
         "animationStep": 1,
         "heading": "BrowserRouter umhüllt deine App",
-        "text": "BrowserRouter stellt Routing-Kontext für die gesamte App bereit. Es verwendet die HTML5-History-API, um die URL mit der UI synchron zu halten."
+        "text": "BrowserRouter stellt Routing-Kontext für die gesamte App bereit. Es verwendet die HTML5-History-API, um die URL mit der UI synchron zu halten.",
+        "expandedText": "`BrowserRouter` muss genau einmal an der Root-Ebene die gesamte Anwendung umhüllen. Er stellt den Routing-Kontext bereit, den alle anderen React-Router-Hooks und -Komponenten verbrauchen. Ein häufiger Fehler ist das Rendern zweier `BrowserRouter`-Komponenten, was zwei separate Routing-Kontexte erstellt. Hooks wie `useNavigate` lesen vom nächsten Eltern-Router; wenn zwei vorhanden sind, lesen sie vom falschen.\n\nFür Tests ist `MemoryRouter` die richtige Wahl — er verwendet einen internen Array als History-Stack statt dem Browser-`window.history`, wodurch Tests ohne Browser-Umgebung laufen können. `StaticRouter` ist für Server-seitiges Rendering gedacht, wo keine echte Navigation stattfindet."
       },
       {
         "animationStep": 2,
         "heading": "Routes und Route",
-        "text": "Routes wählt die erste passende Route aus und rendert ihr Element. Jede Route ordnet einem URL-Pfad eine Komponente zu."
+        "text": "Routes wählt die erste passende Route aus und rendert ihr Element. Jede Route ordnet einem URL-Pfad eine Komponente zu.",
+        "expandedText": "In React Router v6 verwendet `Routes` einen **spezifitätsbasierten Matching-Algorithmus**, der Routen automatisch nach Spezifität einordnet — statische Segmente schlagen dynamische, längere Pfade schlagen kürzere. Das bedeutet, dass die Reihenfolge der Routen für die Korrektheit meist keine Rolle spielt, anders als in v5, wo der erste Treffer immer gewann.\n\nDas `element`-Prop akzeptiert ein JSX-Element — nicht einen Komponentenverweis. `<Route path=\"/about\" element={<About />} />` — nicht `element={About}`. Dieser Unterschied ist wichtig: Mit JSX können Props direkt an die Komponente weitergegeben werden `element={<About title=\"Über uns\" />}`, ohne einen Router-Wrapper-Mechanismus zu benötigen."
       },
       {
         "animationStep": 3,
         "heading": "Link — ohne Neuladen navigieren",
-        "text": "Verwende `Link` statt `<a href>`. `Link` aktualisiert die URL und rendert die passende Komponente ohne vollständiges Seitenneuladen."
+        "text": "Verwende `Link` statt `<a href>`. `Link` aktualisiert die URL und rendert die passende Komponente ohne vollständiges Seitenneuladen.",
+        "expandedText": "`Link` rendert ein Standard-`<a>`-Element im DOM, was bedeutet, dass es alle eingebauten Browser-Verhaltensweisen erbt: Tastaturfokus, Vorleseprogramm-Ankündigungen, Rechtsklick zum Öffnen in einem neuen Tab und Cmd+Click auf macOS. React Router fängt das Click-Event ab und ruft `history.pushState` auf, um die Standard-Ganzseitennavigation zu verhindern.\n\n`NavLink` erweitert `Link` mit aktiver Zustandsverwaltung: Es wendet automatisch eine `active`-Klasse an, wenn der `href` mit dem aktuellen Pfad übereinstimmt. Dies ist die idiomatische Methode für Navigationsmenüs. Das `end`-Prop auf einem `NavLink` stellt sicher, dass `/dashboard` nur als aktiv gilt, wenn der Pfad exakt übereinstimmt — nicht wenn er mit `/dashboard/settings` übereinstimmt."
       },
       {
         "animationStep": 4,
         "heading": "useParams — dynamische Segmente",
-        "text": "URL-Segmente mit `:` als Präfix sind dynamisch. `useParams` gibt ein Objekt mit den gematchten Werten zurück."
+        "text": "URL-Segmente mit `:` als Präfix sind dynamisch. `useParams` gibt ein Objekt mit den gematchten Werten zurück.",
+        "expandedText": "`useParams` gibt ein Objekt der **dynamischen Segment-Werte** aus der aktuellen URL zurück. Alle Werte sind Strings — React Router kann nicht wissen, ob `:id` eine Zahl oder eine UUID sein soll. Ein häufiger Bug ist das direkte Vergleichen eines Params mit einer Zahl: `userId === 42` ist immer falsch, weil `\"42\" !== 42`. Numerische Params müssen immer mit `parseInt` oder `Number` geparst und validiert werden.\n\nBei TypeScript-Projekten liefert `useParams` `{ [key: string]: string | undefined }` — alle Felder sind potenziell `undefined`. Der richtige Ansatz: Defensiv destrukturieren und sicherstellen, dass der Param vor der Verwendung existiert. Generische Route-Typen können mit einer Typ-Parameter-Erweiterung verbessert werden."
       },
       {
         "animationStep": 5,
         "heading": "Layout-Routen & Outlet",
-        "text": "Verschachtle Kind-Routen innerhalb einer Eltern-Route, die gemeinsame UI rendert (Navbar, Sidebar). Die Elternkomponente verwendet `<Outlet />` als Platzhalter – React Router rendert die passende Kind-Route dort."
+        "text": "Verschachtle Kind-Routen innerhalb einer Eltern-Route, die gemeinsame UI rendert (Navbar, Sidebar). Die Elternkomponente verwendet `<Outlet />` als Platzhalter – React Router rendert die passende Kind-Route dort.",
+        "expandedText": "`Outlet` ist der Platzhalter innerhalb einer **Layout-Route**, wo übereinstimmende Kind-Routen gerendert werden. Ohne `Outlet` rendert das Elternteil-Layout, aber der Kinder-Seiteninhalt erscheint nie — dieser stille Fehler (korrekte URL, leerer Inhaltsbereich) ist einer der häufigsten React-Router-Bugs. Die Elternlayout-Komponente weiß, wo der Kinderinhalt hingehört, über `<Outlet />`.\n\nLayout-Routen ermöglichen das Teilen von Navigationsleisten, Seitenleisten, Breadcrumbs und anderen UI-Elementen ohne Wiederholung in jeder Seitenkomponente. Der Vorteil gegenüber dem manuellen Importieren von Layout-Komponenten in jede Seite: Das Layout mountiert **einmal** und verwaltet seinen eigenen Zustand über Navigationen zwischen seinen Kindern."
       },
       {
         "animationStep": 6,
         "heading": "Index-Routen & useNavigate",
-        "text": "Eine Index-Route ist das Standard-Kind – sie rendert, wenn der Elternpfad genau übereinstimmt. `useNavigate` ermöglicht programmatische Navigation: nach dem Absenden eines Formulars, Login oder anderen Events."
+        "text": "Eine Index-Route ist das Standard-Kind – sie rendert, wenn der Elternpfad genau übereinstimmt. `useNavigate` ermöglicht programmatische Navigation: nach dem Absenden eines Formulars, Login oder anderen Events.",
+        "expandedText": "Eine **Index-Route** (`<Route index />`) ist das Standard-Kind, das gerendert wird, wenn der Elternpfad genau übereinstimmt, aber keine weiteren Segmente vorhanden sind. Ohne eine Index-Route rendert die Navigation zum Elternpfad das Eltern-Layout mit einem leeren `Outlet`. Index-Routen lösen das Problem: 'Was wird im Hauptbereich angezeigt, wenn die Seitenleiste sichtbar ist, aber nichts ausgewählt ist'.\n\n`useNavigate` gibt eine Funktion zurück, die eine Navigation programmgesteuert auslöst. `navigate('/path')` führt eine Vorwärtsnavigation durch; `navigate(-1)` geht einen Schritt zurück. Der State-Parameter `navigate('/path', { state: { from: location } })` übergibt Daten an die Zielroute, die über `useLocation().state` zugänglich sind — nützlich für Weiterleitungsflows nach der Anmeldung."
       }
     ],
     "cheatSheet": {
@@ -1436,32 +1471,38 @@
       {
         "animationStep": 0,
         "heading": "Prop Drilling",
-        "text": "Prop Drilling bedeutet, Daten durch Zwischenkomponenten weiterzureichen, die sie gar nicht brauchen – nur damit ein tief verschachteltes Kind sie erhält. Mit wachsenden Bäumen muss jede Schicht Props deklarieren und weiterleiten, die sie selbst nicht verwendet."
+        "text": "Prop Drilling bedeutet, Daten durch Zwischenkomponenten weiterzureichen, die sie gar nicht brauchen – nur damit ein tief verschachteltes Kind sie erhält. Mit wachsenden Bäumen muss jede Schicht Props deklarieren und weiterleiten, die sie selbst nicht verwendet.",
+        "expandedText": "**Prop-Drilling** wird zu einem Problem, wenn Zwischenkomponenten als Datenrelais fungieren — sie empfangen Props nur, um sie an ihre Kinder weiterzugeben, ohne die Daten selbst zu verwenden. Jede Zwischenkomponente hat nun eine unnötige Abhängigkeit von der Form dieser Daten, was bedeutet, dass das Ändern der Datenstruktur Updates über mehrere Dateien erfordert. Context bietet einen Kanal, über den Daten den Baum hinab übertragen werden können.\n\nDer häufige Fehler ist, Context zu früh zu verwenden. Prop-Drilling über zwei oder drei Ebenen ist oft akzeptabel und explizit. Context fügt implizite Abhängigkeiten hinzu — eine Komponente konsumiert Daten aus einem Kontext, der möglicherweise mehrere Ebenen oben ist. **Komposition** — das Hochheben von Komponenten und die direkte Übergabe von JSX — ist oft die bessere erste Lösung, bevor Context eingeführt wird."
       },
       {
         "animationStep": 1,
         "heading": "createContext & Provider",
-        "text": "createContext() erstellt das Context-Objekt. Umschließe den Teilbaum, der Zugriff benötigt, mit <XContext.Provider value={...}>. Alle Komponenten darin können diesen Wert direkt lesen – egal wie tief sie verschachtelt sind."
+        "text": "createContext() erstellt das Context-Objekt. Umschließe den Teilbaum, der Zugriff benötigt, mit <XContext.Provider value={...}>. Alle Komponenten darin können diesen Wert direkt lesen – egal wie tief sie verschachtelt sind.",
+        "expandedText": "`createContext` nimmt einen **Standardwert**, der verwendet wird, wenn eine Komponente `useContext` aufruft, aber keinen `Provider`-Vorfahren im Baum hat. Dies ist nicht dasselbe wie der Anfangszustand des Providers — es ist der Fallback für Komponenten, die vollständig außerhalb eines Providers gerendert werden. Ein gängiges Muster für typisierte Kontexte ist das Übergeben von `null` als Standard.\n\nDas `Provider`-Komponent-Muster schließt den Kontext-Wert und die Update-Logik in eine einzige Komponente ein: `const UserProvider = ({ children }) => { const [user, setUser] = useState(null); return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>; }`. Dieses Muster hält die Provider-Logik zusammengehörig und ermöglicht Tests durch einfaches Einwickeln."
       },
       {
         "animationStep": 2,
         "heading": "useContext",
-        "text": "useContext(MyContext) liest den nächsten Provider darüber im Baum und gibt seinen Wert zurück. Die Komponente rendert automatisch neu, wenn sich der Wert ändert. Jede Komponente kann konsumieren – kein Prop-Passing erforderlich."
+        "text": "useContext(MyContext) liest den nächsten Provider darüber im Baum und gibt seinen Wert zurück. Die Komponente rendert automatisch neu, wenn sich der Wert ändert. Jede Komponente kann konsumieren – kein Prop-Passing erforderlich.",
+        "expandedText": "Jede Komponente, die `useContext` aufruft, **wird neu gerendert, wenn sich der Kontextwert durch Referenz ändert**. Ein häufiger Performance-Fehler ist das direkte Übergeben eines Objektliterals als Wert: `<UserContext.Provider value={{ user, logout }}>`. Dadurch wird bei jedem Render des Provider-Elternteils eine neue Objekt-Referenz erstellt, was dazu führt, dass alle Consumer neu gerendert werden.\n\nDie Lösung ist das Memoieren des Kontextwerts mit `useMemo`: `const value = useMemo(() => ({ user, logout }), [user, logout])`. Jetzt wird nur dann ein neues Objekt erstellt, wenn sich `user` oder `logout` tatsächlich ändern. Alternativ kann man den Kontext aufteilen: Einen für den Benutzer-Objekt-Wert und einen für die Aktionen (da sich Aktionen nie ändern, können Consumer der Aktionskontexts nie unnötig neu rendern)."
       },
       {
         "animationStep": 3,
         "heading": "Wann Context verwenden",
-        "text": "Context eignet sich am besten für Daten, die wirklich global sind oder von vielen Komponenten geteilt werden. Vermeide ihn für häufig ändernde Daten – jede Context-Wert-Änderung rendert alle Konsumenten neu."
+        "text": "Context eignet sich am besten für Daten, die wirklich global sind oder von vielen Komponenten geteilt werden. Vermeide ihn für häufig ändernde Daten – jede Context-Wert-Änderung rendert alle Konsumenten neu.",
+        "expandedText": "Kontext passt natürlich zu `useReducer` für ein **Zustandsverwaltungsmuster**, das bei mittlerer Komplexität skaliert. Der Reducer behandelt Zustandsübergänge; der Kontext verteilt Zustand und Dispatch an den Teilbaum. Der Provider kombiniert sie: `const [state, dispatch] = useReducer(reducer, initialState)` und stellt `{ state, dispatch }` für Consumers bereit.\n\nDieses Muster skaliert gut bis zu moderater App-Komplexität. Jenseits dieser Grenze werden externe Bibliotheken wie Zustand, Jotai oder Redux Toolkit überlegt. Der Grund ist nicht Performance — es ist **Entwicklererfahrung**: Debugging-Tools, Middleware, DevTools-Integration und geteilte Bibliotheksmuster, die in der Community verbreitet sind."
       },
       {
         "animationStep": 4,
         "heading": "useReducer – was & warum",
-        "text": "Wenn useState mehrere zusammenhängende Felder verwaltet – z. B. einen Warenkorb mit Items, Gesamtpreis und Anzahl – muss jedes Update alle konsistent anfassen. useReducer zentralisiert alle Übergänge in einer reinen Funktion: (state, action) => newState."
+        "text": "Wenn useState mehrere zusammenhängende Felder verwaltet – z. B. einen Warenkorb mit Items, Gesamtpreis und Anzahl – muss jedes Update alle konsistent anfassen. useReducer zentralisiert alle Übergänge in einer reinen Funktion: (state, action) => newState.",
+        "expandedText": "`useReducer` ist besser als `useState`, wenn **mehrere Zustandsfelder zusammen aktualisiert werden** oder wenn **der nächste Zustand auf dem vorherigen in nicht-trivialer Weise abhängt**. Ein Formular, das `{ name, email, isSubmitting, error }` verfolgt und bei Erfolg alle Felder zurücksetzen muss, ist ein perfekter Anwendungsfall. Der Reducer erhält den vollständigen Zustand und die Aktion und gibt den vollständigen nächsten Zustand zurück.\n\nDer Reducer ist eine **reine Funktion**: `(state, action) => newState`. Keine Seiteneffekte, keine API-Aufrufe, kein Mutieren des Zustands. Diese Reinheit macht Reducer einfach zu testen — man ruft einfach die Funktion mit Eingaben auf und überprüft die Ausgabe, ohne irgendwelche Mocks einzurichten."
       },
       {
         "animationStep": 5,
         "heading": "dispatch & Actions",
-        "text": "useReducer gibt [state, dispatch] zurück. Actions sind einfache Objekte mit einem type-String und optionalem payload. Der Reducer switcht auf type und gibt ein neues State-Objekt zurück – den bestehenden State niemals direkt mutieren."
+        "text": "useReducer gibt [state, dispatch] zurück. Actions sind einfache Objekte mit einem type-String und optionalem payload. Der Reducer switcht auf type und gibt ein neues State-Objekt zurück – den bestehenden State niemals direkt mutieren.",
+        "expandedText": "Das Zurückgeben eines **neuen Zustandsobjekts** aus dem Reducer ist wichtig, damit React Änderungen erkennt. Wenn man den bestehenden Zustand mutiert und dieselbe Referenz zurückgibt, sieht React, dass das Zustandsobjekt sich nicht geändert hat und überspringt das Re-Render. Immer den vorhandenen Zustand spreaden und die geänderten Felder überschreiben: `return { ...state, count: state.count + 1 }`.\n\nFür komplexe verschachtelte Zustandsstrukturen löst **Immer** das Spreading-Problem: Man schreibt mutierende Logik (`draft.user.address.city = 'Berlin'`) innerhalb eines `produce`-Aufrufs, und Immer erstellt ein korrekt unveränderlich aktualisiertes Objekt. Dies macht Reducer für komplexe Zustands-Shapes bedeutend lesbarer. Redux Toolkit verwendet Immer intern."
       },
       {
         "animationStep": 6,
@@ -2824,32 +2865,38 @@
       {
         "animationStep": 0,
         "heading": "Was ist Next.js?",
-        "text": "Next.js ist ein React-Framework für Produktionsanwendungen mit integriertem Routing, Datenabruf, Code-Splitting und Deployment. Mit React 19 und React Server Components (RSC) verfolgt es ein Fullstack-Modell: Komponenten laufen dauerhaft auf dem Server, rufen Daten ohne `useEffect` ab und können Datenbanken direkt abfragen — im selben Komponentenbaum wie die clientseitige UI."
+        "text": "Next.js ist ein React-Framework für Produktionsanwendungen mit integriertem Routing, Datenabruf, Code-Splitting und Deployment. Mit React 19 und React Server Components (RSC) verfolgt es ein Fullstack-Modell: Komponenten laufen dauerhaft auf dem Server, rufen Daten ohne `useEffect` ab und können Datenbanken direkt abfragen — im selben Komponentenbaum wie die clientseitige UI.",
+        "expandedText": "**Next.js** ist ein React-Framework, das Routing, Server-Rendering, Datenabruf, API-Endpunkte und Deployment-Konfiguration in eine einzige kohärente Toolchain bündelt. Reines React erfordert das separate Zusammensetzen dieser Belange — Vite für Bundling, React Router für Routing, `useEffect` für Datenabruf, Express für API-Endpunkte. Next.js ersetzt diese Zusammenstellung durch **konventionsbasierte Standards**.\n\nDer **App Router** (eingeführt in Next.js 13) baut auf **React Server Components** auf, was bedeutet, dass Komponenten standardmäßig server-gerendert werden und nur HTML an den Browser senden. Dies unterscheidet sich architektonisch von früheren SSR-Ansätzen, bei denen derselbe Komponentencode auf Server und Client lief."
       },
       {
         "animationStep": 1,
         "heading": "App Router & Projektstruktur",
-        "text": "Erstelle ein Next.js-Projekt mit `npx create-next-app@latest`. Der App Router nutzt das Dateisystem für Routen: jeder Ordner unter `src/app/` wird ein URL-Segment. Spezielle Dateien steuern das Rendering — `page.js` ist die UI, `layout.js` wrappt sie mit gemeinsamem Chrome, `loading.js` zeigt einen Suspense-Fallback und `error.js` fängt nicht behandelte Ausnahmen ab."
+        "text": "Erstelle ein Next.js-Projekt mit `npx create-next-app@latest`. Der App Router nutzt das Dateisystem für Routen: jeder Ordner unter `src/app/` wird ein URL-Segment. Spezielle Dateien steuern das Rendering — `page.js` ist die UI, `layout.js` wrappt sie mit gemeinsamem Chrome, `loading.js` zeigt einen Suspense-Fallback und `error.js` fängt nicht behandelte Ausnahmen ab.",
+        "expandedText": "Der **App Router** verwendet das Dateisystem innerhalb von `src/app/` als Routing-Konfiguration. Jeder Ordner ist ein URL-Segment; eine Datei namens `page.tsx` macht dieses Segment öffentlich als Route zugänglich. Dateien namens `layout.tsx`, `loading.tsx`, `error.tsx` und `not-found.tsx` haben spezielle Rollen und werden automatisch ohne Import oder Konfiguration angewendet.\n\n`next dev` startet den Entwicklungsserver mit Hot-Module-Replacement; `next build` kompiliert und optimiert das Projekt für Produktion; `next start` stellt den Produktions-Build bereit. Die Build-Ausgabe meldet jede Route mit ihrer Rendering-Strategie (statisch, dynamisch oder ISR) und Bundle-Größen."
       },
       {
         "animationStep": 2,
         "heading": "Server- vs. Client-Komponenten",
-        "text": "Im App Router ist jede Komponente standardmäßig eine Server-Komponente — sie läuft auf dem Server, kann `async` sein und wird nie in das Client-Bundle ausgeliefert. Füge `'use client'` am Anfang einer Datei ein, um eine Client-Komponente zu erstellen, wenn Interaktivität, State oder Browser-APIs benötigt werden. Regel: mit Server-Komponenten beginnen, Client-Komponenten nur bei Bedarf einsetzen."
+        "text": "Im App Router ist jede Komponente standardmäßig eine Server-Komponente — sie läuft auf dem Server, kann `async` sein und wird nie in das Client-Bundle ausgeliefert. Füge `'use client'` am Anfang einer Datei ein, um eine Client-Komponente zu erstellen, wenn Interaktivität, State oder Browser-APIs benötigt werden. Regel: mit Server-Komponenten beginnen, Client-Komponenten nur bei Bedarf einsetzen.",
+        "expandedText": "Die **Server Component / Client Component**-Unterscheidung ist das wichtigste mentale Modell im App Router. Server Components laufen ausschließlich auf dem Server, können `async/await` verwenden, Geheimnisse und Datenbanken lesen und senden nur HTML an den Browser. Client Components (mit `\"use client\"` markiert) sind das traditionelle React-Modell: Sie laufen auf Server und Client.\n\nDie `\"use client\"`-Direktive ist eine **Modulgrenze**, keine Per-Komponenten-Deklaration. Das Platzieren von `\"use client\"` hoch im Import-Baum zieht versehentlich große Mengen von Code in das Client-Bundle. Das optimale Muster ist, Client Components als **Blattknoten** zu halten — kleine, fokussierte Komponenten an den Rändern des Baums."
       },
       {
         "animationStep": 3,
         "heading": "Datenabruf & Streaming",
-        "text": "Server-Komponenten können `fetch()` oder einen Datenbank-Client direkt aufrufen — kein API-Layer nötig. Für langsame Daten ein Promise an eine Client-Komponente übergeben und `use()` mit Suspense nutzen, um Inhalte progressiv zu streamen. Eine `loading.js`-Datei ist die Abkürzung: Next.js umhüllt die Seite automatisch mit einer Suspense-Boundary."
+        "text": "Server-Komponenten können `fetch()` oder einen Datenbank-Client direkt aufrufen — kein API-Layer nötig. Für langsame Daten ein Promise an eine Client-Komponente übergeben und `use()` mit Suspense nutzen, um Inhalte progressiv zu streamen. Eine `loading.js`-Datei ist die Abkürzung: Next.js umhüllt die Seite automatisch mit einer Suspense-Boundary.",
+        "expandedText": "Next.js **teilt den JavaScript-Bundle automatisch** nach Route auf. Wenn ein Benutzer `/about` besucht, lädt er nur das JavaScript für die `/about`-Seite. Bei client-seitiger Navigation prefetcht Next.js das JavaScript-Bundle der Zielseite, wenn ein `<Link>` den Viewport betritt. Dies ist standardmäßig aktiviert.\n\nJenseits des Route-Level-Splittings führt Next.js **Tree-Shaking** durch, um unbenutzte Exporte zu eliminieren. Server-Component-Importe werden vollständig aus dem Client-Bundle ausgeschlossen. Dynamische Imports mit `next/dynamic` ermöglichen **Lazy Loading** von Client Components, was deren JavaScript-Download verzögert, bis sie benötigt werden."
       },
       {
         "animationStep": 4,
         "heading": "Server-Funktionen & Mutationen",
-        "text": "Eine Server-Funktion ist eine `async`-Funktion, die mit `'use server'` markiert ist — sie läuft ausschließlich auf dem Server, kann aber von jeder Komponente aufgerufen werden. Als `form`-`action`-Prop ermöglicht sie die Verarbeitung von Formulareingaben ohne separaten API-Endpunkt. Nach einer Mutation `revalidatePath()` oder `revalidateTag()` aufrufen, um den Cache zu leeren."
+        "text": "Eine Server-Funktion ist eine `async`-Funktion, die mit `'use server'` markiert ist — sie läuft ausschließlich auf dem Server, kann aber von jeder Komponente aufgerufen werden. Als `form`-`action`-Prop ermöglicht sie die Verarbeitung von Formulareingaben ohne separaten API-Endpunkt. Nach einer Mutation `revalidatePath()` oder `revalidateTag()` aufrufen, um den Cache zu leeren.",
+        "expandedText": "Next.js erweitert die Standard-`fetch`-API mit **Caching-Semantik** spezifisch für den App Router. `fetch(url)` in einer Server Component cacht die Antwort standardmäßig, sodass mehrere Komponenten, die dieselbe URL in derselben Anfrage abrufen, dieselbe gecachte Antwort erhalten. `fetch(url, { cache: \"no-store\" })` verzichtet auf Caching. `fetch(url, { next: { revalidate: 60 } })` verwendet gecachte Daten und revalidiert sie höchstens einmal pro Minute.\n\nFür Mutationen invalidieren `revalidatePath(path)` und `revalidateTag(tag)` spezifische gecachte Seiten oder Fetch-Ergebnisse aus Server Actions oder Route Handlern. Diese Funktionen werden nach einem Datenbank-Schreibvorgang aufgerufen, um sicherzustellen, dass nachfolgende Seitenrenderings die aktualisierten Daten widerspiegeln. Tags werden an Fetch-Aufrufe mit `{ next: { tags: [\"posts\"] } }` angehängt und gemeinsam mit `revalidateTag(\"posts\")` invalidiert."
       },
       {
         "animationStep": 5,
         "heading": "Fehlerbehandlung",
-        "text": "Next.js unterscheidet zwei Fehlerkategorien. Erwartete Fehler (Validierung, 404) explizit behandeln — strukturierten State aus Server-Funktionen mit `useActionState` zurückgeben, `res.ok` prüfen oder `notFound()` bei fehlenden Ressourcen aufrufen. Unerwartete Fehler fängt `error.js` ab — eine Client-Komponente mit der `error`-Prop und einer `reset()`-Funktion zum Wiederholen."
+        "text": "Next.js unterscheidet zwei Fehlerkategorien. Erwartete Fehler (Validierung, 404) explizit behandeln — strukturierten State aus Server-Funktionen mit `useActionState` zurückgeben, `res.ok` prüfen oder `notFound()` bei fehlenden Ressourcen aufrufen. Unerwartete Fehler fängt `error.js` ab — eine Client-Komponente mit der `error`-Prop und einer `reset()`-Funktion zum Wiederholen.",
+        "expandedText": "Next.js unterteilt Fehler in zwei Kategorien mit unterschiedlichen Behandlungsstrategien. **Erwartete Fehler** — Validierungsfehler, fehlende Ressourcen, nicht autorisierter Zugriff — werden explizit behandelt: Server Actions geben strukturierten Fehlerzustand über `useActionState` zurück, `notFound()` rendert das nächste `not-found.tsx`, und `redirect()` navigiert zu einer anderen URL.\n\n**Unerwartete Fehler** — unbehandelte Ausnahmen, Netzwerkfehler, Datenbankfehler — werden von `error.tsx`-Boundaries abgefangen. Eine `error.tsx`-Datei muss eine Client-Komponente sein (weil sie die `reset()`-Funktion von der React-Error-Boundary-API verwendet) und ist auf ihr Verzeichnis und ihre Kinder beschränkt. Das Root-`app/global-error.tsx` ist die letzte Grenze für das Root-Layout."
       }
     ],
     "cheatSheet": {
@@ -2910,22 +2957,26 @@
       {
         "animationStep": 0,
         "heading": "Ordner = Routen",
-        "text": "Jeder Ordner innerhalb von `src/app/` wird zu einem URL-Pfadsegment. Eine Datei namens `page.tsx` in diesem Ordner macht ihn zu einer echten Route. Keine Router-Konfiguration, keine Imports — einfach Ordner und Datei erstellen. Verschachtelte Ordner erzeugen verschachtelte URLs."
+        "text": "Jeder Ordner innerhalb von `src/app/` wird zu einem URL-Pfadsegment. Eine Datei namens `page.tsx` in diesem Ordner macht ihn zu einer echten Route. Keine Router-Konfiguration, keine Imports — einfach Ordner und Datei erstellen. Verschachtelte Ordner erzeugen verschachtelte URLs.",
+        "expandedText": "Der App Router behandelt jeden Ordner innerhalb von `src/app/` als **Routensegment**. Nur Dateien namens `page.tsx` sind öffentlich zugängliche URLs — andere TypeScript-Dateien (Komponenten, Utilities, Tests) können daneben liegen, ohne zu Routen zu werden. Diese Co-Lokation von Route-Dateien mit ihren Helfern reduziert den Bedarf, zwischen Verzeichnissen zu wechseln.\n\nDas **`page.tsx`-Erfordernis** ist die primäre Zugriffskontrolle. Eine Datei `app/admin/utils.ts` ist nicht über HTTP erreichbar, unabhängig davon, wie sie benannt ist. Nur `page.tsx` (für UI) und `route.ts` (für API-Endpunkte) erstellen öffentlich zugängliche Endpunkte."
       },
       {
         "animationStep": 1,
         "heading": "Dynamische Segmente",
-        "text": "Einen Ordnernamen in eckige Klammern setzen, um ein dynamisches Segment zu erstellen: `[id]` passt zu /posts/1, /posts/abc usw. Den Wert über die `params`-Prop auslesen — in Next.js 15+ muss `params` awaitet werden."
+        "text": "Einen Ordnernamen in eckige Klammern setzen, um ein dynamisches Segment zu erstellen: `[id]` passt zu /posts/1, /posts/abc usw. Den Wert über die `params`-Prop auslesen — in Next.js 15+ muss `params` awaitet werden.",
+        "expandedText": "**Dynamische Segmente** — Ordnernamen in eckigen Klammern wie `[id]` — erfassen den URL-Wert an dieser Position. Der erfasste Wert wird dem `page.tsx` als `params`-Prop übergeben. In Next.js 15 ist `params` ein Promise in Server Components, was `await params` vor dem Zugriff erfordert. Der Wert ist immer ein String — numerische IDs müssen explizit geparst werden.\n\n**Verschachtelte dynamische Segmente** — `app/users/[userId]/posts/[postId]/page.tsx` — fangen mehrere Werte als `{ userId: string, postId: string }` ein. Das `generateStaticParams`-Export ermöglicht das Vorab-Rendern aller bekannten Kombinationen zur Build-Zeit."
       },
       {
         "animationStep": 2,
         "heading": "Route Groups",
-        "text": "Einen Ordnernamen in Klammern setzen, um eine Route Group zu erstellen: `(marketing)` gruppiert Routen, ohne sie zur URL hinzuzufügen. So können Layouts über Routen geteilt werden, die in der URL nicht verschachtelt sind."
+        "text": "Einen Ordnernamen in Klammern setzen, um eine Route Group zu erstellen: `(marketing)` gruppiert Routen, ohne sie zur URL hinzuzufügen. So können Layouts über Routen geteilt werden, die in der URL nicht verschachtelt sind.",
+        "expandedText": "**Catch-all-Segmente** `[...slug]` passen auf eine beliebige Anzahl von Pfadsegmenten nach dem Präfix und sammeln sie als String-Array in `params.slug`. **Optionale Catch-all-Segmente** `[[...slug]]` passen auch auf den Elternpfad selbst ohne Segmente.\n\n**Route Groups** — Ordner in Klammern wie `(auth)` — organisieren Routen, ohne die URL zu beeinflussen. Eine Datei bei `app/(auth)/login/page.tsx` rendert bei `/login`, nicht `/auth/login`. Route Groups sind am nützlichsten für das Anwenden verschiedener Layouts auf verschiedene Gruppen von Routen."
       },
       {
         "animationStep": 3,
         "heading": "Catch-all-Segmente",
-        "text": "Mit `[...slug]` können mehrere Pfadsegmente gleichzeitig abgefangen werden. `params.slug` ist ein Array der Segmente. Doppelte Klammern `[[...slug]]` machen den Catch-all optional — dann passt er auch auf den Root-Pfad."
+        "text": "Mit `[...slug]` können mehrere Pfadsegmente gleichzeitig abgefangen werden. `params.slug` ist ein Array der Segmente. Doppelte Klammern `[[...slug]]` machen den Catch-all optional — dann passt er auch auf den Root-Pfad.",
+        "expandedText": "**Route Groups** — Ordner in Klammern wie `(auth)` — organisieren Routen ohne die URL zu beeinflussen. Eine Datei bei `app/(auth)/login/page.tsx` rendert bei `/login`, nicht `/auth/login`. Die `(marketing)`-Gruppe könnte ein Landing-Page-Layout verwenden; die `(app)`-Gruppe ein Dashboard-Layout mit Seitenleiste — beide auf Root-Ebene ohne URL-Konflikt.\n\nRoute Groups können auch für **Onboarding-Flows** und **modales Routing** mit parallelen Routen verwendet werden. Das `@modal`-Convention kombiniert mit einem Route-Group ermöglicht URL-shareable Modals: `/photos/[id]` kann sowohl die vollständige Fotoseite als auch das Foto-Modal über einem Feed rendern."
       }
     ],
     "cheatSheet": {
@@ -2961,22 +3012,26 @@
       {
         "animationStep": 0,
         "heading": "Verschachtelte Layouts",
-        "text": "`layout.tsx` umhüllt `page.tsx` und alle Kind-Routen. Layouts bleiben über Navigationen hinweg bestehen — sie rendern nicht neu, wenn sich die Kindseite ändert. Durch verschachtelte Layout-Dateien können komplexe UIs gebaut werden."
+        "text": "`layout.tsx` umhüllt `page.tsx` und alle Kind-Routen. Layouts bleiben über Navigationen hinweg bestehen — sie rendern nicht neu, wenn sich die Kindseite ändert. Durch verschachtelte Layout-Dateien können komplexe UIs gebaut werden.",
+        "expandedText": "**Verschachtelte Layouts** sind der primäre Mechanismus für das Teilen von Chrome — Header, Seitenleisten, Footer, Navigation — über mehrere Seiten ohne Wiederholung desselben JSX. Der App Router wendet Layouts automatisch basierend auf der Dateistruktur an.\n\nDie Layout-Hierarchie spiegelt die URL-Hierarchie wider: `app/layout.tsx` wrappet alles; `app/dashboard/layout.tsx` wrappet nur Dashboard-Routen. Jedes Layout erhält die gerenderten Kind-Routen als `children`-Prop. Layouts werden persistiert über Navigationen hinweg — `app/dashboard/layout.tsx` unmountet nicht, wenn der Benutzer von `/dashboard/analytics` nach `/dashboard/settings` navigiert."
       },
       {
         "animationStep": 1,
         "heading": "Spezielle Dateien",
-        "text": "Next.js reserviert bestimmte Dateinamen auf jeder Routenebene. `loading.tsx` zeigt ein Skeleton, während die Seite rendert. `error.tsx` fängt unbehandelte Ausnahmen ab und muss eine Client-Komponente sein. `not-found.tsx` wird gerendert, wenn `notFound()` aufgerufen wird."
+        "text": "Next.js reserviert bestimmte Dateinamen auf jeder Routenebene. `loading.tsx` zeigt ein Skeleton, während die Seite rendert. `error.tsx` fängt unbehandelte Ausnahmen ab und muss eine Client-Komponente sein. `not-found.tsx` wird gerendert, wenn `notFound()` aufgerufen wird.",
+        "expandedText": "Eine `layout.tsx` exportiert eine Standard-React-Komponente, die ein `children`-Prop akzeptiert. Das `children`-Prop enthält die gerenderte Ausgabe des nächsten Layouts oder der Seite in der Hierarchie. Layouts sind **persistent über Navigationen** zwischen Seiten, die sie umhüllen — die Layout-Komponente unmountet nicht, was Layout-Zustand erhält.\n\nDie **speziellen Dateien** — `loading.tsx`, `error.tsx` und `not-found.tsx` — werden automatisch als Boundaries um die Seiteninhalte gewickelt. `loading.tsx` wird gerendert, während Server-Komponenten streamen; `error.tsx` fängt Rendering-Fehler im Segment ab; `not-found.tsx` rendert, wenn `notFound()` geworfen wird."
       },
       {
         "animationStep": 2,
         "heading": "Metadata API",
-        "text": "Ein metadata-Objekt oder eine `generateMetadata()`-Funktion aus `page.tsx` oder `layout.tsx` exportieren, um Head-Tags zu setzen. Statische Metadata wird als Konstante exportiert. Dynamische Metadata verwendet `generateMetadata()` — eine `async`-Funktion, die dieselben `params` wie die Seite erhält."
+        "text": "Ein metadata-Objekt oder eine `generateMetadata()`-Funktion aus `page.tsx` oder `layout.tsx` exportieren, um Head-Tags zu setzen. Statische Metadata wird als Konstante exportiert. Dynamische Metadata verwendet `generateMetadata()` — eine `async`-Funktion, die dieselben `params` wie die Seite erhält.",
+        "expandedText": "Das **Root-Layout** bei `app/layout.tsx` ist erforderlich und muss die `<html>`- und `<body>`-Tags enthalten. Es umhüllt jede Seite in der Anwendung und ist der richtige Ort für globale Styles, globale Provider und Metadaten-Standardwerte. Ohne das Root-Layout wirft Next.js einen Build-Fehler.\n\nJede Layout-Ebene kann Metadaten exportieren. Das **Metadaten-API** — `export const metadata: Metadata = { title: '...' }` — generiert `<title>` und `<meta>`-Tags automatisch. Für dynamische Metadaten exportiert man `export async function generateMetadata({ params })`. Die Metadaten werden mit den Root-Metadaten zusammengeführt."
       },
       {
         "animationStep": 3,
         "heading": "RootLayout-Anforderungen",
-        "text": "Jede Next.js-App muss `app/layout.tsx` haben — das Root-Layout. Es muss html- und body-Tags enthalten. Es umhüllt jede Seite und ist der richtige Ort für globale Styles, Analytics, Auth-Provider und Theme-Provider."
+        "text": "Jede Next.js-App muss `app/layout.tsx` haben — das Root-Layout. Es muss html- und body-Tags enthalten. Es umhüllt jede Seite und ist der richtige Ort für globale Styles, Analytics, Auth-Provider und Theme-Provider.",
+        "expandedText": "Das **Template-Datei**-Muster (`template.tsx` neben `layout.tsx`) ist für Fälle, in denen man das Layout bei jeder Navigation neu mounten möchte — zum Beispiel für Seitenübergangsanimationen oder das Zurücksetzen von Scroll-Position. Während `layout.tsx` persistent ist und nicht re-mountet, erstellt `template.tsx` bei jeder Navigation eine neue Instanz.\n\n**Parallele Routen** (`@slot`-Konvention) ermöglichen das gleichzeitige Rendern mehrerer Seiten im selben Layout. Ein `app/dashboard/@analytics/page.tsx` und ein `app/dashboard/@team/page.tsx` können im Layout als separate `children`-Props gerendert werden, was unabhängiges Streaming und Fehlerbehandlung für jeden Slot ermöglicht."
       }
     ],
     "cheatSheet": {
@@ -3015,22 +3070,26 @@
       {
         "animationStep": 0,
         "heading": "Link-Komponente",
-        "text": "`Link` aus `next/link` statt a für clientseitige Navigation verwenden — kein vollständiger Seitenaufruf. Next.js prefetcht verlinkte Seiten automatisch im Hintergrund, wenn sie im Viewport erscheinen, wodurch Navigation sich sofort anfühlt."
+        "text": "`Link` aus `next/link` statt a für clientseitige Navigation verwenden — kein vollständiger Seitenaufruf. Next.js prefetcht verlinkte Seiten automatisch im Hintergrund, wenn sie im Viewport erscheinen, wodurch Navigation sich sofort anfühlt.",
+        "expandedText": "Vollständige Seitenneuladungen verwerfen den gesamten JavaScript-Zustand, laden die Seiten-Shell erneut herunter und erfordern einen Server-Roundtrip. **Client-seitige Navigation** in Next.js bewahrt das aktuelle Layout und tauscht nur das geänderte Seitensegment aus.\n\n**Prefetching** ist die Schlüsseloptimierung, die Client-seitige Navigation sofortig erscheinen lässt. Wenn ein `<Link>`-Komponente den Viewport betritt, beginnt Next.js mit dem Prefetching des Ziel-RSC-Payloads im Hintergrund. Wenn der Benutzer klickt, sind die Daten bereits im Router-Cache. Prefetching ist in der Produktion automatisch aktiviert."
       },
       {
         "animationStep": 1,
         "heading": "useRouter — Programmatische Navigation",
-        "text": "`useRouter` aus `next/navigation` in Client-Komponenten verwenden, wenn nach einer Aktion navigiert werden soll. `router.push()` fügt zum Verlauf hinzu, `router.replace()` ersetzt den aktuellen Eintrag, `router.back()` und `router.forward()` navigieren durch den Verlauf."
+        "text": "`useRouter` aus `next/navigation` in Client-Komponenten verwenden, wenn nach einer Aktion navigiert werden soll. `router.push()` fügt zum Verlauf hinzu, `router.replace()` ersetzt den aktuellen Eintrag, `router.back()` und `router.forward()` navigieren durch den Verlauf.",
+        "expandedText": "Die `Link`-Komponente von `next/link` rendert ein Standard-`<a>`-Element, das Klicks für Client-seitige Navigation abfängt. Sie **prefetcht** das React Server Component Payload der Zielseite, wenn der Link den Viewport betritt. Prefetching ist in der Produktion automatisch und in der Entwicklung deaktiviert.\n\n`replace` vs `push`: Das `replace`-Prop auf `<Link>` führt `router.replace()` statt `router.push()` aus und ersetzt den aktuellen History-Eintrag. Nützlich für Weiterleitungen nach der Anmeldung oder beim Filtern, wo der Zurück-Button den Benutzer zum vorherigen Zustand zurückbringen soll."
       },
       {
         "animationStep": 2,
         "heading": "usePathname & useSearchParams",
-        "text": "`usePathname()` gibt den aktuellen Pfad als String zurück — nützlich für die Hervorhebung aktiver Nav-Links. `useSearchParams()` liest den ?key=value Query-String. Beide sind Client-Komponenten-Hooks aus `next/navigation`."
+        "text": "`usePathname()` gibt den aktuellen Pfad als String zurück — nützlich für die Hervorhebung aktiver Nav-Links. `useSearchParams()` liest den ?key=value Query-String. Beide sind Client-Komponenten-Hooks aus `next/navigation`.",
+        "expandedText": "`useRouter` von `next/navigation` bietet programmatische Navigationsmethoden für Situationen, in denen ein `<Link>` nicht verwendet werden kann — innerhalb von Event-Handlern, nach asynchronen Operationen. `router.push(url)` navigiert vorwärts; `router.replace(url)` navigiert ohne Hinzufügen zum Stack; `router.back()` und `router.forward()` navigieren in der History.\n\n`usePathname` gibt den aktuellen URL-Pathname als String zurück und rendert die Komponente neu, wenn sich der Pathname ändert. `useSearchParams` gibt die aktuellen Query-Parameter zurück. Beide Hooks können nur in Client Components verwendet werden."
       },
       {
         "animationStep": 3,
         "heading": "redirect() und notFound()",
-        "text": "`redirect()` aus `next/navigation` navigiert programmatisch aus Server-Komponenten, Server-Funktionen und Route Handlers — keine Client-Komponente nötig. `notFound()` rendert die nächste `not-found.tsx`-Datei. Beide werfen intern, sodass Code danach nie ausgeführt wird."
+        "text": "`redirect()` aus `next/navigation` navigiert programmatisch aus Server-Komponenten, Server-Funktionen und Route Handlers — keine Client-Komponente nötig. `notFound()` rendert die nächste `not-found.tsx`-Datei. Beide werfen intern, sodass Code danach nie ausgeführt wird.",
+        "expandedText": "`usePathname` gibt den aktuellen URL-Pathname als String zurück und rendert die Komponente neu, wenn sich der Pathname ändert. Es ist das Standardwerkzeug zum Hervorheben des aktiven Elements in einem Navigationsmenü: `usePathname()` mit jedem Link-`href` vergleichen und eine `active`-Klasse anwenden, wenn sie übereinstimmen. Der Hook rendert nur neu, wenn sich der Pathname ändert — nicht bei Query-String-Änderungen.\n\n`redirect()` (von `next/navigation`) kann in Server Components, Server Actions und Route Handlern aufgerufen werden, um eine 307-Weiterleitung durchzuführen. `notFound()` rendert das nächste `not-found.tsx`. Beide Funktionen werfen intern — Code nach `redirect()` oder `notFound()` wird nicht ausgeführt."
       }
     ],
     "cheatSheet": {
@@ -3075,22 +3134,26 @@
       {
         "animationStep": 0,
         "heading": "Immer auf dem Server",
-        "text": "React Server Components laufen ausschließlich auf dem Server und werden nie ins Browser-Bundle geliefert. Sie können `async` sein, direkt auf Datenbanken und Secrets zugreifen und aus dem Dateisystem lesen. Jede Komponente im App Router ist standardmäßig eine Server-Komponente — keine Direktive nötig."
+        "text": "React Server Components laufen ausschließlich auf dem Server und werden nie ins Browser-Bundle geliefert. Sie können `async` sein, direkt auf Datenbanken und Secrets zugreifen und aus dem Dateisystem lesen. Jede Komponente im App Router ist standardmäßig eine Server-Komponente — keine Direktive nötig.",
+        "expandedText": "**React Server Components** (RSC) sind ein neues Primitiv, bei dem eine Komponente ausschließlich auf dem Server läuft und ihr JavaScript nie an den Browser sendet. Die Ausgabe ist HTML (für die initiale Anfrage) oder ein React Server Component Payload für nachfolgende client-seitige Navigationen. Der Komponentenquellcode und seine Abhängigkeiten erreichen den Browser nie.\n\nServerkomponenten haben **keine Bundle-Kosten** — man kann jede Bibliothek importieren, jede Datenbankabfrage durchführen und jede API aufrufen, ohne das Client-Bundle zu vergrößern. Der Browser empfängt die Ausgabe, nicht den Quellcode."
       },
       {
         "animationStep": 1,
         "heading": "Direkter Datenzugriff",
-        "text": "Server-Komponenten können Datenbanken abfragen, Dateien lesen und interne APIs direkt aufrufen — kein separater API-Endpunkt nötig. Sensible Zugangsdaten verlassen den Server nie, da die Komponente nie im Browser läuft."
+        "text": "Server-Komponenten können Datenbanken abfragen, Dateien lesen und interne APIs direkt aufrufen — kein separater API-Endpunkt nötig. Sensible Zugangsdaten verlassen den Server nie, da die Komponente nie im Browser läuft.",
+        "expandedText": "Server Components haben **keine JavaScript-Bundle-Kosten**. Eine Server Component, die einen 500-KB-Markdown-Parser importiert, fügt dem Client-Bundle null Bytes hinzu. Dies ändert grundlegend die Kosten-Nutzen-Analyse von Drittanbieter-Bibliotheken: Abhängigkeiten für das Parsing, Formatieren oder Transformieren von Daten können frei genutzt werden.\n\n**Direkte Datenbank-Abfragen** sind in Server Components idiomatisch: `const posts = await db.query('SELECT * FROM posts WHERE published = true')`. Kein API-Layer erforderlich, kein Exposition von Datenbankverbindungsdetails an den Client, kein `useEffect` für den initialen Datenladen."
       },
       {
         "animationStep": 2,
         "heading": "Was nicht möglich ist",
-        "text": "Server-Komponenten können keinen React-State, keine Effekte oder Browser-APIs verwenden. Kein `useState`, `useEffect`, `useContext`, `useRef`. Keine Event-Handler wie `onClick` oder `onChange`. Kein `window`, `document`, `localStorage`. Bei Bedarf `'use client'` hinzufügen oder den interaktiven Teil in eine separate Client-Komponente auslagern."
+        "text": "Server-Komponenten können keinen React-State, keine Effekte oder Browser-APIs verwenden. Kein `useState`, `useEffect`, `useContext`, `useRef`. Keine Event-Handler wie `onClick` oder `onChange`. Kein `window`, `document`, `localStorage`. Bei Bedarf `'use client'` hinzufügen oder den interaktiven Teil in eine separate Client-Komponente auslagern.",
+        "expandedText": "Server Components unterstützen **natives `async/await`**. Eine Server-Komponentenfunktion kann als `async` deklariert werden und kann Datenbankabfragen, API-Aufrufe oder Dateisystemoperationen direkt im Komponentenkörper `await`en. Es gibt kein `useEffect`, kein Laden-Zustand und keine Fehler bei leerer Anzeige beim ersten Rendern.\n\nMehrere Server Components in demselben Request-Baum führen automatisch **Request-Deduplication** durch: Wenn zwei Komponenten dasselbe `fetch(url)` aufrufen, wird nur eine HTTP-Anfrage gesendet. Dies ermöglicht das Komponenten-Kompositionsmuster — jede Komponente ruft die Daten ab, die sie benötigt — ohne doppelte Netzwerkanfragen."
       },
       {
         "animationStep": 3,
         "heading": "Komposition mit Client-Komponenten",
-        "text": "Server-Komponenten können Client-Komponenten als Kinder rendern. Serialisierbare Daten (Strings, Zahlen, einfache Objekte, Arrays) als Props übergeben. Der Komponentenbaum kann Server und Client frei mischen — jede Komponente rendert in ihrer Umgebung."
+        "text": "Server-Komponenten können Client-Komponenten als Kinder rendern. Serialisierbare Daten (Strings, Zahlen, einfache Objekte, Arrays) als Props übergeben. Der Komponentenbaum kann Server und Client frei mischen — jede Komponente rendert in ihrer Umgebung.",
+        "expandedText": "Server Components **können nicht** `useState`, `useEffect`, Event-Handler oder Browser-APIs verwenden. Diese Fähigkeiten erfordern eine Client-Komponente. Die `\"use client\"`-Direktive am Anfang einer Datei deklariert, dass die Komponente und ihr gesamter Import-Subtree als Client-Code gebündelt werden soll.\n\nDie Architektur-Strategie: **Datenabfragen- und Rendering-Logik** in Server Components halten; **Interaktivität und Browser-APIs** in kleinen, fokussierten Client Components an den Rändern. Eine Server Component kann eine Client Component rendern, indem sie sie importiert. Eine Client Component kann keine Server Component importieren — aber eine Server Component kann als Prop übergeben werden."
       }
     ],
     "cheatSheet": {
@@ -3123,22 +3186,26 @@
       {
         "animationStep": 0,
         "heading": "'use client'-Direktive",
-        "text": "`'use client'` als allererste Zeile einer Datei hinzufügen, um sie als Client-Komponente zu markieren. Das bezieht die gesamte Datei — und alles, was sie importiert — ins Client-Bundle ein. Die Direktive ist eine Grenzdeklaration: sie teilt Next.js mit, wo der Server-zu-Client-Übergang stattfindet."
+        "text": "`'use client'` als allererste Zeile einer Datei hinzufügen, um sie als Client-Komponente zu markieren. Das bezieht die gesamte Datei — und alles, was sie importiert — ins Client-Bundle ein. Die Direktive ist eine Grenzdeklaration: sie teilt Next.js mit, wo der Server-zu-Client-Übergang stattfindet.",
+        "expandedText": "`\"use client\"` am Anfang einer Datei erstellt eine **Server-Client-Grenze**. Die Komponente in dieser Datei und alles, was sie importiert, wird für den Client gebündelt. Komponenten, die von der `\"use client\"`-Datei importiert werden, benötigen keine eigene Direktive. Eine Server-Komponente kann jedoch als **Prop** (einschließlich `children`) an eine Client-Komponente übergeben werden, ohne selbst zur Client-Komponente zu werden.\n\nEin `<ThemeProvider>` Client-Komponente kann server-gerenderte Kinder umhüllen: `<ThemeProvider><ServerSidebar /><ServerContent /></ThemeProvider>`. Der `ThemeProvider` ist eine Client-Komponente mit Theme-Zustand; `ServerSidebar` und `ServerContent` sind Server-Komponenten, die als `children` übergeben werden. Nur das `ThemeProvider`-JavaScript wird an den Client gesendet."
       },
       {
         "animationStep": 1,
         "heading": "Wann Client-Komponenten verwenden",
-        "text": "`'use client'` verwenden, wenn die Komponente benötigt: React-Hooks (`useState`, `useEffect`, `useRef`, `useContext`), Event-Handler (`onClick`, `onChange`, `onSubmit`), Browser-APIs (`window`, `document`, `localStorage`, `navigator`) oder Echtzeit-Updates. Wenn keines davon zutrifft, als Server-Komponente belassen."
+        "text": "`'use client'` verwenden, wenn die Komponente benötigt: React-Hooks (`useState`, `useEffect`, `useRef`, `useContext`), Event-Handler (`onClick`, `onChange`, `onSubmit`), Browser-APIs (`window`, `document`, `localStorage`, `navigator`) oder Echtzeit-Updates. Wenn keines davon zutrifft, als Server-Komponente belassen.",
+        "expandedText": "Client Components sind **auf der ersten Anfrage serverseitig gerendert**, um das initiale HTML zu generieren, und dann auf dem Client **hydratisiert**, um Event-Handler anzuhängen und React-Zustand wiederherzustellen. Das bedeutet, dass eine Client-Komponente mit `useState` zweimal rendert: einmal auf dem Server und einmal auf dem Client.\n\n**Hydration-Mismatches** treten auf, wenn das server-gerenderte HTML nicht mit dem übereinstimmt, was der Client während der Hydration rendert. Häufige Ursachen: Zugriff auf `window` oder `document` während des Renderns (nicht auf dem Server verfügbar), Verwendung von `Math.random()` ohne stabilen Seed, und bedingtes Rendern basierend auf Browser-Zustand wie `localStorage`."
       },
       {
         "animationStep": 2,
         "heading": "Hydration",
-        "text": "Client-Komponenten werden weiterhin serverseitig für das initiale HTML gerendert — `'use client'` bedeutet nicht, Server-Rendering zu überspringen. Next.js rendert die Komponente auf dem Server für schnelles initiales Laden, liefert dann JavaScript und hydratisiert es auf dem Client. Hydration erfordert identische Ausgaben von Server und Client."
+        "text": "Client-Komponenten werden weiterhin serverseitig für das initiale HTML gerendert — `'use client'` bedeutet nicht, Server-Rendering zu überspringen. Next.js rendert die Komponente auf dem Server für schnelles initiales Laden, liefert dann JavaScript und hydratisiert es auf dem Client. Hydration erfordert identische Ausgaben von Server und Client.",
+        "expandedText": "Das architektonische Prinzip für Client Components ist, sie **klein und an den Rändern** des Komponentenbaums zu halten. Eine große Client-Komponente zieht alle ihre Abhängigkeiten in das Client-Bundle. Eine kleine Client-Komponente, die ein bestimmtes interaktives Element umhüllt, hält die Bundle-Kosten proportional zur benötigten Interaktivität.\n\nEin praktischer Audit: Jede Komponente im Baum anschauen und fragen, ob sie wirklich `useState`, `useEffect` oder einen Event-Handler benötigt. Falls nicht, `\"use client\"` entfernen und als Server-Komponente fungieren lassen. Die häufigsten Kandidaten für die Rückkonvertierung sind Datenanzeige-Komponenten, die sich zufällig in derselben Datei wie eine interaktive Komponente befinden."
       },
       {
         "animationStep": 3,
         "heading": "Grenzen zu den Blättern verschieben",
-        "text": "Die `'use client'`-Grenze schließt alles ein, was aus dieser Datei importiert wird. Wird sie weit oben im Baum platziert, werden alle darunter liegenden Komponenten zu Client-Komponenten. Best Practice: `'use client'` so weit wie möglich nach unten in den Baum verschieben, zu den kleinsten Komponenten, die tatsächlich Interaktivität benötigen."
+        "text": "Die `'use client'`-Grenze schließt alles ein, was aus dieser Datei importiert wird. Wird sie weit oben im Baum platziert, werden alle darunter liegenden Komponenten zu Client-Komponenten. Best Practice: `'use client'` so weit wie möglich nach unten in den Baum verschieben, zu den kleinsten Komponenten, die tatsächlich Interaktivität benötigen.",
+        "expandedText": "Das architektonische Prinzip für Client Components ist, sie **klein und an den Rändern** des Komponentenbaums zu halten. Eine große Client-Komponente zieht alle ihre Abhängigkeiten in das Client-Bundle. Eine kleine Client-Komponente, die ein bestimmtes interaktives Element umhüllt, hält die Bundle-Kosten proportional zur benötigten Interaktivität.\n\nEin praktischer Audit: Jede Komponente im Baum anschauen und fragen, ob sie wirklich `useState`, `useEffect` oder einen Event-Handler benötigt. Falls nicht, `\"use client\"` entfernen und als Server-Komponente fungieren lassen. Die häufigsten Kandidaten für die Rückkonvertierung sind Datenanzeige-Komponenten, die sich zufällig in derselben Datei wie eine interaktive Komponente befinden — **Dateiaufteilung** platziert den interaktiven Teil in seine eigene `\"use client\"`-Datei."
       }
     ],
     "cheatSheet": {
@@ -3168,17 +3235,20 @@
       {
         "animationStep": 0,
         "heading": "loading.tsx — Sofortige Skeleton-UI",
-        "text": "`loading.tsx` neben einer `page.tsx` hinzufügen, um sie automatisch in eine Suspense-Boundary einzuwickeln. Next.js streamt das Layout sofort, während die Seite Daten abruft — Nutzer sehen ein Skeleton statt einem leeren Bildschirm."
+        "text": "`loading.tsx` neben einer `page.tsx` hinzufügen, um sie automatisch in eine Suspense-Boundary einzuwickeln. Next.js streamt das Layout sofort, während die Seite Daten abruft — Nutzer sehen ein Skeleton statt einem leeren Bildschirm.",
+        "expandedText": "Ohne **Suspense** blockiert jede asynchrone Server-Komponente das gesamte Seiten-Rendering, bis alle Datenabrufe abgeschlossen sind. Wenn eine Komponente Benutzerdaten in 100 ms abruft und eine andere Empfehlungen in 2000 ms, wartet der Benutzer die vollen 2 Sekunden, bevor er etwas sieht. Suspense entkoppelt das Rendering von Komponenten voneinander.\n\n**`loading.tsx`** ist ein Suspense-Boundary, der automatisch auf das gesamte Routensegment angewendet wird. Es rendert sofort, während das Segment lädt. Das Erstellen einer `loading.tsx` ist der schnellste Weg, sofortiges visuelles Feedback für jede Route bereitzustellen."
       },
       {
         "animationStep": 1,
         "heading": "Streaming mit Suspense",
-        "text": "Für feinere Kontrolle — einzelne Abschnitte einer Seite streamen — Suspense manuell verwenden. Einen fallback-Prop für das Skeleton angeben. Daten ohne await abrufen, das Promise an eine Client-Komponente übergeben, die use() zum Suspendieren nutzt. Mehrere Suspense-Boundaries auf einer Seite streamen unabhängig voneinander."
+        "text": "Für feinere Kontrolle — einzelne Abschnitte einer Seite streamen — Suspense manuell verwenden. Einen fallback-Prop für das Skeleton angeben. Daten ohne await abrufen, das Promise an eine Client-Komponente übergeben, die use() zum Suspendieren nutzt. Mehrere Suspense-Boundaries auf einer Seite streamen unabhängig voneinander.",
+        "expandedText": "Das Platzieren einer `<Suspense fallback={...}>`-Grenze um eine asynchrone Server-Komponente ermöglicht unabhängiges Streaming für diese Komponente. Wenn Next.js auf die Grenze trifft, rendert es sofort den Fallback und fährt mit dem Rendering des Rests der Seite fort. Mehrere Suspense-Grenzen auf einer Seite ermöglichen unabhängiges progressives Rendering jedes Abschnitts.\n\nEin Dashboard mit Benutzer-Header (schnell), Diagrammen (mittel) und KI-Empfehlungen (langsam) könnte drei separate Suspense-Grenzen haben. Der Benutzer sieht den Header sofort, Diagramme erscheinen in ~300 ms und Empfehlungen in ~2 s."
       },
       {
         "animationStep": 2,
         "heading": "error.tsx und not-found.tsx",
-        "text": "`error.tsx` fängt alle unbehandelten Ausnahmen ab, die während des Renderings in seinem Routensegment auftreten. Es muss eine Client-Komponente sein, um den `reset()`-Callback zu nutzen. `not-found.tsx` wird gerendert, wenn `notFound()` aufgerufen wird."
+        "text": "`error.tsx` fängt alle unbehandelten Ausnahmen ab, die während des Renderings in seinem Routensegment auftreten. Es muss eine Client-Komponente sein, um den `reset()`-Callback zu nutzen. `not-found.tsx` wird gerendert, wenn `notFound()` aufgerufen wird.",
+        "expandedText": "**Streaming** HTML wird auf HTTP-Ebene mittels **Chunked-Transfer-Encoding** implementiert — der Server sendet die HTTP-Antwort in mehreren Chunks, ohne die Gesamt-`Content-Length` vorab anzugeben. Der Browser rendert jeden Chunk bei Ankunft. Next.js koordiniert dies mit React's Streaming-Renderer: Wenn Suspense-Grenzen aufgelöst werden, generiert React HTML und sendet es als neuen Chunk.\n\n**`error.tsx`** ist eine Client-Komponente, die automatisch als Error-Boundary für ihr Routensegment angewendet wird. Sie empfängt `{ error, reset }` Props: `error` ist das geworfene Fehler-Objekt, `reset` ist eine Funktion, die die Grenze durch Wiederrendern zurücksetzen versucht. `not-found.tsx` wird gerendert, wenn `notFound()` geworfen wird."
       }
     ],
     "cheatSheet": {
@@ -3214,22 +3284,26 @@
       {
         "animationStep": 0,
         "heading": "fetch() in Server-Komponenten",
-        "text": "Server-Komponenten können `fetch()` direkt aufrufen — kein `useEffect`, kein Loading-State, kein API-Route. Next.js erweitert das native fetch mit Caching-Optionen. Die Antwort wird automatisch dedupliziert: rufen mehrere Server-Komponenten dieselbe URL während eines Renderings auf, macht Next.js nur eine Netzwerkanfrage."
+        "text": "Server-Komponenten können `fetch()` direkt aufrufen — kein `useEffect`, kein Loading-State, kein API-Route. Next.js erweitert das native fetch mit Caching-Optionen. Die Antwort wird automatisch dedupliziert: rufen mehrere Server-Komponenten dieselbe URL während eines Renderings auf, macht Next.js nur eine Netzwerkanfrage.",
+        "expandedText": "Next.js erweitert die native `fetch`-API mit **Caching-Semantik**, die durch das zweite Argument gesteuert wird. `fetch(url)` (keine Optionen) verwendet den `\"force-cache\"`-Standard. `fetch(url, { cache: \"no-store\" })` ruft bei jeder Anfrage frische Daten ab. `fetch(url, { next: { revalidate: 60 } })` verwendet **Incremental Static Regeneration (ISR)**.\n\nMehrere Server Components im selben Request-Baum, die dasselbe URL `fetch`en, erhalten **deduplizierte Antworten** — nur eine HTTP-Anfrage wird gesendet. Die `unstable_cache`-Funktion bietet dieselbe Semantik für Nicht-`fetch`-Datenquellen wie Datenbankabfragen."
       },
       {
         "animationStep": 1,
         "heading": "Cache-Optionen & Revalidierung",
-        "text": "Mit der next-Option steuern, wie Next.js Fetch-Antworten cached. force-cache (Standard) cached unbegrenzt. no-store ruft immer frisch ab. revalidate: 60 cached, aber aktualisiert alle 60 Sekunden. revalidateTag() oder revalidatePath() verwenden, um den Cache manuell aus einer Server-Action zu leeren."
+        "text": "Mit der next-Option steuern, wie Next.js Fetch-Antworten cached. force-cache (Standard) cached unbegrenzt. no-store ruft immer frisch ab. revalidate: 60 cached, aber aktualisiert alle 60 Sekunden. revalidateTag() oder revalidatePath() verwenden, um den Cache manuell aus einer Server-Action zu leeren.",
+        "expandedText": "`fetch` mit `{ cache: \"no-store\" }` macht die Seite **dynamisch gerendert** — es verzichtet auf den statischen Cache, entspricht dem alten `getServerSideProps`-Verhalten. `fetch` mit `{ next: { revalidate: N } }` aktiviert **ISR** — Next.js generiert die Seite statisch und regeneriert sie im Hintergrund nach `N` Sekunden. Die veraltete Seite wird sofort bereitgestellt; die frische Seite ist für die nächste Anfrage bereit.\n\nBei ISR sieht der Benutzer immer eine Version der Seite mit null Latenz für die statische Dateiservierung. Für Inhalte, die sich selten ändern, bietet ISR nahezu sofortige Lieferung mit ausreichend frischen Daten. Für häufig ändernde oder personalisierte Inhalte sind `\"no-store\"` oder `revalidatePath` / `revalidateTag` geeigneter."
       },
       {
         "animationStep": 2,
         "heading": "Paralleles Abrufen",
-        "text": "Sequentielle await-Aufrufe erzeugen einen Waterfall — jeder Abruf wartet auf den vorherigen. `Promise.all()` verwenden, um alle Abrufe gleichzeitig zu starten. Dies ist besonders wichtig in verschachtelten Layouts und Seiten, wo mehrere Datenstücke benötigt werden."
+        "text": "Sequentielle await-Aufrufe erzeugen einen Waterfall — jeder Abruf wartet auf den vorherigen. `Promise.all()` verwenden, um alle Abrufe gleichzeitig zu starten. Dies ist besonders wichtig in verschachtelten Layouts und Seiten, wo mehrere Datenstücke benötigt werden.",
+        "expandedText": "Next.js **generiert** Seiten bei `next build` statisch, wenn alle Datenabrufe gecacht oder statisch sind. Eine Route wird als **dynamisch** klassifiziert, wenn sie `fetch` mit `no-store` verwendet, auf `headers()` oder `cookies()` zugreift, oder `searchParams` liest. Das Build-Output protokolliert jede Route mit `○` (statisch), `ƒ` (dynamisch) oder `◑` (ISR).\n\n**`revalidatePath`** und **`revalidateTag`** ermöglichen On-Demand-Revalidierung nach Mutationen. `revalidatePath('/blog')` markiert alle Cache-Einträge für diesen Pfad als veraltet. `revalidateTag('posts')` invalidiert alle `fetch`-Aufrufe, die mit diesem Tag getaggt sind. Diese Funktionen können aus Server Actions oder Route Handlers aufgerufen werden."
       },
       {
         "animationStep": 3,
         "heading": "Datenbankzugriff & ORM",
-        "text": "Server-Komponenten können Datenbank-Clients direkt importieren — kein API-Layer nötig. Ein ORM wie Prisma oder Drizzle für Datenbankabfragen mit vollständigen TypeScript-Typen verwenden. server-only importieren, um zu verhindern, dass ein Modul versehentlich im Browser ausgeführt wird."
+        "text": "Server-Komponenten können Datenbank-Clients direkt importieren — kein API-Layer nötig. Ein ORM wie Prisma oder Drizzle für Datenbankabfragen mit vollständigen TypeScript-Typen verwenden. server-only importieren, um zu verhindern, dass ein Modul versehentlich im Browser ausgeführt wird.",
+        "expandedText": "**`unstable_cache`** bietet Caching-Semantik für beliebige asynchrone Funktionen — nicht nur `fetch`. Datenbankabfragen, Dateisystemzugriff und externe SDK-Aufrufe können gecacht werden: `const getCachedUser = unstable_cache(async (id) => db.users.findById(id), ['user'], { revalidate: 60 })`.\n\nDas **PPR** (Partial Prerendering) Feature in Next.js 15 kombiniert statisches und dynamisches Rendering auf Komponentenebene statt Seitenebene. Statische Teile einer Seite werden bei Build-Zeit gerendert; dynamische Teile sind in Suspense-Grenzen eingebettet und streamen bei Anfrage-Zeit. Dies eliminiert die Alles-oder-nichts-Entscheidung zwischen vollständig statisch und vollständig dynamisch."
       }
     ],
     "cheatSheet": {
@@ -3265,22 +3339,26 @@
       {
         "animationStep": 0,
         "heading": "'use server'-Funktionen",
-        "text": "Eine Server Action ist eine async-Funktion, die mit `'use server'` markiert ist. Sie läuft nur auf dem Server, kann aber von überall aufgerufen werden — einer Client-Komponente, einem Formular-action-Prop oder einer anderen Server-Komponente. Next.js serialisiert den Aufruf transparent über HTTP."
+        "text": "Eine Server Action ist eine async-Funktion, die mit `'use server'` markiert ist. Sie läuft nur auf dem Server, kann aber von überall aufgerufen werden — einer Client-Komponente, einem Formular-action-Prop oder einer anderen Server-Komponente. Next.js serialisiert den Aufruf transparent über HTTP.",
+        "expandedText": "Die `\"use server\"`-Direktive kann an den Anfang einer gesamten Datei platziert werden (wobei alle Exporte zu Server Actions werden) oder inline innerhalb einer asynchronen Funktion innerhalb einer Server Component. Wenn eine Server-Action-Datei von einer Client-Komponente importiert wird, ersetzt Next.js den Import durch einen generierten **RPC-Stub** — eine clientseitige Funktion, die einen `fetch`-POST macht.\n\nServer Actions müssen `async`-Funktionen sein. Sie können jeden serialisierbaren Wert zurückgeben. Das Zurückgeben von `null` oder `undefined` ist gültig für Mutationen, die nur Seiteneffekte haben. Der Rückgabewert ist der primäre Kanal für die Kommunikation von Erfolg, Validierungsfehlern und Weiterleitungsanweisungen zurück an den Client."
       },
       {
         "animationStep": 1,
         "heading": "Formular-Actions",
-        "text": "Eine Server Action direkt an den action-Prop eines Formulars übergeben — kein `onSubmit`, kein `e.preventDefault()`, kein `fetch()`. Der Browser sendet die FormData per POST an die Server Action. Dies funktioniert auch ohne JavaScript — eine Progressive Enhancement."
+        "text": "Eine Server Action direkt an den action-Prop eines Formulars übergeben — kein `onSubmit`, kein `e.preventDefault()`, kein `fetch()`. Der Browser sendet die FormData per POST an die Server Action. Dies funktioniert auch ohne JavaScript — eine Progressive Enhancement.",
+        "expandedText": "Formulare, die Server Actions als ihr `action`-Prop verwenden, erhalten das `FormData`-Objekt als Aktionsargument. Im Gegensatz zu API-basierten Ansätzen ist kein clientseitiger Event-Handler erforderlich — React verwaltet den Formular-Übermittlungs-Lebenszyklus automatisch. Der `useFormStatus`-Hook liefert `pending`-Zustand, der `true` ist, während die Server-Action ausgeführt wird.\n\n`useActionState` (React 19) verwaltet den vollständigen Aktions-Lebenszyklus. Der Hook nimmt `(action, initialState)` und gibt `[state, dispatch, isPending]` zurück. Die Aktion empfängt `(previousState, formData)` — beachte, dass `previousState` das erste Argument ist. Der `state` vom Hook ist der Rückgabewert des letzten Aktionsaufrufs."
       },
       {
         "animationStep": 2,
         "heading": "useActionState — Pending & Fehler",
-        "text": "`useActionState` umhüllt eine Server Action mit Pending/Fehler-State in einer Client-Komponente. Es gibt `[state, action, isPending]` zurück. Die Action ersetzt die rohe Server Action. `isPending` ist true, während die Action läuft. Der `state` enthält den Rückgabewert des letzten Aufrufs."
+        "text": "`useActionState` umhüllt eine Server Action mit Pending/Fehler-State in einer Client-Komponente. Es gibt `[state, action, isPending]` zurück. Die Action ersetzt die rohe Server Action. `isPending` ist true, während die Action läuft. Der `state` enthält den Rückgabewert des letzten Aufrufs.",
+        "expandedText": "Nach einer Mutation in einer Server-Action ist **Cache-Revalidierung** der Mechanismus zur Aktualisierung der gerenderten Ausgabe. `revalidatePath(path)` markiert alle gecachten Daten für diesen Pfad als veraltet. `revalidateTag(tag)` invalidiert alle `fetch`-Aufrufe, die mit diesem Tag getaggt sind. Die `redirect(url)`-Funktion wirft intern, muss also nach allen Datenbankoperationen aufgerufen werden, nicht innerhalb eines try-catch.\n\n`redirect()` innerhalb einer Server-Action führt zu einer **303 See Other**-Weiterleitungsantwort. Für die Post-Übermittlungs-Navigation, bei der der Benutzer auf einer Bestätigungs- oder Listenseite landen soll, ist `redirect()` das richtige Werkzeug. Für umkehrbare Navigation gibt man einen Erfolgszustand aus der Aktion zurück und verwendet `router.push()` in der Client-Komponente."
       },
       {
         "animationStep": 3,
         "heading": "Actions aus Client-Komponenten aufrufen",
-        "text": "Server Actions können programmatisch aus Client-Komponenten aufgerufen werden — nicht nur aus Formularen. Die Action importieren und wie eine normale async-Funktion aufrufen. `useTransition` verwenden, um ein `isPending`-Flag ohne Formularbindung zu erhalten. Nützlich für Löschen-Buttons, Toggle-Actions und Nicht-Formular-Mutationen."
+        "text": "Server Actions können programmatisch aus Client-Komponenten aufgerufen werden — nicht nur aus Formularen. Die Action importieren und wie eine normale async-Funktion aufrufen. `useTransition` verwenden, um ein `isPending`-Flag ohne Formularbindung zu erhalten. Nützlich für Löschen-Buttons, Toggle-Actions und Nicht-Formular-Mutationen.",
+        "expandedText": "Server Actions sind **nicht nur für Formulare** — sie können auch direkt aus Client Components für programmatische Mutationen aufgerufen werden: `const result = await serverAction(data)`. Dies ist nützlich für nicht-Formular-Interaktionen wie Umschalter, Drag-and-Drop oder optimistische Updates.\n\n**Sicherheitsüberlegungen**: Server Actions sind öffentliche Endpunkte. Jede exportierte Server Action ist über einen `fetch`-POST aufrufbar. Man muss **Authentifizierung** und **Autorisierung** innerhalb jeder Action durchführen — nicht davon ausgehen, dass der Aufruf von einer vertrauenswürdigen Client-Komponente kommt."
       }
     ],
     "cheatSheet": {
@@ -3316,17 +3394,20 @@
       {
         "animationStep": 0,
         "heading": "Route-Handler-Dateien",
-        "text": "Eine `route.ts`-Datei innerhalb von `app/api/` erstellen, um HTTP-Endpunkte zu definieren. Benannte Funktionen für jede Methode exportieren: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`. Die Datei verwendet die Standard-Web-Request- und Response-APIs. Route Handler können async sein und auf Datenbanken und Secrets zugreifen."
+        "text": "Eine `route.ts`-Datei innerhalb von `app/api/` erstellen, um HTTP-Endpunkte zu definieren. Benannte Funktionen für jede Methode exportieren: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`. Die Datei verwendet die Standard-Web-Request- und Response-APIs. Route Handler können async sein und auf Datenbanken und Secrets zugreifen.",
+        "expandedText": "**Route Handler** (`route.ts`-Dateien im App Router) ersetzen die `pages/api/`-Konvention durch eine modernere API, die auf der **Web Fetch API** basiert — denselben `Request`- und `Response`-Objekten, die in Service Workers und Edge-Runtimes verwendet werden. Diese Portabilität bedeutet, dass Route Handler auf Node.js, Edge-Runtimes und Deno ohne Code-Änderungen laufen können.\n\nRoute Handler sind für **externe API-Endpunkte** gedacht — Webhooks, mobile App-Backends, Drittanbieter-Integrationen — nicht für Datenabruf durch Next.js-Seiten selbst. Die häufige Anfängerfehler ist das Erstellen interner API-Routen, die von Server Components aufgerufen werden — der direkte Datenbankzugriff ist einfacher und leistungsfähiger."
       },
       {
         "animationStep": 1,
         "heading": "Request-Daten lesen",
-        "text": "Route Handler erhalten ein Standard-Request-Objekt. `request.json()` für JSON-Bodies, `request.formData()` für Formular-Einsendungen, `request.headers` für Header und `new URL(request.url)` für Query-Parameter verwenden. `NextRequest` aus `next/server` für zusätzliche Hilfsmittel wie `cookies()` und `nextUrl` nutzen."
+        "text": "Route Handler erhalten ein Standard-Request-Objekt. `request.json()` für JSON-Bodies, `request.formData()` für Formular-Einsendungen, `request.headers` für Header und `new URL(request.url)` für Query-Parameter verwenden. `NextRequest` aus `next/server` für zusätzliche Hilfsmittel wie `cookies()` und `nextUrl` nutzen.",
+        "expandedText": "Eine `route.ts`-Datei exportiert benannte Funktionen, die HTTP-Methodennamen entsprechen: `GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `HEAD`, `OPTIONS`. Next.js leitet eingehende Anfragen basierend auf der HTTP-Methode an den passenden Export weiter. Eine 405 Method Not Allowed Antwort wird automatisch für nicht exportierte Methoden zurückgegeben.\n\nRoute Handler erhalten die `Request`-Instanz der Web Fetch API und geben eine `Response`-Instanz zurück. Das Lesen von Anfragedaten: `request.json()` für JSON-Body, `request.formData()` für Formulardaten. Das Lesen von Query-Parametern: `new URL(request.url).searchParams.get('param')`."
       },
       {
         "animationStep": 2,
         "heading": "Route Handler vs. Server Actions",
-        "text": "Server Actions (bevorzugt) für Mutationen aus der eigenen React-UI verwenden — kein API-Layer nötig. Route Handler verwenden, wenn eine echte HTTP-API benötigt wird: Webhooks von Drittanbietern, Nutzung durch mobile Apps oder externe Clients oder bei Bedarf von benutzerdefinierten Status-Codes und Headern."
+        "text": "Server Actions (bevorzugt) für Mutationen aus der eigenen React-UI verwenden — kein API-Layer nötig. Route Handler verwenden, wenn eine echte HTTP-API benötigt wird: Webhooks von Drittanbietern, Nutzung durch mobile Apps oder externe Clients oder bei Bedarf von benutzerdefinierten Status-Codes und Headern.",
+        "expandedText": "Der `Response`-Konstruktor erstellt die Antwort mit `body`, `status` und `headers`. `Response.json(data, { status: 200 })` ist der idiomatische Weg, JSON zurückzugeben — es setzt den `Content-Type: application/json`-Header automatisch. `NextResponse` von `next/server` erweitert die Standard-`Response` um Next.js-spezifische Hilfsmethoden.\n\nRoute Handler vs. Server Actions: Wenn die Mutation von React-Komponenten aus ausgelöst wird, sind **Server Actions** die erste Wahl — typsicher, keine HTTP-Endpoints, automatische CSRF-Protektion. Wenn man ein **öffentliches API** für externe Konsumenten bereitstellt (Webhooks, mobile Apps), sind **Route Handler** die richtige Wahl."
       }
     ],
     "cheatSheet": {
@@ -3362,37 +3443,44 @@
       {
         "animationStep": 0,
         "heading": "Bibliothek vs. Framework-Modus",
-        "text": "React Router begann als clientseitige Routing-Bibliothek. In v7 kann es auch als vollständiges Framework betrieben werden — mit dateibasiertem Routing, serverseitigem Rendering und integriertem Datenladen. Im Bibliotheksmodus konfigurierst du BrowserRouter selbst; im Framework-Modus übernimmt React Router den Einstiegspunkt."
+        "text": "React Router begann als clientseitige Routing-Bibliothek. In v7 kann es auch als vollständiges Framework betrieben werden — mit dateibasiertem Routing, serverseitigem Rendering und integriertem Datenladen. Im Bibliotheksmodus konfigurierst du BrowserRouter selbst; im Framework-Modus übernimmt React Router den Einstiegspunkt.",
+        "expandedText": "**React Router Framework-Modus** (früher Remix) kehrt die traditionelle Beziehung zwischen App und Router um. Im Bibliotheksmodus konfiguriert man den Router innerhalb der React-App; im Framework-Modus besitzt der Router den Einstiegspunkt, das Vite-Dev-Server-Plugin und den Build-Output. Diese Eigentümerschaft ermöglicht dem Framework Features, die für eine Bibliothek unmöglich sind: **typsichere Routenpfade**, **automatisches Code-Splitting** pro Routenmodul und **Server-Rendering** ohne zusätzliche Konfiguration.\n\nDie `routes.ts`-Konfigurationsdatei wird zur Build-Zeit ausgewertet, um ein **typisiertes Routenmanifest** zu erzeugen. In der Konfiguration definierte Routenpfade werden statisch geprüft — ein Tippfehler wie `/usres/:id` ist ein Build-Fehler, kein Laufzeit-404. Das Manifest treibt auch das Code-Splitting an: Jedes Routenmodul ist ein separater Chunk."
       },
       {
         "animationStep": 1,
         "heading": "routes.js Konfiguration",
-        "text": "Der Framework-Modus verwendet eine routes.js-Datei zur Deklaration der Route-Struktur. Der index()-Helfer deklariert die Index-Route; route() deklariert benannte Routen mit URL-Muster und Dateipfad zum Route-Modul."
+        "text": "Der Framework-Modus verwendet eine routes.js-Datei zur Deklaration der Route-Struktur. Der index()-Helfer deklariert die Index-Route; route() deklariert benannte Routen mit URL-Muster und Dateipfad zum Route-Modul.",
+        "expandedText": "Die **`routes.ts`-Konfiguration** verwendet eine hierarchische `route()`- und `layout()`-API, die die Komponentenbaum-Struktur widerspiegelt. Ein `layout()`-Aufruf umhüllt seine Kinder in einer gemeinsamen Layout-Komponente, die ein `Outlet` rendert; `route()` definiert einen Pfad und eine Moduldatei. Die verschachtelte Struktur der Konfiguration bestimmt direkt die verschachtelte Struktur der gerenderten Komponenten.\n\nRoutenpfade in der Konfiguration werden **statisch zur Build-Zeit geprüft**, was eine ganze Klasse von Tippfehler-basierten Bugs eliminiert. Die generierte Typinformation ermöglicht auch IDE-Autovervollständigung für `Link to`- und `useNavigate`-Aufrufe — man erhält einen Typfehler, wenn man zu einem nicht existierenden Pfad navigiert."
       },
       {
         "animationStep": 2,
         "heading": "Route-Module",
-        "text": "Ein Route-Modul exportiert benannte Funktionen, die React Router kennt: default (die Komponente), loader/clientLoader (Datenabruf), action/clientAction (Mutationen) und ErrorBoundary (Fehler-UI). React Router verbindet diese automatisch."
+        "text": "Ein Route-Modul exportiert benannte Funktionen, die React Router kennt: default (die Komponente), loader/clientLoader (Datenabruf), action/clientAction (Mutationen) und ErrorBoundary (Fehler-UI). React Router verbindet diese automatisch.",
+        "expandedText": "Ein **Routenmodul** ist eine Datei, die einen spezifischen Satz benannter Exporte exportiert, die React Router erkennt: `default` (die Komponente), `loader` (serverseitige Daten), `clientLoader` (clientseitige Daten), `action` (serverseitige Mutation), `clientAction` (clientseitige Mutation), `HydrateFallback` (initiales Lade-Skeleton) und `ErrorBoundary` (Fehler-UI). Jede Route ist vollständig in sich geschlossen.\n\nDiese Co-Lokation hat bedeutende Wartbarkeitsvorteile. Um zu verstehen, was eine Route tut, öffnet man eine Datei: Man sieht, welche Daten sie benötigt, wie sie Fehler behandelt und wie sie Mutationen handhabt — ohne separate API-Dateien nachverfolgen zu müssen. React Router **code-splittet** automatisch jedes Routenmodul."
       },
       {
         "animationStep": 3,
         "heading": "clientLoader — CSR-Datenladen",
-        "text": "clientLoader lädt Daten im Browser, bevor die Komponente rendert. Er empfängt { params } für URL-Parameter. Exportiere HydrateFallback, um eine Lade-UI beim ersten Besuch anzuzeigen."
+        "text": "clientLoader lädt Daten im Browser, bevor die Komponente rendert. Er empfängt { params } für URL-Parameter. Exportiere HydrateFallback, um eine Lade-UI beim ersten Besuch anzuzeigen.",
+        "expandedText": "Ein **`clientLoader`** läuft im Browser nach der Navigation und kann Browser-exklusive APIs wie `localStorage`, `sessionStorage` und `IndexedDB` zusammen mit `fetch` verwenden. Die `HydrateFallback`-Komponente wird nur beim initialen Seitenladen angezeigt, während der `clientLoader` läuft — bei nachfolgenden client-seitigen Navigationen bleibt die vorherige Route sichtbar, bis der Loader aufgelöst ist.\n\nDas Muster, aus einem Client-seitigen Cache in `clientLoader` zu lesen und auf das Netzwerk zurückzugreifen, wenn veraltet, ist eine leistungsstarke Methode, um Navigation sofortig zu machen. Das `serverLoader()`-Utility (verfügbar innerhalb von `clientLoader`) erlaubt das Weiterleiten der Anfrage an den Server-Loader bei Cache-Misses."
       },
       {
         "animationStep": 4,
         "heading": "loader — SSR-Datenladen",
-        "text": "loader wird auf dem Server ausgeführt — bevor HTML an den Browser gesendet wird. Er kann sicher auf Datenbanken oder serverseitige APIs zugreifen, ohne diese im Client-Bundle zu exponieren. Die Komponente empfängt dieselbe loaderData-Prop."
+        "text": "loader wird auf dem Server ausgeführt — bevor HTML an den Browser gesendet wird. Er kann sicher auf Datenbanken oder serverseitige APIs zugreifen, ohne diese im Client-Bundle zu exponieren. Die Komponente empfängt dieselbe loaderData-Prop.",
+        "expandedText": "Ein **serverseitiger Loader** hat Zugriff auf die gesamte Node.js-Umgebung — Umgebungsvariablen, Datenbankverbindungen und server-exklusive Geheimnisse, die niemals in den Client gebündelt werden dürfen. Bei client-seitigen Navigationen ruft React Router den Loader automatisch über einen `fetch` an einen framework-generierten API-Endpunkt auf, und die Komponente empfängt `loaderData` in beiden Szenarien identisch.\n\n`defer()` ermöglicht es einem Loader, eine Mischung aus aufgelösten und ausstehenden Daten zurückzugeben. Aufgelöste Werte rendern sofort; ausstehende Werte werden gestreamt, wenn sie sich auflösen. Die Komponente umhüllt den ausstehenden Wert in `<Suspense>`, um ein Skeleton anzuzeigen, bis die langsamen Daten eintreffen."
       },
       {
         "animationStep": 5,
         "heading": "Form & Actions",
-        "text": "clientAction und action verarbeiten Formularmutationen. Die Form-Komponente von React Router serialisiert das Formular und ruft die passende Action auf. Nach der Action werden Loader automatisch neu validiert."
+        "text": "clientAction und action verarbeiten Formularmutationen. Die Form-Komponente von React Router serialisiert das Formular und ruft die passende Action auf. Nach der Action werden Loader automatisch neu validiert.",
+        "expandedText": "**Automatische Revalidierung** nach einer Aktion ist eines der mächtigsten Features im React Router Framework-Modus. Nach einer erfolgreichen Aktion werden alle aktiven Loader auf der Seite parallel erneut ausgeführt und die Komponenten werden atomar mit frischen Daten aktualisiert. Dies eliminiert den manuellen Cache-Invalidierungscode der die meisten React-Mutationsimplementierungen füllt.\n\n`shouldRevalidate` ist ein Fluchtluk, das bestimmten Loadern ermöglicht, sich aus der automatischen Revalidierung auszuschließen. Es erhält die vorherigen und nächsten URLs sowie die Formulardaten und das Aktionsergebnis, was eine fein granulierte Kontrolle über die Revalidierung ermöglicht."
       },
       {
         "animationStep": 6,
         "heading": "Rendering-Strategien",
-        "text": "React Router v7 unterstützt drei Rendering-Strategien in react-router.config.js. CSR rendert alles im Browser; SSR rendert HTML bei jeder Anfrage auf dem Server; SSG rendert Seiten zur Build-Zeit vor."
+        "text": "React Router v7 unterstützt drei Rendering-Strategien in react-router.config.js. CSR rendert alles im Browser; SSR rendert HTML bei jeder Anfrage auf dem Server; SSG rendert Seiten zur Build-Zeit vor.",
+        "expandedText": "Die **Rendering-Strategie** — SSR, SSG oder CSR — bestimmt, wie und wann HTML generiert wird. **SSR** generiert bei jeder Anfrage HTML, garantiert frische Inhalte und vollständige Crawlbarkeit, erfordert aber einen laufenden Node.js-Server. **SSG** rendert HTML zum Build-Zeitpunkt in statische Dateien, die von einem CDN mit nahezu null Latenz bereitgestellt werden.\n\n**CSR** liefert eine leere Shell und rendert vollständig im Browser. React Router Framework-Modus unterstützt alle drei Strategien pro Route, was ein Hybrid erlaubt: Marketing-Seiten statisch generieren, authentifizierte Dashboard-Seiten mit SSR, interaktive Editor-Seiten mit CSR — alles im selben Projekt."
       }
     ]
   },
@@ -3403,27 +3491,32 @@
       {
         "animationStep": 0,
         "heading": "Das Wasserfall-Problem",
-        "text": "Wenn eine Elternkomponente Daten lädt und das Kind erst nach dem Datenabruf rendert, entsteht ein Wasserfall — jede Anfrage wartet auf die vorherige. Die Gesamtwartezeit ist die Summe aller Anfragen, nicht die längste."
+        "text": "Wenn eine Elternkomponente Daten lädt und das Kind erst nach dem Datenabruf rendert, entsteht ein Wasserfall — jede Anfrage wartet auf die vorherige. Die Gesamtwartezeit ist die Summe aller Anfragen, nicht die längste.",
+        "expandedText": "Das **Waterfall-Problem** ist die wichtigste Quelle für schlechte wahrgenommene Performance in React-Anwendungen. Wenn eine Elternkomponente Daten abruft, kann das Kind nicht einmal beginnen zu mounten, bis die Elterndaten ankommen. Wenn das Kind ebenfalls Daten abruft, warten Benutzer auf beide Anfragen sequentiell. Drei Verschachtelungsebenen mit sequentiellen Abrufen bedeutet, dass Benutzer auf die Summe aller Latenzen warten, nicht das Maximum.\n\nDie Lösung ist, **parallele Anfragen** so früh wie möglich zu starten. Auf Route-Ebene bedeutet dies das Verwenden von Loader-Funktionen, die alle Daten für eine Route auslösen, bevor Komponenten mounten. Der kritische Gedanke: Wenn zwei Datenstücke gleichzeitig benötigt werden, sollten beide Anfragen gleichzeitig gestartet werden."
       },
       {
         "animationStep": 1,
         "heading": "Fetch-on-Render (useEffect-Muster)",
-        "text": "Das klassische Muster platziert den Datenabruf in useEffect. Die Komponente rendert zuerst mit einem Spinner, dann wird der Effekt ausgeführt. Es erzwingt sequentielles Rendering: ein Kind kann erst laden, wenn das Elternteil fertig gerendert hat."
+        "text": "Das klassische Muster platziert den Datenabruf in useEffect. Die Komponente rendert zuerst mit einem Spinner, dann wird der Effekt ausgeführt. Es erzwingt sequentielles Rendering: ein Kind kann erst laden, wenn das Elternteil fertig gerendert hat.",
+        "expandedText": "Der **veraltete Closure-Bug** im `useEffect`-Datenabruf ist entscheidend zu verstehen: Wenn die Komponente mit einer neuen `userId`-Prop neu rendert, während der vorherige `fetch` noch unterwegs ist, werden beide Anfragen schließlich `setState` aufrufen. Diejenige, die zuletzt aufgelöst wird, gewinnt. Der Fix erfordert ein Cleanup-Flag: `let cancelled = false` zu Beginn des Effekts, `if (!cancelled) setState(...)` nach dem Fetch, und `cancelled = true` in der Cleanup-Funktion.\n\nDieses Pattern wird so häufig benötigt, dass es typischerweise in einen benutzerdefinierten `useFetch`-Hook extrahiert wird. Die Alternative — `AbortController` — bricht die Netzwerkanfrage selbst ab: `fetch(url, { signal: controller.signal })` mit `controller.abort()` in der Cleanup-Funktion."
       },
       {
         "animationStep": 2,
         "heading": "Render-as-you-Fetch",
-        "text": "Render-as-you-Fetch startet alle Abrufe vor dem Rendern des Komponentenbaums. Abrufe laufen parallel, daher ist die Gesamtzeit gleich der langsamsten Anfrage — nicht der Summe."
+        "text": "Render-as-you-Fetch startet alle Abrufe vor dem Rendern des Komponentenbaums. Abrufe laufen parallel, daher ist die Gesamtzeit gleich der langsamsten Anfrage — nicht der Summe.",
+        "expandedText": "**Render-as-you-fetch** ist ein Muster, bei dem der Datenabruf so früh wie möglich beginnt — bevor die Komponente, die die Daten verbraucht, mountet — typischerweise zum Navigationszeit in einem Router-Loader. Das Promise wird als Prop oder über Kontext weitergegeben, und die verbrauchende Komponente ruft `use(promise)` auf, um auf die Daten zuzugreifen.\n\nDer Performance-Gewinn ist signifikant: Anstatt Rendern → Mount → Abruf starten zu warten, werden Abruf starten und Rendern gleichzeitig ausgeführt. Die Komponente rendert, wenn der Abruf aufgelöst ist. Dies eliminiert den \"Loading-Zustand\" vollständig für Daten, die auf Route-Ebene abgerufen werden können."
       },
       {
         "animationStep": 3,
         "heading": "Suspense + use()",
-        "text": "Reacts use()-Hook löst ein Promise in einer Komponente auf. Ist das Promise noch nicht erfüllt, wird die Komponente suspendiert und React zeigt den nächsten Suspense-Fallback. ErrorBoundary fängt abgelehnte Promises ab."
+        "text": "Reacts use()-Hook löst ein Promise in einer Komponente auf. Ist das Promise noch nicht erfüllt, wird die Komponente suspendiert und React zeigt den nächsten Suspense-Fallback. ErrorBoundary fängt abgelehnte Promises ab.",
+        "expandedText": "Der **`use()`-Hook** in React 19 kann ein Promise innerhalb einer Komponente auspacken und gibt den aufgelösten Wert zurück. Wenn das Promise noch ausstehend ist, suspendiert `use()` die Komponente durch Werfen des Promises — React fängt es ab und rendert den nächsten `<Suspense>`-Fallback. Wenn das Promise aufgelöst wird, setzt React das Rendering fort. Wenn das Promise abgelehnt wird, wird der nächste Error-Boundary-Vorfahre aktiviert.\n\nDer entscheidende Unterschied zwischen `use()` und `await`: `await` kann nur in `async`-Funktionen verwendet werden und blockiert den gesamten Render. `use()` kann in jedem Komponentenkontext verwendet werden und suspendiert die Komponente ohne den Haupt-Thread zu blockieren."
       },
       {
         "animationStep": 4,
         "heading": "Loader als Lösung",
-        "text": "Die sauberste Implementierung delegiert den Datenabruf an den Router. Der React-Router-Loader wird beim Start einer Navigation ausgeführt — bevor Komponenten rendern. Kein useEffect, keine manuelle Promise-Verwaltung."
+        "text": "Die sauberste Implementierung delegiert den Datenabruf an den Router. Der React-Router-Loader wird beim Start einer Navigation ausgeführt — bevor Komponenten rendern. Kein useEffect, keine manuelle Promise-Verwaltung.",
+        "expandedText": "Router-**Loader** sind `useEffect` für den Datenabruf überlegen, weil sie ausgeführt werden, bevor die Routentransition abgeschlossen ist — die Browser-URL aktualisiert sich nicht und die Komponente mountet nicht, bis der Loader aufgelöst ist. Das bedeutet, dass die Komponente beim ersten Render immer Daten erhält, ohne Ladezustand in der Komponente selbst zu benötigen.\n\nAuf diese Weise wird das Waterfall-Problem auf Routenebene beseitigt: Der Loader ruft alle Daten für die Route ab — potentiell mit `Promise.all` für mehrere parallele Anfragen — und die Komponente rendert einmal mit allen Daten. Loader können auch als Cache mit Bibliotheken wie TanStack Query fungieren: `loader = () => queryClient.ensureQueryData(options)`."
       }
     ]
   },
@@ -3434,32 +3527,38 @@
       {
         "animationStep": 0,
         "heading": "onSubmit + preventDefault",
-        "text": "Das klassische React-Formularmuster fängt das Submit-Event ab, ruft preventDefault() auf und sendet die Daten manuell mit fetch. Lade-, Fehler- und Erfolgszustand werden manuell mit useState verwaltet."
+        "text": "Das klassische React-Formularmuster fängt das Submit-Event ab, ruft preventDefault() auf und sendet die Daten manuell mit fetch. Lade-, Fehler- und Erfolgszustand werden manuell mit useState verwaltet.",
+        "expandedText": "Das traditionelle Muster, den Formularbetragungs-Zustand mit drei separaten `useState`-Hooks zu verwalten — `loading`, `error` und `success` — erfordert sorgfältige Koordinierung. Ein häufiger Bug ist das Vergessen, `setLoading(false)` im `catch`-Block aufzurufen, was den Submit-Button nach einem Netzwerkfehler dauerhaft deaktiviert. Die Verwendung eines `useReducer` statt dreier unabhängiger Zustandsvariablen stellt die atomare Zustandstransition sicher.\n\n`e.preventDefault()` ist für Formular-Submits unerlässlich — ohne es lädt die Browser-Seite neu und übermittelt das Formular an die Server-URL. Das Abfangen und Verhindern dieser Standardaktion ist der erste Schritt in jeder JavaScript-Formularbehandlung."
       },
       {
         "animationStep": 1,
         "heading": "Formular-Actions (React 19)",
-        "text": "React 19 führt die action-Prop für Formularelemente ein. Übergib eine async-Funktion direkt — React ruft sie mit einem FormData-Objekt auf. Kein onSubmit, kein preventDefault nötig."
+        "text": "React 19 führt die action-Prop für Formularelemente ein. Übergib eine async-Funktion direkt — React ruft sie mit einem FormData-Objekt auf. Kein onSubmit, kein preventDefault nötig.",
+        "expandedText": "**React 19 Formularaktionen** integrieren sich in das native Formular-Übermittlungsmodell des Browsers und die `FormData`-API, was bedeutet, dass sie ohne JavaScript als **Progressive Enhancement**-Baseline funktionieren. Das `action`-Prop auf einem `<form>`-Element akzeptiert eine asynchrone Funktion, die ein `FormData`-Objekt erhält. Kein Event-Objekt, kein `e.preventDefault()`, keine manuelle JSON-Serialisierung.\n\nBei deaktiviertem JavaScript submittiert das Formular an den Server mit standardmäßiger POST-Übermittlung. Bei aktiviertem JavaScript fängt React die Übermittlung ab und ruft die Aktionsfunktion auf. Dieses Progressive-Enhancement-Muster war historisch schwierig in React zu implementieren; React 19 macht es idiomatisch."
       },
       {
         "animationStep": 2,
         "heading": "FormData",
-        "text": "FormData ist die integrierte Browser-Methode zum Sammeln von Formularfeldern. Das name-Attribut eines Inputs wird zum Schlüssel. formData.get() gibt einen einzelnen Wert zurück; formData.getAll() gibt mehrere Werte für Checkboxen zurück."
+        "text": "FormData ist die integrierte Browser-Methode zum Sammeln von Formularfeldern. Das name-Attribut eines Inputs wird zum Schlüssel. formData.get() gibt einen einzelnen Wert zurück; formData.getAll() gibt mehrere Werte für Checkboxen zurück.",
+        "expandedText": "`FormData` unterstützt das vollständige HTML-Formularfeld-Modell: Texteingaben, Selects, Textbereiche, Checkboxen, Radio-Buttons und Datei-Eingaben. `formData.get(name)` gibt den Wert als String zurück; `formData.getAll(name)` gibt ein Array für Multi-Wert-Felder zurück. **Datei-Eingaben** geben `File`-Objekte statt Strings zurück, und `File` erweitert `Blob` mit `name`-, `size`- und `type`-Eigenschaften.\n\nFür strukturierte Datenvalidierung eignet sich `Object.fromEntries(formData)` für einfache Formulare mit flacher Struktur. Für verschachtelte Felder oder benutzerdefinierte Validierungsanforderungen sind Bibliotheken wie `zod` für das Schema und `conform` für die React-Integration hilfreicher."
       },
       {
         "animationStep": 3,
         "heading": "useFormStatus — Ladezustand",
-        "text": "useFormStatus() aus react-dom liest den Ausstehend-Zustand der nächsten übergeordneten Formular-Action. Es muss in einer Kindkomponente innerhalb des Formulars aufgerufen werden — es liest Kontext, keine Props."
+        "text": "useFormStatus() aus react-dom liest den Ausstehend-Zustand der nächsten übergeordneten Formular-Action. Es muss in einer Kindkomponente innerhalb des Formulars aufgerufen werden — es liest Kontext, keine Props.",
+        "expandedText": "`useFormStatus` liest den **Ausstehend-Zustand des nächsten Vorfahren-`<form>`**, das eine React 19-Aktion hat. Es muss innerhalb einer Komponente aufgerufen werden, die ein **Nachkomme** des Formulars ist, nicht die Formularkomponente selbst. Dies ist der häufigste Fehler: `useFormStatus` auf der obersten Ebene der Komponente aufzurufen, die das Formular rendert.\n\nDas korrekte Muster ist die Erstellung einer `<SubmitButton>`-Komponente, die `useFormStatus` aufruft und innerhalb des `<form>` platziert wird. Diese Trennung ist sauber — der Submit-Button weiß, dass er deaktiviert werden soll, wenn das Formular submitted wird, ohne dass der Elternteil Zustand weiterleiten muss."
       },
       {
         "animationStep": 4,
         "heading": "ErrorBoundary für Formulare",
-        "text": "Wenn eine Formular-Action einen Fehler wirft, fängt ein ErrorBoundary ihn ab und zeigt eine Fallback-UI. Die Fallback-Komponente erhält resetErrorBoundary für einen Wiederholungsversuch. Geeignet für unerwartete Serverfehler."
+        "text": "Wenn eine Formular-Action einen Fehler wirft, fängt ein ErrorBoundary ihn ab und zeigt eine Fallback-UI. Die Fallback-Komponente erhält resetErrorBoundary für einen Wiederholungsversuch. Geeignet für unerwartete Serverfehler.",
+        "expandedText": "Das Verwenden von `ErrorBoundary` für Formulare sollte auf wirklich unerwartete Fehler reserviert werden — Netzwerktimeouts, 500-Antworten oder nicht abgefangene Ausnahmen in der Aktionsfunktion — nicht für Validierungsfehler. Das Anzeigen einer vollständigen Error-Boundary-Benutzeroberfläche für ein fehlendes Pflichtfeld ist eine schlechte Benutzererfahrung: Alle Formulareingaben gehen verloren.\n\nValidierungsfehler sollten stattdessen als **Rückgabewerte** aus der Aktionsfunktion behandelt werden: `return { errors: { email: 'Ungültige E-Mail-Adresse' } }`. `useActionState` empfängt diesen Wert und stellt ihn für das Formular zur Verfügung. Field-level Fehler, die neben den Eingaben angezeigt werden, sind eine überlegene Benutzererfahrung."
       },
       {
         "animationStep": 5,
         "heading": "useActionState",
-        "text": "useActionState(action, initialState) umhüllt eine Formular-Action und gibt das letzte Ergebnis als State zurück — ideal für feldweise Validierungsfehler. Die Action erhält (previousState, formData) und gibt den neuen State zurück."
+        "text": "useActionState(action, initialState) umhüllt eine Formular-Action und gibt das letzte Ergebnis als State zurück — ideal für feldweise Validierungsfehler. Die Action erhält (previousState, formData) und gibt den neuen State zurück.",
+        "expandedText": "`useActionState` leitet **vorherigen Zustand** durch jeden Aktionsaufruf durch. Die Aktionssignatur ist `async function action(previousState, formData)` — beachte, dass `previousState` das **erste Argument** ist, nicht `formData`. Dies ist die häufigste Quelle für subtile Bugs: Wenn man die Aktion so schreibt, dass sie nur `formData` akzeptiert, empfängt das `formData`-Argument stillschweigend den Wert von `previousState`.\n\nDer vollständige Hook-Rückgabewert `[state, dispatch, isPending]` enthält alles, was zum Verwalten des Aktions-Lebenszyklus benötigt wird. `state` ist der Rückgabewert der letzten Aktion — idealerweise ein strukturiertes Objekt wie `{ success: boolean, errors?: Record<string, string> }`. Dieses Hook ersetzt mehrere `useState`-Aufrufe durch eine einzige, klar strukturierte Zustandsmaschine."
       }
     ]
   },
@@ -3470,27 +3569,32 @@
       {
         "animationStep": 0,
         "heading": "Das Caching-Problem",
-        "text": "Jedes Mal wenn ein Nutzer zu einer Route zurücknavigiert, wird ein useEffect-Fetch erneut ausgelöst — auch ohne Datenänderung. Clientseitiges Caching speichert Abrufergebnisse nach Schlüssel, sodass Folgebesuche sofort angezeigt werden."
+        "text": "Jedes Mal wenn ein Nutzer zu einer Route zurücknavigiert, wird ein useEffect-Fetch erneut ausgelöst — auch ohne Datenänderung. Clientseitiges Caching speichert Abrufergebnisse nach Schlüssel, sodass Folgebesuche sofort angezeigt werden.",
+        "expandedText": "**TanStack Query** löst Probleme, die manueller `useEffect`-Datenabruf nicht kann: **Request-Deduplication**, Hintergrund-Refetching, Stale-while-revalidate-Caching und koordinierte Invalidierung. Wenn zwei Komponenten gleichzeitig mit demselben `queryKey` mounten, wird nur eine HTTP-Anfrage gesendet — beide Komponenten erhalten dieselben Daten, wenn sie aufgelöst werden.\n\nDer **`QueryClient`** ist ein Cache, der Query-Ergebnisse speichert, den Ladezustand verfolgt und Hintergrund-Refetching verwaltet. Er wird einmal an der Anwendungswurzel konfiguriert und von allen `useQuery`-Aufrufen über den `QueryClientProvider` aufgerufen. Der Cache wird über die gesamte Anwendung geteilt, sodass das Navigieren von einer Seite und zurück sofort gecachte Daten zurückgeben kann."
       },
       {
         "animationStep": 1,
         "heading": "Stale vs. Fresh-Daten",
-        "text": "TanStack Query verfolgt, ob gecachte Daten frisch (kürzlich abgerufen) oder veraltet (alt genug für einen Hintergrund-Refetch) sind. staleTime steuert das Zeitfenster — 0 bedeutet immer veraltet, Infinity bedeutet kein automatischer Refetch. Standard ist 0."
+        "text": "TanStack Query verfolgt, ob gecachte Daten frisch (kürzlich abgerufen) oder veraltet (alt genug für einen Hintergrund-Refetch) sind. staleTime steuert das Zeitfenster — 0 bedeutet immer veraltet, Infinity bedeutet kein automatischer Refetch. Standard ist 0.",
+        "expandedText": "`staleTime` und `gcTime` sind unabhängig und werden häufig verwechselt. **`staleTime`** (Standard: `0`) steuert, wann Daten als veraltet gelten — bei `staleTime: 0` sind Daten sofort nach dem Empfang veraltet. Ein Nicht-Null-`staleTime` bedeutet, dass die Daten für diese Dauer als frisch gelten. **`gcTime`** (früher `cacheTime`, Standard: 5 Minuten) steuert, wie lange nicht verwendete Daten im Cache bleiben.\n\nAls veraltet markierte Daten werden **nicht sofort weggeworfen** — sie verbleiben im Cache und werden an neue Subscriber zurückgegeben, während ein Hintergrund-Refetch läuft. Dies ist das **Stale-while-revalidate**-Muster. Das Setzen von `staleTime: Infinity` deaktiviert das Hintergrund-Refetching vollständig."
       },
       {
         "animationStep": 2,
         "heading": "useQuery",
-        "text": "useQuery nimmt einen queryKey und eine queryFn. Der queryKey ist ein Array, das die Abfrage eindeutig identifiziert — alle Variablen einschließen, die den Abruf beeinflussen. queryFn ist die async-Funktion. Gibt data, isLoading, isError und error zurück."
+        "text": "useQuery nimmt einen queryKey und eine queryFn. Der queryKey ist ein Array, das die Abfrage eindeutig identifiziert — alle Variablen einschließen, die den Abruf beeinflussen. queryFn ist die async-Funktion. Gibt data, isLoading, isError und error zurück.",
+        "expandedText": "Der **`queryKey`** ist ein Abhängigkeits-Array analog zum `useEffect`-Abhängigkeits-Array — jede Variable, die die `queryFn` verwendet, muss im Key erscheinen. Bei einer Änderung von `userId` erstellt TanStack Query einen neuen Cache-Eintrag für den neuen Key und ruft frische Daten ab. Das Weglassen von `userId` aus dem Key bedeutet, dass derselbe Cache-Eintrag unabhängig vom ausgewählten Benutzer zurückgegeben wird.\n\nDie Key-**Struktur** ist wichtig für die Cache-Invalidierung. Hierarchische Keys wie `[\"posts\", postId, \"comments\"]` ermöglichen gezielte Invalidierung: `invalidateQueries({ queryKey: [\"posts\", postId] })` invalidiert alle unter diesem Post verschachtelten Queries. Eine praktische Regel: Keys so strukturieren, dass sie die Datenhierarchie widerspiegeln."
       },
       {
         "animationStep": 3,
         "heading": "Hintergrund-Refetch",
-        "text": "Wenn eine veraltete Abfrage erneut gemountet wird, zeigt TanStack Query sofort die gecachten Daten und führt im Hintergrund einen Refetch durch. Nutzer sehen Inhalte sofort — kein Spinner bei Rückkehr."
+        "text": "Wenn eine veraltete Abfrage erneut gemountet wird, zeigt TanStack Query sofort die gecachten Daten und führt im Hintergrund einen Refetch durch. Nutzer sehen Inhalte sofort — kein Spinner bei Rückkehr.",
+        "expandedText": "`isLoading` und `isFetching` repräsentieren unterschiedliche Zustände. **`isLoading`** ist `true` nur beim initialen Abruf, wenn keine gecachten Daten vorhanden sind. **`isFetching`** ist `true`, wann immer eine Anfrage läuft, einschließlich Hintergrund-Refetches. Ein vollständiges Lade-Skeleton bei `isLoading` anzeigen; einen subtilen Fortschrittsindikator bei `isFetching`.\n\nDas `status`-Feld liefert einen Union-Typ — `\"pending\"`, `\"success\"`, `\"error\"` — für strukturiertes UI-Rendering. Innerhalb `status === \"success\"` ist `data` als der aufgelöste Wert typisiert statt `T | undefined`. Dies ist einer der wichtigsten ergonomischen Vorteile von TanStack Query gegenüber manuellem `useEffect`-Zustandsmanagement."
       },
       {
         "animationStep": 4,
         "heading": "useMutation",
-        "text": "useMutation verarbeitet Schreiboperationen. Rufe mutate mit deinen Variablen auf. Verwende onSuccess, um verwandte Queries zu invalidieren — so bleibt der Cache nach Erstell-, Aktualisierungs- oder Löschoperationen synchron."
+        "text": "useMutation verarbeitet Schreiboperationen. Rufe mutate mit deinen Variablen auf. Verwende onSuccess, um verwandte Queries zu invalidieren — so bleibt der Cache nach Erstell-, Aktualisierungs- oder Löschoperationen synchron.",
+        "expandedText": "`invalidateQueries` markiert übereinstimmende Cache-Einträge als veraltet und löst sofort ein Hintergrund-Refetch aus. Es verwendet standardmäßig **Präfix-Matching**: Das Invalidieren von `[\"posts\"]` invalidiert auch `[\"posts\", 1]` und `[\"posts\", 1, \"comments\"]`. Für **optimistische Updates** wird `onMutate` verwendet, um `setQueryData` mit dem erwarteten Ergebnis aufzurufen.\n\n`useMutation` verwaltet den Lebenszyklus einer Mutation: `isPending`, `isError` und `isSuccess` spiegeln den Status wider. Die `mutateAsync`-Funktion gibt ein Promise zurück für Fälle, in denen man das Ergebnis `await`en muss. Der `onSettled`-Callback wird sowohl bei Erfolg als auch bei Fehler ausgeführt."
       }
     ]
   }
