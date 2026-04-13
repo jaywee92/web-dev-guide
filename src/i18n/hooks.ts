@@ -64,6 +64,7 @@ interface StepTranslation {
   animationStep: number
   heading: string
   text: string
+  expandedText?: string
   analogy?: { title: string; text: string[] }
 }
 interface CheatSheetTranslation {
@@ -127,8 +128,9 @@ export function useTopic(id: string): Topic | undefined {
           const txAnalogy = txStep?.analogy
           return {
             ...step,
-            heading: txStep?.heading ?? step.heading,
-            text:    txStep?.text    ?? step.text,
+            heading:      txStep?.heading      ?? step.heading,
+            text:         txStep?.text         ?? step.text,
+            expandedText: txStep?.expandedText ?? step.expandedText,
             analogy: step.analogy && txAnalogy
               ? { ...step.analogy, title: txAnalogy.title, text: txAnalogy.text }
               : step.analogy,
@@ -190,8 +192,9 @@ export function useTopics(): Topic[] {
             const txAnalogy = txStep?.analogy
             return {
               ...step,
-              heading: txStep?.heading ?? step.heading,
-              text:    txStep?.text    ?? step.text,
+              heading:      txStep?.heading      ?? step.heading,
+              text:         txStep?.text         ?? step.text,
+              expandedText: txStep?.expandedText ?? step.expandedText,
               analogy: step.analogy && txAnalogy
                 ? { ...step.analogy, title: txAnalogy.title, text: txAnalogy.text }
                 : step.analogy,
