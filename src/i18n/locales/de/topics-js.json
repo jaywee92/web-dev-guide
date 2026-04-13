@@ -15,7 +15,7 @@
             "var leckt aus Blöcken heraus — das if-Scope wird ignoriert, der Funktionsbereich gewinnt."
           ]
         },
-        "expandedText": "**var** ist **funktionsscoped**: es verlässt `if`-Blöcke und `for`-Schleifen und gelangt bis in die nächste umschließende Funktion. Die Engine **hoisted** außerdem `var`-Deklarationen an den Anfang der Funktion und initialisiert sie mit `undefined` — ein Zugriff auf `var` vor der Deklarationszeile ergibt stillschweigend `undefined` statt eines Fehlers.\n\nDieses stille Verhalten verursacht schwer auffindbare Fehler in großen Codebasen. Modernes JavaScript ersetzte `var` durch `let` und `const`, die **blockscoped** sind und einen `ReferenceError` werfen, wenn man vor der Deklaration auf sie zugreift (die **Temporal Dead Zone**). Behandle `var` als historisches Artefakt und vermeide es in jedem neuen Code."
+        "expandedText": "🔬 **var** ist **funktionsscoped**: es verlässt `if`-Blöcke und `for`-Schleifen und gelangt bis in die nächste umschließende Funktion. Die Engine **hoisted** außerdem `var`-Deklarationen an den Anfang der Funktion und initialisiert sie mit `undefined` — ein Zugriff auf `var` vor der Deklarationszeile ergibt stillschweigend `undefined` statt eines Fehlers.\n\n⚠️ Dieses stille Verhalten verursacht schwer auffindbare Fehler in großen Codebasen. Modernes JavaScript ersetzte `var` durch `let` und `const`, die **blockscoped** sind und einen `ReferenceError` werfen, wenn man vor der Deklaration auf sie zugreift (die **Temporal Dead Zone**). Behandle `var` als historisches Artefakt und vermeide es in jedem neuen Code."
       },
       {
         "animationStep": 1,
@@ -29,7 +29,7 @@
             "let bleibt im Block — der Versuch, von außen darauf zuzugreifen, wirft einen ReferenceError."
           ]
         },
-        "expandedText": "`let` deklariert eine **blockscoped** Variable: sie existiert nur zwischen dem `{` und dem `}`, in dem sie deklariert wurde. Ein `let` im Header einer `for`-Schleife erzeugt für jede Iteration eine frische Bindung — entscheidend, wenn Closures die Schleifenvariable einfangen und jede Closure einen anderen Wert sehen soll.\n\n`let` befindet sich in der **Temporal Dead Zone** zwischen dem Beginn seines Blocks und der Deklarationszeile — ein Zugriff dort wirft sofort einen `ReferenceError` statt `undefined` zurückzugeben. Dieses Frühfehler-Verhalten macht Bugs wesentlich leichter auffindbar als die stillen Fehler, die `var` verursacht."
+        "expandedText": "📖 `let` deklariert eine **blockscoped** Variable: sie existiert nur zwischen dem `{` und dem `}`, in dem sie deklariert wurde. Ein `let` im Header einer `for`-Schleife erzeugt für jede Iteration eine frische Bindung — entscheidend, wenn Closures die Schleifenvariable einfangen und jede Closure einen anderen Wert sehen soll.\n\n⚠️ `let` befindet sich in der **Temporal Dead Zone** zwischen dem Beginn seines Blocks und der Deklarationszeile — ein Zugriff dort wirft sofort einen `ReferenceError` statt `undefined` zurückzugeben. Dieses Frühfehler-Verhalten macht Bugs wesentlich leichter auffindbar als die stillen Fehler, die `var` verursacht."
       },
       {
         "animationStep": 2,
@@ -43,7 +43,7 @@
             "const schützt die Referenz, nicht den Inhalt — Objekteigenschaften können sich trotzdem ändern."
           ]
         },
-        "expandedText": "`const` verhindert die **Neuzuweisung** der Bindung — du kannst den Namen nach der ersten Zuweisung nicht auf einen anderen Wert zeigen lassen. `const` macht den Wert selbst jedoch nicht unveränderlich: Eigenschaften eines Objekts oder Elemente eines Arrays, das mit `const` deklariert wurde, können weiterhin frei verändert werden.\n\n`const` standardmäßig zu verwenden gilt als Best Practice, weil es die Absicht klar signalisiert: Jeder Leser erkennt auf einen Blick, dass die Bindung nie auf einen anderen Wert zeigen wird. Verwende `let` für Variablen, die sich tatsächlich ändern müssen, wie Schleifenzähler oder Akkumulatoren, die über Iterationen hinweg wachsen."
+        "expandedText": "📖 `const` verhindert die **Neuzuweisung** der Bindung — du kannst den Namen nach der ersten Zuweisung nicht auf einen anderen Wert zeigen lassen. `const` macht den Wert selbst jedoch nicht unveränderlich: Eigenschaften eines Objekts oder Elemente eines Arrays, das mit `const` deklariert wurde, können weiterhin frei verändert werden.\n\n💡 `const` standardmäßig zu verwenden gilt als Best Practice, weil es die Absicht klar signalisiert: Jeder Leser erkennt auf einen Blick, dass die Bindung nie auf einen anderen Wert zeigen wird. Verwende `let` für Variablen, die sich tatsächlich ändern müssen, wie Schleifenzähler oder Akkumulatoren, die über Iterationen hinweg wachsen."
       },
       {
         "animationStep": 3,
@@ -57,7 +57,7 @@
             "Es gibt sechs Primitive in JavaScript: string, number, boolean, null, undefined und symbol."
           ]
         },
-        "expandedText": "JavaScript hat sechs **primitive Typen**: `string`, `number`, `boolean`, `null`, `undefined` und `symbol`. Primitives werden **nach Wert** verglichen: zwei Strings sind gleich, wenn sie dieselben Zeichen enthalten, unabhängig davon, wie sie erstellt wurden.\n\n`null` und `undefined` unterscheiden sich subtil: `undefined` bedeutet *nie gesetzt*, `null` bedeutet *absichtlich leer*. `NaN` (Not a Number) ist technisch ein `number`, verhält sich aber eigenartig — es ist das einzige Wert in JavaScript, das sich selbst nicht gleich ist: `NaN === NaN` ergibt `false`."
+        "expandedText": "📖 JavaScript hat sechs **primitive Typen**: `string`, `number`, `boolean`, `null`, `undefined` und `symbol`. Primitives werden **nach Wert** verglichen: zwei Strings sind gleich, wenn sie dieselben Zeichen enthalten, unabhängig davon, wie sie erstellt wurden.\n\n🔬 `null` und `undefined` unterscheiden sich subtil: `undefined` bedeutet *nie gesetzt*, `null` bedeutet *absichtlich leer*. `NaN` (Not a Number) ist technisch ein `number`, verhält sich aber eigenartig — es ist das einzige Wert in JavaScript, das sich selbst nicht gleich ist: `NaN === NaN` ergibt `false`."
       },
       {
         "animationStep": 4,
@@ -71,7 +71,7 @@
             "typeof null === \"object\" ist ein 30 Jahre alter Bug — prüfe null immer explizit mit === null."
           ]
         },
-        "expandedText": "Der `typeof`-Operator gibt einen **String** zurück, der den Typ beschreibt. Die meisten Ergebnisse sind vorhersehbar, aber es gibt zwei bemerkenswerte Eigenheiten: `typeof null === \"object\"` ist ein jahrzehntealter Fehler, der aus Rückwärtskompatibilität eingefroren wurde, und `typeof function(){} === \"function\"`, obwohl Funktionen technisch Objekte sind.\n\nVerwende `typeof` für primitive Typprüfungen. Für Objekte nutze `instanceof` oder `Array.isArray()`. Prüfe `null` immer explizit mit `=== null`, da `typeof null` irreführend ist."
+        "expandedText": "⚠️ Der `typeof`-Operator gibt einen **String** zurück, der den Typ beschreibt. Die meisten Ergebnisse sind vorhersehbar, aber es gibt zwei bemerkenswerte Eigenheiten: `typeof null === \"object\"` ist ein jahrzehntealter Fehler, der aus Rückwärtskompatibilität eingefroren wurde, und `typeof function(){} === \"function\"`, obwohl Funktionen technisch Objekte sind.\n\n📖 Verwende `typeof` für primitive Typprüfungen. Für Objekte nutze `instanceof` oder `Array.isArray()`. Prüfe `null` immer explizit mit `=== null`, da `typeof null` irreführend ist."
       },
       {
         "animationStep": 5,
@@ -85,7 +85,7 @@
             "% gibt den Rest der Division zurück — nützlich, um gerade/ungerade Zahlen zu prüfen."
           ]
         },
-        "expandedText": "Arithmetische Operatoren arbeiten direkt auf Zahlen. **Modulo** (`%`) gibt den Rest der Division zurück — nützlich, um gerade/ungerade Zahlen zu prüfen (`n % 2 === 0`), durch Indizes zu rotieren und Teilbarkeit zu testen. **Potenzierung** (`**`) ist gleichwertig zu `Math.pow(base, exp)`, aber lesbarer.\n\nJavaScript hat nur einen einzigen Zahlentyp — **64-bit floating-point** (IEEE 754). Das erklärt `0.1 + 0.2 !== 0.3`: Fließkommazahlen können manche Dezimalbrüche nicht exakt darstellen. Für Währungen und genaue Dezimalberechnungen runde auf eine feste Anzahl von Stellen oder verwende eine Ganzzahl-Hilfsbibliothek."
+        "expandedText": "📖 Arithmetische Operatoren arbeiten direkt auf Zahlen. **Modulo** (`%`) gibt den Rest der Division zurück — nützlich, um gerade/ungerade Zahlen zu prüfen (`n % 2 === 0`), durch Indizes zu rotieren und Teilbarkeit zu testen. **Potenzierung** (`**`) ist gleichwertig zu `Math.pow(base, exp)`, aber lesbarer.\n\n📖 JavaScript hat nur einen einzigen Zahlentyp — **64-bit floating-point** (IEEE 754). Das erklärt `0.1 + 0.2 !== 0.3`: Fließkommazahlen können manche Dezimalbrüche nicht exakt darstellen. Für Währungen und genaue Dezimalberechnungen runde auf eine feste Anzahl von Stellen oder verwende eine Ganzzahl-Hilfsbibliothek."
       },
       {
         "animationStep": 6,
@@ -99,7 +99,7 @@
             "=== prüft Wert UND Typ. == wandelt Typen still um — deshalb verbieten die meisten Style Guides es."
           ]
         },
-        "expandedText": "**Strikte Gleichheit** (`===`) vergleicht Wert und Typ ohne Typumwandlung. **Lose Gleichheit** (`==`) wandelt Operanden um, bevor sie verglichen werden, was zu überraschenden Ergebnissen wie `0 == false` (true) und `\"\" == false` (true) führt. Die meisten Style Guides verbieten `==`.\n\n**Logisches UND** (`&&`) gibt den ersten falschen Wert oder den letzten Wert zurück. **Logisches ODER** (`||`) gibt den ersten wahren Wert zurück. Dieses \"Short-Circuit\"-Verhalten wird für Standardwerte genutzt: `const name = input || \"Gast\"`. Der **Nullish-Coalescing-Operator** (`??`) ist strenger — er greift nur bei `null` oder `undefined`, nicht bei anderen falschen Werten wie `0` oder `\"\"`. Der **optionale Verkettungsoperator** (`?.`) ermöglicht sichere Eigenschaftszugriffe auf möglicherweise nullwertige Referenzen."
+        "expandedText": "📖 **Strikte Gleichheit** (`===`) vergleicht Wert und Typ ohne Typumwandlung. **Lose Gleichheit** (`==`) wandelt Operanden um, bevor sie verglichen werden, was zu überraschenden Ergebnissen wie `0 == false` (true) und `\"\" == false` (true) führt. Die meisten Style Guides verbieten `==`.\n\n📖 **Logisches UND** (`&&`) gibt den ersten falschen Wert oder den letzten Wert zurück. **Logisches ODER** (`||`) gibt den ersten wahren Wert zurück. Dieses \"Short-Circuit\"-Verhalten wird für Standardwerte genutzt: `const name = input || \"Gast\"`. Der **Nullish-Coalescing-Operator** (`??`) ist strenger — er greift nur bei `null` oder `undefined`, nicht bei anderen falschen Werten wie `0` oder `\"\"`. Der **optionale Verkettungsoperator** (`?.`) ermöglicht sichere Eigenschaftszugriffe auf möglicherweise nullwertige Referenzen."
       },
       {
         "animationStep": 7,
@@ -113,7 +113,7 @@
             "finally ist der Vorhang — er läuft immer, egal ob der Trick geklappt hat oder nicht."
           ]
         },
-        "expandedText": "`try`/`catch` erstellt eine **Fehlergrenze**: Code im `try`-Block wird ausgeführt; wenn er einen Fehler wirft, wird die Ausführung sofort zu `catch` weitergeleitet, und der Fehler ist als Argument verfügbar. Der `finally`-Block wird **immer** ausgeführt — auch wenn `try` zurückkehrt oder wirft — und eignet sich für Aufräumarbeiten wie das Schließen von Verbindungen.\n\nWirfe immer `Error`-Objekte (oder Unterklassen) statt roher Strings: `throw new Error(\"Meldung\")`. `Error`-Objekte enthalten einen Stack-Trace, der bei der Fehlersuche unerlässlich ist. Erstelle benutzerdefinierte Fehlerklassen mit `class MeinFehler extends Error` für typenspezifisches Catching (`if (err instanceof MeinFehler)`)."
+        "expandedText": "⚠️ `try`/`catch` erstellt eine **Fehlergrenze**: Code im `try`-Block wird ausgeführt; wenn er einen Fehler wirft, wird die Ausführung sofort zu `catch` weitergeleitet, und der Fehler ist als Argument verfügbar. Der `finally`-Block wird **immer** ausgeführt — auch wenn `try` zurückkehrt oder wirft — und eignet sich für Aufräumarbeiten wie das Schließen von Verbindungen.\n\n⚠️ Wirfe immer `Error`-Objekte (oder Unterklassen) statt roher Strings: `throw new Error(\"Meldung\")`. `Error`-Objekte enthalten einen Stack-Trace, der bei der Fehlersuche unerlässlich ist. Erstelle benutzerdefinierte Fehlerklassen mit `class MeinFehler extends Error` für typenspezifisches Catching (`if (err instanceof MeinFehler)`)."
       }
     ],
     "cheatSheet": {
@@ -207,7 +207,7 @@
             "Ein Array ist wie eine nummerierte Einkaufsliste. Jeder Punkt hat eine Position (Index, beginnend bei 0) — und du kannst gezielt auf Position 3 zugreifen oder die Liste komplett durchgehen."
           ]
         },
-        "expandedText": "Arrays in JavaScript sind **geordnete, nullbasiert indizierte** Listen, die Werte jedes Typs speichern — auch gemischt. Die Literalsyntax (`[]`) ist gegenüber `new Array()` zu bevorzugen, da sie klarer und weniger fehleranfällig ist.\n\nArrays sind in Wirklichkeit Objekte, weshalb `typeof []` den String `\"object\"` zurückgibt. Verwende `Array.isArray(wert)`, um zuverlässig zu prüfen, ob etwas ein Array ist. Indizes beginnen bei `0`; `arr.length` gibt die Anzahl der Elemente zurück. Sparse Arrays (mit Lücken wie `[1, , 3]`) existieren, sollten aber vermieden werden, da sich Iteratoren inkonsistent verhalten."
+        "expandedText": "⚠️ Arrays in JavaScript sind **geordnete, nullbasiert indizierte** Listen, die Werte jedes Typs speichern — auch gemischt. Die Literalsyntax (`[]`) ist gegenüber `new Array()` zu bevorzugen, da sie klarer und weniger fehleranfällig ist.\n\n📖 Arrays sind in Wirklichkeit Objekte, weshalb `typeof []` den String `\"object\"` zurückgibt. Verwende `Array.isArray(wert)`, um zuverlässig zu prüfen, ob etwas ein Array ist. Indizes beginnen bei `0`; `arr.length` gibt die Anzahl der Elemente zurück. Sparse Arrays (mit Lücken wie `[1, , 3]`) existieren, sollten aber vermieden werden, da sich Iteratoren inkonsistent verhalten."
       },
       {
         "animationStep": 1,
@@ -219,7 +219,7 @@
             "filter() ist ein Qualitätsprüfer am Fließband: er lässt nur die Elemente durch, die eine Bedingung erfüllen — der Rest wird aussortiert."
           ]
         },
-        "expandedText": "`push` fügt **am Ende** hinzu (gibt die neue Länge zurück); `pop` **entfernt das letzte** Element (gibt es zurück). `shift` entfernt das **erste** Element (gibt es zurück); `unshift` fügt **am Anfang** ein (gibt die neue Länge zurück). `push`/`pop` sind O(1) und schnell; `shift`/`unshift` sind O(n), weil sie das gesamte Array neu indizieren müssen.\n\nFür leistungskritischen Code, der häufig am Anfang Elemente einfügt/entfernt, erwäge `unshift`/`shift` durch ein Reverse-Array oder eine Linked-List-Datenstruktur zu ersetzen. Im täglichen App-Code sind diese Kosten selten von Bedeutung."
+        "expandedText": "📖 `push` fügt **am Ende** hinzu (gibt die neue Länge zurück); `pop` **entfernt das letzte** Element (gibt es zurück). `shift` entfernt das **erste** Element (gibt es zurück); `unshift` fügt **am Anfang** ein (gibt die neue Länge zurück). `push`/`pop` sind O(1) und schnell; `shift`/`unshift` sind O(n), weil sie das gesamte Array neu indizieren müssen.\n\n⚠️ Für leistungskritischen Code, der häufig am Anfang Elemente einfügt/entfernt, erwäge `unshift`/`shift` durch ein Reverse-Array oder eine Linked-List-Datenstruktur zu ersetzen. Im täglichen App-Code sind diese Kosten selten von Bedeutung."
       },
       {
         "animationStep": 2,
@@ -231,7 +231,7 @@
             "map() ist wie ein Übersetzer: er nimmt jedes Element der Originalliste und gibt eine neue Liste mit transformierten Werten zurück — die Länge bleibt gleich."
           ]
         },
-        "expandedText": "`splice(start, deleteCount, ...items)` verändert das Array an Ort und Stelle und gibt die entfernten Elemente zurück. Es ist flexibel, aber gefährlich, weil es das Original verändert. **Bevorzuge `slice`** für unveränderliche Operationen: `slice(start, end)` gibt ein neues Array zurück, ohne das Original anzutasten.\n\n`splice` mit `deleteCount = 0` fügt Elemente ein. `splice(idx, 1)` entfernt ein Element nach Index — üblich beim Mutieren eines State-Arrays. Da `splice` das Array verändert, erfordert es beim Aufruf in React-State-Aktualisierungen immer das Klonen des Arrays zuerst: `const kopie = [...arr]; kopie.splice(...)`.  "
+        "expandedText": "📖 `splice(start, deleteCount, ...items)` verändert das Array an Ort und Stelle und gibt die entfernten Elemente zurück. Es ist flexibel, aber gefährlich, weil es das Original verändert. **Bevorzuge `slice`** für unveränderliche Operationen: `slice(start, end)` gibt ein neues Array zurück, ohne das Original anzutasten.\n\n📖 `splice` mit `deleteCount = 0` fügt Elemente ein. `splice(idx, 1)` entfernt ein Element nach Index — üblich beim Mutieren eines State-Arrays. Da `splice` das Array verändert, erfordert es beim Aufruf in React-State-Aktualisierungen immer das Klonen des Arrays zuerst: `const kopie = [...arr]; kopie.splice(...)`."
       },
       {
         "animationStep": 3,
@@ -243,61 +243,61 @@
             "reduce() summiert Werte wie ein Buchhalter: er geht die Liste von vorne nach hinten durch und akkumuliert ein einzelnes Ergebnis — Summe, Objekt, oder alles andere."
           ]
         },
-        "expandedText": "`indexOf` durchsucht vorwärts nach strikter Gleichheit (`===`) und gibt den ersten Index oder `-1` zurück. `lastIndexOf` durchsucht rückwärts. `includes` gibt einen booleschen Wert zurück — nützlich, wenn du nur wissen musst, ob ein Element existiert.\n\nFür Objekte funktionieren diese Methoden nach Referenzgleichheit, nicht nach Struktur: `[{a:1}].includes({a:1})` ist `false`, weil es zwei verschiedene Objekte sind. Verwende stattdessen `arr.some(el => el.a === 1)` für strukturelle Suche."
+        "expandedText": "📖 `indexOf` durchsucht vorwärts nach strikter Gleichheit (`===`) und gibt den ersten Index oder `-1` zurück. `lastIndexOf` durchsucht rückwärts. `includes` gibt einen booleschen Wert zurück — nützlich, wenn du nur wissen musst, ob ein Element existiert.\n\n📖 Für Objekte funktionieren diese Methoden nach Referenzgleichheit, nicht nach Struktur: `[{a:1}].includes({a:1})` ist `false`, weil es zwei verschiedene Objekte sind. Verwende stattdessen `arr.some(el => el.a === 1)` für strukturelle Suche."
       },
       {
         "animationStep": 4,
         "heading": "Objekte — Schlüssel-Wert-Paare",
         "text": "Objekte speichern benannte Eigenschaften. Greife mit Punktnotation oder Klammernotation darauf zu.",
-        "expandedText": "`map` transformiert jedes Element und gibt ein **neues Array derselben Länge** zurück. `filter` behält nur Elemente, bei denen der Callback `true` zurückgibt. `reduce` akkumuliert alle Elemente zu einem einzelnen Wert — der `initialValue`-Parameter (zweites Argument von `reduce`) ist entscheidend und sollte immer angegeben werden, um Fehler bei leeren Arrays zu vermeiden.\n\nDiese drei Methoden bilden den Kern der **funktionalen Array-Transformation**. Zusammengekettet: `arr.filter(predicate).map(transform).reduce(akkumulator, start)` verarbeitet Daten in lesbaren Stufen ohne Variablenmutation."
+        "expandedText": "📖 `map` transformiert jedes Element und gibt ein **neues Array derselben Länge** zurück. `filter` behält nur Elemente, bei denen der Callback `true` zurückgibt. `reduce` akkumuliert alle Elemente zu einem einzelnen Wert — der `initialValue`-Parameter (zweites Argument von `reduce`) ist entscheidend und sollte immer angegeben werden, um Fehler bei leeren Arrays zu vermeiden.\n\n📖 Diese drei Methoden bilden den Kern der **funktionalen Array-Transformation**. Zusammengekettet: `arr.filter(predicate).map(transform).reduce(akkumulator, start)` verarbeitet Daten in lesbaren Stufen ohne Variablenmutation."
       },
       {
         "animationStep": 5,
         "heading": "push / pop / shift / unshift",
         "text": "Diese vier Methoden verändern das Array direkt. push/pop wirken am Ende; shift/unshift am Anfang. push und unshift geben die neue Länge zurück; pop und shift geben das entfernte Element zurück.",
-        "expandedText": "`find` gibt das **erste übereinstimmende Element** zurück (`undefined` wenn nicht gefunden); `findIndex` gibt seinen Index zurück (`-1` wenn nicht gefunden). Beide hören auf, sobald eine Übereinstimmung gefunden wird (Short-Circuit), was sie effizienter als `filter` macht, wenn du nur das erste Element brauchst.\n\n`some` gibt `true` zurück, sobald ein Element den Test besteht; `every` gibt `false` zurück, sobald eines scheitert — beide hören früh auf. Diese Short-Circuit-Natur macht sie effizient für Existenz- und Validierungsprüfungen in großen Arrays."
+        "expandedText": "📖 `find` gibt das **erste übereinstimmende Element** zurück (`undefined` wenn nicht gefunden); `findIndex` gibt seinen Index zurück (`-1` wenn nicht gefunden). Beide hören auf, sobald eine Übereinstimmung gefunden wird (Short-Circuit), was sie effizienter als `filter` macht, wenn du nur das erste Element brauchst.\n\n📖 `some` gibt `true` zurück, sobald ein Element den Test besteht; `every` gibt `false` zurück, sobald eines scheitert — beide hören früh auf. Diese Short-Circuit-Natur macht sie effizient für Existenz- und Validierungsprüfungen in großen Arrays."
       },
       {
         "animationStep": 6,
         "heading": "slice und join",
         "text": "slice(start, end) gibt ein neues Array von Index start bis (nicht einschließlich) end zurück — das Original bleibt unverändert. join(separator) wandelt alle Elemente in einen durch das angegebene Zeichen getrennten String um.",
-        "expandedText": "`sort` verändert das Array **an Ort und Stelle** und gibt es zurück. Ohne Callback wandelt es Elemente in Strings um und sortiert nach Unicode-Codepoint — deshalb wird `[10, 9, 2].sort()` zu `[10, 2, 9]`. Verwende immer eine Vergleichsfunktion: `(a, b) => a - b` für aufsteigende Zahlen, `(a, b) => b - a` für absteigende.\n\nDer eingebaute Sortierer ist in modernen Engines **stabil** (gleichwertige Elemente behalten ihre relative Reihenfolge). Beim Sortieren von Strings verwende `localeCompare`: `arr.sort((a, b) => a.localeCompare(b, \"de\"))` für korrekte sprachsensitive Sortierung."
+        "expandedText": "📖 `sort` verändert das Array **an Ort und Stelle** und gibt es zurück. Ohne Callback wandelt es Elemente in Strings um und sortiert nach Unicode-Codepoint — deshalb wird `[10, 9, 2].sort()` zu `[10, 2, 9]`. Verwende immer eine Vergleichsfunktion: `(a, b) => a - b` für aufsteigende Zahlen, `(a, b) => b - a` für absteigende.\n\n📖 Der eingebaute Sortierer ist in modernen Engines **stabil** (gleichwertige Elemente behalten ihre relative Reihenfolge). Beim Sortieren von Strings verwende `localeCompare`: `arr.sort((a, b) => a.localeCompare(b, \"de\"))` für korrekte sprachsensitive Sortierung."
       },
       {
         "animationStep": 7,
         "heading": "splice — einfügen und entfernen",
         "text": "splice(start, deleteCount, ...items) verändert das Array: entfernt deleteCount Elemente ab start und fügt dann die angegebenen Elemente ein. Es gibt die entfernten Elemente zurück.",
-        "expandedText": "`flat(depth)` glättet verschachtelte Arrays bis zur angegebenen Tiefe (Standard: 1). `flatMap(fn)` ist `map` gefolgt von `flat(1)` in einem Schritt und oft effizienter. Beide Methoden geben ein **neues Array** zurück.\n\n`flat(Infinity)` glättet beliebig tief verschachtelte Arrays vollständig — nützlich, aber vorsichtig bei unbekannten Tiefen. `flatMap` ist besonders leistungsstark, wenn eine Mapping-Funktion *null oder mehr* Elemente pro Eingabe erzeugen soll: ein leeres Array `[]` zurückzugeben filtert ein Element effektiv heraus."
+        "expandedText": "📖 `flat(depth)` glättet verschachtelte Arrays bis zur angegebenen Tiefe (Standard: 1). `flatMap(fn)` ist `map` gefolgt von `flat(1)` in einem Schritt und oft effizienter. Beide Methoden geben ein **neues Array** zurück.\n\n⚠️ `flat(Infinity)` glättet beliebig tief verschachtelte Arrays vollständig — nützlich, aber vorsichtig bei unbekannten Tiefen. `flatMap` ist besonders leistungsstark, wenn eine Mapping-Funktion *null oder mehr* Elemente pro Eingabe erzeugen soll: ein leeres Array `[]` zurückzugeben filtert ein Element effektiv heraus."
       },
       {
         "animationStep": 8,
         "heading": "reverse",
         "text": "reverse() dreht das Array in-place um und gibt dasselbe Array zurück (das Original wird verändert). Um ohne Mutation umzukehren, zuerst in ein neues Array spreaden.",
-        "expandedText": "`concat` gibt ein **neues Array** zurück, das aus dem Zusammenfügen von zwei oder mehr Arrays (oder Werten) besteht. Der Spread-Operator `[...a, ...b]` ist moderner und expressive; er klont und kombiniert in einem einzigen Ausdruck.\n\nZum Erstellen einer flachen Kopie ist `[...original]` oder `Array.from(original)` idiomatisch. Diese sind jedoch **flache** Kopien: verschachtelte Objekte werden immer noch referenziert, nicht geklont. Für tiefes Klonen verwende `structuredClone(obj)` (eingebaut, modern) oder eine Bibliothek."
+        "expandedText": "📖 `concat` gibt ein **neues Array** zurück, das aus dem Zusammenfügen von zwei oder mehr Arrays (oder Werten) besteht. Der Spread-Operator `[...a, ...b]` ist moderner und expressive; er klont und kombiniert in einem einzigen Ausdruck.\n\n📖 Zum Erstellen einer flachen Kopie ist `[...original]` oder `Array.from(original)` idiomatisch. Diese sind jedoch **flache** Kopien: verschachtelte Objekte werden immer noch referenziert, nicht geklont. Für tiefes Klonen verwende `structuredClone(obj)` (eingebaut, modern) oder eine Bibliothek."
       },
       {
         "animationStep": 9,
         "heading": "forEach und map",
         "text": "forEach führt eine Funktion für jedes Element aus — nützlich für Seiteneffekte, gibt aber nichts zurück. map gibt ein neues Array transformierter Werte zurück. Verwende map, wenn du das Ergebnis benötigst; forEach, wenn du nur reagieren möchtest.",
-        "expandedText": "`Array.from` wandelt ein **iterables oder array-ähnliches Objekt** in ein echtes Array um. Häufige Anwendungsfälle: DOM-NodeLists (`Array.from(document.querySelectorAll(\"p\"))`), `Set`-Werte, `Map`-Einträge und Strings.\n\nDas optionale zweite Argument (`mapFn`) wendet eine Transformation auf jedes Element an: `Array.from({length: 5}, (_, i) => i)` erzeugt `[0,1,2,3,4]` — ein prägnanter Trick zur Erstellung von Sequenz-Arrays. `Array.of(...items)` ist eine weitere Fabrik-Methode, die die `new Array(n)`-Falle (erzeugt ein Array der Länge n, kein Array mit einem Element n) vermeidet."
+        "expandedText": "⚠️ `Array.from` wandelt ein **iterables oder array-ähnliches Objekt** in ein echtes Array um. Häufige Anwendungsfälle: DOM-NodeLists (`Array.from(document.querySelectorAll(\"p\"))`), `Set`-Werte, `Map`-Einträge und Strings.\n\n⚠️ Das optionale zweite Argument (`mapFn`) wendet eine Transformation auf jedes Element an: `Array.from({length: 5}, (_, i) => i)` erzeugt `[0,1,2,3,4]` — ein prägnanter Trick zur Erstellung von Sequenz-Arrays. `Array.of(...items)` ist eine weitere Fabrik-Methode, die die `new Array(n)`-Falle (erzeugt ein Array der Länge n, kein Array mit einem Element n) vermeidet."
       },
       {
         "animationStep": 10,
         "heading": "find und filter",
         "text": "find gibt das erste Element zurück, das das Prädikat erfüllt (oder undefined). filter gibt ein neues Array aller passenden Elemente zurück. Beide verändern das Original nicht.",
-        "expandedText": "`for...of` iteriert über **Werte** in einem beliebigen Iterable (Arrays, Strings, Sets, Maps). Es ist sauberer als `for` mit Index-Schleifen, wenn der Index nicht benötigt wird. `for...in` iteriert über **Schlüssel** (enumerable Eigenschaften) — auf Arrays sollte es wegen geerbter Eigenschaften und nicht-garantierter Reihenfolge vermieden werden.\n\nVerwende `entries()`, wenn du den Index benötigst: `for (const [idx, val] of arr.entries())`. `forEach` ist ähnlich, gibt aber kein Array zurück und kann nicht mit `return` aus der äußeren Funktion herausgebrochen werden — bevorzuge `for...of`, wenn du früh abbrechen musst."
+        "expandedText": "📖 `for...of` iteriert über **Werte** in einem beliebigen Iterable (Arrays, Strings, Sets, Maps). Es ist sauberer als `for` mit Index-Schleifen, wenn der Index nicht benötigt wird. `for...in` iteriert über **Schlüssel** (enumerable Eigenschaften) — auf Arrays sollte es wegen geerbter Eigenschaften und nicht-garantierter Reihenfolge vermieden werden.\n\n📖 Verwende `entries()`, wenn du den Index benötigst: `for (const [idx, val] of arr.entries())`. `forEach` ist ähnlich, gibt aber kein Array zurück und kann nicht mit `return` aus der äußeren Funktion herausgebrochen werden — bevorzuge `for...of`, wenn du früh abbrechen musst."
       },
       {
         "animationStep": 11,
         "heading": "reduce",
         "text": "reduce(callback, initialValue) verarbeitet jedes Element sequenziell und akkumuliert ein einzelnes Ergebnis. Der Callback erhält den Akkumulator und das aktuelle Element. Ideal für Summen, Zählungen und Datentransformationen.",
-        "expandedText": "`Set` speichert **eindeutige Werte** jedes Typs und testet die Mitgliedschaft in O(1). Die Eindeutigkeit wird durch strikte Gleichheit bestimmt: primitive Typen nach Wert, Objekte nach Referenz. `Map` speichert **Schlüssel-Wert-Paare** mit Schlüsseln jedes Typs — anders als Objekte-Schlüssel, die auf Strings/Symbole beschränkt sind.\n\nVerwende `Set` für Duplikatfilterung und schnelle Mitgliedschaftsprüfungen. Verwende `Map` wenn du Nicht-String-Schlüssel benötigst oder wenn du Einfügereihenfolge, Größeninformationen (`map.size`) oder häufige Hinzufügungen/Löschungen auf einem großen Wörterbuch benötigst — `Map` bietet in diesen Fällen eine bessere Performance als einfache Objekte."
+        "expandedText": "📖 `Set` speichert **eindeutige Werte** jedes Typs und testet die Mitgliedschaft in O(1). Die Eindeutigkeit wird durch strikte Gleichheit bestimmt: primitive Typen nach Wert, Objekte nach Referenz. `Map` speichert **Schlüssel-Wert-Paare** mit Schlüsseln jedes Typs — anders als Objekte-Schlüssel, die auf Strings/Symbole beschränkt sind.\n\n⚠️ Verwende `Set` für Duplikatfilterung und schnelle Mitgliedschaftsprüfungen. Verwende `Map` wenn du Nicht-String-Schlüssel benötigst oder wenn du Einfügereihenfolge, Größeninformationen (`map.size`) oder häufige Hinzufügungen/Löschungen auf einem großen Wörterbuch benötigst — `Map` bietet in diesen Fällen eine bessere Performance als einfache Objekte."
       },
       {
         "animationStep": 12,
         "heading": "some und every",
         "text": "some gibt true zurück, wenn mindestens ein Element den Test besteht. every gibt true zurück, wenn alle Elemente bestehen. Beide brechen frühzeitig ab, sobald das Ergebnis feststeht.",
-        "expandedText": "Der **Spread-Operator** (`...`) entpackt Iterables in Positional-Argumente oder Array-Literale. Der **Rest-Parameter** (`...name`) in Funktionssignaturen sammelt übrig gebliebene Argumente in einem Array. Beide nutzen dieselbe `...`-Syntax, aber unterschiedliche Positionen bestimmen ihre Bedeutung.\n\nSpread klont Arrays flach (`[...original]`), kombiniert Arrays (`[...a, ...b]`) und übergibt Array-Werte als Argumente (`Math.max(...zahlen)`). Rest-Parameter ersetzen das alte `arguments`-Objekt, das keine echte Array-Methoden hatte. `Array.isArray(argumente)` ist `false`; `Array.isArray(restParam)` ist `true`."
+        "expandedText": "📖 Der **Spread-Operator** (`...`) entpackt Iterables in Positional-Argumente oder Array-Literale. Der **Rest-Parameter** (`...name`) in Funktionssignaturen sammelt übrig gebliebene Argumente in einem Array. Beide nutzen dieselbe `...`-Syntax, aber unterschiedliche Positionen bestimmen ihre Bedeutung.\n\n📖 Spread klont Arrays flach (`[...original]`), kombiniert Arrays (`[...a, ...b]`) und übergibt Array-Werte als Argumente (`Math.max(...zahlen)`). Rest-Parameter ersetzen das alte `arguments`-Objekt, das keine echte Array-Methoden hatte. `Array.isArray(argumente)` ist `false`; `Array.isArray(restParam)` ist `true`."
       }
     ],
     "cheatSheet": {
@@ -403,7 +403,7 @@
             "Eine Funktion ist wie ein Rezept: du beschreibst einmalig die Schritte, und rufst es beliebig oft auf — jedes Mal mit anderen Zutaten (Argumenten)."
           ]
         },
-        "expandedText": "Eine **Funktionsdeklaration** (`function name(){}`) wird vollständig gehoisted — du kannst sie aufrufen, bevor sie im Quellcode erscheint. Ein **Funktionsausdruck** (`const fn = function(){}`) ist nicht gehoisted: die Variable wird deklariert, aber die Zuweisung geschieht erst zur Laufzeit.\n\n**Benannte Funktionsausdrücke** (`const fn = function meinFn(){}`) sind besser als anonyme: Der interne Name erscheint in Stack-Traces und ermöglicht rekursive Selbstreferenz. Benenne Funktionen immer — auch wenn sie als Argument übergeben werden — damit Stack-Traces lesbar bleiben."
+        "expandedText": "📖 Eine **Funktionsdeklaration** (`function name(){}`) wird vollständig gehoisted — du kannst sie aufrufen, bevor sie im Quellcode erscheint. Ein **Funktionsausdruck** (`const fn = function(){}`) ist nicht gehoisted: die Variable wird deklariert, aber die Zuweisung geschieht erst zur Laufzeit.\n\n📖 **Benannte Funktionsausdrücke** (`const fn = function meinFn(){}`) sind besser als anonyme: Der interne Name erscheint in Stack-Traces und ermöglicht rekursive Selbstreferenz. Benenne Funktionen immer — auch wenn sie als Argument übergeben werden — damit Stack-Traces lesbar bleiben."
       },
       {
         "animationStep": 1,
@@ -415,7 +415,7 @@
             "Default-Parameter sind wie Voreinstellungen eines Roboters. Wenn du keinen Wert angibst, verwendet er seinen Standardwert — gibst du einen an, überschreibt dieser die Voreinstellung."
           ]
         },
-        "expandedText": "**Arrow Functions** (`=>`) haben kein eigenes `this`, `arguments` oder `prototype`. Sie erben `this` vom umgebenden lexikalischen Kontext, was sie ideal für Callbacks innerhalb von Klassen-Methoden macht. Da sie kein eigenes `this` haben, können sie nicht mit `new` als Konstruktoren verwendet werden.\n\nDie Kurzschreibweise eines **einzeiligen Ausdrucks** (`(x) => x * 2`) gibt den Ausdruck implizit zurück. Das **Zurückgeben eines Objektliterals** erfordert Klammern: `(x) => ({key: x})`, da geschweifte Klammern sonst als Funktionskörper interpretiert werden. Arrow Functions sind in React-Komponenten allgegenwärtig: `const Handler = (props) => <div/>` oder `array.map(item => <Item key={item.id}/>)`."
+        "expandedText": "📖 **Arrow Functions** (`=>`) haben kein eigenes `this`, `arguments` oder `prototype`. Sie erben `this` vom umgebenden lexikalischen Kontext, was sie ideal für Callbacks innerhalb von Klassen-Methoden macht. Da sie kein eigenes `this` haben, können sie nicht mit `new` als Konstruktoren verwendet werden.\n\n📖 Die Kurzschreibweise eines **einzeiligen Ausdrucks** (`(x) => x * 2`) gibt den Ausdruck implizit zurück. Das **Zurückgeben eines Objektliterals** erfordert Klammern: `(x) => ({key: x})`, da geschweifte Klammern sonst als Funktionskörper interpretiert werden. Arrow Functions sind in React-Komponenten allgegenwärtig: `const Handler = (props) => <div/>` oder `array.map(item => <Item key={item.id}/>)`."
       },
       {
         "animationStep": 2,
@@ -427,7 +427,7 @@
             "Rest-Parameter (...args) sind wie ein Schweizer Taschenmesser: du weißt nicht vorher, wie viele Werkzeuge du brauchst — du packst einfach alle in ein Array."
           ]
         },
-        "expandedText": "JavaScript wertet Argumente von links nach rechts aus und übergibt jeden Wert an den entsprechenden Parameter. **Standardwerte** (`function fn(x = 10)`) werden ausgewertet, wenn das Argument `undefined` ist — **nicht** wenn es `null` ist. Standardwerte können Ausdrücke sein: `function fn(size = items.length)` (wobei `items` im Scope sein muss).\n\n**Parameterobjekte** (`function({ x, y }`) sind ein häufiges Muster für Funktionen mit vielen optionalen Optionen: Aufrufer übergeben ein Konfigurationsobjekt, und die Funktion destrukturiert sie namentlich, wodurch die Aufrufsyntax lesbarer wird (`fn({ width: 200, debug: true })` statt `fn(200, undefined, true)`)."
+        "expandedText": "📖 JavaScript wertet Argumente von links nach rechts aus und übergibt jeden Wert an den entsprechenden Parameter. **Standardwerte** (`function fn(x = 10)`) werden ausgewertet, wenn das Argument `undefined` ist — **nicht** wenn es `null` ist. Standardwerte können Ausdrücke sein: `function fn(size = items.length)` (wobei `items` im Scope sein muss).\n\n⚠️ **Parameterobjekte** (`function({ x, y }`) sind ein häufiges Muster für Funktionen mit vielen optionalen Optionen: Aufrufer übergeben ein Konfigurationsobjekt, und die Funktion destrukturiert sie namentlich, wodurch die Aufrufsyntax lesbarer wird (`fn({ width: 200, debug: true })` statt `fn(200, undefined, true)`)."
       },
       {
         "animationStep": 3,
@@ -439,19 +439,19 @@
             "Arrow Functions sind wie ein schneller Inline-Übersetzer: kurze Syntax, kein eigenes this — perfekt für Callbacks und einzeilige Transformationen."
           ]
         },
-        "expandedText": "JavaScript wertet Argumente **vor** dem Funktionsaufruf aus (eager evaluation). **Primitive** werden nach Wert übergeben — Änderungen am Parameter innerhalb der Funktion haben keinen Effekt auf die äußere Variable. **Objekte und Arrays** werden nach Referenz übergeben — Mutation des Objekts innerhalb der Funktion (z.B. `obj.name = \"neu\"`) ändert das Original, aber die Neuzuweisung des Parameters (`obj = {}`) nicht.\n\nDieses Verhalten wird oft als **Call-by-Value für Objekte** (d.h. du erhältst eine Kopie der Referenz) beschrieben. Um unbeabsichtigte Mutationen zu vermeiden, klone Objekte beim Eingang: `const lokal = {...eingabe}` oder `Object.assign({}, eingabe)`."
+        "expandedText": "📖 JavaScript wertet Argumente **vor** dem Funktionsaufruf aus (eager evaluation). **Primitive** werden nach Wert übergeben — Änderungen am Parameter innerhalb der Funktion haben keinen Effekt auf die äußere Variable. **Objekte und Arrays** werden nach Referenz übergeben — Mutation des Objekts innerhalb der Funktion (z.B. `obj.name = \"neu\"`) ändert das Original, aber die Neuzuweisung des Parameters (`obj = {}`) nicht.\n\n📖 Dieses Verhalten wird oft als **Call-by-Value für Objekte** (d.h. du erhältst eine Kopie der Referenz) beschrieben. Um unbeabsichtigte Mutationen zu vermeiden, klone Objekte beim Eingang: `const lokal = {...eingabe}` oder `Object.assign({}, eingabe)`."
       },
       {
         "animationStep": 4,
         "heading": "Lexikalisches this in Arrow Functions",
         "text": "Arrow Functions haben kein eigenes `this`. Sie erben `this` aus dem umgebenden Scope, in dem sie definiert wurden. Das macht sie ideal für Callbacks innerhalb von Methoden, aber ungeeignet für die Definition von Objektmethoden selbst.",
-        "expandedText": "Ein **Higher-Order-Function** nimmt eine Funktion als Argument oder gibt eine zurück. `map`, `filter`, `reduce`, `sort`, `forEach` sind allesamt Higher-Order-Functions. Das Zurückgeben einer Funktion ist das Fundament von **Closures**, **Currying** und **Fabrik-Funktionen**.\n\n**Callbacks** sind Funktionen, die zur späteren Ausführung übergeben werden. Sie sind überall: `setTimeout(fn, 1000)`, Event-Listener (`btn.addEventListener(\"click\", fn)`), Array-Methoden. Moderne APIs bevorzugen oft **Promises** und `async/await` gegenüber Callbacks, um die sogenannte \"Callback-Hölle\" (tief verschachtelte Callbacks) zu vermeiden."
+        "expandedText": "📖 Ein **Higher-Order-Function** nimmt eine Funktion als Argument oder gibt eine zurück. `map`, `filter`, `reduce`, `sort`, `forEach` sind allesamt Higher-Order-Functions. Das Zurückgeben einer Funktion ist das Fundament von **Closures**, **Currying** und **Fabrik-Funktionen**.\n\n📖 **Callbacks** sind Funktionen, die zur späteren Ausführung übergeben werden. Sie sind überall: `setTimeout(fn, 1000)`, Event-Listener (`btn.addEventListener(\"click\", fn)`), Array-Methoden. Moderne APIs bevorzugen oft **Promises** und `async/await` gegenüber Callbacks, um die sogenannte \"Callback-Hölle\" (tief verschachtelte Callbacks) zu vermeiden."
       },
       {
         "animationStep": 5,
         "heading": "Standard- & Rest-Parameter",
         "text": "Standardparameter bieten einen Fallback-Wert, wenn ein Argument fehlt oder undefined ist. Rest-Parameter sammeln alle verbleibenden Argumente in einem Array — sie müssen immer am Ende der Parameterliste stehen.",
-        "expandedText": "`arguments` ist ein array-ähnliches Objekt, das **alle übergebenen Argumente** enthält und nur in regulären (nicht-arrow) Funktionen verfügbar ist. Es fehlen Array-Methoden wie `map` oder `filter`. Der moderne Ersatz ist der **Rest-Parameter** (`...args`), der ein echtes Array ist.\n\n**Geheime Tipps:** Verwende `arguments` nie in neuem Code — nutze immer Rest-Parameter. `arguments.callee` (Referenz auf die aktuelle Funktion) ist im strikten Modus verboten. Wenn du eine variable Anzahl von Argumenten benötigst, sind Rest-Parameter klarer, beschreibbarer und treffen sich gut mit dem Type-System: `function addiere(...zahlen: number[]): number`."
+        "expandedText": "📖 `arguments` ist ein array-ähnliches Objekt, das **alle übergebenen Argumente** enthält und nur in regulären (nicht-arrow) Funktionen verfügbar ist. Es fehlen Array-Methoden wie `map` oder `filter`. Der moderne Ersatz ist der **Rest-Parameter** (`...args`), der ein echtes Array ist.\n\n📖 **Geheime Tipps:** Verwende `arguments` nie in neuem Code — nutze immer Rest-Parameter. `arguments.callee` (Referenz auf die aktuelle Funktion) ist im strikten Modus verboten. Wenn du eine variable Anzahl von Argumenten benötigst, sind Rest-Parameter klarer, beschreibbarer und treffen sich gut mit dem Type-System: `function addiere(...zahlen: number[]): number`."
       }
     ],
     "commonErrors": [
@@ -507,7 +507,7 @@
             "Destructuring ist wie das Auspacken eines Pakets: statt das ganze Paket zu tragen, nimmst du direkt die Dinge heraus, die du brauchst — und gibst ihnen gleich eigene Namen."
           ]
         },
-        "expandedText": "**Array-Destrukturierung** gleicht **nach Position** ab: `const [first, second] = arr` entpackt die ersten beiden Elemente. Elemente überspringen mit Kommas: `const [, , third] = arr`. Das **Rest-Element** `const [head, ...tail] = arr` sammelt verbleibende Elemente in ein neues Array.\n\nDestukturierung ist besonders nützlich bei Funktionen, die Tupel zurückgeben, wie Reacts `useState`: `const [wert, setWert] = useState(0)`. Der Standard-Array-Destrukturierungsstil ist, beschreibende Namen zu verwenden: `const [lat, lng] = getKoordinaten()` statt `const arr = getKoordinaten(); arr[0]`."
+        "expandedText": "📖 **Array-Destrukturierung** gleicht **nach Position** ab: `const [first, second] = arr` entpackt die ersten beiden Elemente. Elemente überspringen mit Kommas: `const [, , third] = arr`. Das **Rest-Element** `const [head, ...tail] = arr` sammelt verbleibende Elemente in ein neues Array.\n\n📖 Destukturierung ist besonders nützlich bei Funktionen, die Tupel zurückgeben, wie Reacts `useState`: `const [wert, setWert] = useState(0)`. Der Standard-Array-Destrukturierungsstil ist, beschreibende Namen zu verwenden: `const [lat, lng] = getKoordinaten()` statt `const arr = getKoordinaten(); arr[0]`."
       },
       {
         "animationStep": 1,
@@ -519,7 +519,7 @@
             "Mit Destructuring kannst du zwei Variablen in einer Zeile tauschen: [a, b] = [b, a] — kein temporäre Variable nötig, klar und ausdrucksstark."
           ]
         },
-        "expandedText": "**Objekt-Destrukturierung** gleicht **nach Schlüsselname** ab. **Umbenennen**: `const {name: benutzername} = nutzer` extrahiert `name` und speichert es als `benutzername`. **Standardwerte**: `const {timeout = 5000} = optionen` greift, wenn `timeout` `undefined` ist. **Tief verschachtelt**: `const {adresse: {stadt}} = nutzer` extrahiert `nutzer.adresse.stadt`.\n\nEin häufiger Fallstrick: Das Destrukturieren einer `null`- oder `undefined`-Variable wirft einen TypeError. Schütze dich mit einem Standardwert: `const {a} = obj ?? {}`. In Funktionsparametern ist `function fn({x = 0, y = 0} = {})` das Muster für optionale Konfigurationsobjekte mit Standardwerten."
+        "expandedText": "📖 **Objekt-Destrukturierung** gleicht **nach Schlüsselname** ab. **Umbenennen**: `const {name: benutzername} = nutzer` extrahiert `name` und speichert es als `benutzername`. **Standardwerte**: `const {timeout = 5000} = optionen` greift, wenn `timeout` `undefined` ist. **Tief verschachtelt**: `const {adresse: {stadt}} = nutzer` extrahiert `nutzer.adresse.stadt`.\n\n⚠️ Ein häufiger Fallstrick: Das Destrukturieren einer `null`- oder `undefined`-Variable wirft einen TypeError. Schütze dich mit einem Standardwert: `const {a} = obj ?? {}`. In Funktionsparametern ist `function fn({x = 0, y = 0} = {})` das Muster für optionale Konfigurationsobjekte mit Standardwerten."
       },
       {
         "animationStep": 2,
@@ -531,13 +531,13 @@
             "Falls ein Wert fehlt (undefined), greift der Default-Wert automatisch — wie ein Aufkleber mit 'Standardinhalt', der überklebt wird, wenn echter Inhalt da ist."
           ]
         },
-        "expandedText": "**Funktionsparameter-Destrukturierung** ist idiomatisch in modernem JavaScript. Anstatt auf Positionen zu verlassen (`fn(null, null, optionen)`), können Aufrufer ein Objekt übergeben: `fn({name, verbindungstimeout: 3000})`. Das macht Code selbstdokumentierend und robust gegen Parameterreihenfolgen-Fehler.\n\nKomponentenprops in React werden fast immer destrukturiert: `function Schaltfläche({label, onClick, deaktiviert = false})`. Wenn Props viele optionale Felder hat, können TypeScript-Interfaces mit `interface SchaltflächenProps { label: string; onClick?: () => void; }` verwendet werden, was durch Destrukturierung nahtlos genutzt wird."
+        "expandedText": "📖 **Funktionsparameter-Destrukturierung** ist idiomatisch in modernem JavaScript. Anstatt auf Positionen zu verlassen (`fn(null, null, optionen)`), können Aufrufer ein Objekt übergeben: `fn({name, verbindungstimeout: 3000})`. Das macht Code selbstdokumentierend und robust gegen Parameterreihenfolgen-Fehler.\n\n📖 Komponentenprops in React werden fast immer destrukturiert: `function Schaltfläche({label, onClick, deaktiviert = false})`. Wenn Props viele optionale Felder hat, können TypeScript-Interfaces mit `interface SchaltflächenProps { label: string; onClick?: () => void; }` verwendet werden, was durch Destrukturierung nahtlos genutzt wird."
       },
       {
         "animationStep": 3,
         "heading": "Eingebaute Objekte: Math, Date, String",
         "text": "JavaScript wird mit eingebauten globalen Objekten geliefert. Math bietet statische Methoden für mathematische Operationen. Date erstellt Datums-/Uhrzeitobjekte. String-Methoden wie split, trim und includes operieren auf String-Primitiven via Auto-Boxing.",
-        "expandedText": "**Rest in Destrukturierung** (`...rest`) sammelt verbleibende Eigenschaften oder Elemente. In der Objekt-Destrukturierung erstellt es ein neues Objekt mit nicht-destrukturierten Schlüsseln: `const {id, ...restProps} = props` ist ein häufiges React-Muster zum Trennen von \"meinen\" Props von \"weiterzuleitenden\" Props.\n\n**Spread** (`...obj`) kopiert Eigenschaften flach auf ein neues Objekt: `const zusammengeführt = {...vorgaben, ...überschreibungen}`. Überschreibungen \"gewinnen\", wenn beide Objekte denselben Schlüssel haben, da der letzte Spread-Wert vorherige ersetzt. Dieser Merge-Trick ist ein Grundstein der React-State-Aktualisierungen: `setZustand(prev => ({...prev, isLoading: false}))`."
+        "expandedText": "⚠️ **Rest in Destrukturierung** (`...rest`) sammelt verbleibende Eigenschaften oder Elemente. In der Objekt-Destrukturierung erstellt es ein neues Objekt mit nicht-destrukturierten Schlüsseln: `const {id, ...restProps} = props` ist ein häufiges React-Muster zum Trennen von \"meinen\" Props von \"weiterzuleitenden\" Props.\n\n📖 **Spread** (`...obj`) kopiert Eigenschaften flach auf ein neues Objekt: `const zusammengeführt = {...vorgaben, ...überschreibungen}`. Überschreibungen \"gewinnen\", wenn beide Objekte denselben Schlüssel haben, da der letzte Spread-Wert vorherige ersetzt. Dieser Merge-Trick ist ein Grundstein der React-State-Aktualisierungen: `setZustand(prev => ({...prev, isLoading: false}))`."
       }
     ],
     "commonErrors": [
@@ -593,7 +593,7 @@
             "Bedingungen funktionieren wie eine Weggabelung im Wald. if/else prüft, welchen Pfad du nimmst — und du folgst genau einem davon."
           ]
         },
-        "expandedText": "Der ternäre Operator `condition ? onTrue : onFalse` ist ein **Ausdruck** — er produziert einen Wert und kann überall verwendet werden, wo Ausdrücke erlaubt sind. `if/else` ist eine **Anweisung** — sie führt Code aus, produziert aber keinen Wert.\n\nVerwende den ternären Operator für einfache bedingte Zuweisungen: `const label = isLoggedIn ? \"Abmelden\" : \"Anmelden\"`. Verschachtelte ternäre Operatoren sind schwer lesbar — bevorzuge stattdessen `if/else` oder eine Lookup-Tabelle. In JSX ist der ternäre Operator Standard für bedingte Darstellung: `{isLoading ? <Spinner/> : <Inhalt/>}`."
+        "expandedText": "📖 Der ternäre Operator `condition ? onTrue : onFalse` ist ein **Ausdruck** — er produziert einen Wert und kann überall verwendet werden, wo Ausdrücke erlaubt sind. `if/else` ist eine **Anweisung** — sie führt Code aus, produziert aber keinen Wert.\n\n📖 Verwende den ternären Operator für einfache bedingte Zuweisungen: `const label = isLoggedIn ? \"Abmelden\" : \"Anmelden\"`. Verschachtelte ternäre Operatoren sind schwer lesbar — bevorzuge stattdessen `if/else` oder eine Lookup-Tabelle. In JSX ist der ternäre Operator Standard für bedingte Darstellung: `{isLoading ? <Spinner/> : <Inhalt/>}`."
       },
       {
         "animationStep": 1,
@@ -605,7 +605,7 @@
             "Ein switch ist wie eine Speisekarte: du wählst eines von mehreren genau definierten Gerichten. Passt keines, greift der default-Fall."
           ]
         },
-        "expandedText": "`switch` gleicht einen Ausdruck mit `case`-Labels ab mittels **strikter Gleichheit** (`===`). **Fall-Through** (kein `break`) ermöglicht die Behandlung mehrerer Cases mit demselben Code — nützlich, aber auch eine häufige Fehlerquelle. Jeder Case sollte mit `break`, `return` oder `throw` enden, es sei denn, Fall-Through ist beabsichtigt.\n\n`default` fängt alle nicht übereinstimmenden Fälle ab — ähnlich wie `else`. Für eine bessere Alternative zu langen switch-Anweisungen erwäge **Objekt-Lookup-Tabellen**: `const handler = {kaufen: buyFn, verkaufen: sellFn}; handler[aktion]?.()`. Das ist kürzer, typesbarer und unterstützt dynamische Einträge."
+        "expandedText": "⚠️ `switch` gleicht einen Ausdruck mit `case`-Labels ab mittels **strikter Gleichheit** (`===`). **Fall-Through** (kein `break`) ermöglicht die Behandlung mehrerer Cases mit demselben Code — nützlich, aber auch eine häufige Fehlerquelle. Jeder Case sollte mit `break`, `return` oder `throw` enden, es sei denn, Fall-Through ist beabsichtigt.\n\n📖 `default` fängt alle nicht übereinstimmenden Fälle ab — ähnlich wie `else`. Für eine bessere Alternative zu langen switch-Anweisungen erwäge **Objekt-Lookup-Tabellen**: `const handler = {kaufen: buyFn, verkaufen: sellFn}; handler[aktion]?.()`. Das ist kürzer, typesbarer und unterstützt dynamische Einträge."
       },
       {
         "animationStep": 2,
@@ -617,7 +617,7 @@
             "Eine Schleife ist ein Förderband in einer Fabrik. Jedes Element kommt nacheinander an — du bearbeitest es und gibst grünes Licht für das nächste."
           ]
         },
-        "expandedText": "**`for...of`** iteriert über die **Werte** eines Iterables (Arrays, Strings, Sets, Maps, Generatoren). Es funktioniert mit allem, was das `[Symbol.iterator]`-Protokoll implementiert. `for...in` iteriert über **Schlüssel (aufzählbare Eigenschaften)** eines Objekts — auf Arrays meide es, da es auch geerbte Eigenschaften einschließen kann.\n\n**`Array.prototype.forEach`** ist ähnlich wie `for...of`, gibt aber kein Array zurück und `break`/`continue` funktionieren nicht darin — um früh zu beenden, muss man auf `for...of` oder `some`/`every` zurückgreifen. Alle drei Varianten können in leistungskritischem Code durch eine herkömmliche `for`-Schleife ersetzt werden, die keine Iterator-Overhead hat."
+        "expandedText": "📖 **`for...of`** iteriert über die **Werte** eines Iterables (Arrays, Strings, Sets, Maps, Generatoren). Es funktioniert mit allem, was das `[Symbol.iterator]`-Protokoll implementiert. `for...in` iteriert über **Schlüssel (aufzählbare Eigenschaften)** eines Objekts — auf Arrays meide es, da es auch geerbte Eigenschaften einschließen kann.\n\n📖 **`Array.prototype.forEach`** ist ähnlich wie `for...of`, gibt aber kein Array zurück und `break`/`continue` funktionieren nicht darin — um früh zu beenden, muss man auf `for...of` oder `some`/`every` zurückgreifen. Alle drei Varianten können in leistungskritischem Code durch eine herkömmliche `for`-Schleife ersetzt werden, die keine Iterator-Overhead hat."
       },
       {
         "animationStep": 3,
@@ -630,13 +630,13 @@
             "for...in iteriert über die Schlüssel eines Objekts — du bekommst die Etiketten, nicht den Inhalt."
           ]
         },
-        "expandedText": "`while` testet die Bedingung **vor** der Ausführung des Körpers — wenn sie beim ersten Mal falsch ist, wird der Körper nie ausgeführt. `do...while` führt den Körper **mindestens einmal** aus, bevor die Bedingung geprüft wird — nützlich, wenn eine Anfangsoperation garantiert ausgeführt werden muss (z.B. Nutzereingabe lesen, dann prüfen).\n\nVerwende `break`, um eine Schleife vorzeitig zu beenden, und `continue`, um zur nächsten Iteration zu springen. **Benannte Sprünge** (`äußere: for(...)`) ermöglichen `break äußere` zum Ausbrechen aus einer verschachtelten Schleife — selten nötig, aber nützlich in bestimmten Parsing-Algorithmen."
+        "expandedText": "📖 `while` testet die Bedingung **vor** der Ausführung des Körpers — wenn sie beim ersten Mal falsch ist, wird der Körper nie ausgeführt. `do...while` führt den Körper **mindestens einmal** aus, bevor die Bedingung geprüft wird — nützlich, wenn eine Anfangsoperation garantiert ausgeführt werden muss (z.B. Nutzereingabe lesen, dann prüfen).\n\n📖 Verwende `break`, um eine Schleife vorzeitig zu beenden, und `continue`, um zur nächsten Iteration zu springen. **Benannte Sprünge** (`äußere: for(...)`) ermöglichen `break äußere` zum Ausbrechen aus einer verschachtelten Schleife — selten nötig, aber nützlich in bestimmten Parsing-Algorithmen."
       },
       {
         "animationStep": 4,
         "heading": "break und continue",
         "text": "break beendet die nächste umschließende Schleife sofort. continue überspringt den Rest der aktuellen Iteration und geht zur nächsten über. Beide machen Schleifen ausdrucksstarker, ohne zusätzliche boolesche Flags zu benötigen.",
-        "expandedText": "Ein **truthy** Wert wird zu `true` umgewandelt, wenn er in einem booleschen Kontext verwendet wird. Alle Werte sind truthy außer den sechs **falsy** Werten: `false`, `0`, `\"\"` (leerer String), `null`, `undefined` und `NaN`.\n\nDieses Verhalten ermöglicht Kurzschreibweisen: `if (user)` anstelle von `if (user !== null && user !== undefined)`. Der **Nullish-Coalescing-Operator** (`??`) ist strenger — er greift nur bei `null`/`undefined`, nicht bei allen falschen Werten: `const n = 0 ?? 5` ergibt `0`, aber `const n = 0 || 5` ergibt `5`."
+        "expandedText": "📖 Ein **truthy** Wert wird zu `true` umgewandelt, wenn er in einem booleschen Kontext verwendet wird. Alle Werte sind truthy außer den sechs **falsy** Werten: `false`, `0`, `\"\"` (leerer String), `null`, `undefined` und `NaN`.\n\n📖 Dieses Verhalten ermöglicht Kurzschreibweisen: `if (user)` anstelle von `if (user !== null && user !== undefined)`. Der **Nullish-Coalescing-Operator** (`??`) ist strenger — er greift nur bei `null`/`undefined`, nicht bei allen falschen Werten: `const n = 0 ?? 5` ergibt `0`, aber `const n = 0 || 5` ergibt `5`."
       }
     ],
     "cheatSheet": {
@@ -725,7 +725,7 @@
             "Eine Klasse ist der Bauplan, ein Objekt ist das fertige Haus. Mit new baust du ein Haus nach dem Plan — jedes Haus ist unabhängig, auch wenn alle denselben Plan teilen."
           ]
         },
-        "expandedText": "**Objektorientierte Programmierung** organisiert Code, indem verwandte **Daten** (Eigenschaften) und **Verhalten** (Methoden) in Objekten gebündelt werden. Ein User, ein Warenkorb oder eine Anfrage bündeln ihren State und ihre Logik zusammen, anstatt sie über separate Funktionen und Variablen zu verteilen.\n\nDie vier Prinzipien von OOP sind **Kapselung** (Implementierungsdetails verstecken), **Abstraktion** (nur das Notwendige nach außen exponieren), **Vererbung** (Kindklassen erweitern das Verhalten der Elternklasse) und **Polymorphismus** (verschiedene Typen reagieren auf denselben Methodenaufruf). JavaScript unterstützt alle vier über sein Prototype-System und die mit ES2015 eingeführte `class`-Syntax."
+        "expandedText": "📖 **Objektorientierte Programmierung** organisiert Code, indem verwandte **Daten** (Eigenschaften) und **Verhalten** (Methoden) in Objekten gebündelt werden. Ein User, ein Warenkorb oder eine Anfrage bündeln ihren State und ihre Logik zusammen, anstatt sie über separate Funktionen und Variablen zu verteilen.\n\n📖 Die vier Prinzipien von OOP sind **Kapselung** (Implementierungsdetails verstecken), **Abstraktion** (nur das Notwendige nach außen exponieren), **Vererbung** (Kindklassen erweitern das Verhalten der Elternklasse) und **Polymorphismus** (verschiedene Typen reagieren auf denselben Methodenaufruf). JavaScript unterstützt alle vier über sein Prototype-System und die mit ES2015 eingeführte `class`-Syntax."
       },
       {
         "animationStep": 1,
@@ -737,7 +737,7 @@
             "Vererbung ist wie eine Erbschaft: eine Unterklasse übernimmt alle Methoden und Eigenschaften der Elternklasse und kann neue hinzufügen oder bestehende überschreiben."
           ]
         },
-        "expandedText": "Eine **Klasse** ist ein Bauplan für das Erstellen von Objekten. Die `constructor`-Methode wird ausgeführt, wenn `new KlassenName(args)` aufgerufen wird — sie verwendet `this`, um Eigenschaften an die neue Instanz anzuhängen. Auf der Klasse definierte Methoden werden auf dem Prototyp abgelegt, sodass alle Instanzen eine gemeinsame Kopie teilen statt jede ihre eigene zu tragen.\n\n**Private Felder** (`#name`) werden von der Engine erzwungen — externer Code kann nicht auf sie zugreifen. **Statische Methoden** (`static fn()`) gehören zur Klasse selbst und werden als `KlassenName.fn()` aufgerufen. **Klassenfelder** (`name = wert` außerhalb des Konstruktors) bieten eine prägnante Syntax für Instanz-Eigenschaften mit optionalen Standardwerten."
+        "expandedText": "📖 Eine **Klasse** ist ein Bauplan für das Erstellen von Objekten. Die `constructor`-Methode wird ausgeführt, wenn `new KlassenName(args)` aufgerufen wird — sie verwendet `this`, um Eigenschaften an die neue Instanz anzuhängen. Auf der Klasse definierte Methoden werden auf dem Prototyp abgelegt, sodass alle Instanzen eine gemeinsame Kopie teilen statt jede ihre eigene zu tragen.\n\n🔬 **Private Felder** (`#name`) werden von der Engine erzwungen — externer Code kann nicht auf sie zugreifen. **Statische Methoden** (`static fn()`) gehören zur Klasse selbst und werden als `KlassenName.fn()` aufgerufen. **Klassenfelder** (`name = wert` außerhalb des Konstruktors) bieten eine prägnante Syntax für Instanz-Eigenschaften mit optionalen Standardwerten."
       },
       {
         "animationStep": 2,
@@ -749,19 +749,19 @@
             "Die Prototypenkette ist das unsichtbare Skelett. Methoden leben nicht auf jeder Instanz — sie liegen auf dem Prototypen. JavaScript 'klettert' die Kette hoch, bis es die Methode findet."
           ]
         },
-        "expandedText": "`extends` richtet **prototypbasierte Vererbung** ein: Das Prototyp der Kindklasse wird mit dem Prototyp der Elternklasse verknüpft, sodass die Kindklasse alle Methoden erbt. `super()` im Konstruktor ruft den Eltern-Konstruktor auf und muss vor der Verwendung von `this` aufgerufen werden. `super.methodenName()` ruft die Eltern-Version einer überschriebenen Methode auf.\n\nVererbung schafft eine **ist-ein** Beziehung. Verwende sie nur, wenn das Kind tatsächlich eine Spezialisierung des Elternteils ist — `Hund extends Tier` ergibt Sinn; `NutzerService extends Datenbank` nicht. **Bevorzuge Komposition vor Vererbung**, wenn Wiederverwendung das Ziel ist: Das Zusammenfügen kleiner, fokussierter Objekte produziert in der Regel flexibleren und testbaren Code als tiefe Vererbungshierarchien."
+        "expandedText": "📖 `extends` richtet **prototypbasierte Vererbung** ein: Das Prototyp der Kindklasse wird mit dem Prototyp der Elternklasse verknüpft, sodass die Kindklasse alle Methoden erbt. `super()` im Konstruktor ruft den Eltern-Konstruktor auf und muss vor der Verwendung von `this` aufgerufen werden. `super.methodenName()` ruft die Eltern-Version einer überschriebenen Methode auf.\n\n📖 Vererbung schafft eine **ist-ein** Beziehung. Verwende sie nur, wenn das Kind tatsächlich eine Spezialisierung des Elternteils ist — `Hund extends Tier` ergibt Sinn; `NutzerService extends Datenbank` nicht. **Bevorzuge Komposition vor Vererbung**, wenn Wiederverwendung das Ziel ist: Das Zusammenfügen kleiner, fokussierter Objekte produziert in der Regel flexibleren und testbaren Code als tiefe Vererbungshierarchien."
       },
       {
         "animationStep": 3,
         "heading": "Prototype-Kette",
         "text": "Jedes JavaScript-Objekt hat einen versteckten [[Prototype]]-Link. Wenn du auf eine Eigenschaft zugreifst, sucht JS zuerst auf dem Objekt selbst und geht dann die Prototype-Kette hinauf, bis es die Eigenschaft findet oder null erreicht. Klassenmethoden leben auf dem Prototype, nicht auf jeder Instanz.",
-        "expandedText": "Die **Prototyp-Kette** ist der Mechanismus hinter jeder JavaScript-Vererbung. Jedes Objekt hat einen versteckten `[[Prototype]]`-Link. Beim Zugriff auf eine Eigenschaft prüft JavaScript zunächst das Objekt selbst, dann geht es die Kette entlang, bis die Eigenschaft gefunden wird oder `null` erreicht wird.\n\n`Object.create(proto)` erstellt ein Objekt mit einem explizit gesetzten Prototyp — die Low-Level-API, die `class`-Syntax intern nutzt. `Object.getPrototypeOf(obj)` gibt den Prototyp eines Objekts zurück. Das Verstehen der Prototyp-Kette erklärt, warum alle Arrays eine `map`-Methode haben (von `Array.prototype`), warum alle Objekte eine `toString`-Methode haben (von `Object.prototype`) und was passiert, wenn du `obj.eigenschaft = ...` auf einem fremden Objekt aufrufst."
+        "expandedText": "🔬 Die **Prototyp-Kette** ist der Mechanismus hinter jeder JavaScript-Vererbung. Jedes Objekt hat einen versteckten `[[Prototype]]`-Link. Beim Zugriff auf eine Eigenschaft prüft JavaScript zunächst das Objekt selbst, dann geht es die Kette entlang, bis die Eigenschaft gefunden wird oder `null` erreicht wird.\n\n🔬 `Object.create(proto)` erstellt ein Objekt mit einem explizit gesetzten Prototyp — die Low-Level-API, die `class`-Syntax intern nutzt. `Object.getPrototypeOf(obj)` gibt den Prototyp eines Objekts zurück. Das Verstehen der Prototyp-Kette erklärt, warum alle Arrays eine `map`-Methode haben (von `Array.prototype`), warum alle Objekte eine `toString`-Methode haben (von `Object.prototype`) und was passiert, wenn du `obj.eigenschaft = ...` auf einem fremden Objekt aufrufst."
       },
       {
         "animationStep": 4,
         "heading": "Das this-Schlüsselwort",
         "text": "`this` bezieht sich auf das Objekt, auf dem eine Methode aufgerufen wurde. In einer Klassenmethode zeigt es auf die Instanz. In einer eigenständigen Funktion hängt es davon ab, wie die Funktion aufgerufen wird. Arrow Functions erben `this` aus ihrem äußeren Scope, anstatt ein eigenes zu definieren.",
-        "expandedText": "`this` verweist auf den Kontext, in dem eine Funktion aufgerufen wird. In einer regulären Methode verweist es auf die Instanz. In einem Callback kann `this` verloren gehen — deshalb verwenden Klassen-Methoden, die als Callbacks übergeben werden, oft Arrow Functions (die kein eigenes `this` haben und das umgebende `this` erben).\n\n`bind(context)` gibt eine neue Funktion zurück, bei der `this` dauerhaft an `context` gebunden ist. `call(context, ...args)` und `apply(context, argsArray)` rufen eine Funktion sofort mit einem bestimmten `this` auf. Das Binden von Methoden im Konstruktor (`this.handleClick = this.handleClick.bind(this)`) ist ein klassisches React-Muster, obwohl Klassen-Felder mit Arrow Functions (`handleClick = () => {...}`) heute häufiger sind."
+        "expandedText": "📖 `this` verweist auf den Kontext, in dem eine Funktion aufgerufen wird. In einer regulären Methode verweist es auf die Instanz. In einem Callback kann `this` verloren gehen — deshalb verwenden Klassen-Methoden, die als Callbacks übergeben werden, oft Arrow Functions (die kein eigenes `this` haben und das umgebende `this` erben).\n\n📖 `bind(context)` gibt eine neue Funktion zurück, bei der `this` dauerhaft an `context` gebunden ist. `call(context, ...args)` und `apply(context, argsArray)` rufen eine Funktion sofort mit einem bestimmten `this` auf. Das Binden von Methoden im Konstruktor (`this.handleClick = this.handleClick.bind(this)`) ist ein klassisches React-Muster, obwohl Klassen-Felder mit Arrow Functions (`handleClick = () => {...}`) heute häufiger sind."
       }
     ],
     "cheatSheet": {
@@ -854,7 +854,7 @@
             "setTimeout ist ein Wecker: du stellst ihn ein, und nach der angegebenen Zeit klingelt er genau einmal — danach ist er inaktiv."
           ]
         },
-        "expandedText": "`setTimeout(fn, ms)` plant die Ausführung von `fn` **mindestens** `ms` Millisekunden später — nicht exakt, da JavaScript single-threaded ist und `fn` warten muss, wenn der Call Stack beschäftigt ist. `clearTimeout(id)` bricht einen geplanten Timeout ab, bevor er ausgelöst wird.\n\nEin häufiger Anwendungsfall: Debouncing — mehrere schnelle Ereignisse in einem einzelnen ausstehenden Aufruf zusammenfassen: Timeout bei jedem Ereignis löschen und neu setzen. Das verarbeitet nur den letzten Aufruf, nachdem die Ereignisse aufgehört haben. Verwende außerdem die Return-ID, um Leaks zu vermeiden: Vergiss nicht, `clearTimeout` aufzurufen, wenn eine React-Komponente unmountet wird (`return () => clearTimeout(id)` in einem `useEffect`)."
+        "expandedText": "📖 `setTimeout(fn, ms)` plant die Ausführung von `fn` **mindestens** `ms` Millisekunden später — nicht exakt, da JavaScript single-threaded ist und `fn` warten muss, wenn der Call Stack beschäftigt ist. `clearTimeout(id)` bricht einen geplanten Timeout ab, bevor er ausgelöst wird.\n\n⚠️ Ein häufiger Anwendungsfall: Debouncing — mehrere schnelle Ereignisse in einem einzelnen ausstehenden Aufruf zusammenfassen: Timeout bei jedem Ereignis löschen und neu setzen. Das verarbeitet nur den letzten Aufruf, nachdem die Ereignisse aufgehört haben. Verwende außerdem die Return-ID, um Leaks zu vermeiden: Vergiss nicht, `clearTimeout` aufzurufen, wenn eine React-Komponente unmountet wird (`return () => clearTimeout(id)` in einem `useEffect`)."
       },
       {
         "animationStep": 1,
@@ -866,7 +866,7 @@
             "setInterval ist ein Metronom: es tickt gleichmäßig im gewählten Rhythmus, bis du es stoppst. Ohne clearInterval läuft es für immer."
           ]
         },
-        "expandedText": "`setInterval(fn, ms)` ruft `fn` wiederholt etwa alle `ms` Millisekunden auf, bis `clearInterval(id)` aufgerufen wird. Es liefert keine Garantien für exaktes Timing — wenn der Call Stack beschäftigt ist, können Ticks übersprungen oder verzögert werden.\n\nFür Animationen ist `requestAnimationFrame(fn)` besser als `setInterval`, da es mit der Display-Refresh-Rate (normalerweise 60Hz) synchronisiert ist und pausiert, wenn der Tab im Hintergrund ist, was Batterie spart. `cancelAnimationFrame(id)` bricht einen ausstehenden Frame ab. Verwende `requestAnimationFrame` für Spieleschleifen, Scroll-Animationen und visuelle Aktualisierungen."
+        "expandedText": "📖 `setInterval(fn, ms)` ruft `fn` wiederholt etwa alle `ms` Millisekunden auf, bis `clearInterval(id)` aufgerufen wird. Es liefert keine Garantien für exaktes Timing — wenn der Call Stack beschäftigt ist, können Ticks übersprungen oder verzögert werden.\n\n📖 Für Animationen ist `requestAnimationFrame(fn)` besser als `setInterval`, da es mit der Display-Refresh-Rate (normalerweise 60Hz) synchronisiert ist und pausiert, wenn der Tab im Hintergrund ist, was Batterie spart. `cancelAnimationFrame(id)` bricht einen ausstehenden Frame ab. Verwende `requestAnimationFrame` für Spieleschleifen, Scroll-Animationen und visuelle Aktualisierungen."
       },
       {
         "animationStep": 2,
@@ -878,7 +878,7 @@
             "Promises und async/await haben gegenüber Timern 'Vorfahrt' in der Mikrotask-Queue. setTimeout-Callbacks warten, bis alle Promises abgearbeitet sind — selbst wenn das Timeout 0ms beträgt."
           ]
         },
-        "expandedText": "`queueMicrotask(fn)` plant `fn` in der **Microtask-Queue** — sie wird direkt nach dem Abschluss der aktuellen Aufgabe verarbeitet, bevor der nächste Makro-Task (setTimeout, I/O) läuft. Promises (`.then`-Callbacks) werden ebenfalls in der Microtask-Queue ausgeführt.\n\nDie Reihenfolge: 1) Aktueller synchroner Code abschließen, 2) Alle Microtasks verarbeiten (Promises, queueMicrotask), 3) Nächsten Makro-Task ausführen (setTimeout/setInterval). Das Verstehen dieser Reihenfolge erklärt, warum Promise-Callbacks vor setTimeout-Callbacks mit 0ms-Delay ausgeführt werden: `Promise.resolve().then(() => console.log(\"A\")); setTimeout(() => console.log(\"B\"), 0);` — \"A\" kommt immer zuerst."
+        "expandedText": "📖 `queueMicrotask(fn)` plant `fn` in der **Microtask-Queue** — sie wird direkt nach dem Abschluss der aktuellen Aufgabe verarbeitet, bevor der nächste Makro-Task (setTimeout, I/O) läuft. Promises (`.then`-Callbacks) werden ebenfalls in der Microtask-Queue ausgeführt.\n\n📖 Die Reihenfolge: 1) Aktueller synchroner Code abschließen, 2) Alle Microtasks verarbeiten (Promises, queueMicrotask), 3) Nächsten Makro-Task ausführen (setTimeout/setInterval). Das Verstehen dieser Reihenfolge erklärt, warum Promise-Callbacks vor setTimeout-Callbacks mit 0ms-Delay ausgeführt werden: `Promise.resolve().then(() => console.log(\"A\")); setTimeout(() => console.log(\"B\"), 0);` — \"A\" kommt immer zuerst."
       }
     ],
     "cheatSheet": {
@@ -971,7 +971,7 @@
             "JavaScript ist wie ein einziger Kellner, der alle Bestellungen selbst bearbeitet. Er kann nur eine Sache gleichzeitig tun — aber er notiert neue Aufgaben im Bestellblock (Queue) und arbeitet sie der Reihe nach ab."
           ]
         },
-        "expandedText": "JavaScript ist **single-threaded**: Es gibt einen einzigen Call Stack, sodass immer nur ein Code-Stück gleichzeitig ausgeführt wird. Die **Event Loop** ist der Mechanismus, der asynchronen Code ermöglicht, obwohl er single-threaded ist — sie überprüft kontinuierlich, ob der Call Stack leer ist, und schiebt dann ausstehende Tasks auf ihn.\n\nDiese Architektur bedeutet: **Blockierender Code** (eine Schleife, die eine Sekunde läuft) blockiert jeden anderen Code, einschließlich UI-Aktualisierungen und Ereignisverarbeitung. Das erklärt, warum Webseiten einfrieren, wenn JavaScript auf dem Hauptthread schwer rechnet. Verschiebe intensive Arbeit in Worker-Threads oder teile sie in kleinere Chunks mit `setTimeout(nächsterChunk, 0)` auf."
+        "expandedText": "🔬 JavaScript ist **single-threaded**: Es gibt einen einzigen Call Stack, sodass immer nur ein Code-Stück gleichzeitig ausgeführt wird. Die **Event Loop** ist der Mechanismus, der asynchronen Code ermöglicht, obwohl er single-threaded ist — sie überprüft kontinuierlich, ob der Call Stack leer ist, und schiebt dann ausstehende Tasks auf ihn.\n\n📖 Diese Architektur bedeutet: **Blockierender Code** (eine Schleife, die eine Sekunde läuft) blockiert jeden anderen Code, einschließlich UI-Aktualisierungen und Ereignisverarbeitung. Das erklärt, warum Webseiten einfrieren, wenn JavaScript auf dem Hauptthread schwer rechnet. Verschiebe intensive Arbeit in Worker-Threads oder teile sie in kleinere Chunks mit `setTimeout(nächsterChunk, 0)` auf."
       },
       {
         "animationStep": 1,
@@ -983,7 +983,7 @@
             "Der Call Stack ist ein Förderband: Funktionen werden oben aufgelegt und nach der Ausführung entfernt. Erst wenn das Band leer ist, kann der Event Loop die nächste Aufgabe aus der Queue nehmen."
           ]
         },
-        "expandedText": "Der **Call Stack** ist eine LIFO-Datenstruktur (Last-In, First-Out), die Funktionsausführungskontexte verfolgt. Wenn eine Funktion aufgerufen wird, wird ein Frame gepusht; wenn sie zurückkehrt, wird er gepoppt. Der Stack beginnt leer; sobald er nach der Ausführung des Top-Level-Scripts wieder leer ist, kann die Event Loop den nächsten Task verarbeiten.\n\n**Stack Overflow** tritt auf, wenn die Rekursion keine Basisfall-Überprüfung hat oder zu tief ist — der Stack überläuft die maximale Größe des Engines. Für tiefe Rekursion erwäge Trampolining (Schleifen-basierte Iteration) oder erhöhe Wachheit gegenüber Endrekursionsoptimierung (ES2015 spezifizierte sie, aber die meisten Engines implementieren sie nicht zuverlässig)."
+        "expandedText": "📖 Der **Call Stack** ist eine LIFO-Datenstruktur (Last-In, First-Out), die Funktionsausführungskontexte verfolgt. Wenn eine Funktion aufgerufen wird, wird ein Frame gepusht; wenn sie zurückkehrt, wird er gepoppt. Der Stack beginnt leer; sobald er nach der Ausführung des Top-Level-Scripts wieder leer ist, kann die Event Loop den nächsten Task verarbeiten.\n\n📖 **Stack Overflow** tritt auf, wenn die Rekursion keine Basisfall-Überprüfung hat oder zu tief ist — der Stack überläuft die maximale Größe des Engines. Für tiefe Rekursion erwäge Trampolining (Schleifen-basierte Iteration) oder erhöhe Wachheit gegenüber Endrekursionsoptimierung (ES2015 spezifizierte sie, aber die meisten Engines implementieren sie nicht zuverlässig)."
       },
       {
         "animationStep": 2,
@@ -995,37 +995,37 @@
             "Mikrotasks (Promises) haben Vorfahrt vor Makrotasks (setTimeout). Nach jeder Makrotask werden alle Mikrotasks abgearbeitet — erst dann kommt die nächste Makrotask an die Reihe."
           ]
         },
-        "expandedText": "Die **Callback-Queue** (auch **Task-Queue** oder Makro-Task-Queue) enthält Callbacks aus `setTimeout`, `setInterval`, I/O-Ereignissen und ähnlichen APIs. Die Event Loop überträgt den nächsten Task nur, wenn der Call Stack komplett leer ist.\n\nWichtige Implikation: `setTimeout(fn, 0)` führt `fn` **nicht sofort** aus — es plant `fn` im nächstmöglichen freien Slot der Event Loop. Wenn der aktuelle synchrone Code 100ms läuft, wartet `fn` mindestens 100ms, auch wenn das Timeout 0ms beträgt. Das ist der Grund, warum Timeout-Zahlen Mindest-Delays, nicht Garantien sind."
+        "expandedText": "📖 Die **Callback-Queue** (auch **Task-Queue** oder Makro-Task-Queue) enthält Callbacks aus `setTimeout`, `setInterval`, I/O-Ereignissen und ähnlichen APIs. Die Event Loop überträgt den nächsten Task nur, wenn der Call Stack komplett leer ist.\n\n📖 Wichtige Implikation: `setTimeout(fn, 0)` führt `fn` **nicht sofort** aus — es plant `fn` im nächstmöglichen freien Slot der Event Loop. Wenn der aktuelle synchrone Code 100ms läuft, wartet `fn` mindestens 100ms, auch wenn das Timeout 0ms beträgt. Das ist der Grund, warum Timeout-Zahlen Mindest-Delays, nicht Garantien sind."
       },
       {
         "animationStep": 3,
         "heading": "Stack muss zuerst leer sein",
         "text": "Selbst bei einem 0ms-Timeout wartet der Callback. Der Call Stack muss alle synchrone Arbeit abschließen, bevor die Event Loop die eingereihten Tasks aufnimmt.",
-        "expandedText": "Die **Microtask-Queue** hat **höhere Priorität** als die Task-Queue. Nach dem Abschluss des aktuellen Tasks (oder des synchronen Codes) verarbeitet die Event Loop die gesamte Microtask-Queue, bevor sie den nächsten Makro-Task aufnimmt. Microtasks beinhalten Promise-Callbacks (`.then`/`.catch`/`.finally`) und `queueMicrotask`-Callbacks.\n\nPraktische Konsequenz: Promises lösen sich immer nach dem aktuellen synchronen Code, aber vor dem nächsten setTimeout auf. Das bedeutet: Wenn du `await` verwendest, wird der Code nach dem `await` als Microtask fortgesetzt — nicht nach dem nächsten Browser-Rendering-Zyklus."
+        "expandedText": "📖 Die **Microtask-Queue** hat **höhere Priorität** als die Task-Queue. Nach dem Abschluss des aktuellen Tasks (oder des synchronen Codes) verarbeitet die Event Loop die gesamte Microtask-Queue, bevor sie den nächsten Makro-Task aufnimmt. Microtasks beinhalten Promise-Callbacks (`.then`/`.catch`/`.finally`) und `queueMicrotask`-Callbacks.\n\n📖 Praktische Konsequenz: Promises lösen sich immer nach dem aktuellen synchronen Code, aber vor dem nächsten setTimeout auf. Das bedeutet: Wenn du `await` verwendest, wird der Code nach dem `await` als Microtask fortgesetzt — nicht nach dem nächsten Browser-Rendering-Zyklus."
       },
       {
         "animationStep": 4,
         "heading": "Die Event Loop",
         "text": "Die Event Loop prüft kontinuierlich: Ist der Call Stack leer? Wenn ja, verschiebt sie den nächsten Task aus der Queue auf den Stack.",
-        "expandedText": "Eine **asynchrone** Operation startet eine Aufgabe (I/O, Timer, Netzwerk), gibt die Kontrolle sofort zurück und liefert das Ergebnis später über einen Callback, Promise oder Event. Das ist das Gegenteil von **synchronem** Code, der blockiert, bis ein Ergebnis produziert wird.\n\nAsynchrones Muster ermöglicht es JavaScript, während das Warten auf I/O zu anderen Dingen zu tun — das ist der Kern der **Non-blocking I/O**-Architektur von Node.js. Ein Web-Server kann Tausende gleichzeitiger Verbindungen ohne Threads verarbeiten, indem er Event Loop und Non-blocking System-Calls nutzt."
+        "expandedText": "📖 Eine **asynchrone** Operation startet eine Aufgabe (I/O, Timer, Netzwerk), gibt die Kontrolle sofort zurück und liefert das Ergebnis später über einen Callback, Promise oder Event. Das ist das Gegenteil von **synchronem** Code, der blockiert, bis ein Ergebnis produziert wird.\n\n✅ Asynchrones Muster ermöglicht es JavaScript, während das Warten auf I/O zu anderen Dingen zu tun — das ist der Kern der **Non-blocking I/O**-Architektur von Node.js. Ein Web-Server kann Tausende gleichzeitiger Verbindungen ohne Threads verarbeiten, indem er Event Loop und Non-blocking System-Calls nutzt."
       },
       {
         "animationStep": 5,
         "heading": "Der Call Stack",
         "text": "JavaScript ist single-threaded. Aller synchrone Code läuft auf dem Call Stack — einer LIFO-Struktur. Wenn eine Funktion aufgerufen wird, wird sie auf den Stack geschoben; wenn sie zurückkehrt, wird sie entfernt. Langläufiger Code blockiert den Stack und friert die UI ein.",
-        "expandedText": "Web APIs sind Browser-bereitgestellte Funktionen, die außerhalb der JavaScript-Engine ausgeführt werden: `fetch`, `setTimeout`, DOM-Events, `geolocation`, `localStorage`, `WebSockets`. Sie nehmen Callbacks oder Promises entgegen, führen ihre Arbeit in Thread-Pools des Browsers aus und legen Ergebnisse in die Task/Microtask-Queue, wenn sie fertig sind.\n\nDeshalb kann JavaScript I/O-gebundene Operationen gleichzeitig handhaben, obwohl es single-threaded ist — das I/O passiert in nativem Code außerhalb des JavaScript-Threads. Nur CPU-gebundene Arbeit (schwere Berechnungen) blockiert wirklich den Thread; für diese sind Web Workers die Lösung."
+        "expandedText": "🔬 Web APIs sind Browser-bereitgestellte Funktionen, die außerhalb der JavaScript-Engine ausgeführt werden: `fetch`, `setTimeout`, DOM-Events, `geolocation`, `localStorage`, `WebSockets`. Sie nehmen Callbacks oder Promises entgegen, führen ihre Arbeit in Thread-Pools des Browsers aus und legen Ergebnisse in die Task/Microtask-Queue, wenn sie fertig sind.\n\n📖 Deshalb kann JavaScript I/O-gebundene Operationen gleichzeitig handhaben, obwohl es single-threaded ist — das I/O passiert in nativem Code außerhalb des JavaScript-Threads. Nur CPU-gebundene Arbeit (schwere Berechnungen) blockiert wirklich den Thread; für diese sind Web Workers die Lösung."
       },
       {
         "animationStep": 6,
         "heading": "Microtask-Queue",
         "text": "Promise-Callbacks (.then, .catch, .finally) und queueMicrotask()-Callbacks gehen in die Microtask-Queue — die vollständig geleert wird, bevor der nächste Macrotask (setTimeout, setInterval) ausgeführt wird. Microtasks laufen immer vor dem nächsten Render.",
-        "expandedText": "Der **Render-Zyklus** des Browsers (Layout, Paint, Composite) findet zwischen Makro-Tasks statt — er konkurriert mit JavaScript um den Haupt-Thread. Wenn JavaScript-Code zu lange läuft, verzögert er Rendering und produziert merkbare Ruckler (niedrige FPS).\n\n`requestAnimationFrame(fn)` plant `fn` kurz vor dem nächsten Render — ideal für Animationen. Für lang laufende Berechnungen nutze `queueMicrotask` oder `setTimeout(fn, 0)`, um Arbeit in Chunks aufzuteilen, sodass der Browser zwischen Chunks rendern kann. Oder verlagere die Arbeit in einen **Web Worker**, der auf einem separaten Thread ohne Blockierung des Haupt-Threads läuft."
+        "expandedText": "📖 Der **Render-Zyklus** des Browsers (Layout, Paint, Composite) findet zwischen Makro-Tasks statt — er konkurriert mit JavaScript um den Haupt-Thread. Wenn JavaScript-Code zu lange läuft, verzögert er Rendering und produziert merkbare Ruckler (niedrige FPS).\n\n📖 `requestAnimationFrame(fn)` plant `fn` kurz vor dem nächsten Render — ideal für Animationen. Für lang laufende Berechnungen nutze `queueMicrotask` oder `setTimeout(fn, 0)`, um Arbeit in Chunks aufzuteilen, sodass der Browser zwischen Chunks rendern kann. Oder verlagere die Arbeit in einen **Web Worker**, der auf einem separaten Thread ohne Blockierung des Haupt-Threads läuft."
       },
       {
         "animationStep": 7,
         "heading": "Event-Loop-Phasen",
         "text": "Die Event Loop nimmt einen Macrotask aus der Queue, führt ihn vollständig auf dem Call Stack aus, leert dann die Microtask-Queue vollständig, dann kann der Browser rendern, dann nimmt die Loop den nächsten Macrotask. Dieser Zyklus heißt \"Tick\".",
-        "expandedText": "`Promise.all([p1, p2, p3])` läuft alle drei Promises **gleichzeitig** (nicht sequentiell) und löst sich auf, wenn alle erfolgreich sind, oder lehnt ab, wenn eines fehlschlägt. `Promise.allSettled` wartet auf alle, egal ob sie erfüllt oder abgelehnt wurden — nützlich, wenn du jeden Ausgang unabhängig verarbeiten möchtest.\n\n`Promise.race` löst sich mit dem ersten gesetzten Promise auf (egal ob erfüllt oder abgelehnt) — nützlich für Timeout-Muster: `Promise.race([fetchDaten(), timeout(5000)])`. `Promise.any` löst sich mit dem ersten **erfüllten** Promise auf und ignoriert Ablehnungen. Verstehe die Unterschiede, um die richtige Methode für parallele asynchrone Workflows zu wählen."
+        "expandedText": "📖 `Promise.all([p1, p2, p3])` läuft alle drei Promises **gleichzeitig** (nicht sequentiell) und löst sich auf, wenn alle erfolgreich sind, oder lehnt ab, wenn eines fehlschlägt. `Promise.allSettled` wartet auf alle, egal ob sie erfüllt oder abgelehnt wurden — nützlich, wenn du jeden Ausgang unabhängig verarbeiten möchtest.\n\n✅ `Promise.race` löst sich mit dem ersten gesetzten Promise auf (egal ob erfüllt oder abgelehnt) — nützlich für Timeout-Muster: `Promise.race([fetchDaten(), timeout(5000)])`. `Promise.any` löst sich mit dem ersten **erfüllten** Promise auf und ignoriert Ablehnungen. Verstehe die Unterschiede, um die richtige Methode für parallele asynchrone Workflows zu wählen."
       }
     ],
     "cheatSheet": {
@@ -1100,7 +1100,7 @@
             "Closure ist dieses Notizbuch: es bleibt auch dann erhalten, wenn der Kellner längst woanders ist."
           ]
         },
-        "expandedText": "Ein **Closure** wird gebildet, wenn eine innere Funktion Variablen aus ihrem äußeren (umgebenden) Scope referenziert. Die innere Funktion behält Zugriff auf diese Variablen auch dann, wenn die äußere Funktion bereits zurückgekehrt ist — der lexikalische Scope der Funktion bleibt mit ihr verbunden, auch wenn sie an anderer Stelle ausgeführt wird.\n\nClosures entstehen in JavaScript ständig und natürlich — jedes Mal wenn eine Funktion innerhalb einer anderen Funktion definiert wird. Callback-Funktionen, Event-Handler und zurückgegebene Funktionen sind fast immer Closures. Das Verstehen von Closures ist entscheidend für das Verständnis von State-Management, Modulen, Currying und beinahe jedem fortgeschrittenen JavaScript-Muster."
+        "expandedText": "📖 Ein **Closure** wird gebildet, wenn eine innere Funktion Variablen aus ihrem äußeren (umgebenden) Scope referenziert. Die innere Funktion behält Zugriff auf diese Variablen auch dann, wenn die äußere Funktion bereits zurückgekehrt ist — der lexikalische Scope der Funktion bleibt mit ihr verbunden, auch wenn sie an anderer Stelle ausgeführt wird.\n\n📖 Closures entstehen in JavaScript ständig und natürlich — jedes Mal wenn eine Funktion innerhalb einer anderen Funktion definiert wird. Callback-Funktionen, Event-Handler und zurückgegebene Funktionen sind fast immer Closures. Das Verstehen von Closures ist entscheidend für das Verständnis von State-Management, Modulen, Currying und beinahe jedem fortgeschrittenen JavaScript-Muster."
       },
       {
         "animationStep": 1,
@@ -1113,7 +1113,7 @@
             "Nur diese Funktion kennt die Kombination — niemand von außen kann direkt hineinschauen."
           ]
         },
-        "expandedText": "**Closures als State-Speicher** ermöglichen privaten, persistenten State ohne globale Variablen oder Klassen. Eine Fabrik-Funktion gibt eine innere Funktion zurück, die einen exklusiven Zugriff auf Variablen im äußeren Scope behält — für jeden Aufruf der Fabrik eine frische Kopie. Das ist das Fundament des **Module-Patterns**.\n\nJede von der Fabrik zurückgegebene Funktion erhält ihre eigene Closure-Scope — sie teilen sich keine Variablen, es sei denn, sie schließen über dasselbe übergeordnete Scope. Dies erklärt, warum `zaehler1 = erstelleZaehler()` und `zaehler2 = erstelleZaehler()` unabhängige Zähler sind."
+        "expandedText": "📖 **Closures als State-Speicher** ermöglichen privaten, persistenten State ohne globale Variablen oder Klassen. Eine Fabrik-Funktion gibt eine innere Funktion zurück, die einen exklusiven Zugriff auf Variablen im äußeren Scope behält — für jeden Aufruf der Fabrik eine frische Kopie. Das ist das Fundament des **Module-Patterns**.\n\n📖 Jede von der Fabrik zurückgegebene Funktion erhält ihre eigene Closure-Scope — sie teilen sich keine Variablen, es sei denn, sie schließen über dasselbe übergeordnete Scope. Dies erklärt, warum `zaehler1 = erstelleZaehler()` und `zaehler2 = erstelleZaehler()` unabhängige Zähler sind."
       },
       {
         "animationStep": 2,
@@ -1125,7 +1125,7 @@
             "Ein Wasserzähler erinnert sich an seinen letzten Stand, egal wann du hineinschaust. Genau so erinnert sich eine Closure an den aktuellen Wert ihrer äußeren Variable — der Zähler geht nicht nach jedem Aufruf auf null zurück."
           ]
         },
-        "expandedText": "Das **klassische `var`-Schleifenproblem**: `var i` ist funktionsscoped, sodass alle Callbacks in der Schleife dieselbe Variable teilen. Wenn Callbacks ausgeführt werden (nach der Schleife), ist `i` der endgültige Wert. Die Lösung: Verwende `let` (blockscoped, eine frische Bindung pro Iteration) oder erstelle pro Iteration eine neue Closure mit einer IIFE: `(function(j) { setTimeout(() => console.log(j), 0); })(i)`.\n\nDieses Problem war ein klassisches JavaScript-Interview-Thema und ein häufiger Bug in Event-Handlern und asynchronem Code. Mit modernem `let`/`const` ist es veraltet — aber das Verständnis der Ursache (Closure über veränderliche vs. frische Variable) bleibt grundlegend für das Verständnis von Scoping und Closures."
+        "expandedText": "📖 Das **klassische `var`-Schleifenproblem**: `var i` ist funktionsscoped, sodass alle Callbacks in der Schleife dieselbe Variable teilen. Wenn Callbacks ausgeführt werden (nach der Schleife), ist `i` der endgültige Wert. Die Lösung: Verwende `let` (blockscoped, eine frische Bindung pro Iteration) oder erstelle pro Iteration eine neue Closure mit einer IIFE: `(function(j) { setTimeout(() => console.log(j), 0); })(i)`.\n\n⚠️ Dieses Problem war ein klassisches JavaScript-Interview-Thema und ein häufiger Bug in Event-Handlern und asynchronem Code. Mit modernem `let`/`const` ist es veraltet — aber das Verständnis der Ursache (Closure über veränderliche vs. frische Variable) bleibt grundlegend für das Verständnis von Scoping und Closures."
       },
       {
         "animationStep": 3,
@@ -1138,7 +1138,7 @@
             "Wenn du zwei Zähler aus derselben Fabrikfunktion erzeugst, teilen sie niemals ihren Zustand — jeder hat seine eigene private Schublade."
           ]
         },
-        "expandedText": "Das **Module-Pattern** nutzt Closures, um private State und öffentliche API zu kapseln. Eine IIFE (Immediately Invoked Function Expression) erstellt einen Scope; Rückgabe eines Objekts aus diesem Scope exponiert das öffentliche Interface. Private Variablen sind von außen nicht zugänglich.\n\nModernes JavaScript hat natürliche Modulunterstützung (`import`/`export`), die das Module-Pattern für die Modulkapselung ersetzt. Aber dasselbe Closure-Prinzip lebt in `class`-Feldern (privat: `#feld`), React-Hooks (State-Closures) und Factory-Funktionen weiter. Das Verstehen des Module-Patterns hilft zu verstehen, warum React-Hooks nur innerhalb von Komponenten funktionieren."
+        "expandedText": "✅ Das **Module-Pattern** nutzt Closures, um private State und öffentliche API zu kapseln. Eine IIFE (Immediately Invoked Function Expression) erstellt einen Scope; Rückgabe eines Objekts aus diesem Scope exponiert das öffentliche Interface. Private Variablen sind von außen nicht zugänglich.\n\n✅ Modernes JavaScript hat natürliche Modulunterstützung (`import`/`export`), die das Module-Pattern für die Modulkapselung ersetzt. Aber dasselbe Closure-Prinzip lebt in `class`-Feldern (privat: `#feld`), React-Hooks (State-Closures) und Factory-Funktionen weiter. Das Verstehen des Module-Patterns hilft zu verstehen, warum React-Hooks nur innerhalb von Komponenten funktionieren."
       },
       {
         "animationStep": 4,
@@ -1151,7 +1151,7 @@
             "Nur die Funktionen, die du bewusst nach außen gibst (return), können die Kapsel öffnen — alles andere bleibt privat."
           ]
         },
-        "expandedText": "**Currying** transformiert eine Funktion mit mehreren Argumenten in eine Kette von Funktionen mit einem Argument: `add(a)(b)` statt `add(a, b)`. Dies ermöglicht **Partial Application**: Einige Argumente vorher fixieren und eine spezialisierte Funktion erhalten.\n\n**Memoization** ist eine Optimierungstechnik, bei der Ergebnisse von teuren Funktionsaufrufen gecacht werden. Ein Closure speichert einen Cache-Map; bei jedem Aufruf wird zunächst der Cache überprüft. Memoization ist sinnvoll für reine Funktionen (kein Side-Effect, deterministisch), wo dasselbe Input immer dasselbe Output produziert — z.B. Fibonacci-Zahlen oder kostspielige Berechnungen."
+        "expandedText": "📖 **Currying** transformiert eine Funktion mit mehreren Argumenten in eine Kette von Funktionen mit einem Argument: `add(a)(b)` statt `add(a, b)`. Dies ermöglicht **Partial Application**: Einige Argumente vorher fixieren und eine spezialisierte Funktion erhalten.\n\n📖 **Memoization** ist eine Optimierungstechnik, bei der Ergebnisse von teuren Funktionsaufrufen gecacht werden. Ein Closure speichert einen Cache-Map; bei jedem Aufruf wird zunächst der Cache überprüft. Memoization ist sinnvoll für reine Funktionen (kein Side-Effect, deterministisch), wo dasselbe Input immer dasselbe Output produziert — z.B. Fibonacci-Zahlen oder kostspielige Berechnungen."
       }
     ],
     "cheatSheet": {
@@ -1241,7 +1241,7 @@
             "Eine Promise ist wie ein Bestellzettel im Restaurant: du bekommst ihn sofort, aber das Essen kommt später. Du kannst in der Zwischenzeit andere Dinge tun — statt am Tresen zu warten."
           ]
         },
-        "expandedText": "Ein **Promise** repräsentiert das eventuelle Ergebnis einer asynchronen Operation. Es befindet sich immer in einem von drei Zuständen: **pending** (in Bearbeitung), **fulfilled** (mit einem Wert erfolgreich) oder **rejected** (mit einem Grund fehlgeschlagen). Einmal settled ändert es seinen Zustand nicht mehr.\n\nEin Promise wird mit `new Promise((resolve, reject) => {...})` erstellt. Rufe `resolve(wert)` auf, um es zu erfüllen, und `reject(grund)` um es abzulehnen. Den meisten Code wird Promises konsumieren (von APIs, `fetch`, etc.) statt sie manuell zu erstellen — aber das Verstehen der Erstellungs-API hilft beim Debuggen von Promise-Chains."
+        "expandedText": "📖 Ein **Promise** repräsentiert das eventuelle Ergebnis einer asynchronen Operation. Es befindet sich immer in einem von drei Zuständen: **pending** (in Bearbeitung), **fulfilled** (mit einem Wert erfolgreich) oder **rejected** (mit einem Grund fehlgeschlagen). Einmal settled ändert es seinen Zustand nicht mehr.\n\n📖 Ein Promise wird mit `new Promise((resolve, reject) => {...})` erstellt. Rufe `resolve(wert)` auf, um es zu erfüllen, und `reject(grund)` um es abzulehnen. Den meisten Code wird Promises konsumieren (von APIs, `fetch`, etc.) statt sie manuell zu erstellen — aber das Verstehen der Erstellungs-API hilft beim Debuggen von Promise-Chains."
       },
       {
         "animationStep": 1,
@@ -1253,7 +1253,7 @@
             ".then() verkettet Schritte wie Kettenbriefe: das Ergebnis jedes Schritts fließt automatisch in den nächsten. Wenn einer scheitert, springt die Kette direkt zum .catch()."
           ]
         },
-        "expandedText": "`.then(onFulfilled)` gibt ein **neues Promise** zurück, das mit dem Rückgabewert des Callbacks aufgelöst wird, was Chaining ermöglicht. Jedes `.then` erhält das Ergebnis des vorherigen Schritts. Wenn ein `.then`-Callback wirft, springt die Kette zum nächsten `.catch`.\n\n`.catch(onRejected)` ist äquivalent zu `.then(undefined, onRejected)`. `.finally(fn)` wird immer ausgeführt — nützlich für Cleanup (Loader ausblenden, Verbindung schließen). **Vergiss nicht**: Das Rückgabe-Promise aus einem `.then`-Callback zu `return`, sonst verlierst du die Verkettung und erhältst ein Promise von `undefined`."
+        "expandedText": "📖 `.then(onFulfilled)` gibt ein **neues Promise** zurück, das mit dem Rückgabewert des Callbacks aufgelöst wird, was Chaining ermöglicht. Jedes `.then` erhält das Ergebnis des vorherigen Schritts. Wenn ein `.then`-Callback wirft, springt die Kette zum nächsten `.catch`.\n\n📖 `.catch(onRejected)` ist äquivalent zu `.then(undefined, onRejected)`. `.finally(fn)` wird immer ausgeführt — nützlich für Cleanup (Loader ausblenden, Verbindung schließen). **Vergiss nicht**: Das Rückgabe-Promise aus einem `.then`-Callback zu `return`, sonst verlierst du die Verkettung und erhältst ein Promise von `undefined`."
       },
       {
         "animationStep": 2,
@@ -1265,7 +1265,7 @@
             "Promise.all() ist wie ein Orchesterdirigent: er wartet, bis alle Musiker fertig gestimmt haben — erst dann beginnt das Konzert. Scheitert ein Musiker, wird abgebrochen."
           ]
         },
-        "expandedText": "**`async`/`await`** ist syntaktischer Zucker über Promises. Eine `async`-Funktion gibt immer ein Promise zurück. Innerhalb davon pausiert `await` die Ausführung, bis das erwartete Promise settled ist, und nimmt dann mit seinem Wert wieder auf.\n\nUnter der Haube wird Code nach einem `await` als Microtask-Continuation geplant — equivalent zu einem `.then`-Callback. `async/await` macht asynchronen Code synchron-**aussehend** und leichter lesbar, ohne die asynchrone Natur zu ändern. Der `for await...of`-Loop ist die asynchrone Version von `for...of` und funktioniert mit asynchronen Iteratoren und dem Lesen von Streams."
+        "expandedText": "📖 **`async`/`await`** ist syntaktischer Zucker über Promises. Eine `async`-Funktion gibt immer ein Promise zurück. Innerhalb davon pausiert `await` die Ausführung, bis das erwartete Promise settled ist, und nimmt dann mit seinem Wert wieder auf.\n\n📖 Unter der Haube wird Code nach einem `await` als Microtask-Continuation geplant — equivalent zu einem `.then`-Callback. `async/await` macht asynchronen Code synchron-**aussehend** und leichter lesbar, ohne die asynchrone Natur zu ändern. Der `for await...of`-Loop ist die asynchrone Version von `for...of` und funktioniert mit asynchronen Iteratoren und dem Lesen von Streams."
       },
       {
         "animationStep": 3,
@@ -1277,7 +1277,7 @@
             "async/await ist syntaktischer Zucker für Promises. Der Compiler 'übersetzt' es intern in Promise-Ketten — async macht eine Funktion zur Promise-Fabrik, await 'pausiert' die Ausführung der Funktion."
           ]
         },
-        "expandedText": "`try`/`catch` rund um `await` behandelt sowohl **Netzwerk-Level-Ablehnungen** (Timeout, Verbindung verweigert) als auch geworfene Fehler aus Code, der nach dem await-Auflösen ausgeführt wird. Jedes `await` kann sein eigenes `try`/`catch` haben.\n\nAlternatives Muster: `const [fehler, daten] = await daten.catch(e => [e, null])` — das \"Go-Stil\" Fehlerhandling. Hierbei wird `.catch` direkt an das Promise angehängt und ein `[fehler, null]` Tupel zurückgegeben, wenn es ablehnt. Das vermeidet verschachtelte try/catch-Blöcke bei mehreren awaits, die unabhängig behandelt werden müssen."
+        "expandedText": "⚠️ `try`/`catch` rund um `await` behandelt sowohl **Netzwerk-Level-Ablehnungen** (Timeout, Verbindung verweigert) als auch geworfene Fehler aus Code, der nach dem await-Auflösen ausgeführt wird. Jedes `await` kann sein eigenes `try`/`catch` haben.\n\n⚠️ Alternatives Muster: `const [fehler, daten] = await daten.catch(e => [e, null])` — das \"Go-Stil\" Fehlerhandling. Hierbei wird `.catch` direkt an das Promise angehängt und ein `[fehler, null]` Tupel zurückgegeben, wenn es ablehnt. Das vermeidet verschachtelte try/catch-Blöcke bei mehreren awaits, die unabhängig behandelt werden müssen."
       },
       {
         "animationStep": 4,
@@ -1342,7 +1342,7 @@
             "Module sind wie beschriftete Werkzeugkästen: jeder Kasten enthält Werkzeuge für eine bestimmte Aufgabe. Mit import holst du genau das Werkzeug, das du brauchst — ohne den ganzen Kasten zu schleppen."
           ]
         },
-        "expandedText": "**ES-Module** (`import`/`export`) sind das native Modulsystem seit ES2015. Jede Datei ist ein eigener Scope — Variablen sind nicht global außer wenn explizit exportiert. Module werden **statisch analysiert**: Import-Statements müssen auf Top-Level sein, was Build-Tools ermöglicht, toten Code zu eliminieren (Tree-Shaking).\n\nBrowser unterstützen ES-Module nativ mit `<script type=\"module\">`. Node.js unterstützt sie in `.mjs`-Dateien oder wenn `\"type\": \"module\"` in `package.json` gesetzt ist. ES-Module werden immer **einmal ausgeführt** — mehrfaches Importieren desselben Moduls gibt dieselbe gecachte Instanz zurück."
+        "expandedText": "📖 **ES-Module** (`import`/`export`) sind das native Modulsystem seit ES2015. Jede Datei ist ein eigener Scope — Variablen sind nicht global außer wenn explizit exportiert. Module werden **statisch analysiert**: Import-Statements müssen auf Top-Level sein, was Build-Tools ermöglicht, toten Code zu eliminieren (Tree-Shaking).\n\n📖 Browser unterstützen ES-Module nativ mit `<script type=\"module\">`. Node.js unterstützt sie in `.mjs`-Dateien oder wenn `\"type\": \"module\"` in `package.json` gesetzt ist. ES-Module werden immer **einmal ausgeführt** — mehrfaches Importieren desselben Moduls gibt dieselbe gecachte Instanz zurück."
       },
       {
         "animationStep": 1,
@@ -1354,19 +1354,19 @@
             "export default ist wie ein Hauptfenster in einem Gebäude: es gibt genau eines — das wichtigste Element. Named exports sind wie nummerierte Nebentüren: mehrere, je nach Bedarf importierbar."
           ]
         },
-        "expandedText": "**Default Export** exportiert einen einzigen Hauptwert aus einem Modul. Der Importer wählt seinen eigenen Namen: `import MeinName from \"./modul\"`. Üblich für Komponenten, Klassen oder Haupt-Utility-Funktionen.\n\n**Benannte Exports** exponieren mehrere Werte: `export const a = 1; export function b(){}`. Importiert als `import {a, b} from \"./modul\"`. Du kannst beim Import umbenennen: `import {a as meineA} from \"./modul\"`. **Bevorzuge benannte Exports** in den meisten Fällen — sie sind refaktorierungsfreundlicher und geben bessere Auto-Import-Erfahrungen in Editoren."
+        "expandedText": "📖 **Default Export** exportiert einen einzigen Hauptwert aus einem Modul. Der Importer wählt seinen eigenen Namen: `import MeinName from \"./modul\"`. Üblich für Komponenten, Klassen oder Haupt-Utility-Funktionen.\n\n📖 **Benannte Exports** exponieren mehrere Werte: `export const a = 1; export function b(){}`. Importiert als `import {a, b} from \"./modul\"`. Du kannst beim Import umbenennen: `import {a as meineA} from \"./modul\"`. **Bevorzuge benannte Exports** in den meisten Fällen — sie sind refaktorierungsfreundlicher und geben bessere Auto-Import-Erfahrungen in Editoren."
       },
       {
         "animationStep": 2,
         "heading": "npm und Pakete installieren",
         "text": "npm (Node Package Manager) ist das Registry für JavaScript-Pakete. npm install speichert das Paket in node_modules und listet es in package.json. Importiere das Paket genauso wie deine eigenen Module — Bundler lösen node_modules automatisch auf.",
-        "expandedText": "`import * as ns from \"./modul\"` importiert alles in ein Namespace-Objekt: `ns.exportName`. Nützlich für Modul-Collections oder wenn du mit allen Exports eines Moduls interagieren möchtest. Kann jedoch das Tree-Shaking behindern, wenn Build-Tools nicht bestimmen können, welche Exports tatsächlich verwendet werden.\n\n**Re-exporting** (`export {a} from \"./anderes\"`) ermöglicht dir, als Aggregator zu fungieren — ein öffentliches Interface, das Exports aus mehreren Dateien in einer einzigen Importpfad-API zusammenfasst. Das ist das Muster hinter `index.ts`-Barrel-Files: `export {Schaltfläche} from \"./Schaltfläche\"; export {Eingabe} from \"./Eingabe\"` — Konsumenten importieren aus `\"./komponenten\"` statt aus tiefen Pfaden."
+        "expandedText": "📖 `import * as ns from \"./modul\"` importiert alles in ein Namespace-Objekt: `ns.exportName`. Nützlich für Modul-Collections oder wenn du mit allen Exports eines Moduls interagieren möchtest. Kann jedoch das Tree-Shaking behindern, wenn Build-Tools nicht bestimmen können, welche Exports tatsächlich verwendet werden.\n\n✅ **Re-exporting** (`export {a} from \"./anderes\"`) ermöglicht dir, als Aggregator zu fungieren — ein öffentliches Interface, das Exports aus mehreren Dateien in einer einzigen Importpfad-API zusammenfasst. Das ist das Muster hinter `index.ts`-Barrel-Files: `export {Schaltfläche} from \"./Schaltfläche\"; export {Eingabe} from \"./Eingabe\"` — Konsumenten importieren aus `\"./komponenten\"` statt aus tiefen Pfaden."
       },
       {
         "animationStep": 3,
         "heading": "Bundler: Parcel und Vite",
         "text": "Bundler nehmen viele ES-Module-Dateien und erzeugen optimierte, browserbereite Ausgabe. Parcel ist konfigurationsfrei; Vite ist schnell mit Hot Module Replacement für die Entwicklung. Beide unterstützen den Import von CSS, Bildern und npm-Paketen out of the box.",
-        "expandedText": "**Dynamisches Import** (`import(pfad)`) gibt ein Promise zurück — es lädt und wertet das Modul asynchron aus. Es kann überall im Code verwendet werden (nicht nur auf Top-Level) und ermöglicht **Code-Splitting**: nur den Code laden, der tatsächlich benötigt wird.\n\nCode-Splitting ist kritisch für Web-Performance. Anstatt die gesamte App beim Start zu bündeln, teile Routen oder Features in separate Chunks auf: `const AdminPanel = lazy(() => import(\"./AdminPanel\"))`. Bundler (Vite, webpack) erstellen automatisch separate Dateien für dynamische Imports. Das erheblich reduziert das anfängliche Lade-Payload — Nutzer laden nur den Code für die angefragte Seite."
+        "expandedText": "📖 **Dynamisches Import** (`import(pfad)`) gibt ein Promise zurück — es lädt und wertet das Modul asynchron aus. Es kann überall im Code verwendet werden (nicht nur auf Top-Level) und ermöglicht **Code-Splitting**: nur den Code laden, der tatsächlich benötigt wird.\n\n📖 Code-Splitting ist kritisch für Web-Performance. Anstatt die gesamte App beim Start zu bündeln, teile Routen oder Features in separate Chunks auf: `const AdminPanel = lazy(() => import(\"./AdminPanel\"))`. Bundler (Vite, webpack) erstellen automatisch separate Dateien für dynamische Imports. Das erheblich reduziert das anfängliche Lade-Payload — Nutzer laden nur den Code für die angefragte Seite."
       }
     ],
     "cheatSheet": {
@@ -1450,7 +1450,7 @@
             "npm ist wie ein Paketdienst: du bestellst Pakete (Bibliotheken) aus einem riesigen Katalog (Registry). package.json ist dein Bestellbuch — es listet alles auf, was dein Projekt braucht."
           ]
         },
-        "expandedText": "**npm** (Node Package Manager) ist das Standard-Registry und CLI für JavaScript-Pakete. `package.json` deklariert das Projekt-Metadata und Abhängigkeiten. `node_modules/` enthält installierte Pakete — diese Verzeichnis sollte immer in `.gitignore` sein.\n\n`package-lock.json` (npm) oder `yarn.lock`/`pnpm-lock.yaml` sperren exakte Versionen für reproduzierbare Builds. Versionsbereiche in `package.json` (`^1.2.3`, `~1.2.3`) erlauben kompatible Updates, aber Lock-Files sichern genau installierte Versionen. Sichere immer Lock-Files in Git ein — sie gewährleisten, dass alle Entwickler und CI-Systeme identische Abhängigkeiten installieren."
+        "expandedText": "📖 **npm** (Node Package Manager) ist das Standard-Registry und CLI für JavaScript-Pakete. `package.json` deklariert das Projekt-Metadata und Abhängigkeiten. `node_modules/` enthält installierte Pakete — diese Verzeichnis sollte immer in `.gitignore` sein.\n\n📖 `package-lock.json` (npm) oder `yarn.lock`/`pnpm-lock.yaml` sperren exakte Versionen für reproduzierbare Builds. Versionsbereiche in `package.json` (`^1.2.3`, `~1.2.3`) erlauben kompatible Updates, aber Lock-Files sichern genau installierte Versionen. Sichere immer Lock-Files in Git ein — sie gewährleisten, dass alle Entwickler und CI-Systeme identische Abhängigkeiten installieren."
       },
       {
         "animationStep": 1,
@@ -1462,25 +1462,25 @@
             "Ein Bundler ist wie eine Packstation: er nimmt hunderte einzelne JS-Dateien, schnürt sie zu wenigen optimierten Paketen zusammen und sorgt dafür, dass Browser sie schnell laden können."
           ]
         },
-        "expandedText": "Ein **Bundler** kombiniert Hunderte von Modulen in wenige optimierte Dateien für den Browser. **Vite** (der Standard in modernem React-Tooling) nutzt native ES-Module in der Entwicklung für blitzschnelle HMR (Hot Module Replacement) und Rollup für Produktions-Builds. **webpack** ist das ältere, konfigurationsschwerere Tool hinter Create React App.\n\n**Babel** transpiliert modernes JavaScript und JSX in browser-kompatiblen Code. **esbuild** ist ein in Go geschriebener Bundler/Transpiler, der wesentlich schneller als webpack ist — er dient als Vites Kern-Transformer in der Entwicklung. **SWC** ist ein weiterer schneller Transformer (Rust-basiert), genutzt von Next.js."
+        "expandedText": "📖 Ein **Bundler** kombiniert Hunderte von Modulen in wenige optimierte Dateien für den Browser. **Vite** (der Standard in modernem React-Tooling) nutzt native ES-Module in der Entwicklung für blitzschnelle HMR (Hot Module Replacement) und Rollup für Produktions-Builds. **webpack** ist das ältere, konfigurationsschwerere Tool hinter Create React App.\n\n📖 **Babel** transpiliert modernes JavaScript und JSX in browser-kompatiblen Code. **esbuild** ist ein in Go geschriebener Bundler/Transpiler, der wesentlich schneller als webpack ist — er dient als Vites Kern-Transformer in der Entwicklung. **SWC** ist ein weiterer schneller Transformer (Rust-basiert), genutzt von Next.js."
       },
       {
         "animationStep": 2,
         "heading": "Was Bundler tun",
         "text": "Ein Bundler löst deinen Import-Graphen ausgehend vom Einstiegspunkt auf, kombiniert alle Module, eliminiert toten Code (Tree-Shaking) und erzeugt optimierte Browser-Ausgabe. Er verarbeitet auch CSS-Imports, Bild-Assets, TypeScript-Kompilierung und Code-Splitting.",
-        "expandedText": "**Tree Shaking** eliminiert unbenutzten Code aus Bundles. Es funktioniert mit ES-Modul `import`/`export` (statisch analysierbar) aber nicht mit CommonJS `require()` (dynamisch). Das bedeutet: Wenn du `import {meinFn} from \"große-bibliothek\"` verwendest und `meinFn` die einzige genutzte Export ist, inkludiert der Bundler nur `meinFn`'s Code.\n\nUm Tree Shaking zu maximieren: Bevorzuge benannte Exports gegenüber Default-Exports, vermeide Seiten-Effekte auf Modul-Top-Level und verwende ES-Modul-kompatible Bibliotheken. Prüfe die Bundle-Größe mit Tools wie `vite-bundle-visualizer` oder `webpack-bundle-analyzer`, um zu sehen, was Platz einnimmt."
+        "expandedText": "📖 **Tree Shaking** eliminiert unbenutzten Code aus Bundles. Es funktioniert mit ES-Modul `import`/`export` (statisch analysierbar) aber nicht mit CommonJS `require()` (dynamisch). Das bedeutet: Wenn du `import {meinFn} from \"große-bibliothek\"` verwendest und `meinFn` die einzige genutzte Export ist, inkludiert der Bundler nur `meinFn`'s Code.\n\n📖 Um Tree Shaking zu maximieren: Bevorzuge benannte Exports gegenüber Default-Exports, vermeide Seiten-Effekte auf Modul-Top-Level und verwende ES-Modul-kompatible Bibliotheken. Prüfe die Bundle-Größe mit Tools wie `vite-bundle-visualizer` oder `webpack-bundle-analyzer`, um zu sehen, was Platz einnimmt."
       },
       {
         "animationStep": 3,
         "heading": "Bundler im Vergleich",
         "text": "Webpack ist am ausgereiftesten und konfigurierbarstem, aber komplex. Rollup eignet sich ideal für Bibliotheken mit überlegenem Tree-Shaking. Parcel ist zero-config und super für Einsteiger. Vite nutzt natives ESM für sofortigen Dev-Server-Start und Rollup für Production — der moderne Standard für neue Projekte.",
-        "expandedText": "**HMR** (Hot Module Replacement) aktualisiert Module im Browser **ohne die Seite neu zu laden** — State wird beibehalten, während Code-Änderungen sofort sichtbar werden. Vites HMR ist besonders schnell, da es native ES-Module direkt serviert statt neu zu bündeln.\n\n**Source Maps** verbinden minimisierten/transpilierten Bundle-Code zurück zu deinem Original-Quellcode — unverzichtbar für das Debuggen. Browser-DevTools nutzen Source Maps, um korrekte Dateinamen und Zeilennummern anzuzeigen. Aktiviere immer Source Maps für Entwicklungs-Builds; für Produktions-Builds entscheide basierend auf deinen Anforderungen (manchmal deaktiviert für Code-Verschleierung)."
+        "expandedText": "📖 **HMR** (Hot Module Replacement) aktualisiert Module im Browser **ohne die Seite neu zu laden** — State wird beibehalten, während Code-Änderungen sofort sichtbar werden. Vites HMR ist besonders schnell, da es native ES-Module direkt serviert statt neu zu bündeln.\n\n📖 **Source Maps** verbinden minimisierten/transpilierten Bundle-Code zurück zu deinem Original-Quellcode — unverzichtbar für das Debuggen. Browser-DevTools nutzen Source Maps, um korrekte Dateinamen und Zeilennummern anzuzeigen. Aktiviere immer Source Maps für Entwicklungs-Builds; für Produktions-Builds entscheide basierend auf deinen Anforderungen (manchmal deaktiviert für Code-Verschleierung)."
       },
       {
         "animationStep": 4,
         "heading": "Dev-Server & HMR",
         "text": "Vites Dev-Server liefert Dateien als natives ESM — kein Build-Schritt, daher startet er nahezu sofort. Hot Module Replacement (HMR) schiebt nur das geänderte Modul in den Browser ohne vollständigen Seitenreload und bewahrt den Anwendungszustand. Production-Builds nutzen Rollup für vollständige Optimierung.",
-        "expandedText": "**`dependencies`** sind Pakete, die dein Code in der Produktion benötigt (React, Lodash). **`devDependencies`** werden nur während der Entwicklung benötigt (Vite, Jest, TypeScript, ESLint). Das Trennen der beiden hält Produktions-Docker-Images klein (`npm install --omit=dev`).\n\n**Semantic Versioning** (semver): `MAJOR.MINOR.PATCH`. `^` erlaubt Minor/Patch-Updates; `~` erlaubt nur Patch-Updates; exakte Versionen ohne Präfix sperren auf eine spezifische Version. Führe `npm audit` regelmäßig aus, um bekannte Schwachstellen in Abhängigkeiten zu prüfen. Automatisiere Updates mit Tools wie Dependabot oder Renovate Bot."
+        "expandedText": "📖 **`dependencies`** sind Pakete, die dein Code in der Produktion benötigt (React, Lodash). **`devDependencies`** werden nur während der Entwicklung benötigt (Vite, Jest, TypeScript, ESLint). Das Trennen der beiden hält Produktions-Docker-Images klein (`npm install --omit=dev`).\n\n📖 **Semantic Versioning** (semver): `MAJOR.MINOR.PATCH`. `^` erlaubt Minor/Patch-Updates; `~` erlaubt nur Patch-Updates; exakte Versionen ohne Präfix sperren auf eine spezifische Version. Führe `npm audit` regelmäßig aus, um bekannte Schwachstellen in Abhängigkeiten zu prüfen. Automatisiere Updates mit Tools wie Dependabot oder Renovate Bot."
       }
     ],
     "cheatSheet": {
@@ -1538,43 +1538,43 @@
         "animationStep": 0,
         "heading": "Variablen",
         "text": "Python benötigt kein Schlüsselwort — einfach name = \"Alice\" schreiben. JavaScript verwendet const für unveränderliche Werte und let für veränderliche.",
-        "expandedText": "JavaScript und Python haben **ähnliche C-artige Syntax** für Variablen, Schleifen und Funktionen, aber unterscheiden sich in der philosophischen Ausrichtung. JavaScript wurde für **Browser-Interaktivität** entwickelt — asynchrones, event-getriebenes Programmieren ist fundamental. Python wurde für **Lesbarkeit und Scripting** entwickelt — synchrones, imperatatives Programmieren ist der Standard.\n\nBeide sind dynamisch typisiert, aber JavaScript hat mehr implizite Typkonvertierung (Coercion). Python ist strenger: `1 + \"1\"` wirft einen `TypeError`; JavaScript gibt `\"11\"` zurück. Diese Philosophie-Unterschiede sind auf modernen Codebasen zu sehen: TypeScript fügt statische Typen zu JavaScript hinzu (wie mypy für Python)."
+        "expandedText": "📖 JavaScript und Python haben **ähnliche C-artige Syntax** für Variablen, Schleifen und Funktionen, aber unterscheiden sich in der philosophischen Ausrichtung. JavaScript wurde für **Browser-Interaktivität** entwickelt — asynchrones, event-getriebenes Programmieren ist fundamental. Python wurde für **Lesbarkeit und Scripting** entwickelt — synchrones, imperatatives Programmieren ist der Standard.\n\n📖 Beide sind dynamisch typisiert, aber JavaScript hat mehr implizite Typkonvertierung (Coercion). Python ist strenger: `1 + \"1\"` wirft einen `TypeError`; JavaScript gibt `\"11\"` zurück. Diese Philosophie-Unterschiede sind auf modernen Codebasen zu sehen: TypeScript fügt statische Typen zu JavaScript hinzu (wie mypy für Python)."
       },
       {
         "animationStep": 1,
         "heading": "Funktionen",
         "text": "Python verwendet das Schlüsselwort def gefolgt von einem Doppelpunkt. JavaScript nutzt das Schlüsselwort function oder die kompakte Pfeilsyntax (=>). Beide unterstützen Standardparameter.",
-        "expandedText": "JavaScript verwendet **geschweifte Klammern** und Semikolons (optional, aufgrund von ASI — Automatic Semicolon Insertion). Python verwendet **Einrückung** zur Blockstrukturierung — kein Trennzeichen nötig, aber Einrückungs-Inkonsistenz verursacht Syntaxfehler.\n\nASI in JavaScript ist eine Quelle von subtilen Bugs: `return` auf einer Zeile gefolgt von einem Wert auf der nächsten funktioniert nicht wie erwartet — ASI fügt ein Semikolon nach `return` ein. Das ist ein Grund, warum viele Style Guides explizite Semikolons fordern und Klammern immer auf derselben Zeile wie `return` zu platzieren."
+        "expandedText": "⚠️ JavaScript verwendet **geschweifte Klammern** und Semikolons (optional, aufgrund von ASI — Automatic Semicolon Insertion). Python verwendet **Einrückung** zur Blockstrukturierung — kein Trennzeichen nötig, aber Einrückungs-Inkonsistenz verursacht Syntaxfehler.\n\n📖 ASI in JavaScript ist eine Quelle von subtilen Bugs: `return` auf einer Zeile gefolgt von einem Wert auf der nächsten funktioniert nicht wie erwartet — ASI fügt ein Semikolon nach `return` ein. Das ist ein Grund, warum viele Style Guides explizite Semikolons fordern und Klammern immer auf derselben Zeile wie `return` zu platzieren."
       },
       {
         "animationStep": 2,
         "heading": "Kontrollfluss",
         "text": "Python definiert Blöcke durch Einrückung — keine geschweiften Klammern. JavaScript verwendet geschweifte Klammern {} und erfordert Klammern um die Bedingung.",
-        "expandedText": "Pythons **List Comprehensions** (`[x*2 for x in items if x > 0]`) haben kein direktes Äquivalent in JavaScript — verwende `arr.filter(pred).map(fn)` stattdessen. Beide sind ausdrucksstark, aber JavaScript's Chaining ist verbaler.\n\nPythons **Dictionary Comprehensions** (`{k: v for k, v in items.items()}`) entsprechen JavaScript's `Object.fromEntries(Object.entries(obj).map(...))`. Für Simple-Objekt-Transformationen ist Pythons Syntax kompakter. JavaScript kompensiert mit Spread-Operator-Patterns und verständlichem Chaining."
+        "expandedText": "📖 Pythons **List Comprehensions** (`[x*2 for x in items if x > 0]`) haben kein direktes Äquivalent in JavaScript — verwende `arr.filter(pred).map(fn)` stattdessen. Beide sind ausdrucksstark, aber JavaScript's Chaining ist verbaler.\n\n📖 Pythons **Dictionary Comprehensions** (`{k: v for k, v in items.items()}`) entsprechen JavaScript's `Object.fromEntries(Object.entries(obj).map(...))`. Für Simple-Objekt-Transformationen ist Pythons Syntax kompakter. JavaScript kompensiert mit Spread-Operator-Patterns und verständlichem Chaining."
       },
       {
         "animationStep": 3,
         "heading": "Datentypen",
         "text": "Beide Sprachen haben Strings, Zahlen, Booleans und einen 'Nichts'-Wert. Python schreibt True/False/None groß; JavaScript verwendet true/false/null.",
-        "expandedText": "Python ist standardmäßig **synchron** — bei netzwerkschweren Code musst du `asyncio` und `async/await` explizit einsetzen. JavaScript ist **nativ asynchron** mit event-getriebenem I/O — `async/await` ist überall, und der Event Loop läuft immer.\n\nPython's GIL (Global Interpreter Lock) verhindert echtes Multithreading in CPU-gebundenem Code — nutze `multiprocessing` für parallele Berechnungen. JavaScript hat keine GIL, ist aber single-threaded — nutze Worker Threads (Node.js) oder Web Workers (Browser) für CPU-gebundene Arbeit. Beide Sprachen verwenden Non-blocking I/O für I/O-gebundene Concurrency-Szenarien."
+        "expandedText": "📖 Python ist standardmäßig **synchron** — bei netzwerkschweren Code musst du `asyncio` und `async/await` explizit einsetzen. JavaScript ist **nativ asynchron** mit event-getriebenem I/O — `async/await` ist überall, und der Event Loop läuft immer.\n\n📖 Python's GIL (Global Interpreter Lock) verhindert echtes Multithreading in CPU-gebundenem Code — nutze `multiprocessing` für parallele Berechnungen. JavaScript hat keine GIL, ist aber single-threaded — nutze Worker Threads (Node.js) oder Web Workers (Browser) für CPU-gebundene Arbeit. Beide Sprachen verwenden Non-blocking I/O für I/O-gebundene Concurrency-Szenarien."
       },
       {
         "animationStep": 4,
         "heading": "Schleifen",
         "text": "Pythons for-Schleife iteriert direkt über Elemente. JavaScript verwendet for...of für dasselbe Muster und Array-Methoden wie .map() und .filter() ersetzen List Comprehensions.",
-        "expandedText": "**Python**: Klassen, Decorators, Vererbung sind bürgerrechtlich gleichgestellt. List Comprehensions und Generator-Ausdrücke sind einzigartig für Python. **Lambdas** sind auf einen Ausdruck beschränkt.\n\n**JavaScript**: Erstklassige Funktionen, Closures und prototypbasierte Vererbung sind zentral. Arrow Functions sind ausdrucksstarke Einzeiler. Generatoren (`function*`) und Iteratoren-Protokoll existieren in beiden, aber ES-Generatoren sind weniger häufig als Pythons `yield`-schweres Ökosystem."
+        "expandedText": "📖 **Python**: Klassen, Decorators, Vererbung sind bürgerrechtlich gleichgestellt. List Comprehensions und Generator-Ausdrücke sind einzigartig für Python. **Lambdas** sind auf einen Ausdruck beschränkt.\n\n⚠️ **JavaScript**: Erstklassige Funktionen, Closures und prototypbasierte Vererbung sind zentral. Arrow Functions sind ausdrucksstarke Einzeiler. Generatoren (`function*`) und Iteratoren-Protokoll existieren in beiden, aber ES-Generatoren sind weniger häufig als Pythons `yield`-schweres Ökosystem."
       },
       {
         "animationStep": 5,
         "heading": "Dicts vs. Objekte",
         "text": "Pythons Dicts und JavaScripts Objekte speichern beide Schlüssel-Wert-Paare. In JS können Schlüssel ohne Anführungszeichen geschrieben werden und mit Punktnotation oder Optional Chaining (?.) aufgerufen werden.",
-        "expandedText": "Python nutzt **Listenindizes** und **Slicing** (`arr[1:3]`). JavaScript nutzt `slice(1, 3)` (äquivalent) aber bietet kein syntaktisches Slicing. Python's **Tuple-Unpacking** entspricht JavaScript's **Destrukturierung**.\n\nPython hat **f-Strings** (`f\"Hallo {name}\"`); JavaScript hat **Template Literals** (`` `Hallo ${name}` ``). Beide ermöglichen saubere String-Interpolation. Python's Strings sind unveränderlich wie JavaScript's. Formatierung mit f-Strings in Python ist idiomatischer für einfache Fälle; JavaScript's Template Literals sind mächtiger mit verschachtelten Ausdrücken."
+        "expandedText": "📖 Python nutzt **Listenindizes** und **Slicing** (`arr[1:3]`). JavaScript nutzt `slice(1, 3)` (äquivalent) aber bietet kein syntaktisches Slicing. Python's **Tuple-Unpacking** entspricht JavaScript's **Destrukturierung**.\n\n📖 Python hat **f-Strings** (`f\"Hallo {name}\"`); JavaScript hat **Template Literals** (`` `Hallo ${name}` ``). Beide ermöglichen saubere String-Interpolation. Python's Strings sind unveränderlich wie JavaScript's. Formatierung mit f-Strings in Python ist idiomatischer für einfache Fälle; JavaScript's Template Literals sind mächtiger mit verschachtelten Ausdrücken."
       },
       {
         "animationStep": 6,
         "heading": "Async / await",
         "text": "Beide Sprachen verwenden async/await für asynchronen Code. Python benötigt asyncio; JavaScripts async ist in Browser und Node.js-Eventloop eingebaut.",
-        "expandedText": "Python hat umfangreiche **Standardbibliothek** (`os`, `json`, `datetime`, `pathlib`, etc.) — \"batteries included\". JavaScript hat eine minimalistischere integrierte API, verlässt sich mehr auf npm-Pakete, aber Node.js bietet `fs`, `path`, `http`, etc. für Server-seitige Programmierung.\n\n**Python-Ökosystem**: NumPy, Pandas, TensorFlow/PyTorch für Data Science/ML; Django/FastAPI/Flask für Web. **JavaScript-Ökosystem**: React/Vue/Angular für Frontend; Express/Fastify/Next.js für Backend. JavaScript dominiert Browser-Entwicklung; Python dominiert Data Science/ML. Beide Sprachen konvergieren in Full-Stack-Webentwicklung (Next.js vs. Django, Node.js vs. FastAPI)."
+        "expandedText": "📖 Python hat umfangreiche **Standardbibliothek** (`os`, `json`, `datetime`, `pathlib`, etc.) — \"batteries included\". JavaScript hat eine minimalistischere integrierte API, verlässt sich mehr auf npm-Pakete, aber Node.js bietet `fs`, `path`, `http`, etc. für Server-seitige Programmierung.\n\n📖 **Python-Ökosystem**: NumPy, Pandas, TensorFlow/PyTorch für Data Science/ML; Django/FastAPI/Flask für Web. **JavaScript-Ökosystem**: React/Vue/Angular für Frontend; Express/Fastify/Next.js für Backend. JavaScript dominiert Browser-Entwicklung; Python dominiert Data Science/ML. Beide Sprachen konvergieren in Full-Stack-Webentwicklung (Next.js vs. Django, Node.js vs. FastAPI)."
       },
       {
         "animationStep": 7,
