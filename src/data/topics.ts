@@ -613,6 +613,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 0,
             heading: 'Unordered lists',
+          icon: '📋',
             text: '`<ul>` creates a bulleted list. Each item is wrapped in `<li>`. Use unordered lists when the order doesn\'t matter — a navigation menu, a feature list, a set of tags.',
             expandedText: 'Navigation menus are almost universally built from `<ul>` elements because **navigation links are conceptually a set without order**. Combined with `<nav>`, this gives screen readers both a list structure (for item count) and a navigation landmark. CSS removes the list markers and arranges items horizontally with `display: flex`.\n\nThe `<li>` element has an implicit `role="listitem"`. When `list-style: none` is applied in CSS, some browser and screen reader combinations (notably Safari with VoiceOver) no longer announce the element as a list. Adding `role="list"` explicitly to the `<ul>` restores the announcement.',
             codeExample: '<ul>\n  <li>HTML</li>\n  <li>CSS</li>\n  <li>JavaScript</li>\n</ul>',
@@ -629,6 +630,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 1,
             heading: 'Ordered lists',
+          icon: '🔢',
             text: '`<ol>` creates a numbered list. Items are still `<li>`. Use ordered lists when sequence matters — steps in a tutorial, rankings, a recipe. The browser handles the numbering automatically.',
             expandedText: '`<ol>` supports `start` and `reversed` attributes. `start="5"` begins numbering at 5 rather than 1 — useful for continuing a list after an interruption. `reversed` counts down instead of up. The browser handles the number display automatically, so you never need to hardcode numbers in the content.\n\nThe `type` attribute on `<ol>` changes the numbering style: `"a"` for lowercase letters, `"A"` for uppercase, `"i"` for lowercase roman numerals, `"I"` for uppercase. These are deprecated in favor of the CSS `list-style-type` property, which provides the same control with better separation of presentation from structure.',
             codeExample: '<ol>\n  <li>Boil water</li>\n  <li>Add pasta</li>\n  <li>Cook 8 minutes</li>\n</ol>',
@@ -645,6 +647,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 2,
             heading: 'Nested lists',
+          icon: '🪆',
             text: 'Lists can be nested inside list items. An `<li>` can contain another `<ul>` or `<ol>`. This creates hierarchical structures — like a table of contents or an outline.',
             expandedText: 'A nested list **must** be placed inside an `<li>` element — directly inside `<ul>` or `<ol>` is invalid HTML. The browser auto-corrects by inserting an implied `<li>`, but the resulting DOM differs from the intended structure. Validators and linters catch this mistake before it causes layout or accessibility issues.\n\nNested lists have depth limits in practice — beyond two or three levels, hierarchy becomes difficult to understand for users. Consider flattening deep nesting with section headings or using a different component pattern like an accordion or tree view rather than deeply nested `<ul>` lists.',
             codeExample: '<ul>\n  <li>Frontend\n    <ul>\n      <li>HTML</li>\n      <li>CSS</li>\n    </ul>\n  </li>\n  <li>Backend</li>\n</ul>',
@@ -661,6 +664,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 3,
             heading: 'Block vs inline elements',
+          icon: '🧱',
             text: 'Block elements (`<div>`, `<p>`, `<h1>`, `<ul>`) start on a new line and take full width. Inline elements (`<span>`, `<a>`, `<strong>`, `<img>`) flow within text. This determines how elements stack and wrap.',
             expandedText: '**Block elements** create a new formatting context and stack vertically by default. They expand to fill the full available width of their container unless constrained by CSS. **Inline elements** flow within the text line and only occupy as much space as their content needs.\n\nThis distinction drives CSS layout behavior. `display: block` on an inline element (like `<span>`) gives it block behavior. `display: inline` on a block element (like `<div>`) makes it flow like text. `display: inline-block` combines both: flows inline but accepts `width`, `height`, `margin-top`, and `margin-bottom`.',
             codeExample: '<!-- Block: each on its own line -->\n<div>Section A</div>\n<div>Section B</div>\n\n<!-- Inline: side by side in text -->\n<span>red</span> and <span>blue</span>',
@@ -677,6 +681,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 4,
             heading: '<div> and <span>',
+          icon: '📦',
             text: '`<div>` is a generic block container — no semantic meaning, just grouping. `<span>` is a generic inline container. Use them for styling hooks or JavaScript targets when no semantic element fits. Prefer semantic elements when possible.',
             expandedText: '`<div>` and `<span>` have **no implicit ARIA role** — screen readers treat them as anonymous containers. Excessive `<div>` nesting (often called "div soup") makes DOM traversal, CSS selectors, and debugging harder without providing any semantic benefit.\n\nThe rule of thumb: reach for the most specific semantic element first. If no semantic element fits (e.g. a layout wrapper with no meaning), only then use `<div>`. `<span>` is appropriate for inline styling hooks when `<strong>`, `<em>`, `<code>`, or `<mark>` do not fit. Always ask: does this element communicate meaning beyond "a box"?',
             codeExample: '<div class="card">\n  <h2>Title</h2>\n  <p>Price: <span class="price">€49</span></p>\n</div>',
@@ -1978,6 +1983,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 0,
             heading: 'Content Box',
+          icon: '📦',
             text: 'The innermost area. This is where your text and images live. `width` and `height` apply here by default.',
             expandedText: 'The **content box** is where text flows and replaced elements like images render. By default, CSS `width` and `height` apply to the content box only — padding and border are added on top. This default (`box-sizing: content-box`) means `width: 200px` on an element with `padding: 20px` produces a 240px-wide element visually.\n\n`box-sizing: border-box` changes the calculation so `width` includes padding and border. A `width: 200px` element with `padding: 20px` stays 200px wide — the padding is carved out of the content area. This is universally preferred in modern CSS and is typically set globally as `*, *::before, *::after { box-sizing: border-box; }`.',
             codeExample: '.box { width: 200px; height: 100px; }',
@@ -1993,6 +1999,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 1,
             heading: 'Padding',
+          icon: '🔲',
             text: 'Space between the content and the border. Padding is inside the element — it shares the background color.',
             expandedText: 'Padding is rendered with the **element background color**, so it visually extends the colored area of the element. A common pattern is setting `padding` on a container to create internal breathing room rather than applying `margin` on child elements, which avoids margin collapse edge cases.\n\nPadding shorthand follows the **TRBL (Top Right Bottom Left)** clockwise convention: `padding: 10px 20px 10px 20px` sets top, right, bottom, left. Two-value shorthand `padding: 10px 20px` sets top/bottom and left/right. One value sets all four sides equally. Individual sides: `padding-top`, `padding-right`, `padding-bottom`, `padding-left`.',
             codeExample: '.box { padding: 24px; }',
@@ -2008,6 +2015,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 2,
             heading: 'Border',
+          icon: '🖼️',
             text: 'A line that wraps around padding and content. Can be styled independently.',
             expandedText: 'Borders are drawn on top of the background and inside the **CSS outline**. With the default `content-box` sizing, borders add to the total element size. With `border-box`, borders are included in the declared `width` and `height`. The `outline` property (used for focus indicators) does not affect layout — it renders outside the border without pushing other elements.\n\nBorder shorthand (`border: 2px solid #333`) sets all four sides. Individual sides (`border-top`, `border-right`, etc.) override specific edges. `border-radius` rounds corners independently or uniformly. Setting `border-radius: 50%` on a square element creates a circle.',
             codeExample: '.box { border: 2px solid #4ade80; }',
@@ -2023,6 +2031,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 3,
             heading: 'Margin',
+          icon: '↔️',
             text: 'Space outside the border. Pushes other elements away. Margins can collapse between siblings.',
             expandedText: '**Margin collapse** is one of the most confusing CSS behaviors. When two vertical margins touch (adjacent siblings or parent-child without padding/border separator), they collapse to the **larger** of the two values rather than adding together. This means `margin-bottom: 20px` on a paragraph and `margin-top: 30px` on the next produces 30px of space, not 50px.\n\nMargin collapse only occurs vertically (top/bottom) for block elements in normal flow. It does not occur for flex children, grid items, floated elements, or absolutely/fixed positioned elements. Setting `overflow: auto` or `padding` on a parent prevents collapsing between parent and child margins.',
             codeExample: '.box { margin: 16px auto; }',
@@ -2742,6 +2751,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 0,
             heading: 'Default browser text',
+          icon: '🌐',
             text: 'Without CSS, browsers apply their own default styles — usually Times New Roman at 16px. Every CSS reset or stylesheet you write is overriding these defaults.',
             expandedText: '**Browser default text styles** exist because the web began as an academic document system where serif fonts, heading hierarchy, and link styling mattered more than visual design. CSS resets (like `* { margin: 0; padding: 0 }`) remove these defaults entirely; normalizers (normalize.css) make them consistent across browsers.\n\nNever override the root `font-size` with a fixed pixel value — doing so breaks users who have increased their system font size for accessibility. Set `font-size: 100%` on `<html>` (or omit it) to preserve the user\'s preference, then use `rem` units throughout.',
             codeExample: '/* Browser default — no CSS applied */\nbody { font: 16px serif; }',
@@ -2757,6 +2767,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 1,
             heading: 'font-family, font-size, font-weight',
+          icon: '🔤',
             text: '`font-family` sets the typeface — always end with a generic fallback. `font-size` controls how big text appears. `font-weight` ranges from 100 (thin) to 900 (black), with 400 = normal and 700 = bold.',
             expandedText: 'The **font-family cascade** means the browser tries each listed family in order, using the first one available. Generic families (`sans-serif`, `serif`, `monospace`) are the mandatory final fallback — every browser guarantees at least one font for each.\n\nSystem font stacks like `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif` use the operating system\'s native font for a familiar appearance with zero download cost. Variable fonts provide all weights and styles in a single file — `@font-face` with `format("woff2-variations")` enables fine-grained weight control across the 100–900 range.',
             codeExample: 'body {\n  font-family: "Inter", sans-serif;\n  font-size: 16px;\n  font-weight: 400;\n}',
@@ -2772,6 +2783,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 2,
             heading: 'text-align & text-decoration',
+          icon: '📐',
             text: '`text-align` positions text horizontally (left, center, right, justify). `text-decoration` controls underlines, strikethroughs, and their style.',
             expandedText: '`text-align: justify` creates newspaper-style columns but produces **uneven word spacing** in narrow containers or with long words. Combining `text-align: justify` with `hyphens: auto` reduces spacing issues by allowing hyphenation at line breaks.\n\n`text-decoration` is now a shorthand for `text-decoration-line`, `text-decoration-color`, `text-decoration-style`, and `text-decoration-thickness`. Custom underline styles are possible: `text-decoration: underline wavy #3b82f6 2px`. Removing link underlines hurts accessibility — underlines are a primary visual indicator that text is a link.',
             codeExample: 'h1 { text-align: center; }\na  { text-decoration: none; }   /* removes link underline */\n.strike { text-decoration: line-through; }',
@@ -2787,6 +2799,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 3,
             heading: 'Spacing: letter-spacing & line-height',
+          icon: '↔️',
             text: '`letter-spacing` adjusts space between characters. `line-height` controls the height of each line — use a unitless value like 1.6 so it scales with font size.',
             expandedText: 'Using a **unitless line-height** (like 1.6) is critical for inheritance. `line-height: 24px` on a parent does not scale when a child increases its font-size — lines overlap. `line-height: 1.6` means "1.6 times the current font-size" and scales automatically throughout the inheritance chain.\n\nTypography guidelines for body text: `font-size: 16px–18px`, `line-height: 1.5–1.7`, `max-width: 65ch–75ch`. The `ch` unit equals the width of the "0" character, making it ideal for controlling line length. Research shows lines longer than 75 characters reduce reading comprehension.',
             codeExample: 'p {\n  line-height: 1.6;       /* 1.6× font-size */\n  letter-spacing: 0.01em;\n}\n\n.heading { letter-spacing: -0.02em; }',
@@ -2802,6 +2815,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 4,
             heading: 'Google Fonts & @import',
+          icon: '🌍',
             text: 'Load custom fonts with `@import` inside your CSS. Google Fonts generates the URL for you. `@font-face` works the same way but for locally hosted font files.',
             expandedText: 'The `display=swap` descriptor in `@font-face` (and the corresponding URL parameter in Google Fonts) tells the browser to show a **fallback font** immediately, then swap to the web font when loaded. This prevents FOIT (Flash of Invisible Text). `font-display: optional` is better for performance — if the font is not cached and cannot load quickly, the fallback is used permanently for that page load.\n\nSelf-hosting fonts avoids third-party DNS lookups and connection overhead. Build tools can **subset** fonts to only the characters used in the page, dramatically reducing file size. Variable fonts provide all weights in a single file, further reducing HTTP requests.',
             codeExample: '/* At top of CSS file */\n@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");\n\nbody { font-family: "Inter", sans-serif; }',
@@ -2897,6 +2911,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 0,
             heading: 'background-color',
+          icon: '🎨',
             text: 'The simplest background — a solid color fill. Accepts any CSS color value: named, hex, rgb, hsl.',
             codeExample: '.box {\n  background-color: #3b82f6;\n  /* or: background: #3b82f6; (shorthand) */\n}',
             language: 'css',            analogy: {
@@ -2911,6 +2926,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 1,
             heading: 'background-image',
+          icon: '🖼️',
             text: 'Load an image as a background using `url()`. The image doesn\'t affect the document flow — it\'s purely decorative. Always pair with a fallback `background-color`.',
             codeExample: '.hero {\n  background-image: url("photo.jpg");\n  background-color: #1e293b; /* fallback */\n}',
             language: 'css',            analogy: {
@@ -2925,6 +2941,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 2,
             heading: 'repeat, position & size',
+          icon: '📐',
             text: '`background-repeat` controls tiling. `background-position` sets origin. `background-size: cover` fills the container, `contain` fits within it.',
             codeExample: '.hero {\n  background-image: url("photo.jpg");\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: cover;\n}',
             language: 'css',            analogy: {
@@ -2939,6 +2956,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 3,
             heading: 'linear-gradient()',
+          icon: '🌅',
             text: 'Gradients are generated images — no image file needed. `linear-gradient()` transitions between colors in a straight line. Specify the angle and two or more color stops.',
             codeExample: 'background: linear-gradient(135deg, #6366f1, #ec4899);\nbackground: linear-gradient(to right, #1e293b, #3b82f6 50%, #6366f1);',
             language: 'css',            analogy: {
@@ -2953,6 +2971,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 4,
             heading: 'radial-gradient()',
+          icon: '🌟',
             text: '`radial-gradient()` radiates from a center point outward. Great for spotlight effects and subtle depth. Combine with transparency for overlays.',
             codeExample: 'background: radial-gradient(circle, #6366f1, #0f172a);\nbackground: radial-gradient(ellipse at top left, #6366f1 0%, transparent 60%);',
             language: 'css',            analogy: {
@@ -3495,6 +3514,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 0,
             heading: 'One layout, all screens',
+          icon: '📱',
             text: 'Without media queries, your layout is fixed. On mobile, content may overflow or look cramped. Responsive design makes your CSS adapt to the viewport.',
             expandedText: '**Fixed-width layouts** pre-date widespread mobile. The `<meta name="viewport" content="width=device-width, initial-scale=1">` tag is required to activate responsive behavior — without it, mobile browsers zoom out to show the full desktop width and media queries behave unexpectedly.\n\nMedia queries support beyond width: `prefers-color-scheme` (dark/light mode), `prefers-reduced-motion` (animation accessibility), `prefers-contrast`, `hover` (touch vs mouse), and `pointer` (coarse = touch, fine = mouse). These enable adaptive UIs that go beyond simple layout changes.',
             codeExample: '/* No media queries — same layout everywhere */\n.container { width: 1200px; }',
@@ -3510,6 +3530,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 1,
             heading: 'Media query — tablet breakpoint',
+          icon: '💻',
             text: '`@media` applies styles only when a condition is true. `min-width: 768px` means "apply these styles on screens 768px wide or wider" — the tablet breakpoint.',
             expandedText: '**Breakpoints** should be content-based, not device-based. Add a breakpoint wherever your specific content looks awkward — not at specific device widths. A layout with two columns may need to stack at 600px while another works fine at 400px. Content-based breakpoints remain valid much longer than device-specific ones.\n\nWith container queries (`@container`), components can respond to their parent\'s size rather than the viewport. This enables truly portable components that adapt correctly whether in a sidebar or a main area — the same markup, different layout based on container width.',
             codeExample: '@media (min-width: 768px) {\n  .grid {\n    grid-template-columns: 1fr 1fr;\n  }\n}',
@@ -3525,6 +3546,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 2,
             heading: 'Desktop breakpoint',
+          icon: '🖥️',
             text: 'Stack media queries from smallest to largest. The 1024px breakpoint unlocks a 3-column layout for wider screens.',
             expandedText: '**Content-based breakpoints** are where your specific layout breaks — not device sizes. Inspect your design at various widths and add breakpoints only where the content looks awkward. Resist matching specific device dimensions (375px iPhone, 1024px iPad) as those change each product cycle.\n\nModern layout techniques reduce the need for breakpoints. `grid-template-columns: repeat(auto-fit, minmax(250px, 1fr))` creates a responsive grid without any media queries. `flex-wrap: wrap` with `flex: 1 1 250px` on children achieves similar results. Reserve explicit breakpoints for major layout structure changes.',
             codeExample: '@media (min-width: 1024px) {\n  .grid {\n    grid-template-columns: repeat(3, 1fr);\n  }\n}',
@@ -3540,6 +3562,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 3,
             heading: 'Mobile-first approach',
+          icon: '📲',
             text: 'Write base styles for mobile, then add complexity at larger sizes using `min-width` queries. This is the opposite of "desktop-first" (`max-width`). Mobile-first is the industry standard — it forces simpler defaults.',
             expandedText: '**Mobile-first** means the default CSS (outside any media query) targets mobile. This produces cleaner code — mobile layouts are simpler and serve as the baseline. Desktop enhancements are progressive additions. Desktop-first accumulates override complexity as you undo desktop styles for mobile.\n\nMobile-first also improves perceived performance: on slow connections, users see the mobile layout immediately while desktop CSS loads. The fallback is a functional mobile layout, not a broken desktop layout on a small screen.',
             codeExample: '/* Mobile first: base styles = mobile */\n.grid { display: block; }\n\n/* Enhance for larger screens */\n@media (min-width: 768px) {\n  .grid { display: grid; grid-template-columns: 1fr 1fr; }\n}',
@@ -3555,6 +3578,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 4,
             heading: 'Fluid units',
+          icon: '♻️',
             text: 'Use `%`, `vw`, `vh`, and `rem` instead of fixed `px` for layouts that scale naturally. `clamp()` is powerful: it sets a minimum, a fluid value, and a maximum.',
             expandedText: '`clamp(min, ideal, max)` is a **fluid value with guardrails**. The ideal value (usually `vw`-based) grows with the viewport, but `clamp` caps it at a maximum and enforces a minimum. `font-size: clamp(1rem, 2.5vw, 1.5rem)` scales from 16px on small screens to 24px maximum on large screens — no media queries needed.\n\n`min()` and `max()` CSS functions are often more precise than media queries for numeric properties. `width: min(100%, 800px)` is equivalent to `max-width: 800px` with `width: 100%` — just more compact. These functions can combine different unit types: `width: min(90vw, 600px)`.',
             codeExample: '.container {\n  width: min(100%, 1100px);\n  padding: 0 clamp(16px, 4vw, 48px);\n}\n\nh1 { font-size: clamp(1.5rem, 5vw, 3rem); }',
@@ -3646,6 +3670,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 0,
             heading: 'Unstyled images overflow',
+          icon: '💦',
             text: 'By default, images render at their natural (intrinsic) size. A 1200px photo in a 400px container will overflow — breaking your layout.',
             expandedText: '**Images are "replaced elements"** with intrinsic dimensions. Unlike block elements, they do not expand to fill their container — they render at their natural size unless constrained. `display: block` on an image removes the inline baseline gap that causes the classic "small gap below image" issue in inline containers.\n\n`aspect-ratio` prevents **Cumulative Layout Shift (CLS)** by reserving the correct space before the image loads. Setting `width` and `height` HTML attributes alongside `height: auto; width: 100%` in CSS achieves the same — the browser calculates the aspect ratio from the attributes and reserves space accordingly.',
             codeExample: '/* No CSS — image renders at full size */\n<img src="photo.jpg">',
@@ -3661,6 +3686,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 1,
             heading: 'max-width: 100%',
+          icon: '📏',
             text: 'The simplest responsive image fix. The image will never be wider than its container, and scales down proportionally if the container is smaller.',
             expandedText: '`max-width: 100%` does **not set a width** — it only prevents the image from exceeding its container. The image renders at natural size if smaller, and shrinks proportionally if the container is narrower. The responsive image baseline: `img { max-width: 100%; height: auto; display: block; }`.\n\nFor performance, serve images sized for their display dimensions. Serving a 3000px image that renders at 300px wastes bandwidth. Use `srcset` with `sizes` for resolution switching, or `<picture>` with `<source media>` for art direction — different crops for different viewports.',
             codeExample: 'img {\n  max-width: 100%;\n  height: auto; /* maintain aspect ratio */\n  display: block; /* remove inline gap below image */\n}',
@@ -3676,6 +3702,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 2,
             heading: 'object-fit: cover',
+          icon: '🖼️',
             text: 'When you need an image to fill a fixed-size container without distortion. `object-fit: cover` scales and crops the image to fill. Use `object-position` to control the crop anchor.',
             expandedText: '`object-fit` is analogous to `background-size` — `cover` crops to fill, `contain` fits without cropping. `object-position` controls which part of the image is visible when `cover` crops: `object-position: top` keeps the top visible, useful for portrait photos.\n\n`object-fit` requires explicit `width` and `height` on the `<img>` element to take effect. Without them, the image renders at intrinsic size. Setting `width: 100%; height: 300px; object-fit: cover` creates a uniform thumbnail height regardless of source image dimensions.',
             codeExample: '.thumbnail {\n  width: 300px;\n  height: 200px;\n  object-fit: cover;           /* fill, crop to fit */\n  object-position: center top; /* anchor crop */\n}',
@@ -3691,6 +3718,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 3,
             heading: 'border-radius',
+          icon: '⭕',
             text: 'Round any element\'s corners with border-radius. 50% on a square element creates a perfect circle — great for avatars.',
             codeExample: '.card-image { border-radius: 12px; }\n.avatar {\n  border-radius: 50%;\n  width: 64px;\n  height: 64px;\n  object-fit: cover;\n}',
             language: 'css',            analogy: {
@@ -3705,6 +3733,7 @@ export const TOPICS: Topic[] = [
           {
             animationStep: 4,
             heading: 'aspect-ratio',
+          icon: '📐',
             text: '`aspect-ratio` locks a container\'s proportions. The image fills it with `object-fit: cover`. This prevents layout shift while images load.',
             codeExample: '.card-image {\n  aspect-ratio: 16 / 9; /* widescreen */\n  width: 100%;\n  object-fit: cover;\n}\n\n.square { aspect-ratio: 1; }',
             language: 'css',            analogy: {
@@ -5030,6 +5059,7 @@ scheduleUpdate(() => updateCounter(2))
           {
             animationStep: 0,
             heading: 'A function with local state',
+          icon: '📦',
             text: 'When a function runs, it creates a local scope. Variables inside that scope normally disappear when the function returns.',
             expandedText: 'Normally, variables created inside a function are destroyed when the function returns. A **closure** is created when an inner function **captures** a reference to variables from its enclosing scope, keeping those variables alive as long as the inner function itself is reachable.\n\nEvery function in JavaScript is a closure — it always has access to variables from the scope in which it was defined. In practice, the term "closure" is used specifically when an inner function outlives its outer function, preserving the outer variables in memory. This is the mechanism behind many JavaScript patterns: counters, event handlers with captured state, and partial application.',
             codeExample: 'function makeCounter() {\n  let count = 0 // local variable\n}',
@@ -5047,6 +5077,7 @@ scheduleUpdate(() => updateCounter(2))
           {
             animationStep: 1,
             heading: 'Returning an inner function',
+          icon: '↩️',
             text: 'If we define and return a function inside `makeCounter`, that inner function can see `count` — it is in its scope chain.',
             expandedText: 'When the inner function is **returned** from the outer function, it carries a persistent reference to the outer scope. The outer function has finished executing, but the inner function holds the scope alive. This is the essence of a closure: the inner function "closes over" the variables it references.\n\nThe returned function can be stored in a variable, passed around, and called repeatedly — each call still has full access to the captured variables. This technique is the foundation of **factory functions**: `makeCounter()` returns a new counter function each time, `makeAdder(n)` returns a function that adds `n` to its argument, and so on.',
             codeExample: 'function makeCounter() {\n  let count = 0\n  return function increment() {\n    count++\n    return count\n  }\n}',
@@ -5063,6 +5094,7 @@ scheduleUpdate(() => updateCounter(2))
           {
             animationStep: 2,
             heading: 'The outer function returns',
+          icon: '🚪',
             text: '`makeCounter()` finishes executing, but `count` is NOT garbage collected. The returned function still holds a reference to it — this is the closure.',
             expandedText: 'When the garbage collector runs, it cannot collect `count` because the returned closure holds a live reference to it. The variable persists in memory as long as the closure exists. Assigning `null` to the variable holding the closure releases that reference and allows garbage collection.\n\nThis persistent reference is what makes closures powerful and occasionally dangerous: capturing a large object in a closure that lives forever causes a **memory leak**. Long-lived closures such as event listeners should be carefully managed — detach listeners with `removeEventListener` when the component or page they belong to is destroyed.',
             codeExample: 'const increment = makeCounter()\n// makeCounter is done...\n// but count still exists!',
@@ -5079,6 +5111,7 @@ scheduleUpdate(() => updateCounter(2))
           {
             animationStep: 3,
             heading: 'The closure in action',
+          icon: '💡',
             text: 'Calling `increment()` accesses and modifies `count` — even though we are outside `makeCounter`. The closure remembers the original scope.',
             expandedText: 'The closure provides **encapsulation**: `count` is effectively private. External code has no direct way to read or modify `count` — it can only interact with it through the returned functions. This is the JavaScript equivalent of a private field before class syntax was available, and it is still used in module patterns and factory functions.\n\nMultiple closures returned from the same outer function **share the same scope** — they all reference the same `count`. So if you return both an `increment` and a `decrement` function from the same `makeCounter` call, both functions operate on the same underlying counter variable, which is often exactly the desired behaviour.',
             codeExample: 'increment() // returns 1\nincrement() // returns 2\nincrement() // returns 3',
@@ -5095,6 +5128,7 @@ scheduleUpdate(() => updateCounter(2))
           {
             animationStep: 4,
             heading: 'Independent closures',
+          icon: '🔒',
             text: 'Each call to `makeCounter()` creates a fresh scope with its own `count`. Two counters do not share state.',
             expandedText: 'Every call to `makeCounter()` creates a **brand-new scope** with its own independent `count`. Two counters produced by the same factory function do not share state. This independence makes factory functions a clean alternative to classes for creating instances with private state.\n\nClosures underpin many JavaScript patterns: the **module pattern** (exposing a public API while hiding internals), **memoization** (caching results in a closed-over map), and **partial application** (fixing some arguments and returning a function for the rest). Understanding closures is foundational to understanding how React hooks, event systems, and most frameworks manage internal state.',
             codeExample: 'const a = makeCounter()\nconst b = makeCounter()\na() // 1\na() // 2\nb() // 1 — independent!',
@@ -5955,6 +5989,7 @@ scheduleUpdate(() => updateCounter(2))
           {
             animationStep: 0,
             heading: 'Function declarations vs expressions',
+          icon: '🏷️',
             text: 'Functions can be declared with the `function` keyword or assigned as expressions. Declarations are hoisted; expressions are not.',
             expandedText: 'A **function declaration** (`function foo() {}`) is fully **hoisted**: the entire definition moves to the top of its scope, so you can call it before the line where it appears. A **function expression** (`const foo = function() {}`) is only available from the line of assignment onwards.\n\n**Arrow functions** (`const foo = () => {}`) are also expressions. If the body is a single expression, braces and `return` can be omitted: `const double = x => x * 2`. Arrow functions do not have their own `this`, `arguments`, or `prototype`, making them ideal for callbacks. They cannot be used as constructors or as object methods that need `this` to refer to the object.',
             codeExample: '// Declaration — hoisted\nfunction greet(name: string) {\n  return `Hello, ${name}`\n}\n\n// Expression — not hoisted\nconst greet = (name: string) => `Hello, ${name}`',
@@ -5972,6 +6007,7 @@ scheduleUpdate(() => updateCounter(2))
           {
             animationStep: 1,
             heading: 'Scope and the scope chain',
+          icon: '🗺️',
             text: 'Each function creates a new scope. Inner functions can access variables from outer scopes — this chain of scopes is called the scope chain.',
             expandedText: 'Every function creates a new **lexical scope** — a boundary inside which variables are visible. Inner functions can read and write variables from all enclosing scopes, forming the **scope chain**. JavaScript resolves a variable name by searching outward from the current scope until it reaches the global scope.\n\n**Module scope** (in ES Modules) sits above function scope but below global. Variables at the top level of a module are module-scoped, not global. Understanding scope chains is essential for debugging **name shadowing** bugs, where an inner `let` or `const` hides an outer variable with the same name, causing subtle incorrect reads.',
             codeExample: 'const outer = "I am outer"\n\nfunction inner() {\n  console.log(outer) // accessible via scope chain\n}\n\ninner() // "I am outer"',
@@ -5989,6 +6025,7 @@ scheduleUpdate(() => updateCounter(2))
           {
             animationStep: 2,
             heading: 'Higher-order functions',
+          icon: '🔝',
             text: 'Functions are first-class values in JavaScript. A higher-order function takes a function as argument or returns one.',
             expandedText: 'A **higher-order function** either accepts a function as an argument (a **callback**) or returns a function. Functions are **first-class values** in JavaScript — they can be stored in variables, passed as arguments, and returned from other functions. This enables functional programming patterns that are idiomatic in modern JavaScript.\n\nBuilt-in array methods like `map`, `filter`, and `reduce` are all higher-order functions that take a callback. Writing your own higher-order functions creates reusable, composable logic: a `withLogging` wrapper, a `debounce` utility, or a `memoize` cache all rely on the same principle — accept behaviour as a function, augment it, and return the result.',
             codeExample: 'const double = (n: number) => n * 2\n\n// map is a higher-order function\nconst result = [1, 2, 3].map(double)\n// [2, 4, 6]',
@@ -10900,6 +10937,7 @@ for (let i = 0; i < 5; i++) {
           {
             animationStep: 0,
             heading: 'Partial and Required',
+          icon: '🔧',
             text: 'Partial<T> makes all properties optional. Required<T> makes all properties required. Both derive a new type from an existing interface.',
             expandedText: '**`Partial<T>`** transforms every property in `T` to optional, enabling you to represent partial updates without defining a separate draft interface. This is the correct type for `PATCH` request bodies and form state objects that may be partially filled.\n\n**`Required<T>`** is the inverse: it removes the `?` from every property. Use it when you receive a `Partial` value and have filled in all defaults, producing a fully-populated object. Both are **mapped types** under the hood — they iterate over all keys of `T` and transform each one.',
             codeExample: 'interface User { id: number; name: string; email: string }\n\ntype UserDraft = Partial<User>\n// { id?: number; name?: string; email?: string }\n\ntype StrictUser = Required<UserDraft>\n// { id: number; name: string; email: string }',
@@ -10915,6 +10953,7 @@ for (let i = 0; i < 5; i++) {
           {
             animationStep: 1,
             heading: 'Pick and Omit',
+          icon: '✂️',
             text: 'Pick<T, K> keeps only the listed keys. Omit<T, K> removes the listed keys. Both create a subset type.',
             expandedText: '**`Pick<T, K>`** creates a new type containing only the keys you list. It is the TypeScript equivalent of selecting specific columns in a SQL query — a focused view type with only what the consumer needs. Use it for view models, API response shapes, and component props derived from a larger entity type.\n\n**`Omit<T, K>`** does the opposite: it copies all properties from `T` except the listed keys. Use `Omit<User, "password">` for safe public-facing types, or `Omit<User, "id" | "createdAt">` for creation payloads where the database generates those fields.',
             codeExample: 'type UserPreview = Pick<User, "id" | "name">\n// { id: number; name: string }\n\ntype PublicUser = Omit<User, "email">\n// { id: number; name: string }',
@@ -10930,6 +10969,7 @@ for (let i = 0; i < 5; i++) {
           {
             animationStep: 2,
             heading: 'Record, Readonly, and ReturnType',
+          icon: '🗂️',
             text: 'Record<K, V> creates an object type with keys K and values V. Readonly<T> prevents mutation. ReturnType<F> extracts a function\'s return type.',
             expandedText: '**`Record<K, V>`** builds an object type where every key is of type `K` and every value is of type `V`. It is the canonical way to type dictionaries and lookup tables: `Record<string, number>` is clearer than writing an index signature by hand.\n\n**`Readonly<T>`** marks all properties as `readonly`. **`ReturnType<F>`** extracts the return type of a function — useful when you want to type a variable that holds a function result without duplicating the type definition. Combine these utilities: `Readonly<Partial<User>>` builds a readonly update payload in one expression.',
             codeExample: 'type Scores = Record<string, number>\n// { [key: string]: number }\n\nconst config: Readonly<User> = { id: 1, name: "Alice", email: "a@b.com" }\n// config.id = 2 // Error: readonly\n\nfunction getUser() { return { id: 1, name: "Alice" } }\ntype User2 = ReturnType<typeof getUser>\n// { id: number; name: string }',
