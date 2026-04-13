@@ -582,32 +582,38 @@
       {
         "animationStep": 0,
         "heading": "JavaScript-Typen sind implizit",
-        "text": "In JavaScript haben Variablen zur Laufzeit Typen, aber du deklarierst sie nie. Der Typ wird aus dem Wert abgeleitet."
+        "text": "In JavaScript haben Variablen zur Laufzeit Typen, aber du deklarierst sie nie. Der Typ wird aus dem Wert abgeleitet.",
+        "expandedText": "JavaScript ist **dynamisch typisiert**: Variablen haben keinen deklarierten Typ – die Engine ermittelt den Typ erst zur Laufzeit anhand des aktuellen Werts. Diese Flexibilität ist für kleine Skripte praktisch, erzeugt aber eine Klasse von Fehlern, die erst beim tatsächlichen Ausführen auftreten – oft in der Produktion.\n\n**TypeScript** fügt JavaScript eine optionale statische Typebene hinzu. Du annotierst Variablen, Funktionsparameter und Rückgabewerte mit Typen. Der TypeScript-Compiler (`tsc`) prüft all diese Annotationen, bevor der Code jemals ausgeführt wird, und verwandelt Überraschungen zur Laufzeit in Compile-Zeit-Fehler, die direkt im Editor sichtbar sind."
       },
       {
         "animationStep": 1,
         "heading": "TypeScript macht Typen explizit",
-        "text": "TypeScript fügt Typ-Annotationen mit einem Doppelpunkt nach dem Variablennamen hinzu. Das teilt dem Compiler genau mit, welcher Typ erwartet wird."
+        "text": "TypeScript fügt Typ-Annotationen mit einem Doppelpunkt nach dem Variablennamen hinzu. Das teilt dem Compiler genau mit, welcher Typ erwartet wird.",
+        "expandedText": "Typ-**Annotationen** werden nach einem Doppelpunkt geschrieben: `let age: number = 25`. Sie teilen dem Compiler genau mit, welchen Typ eine Variable haben soll. TypeScript nutzt diese Information, um Typkonflikte zu erkennen, bevor der Code ausgeführt wird.\n\nIn der Praxis annotierst du nicht jede Variable – TypeScript **inferiert** Typen aus zugewiesenen Werten. `let age = 25` inferiert automatisch `number`. Annotationen sind am wertvollsten bei Funktionsparametern und Rückgabetypen, wo TypeScript ohne zusätzlichen Kontext nicht immer inferieren kann."
       },
       {
         "animationStep": 2,
         "heading": "Typfehler werden zur Kompilierzeit erkannt",
-        "text": "Wenn du versuchst, den falschen Typ zuzuweisen, markiert TypeScript es sofort — bevor der Code jemals ausgeführt wird."
+        "text": "Wenn du versuchst, den falschen Typ zuzuweisen, markiert TypeScript es sofort — bevor der Code jemals ausgeführt wird.",
+        "expandedText": "Wenn TypeScript einen Typkonflikt erkennt, erzeugt es einen **Compile-Zeit-Fehler** – eine rote Unterwellung im Editor und einen Fehler in `tsc`. Der Code wird abgelehnt, bevor er ausgeführt werden kann. Das ist grundlegend anders als in JavaScript, wo der entsprechende Fehler still ausgeführt würde und erst zur Laufzeit scheitert.\n\nDie Fehlermeldung benennt die genaue Variable und beschreibt den Konflikt: „Type `string` is not assignable to type `number`.\" Diese Präzision beseitigt Raterei. Viele TypeScript-Fehler werden im Moment des Tippens erkannt, noch bevor du die Datei speicherst – dank der Language-Server-Integration in VS Code und anderen Editoren."
       },
       {
         "animationStep": 3,
         "heading": "Interfaces definieren Objektformen",
-        "text": "Ein Interface beschreibt, welche Eigenschaften ein Objekt haben muss. TypeScript gibt einen Fehler aus, wenn eine erforderliche Eigenschaft fehlt oder den falschen Typ hat."
+        "text": "Ein Interface beschreibt, welche Eigenschaften ein Objekt haben muss. TypeScript gibt einen Fehler aus, wenn eine erforderliche Eigenschaft fehlt oder den falschen Typ hat.",
+        "expandedText": "Ein `interface` ist eine benannte Beschreibung einer Objektform. Jedes Objekt, dem dieser Interface-Typ zugewiesen wird, muss alle erforderlichen Eigenschaften mit ihren deklarierten Typen besitzen. TypeScript verwendet **strukturelles Typing** (auch Duck-Typing genannt): Ein Objekt ist kompatibel mit einem Interface, wenn es mindestens alle erforderlichen Eigenschaften hat – unabhängig davon, wie es erstellt wurde.\n\nInterfaces existieren nur im TypeScript-Quellcode – sie werden bei der Kompilierung vollständig entfernt und erzeugen keine JavaScript-Ausgabe. Sie sind ein reines Compile-Zeit-Werkzeug, um Formfehler zu erkennen, bevor dein Code ausgeführt wird."
       },
       {
         "animationStep": 4,
         "heading": "Generics — wiederverwendbare typisierte Funktionen",
-        "text": "Generics ermöglichen es Funktionen und Klassen, mit beliebigen Typen zu arbeiten und dabei Typsicherheit zu gewährleisten. T ist ein Platzhalter, der zur Aufrufzeit ausgefüllt wird."
+        "text": "Generics ermöglichen es Funktionen und Klassen, mit beliebigen Typen zu arbeiten und dabei Typsicherheit zu gewährleisten. T ist ein Platzhalter, der zur Aufrufzeit ausgefüllt wird.",
+        "expandedText": "**Generics** lösen das Problem, dieselbe Funktion mehrmals für verschiedene Typen schreiben zu müssen. Ein Typparameter `<T>` dient als Platzhalter, der an der Aufrufstelle gefüllt wird. Der Compiler inferiert `T` aus dem übergebenen Argument, sodass du es selten explizit angeben musst.\n\nDer entscheidende Vorteil gegenüber `any` ist, dass Generics **Typinformationen** durch die Funktion hindurch erhalten: `first<T>(arr: T[]): T` garantiert, dass der Rückgabetyp mit dem Element-Typ des Arrays übereinstimmt. Mit `any` geht diese Verbindung verloren. Generics sind der Mechanismus hinter eingebauten Hilfstypen wie `Array<T>`, `Promise<T>` und `Record<K, V>`."
       },
       {
         "animationStep": 5,
         "heading": "Warum TypeScript? Eine praktische Geschichte",
-        "text": "JavaScript schlägt nur zur Laufzeit fehl — oft in der Produktion. TypeScript verlagert Fehler in die Entwicklungszeit: Der Compiler blockiert den Build und hebt jeden fehlerhaften Aufruf in deinem Editor hervor. Benenne ein Feld um, ändere eine Funktionssignatur, übergib den falschen Typ — TypeScript meldet es sofort, statt um 2 Uhr nachts."
+        "text": "JavaScript schlägt nur zur Laufzeit fehl — oft in der Produktion. TypeScript verlagert Fehler in die Entwicklungszeit: Der Compiler blockiert den Build und hebt jeden fehlerhaften Aufruf in deinem Editor hervor. Benenne ein Feld um, ändere eine Funktionssignatur, übergib den falschen Typ — TypeScript meldet es sofort, statt um 2 Uhr nachts.",
+        "expandedText": "TypeScript ist ein **Superset von JavaScript**: Jede gültige `.js`-Datei ist auch gültiges TypeScript. TypeScript fügt Typen hinzu, aber die kompilierte Ausgabe ist reines JavaScript, das in jedem Browser oder jeder Node.js-Version läuft. Der Compiler entfernt alle Typ-Annotationen – sie verursachen keinerlei Laufzeitkosten.\n\nEin Projekt auf TypeScript umzustellen erfordert keine vollständige Neuentwicklung. Du kannst Datei für Datei migrieren und dabei `allowJs: true` verwenden, um `.js`- und `.ts`-Dateien zu mischen. Jede typisierte Datei findet sofort Fehler in diesem Bereich. Teams, die TypeScript schrittweise einführen, berichten, dass die größten Produktivitätsgewinne beim Refactoring entstehen: Der Compiler markiert jede Aufrufstelle, die bricht, wenn eine Funktionssignatur sich ändert."
       }
     ],
     "cheatSheet": {
@@ -1471,27 +1477,32 @@
       {
         "animationStep": 0,
         "heading": "Interfaces beschreiben Objektformen",
-        "text": "Ein Interface definiert einen Vertrag: Jedes Objekt, dem dieser Typ zugewiesen wird, muss genau diese Eigenschaften mit diesen Typen haben. Es dokumentiert die Absicht und lässt TypeScript sie durchsetzen."
+        "text": "Ein Interface definiert einen Vertrag: Jedes Objekt, dem dieser Typ zugewiesen wird, muss genau diese Eigenschaften mit diesen Typen haben. Es dokumentiert die Absicht und lässt TypeScript sie durchsetzen.",
+        "expandedText": "Ein **Interface** in TypeScript ist eine benannte Beschreibung einer Objektform: Es listet Eigenschaftsnamen und ihre erforderlichen Typen auf. Jeder Wert, dem dieser Interface-Typ zugewiesen wird, muss mindestens diese Eigenschaften haben. TypeScript verwendet **strukturelles Typing** – es prüft die Form, nicht die Klassenhierarchie.\n\nInterfaces existieren nur zur Compile-Zeit. Das kompilierte JavaScript enthält keine Spur von ihnen. Sie sind reine, vom Compiler durchgesetzte Dokumentation: Du teilst TypeScript mit, welche Form ein Objekt haben soll, und es lehnt jeden Code ab, der diesen Vertrag verletzt."
       },
       {
         "animationStep": 1,
         "heading": "Optionale und readonly-Eigenschaften",
-        "text": "Markiere eine Eigenschaft mit `?`, um sie optional zu machen. Markiere sie mit `readonly`, um Mutation nach der Erstellung zu verhindern."
+        "text": "Markiere eine Eigenschaft mit `?`, um sie optional zu machen. Markiere sie mit `readonly`, um Mutation nach der Erstellung zu verhindern.",
+        "expandedText": "**Optionale Eigenschaften** (`?`) erlauben es, eine Eigenschaft wegzulassen oder `undefined` zu sein. TypeScript beschwert sich nicht, wenn die Eigenschaft fehlt, aber es beschwert sich, wenn du sie verwendest, ohne vorher auf `undefined` zu prüfen. Das entspricht dem realen Muster von Objekten mit optionalen Feldern wie `middleName` oder `phoneNumber`.\n\n**Readonly**-Eigenschaften können nur bei der Objekterstellung gesetzt werden. Jeder spätere Versuch, sie neu zuzuweisen, ist ein Compile-Zeit-Fehler. Das ist schwächer als `Object.freeze()` (das zur Laufzeit wirkt), aber viel günstiger – TypeScript readonly ist ein Design-Time-Schutz, der Absicht kommuniziert und versehentliche Mutationen im Code abfängt."
       },
       {
         "animationStep": 2,
         "heading": "Interfaces erweitern",
-        "text": "Verwende `extends`, um auf einem bestehenden Interface aufzubauen. Das Kind-Interface erbt alle Eltern-Eigenschaften und fügt eigene hinzu."
+        "text": "Verwende `extends`, um auf einem bestehenden Interface aufzubauen. Das Kind-Interface erbt alle Eltern-Eigenschaften und fügt eigene hinzu.",
+        "expandedText": "Interface-**Erweiterung** ist die Art, wie TypeScript Hierarchien modelliert. `interface Dog extends Animal` bedeutet, dass Dog alle erforderlichen Eigenschaften von Animal plus seine eigenen hat. Du kannst mehrere Interfaces gleichzeitig erweitern: `interface C extends A, B`. Dies ist der primäre Mechanismus für den Aufbau geschichteter Typhierarchien.\n\n`extends` bei Interfaces ist rein additiv – das untergeordnete Interface kann keine Eigenschaften des übergeordneten entfernen oder einengen. Wenn du einen geerbten Eigenschaftstyp ändern musst, verwende stattdessen Schnittmengentypen (`A & { prop: enger }`) oder einen separaten Typ-Alias."
       },
       {
         "animationStep": 3,
         "heading": "Ein Interface implementieren",
-        "text": "Eine Klasse kann ein Interface implementieren und verspricht dabei, alle erforderlichen Eigenschaften und Methoden bereitzustellen. TypeScript gibt einen Fehler aus, wenn etwas fehlt."
+        "text": "Eine Klasse kann ein Interface implementieren und verspricht dabei, alle erforderlichen Eigenschaften und Methoden bereitzustellen. TypeScript gibt einen Fehler aus, wenn etwas fehlt.",
+        "expandedText": "Wenn eine Klasse `implements AnInterface` deklariert, verifiziert TypeScript, dass sie jede Eigenschaft und Methode liefert, die das Interface erfordert – mit kompatiblen Typen. Fehlt etwas oder hat die falsche Signatur, gibt der Compiler sofort einen Fehler aus.\n\n`implements` ist ein **reiner Compile-Zeit-Vertrag** – es erzeugt keine JavaScript-Ausgabe. Anders als `extends` (Vererbung) gibt `implements` der Klasse keine Implementierung aus dem Interface. Die Klasse muss ihre eigenen Methodenrümpfe noch schreiben. Das macht Interfaces ideal für die Definition von Verträgen zwischen Modulen, ohne sie an eine gemeinsame Basisklasse zu koppeln."
       },
       {
         "animationStep": 4,
         "heading": "Index-Signaturen für dynamische Schlüssel",
-        "text": "Wenn du nicht alle Eigenschaftsnamen im Voraus kennst, verwende eine Index-Signatur, um beliebige String-Schlüssel mit einem spezifischen Werttyp zu erlauben."
+        "text": "Wenn du nicht alle Eigenschaftsnamen im Voraus kennst, verwende eine Index-Signatur, um beliebige String-Schlüssel mit einem spezifischen Werttyp zu erlauben.",
+        "expandedText": "Eine **Indexsignatur** `[key: string]: T` teilt TypeScript mit, dass ein Objekt eine beliebige Anzahl von string-basierten Eigenschaften haben kann, alle mit demselben Werttyp `T`. Dies modelliert Wörterbücher, Lookup-Tabellen und Konfigurationsmaps.\n\nIndexsignaturen interagieren mit expliziten Eigenschaften: Wenn du `[key: string]: number` deklarierst, muss auch jede benannte Eigenschaft vom Typ `number` sein. Wenn du sowohl `string`- als auch `number`-Werte willst, verwende `[key: string]: string | number`. Bevorzuge in den meisten Fällen `Record<string, T>` (ein Hilfstyp) gegenüber rohen Indexsignaturen – das ist lesbarer."
       }
     ],
     "cheatSheet": {
@@ -1544,27 +1555,32 @@
       {
         "animationStep": 0,
         "heading": "Das Problem: starre Typen",
-        "text": "Ohne Generics benötigst du für jeden Typ eine separate Funktion — firstNumber, firstString, firstBoolean. Das verletzt das DRY-Prinzip."
+        "text": "Ohne Generics benötigst du für jeden Typ eine separate Funktion — firstNumber, firstString, firstBoolean. Das verletzt das DRY-Prinzip.",
+        "expandedText": "Ohne Generics hast du zwei Möglichkeiten: Schreibe für jeden Typ eine separate Funktion (repetitiv und schwer wartbar) oder verwende `any` (was alle Typinformationen verliert). Keine davon ist für wiederverwendbare Hilfsfunktionen befriedigend.\n\nDas Symptom ist meist Copy-Paste: `firstNumber`, `firstString`, `firstBoolean` – identische Logik, nur die Typ-Annotation unterscheidet sich. Generics lösen dies, indem sie den Typ selbst parametrisieren, sodass eine gut typisierte Funktion für alle Typen funktioniert und den Aufrufern trotzdem genaue Typen liefert."
       },
       {
         "animationStep": 1,
         "heading": "Generische Funktionen mit <T>",
-        "text": "Ein Typparameter <T> ist ein Platzhalter, der zur Aufrufzeit durch einen echten Typ ersetzt wird. Eine Funktion funktioniert für alle Typen."
+        "text": "Ein Typparameter <T> ist ein Platzhalter, der zur Aufrufzeit durch einen echten Typ ersetzt wird. Eine Funktion funktioniert für alle Typen.",
+        "expandedText": "Ein **Typparameter** `<T>` ist ein Platzhalter zur Compile-Zeit. Wenn du eine generische Funktion aufrufst, ersetzt TypeScript den tatsächlichen Typ für `T` in der gesamten Funktionssignatur. Der Rückgabetyp `T` und der Parametertyp `T[]` bleiben synchron: Wenn du `number[]` übergibst, ist der Rückgabetyp `number`.\n\nTypparameter können beliebige Namen haben – `T`, `U`, `K`, `V` sind konventionelle Einzelbuchstaben. Mehrere Typparameter werden durch Kommas getrennt: `function zip<A, B>(a: A[], b: B[]): [A, B][]`. Jeder Parameter ist unabhängig und wird separat aus den Argumenten inferiert."
       },
       {
         "animationStep": 2,
         "heading": "TypeScript leitet T automatisch ab",
-        "text": "Du musst das Typargument selten explizit schreiben — TypeScript leitet es aus dem ab, was du übergibst."
+        "text": "Du musst das Typargument selten explizit schreiben — TypeScript leitet es aus dem ab, was du übergibst.",
+        "expandedText": "**Typinferenz** bedeutet, dass TypeScript `T` aus den übergebenen Argumenten ableitet. In `first([1, 2, 3])` sieht TypeScript ein Array von `number` und schließt `T = number`, was den Rückgabetyp zu `number` macht. Du schreibst nie `first<number>([1, 2, 3])` – die Inferenz erfolgt automatisch.\n\nExplizite Typargumente werden nur benötigt, wenn die Inferenz mehrdeutig ist oder wenn du einen bestimmten Typ bestätigen willst: `useState<User | null>(null)` – hier kann `null` allein TypeScript nicht mitteilen, dass du `User | null` willst, also ist das explizite Generic notwendig. In den meisten anderen Fällen lass TypeScript inferieren."
       },
       {
         "animationStep": 3,
         "heading": "Generische Interfaces",
-        "text": "Interfaces können auch Typparameter haben. Der Typ wird bei der Verwendung des Interfaces angegeben."
+        "text": "Interfaces können auch Typparameter haben. Der Typ wird bei der Verwendung des Interfaces angegeben.",
+        "expandedText": "**Generische Interfaces** parametrisieren die Form des Objekts anstatt einer Funktion. `interface Box<T> { value: T }` erstellt eine Typfamilie: `Box<number>`, `Box<string>`, `Box<User[]>`. Das Typargument wird zur Verwendungszeit angegeben.\n\nGenerische Interfaces bilden die Grundlage der TypeScript-Standardbibliothek: `Array<T>`, `Promise<T>`, `Map<K, V>`, `Set<T>`, `Record<K, V>`. Das Erstellen eigener generischer Interfaces für API-Antworten (`ApiResponse<T>`), paginierte Listen (`Page<T>`) und Ereignis-Payloads hält deine Codebasis konsistent und reduziert doppelte Typdefinitionen."
       },
       {
         "animationStep": 4,
         "heading": "Einschränkungen mit extends",
-        "text": "Verwende extends, um einzuschränken, welche Typen T sein kann. So kannst du sicher auf Eigenschaften zugreifen, die garantiert existieren."
+        "text": "Verwende extends, um einzuschränken, welche Typen T sein kann. So kannst du sicher auf Eigenschaften zugreifen, die garantiert existieren.",
+        "expandedText": "Eine **Einschränkung** (`<T extends SomeType>`) begrenzt, welche Typen für `T` eingesetzt werden können. Ohne Einschränkung geht TypeScript davon aus, dass `T` alles sein kann – du kannst daher keine Eigenschaft darauf sicher zugreifen. Das Hinzufügen von `extends { length: number }` teilt TypeScript mit, dass `T` garantiert eine `.length`-Eigenschaft hat, was `val.length` typsicher macht.\n\n`extends keyof T` ist eine besonders leistungsstarke Einschränkung: `<T, K extends keyof T>` bedeutet „K muss einer der Eigenschaftsnamen von T sein.\" So erreicht `getProperty<T, K extends keyof T>(obj: T, key: K): T[K]` typisierten Eigenschaftszugriff – `any` in generischen Lookup-Hilfsfunktionen wird eliminiert."
       }
     ],
     "cheatSheet": {
@@ -1613,32 +1629,38 @@
       {
         "animationStep": 0,
         "heading": "typeof- und instanceof-Guards",
-        "text": "TypeScript engt Typen innerhalb von Bedingungsblöcken ein. Nach einer typeof-Prüfung wird der Typ automatisch verfeinert."
+        "text": "TypeScript engt Typen innerhalb von Bedingungsblöcken ein. Nach einer typeof-Prüfung wird der Typ automatisch verfeinert.",
+        "expandedText": "**Type Narrowing** ist TypeScripts Fähigkeit, einen breiten Union-Typ in einem bedingten Zweig auf einen spezifischen Typ einzuengen. Nach einer `typeof val === \"string\"`-Prüfung weiß TypeScript, dass `val` im true-Zweig ein `string` ist und engt `number | boolean` im false-Zweig ein. Das geschieht automatisch – kein Cast nötig.\n\n`typeof` funktioniert für primitive Typen (`string`, `number`, `boolean`, `bigint`, `symbol`, `undefined`). `instanceof` funktioniert für Klasseninstanzen (`err instanceof Error`). Beide sind **Type Guards**: Laufzeitprüfungen, die TypeScript versteht und nutzt, um sein internes Typmodell zu aktualisieren."
       },
       {
         "animationStep": 1,
         "heading": "Discriminated Unions",
-        "text": "Eine Discriminated Union verwendet eine gemeinsame Literal-Eigenschaft, um zwischen Typen zu unterscheiden. TypeScript engt anhand dieses Feldes ein."
+        "text": "Eine Discriminated Union verwendet eine gemeinsame Literal-Eigenschaft, um zwischen Typen zu unterscheiden. TypeScript engt anhand dieses Feldes ein.",
+        "expandedText": "Eine **diskriminierte Union** ist eine Union von Objekttypen, die eine gemeinsame literal-typisierte Eigenschaft teilen – den Diskriminanten. Jedes Mitglied hat einen anderen Literalwert für diese Eigenschaft. TypeScript nutzt die Diskriminanten-Prüfung, um die Union innerhalb des Zweigs auf das spezifische Mitglied einzuengen.\n\nDieses Muster ist der idiomatische TypeScript-Weg zur Modellierung von Zustandsmaschinen, Action-Payloads (Redux), Ergebnistypen und jeder Situation mit einem festen Satz von Varianten. Ein `switch (shape.kind)` über eine diskriminierte Union ist sowohl erschöpfend (TypeScript erkennt fehlende Fälle) als auch präzise (jeder Fall hat den richtigen eingeengten Typ)."
       },
       {
         "animationStep": 2,
         "heading": "Benutzerdefinierte Typ-Guards",
-        "text": "Eine Typprädikats-Funktion (x is T) teilt TypeScript den genauen eingeengten Typ mit, wenn die Funktion true zurückgibt."
+        "text": "Eine Typprädikats-Funktion (x is T) teilt TypeScript den genauen eingeengten Typ mit, wenn die Funktion true zurückgibt.",
+        "expandedText": "Ein **Typenprädikat** ist eine Funktion, deren Rückgabetyp `param is Type` ist. Wenn die Funktion `true` zurückgibt, engt TypeScript `param` an der Aufrufstelle auf `Type` ein. So kannst du eine wiederverwendbare Laufzeitprüfung kapseln und ihr eine TypeScript-Typsignatur geben.\n\nTypenprädikate sind unerlässlich, wenn die Einengungslogik komplex genug ist, um eine eigene Funktion zu rechtfertigen – mehrere Eigenschaften prüfen, Array-Formen validieren oder zwischen zwei Interfaces unterscheiden. Die Funktion muss eine korrekte Laufzeitprüfung durchführen; TypeScript vertraut dem Prädikat und überprüft seine Logik nicht."
       },
       {
         "animationStep": 3,
         "heading": "Gleichheitseinengung",
-        "text": "TypeScript engt den Typ ein, wenn du mit === oder !== vergleichst. Wenn beide Seiten auf Gleichheit geprüft werden, eliminiert TypeScript unmögliche Typen."
+        "text": "TypeScript engt den Typ ein, wenn du mit === oder !== vergleichst. Wenn beide Seiten auf Gleichheit geprüft werden, eliminiert TypeScript unmögliche Typen.",
+        "expandedText": "**Gleichheits-Narrowing** tritt auf, wenn TypeScript eine strikte Gleichheitsprüfung (`===` oder `!==`) zwischen zwei Werten sieht. Wenn eine Seite ein Literaltyp ist, entfernt TypeScript unmögliche Typen aus der Union in beiden Zweigen. Das funktioniert für `null`, `undefined` und String-/Number-Literale.\n\nGleichheits-Narrowing kombiniert sich natürlich mit diskriminierten Unions: `if (x.kind === \"circle\")` engt die Union auf die `circle`-Variante ein. Es funktioniert auch, um `null` auszuschließen: `if (x !== null)` macht `x` innerhalb des Blocks nicht-nullbar. Bevorzuge `===` gegenüber `==`, um JavaScript's lockere Gleichheitskoerzionen zu vermeiden."
       },
       {
         "animationStep": 4,
         "heading": "Der \"in\"-Operator",
-        "text": "Der in-Operator prüft, ob eine Eigenschaft auf einem Objekt existiert. TypeScript engt den Typ basierend darauf ein, in welchen Zweig verzweigt wird — nützlich zur Unterscheidung von Typen, die einige, aber nicht alle Eigenschaften teilen."
+        "text": "Der in-Operator prüft, ob eine Eigenschaft auf einem Objekt existiert. TypeScript engt den Typ basierend darauf ein, in welchen Zweig verzweigt wird — nützlich zur Unterscheidung von Typen, die einige, aber nicht alle Eigenschaften teilen.",
+        "expandedText": "Der **`in`-Operator** prüft zur Laufzeit, ob eine Eigenschaft auf einem Objekt existiert. TypeScript nutzt dies, um zwischen Union-Mitgliedern mit unterschiedlichen Eigenschaftssätzen einzuengen. `if (\"drive\" in vehicle)` engt `vehicle` auf den Typ ein, der eine `drive`-Eigenschaft hat.\n\nDas ist besonders nützlich, wenn du keiner vorhandenen Typen eine Diskriminanten-Eigenschaft hinzufügen kannst oder wenn du mit optionalen Eigenschaften arbeitest. `\"drive\" in vehicle` ist true, auch wenn `drive` `undefined` ist – es prüft nur die Existenz. Für robustes Narrowing über Modulgrenzen hinweg bevorzuge eine Diskriminanten-Eigenschaft gegenüber `in`-Prüfungen, wenn du die Typen kontrollierst."
       },
       {
         "animationStep": 5,
         "heading": "Benutzerdefinierte Typprädikate",
-        "text": "Ein benutzerdefinierter Typ-Guard ist eine Funktion, deren Rückgabetyp ein Typprädikat ist (param is Type). Wenn er true zurückgibt, engt TypeScript das Argument überall dort, wo der Guard verwendet wird, auf diesen Typ ein."
+        "text": "Ein benutzerdefinierter Typ-Guard ist eine Funktion, deren Rückgabetyp ein Typprädikat ist (param is Type). Wenn er true zurückgibt, engt TypeScript das Argument überall dort, wo der Guard verwendet wird, auf diesen Typ ein.",
+        "expandedText": "Ein **benutzerdefinierter Type Guard** (Typenprädikat-Funktion) ist das mächtigste Narrowing-Werkzeug. Die Rückgabetyp-Annotation `pet is Fish` teilt TypeScript mit: „Wenn diese Funktion true zurückgibt, behandle das Argument nach dem Aufruf als `Fish`.\" TypeScript nimmt das auf Treu und Glauben an – es analysiert nicht den Funktionsrumpf auf Korrektheit.\n\nDas legt die Verantwortung auf den Entwickler: Das Prädikat **muss** den Laufzeittyp tatsächlich korrekt verifizieren. Ein Prädikat, das immer `true` zurückgibt oder eine falsche Prüfung durchführt, engt lautlos auf den falschen Typ ein. Teste Type-Guard-Funktionen sorgfältig und halte sie einfach – je komplexer die Prüfung, desto wahrscheinlicher ist ein unentdeckter Fehler."
       }
     ],
     "cheatSheet": {
@@ -1683,22 +1705,26 @@
       {
         "animationStep": 0,
         "heading": "Partial und Required",
-        "text": "Partial<T> macht alle Eigenschaften optional. Required<T> macht alle Eigenschaften erforderlich. Beide leiten einen neuen Typ aus einem bestehenden Interface ab."
+        "text": "Partial<T> macht alle Eigenschaften optional. Required<T> macht alle Eigenschaften erforderlich. Beide leiten einen neuen Typ aus einem bestehenden Interface ab.",
+        "expandedText": "**`Partial<T>`** wandelt jede Eigenschaft in `T` in eine optionale um und ermöglicht es, partielle Aktualisierungen darzustellen, ohne ein separates Entwurfs-Interface zu definieren. Das ist der korrekte Typ für `PATCH`-Anfrage-Bodies und Formzustandsobjekte, die möglicherweise nur teilweise ausgefüllt sind.\n\n**`Required<T>`** ist das Gegenteil: Es entfernt das `?` von jeder Eigenschaft. Verwende es, wenn du einen `Partial`-Wert erhältst und alle Standardwerte eingetragen hast und somit ein vollständig befülltes Objekt produzierst. Beide sind intern **gemappte Typen** – sie iterieren über alle Schlüssel von `T` und transformieren jeden einzelnen."
       },
       {
         "animationStep": 1,
         "heading": "Pick und Omit",
-        "text": "Pick<T, K> behält nur die aufgelisteten Schlüssel. Omit<T, K> entfernt die aufgelisteten Schlüssel. Beide erstellen einen Teilmengen-Typ."
+        "text": "Pick<T, K> behält nur die aufgelisteten Schlüssel. Omit<T, K> entfernt die aufgelisteten Schlüssel. Beide erstellen einen Teilmengen-Typ.",
+        "expandedText": "**`Pick<T, K>`** erstellt einen neuen Typ, der nur die aufgelisteten Schlüssel enthält. Es ist das TypeScript-Äquivalent zur Auswahl bestimmter Spalten in einer SQL-Abfrage – ein fokussierter View-Typ mit nur dem, was der Verbraucher benötigt. Verwende es für View-Models, API-Antwortformen und Komponentenprops, die aus einem größeren Entitätstyp abgeleitet werden.\n\n**`Omit<T, K>`** macht das Gegenteil: Es kopiert alle Eigenschaften von `T` außer den aufgelisteten Schlüsseln. Verwende `Omit<User, \"password\">` für sichere öffentlich zugängliche Typen oder `Omit<User, \"id\" | \"createdAt\">` für Erstellungs-Payloads, bei denen die Datenbank diese Felder generiert."
       },
       {
         "animationStep": 2,
         "heading": "Record, Readonly und ReturnType",
-        "text": "Record<K, V> erstellt einen Objekttyp mit Schlüsseln K und Werten V. Readonly<T> verhindert Mutation. ReturnType<F> extrahiert den Rückgabetyp einer Funktion."
+        "text": "Record<K, V> erstellt einen Objekttyp mit Schlüsseln K und Werten V. Readonly<T> verhindert Mutation. ReturnType<F> extrahiert den Rückgabetyp einer Funktion.",
+        "expandedText": "**`Record<K, V>`** erstellt einen Objekttyp, bei dem jeder Schlüssel vom Typ `K` und jeder Wert vom Typ `V` ist. Es ist die kanonische Art, Wörterbücher und Lookup-Tabellen zu typisieren: `Record<string, number>` ist klarer als eine Indexsignatur von Hand zu schreiben.\n\n**`Readonly<T>`** markiert alle Eigenschaften als `readonly`. **`ReturnType<F>`** extrahiert den Rückgabetyp einer Funktion – nützlich, wenn du eine Variable typisieren möchtest, die ein Funktionsergebnis hält, ohne die Typdefinition zu duplizieren. Kombiniere diese Hilfstypen: `Readonly<Partial<User>>` erstellt in einem Ausdruck ein readonly-Aktualisierungs-Payload."
       },
       {
         "animationStep": 3,
         "heading": "Exclude, Extract und NonNullable",
-        "text": "Exclude<T, U> entfernt aus T alle Typen, die U zuweisbar sind. Extract<T, U> behält nur Typen, die U zuweisbar sind. NonNullable<T> entfernt null und undefined — nützlich für validierte Werte."
+        "text": "Exclude<T, U> entfernt aus T alle Typen, die U zuweisbar sind. Extract<T, U> behält nur Typen, die U zuweisbar sind. NonNullable<T> entfernt null und undefined — nützlich für validierte Werte.",
+        "expandedText": "**`Exclude<T, U>`** filtert eine Union `T`, indem es alle Mitglieder entfernt, die `U` zuweisbar sind. **`Extract<T, U>`** behält nur die Mitglieder, die `U` zuweisbar sind. Diese sind komplementär: Eines ist eine Mengendifferenz, das andere ein Mengenschnitt – beide operieren auf Union-Typen.\n\n**`NonNullable<T>`** ist `Exclude<T, null | undefined>` – es entfernt die nullbaren Mitglieder. Verwende es nach einer Null-Prüfung, wenn du möchtest, dass TypeScript widerspiegelt, dass ein Wert validiert wurde. Alle drei Hilfstypen sind intern **distributive bedingte Typen**, die die Bedingung unabhängig auf jedes Mitglied der Union anwenden."
       }
     ],
     "cheatSheet": {
@@ -1759,22 +1785,26 @@
       {
         "animationStep": 0,
         "heading": "Typisierte Arrays",
-        "text": "TypeScript ermöglicht es dir, festzulegen, dass ein Array nur Elemente eines bestimmten Typs enthalten soll. Verwende die `T[]`-Syntax oder die generische `Array<T>`-Form — beide sind äquivalent."
+        "text": "TypeScript ermöglicht es dir, festzulegen, dass ein Array nur Elemente eines bestimmten Typs enthalten soll. Verwende die `T[]`-Syntax oder die generische `Array<T>`-Form — beide sind äquivalent.",
+        "expandedText": "**Typisierte Arrays** (`T[]` oder `Array<T>`) teilen TypeScript mit, welche Art von Elementen das Array enthält. TypeScript nutzt dies, um die Rückgabewerte von Array-Methoden zu typisieren: `scores.map(s => s * 2)` gibt `number[]` zurück, weil `scores` `number[]` ist. Der Compiler erkennt Fehler wie das Hinzufügen eines Strings zu einem Number-Array.\n\nBeide Syntaxen sind äquivalent. `T[]` ist prägnanter und wird für einfache Typen bevorzugt. `Array<T>` ist für verschachtelte oder komplexe Typen wie `Array<Record<string, number>>` lesbarer. Verwende `readonly T[]` oder `ReadonlyArray<T>`, wenn das Array nach der Erstellung nicht mehr verändert werden soll."
       },
       {
         "animationStep": 1,
         "heading": "Arrays von Objekten",
-        "text": "Du kannst Arrays von benutzerdefinierten Objektformen typisieren. TypeScript prüft jedes Element gegen den Typ und gibt dir Autovervollständigung für alle Eigenschaften beim Iterieren."
+        "text": "Du kannst Arrays von benutzerdefinierten Objektformen typisieren. TypeScript prüft jedes Element gegen den Typ und gibt dir Autovervollständigung für alle Eigenschaften beim Iterieren.",
+        "expandedText": "Arrays von **Objekttypen** (`User[]`, `Product[]`) ermöglichen leistungsstarke Typinferenz durch Iteration. Wenn du `users.forEach(user => ...)` aufrufst, weiß TypeScript, dass `user` innerhalb des Callbacks ein `User` ist – vollständige Autovervollständigung für alle Eigenschaften und Fehler bei falsch geschriebenen Eigenschaftsnamen.\n\nDas gilt auch für `map`, `filter`, `find` und `reduce`. `users.filter(u => u.active)` gibt `User[]` zurück. `users.find(u => u.id === id)` gibt `User | undefined` zurück. TypeScript behält den Elementtyp durch Methodenverkettungen bei und gibt dir an jedem Schritt Typsicherheit ohne manuelle Annotationen."
       },
       {
         "animationStep": 2,
         "heading": "Tupel — Arrays fester Länge",
-        "text": "Ein Tupel ist ein typisiertes Array mit einer festen Anzahl von Elementen, wobei jede Position ihren eigenen Typ hat. Tupel sind nützlich für positionelle Daten wie Koordinaten, Schlüssel-Wert-Paare oder Funktionsrückgabewerte."
+        "text": "Ein Tupel ist ein typisiertes Array mit einer festen Anzahl von Elementen, wobei jede Position ihren eigenen Typ hat. Tupel sind nützlich für positionelle Daten wie Koordinaten, Schlüssel-Wert-Paare oder Funktionsrückgabewerte.",
+        "expandedText": "Ein **Tupel** ist ein typisiertes Array mit einer festen Anzahl von Elementen, bei dem jede Position ihren eigenen spezifischen Typ hat. TypeScript erzwingt sowohl die Länge als auch den positionsspezifischen Typ: `const p: [number, string] = [42, \"hello\"]` – Position 0 ist immer `number`, Position 1 ist immer `string`.\n\nTupel sind ideal für Funktionsrückgabewerte, die zusammengehörige Daten bündeln, ohne ein vollständiges benanntes Objekt zu erstellen. Sie ermöglichen sauberes Destructuring: `const [lat, lng] = getCoordinates()`. Reacts `useState` gibt `[T, Dispatch<SetStateAction<T>>]` zurück – ein Tupel, bei dem jede Position einen anderen Typ hat."
       },
       {
         "animationStep": 3,
         "heading": "Beschriftete Tupel",
-        "text": "TypeScript unterstützt beschriftete Tupel-Elemente für bessere Lesbarkeit. Beschriftungen ändern den Typ nicht — sie erscheinen nur in Editor-Tooltips — aber sie machen die Absicht viel klarer als unbenannte positionelle Slots."
+        "text": "TypeScript unterstützt beschriftete Tupel-Elemente für bessere Lesbarkeit. Beschriftungen ändern den Typ nicht — sie erscheinen nur in Editor-Tooltips — aber sie machen die Absicht viel klarer als unbenannte positionelle Slots.",
+        "expandedText": "**Beschriftete Tupel-Elemente** (TypeScript 4.0+) fügen jeder Position Namen hinzu, ohne den zugrunde liegenden Typ zu ändern. Die Labels erscheinen in Editor-Tooltips und verbessern die Lesbarkeit, besonders bei Tupeln mit mehreren Elementen desselben Typs.\n\nLabels beeinflussen weder die Zuweisbarkeit noch das Laufzeitverhalten – `[start: number, end: number]` ist auf Typebene identisch mit `[number, number]`. Sie dienen rein der Dokumentation. Funktionen, die Tupel zurückgeben, profitieren am meisten: `function minMax(arr: number[]): [min: number, max: number]` macht den Rückgabewert an jeder Aufrufstelle sofort selbsterklärend."
       }
     ],
     "cheatSheet": {
@@ -1823,27 +1853,32 @@
       {
         "animationStep": 0,
         "heading": "Klassensyntax mit Typen",
-        "text": "TypeScript-Klassen funktionieren wie JavaScript-Klassen, aber mit Typ-Annotierungen. Deklariere Eigenschaftstypen oben im Klassenrumpf vor dem Konstruktor. TypeScript erzwingt, dass der Konstruktor jede nicht-optionale Eigenschaft initialisiert."
+        "text": "TypeScript-Klassen funktionieren wie JavaScript-Klassen, aber mit Typ-Annotierungen. Deklariere Eigenschaftstypen oben im Klassenrumpf vor dem Konstruktor. TypeScript erzwingt, dass der Konstruktor jede nicht-optionale Eigenschaft initialisiert.",
+        "expandedText": "TypeScript-**Klassen** fügen Typdeklarationen zu den Eigenschaften einer JavaScript-Klasse hinzu. Du deklarierst jede Eigenschaft mit ihrem Typ vor dem Konstruktor, und der Konstruktor muss alle nicht-optionalen, nicht-readonly-Eigenschaften zuweisen, sonst gibt TypeScript einen Fehler aus.\n\nDie Typ-Annotationen auf Klasseneigenschaften dienen zwei Zwecken: Sie dokumentieren das Klassenschema, und sie ermöglichen es TypeScript, jede Methode zu überprüfen, die diese Eigenschaften liest oder schreibt. Methoden-Rückgabetypen werden inferiert, wenn sie nicht annotiert sind, aber explizite Rückgabetyp-Annotationen werden für öffentliche Methoden empfohlen – sie wirken als Vertrag, den die Methode einhalten muss."
       },
       {
         "animationStep": 1,
         "heading": "readonly- und optionale Eigenschaften",
-        "text": "Markiere eine Eigenschaft als `readonly`, um Mutation nach der Konstruktion zu verhindern. Markiere sie mit `?` als optional, wenn sie nicht immer bereitgestellt wird. TypeScript prüft beides zur Compile-Zeit."
+        "text": "Markiere eine Eigenschaft als `readonly`, um Mutation nach der Konstruktion zu verhindern. Markiere sie mit `?` als optional, wenn sie nicht immer bereitgestellt wird. TypeScript prüft beides zur Compile-Zeit.",
+        "expandedText": "**`readonly`**-Eigenschaften können genau einmal zugewiesen werden – im Konstruktor. Jeder spätere Versuch, sie neu zuzuweisen, ist ein Compile-Zeit-Fehler. Das modelliert unveränderliche Bezeichner wie Datenbank-IDs oder Erstellungszeitstempel: Der Wert wird bei der Erstellung gesetzt und ändert sich nie.\n\n**Optionale Eigenschaften** (`?`) auf Klassen funktionieren genau wie auf Interfaces: Die Eigenschaft kann `undefined` sein. Beim Lesen einer optionalen Eigenschaft zwingt TypeScript dich dazu, den `undefined`-Fall zu behandeln (mit optionalem Chaining `?.` oder einer Null-Prüfung), bevor du Methoden darauf aufrufst, und verhindert so Laufzeitfehler."
       },
       {
         "animationStep": 2,
         "heading": "Zugriffsmodifikatoren",
-        "text": "TypeScript fügt drei Zugriffsmodifikatoren hinzu: `public` (Standard — überall zugänglich), `private` (nur innerhalb der Klasse) und `protected` (innerhalb der Klasse und Unterklassen). Das `#`-Präfix ist JavaScripts natives privates Feld — zur Laufzeit erzwungen, nicht nur zur Compile-Zeit."
+        "text": "TypeScript fügt drei Zugriffsmodifikatoren hinzu: `public` (Standard — überall zugänglich), `private` (nur innerhalb der Klasse) und `protected` (innerhalb der Klasse und Unterklassen). Das `#`-Präfix ist JavaScripts natives privates Feld — zur Laufzeit erzwungen, nicht nur zur Compile-Zeit.",
+        "expandedText": "**Zugriffsmodifikatoren** steuern, von wo aus auf eine Eigenschaft oder Methode verwiesen werden kann. `public` (der Standard) bedeutet von überall zugänglich. `private` bedeutet nur innerhalb des Klassenrumpfes – TypeScript gibt bei jedem externen Zugriff einen Fehler aus. `protected` ist wie `private`, aber auch in Unterklassen zugänglich, was es für Eigenschaften geeignet macht, die Unterklassen benötigen, auf die Aufrufer aber nicht direkt zugreifen sollen.\n\nHinweis: Das TypeScript-Schlüsselwort `private` ist eine **reine Compile-Zeit-Beschränkung**. Zur Laufzeit ist die Eigenschaft weiterhin zugänglich. Für echte Laufzeitprivatsphäre verwende die JavaScript-`#field`-Syntax – diese wird von der JavaScript-Engine selbst durchgesetzt und ist selbst mit Bracket-Notation nicht zugänglich."
       },
       {
         "animationStep": 3,
         "heading": "Vererbung mit extends",
-        "text": "Eine Klasse kann eine andere Klasse erweitern, um ihre öffentlichen und geschützten Mitglieder zu erben. Die Unterklasse muss `super()` aufrufen, bevor sie auf `this` zugreift. Überschreibe Methoden, um spezialisiertes Verhalten bereitzustellen."
+        "text": "Eine Klasse kann eine andere Klasse erweitern, um ihre öffentlichen und geschützten Mitglieder zu erben. Die Unterklasse muss `super()` aufrufen, bevor sie auf `this` zugreift. Überschreibe Methoden, um spezialisiertes Verhalten bereitzustellen.",
+        "expandedText": "Klassen-**Vererbung** über `extends` ermöglicht einer Unterklasse, alle `public`- und `protected`-Mitglieder der Elternklasse zu erben. Der Unterklassen-Konstruktor muss `super()` aufrufen, bevor er auf `this` zugreift – TypeScript gibt einen Fehler aus, wenn du das vergisst. Überschreibe Methoden, um spezialisiertes Verhalten für die Unterklasse bereitzustellen, während die gemeinsame Schnittstelle geteilt wird.\n\n`protected`-Mitglieder sind der Kommunikationskanal zwischen einer Basisklasse und ihren Unterklassen. Mache ein Mitglied `protected`, wenn Unterklassen es benötigen, externe Aufrufer aber nicht direkt darauf zugreifen sollen. Die Kombination aus `protected`-Eigenschaften und `public`-Methoden ist ein klassisches Kapselungsmuster: Verbirg den Zustand, enthülle kontrolliertes Verhalten."
       },
       {
         "animationStep": 4,
         "heading": "Abstrakte Klassen",
-        "text": "Eine abstrakte Klasse kann nicht direkt instanziiert werden — sie existiert, um erweitert zu werden. Abstrakte Methoden haben keine Implementierung in der Basisklasse; jede konkrete Unterklasse muss sie implementieren."
+        "text": "Eine abstrakte Klasse kann nicht direkt instanziiert werden — sie existiert, um erweitert zu werden. Abstrakte Methoden haben keine Implementierung in der Basisklasse; jede konkrete Unterklasse muss sie implementieren.",
+        "expandedText": "Eine **abstrakte Klasse** ist eine Vorlage, die nicht direkt instanziiert werden kann – sie existiert nur zum Erweitern. Abstrakte Methoden deklarieren eine Signatur ohne Implementierung; jede konkrete Unterklasse muss ihre eigene bereitstellen. Das erzwingt einen Vertrag: Alle Unterklassen haben garantiert die erforderlichen Methoden und sind daher über den Basisklassentyp austauschbar.\n\nAbstrakte Klassen glänzen, wenn du gemeinsames Verhalten (konkrete Methoden) neben erforderlichem, aber variablem Verhalten (abstrakte Methoden) hast. Eine `Shape`-Basisklasse kann eine `describe()`-Methode implementieren, die `area()` verwendet, während jede konkrete Form (`Circle`, `Rectangle`) ihr eigenes `area()` bereitstellt. Polymorphismus ermöglicht es dann, `shape.describe()` auf jeder Form aufzurufen, ohne den konkreten Typ zu kennen."
       }
     ],
     "cheatSheet": {
@@ -1896,22 +1931,26 @@
       {
         "animationStep": 0,
         "heading": "Numerische Enums",
-        "text": "Ein Enum deklariert eine Menge benannter Konstanten. Standardmäßig sind die Werte auto-inkrementierte Zahlen, die bei 0 beginnen. Du kannst den Startwert überschreiben oder explizite Werte für beliebige Mitglieder setzen."
+        "text": "Ein Enum deklariert eine Menge benannter Konstanten. Standardmäßig sind die Werte auto-inkrementierte Zahlen, die bei 0 beginnen. Du kannst den Startwert überschreiben oder explizite Werte für beliebige Mitglieder setzen.",
+        "expandedText": "Ein TypeScript-**Enum** wird zu einem echten JavaScript-Objekt kompiliert. Für numerische Enums hat das Objekt sowohl Vorwärts- (`Direction.Up === 0`) als auch Rückwärtsmappings (`Direction[0] === \"Up\"`). Dieses bidirektionale Mapping ist einzigartig für numerische Enums und kann Überraschungen verursachen, wenn du den numerischen Wert dort übergibst, wo der Enum-Typ erwartet wird.\n\nEnum-Mitglieder werden standardmäßig ab `0` automatisch inkrementiert. Du kannst den Startwert überschreiben: `enum Status { Active = 1, Inactive, Archived }` gibt die Werte 1, 2, 3. Du kannst auch jedes Mitglied explizit setzen – nützlich für HTTP-Statuscodes oder Fehlercodes mit bedeutungsvollen numerischen Werten."
       },
       {
         "animationStep": 1,
         "heading": "String-Enums",
-        "text": "String-Enums erfordern explizite String-Werte für jedes Mitglied. Sie sind in Logs und beim Debuggen besser lesbar, weil der Wert selbst bedeutungsvoll ist — im Gegensatz zu numerischen Enums, wo man nur eine Zahl sieht."
+        "text": "String-Enums erfordern explizite String-Werte für jedes Mitglied. Sie sind in Logs und beim Debuggen besser lesbar, weil der Wert selbst bedeutungsvoll ist — im Gegensatz zu numerischen Enums, wo man nur eine Zahl sieht.",
+        "expandedText": "**String-Enums** erfordern einen expliziten String-Wert für jedes Mitglied. Im Gegensatz zu numerischen Enums erzeugen sie kein Rückwärts-Mapping – `Status[\"active\"]` existiert nicht. Der Wert selbst ist bedeutungsvoll: Logs, API-Payloads und Datenbanken zeigen `\"published\"` statt `1`.\n\nString-Enums sind in der Praxis sicherer als numerische: Das Übergeben von `1` an eine Funktion, die `Direction` erwartet, ist eine gültige Zahl, aber semantisch falsch. Eine Funktion, die `Status` erwartet, akzeptiert nur `Status.Draft`, `Status.Published` oder `Status.Archived` – keine beliebigen Strings. Das macht sie zur bevorzugten Wahl für Rollen, Statuswerte und Konfigurationskonstanten."
       },
       {
         "animationStep": 2,
         "heading": "Erschöpfendes Switch mit never",
-        "text": "Wenn jeder Enum-Wert in einem Switch behandelt wird, weiß TypeScript, dass der Default-Zweig unerreichbar ist. Eine Zuweisung zu `never` im Default fängt fehlende Fälle zur Compile-Zeit ab."
+        "text": "Wenn jeder Enum-Wert in einem Switch behandelt wird, weiß TypeScript, dass der Default-Zweig unerreichbar ist. Eine Zuweisung zu `never` im Default fängt fehlende Fälle zur Compile-Zeit ab.",
+        "expandedText": "Der **`never`-Trick** für erschöpfende Switches ist eines der mächtigsten TypeScript-Muster. Nachdem jeder Enum-Fall behandelt wurde, weist der `default`-Zweig den Switch-Ausdruck `never` zu. Da `never` keine Werte akzeptiert, gibt TypeScript einen Fehler aus, wenn ein Fall fehlt – die Fehlermeldung teilt dir genau mit, welches Mitglied nicht behandelt wurde.\n\nDieses Muster zahlt sich aus, wenn du ein neues Enum-Mitglied hinzufügst: Jede Switch-Anweisung in der Codebasis, der ein Fall fehlt, wird nicht kompilieren. Du kannst nicht versehentlich Code ausliefern, der eine neue Variante still ignoriert. Kombiniere das mit `const enum` für Compile-Zeit-Konstanten ohne Laufzeitkosten."
       },
       {
         "animationStep": 3,
         "heading": "Praxisbeispiel: RBAC-Rollen",
-        "text": "String-Enums eignen sich gut für Rollen, Status und Konfigurationskonstanten, die in Logs, APIs und Datenbanken erscheinen — der String-Wert ist selbstdokumentierend."
+        "text": "String-Enums eignen sich gut für Rollen, Status und Konfigurationskonstanten, die in Logs, APIs und Datenbanken erscheinen — der String-Wert ist selbstdokumentierend.",
+        "expandedText": "String-Enums für **RBAC-Rollen** sind eine hervorragende Wahl, da der String-Wert in API-Anfragen, Datenbankeinträgen und Logs erscheint – alles profitiert von menschenlesbaren Werten statt undurchsichtiger Zahlen. Das Übergeben von `Role.Admin` an eine Funktion, die `Role` erwartet, gibt TypeScript genug Informationen, um versehentliche String-Literale zur Compile-Zeit abzufangen.\n\nEine verbreitete moderne Alternative zu Enums ist ein `const`-Objekt mit `as const`: `const Role = { Admin: \"admin\", User: \"user\" } as const`. Das vermeidet Enum-Kompilierungsbesonderheiten und funktioniert identisch in reinem JavaScript. Der Kompromiss ist, dass `Role` ein Objekt ist, kein Typ – du benötigst `type Role = typeof Role[keyof typeof Role]`, um den Union-Typ zu erhalten."
       }
     ],
     "cheatSheet": {
@@ -1953,17 +1992,20 @@
       {
         "animationStep": 0,
         "heading": "Das as-Schlüsselwort",
-        "text": "Typ-Assertion teilt TypeScript mit: \"Vertrau mir, ich kenne den Typ besser als du.\" Verwende das `as`-Schlüsselwort (keine spitzen Klammern — sie kollidieren mit JSX). Die Assertion beeinflusst nur den Compiler, niemals den Laufzeitwert."
+        "text": "Typ-Assertion teilt TypeScript mit: \"Vertrau mir, ich kenne den Typ besser als du.\" Verwende das `as`-Schlüsselwort (keine spitzen Klammern — sie kollidieren mit JSX). Die Assertion beeinflusst nur den Compiler, niemals den Laufzeitwert.",
+        "expandedText": "**Typzusicherung** (`as`) überschreibt TypeScripts inferierter Typ ohne Laufzeitprüfung oder -konvertierung. Es ist eine Compile-Zeit-Anweisung: „Behandle diesen Wert als `HTMLInputElement`.\" Wenn du falsch liegst, wird TypeScript es nicht erkennen – der Fehler tritt zur Laufzeit auf.\n\nVerwende `as`, wenn TypeScript keinen spezifischen genug Typ aus dem Kontext inferieren kann und du dir über den tatsächlichen Typ sicher bist. DOM-Abfragen (`document.getElementById`) geben `HTMLElement | null` zurück, weil TypeScript nicht wissen kann, welcher Element-Typ im HTML vorhanden ist. Das Zusichern von `as HTMLInputElement` erschließt die Eigenschaften `.value` und `.checked`."
       },
       {
         "animationStep": 1,
         "heading": "JSON und API-Antworten",
-        "text": "Wenn du JSON parsest oder Daten von einer API erhältst, leitet TypeScript den Typ als `any` oder `unknown` ab. Das sofortige Behaupten eines spezifischen Typs nach dem Parsen gibt dir volle Typsicherheit nachgelagert — aber du bist für die Korrektheit der Assertion verantwortlich."
+        "text": "Wenn du JSON parsest oder Daten von einer API erhältst, leitet TypeScript den Typ als `any` oder `unknown` ab. Das sofortige Behaupten eines spezifischen Typs nach dem Parsen gibt dir volle Typsicherheit nachgelagert — aber du bist für die Korrektheit der Assertion verantwortlich.",
+        "expandedText": "`fetch` und `JSON.parse` geben `any` oder `unknown` zurück. Einen Typ mit `as User` direkt nach dem Parsen zuzusichern macht den Rest des Codes typsicher. Das ist ein **Versprechen an den Compiler**: Du behauptest, dass der Laufzeitwert dem Typ entspricht. Wenn die API ihre Form ändert, ist deine Zusicherung veraltet und Laufzeitfehler können folgen.\n\nDie sicherere Alternative ist ein **Laufzeit-Type-Guard** (oder eine Bibliothek wie Zod): Validiere die Daten, bevor du zusicherst. `if (isUser(data)) { /* data ist hier User */ }` ist besser als `data as User`. Verwende Zusicherungen für Daten, die du wirklich kontrollierst (deine eigene API mit einem festen Schema), und Guards für Drittanbieter- oder benutzerseitig gelieferte Daten."
       },
       {
         "animationStep": 2,
         "heading": "Einschränkungen und Non-Null-Assertion",
-        "text": "Typ-Assertion kann keine vollständig inkompatiblen Typen konvertieren. Der Non-Null-Assertion-Operator `!` behauptet, dass ein Wert weder `null` noch `undefined` ist. Verwende ihn sparsam: Wenn der Wert tatsächlich `null` zur Laufzeit sein kann, schützt die Assertion dich nicht."
+        "text": "Typ-Assertion kann keine vollständig inkompatiblen Typen konvertieren. Der Non-Null-Assertion-Operator `!` behauptet, dass ein Wert weder `null` noch `undefined` ist. Verwende ihn sparsam: Wenn der Wert tatsächlich `null` zur Laufzeit sein kann, schützt die Assertion dich nicht.",
+        "expandedText": "TypeScript erlaubt Zusicherungen nur zu einem **verwandten Typ** – einem, der sich strukturell mit dem inferierten Typ überschneidet. Du kannst nicht `number as string` zusichern, weil sie völlig unverwandt sind. Der Workaround ist eine **doppelte Zusicherung** über `unknown`: `number as unknown as string`. Das ist immer ein Design-Geruch – wenn du es benötigst, stimmt etwas mit den Typen nicht.\n\nDer **Non-Null-Assertion-Operator `!`** ist eine spezielle Zusicherung, die `null | undefined` aus einem Typ entfernt. `document.getElementById(\"app\")!` gibt `HTMLElement` statt `HTMLElement | null` zurück. Verwende `!` nur, wenn du sicher bist, dass das Element existiert – wenn es zur Laufzeit fehlt, wird der nächste Eigenschaftszugriff einen `TypeError` auslösen."
       }
     ],
     "cheatSheet": {
@@ -2005,32 +2047,38 @@
       {
         "animationStep": 0,
         "heading": "Props typisieren",
-        "text": "Definiere einen Typ-Alias für die Props deiner Komponente. TypeScript meldet einen Fehler, wenn erforderliche Props fehlen oder den falschen Typ haben. Markiere optionale Props mit ?. Verwende React.ReactNode für children. Union-Typen schränken erlaubte Werte ein — ideal für Status- oder Variant-Props."
+        "text": "Definiere einen Typ-Alias für die Props deiner Komponente. TypeScript meldet einen Fehler, wenn erforderliche Props fehlen oder den falschen Typ haben. Markiere optionale Props mit ?. Verwende React.ReactNode für children. Union-Typen schränken erlaubte Werte ein — ideal für Status- oder Variant-Props.",
+        "expandedText": "**Typisierte Props** sind das erste und wertvollste TypeScript-Feature in React. Das Definieren eines `type` für Props verwandelt jede Komponente in einen selbst dokumentierenden Vertrag: Das Aufrufen der Komponente ohne eine erforderliche Prop oder das Übergeben des falschen Typs ist ein Compile-Fehler – keine Laufzeitwarnung oder verwirrendes undefined.\n\nVerwende `React.ReactNode` für die `children`-Prop – es deckt alle gültigen JSX-Kind-Typen ab: JSX-Elemente, Strings, Zahlen, Arrays, Fragmente und `null`. Verwende **String-Literal-Unions** für Varianten-Props (`\"primary\" | \"secondary\"`) statt reinem `string` – das schränkt die erlaubten Werte ein und ermöglicht Autovervollständigung in JSX."
       },
       {
         "animationStep": 1,
         "heading": "State typisieren",
-        "text": "useState akzeptiert einen Generic: useState<T>(initial). Wenn der initiale State null oder undefined ist, kann TypeScript den vollständigen Typ nicht ableiten — annotiere immer explizit. Für komplexe Objekte definiere einen Typ-Alias und übergebe ihn als Generic. TypeScript verhindert dann, dass du State mit der falschen Form setzt."
+        "text": "useState akzeptiert einen Generic: useState<T>(initial). Wenn der initiale State null oder undefined ist, kann TypeScript den vollständigen Typ nicht ableiten — annotiere immer explizit. Für komplexe Objekte definiere einen Typ-Alias und übergebe ihn als Generic. TypeScript verhindert dann, dass du State mit der falschen Form setzt.",
+        "expandedText": "**`useState<T>(initial)`** akzeptiert ein explizites Generic, wenn TypeScript den vollständigen Typ nicht aus dem Initialwert inferieren kann. Der häufigste Fall: `useState<User | null>(null)` – `null` allein würde `null` inferieren und den `User`-Teil verlieren. Mit dem Generic sind sowohl `setUser(someUser)` als auch `setUser(null)` gültig; alles andere ist ein Fehler.\n\nFür komplexen Zustand mit mehreren zusammengehörigen Feldern definiere einen `type`-Alias und verwende ihn: `const [form, setForm] = useState<FormState>({ ... })`. Das stellt sicher, dass jeder `setForm`-Aufruf ein konformes Objekt bereitstellt. Der Typ fließt automatisch in den Setter – TypeScript prüft jedes State-Update."
       },
       {
         "animationStep": 2,
         "heading": "useRef & useReducer typisieren",
-        "text": "useRef benötigt einen expliziten Element-Typ — TypeScript kann nicht erraten, ob er auf ein Input, ein Div oder ein Canvas zeigt. Übergib den HTML-Element-Typ als Generic und null als Initialwert. useReducer profitiert am meisten von TypeScript: Definiere State und eine diskriminierte Union für Action, und der erschöpfende Default-Zweig fängt fehlende Fälle zur Compile-Zeit ab."
+        "text": "useRef benötigt einen expliziten Element-Typ — TypeScript kann nicht erraten, ob er auf ein Input, ein Div oder ein Canvas zeigt. Übergib den HTML-Element-Typ als Generic und null als Initialwert. useReducer profitiert am meisten von TypeScript: Definiere State und eine diskriminierte Union für Action, und der erschöpfende Default-Zweig fängt fehlende Fälle zur Compile-Zeit ab.",
+        "expandedText": "`useRef<HTMLInputElement>(null)` muss mit dem HTML-Element-Typ typisiert werden. TypeScript kann es nicht allein aus dem Initialwert `null` inferieren. Das Generic teilt TypeScript mit, dass `ref.current` schließlich ein `HTMLInputElement` halten wird, und erschließt seine spezifischen Eigenschaften wie `.value`, `.focus()` und `.select()`.\n\n`useReducer` mit einer **diskriminierten Union** für `Action` ist das typsicherste State-Management-Muster in React. Jeder Action-Fall hat seine eigene Payload-Form. Das erschöpfende `default: const _: never = action`-Muster macht das Hinzufügen eines neuen Action-Typs zu einem Compile-Fehler überall, wo der Reducer verwendet wird – es ist unmöglich, die Behandlung zu vergessen."
       },
       {
         "animationStep": 3,
         "heading": "useCallback & useMemo",
-        "text": "useCallback cached eine Funktion, damit ihre Referenz über Renders hinweg stabil bleibt — übergib die typisierte Funktion direkt. useMemo cached einen berechneten Wert und berechnet ihn nur neu, wenn sich Abhängigkeiten ändern. TypeScript leitet den Rückgabetyp von useMemo aus dem Callback ab. Beide sind am wertvollsten, wenn sie als Props an Kind-Komponenten übergeben oder als useEffect-Abhängigkeiten verwendet werden."
+        "text": "useCallback cached eine Funktion, damit ihre Referenz über Renders hinweg stabil bleibt — übergib die typisierte Funktion direkt. useMemo cached einen berechneten Wert und berechnet ihn nur neu, wenn sich Abhängigkeiten ändern. TypeScript leitet den Rückgabetyp von useMemo aus dem Callback ab. Beide sind am wertvollsten, wenn sie als Props an Kind-Komponenten übergeben oder als useEffect-Abhängigkeiten verwendet werden.",
+        "expandedText": "**`useCallback`** memoisiert eine Funktionsreferenz und verhindert, dass Kind-Komponenten neu rendern, wenn die Elternkomponente neu rendert und die Funktion in ihren Props ist. TypeScript inferiert die Parameter- und Rückgabetypen aus dem Callback-Rumpf, sodass du selten explizite Annotationen benötigst.\n\n**`useMemo`** memoisiert einen berechneten Wert. TypeScript inferiert den Rückgabetyp von `useMemo` aus dem Callback. Beide Hooks akzeptieren ein Dependency-Array – TypeScript prüft dieses Array nicht; die ESLint-Regel `react-hooks/exhaustive-deps` tut es. Füge diese Regel zu deiner Konfiguration hinzu, um fehlende Dependencies zu erkennen."
       },
       {
         "animationStep": 4,
         "heading": "API-Antworten typisieren",
-        "text": "Definiere einen Typ für deine API-Antwort und übergib ihn als Generic an useState und Fetch-Wrapper. Ein generisches Fetch-Hilfsprogramm fetchData<T>() ruft eine URL ab und behauptet, dass das JSON T entspricht — was dir volle Typsicherheit nachgelagert gibt. Verwende Partial<T> für PATCH-Operationen, bei denen nur einige Felder gesendet werden."
+        "text": "Definiere einen Typ für deine API-Antwort und übergib ihn als Generic an useState und Fetch-Wrapper. Ein generisches Fetch-Hilfsprogramm fetchData<T>() ruft eine URL ab und behauptet, dass das JSON T entspricht — was dir volle Typsicherheit nachgelagert gibt. Verwende Partial<T> für PATCH-Operationen, bei denen nur einige Felder gesendet werden.",
+        "expandedText": "Eine **generische Fetch-Hilfsfunktion** wie `fetchData<T>(url)` ist die sauberste Methode, TypeScript zu API-Aufrufen hinzuzufügen. Der Aufrufer gibt den erwarteten Typ an, und TypeScript propagiert ihn durch alle nachgelagerten Verwendungen des Ergebnisses. Das ist ein praktisches Muster, aber denk daran: Das `as T` am Ende ist immer noch eine Zusicherung – keine Laufzeitprüfung.\n\nFür produktionsreife Sicherheit kombiniere die generische Hilfsfunktion mit einem **Zod-Schema**: Validiere das rohe JSON, bevor du den Typ zusicherst. `const data = Schema.parse(raw)` wirft einen `ZodError` mit feldgenauen Details, wenn die API-Form von den Erwartungen abweicht. `Partial<T>` für PATCH-Payloads ist idiomatisch: Der Aufrufer sendet nur geänderte Felder, und TypeScript stellt sicher, dass jedes Feld den richtigen Typ hat."
       },
       {
         "animationStep": 5,
         "heading": "DOM-Events typisieren",
-        "text": "React stellt spezifische Event-Handler-Typen für jedes HTML-Element bereit. Verwende MouseEventHandler<Element>, ChangeEventHandler<Element> und FormEventHandler<Element>, damit TypeScript weiß, welche Eigenschaften auf dem Event-Objekt verfügbar sind."
+        "text": "React stellt spezifische Event-Handler-Typen für jedes HTML-Element bereit. Verwende MouseEventHandler<Element>, ChangeEventHandler<Element> und FormEventHandler<Element>, damit TypeScript weiß, welche Eigenschaften auf dem Event-Objekt verfügbar sind.",
+        "expandedText": "Reacts typisierte Event-Handler (`MouseEventHandler<T>`, `ChangeEventHandler<T>`, `FormEventHandler<T>`) liefern genaue Typen für das Event-Objekt. Der generische Typparameter `T` ist der Element-Typ – `ChangeEventHandler<HTMLInputElement>` gibt dir `e.target.value` als `string` mit vollständiger Autovervollständigung.\n\nDen Handler als Pfeilfunktion inline in JSX einzubetten ist meist ausreichend: `<input onChange={e => setName(e.target.value)} />` – TypeScript inferiert den Event-Typ aus der Prop. Explizite Handler-Typen sind am nützlichsten, wenn der Handler außerhalb von JSX definiert oder als Callback weitergegeben wird, wo der Event-Typ sonst eine Annotation bräuchte."
       }
     ],
     "cheatSheet": {
