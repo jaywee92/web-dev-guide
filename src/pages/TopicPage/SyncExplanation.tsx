@@ -281,12 +281,16 @@ function StepBlock({ step, index, active, onActivate, color }: {
           }}>
             {step.expandedText.split(/\n\n+/).map((para, i) => {
               const trimmed = para.trim()
+              if (!trimmed) return null
               const emoji = detectCardEmoji(trimmed)
               const bodyText = emoji ? trimmed.slice(emoji.length).trimStart() : trimmed
               const cardStyle = emoji ? CARD_STYLES[emoji] : CARD_STYLES['📖']
               const accent = emoji ? cardStyle.accent : color
               const boldMatch = bodyText.match(/^\*\*([^*]+)\*\*|^.{0,40}\*\*([^*]+)\*\*/)
               const label = boldMatch ? (boldMatch[1] ?? boldMatch[2]) : null
+              const bodyForRender = label
+                ? bodyText.replace(/^\*\*[^*]+\*\*\s*/, '').trimStart()
+                : bodyText
               return (
                 <div key={i} style={{
                   borderRadius: 10,
@@ -311,7 +315,7 @@ function StepBlock({ step, index, active, onActivate, color }: {
                       </div>
                     )}
                     <p style={{ fontSize: 12.5, lineHeight: 1.68, margin: 0, color: 'var(--text-muted)' }}>
-                      {renderInlineText(bodyText, accent || color)}
+                      {renderInlineText(bodyForRender, accent || color)}
                     </p>
                   </div>
                 </div>
