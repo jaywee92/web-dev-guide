@@ -139,83 +139,120 @@ export default function TopicSidebar({
               {/* Categories within tech group */}
               {isTechOpen && (
                 <div style={{ paddingBottom: 4 }}>
-                  {categories.map(cat => {
-                    const isCatOpen = openCats.has(cat.id)
-                    const isActivecat = cat.id === activeCategoryId
-                    const catTopics = TOPICS.filter(t => t.category === cat.id)
-
-                    return (
-                      <div key={cat.id}>
-                        {/* Category row */}
+                  {categories.length === 1 ? (
+                    /* Single category — skip the category row, show topics directly */
+                    TOPICS.filter(t => t.category === categories[0].id).map(topic => {
+                      const isActive = topic.id === activeTopicId
+                      const cat = categories[0]
+                      return (
                         <button
-                          onClick={() => toggleCat(cat.id)}
-                          aria-expanded={isCatOpen}
+                          key={topic.id}
+                          onClick={() => navigate(`/topic/${topic.id}`)}
+                          aria-current={isActive ? 'page' : undefined}
                           style={{
-                            width: '100%', display: 'flex', alignItems: 'center',
-                            justifyContent: 'space-between',
-                            padding: '7px 16px 7px 26px',
-                            background: isActivecat ? `${cat.color}10` : 'none',
+                            width: '100%', textAlign: 'left',
+                            padding: '6px 16px 6px 26px',
+                            background: isActive ? `${cat.color}14` : 'none',
                             border: 'none', cursor: 'pointer',
-                            borderLeft: isActivecat ? `2px solid ${cat.color}` : '2px solid transparent',
-                            color: isActivecat ? cat.color : 'var(--text-muted)',
+                            color: isActive ? cat.color : 'var(--text-muted)',
                             fontSize: 13,
-                            fontWeight: isActivecat ? 700 : 500,
-                            fontFamily: 'var(--font-mono)',
-                            transition: 'color 0.15s, background 0.15s',
+                            fontWeight: isActive ? 600 : 400,
+                            borderLeft: isActive
+                              ? `2px solid ${cat.color}`
+                              : '2px solid transparent',
+                            transition: 'color 0.12s, background 0.12s',
                           }}
                           onMouseEnter={e => {
-                            if (!isActivecat) e.currentTarget.style.color = 'var(--text)'
+                            if (!isActive) e.currentTarget.style.color = 'var(--text)'
                           }}
                           onMouseLeave={e => {
-                            if (!isActivecat) e.currentTarget.style.color = 'var(--text-muted)'
+                            if (!isActive) e.currentTarget.style.color = 'var(--text-muted)'
                           }}
                         >
-                          <span>{cat.title}</span>
-                          {isCatOpen
-                            ? <ChevronDown size={13} style={{ flexShrink: 0, opacity: 0.5 }} />
-                            : <ChevronRight size={13} style={{ flexShrink: 0, opacity: 0.5 }} />
-                          }
+                          {topic.title}
                         </button>
+                      )
+                    })
+                  ) : (
+                    /* Multiple categories — full 3-level hierarchy */
+                    categories.map(cat => {
+                      const isCatOpen = openCats.has(cat.id)
+                      const isActivecat = cat.id === activeCategoryId
+                      const catTopics = TOPICS.filter(t => t.category === cat.id)
 
-                        {/* Topics within category */}
-                        {isCatOpen && (
-                          <div>
-                            {catTopics.map(topic => {
-                              const isActive = topic.id === activeTopicId
-                              return (
-                                <button
-                                  key={topic.id}
-                                  onClick={() => navigate(`/topic/${topic.id}`)}
-                                  aria-current={isActive ? 'page' : undefined}
-                                  style={{
-                                    width: '100%', textAlign: 'left',
-                                    padding: '6px 16px 6px 36px',
-                                    background: isActive ? `${cat.color}14` : 'none',
-                                    border: 'none', cursor: 'pointer',
-                                    color: isActive ? cat.color : 'var(--text-muted)',
-                                    fontSize: 13,
-                                    fontWeight: isActive ? 600 : 400,
-                                    borderLeft: isActive
-                                      ? `2px solid ${cat.color}`
-                                      : '2px solid transparent',
-                                    transition: 'color 0.12s, background 0.12s',
-                                  }}
-                                  onMouseEnter={e => {
-                                    if (!isActive) e.currentTarget.style.color = 'var(--text)'
-                                  }}
-                                  onMouseLeave={e => {
-                                    if (!isActive) e.currentTarget.style.color = 'var(--text-muted)'
-                                  }}
-                                >
-                                  {topic.title}
-                                </button>
-                              )
-                            })}
-                          </div>
-                        )}
-                      </div>
-                    )
-                  })}
+                      return (
+                        <div key={cat.id}>
+                          {/* Category row */}
+                          <button
+                            onClick={() => toggleCat(cat.id)}
+                            aria-expanded={isCatOpen}
+                            style={{
+                              width: '100%', display: 'flex', alignItems: 'center',
+                              justifyContent: 'space-between',
+                              padding: '7px 16px 7px 26px',
+                              background: isActivecat ? `${cat.color}10` : 'none',
+                              border: 'none', cursor: 'pointer',
+                              borderLeft: isActivecat ? `2px solid ${cat.color}` : '2px solid transparent',
+                              color: isActivecat ? cat.color : 'var(--text-muted)',
+                              fontSize: 13,
+                              fontWeight: isActivecat ? 700 : 500,
+                              fontFamily: 'var(--font-mono)',
+                              transition: 'color 0.15s, background 0.15s',
+                            }}
+                            onMouseEnter={e => {
+                              if (!isActivecat) e.currentTarget.style.color = 'var(--text)'
+                            }}
+                            onMouseLeave={e => {
+                              if (!isActivecat) e.currentTarget.style.color = 'var(--text-muted)'
+                            }}
+                          >
+                            <span>{cat.title}</span>
+                            {isCatOpen
+                              ? <ChevronDown size={13} style={{ flexShrink: 0, opacity: 0.5 }} />
+                              : <ChevronRight size={13} style={{ flexShrink: 0, opacity: 0.5 }} />
+                            }
+                          </button>
+
+                          {/* Topics within category */}
+                          {isCatOpen && (
+                            <div>
+                              {catTopics.map(topic => {
+                                const isActive = topic.id === activeTopicId
+                                return (
+                                  <button
+                                    key={topic.id}
+                                    onClick={() => navigate(`/topic/${topic.id}`)}
+                                    aria-current={isActive ? 'page' : undefined}
+                                    style={{
+                                      width: '100%', textAlign: 'left',
+                                      padding: '6px 16px 6px 36px',
+                                      background: isActive ? `${cat.color}14` : 'none',
+                                      border: 'none', cursor: 'pointer',
+                                      color: isActive ? cat.color : 'var(--text-muted)',
+                                      fontSize: 13,
+                                      fontWeight: isActive ? 600 : 400,
+                                      borderLeft: isActive
+                                        ? `2px solid ${cat.color}`
+                                        : '2px solid transparent',
+                                      transition: 'color 0.12s, background 0.12s',
+                                    }}
+                                    onMouseEnter={e => {
+                                      if (!isActive) e.currentTarget.style.color = 'var(--text)'
+                                    }}
+                                    onMouseLeave={e => {
+                                      if (!isActive) e.currentTarget.style.color = 'var(--text-muted)'
+                                    }}
+                                  >
+                                    {topic.title}
+                                  </button>
+                                )
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })
+                  )}
                 </div>
               )}
             </div>

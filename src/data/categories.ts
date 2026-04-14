@@ -140,7 +140,7 @@ export const CATEGORIES: Category[] = [
   },
   {
     id: 'react',
-    title: 'React',
+    title: 'React Core',
     description: 'Component-based UI',
     color: '#f472b6',
     icon: 'Layers',
