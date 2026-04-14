@@ -258,7 +258,7 @@ function StepBlock({ step, index, active, onActivate, color }: {
             textTransform: 'uppercase',
             transition: 'background 0.3s, color 0.3s, border-color 0.3s',
           }}>
-            INFO {String(index + 1).padStart(2, '0')}
+            {t('stepLabel')} {String(index + 1).padStart(2, '0')}
           </span>
           <h3 style={{ fontSize: 15, fontWeight: 700, color: 'var(--text)', margin: 0, lineHeight: 1.25 }}>
             {step.heading}

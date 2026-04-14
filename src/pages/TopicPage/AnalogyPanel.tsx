@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { ExplanationStep } from '@/types'
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export default function AnalogyPanel({ analogy, color: _color, AnalogyComp, step = 0 }: Props) {
+  const { t } = useTranslation('topic')
   if (!analogy && !AnalogyComp) return null
 
   const caption = analogy?.text[analogy.text.length - 1]
@@ -42,7 +44,7 @@ export default function AnalogyPanel({ analogy, color: _color, AnalogyComp, step
           background: 'rgba(251,191,36,0.18)', border: '1px solid rgba(251,191,36,0.4)',
           color: '#fbbf24', textTransform: 'uppercase', flexShrink: 0,
         }}>
-          Analogie
+          {t('analogy')}
         </span>
         {analogy && (
           <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)', lineHeight: 1.3 }}>

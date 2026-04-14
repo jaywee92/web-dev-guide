@@ -140,7 +140,7 @@ export default function TopicPage() {
               fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-faint)',
               marginBottom: 14,
             }}>
-              Docs{category ? ` / ${category.title}` : ''} / <span style={{ color: 'var(--text-muted)' }}>{topic.title}</span>
+              {tTopic('breadcrumbDocs')}{category ? ` / ${category.title}` : ''} / <span style={{ color: 'var(--text-muted)' }}>{topic.title}</span>
             </div>
 
             {category && (() => {
@@ -154,7 +154,7 @@ export default function TopicPage() {
                     marginBottom: 6,
                   }}>
                     <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-faint)' }}>
-                      Topic {pos} of {total} in {category.title}
+                      {tTopic('topicProgress', { pos, total, category: category.title })}
                     </span>
                     <span style={{ fontSize: 11, color: 'var(--text-faint)', display: 'flex', alignItems: 'center', gap: 4 }}>
                       <Clock size={11} /> {topic.estimatedMinutes} min
@@ -194,7 +194,7 @@ export default function TopicPage() {
                 onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = 'var(--text-faint)')}
               >
                 <ExternalLink size={11} />
-                {topic.id.startsWith('html') ? 'HTML Reference' : 'CSS Reference'} →
+                {topic.id.startsWith('html') ? tTopic('htmlReference') : tTopic('cssReference')} →
               </Link>
             )}
           </div>

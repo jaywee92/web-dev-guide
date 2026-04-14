@@ -8,5 +8,12 @@
   "learnMore": "+ Learn more",
   "showLess": "▲ Show less",
   "commonErrors": "Common Errors",
-  "realWorldExamples": "In the Wild"
+  "realWorldExamples": "In the Wild",
+  "analogy": "Analogy",
+  "stepLabel": "INFO",
+  "breadcrumbDocs": "Docs",
+  "topicProgress": "Topic {{pos}} of {{total}} in {{category}}",
+  "htmlReference": "HTML Reference",
+  "cssReference": "CSS Reference",
+  "playgroundSubtitle": "Experiment directly — changes apply in real time."
 }

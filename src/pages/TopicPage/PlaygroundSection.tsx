@@ -1,5 +1,6 @@
 // src/pages/TopicPage/PlaygroundSection.tsx
 import { useState, lazy, Suspense } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { Topic } from '@/types'
 import VisualPlayground from '@/playgrounds/VisualPlayground'
 import MonacoPlayground from '@/playgrounds/MonacoPlayground'
@@ -7,13 +8,13 @@ import MonacoPlayground from '@/playgrounds/MonacoPlayground'
 const GradientPlayground = lazy(() => import('@/playgrounds/GradientPlayground'))
 const CSSLivePlayground  = lazy(() => import('@/playgrounds/CSSLivePlayground'))
 
-const LOADING = <div style={{ color: 'var(--text-muted)', fontSize: 14 }}>Loading...</div>
-
 interface Props { topic: Topic }
 
 export default function PlaygroundSection({ topic }: Props) {
+  const { t } = useTranslation('topic')
   const examples = topic.playgroundExamples ?? []
   const [activeIdx, setActiveIdx] = useState(0)
+  const LOADING = <div style={{ color: 'var(--text-muted)', fontSize: 14 }}>{t('loading', { defaultValue: 'Loading…', ns: 'common' })}</div>
 
   if (topic.playgroundType === 'none') return null
 
@@ -26,10 +27,10 @@ export default function PlaygroundSection({ topic }: Props) {
       borderTop: '1px solid var(--border)',
     }}>
       <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8, color: 'var(--text)' }}>
-        Playground
+        {t('playground')}
       </h2>
       <p style={{ color: 'var(--text-muted)', fontSize: 14, marginBottom: examples.length > 0 ? 16 : 32 }}>
-        Experiment directly — changes apply in real time.
+        {t('playgroundSubtitle')}
       </p>
 
       {/* Example tabs — only rendered when playgroundExamples provided */}
