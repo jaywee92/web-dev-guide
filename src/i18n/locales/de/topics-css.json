@@ -7,31 +7,66 @@
         "animationStep": 0,
         "heading": "Browser-Standardstile",
         "text": "Ohne CSS wenden Browser ihre eigenen eingebauten Stile an — Serifenschriften, Abstände bei Überschriften, blau unterstrichene Links. Jedes Stylesheet, das du schreibst, überschreibt diese Standardwerte.",
-        "expandedText": "📖 Browser-Standardstile unterscheiden sich leicht zwischen Browsern — Chrome, Firefox und Safari liefern jeweils ihr eigenes **User-Agent-Stylesheet** mit. CSS-Resets und Normalizer (wie `normalize.css`) gleichen diese Unterschiede aus. Der moderne Ansatz ist ein minimaler Reset mit `*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }`, der die Größenberechnung vorhersehbar macht und alle Standardabstände entfernt.\n\n✅ Standardstile existieren, weil das Web als Dokumentformat begann — `<h1>` groß und fett, `<a>` blau und unterstrichen, `<em>` kursiv. Diese Konventionen stammen aus der Zeit vor CSS. Heute sind sie Basis-Fallbacks für ungestyltes HTML, keine Designstandards."
+        "expandedText": "📖 Browser-Standardstile unterscheiden sich leicht zwischen Browsern — Chrome, Firefox und Safari liefern jeweils ihr eigenes **User-Agent-Stylesheet** mit. CSS-Resets und Normalizer (wie `normalize.css`) gleichen diese Unterschiede aus. Der moderne Ansatz ist ein minimaler Reset mit `*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }`, der die Größenberechnung vorhersehbar macht und alle Standardabstände entfernt.\n\n✅ Standardstile existieren, weil das Web als Dokumentformat begann — `<h1>` groß und fett, `<a>` blau und unterstrichen, `<em>` kursiv. Diese Konventionen stammen aus der Zeit vor CSS. Heute sind sie Basis-Fallbacks für ungestyltes HTML, keine Designstandards.",
+        "analogy": {
+          "title": "Schritt 0 — Browser-Standards: die Werkseinstellungen",
+          "text": [
+            "Jedes Gerät wird mit Werkseinstellungen geliefert — Standardschrift, Standard-Hintergrund, Standard-Klingelton. Du kannst sie ändern, aber sie sind immer da, wenn du es nicht tust.",
+            "Browser haben eingebaute Standard-Stylesheets. `<h1>` ist groß und fett, `<a>` ist blau und unterstrichen, `<p>` hat oben und unten Margin. Diese existieren auch ohne dein CSS."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Inline-Styles",
         "text": "CSS direkt auf ein einzelnes Element mit dem style-Attribut anwenden. Inline-Styles haben die höchste Spezifität — sie überschreiben externe und interne Stylesheets. Nur für wirklich einmalige dynamische Werte verwenden (z. B. von JavaScript gesetzt).",
-        "expandedText": "📖 Die hohe Spezifität von Inline-Styles ist beabsichtigt: Per JavaScript gesetzte Styles (`element.style.color = \"red\"`) müssen externe Stylesheets überschreiben, ohne neue Klassennamen hinzuzufügen. Inline-Styles für allgemeines Styling zu verwenden schafft jedoch Wartungsprobleme — es gibt keine einzige Quelle der Wahrheit, Styles können nicht wiederverwendet werden und erfordern JavaScript zum Aktualisieren.\n\n📖 Frameworks wie React setzen Inline-Styles als Objekte: `style={{ color: \"red\", fontSize: \"16px\" }}`. Das ist syntaktisch anders als HTML-Strings, erzeugt aber dasselbe DOM-Inline-Style-Attribut. CSS-in-JS-Bibliotheken wie styled-components und Emotion generieren Klassennamen zur Laufzeit und vermeiden so Spezifitätsprobleme durch Inline-Styles."
+        "expandedText": "📖 Die hohe Spezifität von Inline-Styles ist beabsichtigt: Per JavaScript gesetzte Styles (`element.style.color = \"red\"`) müssen externe Stylesheets überschreiben, ohne neue Klassennamen hinzuzufügen. Inline-Styles für allgemeines Styling zu verwenden schafft jedoch Wartungsprobleme — es gibt keine einzige Quelle der Wahrheit, Styles können nicht wiederverwendet werden und erfordern JavaScript zum Aktualisieren.\n\n📖 Frameworks wie React setzen Inline-Styles als Objekte: `style={{ color: \"red\", fontSize: \"16px\" }}`. Das ist syntaktisch anders als HTML-Strings, erzeugt aber dasselbe DOM-Inline-Style-Attribut. CSS-in-JS-Bibliotheken wie styled-components und Emotion generieren Klassennamen zur Laufzeit und vermeiden so Spezifitätsprobleme durch Inline-Styles.",
+        "analogy": {
+          "title": "Schritt 1 — Inline-Styles: direkt auf der Seite schreiben",
+          "text": [
+            "Ein gedrucktes Dokument mit dem Stift am Rand korrigieren. Die Korrektur ist genau dort, gilt aber nur für dieses eine Exemplar.",
+            "Inline-Styles verwenden das `style`-Attribut direkt am Element. Sie funktionieren, vermischen aber Darstellung mit HTML und können nicht wiederverwendet werden. Schwer wartbar im großen Maßstab."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Interner <style>-Tag",
         "text": "CSS innerhalb eines <style>-Elements im <head> schreiben. Nützlich für einseitige Prototypen oder HTML-E-Mail-Vorlagen. Nicht ideal für mehrseitige Seiten — Stile müssen in jeder Datei dupliziert werden.",
-        "expandedText": "📖 Interne `<style>`-Tags werden auch von CSS-in-JS-Bibliotheken und **Server-Side-Rendering**-Frameworks verwendet, die komponentenspezifische Styles in den `<head>` injizieren. Next.js, Astro und ähnliche Frameworks können `<style>`-Tags pro Komponente ausgeben, um das Laden von CSS für nicht angezeigte Komponenten zu vermeiden.\n\n📖 Für HTML-E-Mail-Vorlagen ist internes `<style>` die einzige zuverlässige Option — E-Mail-Clients wie Gmail entfernen `<link>`-Tags vollständig. Inline-Styles sind für E-Mails dennoch am kompatibelsten, da viele Clients auch `<style>`-Tags aus dem `<head>` entfernen."
+        "expandedText": "📖 Interne `<style>`-Tags werden auch von CSS-in-JS-Bibliotheken und **Server-Side-Rendering**-Frameworks verwendet, die komponentenspezifische Styles in den `<head>` injizieren. Next.js, Astro und ähnliche Frameworks können `<style>`-Tags pro Komponente ausgeben, um das Laden von CSS für nicht angezeigte Komponenten zu vermeiden.\n\n📖 Für HTML-E-Mail-Vorlagen ist internes `<style>` die einzige zuverlässige Option — E-Mail-Clients wie Gmail entfernen `<link>`-Tags vollständig. Inline-Styles sind für E-Mails dennoch am kompatibelsten, da viele Clients auch `<style>`-Tags aus dem `<head>` entfernen.",
+        "analogy": {
+          "title": "Schritt 2 — Internes Style-Tag: Haftnotizen auf der Titelseite",
+          "text": [
+            "Persönliche Notizen auf der Innenseite eines Buchdeckels befestigen. Die Notizen gelten nur für dieses Buch.",
+            "Ein `<style>`-Block in `<head>` scoped CSS auf diese einzelne HTML-Datei. In Ordnung für Einzel-Seiten; bricht zusammen, wenn Styles über mehrere Seiten geteilt werden sollen."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Externes Stylesheet",
         "text": "Eine .css-Datei mit <link> im <head> verknüpfen. Best Practice für echte Projekte — eine Datei gilt für jede Seite. Eine Datei ändern, jede Seite wird aktualisiert.",
-        "expandedText": "📖 Externe Stylesheets werden nach dem ersten Download vom Browser **gecacht** — wiederkehrende Besucher zahlen keine Netzwerkkosten. Der Browser nutzt `ETag`- oder `Last-Modified`-Header, um die gecachte Version zu validieren. Lange Cache-Laufzeiten in Kombination mit inhaltsadressierten Dateinamen (wie `style.abc123.css` aus einem Build-Tool) ermöglichen unbegrenzte Caches ohne veraltete Styles.\n\n📖 Moderne Build-Tools (Vite, webpack) bündeln mehrere CSS-Dateien in eine einzige Ausgabedatei, um HTTP-Anfragen zu minimieren. Critical CSS (die Styles für Above-the-Fold-Inhalte) kann inline in `<style>` eingebettet werden, während der Rest asynchron geladen wird."
+        "expandedText": "📖 Externe Stylesheets werden nach dem ersten Download vom Browser **gecacht** — wiederkehrende Besucher zahlen keine Netzwerkkosten. Der Browser nutzt `ETag`- oder `Last-Modified`-Header, um die gecachte Version zu validieren. Lange Cache-Laufzeiten in Kombination mit inhaltsadressierten Dateinamen (wie `style.abc123.css` aus einem Build-Tool) ermöglichen unbegrenzte Caches ohne veraltete Styles.\n\n📖 Moderne Build-Tools (Vite, webpack) bündeln mehrere CSS-Dateien in eine einzige Ausgabedatei, um HTTP-Anfragen zu minimieren. Critical CSS (die Styles für Above-the-Fold-Inhalte) kann inline in `<style>` eingebettet werden, während der Rest asynchron geladen wird.",
+        "analogy": {
+          "title": "Schritt 3 — Externes Stylesheet: der firmenweite Styleguide",
+          "text": [
+            "Ein Firmen-Styleguide, den alle Designer verwenden. Den Guide einmal ändern und alle Dokumente aktualisieren sich automatisch.",
+            "Eine externe `.css`-Datei, verlinkt mit `<link>`, ist der Firmen-Styleguide. Alle Seiten, die sie einbinden, teilen dieselben Regeln. Eine Änderung propagiert überall hin."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "Die Kaskade",
         "text": "Wenn mehrere Regeln dasselbe Element ansprechen, nutzt der Browser die Spezifität, um den Gewinner zu bestimmen. Höhere Spezifität gewinnt immer. Gleiche Spezifität? Die spätere Regel im Quellcode gewinnt.",
-        "expandedText": "📖 **Spezifität** wird als drei separate Zähler berechnet: (ID-Anzahl, Klassen-/Attribut-/Pseudo-Klassen-Anzahl, Typ-/Pseudo-Element-Anzahl). Ein ID-Selektor schlägt jede Anzahl von Klassen-Selektoren. Zwei konfligierende Regeln mit gleicher Spezifität lösen sich durch **Quellreihenfolge** — die spätere Regel gewinnt. `!important` überschreibt alle Spezifitätsberechnungen, sollte aber als letztes Mittel gelten, da es die Kaskade schwer nachvollziehbar macht.\n\n📖 Das `@layer`-Feature (CSS Cascade Layers) ermöglicht die explizite Kontrolle der Kaskaden-Reihenfolge — nützlich beim Integrieren von Drittanbieter-Stylesheets mit eigenen Stilen."
+        "expandedText": "📖 **Spezifität** wird als drei separate Zähler berechnet: (ID-Anzahl, Klassen-/Attribut-/Pseudo-Klassen-Anzahl, Typ-/Pseudo-Element-Anzahl). Ein ID-Selektor schlägt jede Anzahl von Klassen-Selektoren. Zwei konfligierende Regeln mit gleicher Spezifität lösen sich durch **Quellreihenfolge** — die spätere Regel gewinnt. `!important` überschreibt alle Spezifitätsberechnungen, sollte aber als letztes Mittel gelten, da es die Kaskade schwer nachvollziehbar macht.\n\n📖 Das `@layer`-Feature (CSS Cascade Layers) ermöglicht die explizite Kontrolle der Kaskaden-Reihenfolge — nützlich beim Integrieren von Drittanbieter-Stylesheets mit eigenen Stilen.",
+        "analogy": {
+          "title": "Schritt 4 — Die Kaskade: wer das Argument gewinnt",
+          "text": [
+            "Drei Personen geben widersprüchliche Anweisungen. Die ranghöchste Person gewinnt. Bei gleicher Rangordnung gewinnt die neueste Anweisung.",
+            "Die Kaskade löst Konflikte auf. Inline-Styles schlagen interne, die wiederum externe schlagen. Bei Regeln gleicher Spezifität gewinnt die zuletzt deklarierte."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -74,42 +109,91 @@
         "animationStep": 0,
         "heading": "Selektoren sprechen HTML-Elemente an",
         "text": "CSS-Regeln beginnen mit einem Selektor, der dem Browser sagt, welche Elemente gestylt werden sollen.",
-        "expandedText": "📖 **Selektoren** bilden den Kern der CSS-Architektur. Wie man Elemente benennt und anspricht, bestimmt Wartbarkeit und Konfliktpotenzial der Stylesheets. Übermäßig spezifische Selektoren wie `.nav > ul > li > a:first-child` erzeugen fragilen Code, der bricht, wenn HTML umstrukturiert wird.\n\n📖 Methodologien wie BEM (Block-Element-Modifier) strukturieren Klassennamen um: `.nav__link`, `.card__title--featured`. Dadurch wird die Spezifität flach gehalten, Komponentengrenzen werden klar und Stil-Leaks werden verhindert. Tailwind geht noch weiter und eliminiert Selektor-Entscheidungen vollständig."
+        "expandedText": "📖 **Selektoren** bilden den Kern der CSS-Architektur. Wie man Elemente benennt und anspricht, bestimmt Wartbarkeit und Konfliktpotenzial der Stylesheets. Übermäßig spezifische Selektoren wie `.nav > ul > li > a:first-child` erzeugen fragilen Code, der bricht, wenn HTML umstrukturiert wird.\n\n📖 Methodologien wie BEM (Block-Element-Modifier) strukturieren Klassennamen um: `.nav__link`, `.card__title--featured`. Dadurch wird die Spezifität flach gehalten, Komponentengrenzen werden klar und Stil-Leaks werden verhindert. Tailwind geht noch weiter und eliminiert Selektor-Entscheidungen vollständig.",
+        "analogy": {
+          "title": "Schritt 0 — Selektoren: einen Brief adressieren",
+          "text": [
+            "Ein Brief erreicht den richtigen Empfänger, weil die Adresse ihn eindeutig identifiziert: Land, Stadt, Straße, Name.",
+            "CSS-Selektoren zielen auf bestimmte HTML-Elemente. Je spezifischer der Selektor, desto enger die Zielauswahl."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Universalselektor *",
         "text": "Der *-Selektor trifft jedes Element auf der Seite. Häufig für CSS-Resets verwendet.",
-        "expandedText": "📖 Der **Universal-Selektor** `*` hat **null Spezifität**, das heißt jede Klassen- oder Typregel überschreibt ihn. Deshalb funktioniert `* { box-sizing: border-box }` korrekt als Reset — Komponentenstile können box-sizing bei bestimmten Elementen ohne Spezifitätskonflikte überschreiben.\n\n📖 `*::before, *::after` in den Reset einzuschließen stellt sicher, dass Pseudo-Elemente ebenfalls die Grenzrahmen-Größenberechnung erben. Der Universal-Selektor hat keine Leistungseinbußen in modernen Browsern — CSS-Selektoren werden von rechts nach links ausgewertet, und der Browser optimiert die Abgleichung effizient."
+        "expandedText": "📖 Der **Universal-Selektor** `*` hat **null Spezifität**, das heißt jede Klassen- oder Typregel überschreibt ihn. Deshalb funktioniert `* { box-sizing: border-box }` korrekt als Reset — Komponentenstile können box-sizing bei bestimmten Elementen ohne Spezifitätskonflikte überschreiben.\n\n📖 `*::before, *::after` in den Reset einzuschließen stellt sicher, dass Pseudo-Elemente ebenfalls die Grenzrahmen-Größenberechnung erben. Der Universal-Selektor hat keine Leistungseinbußen in modernen Browsern — CSS-Selektoren werden von rechts nach links ausgewertet, und der Browser optimiert die Abgleichung effizient.",
+        "analogy": {
+          "title": "Schritt 1 — Universalselektor *: alle ansprechen",
+          "text": [
+            "Ein Flyer auf jeden Schreibtisch gelegt — kein Name, jeder bekommt ihn.",
+            "Der `*`-Selektor trifft jedes Element. `* { box-sizing: border-box }` gilt für alle. Ideal für Resets."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Typselektoren",
         "text": "Elemente nach ihrem Tag-Namen ansprechen. Jedes <h1> auf der Seite erhält diesen Stil.",
-        "expandedText": "📖 Typ-Selektoren treffen **ausschließlich nach Elementname**, nicht nach Attributen oder Klassen. Sie eignen sich zum Setzen von Basis-Styles (Überschriftsgrößen, Listenmarker-Entfernung, Link-Farben), sind aber für komponentenbasiertes Styling riskant, da sie jede Instanz global treffen.\n\n📖 Typ-Selektoren mit einem Attribut-Selektor zu kombinieren grenzt ihren Geltungsbereich ein: `input[type=\"text\"]` trifft nur Text-Inputs. `article > p` trifft nur direkte Absatz-Kinder eines article-Elements. Die Kombination von Typ und Kontext macht Typ-Selektoren in komponentenbasierten Architekturen sicherer."
+        "expandedText": "📖 Typ-Selektoren treffen **ausschließlich nach Elementname**, nicht nach Attributen oder Klassen. Sie eignen sich zum Setzen von Basis-Styles (Überschriftsgrößen, Listenmarker-Entfernung, Link-Farben), sind aber für komponentenbasiertes Styling riskant, da sie jede Instanz global treffen.\n\n📖 Typ-Selektoren mit einem Attribut-Selektor zu kombinieren grenzt ihren Geltungsbereich ein: `input[type=\"text\"]` trifft nur Text-Inputs. `article > p` trifft nur direkte Absatz-Kinder eines article-Elements. Die Kombination von Typ und Kontext macht Typ-Selektoren in komponentenbasierten Architekturen sicherer.",
+        "analogy": {
+          "title": "Schritt 2 — Typ-Selektoren: nach Berufsbezeichnung ansprechen",
+          "text": [
+            "Eine E-Mail an alle Ingenieure schicken — jeder mit diesem Titel erhält sie, unabhängig vom Namen.",
+            "`p { color: gray }` stylt jedes `<p>`-Element. Typ-Selektoren treffen alle Instanzen eines HTML-Tags."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Klassenselektoren",
         "text": "Klassen beginnen mit einem Punkt. Sie sind wiederverwendbar — viele Elemente können dieselbe Klasse teilen.",
-        "expandedText": "📖 Ein Element kann **mehrere Klassen** haben und mehreren Klassenregeln gleichzeitig entsprechen. Klassennamen sollten beschreiben, **was das Element ist** semantisch (`.nav-link`, `.card-title`) statt wie es aussieht (`.red`, `.bold`). Semantische Namen bleiben bedeutsam, wenn sich das Design ändert — `.primary-action` bleibt gültig, wenn der Knopf von blau auf grün wechselt; `.blue-button` nicht.\n\n✅ Klassen können zur Laufzeit mit JavaScript hinzugefügt und entfernt werden: `element.classList.add(\"active\")`. Das ist das primäre Muster für zustandsgesteuerte UI — CSS definiert die Stile, JavaScript schaltet die Klassen um."
+        "expandedText": "📖 Ein Element kann **mehrere Klassen** haben und mehreren Klassenregeln gleichzeitig entsprechen. Klassennamen sollten beschreiben, **was das Element ist** semantisch (`.nav-link`, `.card-title`) statt wie es aussieht (`.red`, `.bold`). Semantische Namen bleiben bedeutsam, wenn sich das Design ändert — `.primary-action` bleibt gültig, wenn der Knopf von blau auf grün wechselt; `.blue-button` nicht.\n\n✅ Klassen können zur Laufzeit mit JavaScript hinzugefügt und entfernt werden: `element.classList.add(\"active\")`. Das ist das primäre Muster für zustandsgesteuerte UI — CSS definiert die Stile, JavaScript schaltet die Klassen um.",
+        "analogy": {
+          "title": "Schritt 3 — Klassen-Selektoren: nach Abzeichen-Farbe ansprechen",
+          "text": [
+            "Auf einer Konferenz sind grüne Badges Sponsoren, rote Redner. Du sprichst alle Redner an, indem du die Abzeichen-Farbe zielst.",
+            "`.highlight { background: yellow }` stylt jedes Element mit `class=highlight`. Klassen sind das Hauptwerkzeug der CSS-Zielauswahl."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "Spezifität — welche Regel gewinnt",
         "text": "Wenn mehrere Regeln dasselbe Element ansprechen, bestimmt die Spezifität den Gewinner. ID > Klasse > Typ. Höhere Spezifität gewinnt immer, unabhängig von der Reihenfolge.",
-        "expandedText": "📖 **Spezifität** wird als drei separate Zähler berechnet: (ID-Anzahl, Klassen-/Attribut-/Pseudo-Klassen-Anzahl, Typ-/Pseudo-Element-Anzahl). Ein ID-Selektor schlägt jede Anzahl von Klassen-Selektoren. Gleiche Spezifität löst sich durch **Quellreihenfolge** — die spätere Regel gewinnt. `!important` überschreibt alle Spezifitätswerte, sollte aber als letztes Mittel gelten — es verlässt das Normal-Spezifitätssystem vollständig.\n\n📖 Das `@layer`-Feature (CSS Cascade Layers, 2022+) erlaubt die explizite Schichtung von Styles, sodass Drittanbieter-Bibliotheks-Styles durch eigene Stile überschrieben werden können, ohne `!important` zu verwenden."
+        "expandedText": "📖 **Spezifität** wird als drei separate Zähler berechnet: (ID-Anzahl, Klassen-/Attribut-/Pseudo-Klassen-Anzahl, Typ-/Pseudo-Element-Anzahl). Ein ID-Selektor schlägt jede Anzahl von Klassen-Selektoren. Gleiche Spezifität löst sich durch **Quellreihenfolge** — die spätere Regel gewinnt. `!important` überschreibt alle Spezifitätswerte, sollte aber als letztes Mittel gelten — es verlässt das Normal-Spezifitätssystem vollständig.\n\n📖 Das `@layer`-Feature (CSS Cascade Layers, 2022+) erlaubt die explizite Schichtung von Styles, sodass Drittanbieter-Bibliotheks-Styles durch eigene Stile überschrieben werden können, ohne `!important` zu verwenden.",
+        "analogy": {
+          "title": "Schritt 4 — Spezifität: Seniorität entscheidet den Gewinner",
+          "text": [
+            "Drei Manager geben widersprüchliche Anweisungen. Der ranghöchste gewinnt.",
+            "Spezifität ist ein Punktestand: inline=1000, ID=100, Klasse=10, Typ=1. Der höchste Wert gewinnt. `!important` ist die nukleare Überschreibung."
+          ]
+        }
       },
       {
         "animationStep": 5,
         "heading": "Pseudo-Klassen — zustandsbasiertes Ansprechen",
         "text": "Pseudo-Klassen sprechen Elemente basierend auf ihrem Zustand oder ihrer Position an. :hover wird ausgelöst, wenn die Maus über dem Element ist. :focus aktiviert sich, wenn ein Formularfeld fokussiert ist. :nth-child(n) trifft nach Position in einer Liste.",
-        "expandedText": "✅ **Pseudo-Klassen** ermöglichen mächtige Barrierefreiheitsmuster. `:focus-visible` zeigt einen Fokusindikator nur bei Tastaturnavigation, nicht bei Mausklicks — beibehaltene ringfreie Maus-UX bei gleichzeitiger Erhaltung von Tastatur-Indikatoren für Barrierefreiheit. Moderne Browser implementieren das nativ.\n\n📖 `:not()`, `:is()` und `:where()` ermöglichen komplexe Selektor-Logik. `:where()` hat null Spezifität — nützlich für Basis-Styles, die leicht überschrieben werden sollen. `:has()` (CSS Level 4) ist ein \"parent selector\" — `.card:has(img)` wählt Karten, die ein Bild enthalten."
+        "expandedText": "✅ **Pseudo-Klassen** ermöglichen mächtige Barrierefreiheitsmuster. `:focus-visible` zeigt einen Fokusindikator nur bei Tastaturnavigation, nicht bei Mausklicks — beibehaltene ringfreie Maus-UX bei gleichzeitiger Erhaltung von Tastatur-Indikatoren für Barrierefreiheit. Moderne Browser implementieren das nativ.\n\n📖 `:not()`, `:is()` und `:where()` ermöglichen komplexe Selektor-Logik. `:where()` hat null Spezifität — nützlich für Basis-Styles, die leicht überschrieben werden sollen. `:has()` (CSS Level 4) ist ein \"parent selector\" — `.card:has(img)` wählt Karten, die ein Bild enthalten.",
+        "analogy": {
+          "title": "Schritt 5 — Pseudo-Klassen: nach aktuellem Zustand stylen",
+          "text": [
+            "Eine Ampel: rot wenn gestoppt, grün wenn fahrend — dasselbe Licht, unterschiedliches Aussehen je nach Zustand.",
+            "Pseudo-Klassen wie `:hover`, `:focus`, `:checked` stylen Elemente basierend auf ihrem Zustand. `a:hover { color: red }` — kein JS erforderlich."
+          ]
+        }
       },
       {
         "animationStep": 6,
         "heading": "Pseudo-Elemente — virtuelle Unterteile",
-        "text": "Pseudo-Elemente stylen einen Teil eines Elements, der nicht im HTML existiert. ::before und ::after fügen generierten Inhalt ein. ::first-line und ::first-letter sprechen Text an. Immer content: \"\" mit ::before/::after verwenden."
+        "text": "Pseudo-Elemente stylen einen Teil eines Elements, der nicht im HTML existiert. ::before und ::after fügen generierten Inhalt ein. ::first-line und ::first-letter sprechen Text an. Immer content: \"\" mit ::before/::after verwenden.",
+        "analogy": {
+          "title": "Schritt 6 — Pseudo-Elemente: der herbeigezauberte Helfer",
+          "text": [
+            "Ein Zauberer produziert ein Taschentuch aus dem Nichts — es sieht echt aus, ist aber nicht in der echten Tasche.",
+            "Pseudo-Elemente wie `::before` und `::after` fügen virtuelle Elemente ein. `p::before { content: \"★\" }` fügt einen Stern vor jedem Absatz ein — keine HTML-Änderung nötig."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -164,28 +248,63 @@
         "animationStep": 0,
         "heading": "Benannte Farben",
         "text": "CSS hat über 140 benannte Farben wie red, blue, tomato und cornflowerblue. Einfach, aber begrenzt — sie lassen sich nicht fein abstimmen.",
-        "expandedText": "📖 Die moderne CSS Color Level 4 `color()`-Syntax kann **P3-Wide-Gamut-Farben** ausdrücken, die über sRGB hinausgehen. `color(display-p3 1 0 0)` ist ein leuchtendes Rot als `#ff0000` auf P3-Displays (moderne Apple-Geräte). Die `@supports`-Regel erkennt Support: `@supports (color: color(display-p3 1 0 0))`.\n\n📖 Die 4-Argument-Form `rgb()` ist veraltet — `rgba(0,0,0,0.5)` und `rgb(0 0 0 / 0.5)` sind äquivalent. `oklch()` (CSS Color Level 4) ist das moderne Farbmodell mit wahrnehmungsgleichmäßigem Raum — bei gleicher Helligkeit sehen Farben in `oklch` tatsächlich gleichmäßig hell aus, was es ideal für Farbpaletten-Generierung macht."
+        "expandedText": "📖 Die moderne CSS Color Level 4 `color()`-Syntax kann **P3-Wide-Gamut-Farben** ausdrücken, die über sRGB hinausgehen. `color(display-p3 1 0 0)` ist ein leuchtendes Rot als `#ff0000` auf P3-Displays (moderne Apple-Geräte). Die `@supports`-Regel erkennt Support: `@supports (color: color(display-p3 1 0 0))`.\n\n📖 Die 4-Argument-Form `rgb()` ist veraltet — `rgba(0,0,0,0.5)` und `rgb(0 0 0 / 0.5)` sind äquivalent. `oklch()` (CSS Color Level 4) ist das moderne Farbmodell mit wahrnehmungsgleichmäßigem Raum — bei gleicher Helligkeit sehen Farben in `oklch` tatsächlich gleichmäßig hell aus, was es ideal für Farbpaletten-Generierung macht.",
+        "analogy": {
+          "title": "Schritt 0 — Benannte Farben: Farbdosen-Etiketten",
+          "text": [
+            "Ein Baumarkt verkauft Farbe mit Namen: Mitternachtsblau, Feuerrot. Du wählst nach Name aus.",
+            "CSS hat 140+ benannte Farben: `red`, `dodgerblue`, `tomato`. Ideal zum Prototypen, beschränkt dich aber auf eine feste Palette."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "HEX-Codes",
-        "text": "Sechs Hex-Ziffern kodieren Rot-, Grün- und Blau-Kanäle (#RRGGBB). Das häufigste Format in Designs. Kurzform: #RGB wenn jedes Paar sich wiederholt."
+        "text": "Sechs Hex-Ziffern kodieren Rot-, Grün- und Blau-Kanäle (#RRGGBB). Das häufigste Format in Designs. Kurzform: #RGB wenn jedes Paar sich wiederholt.",
+        "analogy": {
+          "title": "Schritt 1 — HEX-Codes: die Farb-DNA",
+          "text": [
+            "Ein interner Herstellercode für exakte Reproduktion: R=59, G=130, B=246 geschrieben als #3B82F6.",
+            "Hex kodiert Rot, Grün, Blau als zweistellige Hex-Zahlen: `#RRGGBB`. Zwei weitere Stellen für Alpha: `#ff000080` ist halb-transparentes Rot."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "RGB & RGBA",
-        "text": "rgb() nimmt drei 0–255-Werte für Rot, Grün, Blau. rgba() fügt einen vierten Wert (0–1) für Transparenz hinzu — ideal für Overlays."
+        "text": "rgb() nimmt drei 0–255-Werte für Rot, Grün, Blau. rgba() fügt einen vierten Wert (0–1) für Transparenz hinzu — ideal für Overlays.",
+        "analogy": {
+          "title": "Schritt 2 — RGB und RGBA: drei Regler und ein Dimmer",
+          "text": [
+            "Ein Bühnenlichtpult: drei Farbregler (RGB) und ein Helligkeitsdimmer (Alpha).",
+            "RGB: `rgb(59, 130, 246)`. RGBA fügt Alpha hinzu: `rgba(59, 130, 246, 0.5)` für 50% Transparenz. Lesbarer als Hex, wenn man einen Kanal anpassen möchte."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "HSL & HSLA",
         "text": "hsl() verwendet Farbton (0–360°), Sättigung (%) und Helligkeit (%). Viel intuitiver für die Erstellung von Farbpaletten — einfach den Farbton verschieben.",
-        "expandedText": "📖 **HSL** macht Farbskalen trivial: Farbton und Sättigung festlegen, Helligkeit von 10% bis 90% variieren, um eine vollständige Palette zu generieren. Tailwind generiert so seine Farbskalen.\n\n📖 `oklch()` (CSS Color Level 4) ist die moderne Alternative mit einem wahrnehmungsgleichmäßigen Modell. In HSL hat Gelb bei 50% Helligkeit eine andere wahrgenommene Helligkeit als Blau bei 50%. In oklch sehen alle Farben bei gleicher Helligkeit tatsächlich gleich hell aus — das macht es ideal für zugängliche Farbpaletten und Themen-Generierung."
+        "expandedText": "📖 **HSL** macht Farbskalen trivial: Farbton und Sättigung festlegen, Helligkeit von 10% bis 90% variieren, um eine vollständige Palette zu generieren. Tailwind generiert so seine Farbskalen.\n\n📖 `oklch()` (CSS Color Level 4) ist die moderne Alternative mit einem wahrnehmungsgleichmäßigen Modell. In HSL hat Gelb bei 50% Helligkeit eine andere wahrgenommene Helligkeit als Blau bei 50%. In oklch sehen alle Farben bei gleicher Helligkeit tatsächlich gleich hell aus — das macht es ideal für zugängliche Farbpaletten und Themen-Generierung.",
+        "analogy": {
+          "title": "Schritt 3 — HSL: das Farbrad des Künstlers",
+          "text": [
+            "Ein Künstler denkt in Farbton (welche Farbe), Sättigung (wie lebhaft), Helligkeit (wie hell oder dunkel).",
+            "HSL: `hsl(210, 90%, 60%)` — Farbton in Grad, Sättigung%, Helligkeit%. Einfacher für harmonische Farbschemata durch Drehen des Farbtons."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "CSS-Einheiten",
-        "text": "px ist absolut. em ist relativ zur font-size des Elternelements. rem ist relativ zur Root-<html>-font-size (normalerweise 16px). % ist relativ zur Größe des Elternelements. rem für Schriftgrößen, px für Rahmen, % für Breiten verwenden."
+        "text": "px ist absolut. em ist relativ zur font-size des Elternelements. rem ist relativ zur Root-<html>-font-size (normalerweise 16px). % ist relativ zur Größe des Elternelements. rem für Schriftgrößen, px für Rahmen, % für Breiten verwenden.",
+        "analogy": {
+          "title": "Schritt 4 — CSS-Einheiten: im richtigen System messen",
+          "text": [
+            "Ein Tischler nutzt mm für Präzision, ein Architekt Meter für Räume, ein Kartograph Kilometer. Die richtige Einheit für den richtigen Kontext.",
+            "CSS-Einheiten: `px` fest, `em`/`rem` schriftgrößen-relativ, `%` container-relativ, `vw`/`vh` viewport-relativ. Nutze `rem` für Schriften."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -243,25 +362,53 @@
         "animationStep": 0,
         "heading": "Content Box",
         "text": "Der innerste Bereich. Hier leben Text und Bilder. Width und height gelten standardmäßig hier.",
-        "expandedText": "📖 Die **Content-Box** ist der Bereich, in dem Text fließt und ersetzte Elemente wie Bilder gerendert werden. Standardmäßig gelten CSS `width` und `height` nur für die Content-Box — Padding und Border werden zusätzlich hinzugefügt. Diese Standardeinstellung (`box-sizing: content-box`) bedeutet, dass `width: 200px` bei einem Element mit `padding: 20px` ein 240px breites Element ergibt.\n\n📖 `box-sizing: border-box` ändert diese Berechnung: `width: 200px` mit `padding: 20px` ergibt ein 200px breites Element mit 160px Content-Breite. Das ist intuitiver für Layoutberechnungen und warum die meisten modernen CSS-Resets `* { box-sizing: border-box }` setzen."
+        "expandedText": "📖 Die **Content-Box** ist der Bereich, in dem Text fließt und ersetzte Elemente wie Bilder gerendert werden. Standardmäßig gelten CSS `width` und `height` nur für die Content-Box — Padding und Border werden zusätzlich hinzugefügt. Diese Standardeinstellung (`box-sizing: content-box`) bedeutet, dass `width: 200px` bei einem Element mit `padding: 20px` ein 240px breites Element ergibt.\n\n📖 `box-sizing: border-box` ändert diese Berechnung: `width: 200px` mit `padding: 20px` ergibt ein 200px breites Element mit 160px Content-Breite. Das ist intuitiver für Layoutberechnungen und warum die meisten modernen CSS-Resets `* { box-sizing: border-box }` setzen.",
+        "analogy": {
+          "title": "Schritt 0 — Content-Box: was im Paket drin ist",
+          "text": [
+            "Ein Paket hat Inhalt im Innern — der eigentliche bestellte Artikel. Die Größe des Inhalts ist die Größe dessen, was du hineinlegst, unabhängig von der Verpackung.",
+            "Die Content-Box ist der innere Bereich, der Text oder Kind-Elemente enthält. `width` und `height` setzen diese innere Größe im Standard-`content-box`-Modell."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Padding",
         "text": "Abstand zwischen Inhalt und Rahmen. Padding ist innerhalb des Elements — es teilt die Hintergrundfarbe.",
-        "expandedText": "✅ Padding wird mit der **Hintergrundfarbe des Elements** gerendert und verlängert so visuell den farbigen Bereich. Ein gängiges Muster ist, `padding` am Container zu setzen, um inneren Freiraum zu schaffen, statt `margin` auf Kindelementen zu verwenden — das vermeidet Edge Cases bei Margin Collapse.\n\n📖 Padding akzeptiert keine negativen Werte (im Gegensatz zu Margin). `padding` als Shorthand kann eine bis vier Werte aufnehmen: `padding: 10px` (alle), `padding: 10px 20px` (oben/unten links/rechts), `padding: 10px 20px 15px 25px` (oben rechts unten links, Uhrzeigersinn)."
+        "expandedText": "✅ Padding wird mit der **Hintergrundfarbe des Elements** gerendert und verlängert so visuell den farbigen Bereich. Ein gängiges Muster ist, `padding` am Container zu setzen, um inneren Freiraum zu schaffen, statt `margin` auf Kindelementen zu verwenden — das vermeidet Edge Cases bei Margin Collapse.\n\n📖 Padding akzeptiert keine negativen Werte (im Gegensatz zu Margin). `padding` als Shorthand kann eine bis vier Werte aufnehmen: `padding: 10px` (alle), `padding: 10px 20px` (oben/unten links/rechts), `padding: 10px 20px 15px 25px` (oben rechts unten links, Uhrzeigersinn).",
+        "analogy": {
+          "title": "Schritt 1 — Padding: der schützende Schaumstoff innen",
+          "text": [
+            "Ein zerbrechlicher Artikel umgeben von Schaumstoff-Polsterung. Der Schaumstoff ist im Inneren der Box und schiebt den Artikel von den Wänden weg. Padding gehört zum Element.",
+            "Padding ist der Platz zwischen Inhalt und Rahmen. Es erbt den Hintergrund des Elements — es ist innerer Raum, keine Trennung von Nachbarn."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Rahmen (Border)",
         "text": "Eine Linie, die Padding und Inhalt umgibt. Kann unabhängig gestylt werden.",
-        "expandedText": "📖 Borders werden auf dem Hintergrund und innerhalb des **CSS-Outline** gezeichnet. Bei der Standard-`content-box`-Größenberechnung addieren Borders zur Gesamtelementgröße. Bei `border-box` sind Borders in der deklarierten `width` und `height` enthalten. Die `outline`-Eigenschaft (für Fokusindikatoren verwendet) beeinflusst das Layout nicht und erzeugt daher kein Reflow.\n\n📖 `border-radius` rundet Ecken ab — es beeinflusst auch die Form der Hintergrundfarbe und der `box-shadow`. `50%` auf einem quadratischen Element erzeugt einen Kreis. `border-image` ermöglicht Bilder oder Verläufe als Rahmen."
+        "expandedText": "📖 Borders werden auf dem Hintergrund und innerhalb des **CSS-Outline** gezeichnet. Bei der Standard-`content-box`-Größenberechnung addieren Borders zur Gesamtelementgröße. Bei `border-box` sind Borders in der deklarierten `width` und `height` enthalten. Die `outline`-Eigenschaft (für Fokusindikatoren verwendet) beeinflusst das Layout nicht und erzeugt daher kein Reflow.\n\n📖 `border-radius` rundet Ecken ab — es beeinflusst auch die Form der Hintergrundfarbe und der `box-shadow`. `50%` auf einem quadratischen Element erzeugt einen Kreis. `border-image` ermöglicht Bilder oder Verläufe als Rahmen.",
+        "analogy": {
+          "title": "Schritt 2 — Border: der Fensterrahmen",
+          "text": [
+            "Ein Fensterrahmen umgibt das Glas. Er ist strukturell, sichtbar und erhöht die Gesamtgröße der Fenstereinheit.",
+            "Border umhüllt Padding und Inhalt. Es ist sichtbar und vergrößert das Element. `border: 2px solid` fügt 4px zur Breite und Höhe hinzu."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Margin",
         "text": "Abstand außerhalb des Rahmens. Schiebt andere Elemente weg. Margins können zwischen Geschwisterelementen kollabieren.",
-        "expandedText": "📖 **Margin Collapse** ist eines der verwirrendsten CSS-Verhaltensweisen. Wenn zwei vertikale Margins berühren (angrenzende Geschwister oder Eltern-Kind ohne Padding/Border-Trenner), kollabieren sie zum **größeren** der beiden Werte statt sich zu addieren. `margin-bottom: 20px` bei einem Absatz und `margin-top: 30px` beim nächsten ergibt 30px, nicht 50px.\n\n📖 Margin Collapse tritt nur bei vertikalen (Block-)Margins auf, nicht bei horizontalen. Flexbox- und Grid-Container verhindern Margin Collapse zwischen Kinderelementen. Negative Margins werden von positiven abgezogen."
+        "expandedText": "📖 **Margin Collapse** ist eines der verwirrendsten CSS-Verhaltensweisen. Wenn zwei vertikale Margins berühren (angrenzende Geschwister oder Eltern-Kind ohne Padding/Border-Trenner), kollabieren sie zum **größeren** der beiden Werte statt sich zu addieren. `margin-bottom: 20px` bei einem Absatz und `margin-top: 30px` beim nächsten ergibt 30px, nicht 50px.\n\n📖 Margin Collapse tritt nur bei vertikalen (Block-)Margins auf, nicht bei horizontalen. Flexbox- und Grid-Container verhindern Margin Collapse zwischen Kinderelementen. Negative Margins werden von positiven abgezogen.",
+        "analogy": {
+          "title": "Schritt 3 — Margin: die Sperrzone um das Element",
+          "text": [
+            "Bauabsperrungen um eine Baustelle: Bleib so weit weg. Die Absperrungen sind außerhalb der Baustelle, nicht Teil davon.",
+            "Margin ist außerhalb des Elements und schafft Abstand zu Nachbarn. Es hat keinen Hintergrund. Angrenzende vertikale Margins kollabieren — der größere gewinnt."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -315,31 +462,66 @@
         "animationStep": 0,
         "heading": "Standard-Browser-Text",
         "text": "Ohne CSS wenden Browser ihre eigenen Standardstile an — normalerweise Times New Roman bei 16px. Jeder CSS-Reset oder jedes Stylesheet überschreibt diese Standardwerte.",
-        "expandedText": "📖 **Browser-Standard-Textstile** existieren, weil das Web als akademisches Dokumentsystem begann, bei dem Serifenschriften, Überschriftshierarchie und Link-Styling wichtiger waren als visuelles Design. CSS-Resets (wie `* { margin: 0; padding: 0 }`) entfernen diese Standardwerte vollständig; Normalizer (normalize.css) machen sie über Browser hinweg konsistent.\n\n📖 Die `font-size`-Basis des Browsers (normalerweise 16px) ist von Benutzern einstellbar — manche Benutzer stellen sie aus Zugänglichkeitsgründen auf 20px ein. Daher ist die Verwendung von `rem`-Einheiten (relativ zur Basis) besser als `px` für Schriftgrößen."
+        "expandedText": "📖 **Browser-Standard-Textstile** existieren, weil das Web als akademisches Dokumentsystem begann, bei dem Serifenschriften, Überschriftshierarchie und Link-Styling wichtiger waren als visuelles Design. CSS-Resets (wie `* { margin: 0; padding: 0 }`) entfernen diese Standardwerte vollständig; Normalizer (normalize.css) machen sie über Browser hinweg konsistent.\n\n📖 Die `font-size`-Basis des Browsers (normalerweise 16px) ist von Benutzern einstellbar — manche Benutzer stellen sie aus Zugänglichkeitsgründen auf 20px ein. Daher ist die Verwendung von `rem`-Einheiten (relativ zur Basis) besser als `px` für Schriftgrößen.",
+        "analogy": {
+          "title": "Schritt 0 — Browser-Standards: der nicht versiegelte Brief",
+          "text": [
+            "Ein unversiegelter Brief ohne Formatierung — nur einfacher Text im Browser-Standardstil.",
+            "Ohne CSS wendet jeder Browser seine eigene Standard-Typografie an. Deine Styles überschreiben diese Standards."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "font-family, font-size, font-weight",
         "text": "font-family setzt die Schriftart — immer mit einem generischen Fallback beenden. font-size steuert, wie groß Text erscheint. font-weight reicht von 100 (dünn) bis 900 (schwarz), wobei 400 = normal und 700 = fett.",
-        "expandedText": "📖 Die **font-family-Kaskade** bedeutet, dass der Browser jede aufgeführte Familie der Reihe nach versucht und die erste verfügbare verwendet. Generische Familien (`sans-serif`, `serif`, `monospace`) sind der obligatorische abschließende Fallback — jeder Browser garantiert mindestens eine Schrift für jede.\n\n📖 System-Schriftstapel wie `-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif` verwenden die native UI-Schrift des Betriebssystems — schnell (kein Web-Font-Download), vertraut für Benutzer und auf dem Gerät gut lesbar. Google Fonts und andere Web-Font-Dienste bieten breitere Designauswahl auf Kosten eines Netzwerk-Requests."
+        "expandedText": "📖 Die **font-family-Kaskade** bedeutet, dass der Browser jede aufgeführte Familie der Reihe nach versucht und die erste verfügbare verwendet. Generische Familien (`sans-serif`, `serif`, `monospace`) sind der obligatorische abschließende Fallback — jeder Browser garantiert mindestens eine Schrift für jede.\n\n📖 System-Schriftstapel wie `-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif` verwenden die native UI-Schrift des Betriebssystems — schnell (kein Web-Font-Download), vertraut für Benutzer und auf dem Gerät gut lesbar. Google Fonts und andere Web-Font-Dienste bieten breitere Designauswahl auf Kosten eines Netzwerk-Requests.",
+        "analogy": {
+          "title": "Schritt 1 — Schrifteigenschaften: der Schriftsatz-Werkzeugkasten",
+          "text": [
+            "Drei Kernentscheidungen: welcher Schriftsatz (font-family), welche Größe (font-size), wie fett (font-weight).",
+            "Das grundlegende Trio: `font-family: Inter, sans-serif`, `font-size: 16px`, `font-weight: 700`. Diese steuern 80% des typografischen Gefühls."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "text-align & text-decoration",
         "text": "text-align positioniert Text horizontal (left, center, right, justify). text-decoration steuert Unterstreichungen, Durchstreichungen und deren Stil.",
-        "expandedText": "📖 `text-align: justify` erzeugt zeitungsähnliche Spalten, produziert aber **ungleichmäßige Wortabstände** in schmalen Containern oder bei langen Wörtern. Die Kombination von `text-align: justify` mit `hyphens: auto` reduziert Abstandsprobleme durch Silbentrennung bei Zeilenumbrüchen.\n\n📖 `text-decoration` ist jetzt eine Kurzschreibweise für `text-decoration-line`, `text-decoration-color`, `text-decoration-style` und `text-decoration-thickness`. `text-decoration: underline wavy red 2px` erzeugt eine rote Wellenunterstreichung mit 2px Dicke — nützlich für Rechtschreibprüfungsanzeigen."
+        "expandedText": "📖 `text-align: justify` erzeugt zeitungsähnliche Spalten, produziert aber **ungleichmäßige Wortabstände** in schmalen Containern oder bei langen Wörtern. Die Kombination von `text-align: justify` mit `hyphens: auto` reduziert Abstandsprobleme durch Silbentrennung bei Zeilenumbrüchen.\n\n📖 `text-decoration` ist jetzt eine Kurzschreibweise für `text-decoration-line`, `text-decoration-color`, `text-decoration-style` und `text-decoration-thickness`. `text-decoration: underline wavy red 2px` erzeugt eine rote Wellenunterstreichung mit 2px Dicke — nützlich für Rechtschreibprüfungsanzeigen.",
+        "analogy": {
+          "title": "Schritt 2 — text-align und decoration: der Zeitungsredakteur",
+          "text": [
+            "Ein Redakteur entscheidet: Ist diese Überschrift zentriert oder links? Soll dieser Link unterstrichen sein?",
+            "`text-align: center` zentriert Text. `text-decoration: none` entfernt die Standard-Unterstreichung von Links."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Abstände: letter-spacing & line-height",
         "text": "letter-spacing passt den Abstand zwischen Zeichen an. line-height steuert die Höhe jeder Zeile — einen einheitenlosen Wert wie 1,6 verwenden, damit er mit der Schriftgröße skaliert.",
-        "expandedText": "📖 Eine **einheitenlose `line-height`** (wie 1,6) ist für die Vererbung entscheidend. `line-height: 24px` bei einem Elternelement skaliert nicht, wenn ein Kind seine Schriftgröße erhöht — Zeilen überlappen sich. `line-height: 1.6` bedeutet \"1,6 mal die aktuelle Schriftgröße\" und skaliert automatisch in der gesamten Vererbungskette.\n\n💡 Typografische Empfehlungen: `line-height: 1.4–1.6` für Fließtext, `1.2–1.3` für Überschriften (kleinere Größen wirken kompakter), `1.0` für Button-Beschriftungen. Die `lh`-Einheit (CSS Level 4) ermöglicht Abstände relativ zur Zeilenhöhe des Elements."
+        "expandedText": "📖 Eine **einheitenlose `line-height`** (wie 1,6) ist für die Vererbung entscheidend. `line-height: 24px` bei einem Elternelement skaliert nicht, wenn ein Kind seine Schriftgröße erhöht — Zeilen überlappen sich. `line-height: 1.6` bedeutet \"1,6 mal die aktuelle Schriftgröße\" und skaliert automatisch in der gesamten Vererbungskette.\n\n💡 Typografische Empfehlungen: `line-height: 1.4–1.6` für Fließtext, `1.2–1.3` für Überschriften (kleinere Größen wirken kompakter), `1.0` für Button-Beschriftungen. Die `lh`-Einheit (CSS Level 4) ermöglicht Abstände relativ zur Zeilenhöhe des Elements.",
+        "analogy": {
+          "title": "Schritt 3 — Abstände: die musikalische Partitur",
+          "text": [
+            "Eine Partitur verwendet präzise Notierung für den Abstand zwischen Noten. Zu eng: unleserlich. Zu weit: keine Kohärenz.",
+            "`letter-spacing` passt den Abstand zwischen Zeichen an. `line-height: 1.6` setzt den Abstand zwischen Zeilen — 1,5 bis 1,8 ist für Fließtext angenehm."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "Google Fonts & @import",
         "text": "Benutzerdefinierte Schriften mit @import in deinem CSS laden. Google Fonts generiert die URL. @font-face funktioniert genauso, aber für lokal gehostete Schriftdateien.",
-        "expandedText": "📖 Der `display=swap`-Deskriptor in `@font-face` (und der entsprechende URL-Parameter bei Google Fonts) weist den Browser an, sofort eine **Fallback-Schrift** anzuzeigen und dann zur Web-Schrift zu wechseln, wenn sie geladen wurde. Das verhindert FOIT (Flash of Invisible Text). `font-display: optional` ist performancetechnisch besser — wenn die Schrift nicht innerhalb eines kurzen Zeitfensters geladen wird, wird sie auf dieser Seite gar nicht verwendet, was einen Schriftwechsel verhindert.\n\n📖 Variable Fonts (z.B. bei Google Fonts verfügbar) kombinieren mehrere Schrift-Stärken und -Stile in einer Datei. Ein Download ersetzt viele — nützlich, wenn mehr als 2–3 Schriftvarianten auf einer Seite benötigt werden."
+        "expandedText": "📖 Der `display=swap`-Deskriptor in `@font-face` (und der entsprechende URL-Parameter bei Google Fonts) weist den Browser an, sofort eine **Fallback-Schrift** anzuzeigen und dann zur Web-Schrift zu wechseln, wenn sie geladen wurde. Das verhindert FOIT (Flash of Invisible Text). `font-display: optional` ist performancetechnisch besser — wenn die Schrift nicht innerhalb eines kurzen Zeitfensters geladen wird, wird sie auf dieser Seite gar nicht verwendet, was einen Schriftwechsel verhindert.\n\n📖 Variable Fonts (z.B. bei Google Fonts verfügbar) kombinieren mehrere Schrift-Stärken und -Stile in einer Datei. Ein Download ersetzt viele — nützlich, wenn mehr als 2–3 Schriftvarianten auf einer Seite benötigt werden.",
+        "analogy": {
+          "title": "Schritt 4 — Google Fonts: die kostenlose Schriftbibliothek",
+          "text": [
+            "Eine kostenlose öffentliche Bibliothek mit Tausenden kuratierten Büchern — stöbern, auswählen, ausleihen. Kein Kauf, keine Installation.",
+            "Google Fonts stellt Web-Schriften über CDN bereit. `<link>` hinzufügen, dann `font-family: Inter, sans-serif` verwenden. Keine Hosting-Kosten."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -400,27 +582,62 @@
       {
         "animationStep": 0,
         "heading": "background-color",
-        "text": "Der einfachste Hintergrund — eine einfarbige Füllung. Akzeptiert jeden CSS-Farbwert: benannt, hex, rgb, hsl."
+        "text": "Der einfachste Hintergrund — eine einfarbige Füllung. Akzeptiert jeden CSS-Farbwert: benannt, hex, rgb, hsl.",
+        "analogy": {
+          "title": "Schritt 0 — background-color: die Wand streichen",
+          "text": [
+            "Eine Zimmerwand zu streichen ist die einfachste Dekoration: eine Farbe, füllt den Raum. Alles andere kommt obendrauf.",
+            "`background-color` füllt den Element-Hintergrund mit einer Volltonfarbe. Es liegt hinter allen anderen Hintergrundebenen."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "background-image",
-        "text": "Ein Bild als Hintergrund mit url() laden. Das Bild beeinflusst den Dokumentenfluss nicht — es ist rein dekorativ. Immer mit einer Fallback-background-color kombinieren."
+        "text": "Ein Bild als Hintergrund mit url() laden. Das Bild beeinflusst den Dokumentenfluss nicht — es ist rein dekorativ. Immer mit einer Fallback-background-color kombinieren.",
+        "analogy": {
+          "title": "Schritt 1 — background-image: ein Gemälde aufhängen",
+          "text": [
+            "Nach dem Streichen hängt man ein Foto auf. Das Foto liegt auf der Wandfarbe, ersetzt sie aber nicht.",
+            "`background-image: url(photo.jpg)` wird über `background-color` gerendert. Nutze `<img>` für bedeutungsvolle Bilder, die Screen-Reader lesen sollen."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "repeat, position & size",
-        "text": "background-repeat steuert die Kachelung. background-position setzt den Ursprung. background-size: cover füllt den Container, contain passt hinein."
+        "text": "background-repeat steuert die Kachelung. background-position setzt den Ursprung. background-size: cover füllt den Container, contain passt hinein.",
+        "analogy": {
+          "title": "Schritt 2 — repeat, position und size: korrekt aufhängen",
+          "text": [
+            "Ein Gemälde aufzuhängen erfordert drei Entscheidungen: Kachelt es? Wo kommt es hin? Wie groß?",
+            "`background-repeat: no-repeat; background-position: center; background-size: cover` — skaliert um den Container zu füllen, schneidet bei Bedarf zu."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "linear-gradient()",
-        "text": "Verläufe sind generierte Bilder — keine Bilddatei nötig. linear-gradient() übergeht Farben in einer geraden Linie. Den Winkel und zwei oder mehr Farbstopps angeben."
+        "text": "Verläufe sind generierte Bilder — keine Bilddatei nötig. linear-gradient() übergeht Farben in einer geraden Linie. Den Winkel und zwei oder mehr Farbstopps angeben.",
+        "analogy": {
+          "title": "Schritt 3 — linear-gradient: der Sonnenuntergangs-Streifen",
+          "text": [
+            "Ein Sonnenuntergang wechselt sanft von Orange am Horizont zu Tiefblau oben.",
+            "`background: linear-gradient(135deg, #f97316, #3b82f6)` — gleichmäßiger Übergang in 45 Grad. Mehrere Farbstopps möglich."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "radial-gradient()",
-        "text": "radial-gradient() strahlt von einem Mittelpunkt nach außen. Ideal für Spotlight-Effekte und subtile Tiefe. Mit Transparenz für Overlays kombinieren."
+        "text": "radial-gradient() strahlt von einem Mittelpunkt nach außen. Ideal für Spotlight-Effekte und subtile Tiefe. Mit Transparenz für Overlays kombinieren.",
+        "analogy": {
+          "title": "Schritt 4 — radial-gradient: der Scheinwerfer",
+          "text": [
+            "Ein Scheinwerfer erzeugt einen hellen Lichtkreis, der zu den Rändern hin ins Dunkle verblasst.",
+            "`background: radial-gradient(circle, #fbbf24, #1e1e2e)` — helle Mitte, dunkle Ränder. Perfekt für Glüheffekte."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -474,31 +691,66 @@
         "animationStep": 0,
         "heading": "box-shadow Anatomie",
         "text": "box-shadow nimmt: x-Versatz, y-Versatz, Unschärferadius, Ausbreitungsradius, Farbe. Nur die ersten beiden sind erforderlich. Positives x = rechts, positives y = unten.",
-        "expandedText": "📖 Der **Spread-Radius** ist standardmäßig 0 — der Schatten ist gleich groß wie das Element. Ein positiver Spread vergrößert den Schatten, ein negativer verkleinert ihn. Ein Schatten mit Null-Offset, Null-Unschärfe und nur Spread erzeugt einen festen Rahmen, der wie ein Border aussieht, aber das Layout nicht beeinflusst: `box-shadow: 0 0 0 3px blue`.\n\n📖 Mehrere `box-shadows` können kommagetrennt gestapelt werden. Die erste in der Liste liegt oben. Dieser Schichttrick erzeugt komplexe Tiefeneffekte — z.B. ein Ringsystem, das wie einen mehrfarbigen Umriss aussieht: `box-shadow: 0 0 0 2px white, 0 0 0 4px blue`."
+        "expandedText": "📖 Der **Spread-Radius** ist standardmäßig 0 — der Schatten ist gleich groß wie das Element. Ein positiver Spread vergrößert den Schatten, ein negativer verkleinert ihn. Ein Schatten mit Null-Offset, Null-Unschärfe und nur Spread erzeugt einen festen Rahmen, der wie ein Border aussieht, aber das Layout nicht beeinflusst: `box-shadow: 0 0 0 3px blue`.\n\n📖 Mehrere `box-shadows` können kommagetrennt gestapelt werden. Die erste in der Liste liegt oben. Dieser Schichttrick erzeugt komplexe Tiefeneffekte — z.B. ein Ringsystem, das wie einen mehrfarbigen Umriss aussieht: `box-shadow: 0 0 0 2px white, 0 0 0 4px blue`.",
+        "analogy": {
+          "title": "Schritt 0 — box-shadow Anatomie: das Schatten-Rezept",
+          "text": [
+            "Ein Schatten hängt von vier Dingen ab: Versatz (Position), Blur (Randweichheit), Spread und Farbe.",
+            "`box-shadow` nimmt: `offset-x offset-y blur-radius spread-radius color`. Beispiel: `0 4px 16px 0 rgba(0,0,0,0.2)`."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Einfacher Schlagschatten",
         "text": "Ein einzelner Schatten mit leichtem y-Versatz und Unschärfe erzeugt Tiefe. Den Schatten subtil halten — zu stark wirkt veraltet. rgba gibt Transparenzkontrolle.",
-        "expandedText": "📖 Die Verwendung von **rgba() für Schattenfarbe** lässt Schatten natürlich mit jedem Hintergrund verschmelzen. `rgba(0, 0, 0, 0.15)` wirkt subtil auf weiß und bleibt auf grauen Hintergründen sichtbar. Ein reiner `#000`-Schatten sieht immer schwer und unnatürlich aus.\n\n📖 Für Dark-Mode-Designs werden Schatten auf dunklen Hintergründen weniger sichtbar. Viele Design-Systeme verwenden leicht getönte Schatten in der Farbe des Hintergrunds oder verwenden Glüheffekte (helle Schatten) anstelle dunkler Schatten im Dark Mode."
+        "expandedText": "📖 Die Verwendung von **rgba() für Schattenfarbe** lässt Schatten natürlich mit jedem Hintergrund verschmelzen. `rgba(0, 0, 0, 0.15)` wirkt subtil auf weiß und bleibt auf grauen Hintergründen sichtbar. Ein reiner `#000`-Schatten sieht immer schwer und unnatürlich aus.\n\n📖 Für Dark-Mode-Designs werden Schatten auf dunklen Hintergründen weniger sichtbar. Viele Design-Systeme verwenden leicht getönte Schatten in der Farbe des Hintergrunds oder verwenden Glüheffekte (helle Schatten) anstelle dunkler Schatten im Dark Mode.",
+        "analogy": {
+          "title": "Schritt 1 — Einfacher Schlagschatten: die schwebende Karte",
+          "text": [
+            "Eine Visitenkarte leicht über einem Tisch wirft einen weichen Schatten — die Karte scheint zu schweben.",
+            "Ein Karten-Schatten: `box-shadow: 0 2px 8px rgba(0,0,0,0.15)`. Kleiner Y-Versatz, moderater Blur, niedrige Deckkraft. Das häufigste Muster."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Geschichtete Schatten",
         "text": "Mehrere Schatten durch Kommas stapeln für Realismus. Ein enger Nahschatten + ein diffuser Fernschatten ahmt nach, wie Licht tatsächlich verhält. Das ist das Geheimnis hinter polierten UI-Designsystemen.",
-        "expandedText": "📖 Das Stapeln zweier Schatten — einer eng und dunkel für Nähe, einer diffus und heller für Umgebungslicht — modelliert **Ambient Occlusion** in physischer Beleuchtung genauer. Material Design verwendet mehrere Schattenebenen bei unterschiedlichen Opazitäten und Unschärfen.\n\n📖 `filter: drop-shadow()` unterscheidet sich von `box-shadow`: Es folgt der tatsächlichen Form des Elements (einschließlich transparenter Bereiche für PNGs und SVGs), während `box-shadow` immer das rechteckige Bounding-Box des Elements verwendet."
+        "expandedText": "📖 Das Stapeln zweier Schatten — einer eng und dunkel für Nähe, einer diffus und heller für Umgebungslicht — modelliert **Ambient Occlusion** in physischer Beleuchtung genauer. Material Design verwendet mehrere Schattenebenen bei unterschiedlichen Opazitäten und Unschärfen.\n\n📖 `filter: drop-shadow()` unterscheidet sich von `box-shadow`: Es folgt der tatsächlichen Form des Elements (einschließlich transparenter Bereiche für PNGs und SVGs), während `box-shadow` immer das rechteckige Bounding-Box des Elements verwendet.",
+        "analogy": {
+          "title": "Schritt 2 — Mehrschichtige Schatten: mehrere Kerzen",
+          "text": [
+            "Drei Kerzen in verschiedenen Abständen werfen drei überlappende Schatten. Das Ergebnis wirkt natürlich und dreidimensional.",
+            "Kommagetrennte Schatten-Ebenen: `0 1px 2px rgba(0,0,0,0.1), 0 4px 16px rgba(0,0,0,0.15)`. Eine scharfe Ebene plus eine weiche — fotorealistische Tiefe."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Eingebetteter Schatten",
         "text": "inset hinzufügen dreht den Schatten ins Innere der Box. Für gedrückte Button-Zustände, innere Tiefe bei Inputs oder eingesunkene Effekte verwendet.",
-        "expandedText": "📖 **Inset-Schatten** werden auf der inneren Oberfläche gezeichnet und erzeugen ein vertieftes Erscheinungsbild. Die Kombination von Inset- und regulären Schatten erzeugt Button-Druckeffekte: äußerer Schatten im Normalzustand, Inset-Schatten im `:active`-Zustand.\n\n📖 Negativer Spread bei Inset-Schatten erzeugt subtile innere Highlights: `box-shadow: inset 0 1px 0 rgba(255,255,255,0.1)`. Das imitiert das Reflexionslicht an der Oberkante, das in Skeumorphismus-Designs üblich ist und subtile Tiefe in modernem Design hinzufügt."
+        "expandedText": "📖 **Inset-Schatten** werden auf der inneren Oberfläche gezeichnet und erzeugen ein vertieftes Erscheinungsbild. Die Kombination von Inset- und regulären Schatten erzeugt Button-Druckeffekte: äußerer Schatten im Normalzustand, Inset-Schatten im `:active`-Zustand.\n\n📖 Negativer Spread bei Inset-Schatten erzeugt subtile innere Highlights: `box-shadow: inset 0 1px 0 rgba(255,255,255,0.1)`. Das imitiert das Reflexionslicht an der Oberkante, das in Skeumorphismus-Designs üblich ist und subtile Tiefe in modernem Design hinzufügt.",
+        "analogy": {
+          "title": "Schritt 3 — Inset-Schatten: der gedrückte Knopf",
+          "text": [
+            "Ein Knopf, der sich beim Drücken in seine Oberfläche senkt — der Schatten ist jetzt im Innern des Elements.",
+            "`inset` hinzufügen dreht den Schatten nach innen: `box-shadow: inset 0 2px 4px rgba(0,0,0,0.2)`. Perfekt für gedrückte Zustände und vertiefte UI."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "Glow und text-shadow",
         "text": "Null Versatz + große Unschärfe = Glühen. Funktioniert bei box-shadow für Halos, text-shadow für glühende Texteffekte. Die text-shadow-Syntax ist identisch, hat aber keine Ausbreitung.",
-        "expandedText": "📖 **Glüheffekte** funktionieren, weil der Browser den Schatten vom Elementrahmen nach außen in alle Richtungen unscharf macht. Null-Offsets und ein großer Unschärferadius erzeugen ein symmetrisches Glühen. Neon-Texteffekt mit gestapelten text-shadows: `text-shadow: 0 0 7px #fff, 0 0 14px #fff, 0 0 30px #3b82f6`.\n\n📖 `text-shadow`-Syntax hat keinen `inset`-Modus und keine `spread`-Parameter — nur X-Offset, Y-Offset, Blur und Farbe. Mehrere `text-shadows` können wie `box-shadow` kommagetrennt gestapelt werden."
+        "expandedText": "📖 **Glüheffekte** funktionieren, weil der Browser den Schatten vom Elementrahmen nach außen in alle Richtungen unscharf macht. Null-Offsets und ein großer Unschärferadius erzeugen ein symmetrisches Glühen. Neon-Texteffekt mit gestapelten text-shadows: `text-shadow: 0 0 7px #fff, 0 0 14px #fff, 0 0 30px #3b82f6`.\n\n📖 `text-shadow`-Syntax hat keinen `inset`-Modus und keine `spread`-Parameter — nur X-Offset, Y-Offset, Blur und Farbe. Mehrere `text-shadows` können wie `box-shadow` kommagetrennt gestapelt werden.",
+        "analogy": {
+          "title": "Schritt 4 — Leuchten und text-shadow: Neon-Schilder",
+          "text": [
+            "Ein Neon-Schild leuchtet mit farbigem Licht drum herum — es strahlt in die umgebende Luft aus.",
+            "Ein Leuchte-Effekt verwendet Farbe statt Schwarz: `box-shadow: 0 0 20px #3b82f6`. `text-shadow: 0 0 10px #fbbf24` erzeugt ein goldenes Text-Leuchten."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -548,29 +800,64 @@
         "animationStep": 0,
         "heading": "Ungestylte Bilder laufen über",
         "text": "Standardmäßig rendern Bilder in ihrer natürlichen (intrinsischen) Größe. Ein 1200px-Foto in einem 400px-Container läuft über — bricht dein Layout.",
-        "expandedText": "📜 **Bilder sind \"Replaced Elements\"** mit intrinsischen Abmessungen. Anders als Block-Elemente dehnen sie sich nicht aus, um ihren Container zu füllen — sie werden in ihrer natürlichen Größe gerendert, wenn nicht eingeschränkt. `display: block` auf einem Bild entfernt den Inline-Baseline-Abstand, der das klassische \"kleiner Abstand unter dem Bild\"-Problem verursacht.\n\n📖 Die intrinsische Größe eines Bildes kommt aus den Bilddaten selbst — ein 800×600px-JPEG hat eine intrinsische Größe von 800×600px. Browser können intrinsische Größen für `<video>` und `<iframe>` nicht immer im Voraus kennen — daher die Technik, einen prozentualen Padding-Trick für Seitenverhältnis-Boxen zu verwenden (jetzt durch `aspect-ratio` ersetzt)."
+        "expandedText": "📜 **Bilder sind \"Replaced Elements\"** mit intrinsischen Abmessungen. Anders als Block-Elemente dehnen sie sich nicht aus, um ihren Container zu füllen — sie werden in ihrer natürlichen Größe gerendert, wenn nicht eingeschränkt. `display: block` auf einem Bild entfernt den Inline-Baseline-Abstand, der das klassische \"kleiner Abstand unter dem Bild\"-Problem verursacht.\n\n📖 Die intrinsische Größe eines Bildes kommt aus den Bilddaten selbst — ein 800×600px-JPEG hat eine intrinsische Größe von 800×600px. Browser können intrinsische Größen für `<video>` und `<iframe>` nicht immer im Voraus kennen — daher die Technik, einen prozentualen Padding-Trick für Seitenverhältnis-Boxen zu verwenden (jetzt durch `aspect-ratio` ersetzt).",
+        "analogy": {
+          "title": "Schritt 0 — Bildgrößen: das Foto im Rahmen",
+          "text": [
+            "Ein Foto zu groß für seinen Rahmen läuft über. Zu klein und es gibt Lücken. Der Rahmen setzt die Grenzen.",
+            "Standardmäßig werden Bilder in ihrer natürlichen Größe dargestellt. `width: 100%; height: auto` lässt sie auf die Container-Breite skalieren und bewahrt das Seitenverhältnis."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "max-width: 100%",
         "text": "Die einfachste Lösung für responsive Bilder. Das Bild ist nie breiter als sein Container und skaliert proportional herunter, wenn der Container kleiner ist.",
-        "expandedText": "📖 `max-width: 100%` setzt **keine Breite** — es verhindert nur, dass das Bild seinen Container überschreitet. Das Bild wird in natürlicher Größe gerendert, wenn kleiner, und schrumpft proportional, wenn der Container schmaler ist. Der responsive Bild-Baseline: `img { max-width: 100%; height: auto; display: block; }`.\n\n📖 Für Performance verwenden `srcset` und `sizes`, um verschiedene Bildauflösungen für verschiedene Viewports zu liefern: `<img srcset=\"img-400.jpg 400w, img-800.jpg 800w\" sizes=\"(max-width: 600px) 400px, 800px\">`. Der Browser wählt die geeignetste Quelle basierend auf Viewport-Breite und Geräte-Pixel-Ratio."
+        "expandedText": "📖 `max-width: 100%` setzt **keine Breite** — es verhindert nur, dass das Bild seinen Container überschreitet. Das Bild wird in natürlicher Größe gerendert, wenn kleiner, und schrumpft proportional, wenn der Container schmaler ist. Der responsive Bild-Baseline: `img { max-width: 100%; height: auto; display: block; }`.\n\n📖 Für Performance verwenden `srcset` und `sizes`, um verschiedene Bildauflösungen für verschiedene Viewports zu liefern: `<img srcset=\"img-400.jpg 400w, img-800.jpg 800w\" sizes=\"(max-width: 600px) 400px, 800px\">`. Der Browser wählt die geeignetste Quelle basierend auf Viewport-Breite und Geräte-Pixel-Ratio.",
+        "analogy": {
+          "title": "Schritt 1 — object-fit: das Foto zuschneiden",
+          "text": [
+            "Ein Foto auf einer Postkarte passt immer auf die Postkarte. Der Drucker schneidet das Original zu oder fügt Letterboxing hinzu.",
+            "`object-fit: cover` füllt den Container und schneidet bei Bedarf Ränder ab. `contain` passt vollständig hinein, ggf. mit Letterboxing. Nutze `cover` für Hero-Bilder."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "object-fit: cover",
         "text": "Wenn ein Bild einen Container fester Größe ohne Verzerrung füllen soll. cover skaliert und beschneidet das Bild zum Füllen. object-position verwenden, um den Beschneidungsanker zu steuern.",
-        "expandedText": "📖 `object-fit` ist analog zu `background-size` — `cover` schneidet zum Füllen ab, `contain` passt ohne Abschneiden ein. `object-position` steuert, welcher Teil des Bildes bei `cover`-Abschneidung sichtbar ist: `object-position: top` behält die Oberseite sichtbar, nützlich für Porträtfotos.\n\n📖 `object-fit` erfordert explizite `width` und `height` auf dem Bild — ohne diese hat das Bild keine Box zum Einpassen. `aspect-ratio` funktioniert gut zusammen mit `object-fit`: `aspect-ratio: 16/9; width: 100%; object-fit: cover` schafft ein responsives 16:9-Bild-Container ohne JavaScript."
+        "expandedText": "📖 `object-fit` ist analog zu `background-size` — `cover` schneidet zum Füllen ab, `contain` passt ohne Abschneiden ein. `object-position` steuert, welcher Teil des Bildes bei `cover`-Abschneidung sichtbar ist: `object-position: top` behält die Oberseite sichtbar, nützlich für Porträtfotos.\n\n📖 `object-fit` erfordert explizite `width` und `height` auf dem Bild — ohne diese hat das Bild keine Box zum Einpassen. `aspect-ratio` funktioniert gut zusammen mit `object-fit`: `aspect-ratio: 16/9; width: 100%; object-fit: cover` schafft ein responsives 16:9-Bild-Container ohne JavaScript.",
+        "analogy": {
+          "title": "Schritt 2 — object-position: wo zuschneiden",
+          "text": [
+            "Beim Zuschneiden eines Portraitfotos willst du das Gesicht zentriert behalten, nicht die Füße.",
+            "`object-position: center top` lässt den oberen Bildbereich nach dem Zuschneiden sichtbar. Nützlich für Portraitfotos in Querformat-Containern."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "border-radius",
-        "text": "Ecken eines beliebigen Elements mit border-radius abrunden. 50% bei einem quadratischen Element erzeugt einen perfekten Kreis — ideal für Avatare."
+        "text": "Ecken eines beliebigen Elements mit border-radius abrunden. 50% bei einem quadratischen Element erzeugt einen perfekten Kreis — ideal für Avatare.",
+        "analogy": {
+          "title": "Schritt 3 — filter: das Instagram-Objektiv",
+          "text": [
+            "Ein Instagram-Filter wendet eine Farbkorrektur mit einem Tap an — kein Photoshop nötig.",
+            "`filter: grayscale(100%)` konvertiert in Schwarz-Weiß. `blur(4px)` macht unscharf. `brightness(1.2)` erhellt. Verketten mit Leerzeichen: `filter: contrast(1.1) saturate(1.2)`."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "aspect-ratio",
-        "text": "aspect-ratio sperrt die Proportionen eines Containers. Das Bild füllt ihn mit object-fit: cover. Dies verhindert Layout-Verschiebungen während Bilder geladen werden."
+        "text": "aspect-ratio sperrt die Proportionen eines Containers. Das Bild füllt ihn mit object-fit: cover. Dies verhindert Layout-Verschiebungen während Bilder geladen werden.",
+        "analogy": {
+          "title": "Schritt 4 — backdrop-filter: Milchglas",
+          "text": [
+            "Milchglas verwischt alles dahinter, während das Glaspanel selbst scharf bleibt.",
+            "`backdrop-filter: blur(12px)` verwischt Hintergrundselemente, die durch das Element sichtbar sind — ideal für schwebende Navigation oder Modal-Overlays."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -619,27 +906,62 @@
       {
         "animationStep": 0,
         "heading": "Block-Fluss",
-        "text": "Block-Elemente stapeln sich vertikal — jedes beginnt auf einer neuen Zeile und erstreckt sich über die verfügbare Breite. div, p, h1–h6 und section sind standardmäßig Block-Elemente."
+        "text": "Block-Elemente stapeln sich vertikal — jedes beginnt auf einer neuen Zeile und erstreckt sich über die verfügbare Breite. div, p, h1–h6 und section sind standardmäßig Block-Elemente.",
+        "analogy": {
+          "title": "Schritt 0 — display block: Steine stapeln",
+          "text": [
+            "Steine in einer Spalte stapeln — jeder Stein beginnt eine neue Reihe und streckt sich auf volle Breite.",
+            "Block-Elemente (div, p, h1) nehmen die volle Zeilenbreite ein und stapeln sich vertikal. `display: block` erzwingt dieses Verhalten."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "display: inline",
-        "text": "Inline-Elemente sitzen nebeneinander im Textfluss. Sie nehmen nur so viel Breite in Anspruch wie ihr Inhalt. width oder height können nicht auf Inline-Elemente gesetzt werden."
+        "text": "Inline-Elemente sitzen nebeneinander im Textfluss. Sie nehmen nur so viel Breite in Anspruch wie ihr Inhalt. width oder height können nicht auf Inline-Elemente gesetzt werden.",
+        "analogy": {
+          "title": "Schritt 1 — display inline: Wörter in einem Satz",
+          "text": [
+            "Wörter in einem Satz fließen nebeneinander und umbrechen natürlich auf die nächste Zeile.",
+            "Inline-Elemente (span, a, em) liegen im Textfluss. Sie ignorieren width/height-Eigenschaften. `display: inline` lässt jedes Element im Text fließen."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "display: inline-block",
-        "text": "Das Beste aus beiden Welten — sitzt inline wie Text, akzeptiert aber width, height, padding und margin wie ein Block."
+        "text": "Das Beste aus beiden Welten — sitzt inline wie Text, akzeptiert aber width, height, padding und margin wie ein Block.",
+        "analogy": {
+          "title": "Schritt 2 — display inline-block: beschriftete Boxen im Regal",
+          "text": [
+            "Beschriftete Boxen nebeneinander in einem Regal angeordnet — jede Box ist eigenständig, kann bemessen werden und sitzt in einer Reihe mit anderen.",
+            "`display: inline-block` kombiniert beides: fließt mit Text, respektiert aber width/height. Verwendet für Navigationspunkte und Bild+Text-Kombinationen."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "position: relative",
-        "text": "Das Element bleibt im normalen Fluss, kann aber mit top, right, bottom, left verschoben werden. Der Platz, den es eingenommen hätte, bleibt erhalten. Häufig als Positionierungsanker für absolute Kinder verwendet."
+        "text": "Das Element bleibt im normalen Fluss, kann aber mit top, right, bottom, left verschoben werden. Der Platz, den es eingenommen hätte, bleibt erhalten. Häufig als Positionierungsanker für absolute Kinder verwendet.",
+        "analogy": {
+          "title": "Schritt 3 — position relative: der verschobene Mitarbeiter",
+          "text": [
+            "Ein Mitarbeiter bleibt an seinem zugewiesenen Schreibtisch, bewegt sich aber 20cm nach links. Der Schreibtisch ist noch reserviert — niemand sonst füllt ihn.",
+            "`position: relative` verschiebt das Element visuell ohne es aus dem Fluss zu entfernen. Andere Elemente behalten den ursprünglichen Platz. `top/left/right/bottom` setzen den Versatz."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "position: absolute",
-        "text": "Entfernt das Element aus dem normalen Fluss — andere Elemente ignorieren es. Positioniert relativ zum nächsten Vorfahren mit position: relative (oder dem Viewport, wenn keiner vorhanden ist). Unverzichtbar für Tooltips, Dropdowns und Overlays."
+        "text": "Entfernt das Element aus dem normalen Fluss — andere Elemente ignorieren es. Positioniert relativ zum nächsten Vorfahren mit position: relative (oder dem Viewport, wenn keiner vorhanden ist). Unverzichtbar für Tooltips, Dropdowns und Overlays.",
+        "analogy": {
+          "title": "Schritt 4 — position absolute fixed sticky: Verankerungsstrategien",
+          "text": [
+            "Anker haben verschiedene Modi: an einer Zimmerecke verankern (absolute), am Fenster verankern (fixed), bis zum Scrollen vorbei verankern (sticky).",
+            "`absolute` verankert am nächsten positionierten Vorfahren. `fixed` verankert am Viewport — bleibt beim Scrollen auf dem Bildschirm. `sticky` haftet beim Scrollen."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -693,23 +1015,51 @@
         "animationStep": 0,
         "heading": "Die klassische Navbar",
         "text": "Flexbox löst die Navbar in 2 Zeilen: display: flex auf dem Container, dann justify-content: space-between schiebt das Logo nach links und Links nach rechts. Der Browser übernimmt alles dazwischen.",
-        "expandedText": "📜 **Flexbox** ersetzte ältere Techniken wie float-basierte Navbars und `inline-block`-Grids. Das Zwei-Zeilen-Muster `display: flex; justify-content: space-between` erreicht, was früher Breitenberechnungen, Clearfix-Hacks und das Bekämpfen mysteriöser Leerzeichen erforderte.\n\n📖 Der Flex-Formatierungskontext ist anders als der Block-Formatierungskontext: Kinder werden zu Flex-Items, die entlang der Hauptachse (standardmäßig horizontal) angeordnet werden. Flex-Items können mit `flex-grow`, `flex-shrink` und `flex-basis` gesteuert werden."
+        "expandedText": "📜 **Flexbox** ersetzte ältere Techniken wie float-basierte Navbars und `inline-block`-Grids. Das Zwei-Zeilen-Muster `display: flex; justify-content: space-between` erreicht, was früher Breitenberechnungen, Clearfix-Hacks und das Bekämpfen mysteriöser Leerzeichen erforderte.\n\n📖 Der Flex-Formatierungskontext ist anders als der Block-Formatierungskontext: Kinder werden zu Flex-Items, die entlang der Hauptachse (standardmäßig horizontal) angeordnet werden. Flex-Items können mit `flex-grow`, `flex-shrink` und `flex-basis` gesteuert werden.",
+        "analogy": {
+          "title": "Schritt 0 — Navbar: Elemente in einem Bento-Tablett",
+          "text": [
+            "Ein Bento-Tablett ordnet Elemente in einer Reihe an. Jedes Fach hält ein Element nebeneinander.",
+            "Eine Navbar ist der klassische Flexbox-Anwendungsfall. `display: flex; justify-content: space-between` — Logo links, Links rechts, keine Floats nötig."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Responsive Karten-Zeilen",
         "text": "flex-wrap: wrap hinzufügen, damit Karten automatisch in die nächste Zeile rutschen, wenn kein Platz mehr ist. gap ersetzt Margin-Hacks. Jede Karte bekommt flex: 1 1 250px — wachsen, schrumpfen, mindestens 250px breit.",
-        "expandedText": "📖 Flexbox ist für **eindimensionale Layouts** — jeweils eine Reihe oder eine Spalte. CSS Grid verarbeitet zweidimensionale Layouts gleichzeitig. Die Entscheidungsregel: Flexbox verwenden, wenn Elemente ihre Größe selbst bestimmen und natürlich umbrechen sollen; Grid für präzise Kontrolle über beide Achsen.\n\n📜 `flex-wrap: wrap` ermöglicht Zeilen- oder Spaltenumbruch. `gap` (früher `grid-gap`) funktioniert mit Flexbox zum Setzen von Abständen zwischen Flex-Items ohne Außenabstands-Hacks. `align-content` steuert die Ausrichtung mehrerer umgebrochener Zeilen."
+        "expandedText": "📖 Flexbox ist für **eindimensionale Layouts** — jeweils eine Reihe oder eine Spalte. CSS Grid verarbeitet zweidimensionale Layouts gleichzeitig. Die Entscheidungsregel: Flexbox verwenden, wenn Elemente ihre Größe selbst bestimmen und natürlich umbrechen sollen; Grid für präzise Kontrolle über beide Achsen.\n\n📜 `flex-wrap: wrap` ermöglicht Zeilen- oder Spaltenumbruch. `gap` (früher `grid-gap`) funktioniert mit Flexbox zum Setzen von Abständen zwischen Flex-Items ohne Außenabstands-Hacks. `align-content` steuert die Ausrichtung mehrerer umgebrochener Zeilen.",
+        "analogy": {
+          "title": "Schritt 1 — Kartenreihen: Spielkarten die umbrechen",
+          "text": [
+            "Karten auf den Tisch legen — nebeneinander bis der Platz aufgebraucht ist, dann umbrechen sie auf eine neue Reihe.",
+            "`flex-wrap: wrap` lässt Elemente auf neue Reihen fließen. Kombiniert mit `flex: 1 1 280px` wachsen Karten und umbrechen elegant auf kleineren Bildschirmen."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Perfekte Zentrierung",
-        "text": "Die meistgesuchte CSS-Frage: Wie zentriere ich das? Mit Flexbox sind es zwei Eigenschaften auf dem Elternelement. justify-content zentriert auf der Hauptachse, align-items auf der Querachse."
+        "text": "Die meistgesuchte CSS-Frage: Wie zentriere ich das? Mit Flexbox sind es zwei Eigenschaften auf dem Elternelement. justify-content zentriert auf der Hauptachse, align-items auf der Querachse.",
+        "analogy": {
+          "title": "Schritt 2 — Perfektes Zentrieren: die Zielscheibe",
+          "text": [
+            "Einen Punkt genau in der Mitte einer Zielscheibe platzieren — gleicher Abstand zu jeder Kante, horizontal und vertikal.",
+            "Zwei Zeilen: `display: flex; align-items: center; justify-content: center`. Die sauberste Zentrierlösung in CSS."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Kern-Eigenschaften im Überblick",
-        "text": "Diese drei Flex-Eigenschaften decken 90 % der echten Layouts ab. Mit diesen beginnen, flex-direction: column für vertikale Stapel hinzufügen."
+        "text": "Diese drei Flex-Eigenschaften decken 90 % der echten Layouts ab. Mit diesen beginnen, flex-direction: column für vertikale Stapel hinzufügen.",
+        "analogy": {
+          "title": "Schritt 3 — Kern-Eigenschaften: die drei Regler",
+          "text": [
+            "Ein Mischpult hat drei Schlüsselregler: wie Elemente verteilt werden (justify-content), wie sie ausgerichtet werden (align-items) und ob sie umbrechen (flex-wrap).",
+            "Das Kern-Trio: `justify-content` (Hauptachse), `align-items` (Querachse), `flex-wrap`. `gap` fügt Abstände ohne Margins hinzu."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -766,23 +1116,51 @@
         "animationStep": 0,
         "heading": "Bereiche benennen",
         "text": "grid-template-areas lässt dich dein Layout als ASCII-Art zeichnen. Jeder String ist eine Zeile. Wiederholte Namen spannen mehrere Spalten. Ein Punkt (.) ist eine leere Zelle.",
-        "expandedText": "📖 **Benannte Template-Areas** sind im Wesentlichen eine visuelle DSL für das Layout. Beim Lesen des CSS versteht man sofort die Seitenstruktur, ohne das DOM inspizieren zu müssen. Die String-Darstellung muss ein Rechteck bilden — jede Reihe muss dieselbe Anzahl von Spalten haben, und jede benannte Area muss zusammenhängend sein.\n\n📖 `grid-template-areas` funktioniert zusammen mit `grid-area` auf Kind-Elementen. Einem Punkt (`.`) als Platzhalter für leere Zellen verwenden. Das Layout ist sofort lesbar und erspart das mentale Nachvollziehen von `grid-column: 2 / 4`-Werten."
+        "expandedText": "📖 **Benannte Template-Areas** sind im Wesentlichen eine visuelle DSL für das Layout. Beim Lesen des CSS versteht man sofort die Seitenstruktur, ohne das DOM inspizieren zu müssen. Die String-Darstellung muss ein Rechteck bilden — jede Reihe muss dieselbe Anzahl von Spalten haben, und jede benannte Area muss zusammenhängend sein.\n\n📖 `grid-template-areas` funktioniert zusammen mit `grid-area` auf Kind-Elementen. Einem Punkt (`.`) als Platzhalter für leere Zellen verwenden. Das Layout ist sofort lesbar und erspart das mentale Nachvollziehen von `grid-column: 2 / 4`-Werten.",
+        "analogy": {
+          "title": "Schritt 0 — Benannte Bereiche: Bauplan mit beschrifteten Räumen",
+          "text": [
+            "Ein Architekt beschriftet Räume auf dem Bauplan: KÜCHE, SCHLAFZIMMER. Keine Koordinaten — nur Namen.",
+            "`grid-template-areas` mappt das Layout mit Strings. `\"header header\" \"sidebar main\"` erzeugt ein 2x2-Grid mit Header über beide Spalten."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Kinder zuweisen",
         "text": "Jedes Kind bekommt einen grid-area-Namen, der zur Vorlage passt. Der Browser platziert es genau — kein Verfolgen von Spalten-/Zeilennummern.",
-        "expandedText": "✅ Die Neudefinition von `grid-template-areas` innerhalb einer `@media`-Abfrage ist das **wartungsfreundlichste Muster** für responsive Grid-Layouts. Statt individuelle `grid-column`- und `grid-row`-Werte auf jedem Kind zu überschreiben, aktualisiert man einen einzigen ASCII-Art-String am Elternelement und jedes benannte Kind repositioniert sich automatisch.\n\n📖 Grid-Layouts lassen sich durch Kombination von `auto-fill` oder `auto-fit` mit `minmax()` vollständig ohne Breakpoints gestalten: `grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))` erstellt eine responsive Galerie ohne Media Queries."
+        "expandedText": "✅ Die Neudefinition von `grid-template-areas` innerhalb einer `@media`-Abfrage ist das **wartungsfreundlichste Muster** für responsive Grid-Layouts. Statt individuelle `grid-column`- und `grid-row`-Werte auf jedem Kind zu überschreiben, aktualisiert man einen einzigen ASCII-Art-String am Elternelement und jedes benannte Kind repositioniert sich automatisch.\n\n📖 Grid-Layouts lassen sich durch Kombination von `auto-fill` oder `auto-fit` mit `minmax()` vollständig ohne Breakpoints gestalten: `grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))` erstellt eine responsive Galerie ohne Media Queries.",
+        "analogy": {
+          "title": "Schritt 1 — Kinder zuweisen: Möbel platzieren",
+          "text": [
+            "Sobald der Bauplan Räume beschriftet, platzieren Möbelpacker Möbel nach Namen in jeden Raum: Sofa kommt ins WOHNZIMMER.",
+            "Jedes Kind bekommt `grid-area: header` und Grid platziert es im passenden benannten Bereich. Den Template-String ändern, um das gesamte Layout neu zu ordnen."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Responsiv mit Bereichen",
-        "text": "Die Vorlage in einer Media-Query neu definieren. Der Browser ordnet alle benannten Bereiche sofort neu an — kein Ändern einzelner grid-column/row-Werte."
+        "text": "Die Vorlage in einer Media-Query neu definieren. Der Browser ordnet alle benannten Bereiche sofort neu an — kein Ändern einzelner grid-column/row-Werte.",
+        "analogy": {
+          "title": "Schritt 2 — Responsive Bereiche: gleiche Möbel, anderer Grundriss",
+          "text": [
+            "Dieselben Möbel, anderes Apartment-Layout für klein vs. groß. Die Möbel-Etiketten bleiben gleich; nur der Bauplan ändert sich.",
+            "In einer Media-Query `grid-template-areas` neu definieren. Dieselben Kinder, dieselben `grid-area`-Werte — aber das Layout ändert sich vollständig."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "fr-Einheit und auto-fit",
-        "text": "fr (Brucheinheit) füllt verbleibenden Platz proportional. Mit repeat(auto-fill, minmax()) für Grids kombinieren, die ihre Spaltenanzahl automatisch anpassen."
+        "text": "fr (Brucheinheit) füllt verbleibenden Platz proportional. Mit repeat(auto-fill, minmax()) für Grids kombinieren, die ihre Spaltenanzahl automatisch anpassen.",
+        "analogy": {
+          "title": "Schritt 3 — fr und auto-fit: elastische Regale",
+          "text": [
+            "Elastische Regale, die den verfügbaren Platz mit gleich breiten Slots füllen. Ein Regal hinzufügen und jeder Slot schrumpft, um den Platz zu teilen.",
+            "Die `fr`-Einheit bedeutet Anteil des verbleibenden Platzes. `repeat(auto-fit, minmax(200px, 1fr))` erzeugt so viele Spalten wie passen — responsive ohne Media-Queries."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -836,31 +1214,66 @@
         "animationStep": 0,
         "heading": "Ein Layout für alle Bildschirme",
         "text": "Ohne Media Queries ist dein Layout fest. Auf Mobilgeräten kann Inhalt überlaufen oder beengt wirken. Responsives Design passt dein CSS an den Viewport an.",
-        "expandedText": "📖 **Fixed-width-Layouts** stammen aus der Zeit vor verbreitetem Mobilzugriff. Das `<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">`-Tag ist erforderlich, um responsives Verhalten zu aktivieren — ohne es zoomen Mobile-Browser auf die volle Desktop-Breite heraus und Media Queries verhalten sich unerwartet.\n\n📜 Media Queries wurden 2012 mit CSS3 eingeführt, aber responsive Design begann früher mit fluiden Grids und prozentbasierter Breite. Ethan Marcottes Artikel \"Responsive Web Design\" (2010) prägte den Begriff und das Konzept."
+        "expandedText": "📖 **Fixed-width-Layouts** stammen aus der Zeit vor verbreitetem Mobilzugriff. Das `<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">`-Tag ist erforderlich, um responsives Verhalten zu aktivieren — ohne es zoomen Mobile-Browser auf die volle Desktop-Breite heraus und Media Queries verhalten sich unerwartet.\n\n📜 Media Queries wurden 2012 mit CSS3 eingeführt, aber responsive Design begann früher mit fluiden Grids und prozentbasierter Breite. Ethan Marcottes Artikel \"Responsive Web Design\" (2010) prägte den Begriff und das Konzept.",
+        "analogy": {
+          "title": "Schritt 0 — Mobile First: erst das Zelt, dann das Haus",
+          "text": [
+            "Designer skizzieren zuerst ein kompaktes Zelt, dann erweitern sie auf ein volles Haus. Einfacher Platz hinzufügen als Unordnung entfernen.",
+            "Mobile-First-CSS bedeutet, Basis-Styles für kleine Bildschirme zu schreiben, dann `@media (min-width)` zu nutzen, um Komplexität für größere hinzuzufügen."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Media Query — Tablet-Breakpoint",
         "text": "@media wendet Stile nur an, wenn eine Bedingung zutrifft. min-width: 768px bedeutet 'diese Stile auf Bildschirmen mit 768px Breite oder breiter anwenden' — der Tablet-Breakpoint.",
-        "expandedText": "📖 **Breakpoints** sollten inhaltsbasiert, nicht gerätebasiert sein. Einen Breakpoint dort hinzufügen, wo der spezifische Inhalt unschön aussieht — nicht bei bestimmten Gerätebreiten. Ein Layout mit zwei Spalten muss möglicherweise bei 600px stapeln, während ein anderes bei 400px gut funktioniert. Inhaltsbasierte Breakpoints bleiben viel länger gültig als gerätebasierte.\n\n✅ Gängige Breakpoint-Systeme (sm: 640px, md: 768px, lg: 1024px, xl: 1280px) sind Ausgangspunkte, keine Regeln. Das Tailwind-Breakpoint-System verwendet diese Werte als Konvention, erlaubt aber vollständige Anpassung in der Konfiguration."
+        "expandedText": "📖 **Breakpoints** sollten inhaltsbasiert, nicht gerätebasiert sein. Einen Breakpoint dort hinzufügen, wo der spezifische Inhalt unschön aussieht — nicht bei bestimmten Gerätebreiten. Ein Layout mit zwei Spalten muss möglicherweise bei 600px stapeln, während ein anderes bei 400px gut funktioniert. Inhaltsbasierte Breakpoints bleiben viel länger gültig als gerätebasierte.\n\n✅ Gängige Breakpoint-Systeme (sm: 640px, md: 768px, lg: 1024px, xl: 1280px) sind Ausgangspunkte, keine Regeln. Das Tailwind-Breakpoint-System verwendet diese Werte als Konvention, erlaubt aber vollständige Anpassung in der Konfiguration.",
+        "analogy": {
+          "title": "Schritt 1 — Media-Queries: größenspezifische TV-Anleitung",
+          "text": [
+            "Eine TV-Anleitung hat verschiedene Einrichtungsanweisungen je Bildschirmgröße: klein, mittel, groß.",
+            "`@media (min-width: 768px) { }` wendet CSS nur an, wenn der Viewport mindestens 768px breit ist. Mehrere Queries für eine fließende Breakpoint-Leiter stapeln."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Desktop-Breakpoint",
         "text": "Media Queries vom kleinsten zum größten stapeln. Der 1024px-Breakpoint schaltet ein 3-Spalten-Layout für breitere Bildschirme frei.",
-        "expandedText": "📖 **Inhaltsbasierte Breakpoints** sind dort, wo das spezifische Layout bricht — nicht Gerätegrößen. Den Entwurf bei verschiedenen Breiten inspizieren und Breakpoints nur dort hinzufügen, wo der Inhalt unschön aussieht. Spezifischen Gerätedimensionen (375px iPhone, 1024px iPad) widerstehen, da diese sich jede Produktgeneration ändern.\n\n📖 Moderne Layouts nutzen oft Container Queries (`@container`) statt Viewport-Media-Queries. Container Queries reagieren auf die Größe des Containers, nicht auf die Viewport-Breite — Komponenten können überall platziert werden und sehen immer noch gut aus."
+        "expandedText": "📖 **Inhaltsbasierte Breakpoints** sind dort, wo das spezifische Layout bricht — nicht Gerätegrößen. Den Entwurf bei verschiedenen Breiten inspizieren und Breakpoints nur dort hinzufügen, wo der Inhalt unschön aussieht. Spezifischen Gerätedimensionen (375px iPhone, 1024px iPad) widerstehen, da diese sich jede Produktgeneration ändern.\n\n📖 Moderne Layouts nutzen oft Container Queries (`@container`) statt Viewport-Media-Queries. Container Queries reagieren auf die Größe des Containers, nicht auf die Viewport-Breite — Komponenten können überall platziert werden und sehen immer noch gut aus.",
+        "analogy": {
+          "title": "Schritt 2 — Fluide Layouts: das Gummiband",
+          "text": [
+            "Ein Gummiband dehnt sich mit dem Container aus und zusammen. `%` und `fr`-Einheiten verhalten sich wie Gummibänder.",
+            "`width: 100%; max-width: 1200px` begrenzt das Wachstum. `grid-template-columns: repeat(auto-fit, minmax(240px, 1fr))` passt die Spaltenanzahl automatisch an."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Mobile-First-Ansatz",
         "text": "Basisstile für Mobilgeräte schreiben, dann mit min-width-Queries Komplexität für größere Bildschirme hinzufügen. Dies ist das Gegenteil von 'Desktop-First' (max-width). Mobile-First ist der Industriestandard — es erzwingt einfachere Standardwerte.",
-        "expandedText": "📖 **Mobile-First** bedeutet, dass das Standard-CSS (außerhalb jeder Media Query) auf Mobilgeräte abzielt. Das ergibt saubereren Code — mobile Layouts sind einfacher und dienen als Baseline. Desktop-Verbesserungen sind progressive Ergänzungen. Desktop-First häuft Überschreibungskomplexität an, wenn man Desktop-Styles für Mobile rückgängig macht.\n\n📖 Mobile-First CSS korreliert gut mit Leistung: Der Browser lädt und rendert zuerst den Kerninhalt. Desktop-Verbesserungen (größere Bilder, komplexere Layouts) werden nur hinzugefügt, wenn der Viewport entsprechend groß ist."
+        "expandedText": "📖 **Mobile-First** bedeutet, dass das Standard-CSS (außerhalb jeder Media Query) auf Mobilgeräte abzielt. Das ergibt saubereren Code — mobile Layouts sind einfacher und dienen als Baseline. Desktop-Verbesserungen sind progressive Ergänzungen. Desktop-First häuft Überschreibungskomplexität an, wenn man Desktop-Styles für Mobile rückgängig macht.\n\n📖 Mobile-First CSS korreliert gut mit Leistung: Der Browser lädt und rendert zuerst den Kerninhalt. Desktop-Verbesserungen (größere Bilder, komplexere Layouts) werden nur hinzugefügt, wenn der Viewport entsprechend groß ist.",
+        "analogy": {
+          "title": "Schritt 3 — Responsive Typografie: auf kleinen Schildern einzoomen",
+          "text": [
+            "Straßenschilder in einem kleinen Dorf können kleiner sein, weil der Verkehr langsam ist. Autobahnschilder müssen groß genug sein, um bei Geschwindigkeit lesbar zu sein.",
+            "`clamp(1rem, 2.5vw, 2rem)` setzt Mindest-, Bevorzugte- und Maximalschriftgröße. Text wächst mit dem Viewport, läuft aber nie über."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "Fluid Einheiten",
         "text": "%, vw, vh und rem statt festem px für natürlich skalierende Layouts verwenden. clamp() ist leistungsstark: es setzt ein Minimum, einen fluid Wert und ein Maximum.",
-        "expandedText": "📖 `clamp(min, ideal, max)` ist ein **flüssiger Wert mit Grenzen**. Der Idealwert (meist `vw`-basiert) wächst mit dem Viewport, aber `clamp` begrenzt ihn auf ein Maximum und erzwingt ein Minimum. `font-size: clamp(1rem, 2.5vw, 1.5rem)` skaliert von 16px auf kleinen Bildschirmen bis maximal 24px auf großen — keine Media Queries erforderlich.\n\n📖 `vw`, `vh`, `dvh` (Dynamic Viewport Height) und `svh` (Small Viewport Height) sind viewport-relative Einheiten. `dvh` ist besonders nützlich auf Mobilgeräten, wo das Verschwinden der Browser-UI-Leiste die Viewport-Höhe ändert."
+        "expandedText": "📖 `clamp(min, ideal, max)` ist ein **flüssiger Wert mit Grenzen**. Der Idealwert (meist `vw`-basiert) wächst mit dem Viewport, aber `clamp` begrenzt ihn auf ein Maximum und erzwingt ein Minimum. `font-size: clamp(1rem, 2.5vw, 1.5rem)` skaliert von 16px auf kleinen Bildschirmen bis maximal 24px auf großen — keine Media Queries erforderlich.\n\n📖 `vw`, `vh`, `dvh` (Dynamic Viewport Height) und `svh` (Small Viewport Height) sind viewport-relative Einheiten. `dvh` ist besonders nützlich auf Mobilgeräten, wo das Verschwinden der Browser-UI-Leiste die Viewport-Höhe ändert.",
+        "analogy": {
+          "title": "Schritt 4 — Responsive Bilder: das richtige Auflösungs-Poster",
+          "text": [
+            "Ein Plakat sieht auf einer kleinen Werbetafel scharf aus, aber auf einer großen verschwommen, wenn man denselben Druck verwendet. Responsive Bilder liefern größengerechte Dateien.",
+            "`max-width: 100%` verhindert Überlauf. `srcset` liefert die richtige Auflösungsdatei. `<picture>` ermöglicht verschiedene Zuschnitte je Breakpoint."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -906,25 +1319,53 @@
         "animationStep": 0,
         "heading": "Das Overflow-Problem",
         "text": "Standardmäßig bedeutet overflow: visible, dass Inhalt aus seinem Container herausläuft. Das bricht Layouts — ein Textblock oder Bild kann Geschwisterelemente überlagern.",
-        "expandedText": "⚠️ Der `overflow: visible`-Standard existiert, weil die CSS-Spezifikation **Inhaltszugänglichkeit über Clipping** priorisiert hat. Inhalte sollten niemals versteckt werden, es sei denn, der Autor fordert es explizit. Clipping muss eine bewusste Entscheidung sein.\n\n📖 Overflow erzeugt einen neuen **Stacking Context**, wenn es mit bestimmten Eigenschaften kombiniert wird. `overflow: hidden` auf einem Container etabliert außerdem einen neuen Block-Formatierungskontext, der Floats cleart — das ist die klassische Clearfix-Technik."
+        "expandedText": "⚠️ Der `overflow: visible`-Standard existiert, weil die CSS-Spezifikation **Inhaltszugänglichkeit über Clipping** priorisiert hat. Inhalte sollten niemals versteckt werden, es sei denn, der Autor fordert es explizit. Clipping muss eine bewusste Entscheidung sein.\n\n📖 Overflow erzeugt einen neuen **Stacking Context**, wenn es mit bestimmten Eigenschaften kombiniert wird. `overflow: hidden` auf einem Container etabliert außerdem einen neuen Block-Formatierungskontext, der Floats cleart — das ist die klassische Clearfix-Technik.",
+        "analogy": {
+          "title": "Schritt 0 — Das Overflow-Problem: Wasser über den Rand",
+          "text": [
+            "Zu viel Wasser in ein Glas gießen und es läuft über. Das Glas hat eine feste Größe; Überschuss geht über die Grenze.",
+            "Standardmäßig läuft Inhalt, der zu groß für seinen Container ist, sichtbar über. Das ist `overflow: visible` — verursacht oft kaputte Layouts."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "overflow: hidden",
         "text": "Schneidet Inhalt an der Container-Grenze ab. Nichts ist scrollbar — der Überlauf verschwindet einfach. Zum Einschließen von gefloateten Kindern, Abschneiden von Bildern oder Erstellen von Masken-Effekten verwenden.",
-        "expandedText": "📖 `overflow: hidden` **etabliert auch einen neuen Block-Formatierungskontext (BFC)**, weshalb es Floats cleart. Das Hinzufügen von `overflow: hidden` zu einem Container, der nur gefloatete Kinder enthält, bewirkt, dass sich der Container ausdehnt, um diese zu umschließen. Das ist die klassische \"Clearfix\"-Technik.\n\n📖 `clip-path` ist der moderne Ersatz für `overflow: hidden` beim Erzeugen von nicht-rechteckigen Clipping-Regionen. `clip-path: circle(50%)` macht ein Element kreisförmig, wobei überstehende Inhalte beschnitten werden. Anders als `overflow: hidden` etabliert `clip-path` keinen BFC."
+        "expandedText": "📖 `overflow: hidden` **etabliert auch einen neuen Block-Formatierungskontext (BFC)**, weshalb es Floats cleart. Das Hinzufügen von `overflow: hidden` zu einem Container, der nur gefloatete Kinder enthält, bewirkt, dass sich der Container ausdehnt, um diese zu umschließen. Das ist die klassische \"Clearfix\"-Technik.\n\n📖 `clip-path` ist der moderne Ersatz für `overflow: hidden` beim Erzeugen von nicht-rechteckigen Clipping-Regionen. `clip-path: circle(50%)` macht ein Element kreisförmig, wobei überstehende Inhalte beschnitten werden. Anders als `overflow: hidden` etabliert `clip-path` keinen BFC.",
+        "analogy": {
+          "title": "Schritt 1 — overflow hidden: den Überschuss abschneiden",
+          "text": [
+            "Ein Foto auf einen Rahmen zuschneiden — alles außerhalb der Grenze wird entfernt.",
+            "`overflow: hidden` schneidet Inhalt an der Element-Grenze ab. Häufig verwendet, um Floats zu halten und absolut positionierte Kinder zu beschneiden."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "overflow: auto und scroll",
         "text": "auto fügt eine Scrollleiste nur hinzu, wenn Inhalt überläuft. scroll zeigt die Scrollleiste immer. auto bevorzugen — es vermeidet Layout-Verschiebungen bei Inhaltsgrößenänderungen. Achsen separat mit overflow-x / overflow-y steuern.",
-        "expandedText": "📖 `overflow: auto` ist fast immer `overflow: scroll` vorzuziehen, weil es **nur bei Bedarf eine Scrollbar anzeigt** und so Layout-Platz erhält, wenn Inhalt hineinpasst. `overflow: scroll` reserviert permanent Scrollbar-Platz, was Layout-Verschiebungen verursacht, wenn sich Inhalt ändert.\n\n⚠️ `overflow-x` und `overflow-y` steuern die Achsen unabhängig. `overflow-x: hidden; overflow-y: auto` ist ein häufiges Muster für seitliche Scroll-Container, die nach oben und unten nicht clippen sollen. Achtung: Das Setzen von `overflow-x: hidden` erzwingt `overflow-y: auto`, wenn es nicht explizit gesetzt ist."
+        "expandedText": "📖 `overflow: auto` ist fast immer `overflow: scroll` vorzuziehen, weil es **nur bei Bedarf eine Scrollbar anzeigt** und so Layout-Platz erhält, wenn Inhalt hineinpasst. `overflow: scroll` reserviert permanent Scrollbar-Platz, was Layout-Verschiebungen verursacht, wenn sich Inhalt ändert.\n\n⚠️ `overflow-x` und `overflow-y` steuern die Achsen unabhängig. `overflow-x: hidden; overflow-y: auto` ist ein häufiges Muster für seitliche Scroll-Container, die nach oben und unten nicht clippen sollen. Achtung: Das Setzen von `overflow-x: hidden` erzwingt `overflow-y: auto`, wenn es nicht explizit gesetzt ist.",
+        "analogy": {
+          "title": "Schritt 2 — overflow auto: Scrollen bei Bedarf",
+          "text": [
+            "Ein zu langer Kassenbon wird auf ein Klemmbrett mit Scroll-Mechanismus abgelegt. Du ziehst ihn heraus, wenn nötig.",
+            "`overflow: auto` fügt eine Scrollleiste nur bei Überlauf hinzu. `overflow: scroll` fügt immer Scrollleisten hinzu. Nutze `auto` — sauberer."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "text-overflow: ellipsis",
         "text": "Kürzt Text mit '...' an der Container-Kante. Erfordert drei zusammenwirkende Eigenschaften: white-space: nowrap (Umbruch verhindern), overflow: hidden (Überlauf verstecken), text-overflow: ellipsis (Punkte anzeigen).",
-        "expandedText": "📖 Das Drei-Eigenschaften-Kombo ist strikt: `white-space: nowrap` entfernen lässt Text umbrechen statt zu überlaufen. `overflow: hidden` entfernen lässt Text sichtbar über den Container hinaus laufen. `text-overflow: ellipsis` entfernen lässt Text ohne den \"...\"-Indikator abschneiden.\n\n📖 Mehrzeilige Ellipse: `-webkit-line-clamp: 3` kombiniert mit `display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden` schneidet nach 3 Zeilen ab. Das `-webkit-`-Präfix bleibt, obwohl es weit verbreitet unterstützt wird — die standardisierte Version (`line-clamp`) ist noch nicht überall implementiert."
+        "expandedText": "📖 Das Drei-Eigenschaften-Kombo ist strikt: `white-space: nowrap` entfernen lässt Text umbrechen statt zu überlaufen. `overflow: hidden` entfernen lässt Text sichtbar über den Container hinaus laufen. `text-overflow: ellipsis` entfernen lässt Text ohne den \"...\"-Indikator abschneiden.\n\n📖 Mehrzeilige Ellipse: `-webkit-line-clamp: 3` kombiniert mit `display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden` schneidet nach 3 Zeilen ab. Das `-webkit-`-Präfix bleibt, obwohl es weit verbreitet unterstützt wird — die standardisierte Version (`line-clamp`) ist noch nicht überall implementiert.",
+        "analogy": {
+          "title": "Schritt 3 — text-overflow ellipsis: die abgeschnittene Überschrift",
+          "text": [
+            "Eine Zeitungsüberschrift, die zu lang für die Spalte ist, wird mit Auslassungspunkten abgeschnitten: Eilmeldung: Wissenschaftler entdecken...",
+            "Erfordert drei Eigenschaften zusammen: `overflow: hidden; white-space: nowrap; text-overflow: ellipsis`. Unverzichtbar für Kartentitel und Navigationspunkte."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -970,31 +1411,65 @@
         "animationStep": 0,
         "heading": "Das Problem: hartcodierte Werte",
         "text": "Ohne Variablen wiederholst du denselben Farb-Hex in Dutzenden von Regeln. Die Markenfarbe ändern? Suchen und Ersetzen über jede Datei.",
-        "expandedText": "📖 Hartkodierte Werte, die über tausende CSS-Zeilen verstreut sind, erzeugen einen Wartungsalbtraum — eine Brand-Farbe zu ändern bedeutet ein globales Suchen-und-Ersetzen über jede Datei. **CSS Custom Properties** (auch CSS-Variablen genannt) lösen das, indem sie Werten Namen geben, sodass eine einzelne Änderung an der Quelle sich überall ausbreitet.\n\n⚠️ Das Praxisbeispiel: 23 Stellen, an denen `#3b82f6` erscheint, muss nichts gesucht oder ersetzt werden — der Wert von `--color-primary` aktualisieren und alles ändert sich. Das reduziert Fehler und macht Design-Änderungen sicher durch Codebasen."
+        "expandedText": "📖 Hartkodierte Werte, die über tausende CSS-Zeilen verstreut sind, erzeugen einen Wartungsalbtraum — eine Brand-Farbe zu ändern bedeutet ein globales Suchen-und-Ersetzen über jede Datei. **CSS Custom Properties** (auch CSS-Variablen genannt) lösen das, indem sie Werten Namen geben, sodass eine einzelne Änderung an der Quelle sich überall ausbreitet.\n\n⚠️ Das Praxisbeispiel: 23 Stellen, an denen `#3b82f6` erscheint, muss nichts gesucht oder ersetzt werden — der Wert von `--color-primary` aktualisieren und alles ändert sich. Das reduziert Fehler und macht Design-Änderungen sicher durch Codebasen.",
+        "analogy": {
+          "title": "Schritt 0 — Variablen deklarieren: der Generalschlüsselbund",
+          "text": [
+            "Ein Generalschlüsselbund hält einen Schlüssel pro Tür. Einen Schlüssel einmal ändern und jedes Schloss, das ihn nutzt, öffnet sich anders.",
+            "`:root { --brand: #3b82f6 }` deklariert eine globale CSS-Variable. Jede Eigenschaft kann `var(--brand)` referenzieren — einmal ändern, überall aktualisieren."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Mit --name deklarieren",
         "text": "Custom Properties beginnen mit --. Sie auf :root deklarieren, um sie global verfügbar zu machen. Sie kaskadieren genau wie jede CSS-Eigenschaft.",
-        "expandedText": "📖 Custom Properties folgen normalen CSS-**Kaskaden- und Vererbungsregeln**. Auf `:root` deklariert, sind sie global verfügbar, weil `:root` der Vorfahre mit höchster Spezifität jedes Elements ist. Auf einem `.card`-Selektor deklariert, sind sie nur innerhalb `.card` und seinen Kindern verfügbar.\n\n📜 Das **Doppel-Strich-Präfix** (`--`) ist die offizielle Syntax (im Gegensatz zu den früheren, nie standardisierten `var()`-Bibliotheken). Benutzerdefinierte Eigenschaftsnamen sind case-sensitive: `--Color` und `--color` sind unterschiedliche Variablen."
+        "expandedText": "📖 Custom Properties folgen normalen CSS-**Kaskaden- und Vererbungsregeln**. Auf `:root` deklariert, sind sie global verfügbar, weil `:root` der Vorfahre mit höchster Spezifität jedes Elements ist. Auf einem `.card`-Selektor deklariert, sind sie nur innerhalb `.card` und seinen Kindern verfügbar.\n\n📜 Das **Doppel-Strich-Präfix** (`--`) ist die offizielle Syntax (im Gegensatz zu den früheren, nie standardisierten `var()`-Bibliotheken). Benutzerdefinierte Eigenschaftsnamen sind case-sensitive: `--Color` und `--color` sind unterschiedliche Variablen.",
+        "analogy": {
+          "title": "Schritt 1 — var() verwenden: den Schlüssel beim Namen rufen",
+          "text": [
+            "Statt jedes Mal den Schlüsselcode zu kopieren, sagt man einfach \"Generalschlüssel verwenden\" und das System weiß, welcher gemeint ist.",
+            "`color: var(--brand)` referenziert die Variable. `var(--color, #000)` gibt einen Fallback, wenn die Variable undefiniert ist."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Mit var() verwenden",
         "text": "Die var()-Funktion liest den Custom-Property-Wert. --color-primary an einer Stelle ändern und jede Regel, die var(--color-primary) verwendet, wird automatisch aktualisiert.",
-        "expandedText": "📖 Die `var()`-Funktion liest den aktuellen berechneten Wert einer Custom Property und folgt der **Kaskade** vom Element nach außen. `var(--color-primary, #3b82f6)` verwendet `#3b82f6` als **Fallback**, wenn die Variable undefiniert ist — das ist in Komponentenbibliotheken wichtig, wo Konsumenten möglicherweise nicht alle Tokens definieren, die eine Komponente erwartet.\n\n🔬 Custom Properties können andere Custom Properties als Fallbacks verwenden: `var(--button-color, var(--color-primary, #3b82f6))`. Dieser geschachtelte Fallback-Mechanismus ermöglicht flexible Token-Hierarchien."
+        "expandedText": "📖 Die `var()`-Funktion liest den aktuellen berechneten Wert einer Custom Property und folgt der **Kaskade** vom Element nach außen. `var(--color-primary, #3b82f6)` verwendet `#3b82f6` als **Fallback**, wenn die Variable undefiniert ist — das ist in Komponentenbibliotheken wichtig, wo Konsumenten möglicherweise nicht alle Tokens definieren, die eine Komponente erwartet.\n\n🔬 Custom Properties können andere Custom Properties als Fallbacks verwenden: `var(--button-color, var(--color-primary, #3b82f6))`. Dieser geschachtelte Fallback-Mechanismus ermöglicht flexible Token-Hierarchien.",
+        "analogy": {
+          "title": "Schritt 2 — Auf Komponent-Ebene überschreiben: lokaler Regler-Override",
+          "text": [
+            "Ein Hotel hat eine zentrale Heizung, aber jedes Zimmer hat seinen eigenen Regler. Die zentrale Einstellung im eigenen Zimmer überschreiben.",
+            "CSS-Variablen kaskadieren. Eine Komponente kann `--brand: red` deklarieren und alle ihre Kinder nutzen den lokalen Wert. Äußere Bereiche werden nicht beeinflusst."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Im Kind-Scope überschreiben",
         "text": "Die Variable innerhalb eines Selektors neu deklarieren, um sie für diesen Teilbaum zu überschreiben. Kindelemente sehen den neuen Wert; Elemente außerhalb sind nicht betroffen.",
-        "expandedText": "📖 Bereichsgebundene Überschreibungen machen Custom Properties einzigartig mächtig für **Theming**. Eine Dark-Mode-Implementierung kann einfach `--bg` und `--text` auf `[data-theme=\"dark\"]` neu definieren, ohne einen einzigen Komponenten-Style zu berühren. `var()` sucht die Kaskade immer vom **Element, wo es verwendet wird**, nicht von wo die Kaskade gesetzt wurde.\n\n📖 Nested Scoping ermöglicht tiefes Komponentenkompositions-Theming: Eine `.sidebar`-Komponente kann Tokens neu definieren und alle Kinder — Buttons, Links, Karten — reagieren automatisch, ohne individuelle Prop-Weitergabe."
+        "expandedText": "📖 Bereichsgebundene Überschreibungen machen Custom Properties einzigartig mächtig für **Theming**. Eine Dark-Mode-Implementierung kann einfach `--bg` und `--text` auf `[data-theme=\"dark\"]` neu definieren, ohne einen einzigen Komponenten-Style zu berühren. `var()` sucht die Kaskade immer vom **Element, wo es verwendet wird**, nicht von wo die Kaskade gesetzt wurde.\n\n📖 Nested Scoping ermöglicht tiefes Komponentenkompositions-Theming: Eine `.sidebar`-Komponente kann Tokens neu definieren und alle Kinder — Buttons, Links, Karten — reagieren automatisch, ohne individuelle Prop-Weitergabe.",
+        "analogy": {
+          "title": "Schritt 3 — calc() mit Variablen: die Tabellenformel",
+          "text": [
+            "Eine Tabellenkalkulation nutzt Zellreferenzen in Formeln: =A1+B1. Eine Zelle ändern und jede Formel, die sie nutzt, aktualisiert sich.",
+            "`calc(var(--spacing) * 2)` berechnet aus einer Variable. `calc(100% - var(--sidebar-width))` ist die Hauptinhalt-Formel."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "Design-Token-System",
         "text": "Ein kleiner Satz von Custom Properties (Farben, Abstände, Radien) wird dein Designsystem. Komponenten referenzieren Tokens — einen Token ändern und die gesamte UI aktualisiert sich.",
-        "expandedText": "📖 Ein **Design-Token-System** ist eine kleine Menge benannter Werte (Farben, Abstände, Radien, Schatten), die jede visuelle Entscheidung in einer UI repräsentieren. Tokens wie `--color-primary`, `--spacing-md` und `--radius-sm` agieren als Vertrag zwischen Design und Code.\n\n📖 Tokens können aus Tools wie Figma exportiert und durch Build-Prozesse in CSS-, iOS- und Android-Konstanten umgewandelt werden — ein Token-Set zieht sich durch alle Plattformen. Systeme wie Style Dictionary von Amazon automatisieren diese Transformation."
+        "expandedText": "📖 Ein **Design-Token-System** ist eine kleine Menge benannter Werte (Farben, Abstände, Radien, Schatten), die jede visuelle Entscheidung in einer UI repräsentieren. Tokens wie `--color-primary`, `--spacing-md` und `--radius-sm` agieren als Vertrag zwischen Design und Code.\n\n📖 Tokens können aus Tools wie Figma exportiert und durch Build-Prozesse in CSS-, iOS- und Android-Konstanten umgewandelt werden — ein Token-Set zieht sich durch alle Plattformen. Systeme wie Style Dictionary von Amazon automatisieren diese Transformation.",
+        "analogy": {
+          "title": "Schritt 4 — Theme-Wechsel: den Lichtschalter umlegen",
+          "text": [
+            "Ein einzelner Schalter wechselt alle Lichter im Haus von warmem zu kühlem Weiß. Eine Änderung, hausweite Wirkung."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -1031,24 +1506,51 @@
         "animationStep": 0,
         "heading": "Das Problem mit hartcodierten Farben",
         "text": "Wenn Farben über 50 CSS-Dateien verstreut sind, bedeutet das Ändern deiner Markenfarbe grep-und-ersetzen über die gesamte Codebasis. Eine übersehene Instanz und deine UI ist inkonsistent.",
-        "expandedText": "📖 **Tokens auf `:root` zu deklarieren** macht sie in jedem Element einschließlich Pseudo-Elementen verfügbar. Die `:root`-Pseudo-Klasse hat höhere Spezifität als der `html`-Typ-Selektor — `:root { --color: red }` gewinnt gegen `html { --color: blue }`.\n\n📖 Verstreute hartkodierte Werte machen **Code-Reviews schwieriger** — Reviewer können Design-Absichten nicht erkennen, wenn numerische Werte bedeutungslos erscheinen. Benannte Tokens dokumentieren sich selbst: `color: var(--color-danger)` ist augenblicklich verständlich."
+        "expandedText": "📖 **Tokens auf `:root` zu deklarieren** macht sie in jedem Element einschließlich Pseudo-Elementen verfügbar. Die `:root`-Pseudo-Klasse hat höhere Spezifität als der `html`-Typ-Selektor — `:root { --color: red }` gewinnt gegen `html { --color: blue }`.\n\n📖 Verstreute hartkodierte Werte machen **Code-Reviews schwieriger** — Reviewer können Design-Absichten nicht erkennen, wenn numerische Werte bedeutungslos erscheinen. Benannte Tokens dokumentieren sich selbst: `color: var(--color-danger)` ist augenblicklich verständlich.",
+        "analogy": {
+          "title": "Schritt 0 — Design-Tokens: die offizielle Farbpalette",
+          "text": [
+            "Ein Markenrichtlinien-Dokument listet jede genehmigte Farbe, jeden Abstand und jeden Typografiewert auf. Designer und Entwickler arbeiten mit derselben Palette.",
+            "Design-Tokens sind benannte CSS-Variablen: `--color-brand`, `--space-4`, `--radius-md`. Nach Rolle benannt, nicht nach Wert — `--text-muted` nicht `--gray-400`."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Design-Tokens mit :root",
         "text": ":root-Variablen sind global verfügbar. Das gesamte Design-Token-System hier definieren — Farben, Abstände, Radius, Schatten. Komponenten referenzieren Tokens, niemals Rohwerte.",
-        "expandedText": "📖 **Tokens auf `:root` zu deklarieren** macht sie global verfügbar. Der Klassen-Toggle-Ansatz funktioniert nahtlos mit JavaScript-Frameworks: React `<html className={isDark ? \"dark\" : \"\"}>` — das gesamte Theme ändert sich mit einem einzelnen booleschen Toggle, null Komponenten-Updates erforderlich.\n\n📖 Design-Token-Systeme, die auf Custom Properties aufgebaut sind, integrieren sich gut mit Figma Tokens, Style Dictionary und anderen Design-zu-Code-Workflows. Token-Namen bilden eine gemeinsame Sprache zwischen Design- und Entwicklungsteams."
+        "expandedText": "📖 **Tokens auf `:root` zu deklarieren** macht sie global verfügbar. Der Klassen-Toggle-Ansatz funktioniert nahtlos mit JavaScript-Frameworks: React `<html className={isDark ? \"dark\" : \"\"}>` — das gesamte Theme ändert sich mit einem einzelnen booleschen Toggle, null Komponenten-Updates erforderlich.\n\n📖 Design-Token-Systeme, die auf Custom Properties aufgebaut sind, integrieren sich gut mit Figma Tokens, Style Dictionary und anderen Design-zu-Code-Workflows. Token-Namen bilden eine gemeinsame Sprache zwischen Design- und Entwicklungsteams.",
+        "analogy": {
+          "title": "Schritt 1 — Dark Mode: die Farbpalette tauschen",
+          "text": [
+            "Ein Bühnenbildner tauscht jede Requisite und jedes Lichtgel für eine Nachtszene aus. Die Bühnenstruktur bleibt identisch — nur die Farben ändern sich."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Dark Mode mit Klassen-Override",
         "text": "Dieselben Variablennamen in einer .dark-Klasse überschreiben. Diese Klasse in JavaScript zu <html> oder <body> hinzufügen/entfernen. Kein Komponentencode ändert sich — alle lesen dieselben Variablennamen.",
-        "expandedText": "📖 Der **Klassen-Toggle-Ansatz** funktioniert mit `localStorage`, um die Theme-Präferenz beizubehalten. Den Toggle-Zustand speichern, vor dem ersten Render lesen, um die korrekte Klasse in `<html>` anzuwenden, bevor JavaScript vollständig ausgeführt wird — das verhindert einen Flash des falschen Themes.\n\n📖 Server-gerenderte Apps können eine Theme-Präferenz aus einem Cookie lesen und die Klasse beim ersten Rendern server-seitig setzen. Das CSS Media Query `prefers-color-scheme: dark` erkennt die OS-Einstellung, kann aber von Benutzern mit einem expliziten Theme-Toggle überschrieben werden."
+        "expandedText": "📖 Der **Klassen-Toggle-Ansatz** funktioniert mit `localStorage`, um die Theme-Präferenz beizubehalten. Den Toggle-Zustand speichern, vor dem ersten Render lesen, um die korrekte Klasse in `<html>` anzuwenden, bevor JavaScript vollständig ausgeführt wird — das verhindert einen Flash des falschen Themes.\n\n📖 Server-gerenderte Apps können eine Theme-Präferenz aus einem Cookie lesen und die Klasse beim ersten Rendern server-seitig setzen. Das CSS Media Query `prefers-color-scheme: dark` erkennt die OS-Einstellung, kann aber von Benutzern mit einem expliziten Theme-Toggle überschrieben werden.",
+        "analogy": {
+          "title": "Schritt 2 — Komponenten-Tokens: der lokale Dialekt",
+          "text": [
+            "Überall Standardenglisch, aber jede Nachbarschaft hat ihren eigenen Slang. Die Komponente spricht den lokalen Dialekt — das System versteht sie trotzdem.",
+            "Variablen innerhalb eines Komponenten-Selektors scopen: `.card { --card-bg: white; --card-radius: 8px }`. Nur diese Komponente und ihre Kinder erben sie."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "prefers-color-scheme",
-        "text": "Die OS-Präferenz des Nutzers automatisch respektieren. Die Media Query liest die Systemeinstellung und aktiviert die Dunkle-Token-Overrides — kein JavaScript für den Anfangszustand nötig."
+        "text": "Die OS-Präferenz des Nutzers automatisch respektieren. Die Media Query liest die Systemeinstellung und aktiviert die Dunkle-Token-Overrides — kein JavaScript für den Anfangszustand nötig.",
+        "analogy": {
+          "title": "Schritt 3 — Utility-Klassen und Variablen: der Werkzeugkasten",
+          "text": [
+            "Ein Werkzeugkasten enthält beschriftete Werkzeuge. Das richtige Werkzeug nach Namen auswählen, nicht nach Schubladenposition merken.",
+            "Utility-Klassen wie `text-muted` mappen auf Token-Variablen. `--text-muted` einmal ändern und alle `text-muted`-Verwendungen in der App aktualisieren sich."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -1094,31 +1596,66 @@
         "animationStep": 0,
         "heading": "Kein Transform",
         "text": "Ohne Transform sitzt das Element in seinem normalen Dokumentenfluss. Transforms werden visuell angewendet — sie schieben andere Elemente nicht weg.",
-        "expandedText": "📖 Ohne Transforms erfordert das Bewegen von Elementen das Ändern von Layout-Eigenschaften wie `margin` oder `top`, was ein **vollständiges Reflow** auslöst — der Browser berechnet jede betroffene Elementposition neu. Transforms umgehen das Layout vollständig und arbeiten auf dem **composited Layer**, was sie für Animationen und Hover-Effekte erheblich effizienter macht.\n\n📖 Die GPU übernimmt die Composite-Operationen, sodass der Hauptthread von JavaScript unbeeinflusst bleibt. Das ist der Grund, warum `transform`-Animationen auch unter schwerer JS-Last flüssig laufen, während `left`/`top`-Animationen ruckeln."
+        "expandedText": "📖 Ohne Transforms erfordert das Bewegen von Elementen das Ändern von Layout-Eigenschaften wie `margin` oder `top`, was ein **vollständiges Reflow** auslöst — der Browser berechnet jede betroffene Elementposition neu. Transforms umgehen das Layout vollständig und arbeiten auf dem **composited Layer**, was sie für Animationen und Hover-Effekte erheblich effizienter macht.\n\n📖 Die GPU übernimmt die Composite-Operationen, sodass der Hauptthread von JavaScript unbeeinflusst bleibt. Das ist der Grund, warum `transform`-Animationen auch unter schwerer JS-Last flüssig laufen, während `left`/`top`-Animationen ruckeln.",
+        "analogy": {
+          "title": "Schritt 0 — translate: der Umzugswagen",
+          "text": [
+            "Ein Sofa an eine andere Stelle im Zimmer schieben. Das Sofa selbst ändert sich nicht — nur seine Position.",
+            "`transform: translate(20px, -10px)` verschiebt ein Element 20px nach rechts und 10px nach oben. Beeinflusst das Layout nicht — Nachbarn bewegen sich nicht."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "translate()",
         "text": "translate(x, y) bewegt das Element von seiner normalen Position. Anders als margin beeinflusst es das umliegende Layout nicht — andere Elemente bleiben an ihrem Platz.",
-        "expandedText": "📖 `translate()` verwendet den **eigenen Abmessungen des Elements** als Referenzrahmen, nicht das Elternelement. `translateX(50%)` verschiebt um die halbe eigene Breite des Elements nach rechts — das ermöglicht den klassischen Zentrierungs-Trick: `left: 50%; transform: translateX(-50%)` zentriert ein Element beliebiger Breite ohne diese Breite im Voraus zu kennen.\n\n📖 `translate` als eigenständige Eigenschaft (nicht als `transform`-Funktion) ist jetzt in modernen Browsern verfügbar: `translate: 50% 0`. Das ermöglicht das unabhängige Setzen von Translations ohne den gesamten `transform`-Wert zu überschreiben."
+        "expandedText": "📖 `translate()` verwendet den **eigenen Abmessungen des Elements** als Referenzrahmen, nicht das Elternelement. `translateX(50%)` verschiebt um die halbe eigene Breite des Elements nach rechts — das ermöglicht den klassischen Zentrierungs-Trick: `left: 50%; transform: translateX(-50%)` zentriert ein Element beliebiger Breite ohne diese Breite im Voraus zu kennen.\n\n📖 `translate` als eigenständige Eigenschaft (nicht als `transform`-Funktion) ist jetzt in modernen Browsern verfügbar: `translate: 50% 0`. Das ermöglicht das unabhängige Setzen von Translations ohne den gesamten `transform`-Wert zu überschreiben.",
+        "analogy": {
+          "title": "Schritt 1 — scale: das Zoomobjektiv",
+          "text": [
+            "Ein Zoomobjektiv vergrößert oder verkleinert das Motiv ohne die Kamera zu bewegen.",
+            "`transform: scale(1.5)` skaliert auf 150% vom `transform-origin` des Elements (Standard: Mitte). `scale(0.5)` halbiert es. Negative Werte spiegeln."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "rotate()",
         "text": "rotate(angle) dreht das Element um seinen transform-origin (Standard: Mitte). Positive Werte = im Uhrzeigersinn.",
-        "expandedText": "📖 Rotation erfolgt um den **transform-origin**, der standardmäßig auf dem Mittelpunkt des Elements liegt (50% 50%). Das Ändern von `transform-origin` auf `top left` lässt das Element um seine obere linke Ecke rotieren — nützlich für ausklappende Panels und Karten-Flip-Effekte.\n\n📖 Positive Grad rotieren **im Uhrzeigersinn**; negative gegen den Uhrzeigersinn. `rotate(45deg)` und `rotate(0.125turn)` sind äquivalent. Für 3D-Rotation: `rotateX()`, `rotateY()`, `rotateZ()` und die Kurzschreibweise `rotate3d()`. Die `perspective`-Eigenschaft muss am Elternelement gesetzt sein, damit 3D-Rotationen perspektivische Tiefe zeigen."
+        "expandedText": "📖 Rotation erfolgt um den **transform-origin**, der standardmäßig auf dem Mittelpunkt des Elements liegt (50% 50%). Das Ändern von `transform-origin` auf `top left` lässt das Element um seine obere linke Ecke rotieren — nützlich für ausklappende Panels und Karten-Flip-Effekte.\n\n📖 Positive Grad rotieren **im Uhrzeigersinn**; negative gegen den Uhrzeigersinn. `rotate(45deg)` und `rotate(0.125turn)` sind äquivalent. Für 3D-Rotation: `rotateX()`, `rotateY()`, `rotateZ()` und die Kurzschreibweise `rotate3d()`. Die `perspective`-Eigenschaft muss am Elternelement gesetzt sein, damit 3D-Rotationen perspektivische Tiefe zeigen.",
+        "analogy": {
+          "title": "Schritt 2 — rotate: der Uhrzeiger",
+          "text": [
+            "Ein Uhrzeiger rotiert um seinen Ankerpunkt — die Basis bleibt fest, während die Spitze einen Bogen beschreibt.",
+            "`transform: rotate(45deg)` dreht im Uhrzeigersinn. `rotateX/Y(60deg)` für 3D-Neigungen. Mit `perspective` am Elternelement für Tiefe kombinieren."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "scale()",
         "text": "scale(n) skaliert das Element visuell. 1 = Originalgröße, 1,5 = 50% größer, 0,5 = halbe Größe.",
-        "expandedText": "📖 `scale(1)` ist die **Identität** — keine visuelle Änderung. `scale(0)` kollabiert zu einem Punkt. `scale(2)` verdoppelt beide Dimensionen visuell ohne das Layout zu beeinflussen. Anders als `width`/`height` beeinflusst Skalieren den **Dokumentfluss nicht**, sodass benachbarte Elemente sich nie bewegen.\n\n⚠️ Ein subtiler Gotcha: Skalieren skaliert auch Child-Elemente — `scale(0.5)` auf einem Container mit `font-size: 16px` macht den Text aus 8px-Text. `scale()` erzeugt einen neuen Stacking Context, was z-index-Verhalten beeinflussen kann."
+        "expandedText": "📖 `scale(1)` ist die **Identität** — keine visuelle Änderung. `scale(0)` kollabiert zu einem Punkt. `scale(2)` verdoppelt beide Dimensionen visuell ohne das Layout zu beeinflussen. Anders als `width`/`height` beeinflusst Skalieren den **Dokumentfluss nicht**, sodass benachbarte Elemente sich nie bewegen.\n\n⚠️ Ein subtiler Gotcha: Skalieren skaliert auch Child-Elemente — `scale(0.5)` auf einem Container mit `font-size: 16px` macht den Text aus 8px-Text. `scale()` erzeugt einen neuen Stacking Context, was z-index-Verhalten beeinflussen kann.",
+        "analogy": {
+          "title": "Schritt 3 — skew: die kursive Neigung",
+          "text": [
+            "Kursiver Text neigt sich um einige Grad nach rechts — dieselbe Buchstabenform, geneigte Darstellung.",
+            "`transform: skewX(15deg)` neigt horizontal. `skewY` neigt vertikal. Für dekorative Formen, Parallelogramm-Karten verwendet."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "Transforms kombinieren",
         "text": "Mehrere Transform-Funktionen stapeln sich von links nach rechts. Die Reihenfolge ist wichtig — rotieren dann verschieben ist anders als verschieben dann rotieren.",
-        "expandedText": "📜 Mehrere Transform-Funktionen werden **von rechts nach links** mathematisch angewendet — `translate(100px) rotate(45deg)` rotiert zunächst, dann verschiebt entlang der ursprünglichen Achse. `rotate(45deg) translate(100px)` rotiert zunächst, dann verschiebt entlang der rotierten Achse. Das ergibt völlig unterschiedliche Ergebnisse.\n\n📖 Die CSS-`transform`-Eigenschaft als eigenständige Eigenschaften: `translate`, `rotate`, `scale` (alle modern). Diese können einzeln festgelegt werden, ohne andere Transforms zu überschreiben — das vereinfacht individuelle Transform-Animationen erheblich."
+        "expandedText": "📜 Mehrere Transform-Funktionen werden **von rechts nach links** mathematisch angewendet — `translate(100px) rotate(45deg)` rotiert zunächst, dann verschiebt entlang der ursprünglichen Achse. `rotate(45deg) translate(100px)` rotiert zunächst, dann verschiebt entlang der rotierten Achse. Das ergibt völlig unterschiedliche Ergebnisse.\n\n📖 Die CSS-`transform`-Eigenschaft als eigenständige Eigenschaften: `translate`, `rotate`, `scale` (alle modern). Diese können einzeln festgelegt werden, ohne andere Transforms zu überschreiben — das vereinfacht individuelle Transform-Animationen erheblich.",
+        "analogy": {
+          "title": "Schritt 4 — Transforms verketten: die CGI-Pipeline",
+          "text": [
+            "Eine 3D-Animationspipeline wendet Transforms nacheinander an: Modell skalieren, dann drehen, dann in Position übersetzen.",
+            "Mehrere Transforms verketten von links nach rechts: `transform: translate(50%, 50%) rotate(45deg) scale(0.8)`. Reihenfolge ist wichtig — jede Transform ist relativ zum vorherigen Zustand."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -1160,37 +1697,79 @@
         "animationStep": 0,
         "heading": "Ohne Transition",
         "text": "Ohne Transition springt jede Eigenschaftsänderung sofort. Es funktioniert, wirkt aber abrupt.",
-        "expandedText": "📖 Ohne Transitions sind Zustandsänderungen **sofortig** — der Browser malt den neuen Stil in einem einzigen Frame. Das kann bei Hover-Effekten, Modal-Erscheinungen oder Farbwechseln abrupt wirken. Transitions weisen den Browser an, zwischen zwei Stil-Zuständen über eine angegebene Dauer zu **interpolieren**.\n\n📖 Nur **animierbare Eigenschaften** können transitioniert werden. Die meisten numerischen CSS-Eigenschaften sind animierbar (`color`, `opacity`, `transform`, `width`). Diskrete Eigenschaften wie `display` können nicht interpoliert werden — der Wechsel von `display: none` zu `display: block` ist immer sofortig."
+        "expandedText": "📖 Ohne Transitions sind Zustandsänderungen **sofortig** — der Browser malt den neuen Stil in einem einzigen Frame. Das kann bei Hover-Effekten, Modal-Erscheinungen oder Farbwechseln abrupt wirken. Transitions weisen den Browser an, zwischen zwei Stil-Zuständen über eine angegebene Dauer zu **interpolieren**.\n\n📖 Nur **animierbare Eigenschaften** können transitioniert werden. Die meisten numerischen CSS-Eigenschaften sind animierbar (`color`, `opacity`, `transform`, `width`). Diskrete Eigenschaften wie `display` können nicht interpoliert werden — der Wechsel von `display: none` zu `display: block` ist immer sofortig.",
+        "analogy": {
+          "title": "Schritt 0 — Ohne Transition: der Lichtschalter",
+          "text": [
+            "Ein Lichtschalter wechselt sofort zwischen ein und aus — kein Fade, kein Aufwärmen.",
+            "Ohne `transition` sind CSS-Änderungen sofort. Ein Hover-Farbwechsel flippt in einem einzigen Frame — abrupt."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "transition: property duration hinzufügen",
         "text": "transition weist den Browser an, die benannte Eigenschaft über eine gegebene Dauer zu animieren. Die Animation spielt in beide Richtungen automatisch.",
-        "expandedText": "📖 Die Transition-Regel sollte auf dem **Basiselement** stehen, nicht im `:hover`-Zustand. `button { transition: background 0.3s; }` bedeutet, dass die Transition beim Eintreten und Verlassen des Hover-Zustands gilt. Legt man `transition` nur in `:hover`, transitioniert das Element beim Hover-Eintreten flüssig, springt aber beim Verlassen sofort zurück.\n\n📖 Mehrere Eigenschaften können mit einem einzigen Transition-Wert festgelegt werden: `transition: color 0.2s, background 0.3s, transform 0.2s ease-out`. Jede Eigenschaft kann eine eigene Dauer und Timing-Funktion haben."
+        "expandedText": "📖 Die Transition-Regel sollte auf dem **Basiselement** stehen, nicht im `:hover`-Zustand. `button { transition: background 0.3s; }` bedeutet, dass die Transition beim Eintreten und Verlassen des Hover-Zustands gilt. Legt man `transition` nur in `:hover`, transitioniert das Element beim Hover-Eintreten flüssig, springt aber beim Verlassen sofort zurück.\n\n📖 Mehrere Eigenschaften können mit einem einzigen Transition-Wert festgelegt werden: `transition: color 0.2s, background 0.3s, transform 0.2s ease-out`. Jede Eigenschaft kann eine eigene Dauer und Timing-Funktion haben.",
+        "analogy": {
+          "title": "Schritt 1 — transition property duration: der Dimmer-Schalter",
+          "text": [
+            "Ein Dimmer lässt Licht sanft über 300ms ein- oder ausblenden. Du sagst ihm, was animiert werden soll und wie lange.",
+            "`transition: background 0.3s` weist den Browser an, den Hintergrund über 300ms zu animieren, wenn er sich ändert."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "transition: all",
         "text": "all animiert jede sich ändernde Eigenschaft. Bequem, kann aber langsam sein — für Performance lieber spezifische Eigenschaften aufführen.",
-        "expandedText": "📖 `transition: all` kann Transitions bei Eigenschaften auslösen, die man nicht animieren wollte, wie `color` oder `font-size`, und hat einen **Leistungskosten**, weil der Browser alle Eigenschaften überwachen muss. Im Produktiveinsatz immer exakte Eigenschaften angeben: `transition: background 0.2s, transform 0.3s`.\n\n✅ **Nicht alle CSS-Eigenschaften sind animierbar**. `display`, `visibility` (teilweise) und Eigenschaften, die ein Layout-Reflow auslösen, werden nicht interpoliert. `opacity: 0` + `pointer-events: none` ist das Pattern für \"visuell versteckt aber transitionierbar\"."
+        "expandedText": "📖 `transition: all` kann Transitions bei Eigenschaften auslösen, die man nicht animieren wollte, wie `color` oder `font-size`, und hat einen **Leistungskosten**, weil der Browser alle Eigenschaften überwachen muss. Im Produktiveinsatz immer exakte Eigenschaften angeben: `transition: background 0.2s, transform 0.3s`.\n\n✅ **Nicht alle CSS-Eigenschaften sind animierbar**. `display`, `visibility` (teilweise) und Eigenschaften, die ein Layout-Reflow auslösen, werden nicht interpoliert. `opacity: 0` + `pointer-events: none` ist das Pattern für \"visuell versteckt aber transitionierbar\".",
+        "analogy": {
+          "title": "Schritt 2 — transition all: alles animieren",
+          "text": [
+            "Ein Dimmer, der mit allen Lichtern verbunden ist — praktisch, aber nicht alles braucht einen Fade.",
+            "`transition: all 0.3s` animiert jede sich ändernde Eigenschaft. Besser spezifische Eigenschaften benennen für bessere Performance."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Timing-Funktionen",
         "text": "Die Timing-Funktion steuert das Tempo. ease-in-out beginnt langsam, beschleunigt, dann verlangsamt — das natürlichste Gefühl für UI.",
-        "expandedText": "📖 **Timing-Funktionen** definieren die Geschwindigkeitskurve der Animation. `ease` startet schnell und verlangsamt sich — fühlt sich für die meisten UI-Aktionen natürlich an. `ease-in` beschleunigt in die Bewegung — gut für Elemente, die den Bildschirm verlassen. `ease-out` verlangsamt sich in die Ruhe — gut für Elemente, die eintreten. `ease-in-out` ist an beiden Enden langsam.\n\n📖 `cubic-bezier(x1, y1, x2, y2)` definiert benutzerdefinierte Kurven. Chrome DevTools hat einen visuellen Kurven-Editor. `steps(n)` erzeugt eine diskrete schrittweise Änderung — nützlich für Sprite-Animationen und Ladeindikator-Ticks."
+        "expandedText": "📖 **Timing-Funktionen** definieren die Geschwindigkeitskurve der Animation. `ease` startet schnell und verlangsamt sich — fühlt sich für die meisten UI-Aktionen natürlich an. `ease-in` beschleunigt in die Bewegung — gut für Elemente, die den Bildschirm verlassen. `ease-out` verlangsamt sich in die Ruhe — gut für Elemente, die eintreten. `ease-in-out` ist an beiden Enden langsam.\n\n📖 `cubic-bezier(x1, y1, x2, y2)` definiert benutzerdefinierte Kurven. Chrome DevTools hat einen visuellen Kurven-Editor. `steps(n)` erzeugt eine diskrete schrittweise Änderung — nützlich für Sprite-Animationen und Ladeindikator-Ticks.",
+        "analogy": {
+          "title": "Schritt 3 — Timing-Funktionen: das Achterbahn-Profil",
+          "text": [
+            "Manche Achterbahnen starten langsam und beschleunigen; andere fallen sofort ab. Das Geschwindigkeitsprofil ist Teil des Erlebnisses.",
+            "Timing-Funktionen: `ease`, `linear`, `ease-in`, `ease-out`, `cubic-bezier()` für benutzerdefinierte Kurven."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "Mehrere Transitions",
         "text": "Durch Komma trennen, um jeder Eigenschaft eine andere Dauer zu geben. Häufig: Farbe transitiert langsamer als transform.",
-        "expandedText": "📖 **Unterschiedliche Dauern pro Eigenschaft** erzeugen natürlich wirkende Interaktionen. Ein Button-Hover kann `background` schnell (0,15s) und `box-shadow` langsamer (0,25s) transitionieren, um Tiefe zu geben. Kommagetrennte Transitions stapeln: `transition: background 0.15s ease, transform 0.2s ease, box-shadow 0.25s ease`.\n\n📖 `transition-delay` kann dazu verwendet werden, Sequencing zu erzeugen: Das erste Element beginnt sofort, das zweite nach 0,1s, das dritte nach 0,2s. Das erzeugt gestaffelte \"Kaskaden\"-Effekte ohne JavaScript."
+        "expandedText": "📖 **Unterschiedliche Dauern pro Eigenschaft** erzeugen natürlich wirkende Interaktionen. Ein Button-Hover kann `background` schnell (0,15s) und `box-shadow` langsamer (0,25s) transitionieren, um Tiefe zu geben. Kommagetrennte Transitions stapeln: `transition: background 0.15s ease, transform 0.2s ease, box-shadow 0.25s ease`.\n\n📖 `transition-delay` kann dazu verwendet werden, Sequencing zu erzeugen: Das erste Element beginnt sofort, das zweite nach 0,1s, das dritte nach 0,2s. Das erzeugt gestaffelte \"Kaskaden\"-Effekte ohne JavaScript.",
+        "analogy": {
+          "title": "Schritt 4 — Mehrere Transitions: verschiedene Geschwindigkeiten pro Eigenschaft",
+          "text": [
+            "Bühnenbeleuchtung kann Scheinwerfer mit verschiedenen Geschwindigkeiten ein- und ausblenden. Jedes Licht hat sein eigenes Timing.",
+            "Kommagetrennt: `transition: background 0.3s ease, transform 0.15s ease-out`. Diese Präzision lässt Interaktionen hochwertig wirken."
+          ]
+        }
       },
       {
         "animationStep": 5,
         "heading": "Die richtigen Eigenschaften animieren",
         "text": "Nicht alle CSS-Eigenschaften sind gleich. transform und opacity laufen auf dem GPU-Compositor-Thread — sie lösen niemals Neuberechnungen des Layouts aus. width, height, top, left erzwingen bei jedem Frame einen Reflow und verursachen Ruckeln. translate() statt left/top für Bewegungen bevorzugen.",
-        "expandedText": "📖 Die Browser-Rendering-Pipeline: **JS → Style → Layout → Paint → Composite**. Eigenschaften im Layout-Schritt zu animieren (`width`, `margin`, `padding`) zwingt die gesamte Pipeline, bei jedem Frame neu durchzulaufen — 60fps bedeutet 16ms pro Frame, was fast kein Budget übrig lässt. Eigenschaften im Composite-Schritt (`transform`, `opacity`) überspringen Layout und Paint vollständig.\n\n📖 `will-change: transform` weist den Browser an, das Element auf einen eigenen Layer zu fördern, bevor die Transition startet. Das eliminiert das Hochstufen-Jucken, kann aber den Speicherverbrauch erhöhen. Nur bei nachgewiesenen Performance-Problemen verwenden."
+        "expandedText": "📖 Die Browser-Rendering-Pipeline: **JS → Style → Layout → Paint → Composite**. Eigenschaften im Layout-Schritt zu animieren (`width`, `margin`, `padding`) zwingt die gesamte Pipeline, bei jedem Frame neu durchzulaufen — 60fps bedeutet 16ms pro Frame, was fast kein Budget übrig lässt. Eigenschaften im Composite-Schritt (`transform`, `opacity`) überspringen Layout und Paint vollständig.\n\n📖 `will-change: transform` weist den Browser an, das Element auf einen eigenen Layer zu fördern, bevor die Transition startet. Das eliminiert das Hochstufen-Jucken, kann aber den Speicherverbrauch erhöhen. Nur bei nachgewiesenen Performance-Problemen verwenden.",
+        "analogy": {
+          "title": "Schritt 5 — Die richtigen Eigenschaften animieren: die GPU-Autobahn",
+          "text": [
+            "Sportwagen nutzen die Autobahn für Geschwindigkeit — nicht die Landstraße. Bestimmte CSS-Eigenschaften haben eine GPU-Schnellspur.",
+            "`transform` und `opacity` animieren auf der GPU — flüssig bei 60fps. `width`, `height`, `top`, `left` vermeiden — sie lösen jeden Frame eine Layout-Neuberechnung aus."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -1227,37 +1806,79 @@
         "animationStep": 0,
         "heading": "Animationen vs. Transitions",
         "text": "Transitions reagieren auf Zustandsänderungen. Animationen laufen von selbst — keine Benutzerinteraktion nötig. Sie haben definierte Keyframes, können schleifen und pausieren.",
-        "expandedText": "📖 **Transitions** sind reaktiv — sie aktivieren nur, wenn sich eine CSS-Eigenschaft aufgrund eines Triggers ändert (Hover, Klassen-Toggle, Fokus). **Animationen** sind eigengesteuert — sie laufen auf ihrem eigenen Zeitplan unabhängig vom Elementzustand, können loopen, reversieren, pausieren und mehrere Phasen verketten.\n\n📖 Transitions für **UI-Feedback** verwenden (Hover-Zustand, Formular-Validierung, Tab-Wechsel). Animationen für **eigenständige Bewegung** verwenden (Loader, Hintergrundeffekte, Einführungs-Animationen, Infografiken). Der Test: Braucht die Bewegung einen Trigger? Transition. Soll sie unabhängig ablaufen? Animation."
+        "expandedText": "📖 **Transitions** sind reaktiv — sie aktivieren nur, wenn sich eine CSS-Eigenschaft aufgrund eines Triggers ändert (Hover, Klassen-Toggle, Fokus). **Animationen** sind eigengesteuert — sie laufen auf ihrem eigenen Zeitplan unabhängig vom Elementzustand, können loopen, reversieren, pausieren und mehrere Phasen verketten.\n\n📖 Transitions für **UI-Feedback** verwenden (Hover-Zustand, Formular-Validierung, Tab-Wechsel). Animationen für **eigenständige Bewegung** verwenden (Loader, Hintergrundeffekte, Einführungs-Animationen, Infografiken). Der Test: Braucht die Bewegung einen Trigger? Transition. Soll sie unabhängig ablaufen? Animation.",
+        "analogy": {
+          "title": "Schritt 0 — Animationen vs. Transitions: Wecker vs. Uhr",
+          "text": [
+            "Eine Uhr läuft kontinuierlich. Ein Wecker klingelt reaktiv, wenn er ausgelöst wird.",
+            "Transitions spielen nur, wenn sich eine Eigenschaft ändert. Animationen laufen nach einem Keyframe-Skript und können loopen, rückwärts spielen, ohne Benutzerinteraktion starten."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "@keyframes",
         "text": "Die Animation mit @keyframes + einem Namen definieren. from/to für zwei Zustände verwenden, oder Prozentsätze (0%, 50%, 100%) für mehrere Stopps.",
-        "expandedText": "📖 `@keyframes`-Blöcke sind **wiederverwendbare Deklarationen** — dieselbe Keyframe-Animation kann auf mehrere Elemente mit unterschiedlichen Dauern, Verzögerungen und Timing-Funktionen angewendet werden. `from` und `to` sind Aliase für `0%` und `100%`. Zwischenstopps wie `25%`, `75%` hinzufügen, um mehrstufige Bewegungen zu erzeugen.\n\n📖 Die **`animation-fill-mode`-Eigenschaft** steuert den Zustand des Elements außerhalb der Animationszeitlinie. `forwards` hält den letzten Keyframe nach Abschluss. `backwards` wendet den ersten Keyframe während der Verzögerungsphase an. `both` kombiniert beides."
+        "expandedText": "📖 `@keyframes`-Blöcke sind **wiederverwendbare Deklarationen** — dieselbe Keyframe-Animation kann auf mehrere Elemente mit unterschiedlichen Dauern, Verzögerungen und Timing-Funktionen angewendet werden. `from` und `to` sind Aliase für `0%` und `100%`. Zwischenstopps wie `25%`, `75%` hinzufügen, um mehrstufige Bewegungen zu erzeugen.\n\n📖 Die **`animation-fill-mode`-Eigenschaft** steuert den Zustand des Elements außerhalb der Animationszeitlinie. `forwards` hält den letzten Keyframe nach Abschluss. `backwards` wendet den ersten Keyframe während der Verzögerungsphase an. `both` kombiniert beides.",
+        "analogy": {
+          "title": "Schritt 1 — @keyframes: das Filmskript",
+          "text": [
+            "Ein Filmskript listet jede Szene auf: Szene 1 einblenden, Szene 100 ausblenden. Der Regisseur folgt dem Skript.",
+            "@keyframes definiert das Animationsskript mit `from`/`to` oder Prozent-Stopps. `@keyframes pulse { 0% { opacity:1 } 50% { opacity:0.3 } 100% { opacity:1 } }`."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Mit animation-Kurzform anwenden",
         "text": "Die animation-Kurzform nimmt Name, Dauer, Timing und mehr. Ohne Dauer spielt die Animation in 0 Sekunden und ist unsichtbar.",
-        "expandedText": "⚠️ Die `animation`-Kurzschreibweise enthält 8 Eigenschaften: **Name, Dauer, Timing-Funktion, Verzögerung, Iterationszähler, Richtung, Fill-Mode, Play-State**. Der häufigste Fehler ist das Weglassen der `Dauer` — der Standard ist `0s`, was die Animation scheinbar nichts tun lässt.\n\n📖 Bei mehreren Animationen auf einem Element kommagetrennte `animation`-Werte verwenden: `animation: spin 1s linear infinite, pulse 2s ease-in-out alternate`. Jede Animation läuft unabhängig auf ihrem eigenen Zeitplan."
+        "expandedText": "⚠️ Die `animation`-Kurzschreibweise enthält 8 Eigenschaften: **Name, Dauer, Timing-Funktion, Verzögerung, Iterationszähler, Richtung, Fill-Mode, Play-State**. Der häufigste Fehler ist das Weglassen der `Dauer` — der Standard ist `0s`, was die Animation scheinbar nichts tun lässt.\n\n📖 Bei mehreren Animationen auf einem Element kommagetrennte `animation`-Werte verwenden: `animation: spin 1s linear infinite, pulse 2s ease-in-out alternate`. Jede Animation läuft unabhängig auf ihrem eigenen Zeitplan.",
+        "analogy": {
+          "title": "Schritt 2 — animation shorthand: die Play-Button-Einstellungen",
+          "text": [
+            "Ein Mediaplayer hat Einstellungen: Track, Dauer, Wiederholanzahl, Startverzögerung. Konfigurieren, bevor man auf Play drückt.",
+            "`animation: pulse 2s ease-in-out infinite` verbindet `@keyframes` mit dem Element. Reihenfolge: Name, Dauer, Timing, Verzögerung, Anzahl, Richtung, Fill-Mode."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Mit iteration-count wiederholen",
         "text": "animation-iteration-count: infinite schleift für immer. alternate verwenden, um vorwärts dann rückwärts zu spielen — erzeugt sanftes Bouncing ohne Sprünge.",
-        "expandedText": "📖 `iteration-count: infinite` ist Standard für Loader und Hintergrundeffekte. Endliche Zählwerte wie `3` spielen die Animation so oft ab und stoppen — kombiniert mit `fill-mode: forwards` hält das Element die letzten Keyframe-Styles nach Abschluss. Fraktionale Werte wie `2.5` spielen 2,5 Zyklen ab — nützlich für Animationen, die auf einem Zwischen-Keyframe-State enden sollen.\n\n📖 `animation-direction: alternate` kehrt die Animation bei jeder ungeraden Iteration um — erzeugt eine nahtlose Hin-und-Her-Bewegung ohne das Abrupte eines Zurückspringens. `alternate-reverse` beginnt in umgekehrter Richtung."
+        "expandedText": "📖 `iteration-count: infinite` ist Standard für Loader und Hintergrundeffekte. Endliche Zählwerte wie `3` spielen die Animation so oft ab und stoppen — kombiniert mit `fill-mode: forwards` hält das Element die letzten Keyframe-Styles nach Abschluss. Fraktionale Werte wie `2.5` spielen 2,5 Zyklen ab — nützlich für Animationen, die auf einem Zwischen-Keyframe-State enden sollen.\n\n📖 `animation-direction: alternate` kehrt die Animation bei jeder ungeraden Iteration um — erzeugt eine nahtlose Hin-und-Her-Bewegung ohne das Abrupte eines Zurückspringens. `alternate-reverse` beginnt in umgekehrter Richtung.",
+        "analogy": {
+          "title": "Schritt 3 — iteration-count: N-mal abspielen",
+          "text": [
+            "Eine Jukebox spielt einmal, auf Wiederholung oder genau dreimal. Du wählst.",
+            "`animation-iteration-count: infinite` loopt ewig. `3` spielt dreimal. `alternate` spielt vorwärts dann rückwärts bei Wiederholung."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "animation-fill-mode",
         "text": "fill-mode steuert den Zustand des Elements nach der Animation. forwards hält den letzten Keyframe — das Element bleibt dort, wo die Animation endete.",
-        "expandedText": "📖 `animation-fill-mode` steuert den Stil des Elements **außerhalb der Animationszeitlinie**. Ohne es springt das Element zum Ende der Animation sofort zu seinen Vor-Animations-Styles zurück — was einen abrupten Flash erzeugt. `forwards` hält die letzten Keyframe-Styles nach Abschluss.\n\n📖 `backwards` wendet die **ersten Keyframe-Styles während der Verzögerungsphase** an — das Element übernimmt den `from`-Zustand sofort, hält ihn dann, bis die Verzögerung abläuft. Ohne `backwards` ist das Element während der Verzögerung in seinem Standard-Zustand."
+        "expandedText": "📖 `animation-fill-mode` steuert den Stil des Elements **außerhalb der Animationszeitlinie**. Ohne es springt das Element zum Ende der Animation sofort zu seinen Vor-Animations-Styles zurück — was einen abrupten Flash erzeugt. `forwards` hält die letzten Keyframe-Styles nach Abschluss.\n\n📖 `backwards` wendet die **ersten Keyframe-Styles während der Verzögerungsphase** an — das Element übernimmt den `from`-Zustand sofort, hält ihn dann, bis die Verzögerung abläuft. Ohne `backwards` ist das Element während der Verzögerung in seinem Standard-Zustand.",
+        "analogy": {
+          "title": "Schritt 4 — animation-fill-mode: Kostüm vor und nach",
+          "text": [
+            "Ein Schauspieler trägt normale Kleidung vor und nach der Vorstellung. `forwards` bedeutet im Kostüm bleiben nach dem letzten Vorhang.",
+            "`animation-fill-mode: forwards` hält den Endzustand. Ohne es springt das Element zu den ursprünglichen Styles zurück, wenn die Animation endet."
+          ]
+        }
       },
       {
         "animationStep": 5,
         "heading": "animation-fill-mode",
         "text": "Ohne fill-mode springt ein Element nach dem Ende der Animation in seinen ursprünglichen Zustand zurück. forwards hält den letzten Keyframe angewendet. backwards wendet den ersten Keyframe sofort an (vor Verzögerung). both macht beides.",
-        "expandedText": "📖 `animation-fill-mode: both` ist der **empfohlene Standard** für die meisten Animationen mit Verzögerungen. Es kombiniert `backwards`-Verhalten (erster Keyframe während der Verzögerung) mit `forwards` (letzter Keyframe nach Abschluss) für ein nahtloses Erlebnis von Anfang bis Ende.\n\n📖 Für **gestaffelte Listenanmimationen** werden Verzögerungen mit CSS Custom Properties gesetzt: `animation-delay: calc(var(--index) * 0.1s)` und `style=\"--index: 3\"` im HTML. Kein JavaScript für die Timing-Logik erforderlich — CSS berechnet die Verzögerung für jedes Element."
+        "expandedText": "📖 `animation-fill-mode: both` ist der **empfohlene Standard** für die meisten Animationen mit Verzögerungen. Es kombiniert `backwards`-Verhalten (erster Keyframe während der Verzögerung) mit `forwards` (letzter Keyframe nach Abschluss) für ein nahtloses Erlebnis von Anfang bis Ende.\n\n📖 Für **gestaffelte Listenanmimationen** werden Verzögerungen mit CSS Custom Properties gesetzt: `animation-delay: calc(var(--index) * 0.1s)` und `style=\"--index: 3\"` im HTML. Kein JavaScript für die Timing-Logik erforderlich — CSS berechnet die Verzögerung für jedes Element.",
+        "analogy": {
+          "title": "Schritt 5 — direction und play-state: pausieren und umkehren",
+          "text": [
+            "Ein Film, den du mitten in einer Szene pausieren und fortsetzen oder rückwärts abspielen kannst.",
+            "`animation-play-state: paused` pausiert mitten in der Animation. `animation-direction: reverse` spielt Keyframes rückwärts."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -1297,31 +1918,66 @@
         "animationStep": 0,
         "heading": "Utility-First-Ansatz",
         "text": "In Tailwind stylt man Elemente, indem man kleine zweckgebundene Klassen direkt auf dem Element kombiniert, anstatt benutzerdefiniertes CSS zu schreiben. Jede Klasse macht genau eine Sache: p-4 fügt Padding hinzu, text-blue-500 setzt die Farbe, flex aktiviert Flexbox. Kein Benennen von CSS-Klassen erforderlich.",
-        "expandedText": "📖 Jede **Tailwind-Klasse** wendet genau eine CSS-Regel an. Die Komposition vieler kleiner Klassen gibt vollständige Kontrolle ohne benutzerdefinierte Selektoren schreiben zu müssen. Es gibt keine Namens-Entscheidungen, keinen Kontextwechsel zwischen HTML- und CSS-Dateien und keine Spezifitätskonflikte.\n\n⚠️ Tailwind generiert nur die Klassen, die **in deinem Code verwendet** werden — die Ausgabe-CSS-Dateigröße korreliert mit der Anzahl der verwendeten Utilities, nicht mit der Gesamtgröße des Frameworks. Ein typisches Produktionsbuild beträgt 5–20KB gzipped, verglichen mit Bootstrap's ~30KB Basis."
+        "expandedText": "📖 Jede **Tailwind-Klasse** wendet genau eine CSS-Regel an. Die Komposition vieler kleiner Klassen gibt vollständige Kontrolle ohne benutzerdefinierte Selektoren schreiben zu müssen. Es gibt keine Namens-Entscheidungen, keinen Kontextwechsel zwischen HTML- und CSS-Dateien und keine Spezifitätskonflikte.\n\n⚠️ Tailwind generiert nur die Klassen, die **in deinem Code verwendet** werden — die Ausgabe-CSS-Dateigröße korreliert mit der Anzahl der verwendeten Utilities, nicht mit der Gesamtgröße des Frameworks. Ein typisches Produktionsbuild beträgt 5–20KB gzipped, verglichen mit Bootstrap's ~30KB Basis.",
+        "analogy": {
+          "title": "Schritt 0 — Utility-First: mit vorgefertigten Steinen bauen",
+          "text": [
+            "Lego stellt vorgefertigte Steine bereit. Du kombinierst sie zum Bauen — kein benutzerdefiniertes Formen für gängige Formen.",
+            "Statt `.card { padding: 16px }` gibt Tailwind dir `p-4` direkt im HTML. Jede Klasse tut eine Sache. Klassen kombinieren, um Designs zu bauen."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Zustands-Varianten",
         "text": "Jede Utility kann mit einer Zustands-Variante kombiniert werden. hover:, focus:, active: reagieren auf Maus-/Tastaturinteraktionen. disabled: und checked: gelten für Formularelemente. focus-visible: wird nur bei Tastaturfokus aktiviert — ideal für barrierefreie Outlines ohne Mausring. Varianten können gestapelt werden: hover:disabled:opacity-50.",
-        "expandedText": "📖 **Benutzerdefiniertes CSS für jede Komponente schreiben** erfordert das Benennen von Klassen, das Wechseln von Dateien und das Verwalten von Spezifität. Utility-First-CSS eliminiert diese Entscheidungen, indem es kleine einzweckige Klassen direkt in HTML anwendet.\n\n📖 Der Kompromiss sind längere Klassenlisten in HTML. Das kann durch das Extrahieren wiederverwendbarer Komponentenklassen mit `@apply` in einem CSS-Block verwaltet werden, oder durch Framework-Komponenten (React, Vue), die das Markup kapseln."
+        "expandedText": "📖 **Benutzerdefiniertes CSS für jede Komponente schreiben** erfordert das Benennen von Klassen, das Wechseln von Dateien und das Verwalten von Spezifität. Utility-First-CSS eliminiert diese Entscheidungen, indem es kleine einzweckige Klassen direkt in HTML anwendet.\n\n📖 Der Kompromiss sind längere Klassenlisten in HTML. Das kann durch das Extrahieren wiederverwendbarer Komponentenklassen mit `@apply` in einem CSS-Block verwaltet werden, oder durch Framework-Komponenten (React, Vue), die das Markup kapseln.",
+        "analogy": {
+          "title": "Schritt 1 — CSS-Frameworks: Standardgerüste",
+          "text": [
+            "Bauunternehmen nutzen Standardgerüste, die sie hunderte Male aufgestellt haben. Keine benutzerdefinierte Fertigung für Standardprobleme.",
+            "CSS-Frameworks lösen dieselben sich wiederholenden Probleme: Abstände, Typografie, responsive Breakpoints. Tailwind stellt Bausteine bereit — kein verstecktes Design-Diktat."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Gängige Utility-Klassen",
         "text": "Tailwind deckt Abstände (p-, m-), Größen (w-, h-), Typografie (text-, font-), Farben (bg-, text-, border-), Flexbox/Grid (flex, grid, items-, justify-), Rahmen (rounded-, border-) und Effekte (shadow-, opacity-) ab. Die vollständige Liste ist in den offiziellen Docs.",
-        "expandedText": "📖 Die `tailwind.config.js`-Datei erweitert oder **überschreibt das Standard-Design-System**. Benutzerdefinierte Farben, Abstandswerte, Schriften und Breakpoints ersetzen oder ergänzen die Standardwerte. `theme.extend` fügt den Standards hinzu; `theme` ersetzt sie vollständig.\n\n📖 Der JIT (Just-In-Time)-Compiler scannt `content`-Pfade für Klassen und generiert nur die CSS, die tatsächlich verwendet werden. Das ermöglicht beliebige Werte in eckigen Klammern (`w-[347px]`, `text-[#1da1f2]`) ohne Konfiguration hinzuzufügen."
+        "expandedText": "📖 Die `tailwind.config.js`-Datei erweitert oder **überschreibt das Standard-Design-System**. Benutzerdefinierte Farben, Abstandswerte, Schriften und Breakpoints ersetzen oder ergänzen die Standardwerte. `theme.extend` fügt den Standards hinzu; `theme` ersetzt sie vollständig.\n\n📖 Der JIT (Just-In-Time)-Compiler scannt `content`-Pfade für Klassen und generiert nur die CSS, die tatsächlich verwendet werden. Das ermöglicht beliebige Werte in eckigen Klammern (`w-[347px]`, `text-[#1da1f2]`) ohne Konfiguration hinzuzufügen.",
+        "analogy": {
+          "title": "Schritt 2 — Setup: CDN vs. npm",
+          "text": [
+            "Online-Version für schnelle Demos (CDN — kein Setup). Lokal installieren für Produktion (npm — versions-gesperrt, tree-shaken).",
+            "CDN: ein Script-Tag hinzufügen, sofort einsatzbereit. npm: tailwindcss installieren, konfigurieren, Build ausführen. Gut für Produktion — entfernt ungenutzte Styles."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Setup: CDN und npm",
         "text": "Für schnelles Prototyping das CDN-Play-Skript zum HTML hinzufügen. Für Produktion via npm installieren und ein PostCSS-Plugin oder die Vite/CLI-Integration verwenden — dies ermöglicht das Bereinigen ungenutzter Stile und das Anpassen des Designsystems via tailwind.config.js.",
-        "expandedText": "📖 Die Tailwind-**Design-Skala** bietet ein konsistentes System: Farben haben 10 Schattierungen (50, 100, 200...900), Abstände verwenden eine 4px-Basiseinheit (p-1=4px, p-2=8px, p-4=16px), und Rahmenradien, Schatten und Schriftgrößen folgen alle vordefinierten Skalen.\n\n📖 Beliebige Werte in eckigen Klammern (`w-[347px]`, `bg-[#1da1f2]`) ermöglichen One-Off-Werte ohne die Konfiguration anzufassen. Durch regelmäßige Nutzung können diese auf Token-Namen verweisen: `bg-[--brand-color]` liest eine CSS Custom Property."
+        "expandedText": "📖 Die Tailwind-**Design-Skala** bietet ein konsistentes System: Farben haben 10 Schattierungen (50, 100, 200...900), Abstände verwenden eine 4px-Basiseinheit (p-1=4px, p-2=8px, p-4=16px), und Rahmenradien, Schatten und Schriftgrößen folgen alle vordefinierten Skalen.\n\n📖 Beliebige Werte in eckigen Klammern (`w-[347px]`, `bg-[#1da1f2]`) ermöglichen One-Off-Werte ohne die Konfiguration anzufassen. Durch regelmäßige Nutzung können diese auf Token-Namen verweisen: `bg-[--brand-color]` liest eine CSS Custom Property.",
+        "analogy": {
+          "title": "Schritt 3 — Häufige Utility-Klassen: die Standard-Palette",
+          "text": [
+            "Eine Standard-Farbpalette: Primär-Blau, Neutral-Grau, semantisches Rot und Grün. Alle nutzen dieselben Tokens.",
+            "Kern-Klassen: Abstände (`p-4`, `m-2`, `gap-3`), Größen (`w-full`, `h-screen`), Farben (`bg-blue-500`), Typografie (`text-lg`, `font-bold`). Diese decken 90% der Bedürfnisse ab."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "Warum CSS-Frameworks?",
         "text": "Reines CSS hat Schwächen: repetitive Regeln, Namenskonventionen (BEM) und die Pflege von Media Queries in großen Codebasen. Utility-first-Frameworks lösen dies, indem sie Single-Purpose-Klassen direkt im HTML anwenden — keine Benennungsentscheidungen, kein Kontextwechsel zwischen Dateien.",
-        "expandedText": "📖 Tailwind ist **Mobile-First**: Nicht-präfixierte Klassen gelten für alle Bildschirmgrößen, und Breakpoint-Präfixe gelten ab dieser Breite aufwärts. `text-sm md:text-base lg:text-xl` bedeutet kleiner Text auf Mobilgeräten, Basis auf Tablets, groß auf Desktops.\n\n📖 Breakpoint-Präfixe kombinieren sich mit Zustandsvarianten: `md:hover:bg-blue-600` aktiviert den Hover-Stil nur ab dem mittleren Breakpoint. Beliebige Breakpoints: `min-[800px]:flex` oder `max-[600px]:hidden` für einmalige Breakpoints ohne Konfigurationsänderung."
+        "expandedText": "📖 Tailwind ist **Mobile-First**: Nicht-präfixierte Klassen gelten für alle Bildschirmgrößen, und Breakpoint-Präfixe gelten ab dieser Breite aufwärts. `text-sm md:text-base lg:text-xl` bedeutet kleiner Text auf Mobilgeräten, Basis auf Tablets, groß auf Desktops.\n\n📖 Breakpoint-Präfixe kombinieren sich mit Zustandsvarianten: `md:hover:bg-blue-600` aktiviert den Hover-Stil nur ab dem mittleren Breakpoint. Beliebige Breakpoints: `min-[800px]:flex` oder `max-[600px]:hidden` für einmalige Breakpoints ohne Konfigurationsänderung.",
+        "analogy": {
+          "title": "Schritt 4 — Responsive Breakpoints: der automatische Grundriss-Wechsel",
+          "text": [
+            "Ein smartes Büro, das sich je nach Mitarbeiteranzahl umordnet.",
+            "Tailwind-Breakpoints sind prefix-basiert: `md:grid-cols-2` gilt nur ab 768px. Mobile-First: Klassen ohne Prefix gelten für alle Größen; Klassen mit Prefix überschreiben für größere."
+          ]
+        }
       },
       {
         "animationStep": 5,
@@ -1418,25 +2074,52 @@
         "animationStep": 0,
         "heading": "Die Abstandsskala",
         "text": "Tailwind verwendet eine konsistente 4px-Basiseinheit. `p-1` = 4px, `p-2` = 8px, `p-4` = 16px, `p-8` = 32px. Alle Padding-, Margin-, Gap- und Größen-Utilities teilen dieselbe Skala — räumliche Konsistenz im gesamten UI ohne Aufwand.",
-        "expandedText": "📖 Die **4px-Abstands-Skala** erzeugt harmonische Layouts ohne beliebige Werte. Alle Padding-, Margin-, Gap- und Sizing-Utilities verwenden dieselbe Skala — deshalb \"passen\" Tailwind-Layouts ohne manuelle Berechnungen.\n\n📖 `space-x-4` und `space-y-4` fügen Margin zwischen Kindern mit CSS-Geschwister-Selektoren hinzu (`> * + *`), ohne das erste oder letzte Element zu berühren. Das ist oft sauberer als jedem Kind Margin hinzuzufügen. `gap-4` auf Flex- oder Grid-Containern ist die modernere Alternative."
+        "expandedText": "📖 Die **4px-Abstands-Skala** erzeugt harmonische Layouts ohne beliebige Werte. Alle Padding-, Margin-, Gap- und Sizing-Utilities verwenden dieselbe Skala — deshalb \"passen\" Tailwind-Layouts ohne manuelle Berechnungen.\n\n📖 `space-x-4` und `space-y-4` fügen Margin zwischen Kindern mit CSS-Geschwister-Selektoren hinzu (`> * + *`), ohne das erste oder letzte Element zu berühren. Das ist oft sauberer als jedem Kind Margin hinzuzufügen. `gap-4` auf Flex- oder Grid-Containern ist die modernere Alternative.",
+        "analogy": {
+          "title": "Schritt 0 — Abstands-Skala: das Standard-Lineal",
+          "text": [
+            "Ein Architekten-Lineal hat feste Abstufungen. Man wählt immer vom Lineal — Konsistenz ist ins Werkzeug eingebaut.",
+            "Tailwind-Abstände basieren auf 4px-Schritten: `p-1` = 4px, `p-4` = 16px, `p-8` = 32px. Die Skala schafft visuellen Rhythmus."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Größen & Zentrierung",
         "text": "`w-full` macht ein Element 100% breit, `w-1/2` ist 50%, `w-64` ist 256px. Mit `max-w-*` die Breite begrenzen: `max-w-sm` (384px), `max-w-xl` (576px), `max-w-screen-lg` (1024px). Block-Elemente mit `mx-auto` zentrieren.",
-        "expandedText": "📖 `max-w-*`-Werte folgen der Abstands-Skala, verwenden aber größere Schritte für Container auf Seitenebene. `max-w-prose` (65ch) ist speziell für optimale Lesezeilenlänge konzipiert — die `ch`-Einheit entspricht der Breite des \"0\"-Zeichens.\n\n📖 `mx-auto` zentriert ein Block-Element horizontal durch gleichmäßige Auto-Margins. Der klassische zentrierte Container: `max-w-4xl mx-auto px-4`. Das `px-4` fügt Padding auf Mobilgeräten hinzu, wenn der Viewport schmaler als `max-w-4xl` ist."
+        "expandedText": "📖 `max-w-*`-Werte folgen der Abstands-Skala, verwenden aber größere Schritte für Container auf Seitenebene. `max-w-prose` (65ch) ist speziell für optimale Lesezeilenlänge konzipiert — die `ch`-Einheit entspricht der Breite des \"0\"-Zeichens.\n\n📖 `mx-auto` zentriert ein Block-Element horizontal durch gleichmäßige Auto-Margins. Der klassische zentrierte Container: `max-w-4xl mx-auto px-4`. Das `px-4` fügt Padding auf Mobilgeräten hinzu, wenn der Viewport schmaler als `max-w-4xl` ist.",
+        "analogy": {
+          "title": "Schritt 1 — Größen und Zentrieren: das Display-Schrank",
+          "text": [
+            "Ein Display-Schrank zentriert im Raum, groß genug für die Wand aber nicht um sie zu füllen.",
+            "`w-full max-w-screen-lg mx-auto` — volle Breite bis zu einem Maximum, zentriert. `h-screen` füllt die Viewport-Höhe. `min-h-screen` setzt Minimum ohne zu deckeln."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Flexbox in Tailwind",
         "text": "`flex` aktiviert Flexbox. `items-center` richtet Kinder vertikal aus, `justify-between` verteilt sie, `gap-*` setzt den Abstand zwischen Elementen. `flex-wrap` mit `flex-1` für responsive Layouts kombinieren.",
-        "expandedText": "📖 **Flexbox in Tailwind** entspricht genau den CSS-Flexbox-Eigenschaften. `flex` = `display: flex`, `items-center` = `align-items: center`, `justify-between` = `justify-content: space-between`.\n\n📖 `flex-1` ist die Kurzschreibweise für `flex: 1 1 0` — das Element kann wachsen und schrumpfen ohne Basisbegröße. `shrink-0` verhindert, dass ein Element schrumpft, wenn der Container zu klein wird. `basis-1/3` setzt `flex-basis: 33.333%` — nützlich für gleichmäßige Drei-Spalten-Splits."
+        "expandedText": "📖 **Flexbox in Tailwind** entspricht genau den CSS-Flexbox-Eigenschaften. `flex` = `display: flex`, `items-center` = `align-items: center`, `justify-between` = `justify-content: space-between`.\n\n📖 `flex-1` ist die Kurzschreibweise für `flex: 1 1 0` — das Element kann wachsen und schrumpfen ohne Basisbegröße. `shrink-0` verhindert, dass ein Element schrumpft, wenn der Container zu klein wird. `basis-1/3` setzt `flex-basis: 33.333%` — nützlich für gleichmäßige Drei-Spalten-Splits.",
+        "analogy": {
+          "title": "Schritt 2 — Flexbox in Tailwind: das Flex-Befehlsset",
+          "text": [
+            "Flex aktivieren, Richtung setzen, Elemente verteilen, Elemente ausrichten, Abstände hinzufügen. Fünf Klassen ersetzen einen CSS-Block.",
+            "`flex items-center justify-between gap-4` — horizontale Reihe, vertikal zentriert, Platz zwischen Elementen, 16px Abstände. Navbar-Layout in einer Zeile."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Grid in Tailwind",
         "text": "`grid` + `grid-cols-*` erstellt Spalten-Layouts. `grid-cols-3` = drei gleiche Spalten. `col-span-2` streckt ein Element über zwei Spalten. `gap-*` für Abstände. Responsives Grid: `grid-cols-1 md:grid-cols-2 lg:grid-cols-3`.",
-        "expandedText": "📖 `grid-cols-*` legt die Anzahl der gleichmäßigen Spalten fest. `grid-cols-[1fr_2fr_1fr]` verwendet die Arbitrary-Value-Syntax für eine benutzerdefinierte Spaltenvorlage. `col-span-full` überspannt alle Spalten.\n\n📖 Responsive Präfixe mit Grid kombinieren: `grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6` erstellt eine responsive Galerie. Kein benutzerdefiniertes CSS erforderlich. `auto-rows-fr` erzeugt gleichmäßige Zeilenhöhen. `place-items-center` zentriert in beiden Dimensionen gleichzeitig."
+        "expandedText": "📖 `grid-cols-*` legt die Anzahl der gleichmäßigen Spalten fest. `grid-cols-[1fr_2fr_1fr]` verwendet die Arbitrary-Value-Syntax für eine benutzerdefinierte Spaltenvorlage. `col-span-full` überspannt alle Spalten.\n\n📖 Responsive Präfixe mit Grid kombinieren: `grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6` erstellt eine responsive Galerie. Kein benutzerdefiniertes CSS erforderlich. `auto-rows-fr` erzeugt gleichmäßige Zeilenhöhen. `place-items-center` zentriert in beiden Dimensionen gleichzeitig.",
+        "analogy": {
+          "title": "Schritt 3 — Grid in Tailwind: das automatisch anpassende Layout",
+          "text": [
+            "Regalsystem, das Spalten automatisch basierend auf der verfügbaren Breite anpasst."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -1478,12 +2161,39 @@
         "animationStep": 0,
         "heading": "Zustands-Varianten",
         "text": "Eine Utility mit einem Zustands-Präfix bedingt anwenden. `hover:`, `focus:`, `active:` für Maus-/Tastaturinteraktionen. `disabled:` und `checked:` für Formular-Zustände. `focus-visible:` nur bei Tastaturfokus — ideal für barrierefreie Outlines. Varianten stapeln: `hover:disabled:opacity-50`.",
-        "expandedText": "📖 **Zustandsvarianten** ko-lokalisieren Hover-, Fokus- und aktive Styles mit Basis-Styles im selben HTML-Element, wodurch das interaktive Verhalten sofort im Markup sichtbar wird. Keine separate CSS-Datei mit passenden Klassennamen erforderlich.\n\n📖 `focus-visible:` zeigt Fokus-Indikatoren nur bei Tastaturnavigation, nicht bei Mausklicks — entspricht dem modernen Browser-`:focus-visible`-Verhalten. `group-hover:` und `peer-hover:` ermöglichen elterngesteuerte Kinder-Styling ohne JavaScript: Element mit `group` markieren, Kinder mit `group-hover:opacity-100` stylen."
+        "expandedText": "📖 **Zustandsvarianten** ko-lokalisieren Hover-, Fokus- und aktive Styles mit Basis-Styles im selben HTML-Element, wodurch das interaktive Verhalten sofort im Markup sichtbar wird. Keine separate CSS-Datei mit passenden Klassennamen erforderlich.\n\n📖 `focus-visible:` zeigt Fokus-Indikatoren nur bei Tastaturnavigation, nicht bei Mausklicks — entspricht dem modernen Browser-`:focus-visible`-Verhalten. `group-hover:` und `peer-hover:` ermöglichen elterngesteuerte Kinder-Styling ohne JavaScript: Element mit `group` markieren, Kinder mit `group-hover:opacity-100` stylen.",
+        "analogy": {
+          "title": "Schritt 0 — Zustandsvarianten: der stimmungsabhängige Knopf",
+          "text": [
+            "Ein Knopf, der sein Aussehen basierend auf dem ändert, was du tust: dunkler beim Hover, gedrückt beim Klicken, gedimmt wenn deaktiviert.",
+            "Tailwind-Zustandsvarianten sind Prefixe: `hover:bg-blue-600`, `focus:ring-2`, `active:scale-95`, `disabled:opacity-50`."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Dark Mode",
-        "text": "Dark Mode durch `darkMode: 'class'` in `tailwind.config.js` aktivieren. Die `dark`-Klasse per JavaScript auf `<html>` umschalten. Jede Klasse mit dem Präfix `dark:` wird aktiv, wenn die `dark`-Klasse auf einem Elternelement vorhanden ist."
+        "text": "Dark Mode durch `darkMode: 'class'` in `tailwind.config.js` aktivieren. Die `dark`-Klasse per JavaScript auf `<html>` umschalten. Jede Klasse mit dem Präfix `dark:` wird aktiv, wenn die `dark`-Klasse auf einem Elternelement vorhanden ist.",
+        "analogy": {
+          "title": "Schritt 1 — Dark Mode: der Lichtschalter für den ganzen Raum",
+          "text": [
+            "Ein Smart Home, das bei Sonnenuntergang alle Lichter auf ein warmes Dämmerlicht umstellt. Ein Auslöser ändert die gesamte Umgebung.",
+            "`darkMode: class` in der Konfiguration hinzufügen. `dark`-Klasse auf `<html>` umschalten. Dann: `bg-white dark:bg-gray-900`. System-Präferenz: `darkMode: media`."
+          ]
+        }
+      },
+      {
+        "animationStep": 2,
+        "heading": "group & peer — Eltern-/Geschwister-Zustand",
+        "text": "Markiere ein Elternelement mit `group`, um Kinder basierend auf dem Eltern-Zustand zu stylen. Markiere ein Geschwisterelement mit `peer`, um nachfolgende Geschwister zu stylen. Beide unterstützen benannte Varianten (`group/item`, `peer/draft`) für verschachtelte Muster. `has:` lässt ein Elternelement auf seine eigenen Nachkommen reagieren — z.B. \"Beschriftung hervorheben, wenn dessen Checkbox angehakt ist\".",
+        "expandedText": "📖 **Fortgeschrittene Muster**: `has:` ist der \"inverse Selektor\". Ein Elternelement kann seinen eigenen Stil basierend darauf ändern, was in seinen Kindern passiert — in CSS früher unmöglich. Benannte Gruppen (`group/nav`, `group/card`) lösen das Problem von verschachtelten Gruppen, bei dem ein inneres group-hover das äußere triggern würde.",
+        "analogy": {
+          "title": "Schritt 2 — group und peer: der Dirigent signalisiert dem Orchester",
+          "text": [
+            "Der Dirigent hebt den Taktstock und jeder Musiker reagiert entsprechend basierend auf dem Dirigenten-Signal.",
+            "`group` markiert ein Elternelement. Kinder reagieren: `group-hover:opacity-100`. `peer` markiert ein Geschwisterelement. Folgende Geschwister reagieren: `peer-focus:border-blue-500`."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -1524,22 +2234,49 @@
       {
         "animationStep": 0,
         "heading": "Beliebige Werte",
-        "text": "Für exakte Werte außerhalb des Design-Systems eckige Klammer-Syntax verwenden. Funktioniert bei jeder Utility: `w-[347px]`, `bg-[#1e1e2e]`, `grid-cols-[1fr_2fr]`. CSS-Variablen verwenden: `bg-[var(--brand)]`. Sparsam einsetzen — Design-Tokens bevorzugen."
+        "text": "Für exakte Werte außerhalb des Design-Systems eckige Klammer-Syntax verwenden. Funktioniert bei jeder Utility: `w-[347px]`, `bg-[#1e1e2e]`, `grid-cols-[1fr_2fr]`. CSS-Variablen verwenden: `bg-[var(--brand)]`. Sparsam einsetzen — Design-Tokens bevorzugen.",
+        "analogy": {
+          "title": "Schritt 0 — Beliebige Werte: die benutzerdefinierte Klammer",
+          "text": [
+            "Wenn das Standard-Lineal deine Maßeinheit nicht hat, nimmst du einen Bleistift und schreibst sie rein."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "@layer & @apply",
-        "text": "`@layer` organisiert CSS in drei Bereiche: `base` (globale Resets), `components` (wiederverwendbare UI-Muster), `utilities` (einzelne Klassen). `@apply` kombiniert Tailwind-Utilities in einer eigenen Klasse — nützlich bei sich wiederholenden Mustern."
+        "text": "`@layer` organisiert CSS in drei Bereiche: `base` (globale Resets), `components` (wiederverwendbare UI-Muster), `utilities` (einzelne Klassen). `@apply` kombiniert Tailwind-Utilities in einer eigenen Klasse — nützlich bei sich wiederholenden Mustern.",
+        "analogy": {
+          "title": "Schritt 1 — @layer und @apply: die organisierte Erweiterungsschublade",
+          "text": [
+            "Ein Schreibtisch mit beschrifteten Schubladen: Basis-Styles in einer, Komponenten-Styles in einer anderen, Utility-Überschreibungen in der dritten.",
+            "`@layer base` für HTML-Resets, `@layer components` für wiederverwendbare Muster, `@layer utilities` für benutzerdefinierte Utilities. Tailwinds Spezifitätsreihenfolge bleibt erhalten."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "@theme — Eigene Design-Tokens (v4)",
-        "text": "Tailwind v4 ersetzt `tailwind.config.js` durch einen CSS-First-Ansatz. Eigene Design-Tokens in `@theme` definieren — Tailwind generiert automatisch passende Utility-Klassen. `--color-*` für Farben, `--font-*` für Schriften, `--breakpoint-*` für responsive Varianten."
+        "text": "Tailwind v4 ersetzt `tailwind.config.js` durch einen CSS-First-Ansatz. Eigene Design-Tokens in `@theme` definieren — Tailwind generiert automatisch passende Utility-Klassen. `--color-*` für Farben, `--font-*` für Schriften, `--breakpoint-*` für responsive Varianten.",
+        "analogy": {
+          "title": "Schritt 2 — @theme: der Design-Token-Tresor (v4)",
+          "text": [
+            "Ein Tresor, in dem jede Design-Entscheidung gespeichert ist. Einen Eintrag ändern und jede Referenz aktualisiert sich.",
+            "Tailwind v4 ersetzt `tailwind.config.js` durch CSS-First `@theme { --color-brand: #3b82f6 }`. Tokens werden zu CSS Custom Properties."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Container Queries",
-        "text": "Container Queries ermöglichen es einer Komponente, auf die Größe ihres eigenen Containers zu reagieren — nicht auf den Viewport. Ein Elternelement mit `@container` markieren, dann Kinder-Klassen mit `@sm:`, `@md:`, `@lg:` präfixieren."
+        "text": "Container Queries ermöglichen es einer Komponente, auf die Größe ihres eigenen Containers zu reagieren — nicht auf den Viewport. Ein Elternelement mit `@container` markieren, dann Kinder-Klassen mit `@sm:`, `@md:`, `@lg:` präfixieren.",
+        "analogy": {
+          "title": "Schritt 3 — Container-Queries: der element-bewusste Designer",
+          "text": [
+            "Ein Designer, der das Layout basierend auf der eigenen Karten-Breite anpasst — nicht der Seitenbreite.",
+            "`@container` Queries reagieren auf die Größe eines Elternelements, nicht des Viewports. `<div class=\"@container\">` aktiviert es. Kinder verwenden `@sm:flex-row`."
+          ]
+        }
       }
     ],
     "cheatSheet": {

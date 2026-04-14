@@ -7,43 +7,93 @@
         "animationStep": 0,
         "heading": "HTML besteht aus Elementen",
         "text": "Alles Sichtbare auf einer Webseite ist ein HTML-Element — eine Überschrift, ein Absatz, ein Link, ein Bild. Elemente teilen dem Browser mit, was der Inhalt bedeutet, nicht nur wie er aussieht.",
-        "expandedText": "📖 **HTML-Semantik** bedeutet, dass der Elementname eine Bedeutung für Browser, Suchmaschinen und assistive Technologien trägt. `<p>` signalisiert einen Absatz, `<h1>` die primäre Überschrift, `<nav>` eine Navigationsmarke — das visuelle Erscheinungsbild ist dabei zweitrangig.\n\n📖 Ein Screenreader-Benutzer, ein Suchmaschinen-Crawler und ein sehender Browser-Benutzer sind alle auf die korrekte Elementwahl angewiesen. Die Wahl von `<div>` anstelle von `<button>` führt gleichzeitig zum Verlust der Tastaturzugänglichkeit und der ARIA-Semantik. Der Elementname ist die wichtigste Entscheidung, die man trifft."
+        "expandedText": "📖 **HTML-Semantik** bedeutet, dass der Elementname eine Bedeutung für Browser, Suchmaschinen und assistive Technologien trägt. `<p>` signalisiert einen Absatz, `<h1>` die primäre Überschrift, `<nav>` eine Navigationsmarke — das visuelle Erscheinungsbild ist dabei zweitrangig.\n\n📖 Ein Screenreader-Benutzer, ein Suchmaschinen-Crawler und ein sehender Browser-Benutzer sind alle auf die korrekte Elementwahl angewiesen. Die Wahl von `<div>` anstelle von `<button>` führt gleichzeitig zum Verlust der Tastaturzugänglichkeit und der ARIA-Semantik. Der Elementname ist die wichtigste Entscheidung, die man trifft.",
+        "analogy": {
+          "title": "Schritt 1 — HTML-Elemente: LEGO-Steine",
+          "text": [
+            "HTML-Elemente sind wie LEGO-Steine. Jeder Stein hat eine bestimmte Form und einen Zweck — ein 2×4-Flachstein, ein Rad, eine Windschutzscheibe. Die Form bestimmt, was er tun kann und wo er passt.",
+            "Genauso bedeutet ein `<p>`-Stein Absatz, ein `<h1>`-Stein Hauptüberschrift, ein `<button>`-Stein klickbare Aktion. Der Name auf dem Stein sagt Browser und Screen-Readern, was er ist.",
+            "Steine mixen und verbinden, um alles zu bauen — genau wie man aus einzelnen LEGO-Steinen ein Schloss bauen kann."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Öffnendes Tag",
         "text": "Das öffnende Tag gibt dem Element seinen Namen. <p> steht für Absatz. <h1> für Hauptüberschrift. <a> für Anker (Link). Der Name bestimmt, wie der Browser den Inhalt darstellt.",
-        "expandedText": "📖 Tag-Namen sind im **HTML Living Standard** definiert, der von WHATWG gepflegt wird. Der Browser ordnet jedem Tag-Namen eine implizite ARIA-Rolle zu — `<button>` erhält `role=\"button\"`, `<a href>` erhält `role=\"link\"`, `<nav>` erhält `role=\"navigation\"`. Diese Rolle bestimmt, was assistive Technologien ankündigen, ohne zusätzliches ARIA-Markup.\n\n📖 Void-Elemente wie `<img>`, `<input>`, `<br>` und `<hr>` haben kein schließendes Tag, weil sie kein Inhaltsmodell besitzen — sie stellen externe Ressourcen oder Layoutpunkte ohne Kindelemente dar."
+        "expandedText": "📖 Tag-Namen sind im **HTML Living Standard** definiert, der von WHATWG gepflegt wird. Der Browser ordnet jedem Tag-Namen eine implizite ARIA-Rolle zu — `<button>` erhält `role=\"button\"`, `<a href>` erhält `role=\"link\"`, `<nav>` erhält `role=\"navigation\"`. Diese Rolle bestimmt, was assistive Technologien ankündigen, ohne zusätzliches ARIA-Markup.\n\n📖 Void-Elemente wie `<img>`, `<input>`, `<br>` und `<hr>` haben kein schließendes Tag, weil sie kein Inhaltsmodell besitzen — sie stellen externe Ressourcen oder Layoutpunkte ohne Kindelemente dar.",
+        "analogy": {
+          "title": "Schritt 2 — Öffnendes Tag: die Eingangstür",
+          "text": [
+            "Das öffnende Tag ist wie eine Eingangstür mit einem Namensschild. Das Schild sagt, welchen Raum man betritt — `<section>` sagt \"du betrittst einen Abschnitt\".",
+            "In dem Moment, wenn der Browser das öffnende Tag liest, weiß er, welche Art von Element er verarbeiten wird — kein Raten nötig."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Inhalt",
         "text": "Der Inhalt befindet sich zwischen den Tags. Er kann Text, andere Elemente oder eine Mischung aus beidem sein. Das Verschachteln von Elementen ineinander bildet die Baumstruktur der Seite.",
-        "expandedText": "📜 Der Browser baut das **DOM (Document Object Model)** beim Parsen von HTML auf — einen lebendigen Knotenbaum. Jedes Element wird zu einem Knoten mit Eltern-, Kind- und Geschwisterbeziehungen. JavaScript manipuliert diesen Baum zur Laufzeit, aber die Grundstruktur stammt direkt aus dem HTML-Quellcode.\n\n⚠️ Verschachtelungsregeln werden vom HTML-Parser durchgesetzt. Block-Elemente wie `<div>` und `<p>` können keine direkten Kinder von Inline-Elementen wie `<span>` sein. Ungültige Verschachtelung löst eine automatische Fehlerkorrektur aus, die den Baum auf eine Weise umschreibt, die oft CSS-Selektoren und das Layout unerwartet bricht."
+        "expandedText": "📜 Der Browser baut das **DOM (Document Object Model)** beim Parsen von HTML auf — einen lebendigen Knotenbaum. Jedes Element wird zu einem Knoten mit Eltern-, Kind- und Geschwisterbeziehungen. JavaScript manipuliert diesen Baum zur Laufzeit, aber die Grundstruktur stammt direkt aus dem HTML-Quellcode.\n\n⚠️ Verschachtelungsregeln werden vom HTML-Parser durchgesetzt. Block-Elemente wie `<div>` und `<p>` können keine direkten Kinder von Inline-Elementen wie `<span>` sein. Ungültige Verschachtelung löst eine automatische Fehlerkorrektur aus, die den Baum auf eine Weise umschreibt, die oft CSS-Selektoren und das Layout unerwartet bricht.",
+        "analogy": {
+          "title": "Schritt 3 — Inhalt: was in der Box ist",
+          "text": [
+            "Inhalt ist das, was man in die Box legt. Es kann Text sein — wie die Wörter eines Absatzes. Es können andere Boxen sein — wie eine Liste innerhalb eines Abschnitts.",
+            "Boxen in Boxen zu verschachteln ist, wie HTML die Baumstruktur einer Seite erzeugt. Jedes Element, das man auf dem Bildschirm sieht, ist eine Box, die andere Elemente oder Text enthält."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Schließendes Tag",
         "text": "Das schließende Tag hat einen Schrägstrich vor dem Namen. Es beendet das Element. Einige Elemente — wie <img>, <br>, <hr>, <input> — sind leere Elemente ohne Inhalt und ohne schließendes Tag.",
-        "expandedText": "📖 Void-Elemente (`<img>`, `<br>`, `<hr>`, `<input>`, `<meta>`, `<link>`) sind void, weil sie **kein Inhaltsmodell** besitzen — sie stellen eine externe Ressource oder einen Punkt im Dokument dar, keinen Container. In der HTML5-Syntax ist der abschließende Schrägstrich (`<br />`) optional und hat keine Auswirkung. In XHTML war er erforderlich, weshalb ältere Codebasen ihn enthalten.\n\n⚠️ Das Weglassen eines erforderlichen schließenden Tags aktiviert den Browser-Fehlerkorrektur-Algorithmus. Der Browser schließt das Element basierend auf den Kontextregeln der Spezifikation, was oft einen DOM erzeugt, der erheblich von der Absicht abweicht."
+        "expandedText": "📖 Void-Elemente (`<img>`, `<br>`, `<hr>`, `<input>`, `<meta>`, `<link>`) sind void, weil sie **kein Inhaltsmodell** besitzen — sie stellen eine externe Ressource oder einen Punkt im Dokument dar, keinen Container. In der HTML5-Syntax ist der abschließende Schrägstrich (`<br />`) optional und hat keine Auswirkung. In XHTML war er erforderlich, weshalb ältere Codebasen ihn enthalten.\n\n⚠️ Das Weglassen eines erforderlichen schließenden Tags aktiviert den Browser-Fehlerkorrektur-Algorithmus. Der Browser schließt das Element basierend auf den Kontextregeln der Spezifikation, was oft einen DOM erzeugt, der erheblich von der Absicht abweicht.",
+        "analogy": {
+          "title": "Schritt 4 — Schließendes Tag: die Tür abschließen",
+          "text": [
+            "Das schließende Tag schließt die Tür. Es teilt dem Browser mit, wo das Element endet. Ohne es bleibt der Browser \"innerhalb\" des Elements, bis er das Ende des Dokuments erreicht.",
+            "Void-Elemente wie `<img>` und `<input>` haben keinen Inhalt und keine Tür zum Öffnen, also brauchen sie kein schließendes Tag."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "Attribute",
         "text": "Attribute stehen im öffnenden Tag und liefern zusätzliche Informationen. Sie kommen als Name=\"Wert\"-Paare. Gängige Attribute: href (Link-URL), src (Bildquelle), alt (Alternativtext), id (eindeutiger Name), class (Styling-Gruppe).",
-        "expandedText": "📖 Attributwerte sind im DOM immer **Strings**. `element.getAttribute(\"width\")` gibt `\"100\"` zurück, nicht die Zahl `100`. Der HTML-Parser erzwingt, dass Attributwerte in Anführungszeichen gesetzt werden müssen, wenn sie Leerzeichen, `/`, `>` oder `=` enthalten. Nicht in Anführungszeichen gesetzte Werte sind technisch gültig, aber fragil.\n\n🔬 Die `data-*`-Familie ist der offizielle Mechanismus zum Einbetten anwendungsspezifischer Daten in HTML, ohne neue Attribute zu erfinden. Der Browser ignoriert sie beim Rendern, aber JavaScript kann den vollständigen Satz über `element.dataset` lesen, wobei das `data-`-Präfix abgestreift und der Rest in camelCase umgewandelt wird."
+        "expandedText": "📖 Attributwerte sind im DOM immer **Strings**. `element.getAttribute(\"width\")` gibt `\"100\"` zurück, nicht die Zahl `100`. Der HTML-Parser erzwingt, dass Attributwerte in Anführungszeichen gesetzt werden müssen, wenn sie Leerzeichen, `/`, `>` oder `=` enthalten. Nicht in Anführungszeichen gesetzte Werte sind technisch gültig, aber fragil.\n\n🔬 Die `data-*`-Familie ist der offizielle Mechanismus zum Einbetten anwendungsspezifischer Daten in HTML, ohne neue Attribute zu erfinden. Der Browser ignoriert sie beim Rendern, aber JavaScript kann den vollständigen Satz über `element.dataset` lesen, wobei das `data-`-Präfix abgestreift und der Rest in camelCase umgewandelt wird.",
+        "analogy": {
+          "title": "Schritt 5 — Attribute: Einstellungsregler an einem Gerät",
+          "text": [
+            "Attribute sind wie die Regler und Knöpfe an einem Gerät. Das Element ist das Gerät; die Attribute konfigurieren, wie es sich verhält. `href` gibt einem Link eine Ziel-URL, `src` gibt einem Bild seine Bilddatei.",
+            "Sie kommen immer innerhalb des öffnenden Tags — nie außerhalb, nie im Inhalt. Und sie kommen immer in `name=\"value\"`-Paaren, genau wie Geräteeinstellungen beschriftete Werte haben."
+          ]
+        }
       },
       {
         "animationStep": 5,
         "heading": "Globale Attribute",
         "text": "Mehrere Attribute funktionieren bei jedem HTML-Element. `id` vergibt einen eindeutigen Namen (für CSS, JS und Anker-Links). `class` gruppiert Elemente für gemeinsame Styles. `style` fügt Inline-CSS hinzu. `data-*` speichert benutzerdefinierte Daten. `lang` legt die Sprache fest.",
-        "expandedText": "📖 Globale Attribute wie `id`, `class`, `lang`, `hidden`, `tabindex` und `data-*` sind in der HTML-Spezifikation als auf **jedes Element** anwendbar definiert. Das `hidden`-Attribut entspricht semantisch `display: none` in CSS, vermittelt aber bewusste Verborgenheit — der Inhalt ist nicht nur außerhalb des Sichtbereichs, er soll überhaupt nicht wahrgenommen werden.\n\n✅ Die `data-*`-Attribute folgen einer Namenskonvention, bei der das Präfix entfernt und der Rest in der `dataset`-Eigenschaft in camelCase umgewandelt wird. `data-user-id` wird zu `element.dataset.userId`."
+        "expandedText": "📖 Globale Attribute wie `id`, `class`, `lang`, `hidden`, `tabindex` und `data-*` sind in der HTML-Spezifikation als auf **jedes Element** anwendbar definiert. Das `hidden`-Attribut entspricht semantisch `display: none` in CSS, vermittelt aber bewusste Verborgenheit — der Inhalt ist nicht nur außerhalb des Sichtbereichs, er soll überhaupt nicht wahrgenommen werden.\n\n✅ Die `data-*`-Attribute folgen einer Namenskonvention, bei der das Präfix entfernt und der Rest in der `dataset`-Eigenschaft in camelCase umgewandelt wird. `data-user-id` wird zu `element.dataset.userId`.",
+        "analogy": {
+          "title": "Schritt 6 — Globale Attribute: universelle Fernbedienungen",
+          "text": [
+            "Globale Attribute sind wie die universellen Tasten einer TV-Fernbedienung — sie funktionieren bei jedem Gerät unabhängig von der Marke. `id`, `class`, `hidden`, `tabindex` — jedes HTML-Element akzeptiert sie.",
+            "Die `data-*`-Attribute sind besonders praktisch: Sie erlauben, benutzerdefinierte Metadaten an jedes Element anzuhängen, die JavaScript später mit `dataset` lesen kann."
+          ]
+        }
       },
       {
         "animationStep": 6,
         "heading": "Boolesche Attribute",
         "text": "Einige Attribute sind boolesch — ihre Anwesenheit bedeutet true, ihre Abwesenheit false. Niemals `disabled='true'` oder `required='false'` schreiben — nur `disabled` oder kein Attribut. Häufige boolsche Attribute: `disabled`, `required`, `checked`, `readonly`, `multiple`, `autoplay`.",
-        "expandedText": "📖 Boolean-Attribute haben ein definiertes Verhalten: **jeder Wert** aktiviert sie. Das Schreiben von `disabled=\"false\"` deaktiviert das Element trotzdem, weil das Attribut vorhanden ist. Die einzige Möglichkeit, ein Boolean-Attribut zu deaktivieren, besteht darin, es mit `element.removeAttribute(\"disabled\")` in JavaScript vollständig zu entfernen.\n\n⚠️ Häufige Boolean-Attribute sind `required`, `disabled`, `readonly`, `checked`, `selected`, `multiple`, `autoplay`, `muted`, `loop`, `defer` und `async`. In der HTML5-Syntax reicht es, nur den Namen zu schreiben (z. B. `required`), ohne einen Wert."
+        "expandedText": "📖 Boolean-Attribute haben ein definiertes Verhalten: **jeder Wert** aktiviert sie. Das Schreiben von `disabled=\"false\"` deaktiviert das Element trotzdem, weil das Attribut vorhanden ist. Die einzige Möglichkeit, ein Boolean-Attribut zu deaktivieren, besteht darin, es mit `element.removeAttribute(\"disabled\")` in JavaScript vollständig zu entfernen.\n\n⚠️ Häufige Boolean-Attribute sind `required`, `disabled`, `readonly`, `checked`, `selected`, `multiple`, `autoplay`, `muted`, `loop`, `defer` und `async`. In der HTML5-Syntax reicht es, nur den Namen zu schreiben (z. B. `required`), ohne einen Wert.",
+        "analogy": {
+          "title": "Schritt 7 — Boolesche Attribute: Lichtschalter",
+          "text": [
+            "Ein Lichtschalter ist entweder an oder aus — man stellt ihn nicht auf \"on=true\". Boolesche HTML-Attribute funktionieren genauso: `required` bedeutet \"dieses Feld ist Pflicht\", nicht \"required=true\".",
+            "`required=\"false\"` deaktiviert das Attribut NICHT. Um es auszuschalten, muss das Attribut vollständig entfernt werden."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -97,43 +147,93 @@
         "animationStep": 0,
         "heading": "Überschriftenhierarchie",
         "text": "HTML hat sechs Überschriftenebenen: <h1> bis <h6>. <h1> ist die wichtigste — einmal pro Seite für den Haupttitel verwendet. Folgende Überschriften erstellen eine Dokumentgliederung, die Browser, Suchmaschinen und Screenreader nutzen.",
-        "expandedText": "⚠️ **Überschriftenebenen** bilden die **Dokumentgliederung**, die für die Screenreader-Navigation, Browser-Lesemodi und Suchergebnisausschnitte verwendet wird. Screenreader-Benutzer navigieren häufig anhand von Überschriften — `H` springt zur nächsten Überschrift, `1` bis `6` springen zur jeweiligen Ebene. Eine logische Gliederung ermöglicht es Benutzern, die Dokumentstruktur schnell zu erfassen, ohne jedes Wort lesen zu müssen.\n\n📖 Verwende pro Seite nur ein `<h1>` (der primäre Titel). Nachfolgende Abschnitte verwenden `<h2>`, Unterabschnitte `<h3>` und so weiter. Überschriftenebenen dürfen nicht übersprungen werden — von `<h1>` direkt zu `<h3>` zu springen ist ein WCAG-Verstoß."
+        "expandedText": "⚠️ **Überschriftenebenen** bilden die **Dokumentgliederung**, die für die Screenreader-Navigation, Browser-Lesemodi und Suchergebnisausschnitte verwendet wird. Screenreader-Benutzer navigieren häufig anhand von Überschriften — `H` springt zur nächsten Überschrift, `1` bis `6` springen zur jeweiligen Ebene. Eine logische Gliederung ermöglicht es Benutzern, die Dokumentstruktur schnell zu erfassen, ohne jedes Wort lesen zu müssen.\n\n📖 Verwende pro Seite nur ein `<h1>` (der primäre Titel). Nachfolgende Abschnitte verwenden `<h2>`, Unterabschnitte `<h3>` und so weiter. Überschriftenebenen dürfen nicht übersprungen werden — von `<h1>` direkt zu `<h3>` zu springen ist ein WCAG-Verstoß.",
+        "analogy": {
+          "title": "Schritt 1 — Überschriften-Hierarchie: Kapiteltitel in einem Buch",
+          "text": [
+            "Ein Buch hat einen Titel auf dem Deckel (h1), Kapitelüberschriften (h2), Abschnittsüberschriften in Kapiteln (h3) und Unterpunkte (h4). Diese Hierarchie gibt dem Buch Struktur.",
+            "Suchmaschinen und Screen-Reader lesen Überschriften-Hierarchie auf dieselbe Weise. Eine gut strukturierte Überschriftsgliederung ist das Navigationsgerüst für assistive Technologien.",
+            "Niemals eine Überschriftenebene wegen ihrer Schriftgröße wählen — das ist Aufgabe von CSS. Nach ihrer Position in der Dokumentgliederung wählen."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Absätze",
         "text": "Der <p>-Tag definiert einen Absatz. Browser fügen automatisch Abstand ober- und unterhalb jedes Absatzes hinzu. Verwende niemals <br>-Tags nur zum Hinzufügen von vertikalem Abstand — nutze stattdessen CSS-Margins.",
-        "expandedText": "📖 `<p>` ist ein **Block-Level**-Element — es beginnt immer in einer neuen Zeile, und der Browser fügt standardmäßig oberen und unteren Abstand hinzu. Der richtige Weg, vertikalen Abstand zwischen Absätzen hinzuzufügen, ist `margin-bottom` in CSS, nicht das Einfügen von `<br>`-Tags. Mehrere `<br>`-Elemente zur Abstands-Erzeugung sind ein verbreitetes Anti-Pattern, das das Layout auf kleinen Bildschirmen bricht.\n\n📖 Ein `<p>`-Element kann keine anderen Block-Elemente wie `<div>`, `<h2>` oder ein anderes `<p>` enthalten. Wenn der Parser ein Block-Element innerhalb von `<p>` antrifft, schließt er `<p>` automatisch davor, was zu unerwartetem DOM-Verhalten führt."
+        "expandedText": "📖 `<p>` ist ein **Block-Level**-Element — es beginnt immer in einer neuen Zeile, und der Browser fügt standardmäßig oberen und unteren Abstand hinzu. Der richtige Weg, vertikalen Abstand zwischen Absätzen hinzuzufügen, ist `margin-bottom` in CSS, nicht das Einfügen von `<br>`-Tags. Mehrere `<br>`-Elemente zur Abstands-Erzeugung sind ein verbreitetes Anti-Pattern, das das Layout auf kleinen Bildschirmen bricht.\n\n📖 Ein `<p>`-Element kann keine anderen Block-Elemente wie `<div>`, `<h2>` oder ein anderes `<p>` enthalten. Wenn der Parser ein Block-Element innerhalb von `<p>` antrifft, schließt er `<p>` automatisch davor, was zu unerwartetem DOM-Verhalten führt.",
+        "analogy": {
+          "title": "Schritt 2 — Absätze: Sätze auf einer Seite",
+          "text": [
+            "Ein Absatz-Tag entspricht dem Drücken von Enter zweimal auf einer Schreibmaschine — er gruppiert einen Block zusammengehöriger Sätze und trennt ihn vom nächsten Absatz.",
+            "Browser fügen automatisch Abstände zwischen Absätzen ein. Niemals mehrere `<br>`-Tags verwenden, um einen Absatzumbruch zu simulieren — das ist ein Hack."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Semantisch vs. präsentational",
         "text": "<strong> und <em> tragen Bedeutung: Wichtigkeit und Betonung. Screenreader lesen sie unterschiedlich vor. <b> und <i> sind rein visuell ohne semantischen Gehalt. Bevorzuge <strong>/<em>, wenn die Bedeutung wichtig ist.",
-        "expandedText": "⚠️ **Screenreader** kündigen `<strong>` häufig mit einer Ton- oder Betonungsveränderung an, während `<em>` eine gesprochene Betonung signalisiert. Dieser semantische Unterschied ist wichtig für Benutzer, die keine Fett-/Kursivschrift sehen können. `<b>` und `<i>` sind rein präsentational und haben keine ARIA-Rolle oder implizite Bedeutung.\n\n📖 Es geht um die **Autorenabsicht**: `<strong>` verwenden, wenn der Inhalt wirklich wichtig ist (eine Warnung, ein Schlüsselbegriff), `<em>` bei betonter Aussprache, die die Bedeutung verändert. `<b>` nur verwenden, wenn Text fettgedruckt sein soll, ohne besondere Wichtigkeit zu signalisieren."
+        "expandedText": "⚠️ **Screenreader** kündigen `<strong>` häufig mit einer Ton- oder Betonungsveränderung an, während `<em>` eine gesprochene Betonung signalisiert. Dieser semantische Unterschied ist wichtig für Benutzer, die keine Fett-/Kursivschrift sehen können. `<b>` und `<i>` sind rein präsentational und haben keine ARIA-Rolle oder implizite Bedeutung.\n\n📖 Es geht um die **Autorenabsicht**: `<strong>` verwenden, wenn der Inhalt wirklich wichtig ist (eine Warnung, ein Schlüsselbegriff), `<em>` bei betonter Aussprache, die die Bedeutung verändert. `<b>` nur verwenden, wenn Text fettgedruckt sein soll, ohne besondere Wichtigkeit zu signalisieren.",
+        "analogy": {
+          "title": "Schritt 3 — Semantisch vs. präsentational: Was vs. Wie",
+          "text": [
+            "`<strong>` sagt \"dies ist wichtig\" — ein Screen-Reader betont es. `<b>` sagt \"mach dies fett\" — es ist rein kosmetisch.",
+            "Der Unterschied ist für Barrierefreiheit wichtig: Ein Screen-Reader kündigt `<strong>` anders an als `<b>`. Semantische Elemente bevorzugen, wenn der Kontext Bedeutung trägt."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Inline-Textelemente",
         "text": "HTML hat viele Inline-Elemente für reichhaltigen Text. <mark> hebt hervor. <del> zeigt gelöschten Text. <ins> zeigt eingefügten Text. <small> verringert die Größe. <sub> und <sup> erzeugen tief- und hochgestellten Text.",
-        "expandedText": "📖 `<mark>` ist besonders nützlich zum Hervorheben von Suchanfrageergebnissen — es trägt die semantische Bedeutung \"relevant für den aktuellen Suchkontext\". Screenreader kündigen es in einigen Implementierungen als \"Hervorhebung\" an.\n\n📖 `<del>` und `<ins>` zusammen stellen **nachverfolgte Änderungen** in einem Dokument dar — `<del>` zeigt, was entfernt wurde, `<ins>` zeigt, was hinzugefügt wurde. Das optionale `cite`-Attribut beider Elemente kann auf eine URL verweisen, die die Änderung erklärt. Für Durchstreichen ohne Lösch-Semantik `text-decoration: line-through` in CSS verwenden."
+        "expandedText": "📖 `<mark>` ist besonders nützlich zum Hervorheben von Suchanfrageergebnissen — es trägt die semantische Bedeutung \"relevant für den aktuellen Suchkontext\". Screenreader kündigen es in einigen Implementierungen als \"Hervorhebung\" an.\n\n📖 `<del>` und `<ins>` zusammen stellen **nachverfolgte Änderungen** in einem Dokument dar — `<del>` zeigt, was entfernt wurde, `<ins>` zeigt, was hinzugefügt wurde. Das optionale `cite`-Attribut beider Elemente kann auf eine URL verweisen, die die Änderung erklärt. Für Durchstreichen ohne Lösch-Semantik `text-decoration: line-through` in CSS verwenden.",
+        "analogy": {
+          "title": "Schritt 4 — Inline-Text-Elemente: einen Absatz unterstreichen",
+          "text": [
+            "Inline-Elemente leben innerhalb eines Satzes und annotieren spezifische Wörter, ohne den Fluss zu unterbrechen. `<mark>` ist wie das Markieren mit einem Textmarker. `<del>` ist der Texte durchstreichen.",
+            "Diese Elemente tragen semantische Bedeutung, die CSS allein nicht vermitteln kann. Ein Screen-Reader sagt \"gelöschter Text\" für `<del>` — das gibt Kontext, den reines Styling nicht liefern kann."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "Blockzitate und Code",
         "text": "<blockquote> umschließt aus einer anderen Quelle zitierten Inhalt. <code> zeigt Inline-Code in Monospace an. <pre> bewahrt Leerzeichen und Zeilenumbrüche — kombiniert mit <code> für mehrzeilige Codeblöcke.",
-        "expandedText": "📖 `<pre>` bewahrt **alle Leerzeichen** — Tabs, Leerzeichen und Zeilenumbrüche — genau so, wie sie im HTML-Quellcode geschrieben sind. Damit ist es der richtige Container für ASCII-Art, formatierten Textausgaben oder jeden Inhalt, bei dem Abstände Bedeutung tragen. Kombiniert mit `<code>` signalisiert es \"vorformatierter Codeblock\" für Browser und Screenreader.\n\n⚠️ `<pre><code>` niemals innerhalb eines `<p>`-Tags platzieren. `<p>` kann keine Block-Elemente enthalten, und der Browser schließt `<p>` vor dem Rendern von `<pre>`. Der resultierende DOM enthält den Code außerhalb des Absatzes."
+        "expandedText": "📖 `<pre>` bewahrt **alle Leerzeichen** — Tabs, Leerzeichen und Zeilenumbrüche — genau so, wie sie im HTML-Quellcode geschrieben sind. Damit ist es der richtige Container für ASCII-Art, formatierten Textausgaben oder jeden Inhalt, bei dem Abstände Bedeutung tragen. Kombiniert mit `<code>` signalisiert es \"vorformatierter Codeblock\" für Browser und Screenreader.\n\n⚠️ `<pre><code>` niemals innerhalb eines `<p>`-Tags platzieren. `<p>` kann keine Block-Elemente enthalten, und der Browser schließt `<p>` vor dem Rendern von `<pre>`. Der resultierende DOM enthält den Code außerhalb des Absatzes.",
+        "analogy": {
+          "title": "Schritt 5 — Blockquote und code: Zitieren und Referenzieren",
+          "text": [
+            "`<blockquote>` ist das HTML-Äquivalent zum Einrücken eines langen Zitats in einer akademischen Arbeit. Das `cite`-Attribut verlinkt zur Originalquelle.",
+            "`<pre><code>` ist der Weg, Code im Web anzuzeigen, ohne dass der Browser den Leerraum zusammenfasst. `pre` bewahrt jeden Leerzeichen und Zeilenumbruch genau wie eingegeben."
+          ]
+        }
       },
       {
         "animationStep": 5,
         "heading": "Semantische Annotationselemente",
         "text": "`<abbr>` markiert Abkürzungen — das `title`-Attribut liefert beim Hover die Langform. `<time>` markiert Datums- und Zeitangaben mit einem maschinenlesbaren `datetime`-Attribut, damit Suchmaschinen zeitliche Inhalte verstehen. `<cite>` umschließt den Titel eines referenzierten Werks.",
-        "expandedText": "📖 Das `datetime`-Attribut von `<time>` verwendet das maschinenlesbare **ISO 8601**-Format. `datetime=\"2024-03-15\"` ist ein Datum, `datetime=\"14:30\"` eine Uhrzeit, `datetime=\"2024-03-15T14:30:00\"` ein Datum mit Zeitzone. Suchmaschinen nutzen diese strukturierten Daten für Rich-Ergebnisse — Veranstaltungsdaten, Artikelveröffentlichungszeiten und Rezeptdauern in Suchergebnissen basieren alle auf `<time datetime>`.\n\n📖 `<cite>` umschließt den **Titel eines kreativen Werks** — ein Buch, Film, Lied oder Artikel. Es sollte nicht für Autorennamen verwendet werden — dafür ist `<span>` oder `<a>` geeigneter."
+        "expandedText": "📖 Das `datetime`-Attribut von `<time>` verwendet das maschinenlesbare **ISO 8601**-Format. `datetime=\"2024-03-15\"` ist ein Datum, `datetime=\"14:30\"` eine Uhrzeit, `datetime=\"2024-03-15T14:30:00\"` ein Datum mit Zeitzone. Suchmaschinen nutzen diese strukturierten Daten für Rich-Ergebnisse — Veranstaltungsdaten, Artikelveröffentlichungszeiten und Rezeptdauern in Suchergebnissen basieren alle auf `<time datetime>`.\n\n📖 `<cite>` umschließt den **Titel eines kreativen Werks** — ein Buch, Film, Lied oder Artikel. Es sollte nicht für Autorennamen verwendet werden — dafür ist `<span>` oder `<a>` geeigneter.",
+        "analogy": {
+          "title": "Schritt 6 — Semantische Anmerkungen: Randnotizen in einem Buch",
+          "text": [
+            "`<abbr>`, `<time>` und `<cite>` sind wie Randnotizen in einem Lehrbuch — sie liefern zusätzlichen Kontext ohne den Lesefluss zu unterbrechen.",
+            "`<time datetime=\"2026-03-26\">` teilt Maschinen mit \"das ist ein Datum\", während \"26. März 2026\" für Menschen angezeigt wird. Suchmaschinen nutzen das für Rich Snippets."
+          ]
+        }
       },
       {
         "animationStep": 6,
         "heading": "HTML-Entities",
         "text": "Einige Zeichen können in HTML nicht direkt eingegeben werden, weil sie als Markup interpretiert würden. HTML-Entities codieren sie: `&lt;` für `<`, `&gt;` für `>`, `&amp;` für `&`, `&nbsp;` für ein geschütztes Leerzeichen, `&copy;` für © und `&mdash;` für —.",
-        "expandedText": "📖 **HTML-Entities** sind der einzige sichere Weg, Zeichen einzufügen, die sonst als HTML-Markup interpretiert würden. `&lt;` und `&gt;` sind in Code-Beispielen unverzichtbar, damit der Parser den Text nicht als tatsächliches Tag behandelt. In modernen UTF-8-Dokumenten können die meisten Sonderzeichen (Akzente, Emojis, Währungssymbole) direkt ohne Entities geschrieben werden.\n\n📖 Benannte Entities wie `&copy;`, `&reg;`, `&trade;` und `&mdash;` sind praktische Gedächtnisstützen. Numerische Entities (`&#169;` oder `&#x00A9;` für Copyright) funktionieren in jeder Umgebung, auch ohne Zeichensatz-Deklaration."
+        "expandedText": "📖 **HTML-Entities** sind der einzige sichere Weg, Zeichen einzufügen, die sonst als HTML-Markup interpretiert würden. `&lt;` und `&gt;` sind in Code-Beispielen unverzichtbar, damit der Parser den Text nicht als tatsächliches Tag behandelt. In modernen UTF-8-Dokumenten können die meisten Sonderzeichen (Akzente, Emojis, Währungssymbole) direkt ohne Entities geschrieben werden.\n\n📖 Benannte Entities wie `&copy;`, `&reg;`, `&trade;` und `&mdash;` sind praktische Gedächtnisstützen. Numerische Entities (`&#169;` oder `&#x00A9;` für Copyright) funktionieren in jeder Umgebung, auch ohne Zeichensatz-Deklaration.",
+        "analogy": {
+          "title": "Schritt 7 — HTML-Entities: Escape-Codes",
+          "text": [
+            "HTML-Entities sind wie Escape-Sequenzen in der Programmierung. Genau wie man `\\n` für Zeilenumbruch in einem String schreibt, schreibt man `&lt;` für das Kleiner-als-Zeichen in HTML.",
+            "Die wichtigsten zum Merken: `&amp;` für &, `&lt;` für <, `&gt;` für >, `&nbsp;` für ein geschütztes Leerzeichen, und `&copy;` für ©."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -184,43 +284,93 @@
         "animationStep": 0,
         "heading": "Das Anker-Element",
         "text": "Der <a>-Tag (Anker) erstellt einen Link. Das href-Attribut enthält das Ziel — eine URL, einen Pfad oder sogar eine E-Mail-Adresse. Ohne href ist es kein Link.",
-        "expandedText": "🔬 Ein `<a>`-Element **ohne** `href`-Attribut ist technisch gültig, wird aber als nicht interaktiver Text ohne implizite Rolle gerendert. Fragment-Links (`href=\"#section-id\"`) scrollen zum passenden `id`-Attribut — sie sind die Grundlage der Seitennavigation und barrierefreier Skip-Links.\n\n📖 Das `<a>`-Element hat eine implizite `role=\"link\"`, die es standardmäßig per Tastatur navigierbar macht. Die Verwendung von `<div onclick>` oder `<span onclick>` als Pseudo-Links bricht die Tastaturnavigation, verliert die implizite Rolle und erfordert zusätzliches ARIA-Markup."
+        "expandedText": "🔬 Ein `<a>`-Element **ohne** `href`-Attribut ist technisch gültig, wird aber als nicht interaktiver Text ohne implizite Rolle gerendert. Fragment-Links (`href=\"#section-id\"`) scrollen zum passenden `id`-Attribut — sie sind die Grundlage der Seitennavigation und barrierefreier Skip-Links.\n\n📖 Das `<a>`-Element hat eine implizite `role=\"link\"`, die es standardmäßig per Tastatur navigierbar macht. Die Verwendung von `<div onclick>` oder `<span onclick>` als Pseudo-Links bricht die Tastaturnavigation, verliert die implizite Rolle und erfordert zusätzliches ARIA-Markup.",
+        "analogy": {
+          "title": "Schritt 1 — Anker-Element: ein Portal-Schild",
+          "text": [
+            "Ein Anker-Tag ist wie ein Portal-Schild auf einer Straße — es zeigt an, dass es ein Ziel gibt, und klicken bringt einen dorthin. Das `href`-Attribut ist die Zieladresse.",
+            "Ohne `href` ist ein `<a>`-Tag nur ein nicht verlinktes Etikett ohne angehängtes Portal — es sieht wie ein Link aus, aber Klicken tut nichts Sinnvolles."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Absolute vs. relative URLs",
         "text": "Absolute URLs beginnen mit https:// — sie funktionieren von überall. Relative URLs beschreiben einen Pfad von der aktuellen Seite. Verwende relative Links für interne Navigation, damit die Seite in jeder Umgebung funktioniert.",
-        "expandedText": "📖 Relative URLs werden gegen die **Dokument-Basis-URL** aufgelöst — die URL der aktuellen Seite oder das `<base href>`-Element, falls vorhanden. `./file.html` verweist auf dasselbe Verzeichnis, `../file.html` geht eine Ebene höher. Dadurch funktionieren relative Links in jeder Umgebung korrekt: lokale Entwicklung, Staging und Produktion, ohne jegliche Konfiguration.\n\n📜 Protokollrelative URLs (`//example.com`) waren früher beliebt, um Assets über HTTP und HTTPS bereitzustellen, aber HTTPS ist heute universell. Die explizite Verwendung von `https://` ist der bevorzugte Ansatz."
+        "expandedText": "📖 Relative URLs werden gegen die **Dokument-Basis-URL** aufgelöst — die URL der aktuellen Seite oder das `<base href>`-Element, falls vorhanden. `./file.html` verweist auf dasselbe Verzeichnis, `../file.html` geht eine Ebene höher. Dadurch funktionieren relative Links in jeder Umgebung korrekt: lokale Entwicklung, Staging und Produktion, ohne jegliche Konfiguration.\n\n📜 Protokollrelative URLs (`//example.com`) waren früher beliebt, um Assets über HTTP und HTTPS bereitzustellen, aber HTTPS ist heute universell. Die explizite Verwendung von `https://` ist der bevorzugte Ansatz.",
+        "analogy": {
+          "title": "Schritt 2 — Absolute vs. relative URLs: vollständige Adresse vs. Wegbeschreibung",
+          "text": [
+            "Eine absolute URL ist eine vollständige Postadresse — sie funktioniert von überall auf der Welt. `https://example.com/about` sagt jedem Browser genau, wo er hingehen soll.",
+            "Eine relative URL ist wie eine Wegbeschreibung vom aktuellen Standort aus — \"einen Ordner höher, dann in images/\". Sie funktioniert nur korrekt auf derselben Site.",
+            "Relative URLs für Links innerhalb der eigenen Site verwenden — sie funktionieren weiterhin nach einer Domain-Änderung. Absolute URLs für externe Links."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "target und download",
         "text": "target=\"_blank\" öffnet den Link in einem neuen Tab. Füge immer rel=\"noopener\" aus Sicherheitsgründen hinzu. Das download-Attribut weist den Browser an, die Datei herunterzuladen statt dorthin zu navigieren.",
-        "expandedText": "📜 Links in einem neuen Tab ohne `rel=\"noopener noreferrer\"` zu öffnen war historisch eine **Sicherheitslücke** — die geöffnete Seite konnte über `window.opener` auf den Öffner zugreifen und ihn verändern. Moderne Browser wenden `rel=\"noopener\"` für `target=\"_blank\"`-Links jetzt implizit an, aber das explizite Hinzufügen dokumentiert die Absicht und unterstützt ältere Browser.\n\n📖 Das `download`-Attribut löst einen Datei-Download anstelle einer Navigation aus. Ohne Wert verwendet der Browser den Dateinamen aus der URL. Mit einem Wert (`download=\"bericht.pdf\"`) wird der vorgeschlagene Dateiname festgelegt."
+        "expandedText": "📜 Links in einem neuen Tab ohne `rel=\"noopener noreferrer\"` zu öffnen war historisch eine **Sicherheitslücke** — die geöffnete Seite konnte über `window.opener` auf den Öffner zugreifen und ihn verändern. Moderne Browser wenden `rel=\"noopener\"` für `target=\"_blank\"`-Links jetzt implizit an, aber das explizite Hinzufügen dokumentiert die Absicht und unterstützt ältere Browser.\n\n📖 Das `download`-Attribut löst einen Datei-Download anstelle einer Navigation aus. Ohne Wert verwendet der Browser den Dateinamen aus der URL. Mit einem Wert (`download=\"bericht.pdf\"`) wird der vorgeschlagene Dateiname festgelegt.",
+        "analogy": {
+          "title": "Schritt 3 — target=\"_blank\": ein neues Fenster öffnen",
+          "text": [
+            "`target=\"_blank\"` ist wie das Öffnen eines Links in einem zweiten Browser-Fenster — die Originalseite bleibt im ersten Fenster geöffnet.",
+            "Das Sicherheitsrisiko: Ohne `rel=\"noopener\"` kann der neue Tab `window.opener` aufrufen und den ursprünglichen Tab umleiten. `target=\"_blank\"` immer mit `rel=\"noopener noreferrer\"` kombinieren."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Das <img>-Element",
         "text": "<img> ist ein leeres Element — kein schließendes Tag. src verweist auf die Bilddatei. alt liefert Text für Screenreader und wenn das Bild nicht geladen werden kann. width und height verhindern Layout-Verschiebungen.",
-        "expandedText": "📖 Das Angeben von `width`- und `height`-Attributen bei `<img>`-Elementen ermöglicht es dem Browser, **Platz** im Layout zu reservieren, bevor das Bild heruntergeladen wird. Ohne sie wird die Seite beim Laden der Bilder neu angeordnet, was **Cumulative Layout Shift (CLS)** verursacht — eine Core Web Vitals-Metrik, die unerwartete Layout-Verschiebungen bestraft.\n\n📖 Das `alt`-Attribut ist für die Barrierefreiheit erforderlich. Für informative Bilder eine prägnante Beschreibung des Bildinhalt schreiben. Für dekorative Bilder `alt=\"\"` verwenden, damit Screenreader das Element überspringen."
+        "expandedText": "📖 Das Angeben von `width`- und `height`-Attributen bei `<img>`-Elementen ermöglicht es dem Browser, **Platz** im Layout zu reservieren, bevor das Bild heruntergeladen wird. Ohne sie wird die Seite beim Laden der Bilder neu angeordnet, was **Cumulative Layout Shift (CLS)** verursacht — eine Core Web Vitals-Metrik, die unerwartete Layout-Verschiebungen bestraft.\n\n📖 Das `alt`-Attribut ist für die Barrierefreiheit erforderlich. Für informative Bilder eine prägnante Beschreibung des Bildinhalt schreiben. Für dekorative Bilder `alt=\"\"` verwenden, damit Screenreader das Element überspringen.",
+        "analogy": {
+          "title": "Schritt 4 — Das img-Element: ein Bilderrahmen an der Wand",
+          "text": [
+            "Das `<img>`-Tag ist wie ein Bilderrahmen mit einem Etikett auf der Rückseite. Das `src`-Attribut sagt, welches Foto in den Rahmen kommt. Das `alt`-Attribut beschreibt es für Screen-Reader.",
+            "`width` und `height` am Rahmen sagen dem Browser, wie viel Wandfläche reserviert werden soll, bevor das Foto geladen wird — verhindert Layout-Sprünge."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "Warum Alternativtext wichtig ist",
         "text": "Alternativtext wird von Screenreadern für blinde Nutzer laut vorgelesen. Er erscheint auch, wenn das Bild nicht geladen werden kann. Beschreibe, was auf dem Bild zu sehen ist, nicht nur den Dateinamen. Für dekorative Bilder verwende ein leeres alt=\"\", damit Screenreader es überspringen.",
-        "expandedText": "📖 Für rein **dekorative Bilder** — Hintergründe, Trennlinien, Icons, die benachbarten Text duplizieren — `alt=\"\"` verwenden. Dies teilt assistiver Technologie mit, das Element vollständig zu überspringen, anstatt einen Dateinamen anzukündigen. Ein `<img>` ohne `alt`-Attribut ist ein WCAG-Level-A-Verstoß.\n\n📖 Die Qualität des Alt-Textes beeinflusst sowohl die Barrierefreiheit als auch die SEO. Suchmaschinen verwenden `alt`-Text, um Bildinhalte für die Bildsuche zu verstehen. Alt-Text aus der Benutzerperspektive schreiben: Welche Information würde fehlen, wenn das Bild nicht geladen würde?"
+        "expandedText": "📖 Für rein **dekorative Bilder** — Hintergründe, Trennlinien, Icons, die benachbarten Text duplizieren — `alt=\"\"` verwenden. Dies teilt assistiver Technologie mit, das Element vollständig zu überspringen, anstatt einen Dateinamen anzukündigen. Ein `<img>` ohne `alt`-Attribut ist ein WCAG-Level-A-Verstoß.\n\n📖 Die Qualität des Alt-Textes beeinflusst sowohl die Barrierefreiheit als auch die SEO. Suchmaschinen verwenden `alt`-Text, um Bildinhalte für die Bildsuche zu verstehen. Alt-Text aus der Benutzerperspektive schreiben: Welche Information würde fehlen, wenn das Bild nicht geladen würde?",
+        "analogy": {
+          "title": "Schritt 5 — Alt-Text: das Foto jemandem am Telefon beschreiben",
+          "text": [
+            "Guten Alt-Text zu schreiben bedeutet, sich vorzustellen, das Bild jemandem am Telefon zu beschreiben. Nicht \"image.jpg\" — sondern \"Ein Entwickler gibt Code an einem Laptop ein, Kaffeetasse links daneben\".",
+            "Für dekorative Bilder ohne Information `alt=\"\"` verwenden — der leere String sagt Screen-Readern, es vollständig zu überspringen."
+          ]
+        }
       },
       {
         "animationStep": 5,
         "heading": "srcset — responsive Bilder",
         "text": "Das `srcset`-Attribut stellt mehrere Bildversionen in verschiedenen Auflösungen bereit. Der Browser wählt die passendste anhand der Bildschirmdichte und Viewport-Größe aus. Mit `sizes` wird dem Browser mitgeteilt, wie breit das Bild an jedem Breakpoint angezeigt wird.",
-        "expandedText": "📖 `srcset` verwendet zwei Arten von Deskriptoren: **Breiten-Deskriptoren** (`400w`, `800w`) und **Pixeldichte-Deskriptoren** (`1x`, `2x`). Breiten-Deskriptoren kombiniert mit dem `sizes`-Attribut geben dem Browser vollständige Informationen zur Auswahl der optimalen Quelle. `sizes` beschreibt, wie breit das Bild bei jedem Breakpoint angezeigt wird.\n\n📖 Der Browser verwendet `srcset` als **Hinweis**, nicht als Befehl — er kann basierend auf Netzwerkbedingungen, gecachten Bildern oder Benutzereinstellungen (`Save-Data`-Header) ein anderes Bild wählen."
+        "expandedText": "📖 `srcset` verwendet zwei Arten von Deskriptoren: **Breiten-Deskriptoren** (`400w`, `800w`) und **Pixeldichte-Deskriptoren** (`1x`, `2x`). Breiten-Deskriptoren kombiniert mit dem `sizes`-Attribut geben dem Browser vollständige Informationen zur Auswahl der optimalen Quelle. `sizes` beschreibt, wie breit das Bild bei jedem Breakpoint angezeigt wird.\n\n📖 Der Browser verwendet `srcset` als **Hinweis**, nicht als Befehl — er kann basierend auf Netzwerkbedingungen, gecachten Bildern oder Benutzereinstellungen (`Save-Data`-Header) ein anderes Bild wählen.",
+        "analogy": {
+          "title": "Schritt 6 — srcset: die richtige Fotogröße für den Rahmen wählen",
+          "text": [
+            "`srcset` ist wie ein Fotoservice, der dasselbe Bild in drei Größen hat: klein, mittel und groß. Man übergibt die gesamte Sammlung und der Browser wählt die beste für das aktuelle Gerät.",
+            "`sizes` teilt dem Browser mit, wie groß das Bild tatsächlich auf dem Bildschirm erscheinen wird — ohne diesen Hinweis könnte er die falsche Größe wählen. Zusammen sparen sie mobile Daten erheblich."
+          ]
+        }
       },
       {
         "animationStep": 6,
         "heading": "loading=\"lazy\"",
         "text": "Das Attribut `loading='lazy'` verzögert das Laden von Bildern unterhalb des Viewports. Sie werden erst geladen, wenn der Nutzer in ihre Nähe scrollt — das reduziert initiale Ladezeiten. In allen modernen Browsern unterstützt. Bei Bildern unterhalb des sichtbaren Bereichs verwenden.",
-        "expandedText": "🔬 `loading=\"lazy\"` verwendet intern die **Intersection Observer API**, um Netzwerkanfragen zu verschieben, bis das Bild den Viewport-Schwellenwert erreicht. Für Bilder above the fold (ohne Scrollen sichtbar) immer `loading=\"eager\"` (Standard) verwenden oder das Attribut weglassen. Das Lazy-Loading von Bildern above the fold verzögert die **Largest Contentful Paint (LCP)**-Metrik, was Core Web Vitals-Scores verschlechtert.\n\n📖 Der Browser implementiert seinen eigenen Schwellenwert — Bilder beginnen in der Regel zu laden, wenn sie sich einige hundert Pixel unter dem Viewport befinden."
+        "expandedText": "🔬 `loading=\"lazy\"` verwendet intern die **Intersection Observer API**, um Netzwerkanfragen zu verschieben, bis das Bild den Viewport-Schwellenwert erreicht. Für Bilder above the fold (ohne Scrollen sichtbar) immer `loading=\"eager\"` (Standard) verwenden oder das Attribut weglassen. Das Lazy-Loading von Bildern above the fold verzögert die **Largest Contentful Paint (LCP)**-Metrik, was Core Web Vitals-Scores verschlechtert.\n\n📖 Der Browser implementiert seinen eigenen Schwellenwert — Bilder beginnen in der Regel zu laden, wenn sie sich einige hundert Pixel unter dem Viewport befinden.",
+        "analogy": {
+          "title": "Schritt 7 — loading=\"lazy\": ein Restaurant, das nur auf Bestellung kocht",
+          "text": [
+            "Ein kluges Restaurant kocht nicht jedes Gericht auf der Karte zur Öffnungszeit. Es beginnt erst zu kochen, wenn ein Kunde es tatsächlich bestellt. `loading=\"lazy\"` funktioniert genauso: Bilder werden erst geladen, wenn sie sich dem Viewport nähern.",
+            "Das ist einer der einfachsten Performance-Gewinne in HTML — eine einzelne Attribut-Ergänzung, die die anfängliche Ladezeit erheblich reduzieren kann."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -271,43 +421,92 @@
         "animationStep": 0,
         "heading": "Ungeordnete Listen",
         "text": "<ul> erstellt eine Aufzählungsliste. Jeder Eintrag wird in <li> eingeschlossen. Verwende ungeordnete Listen, wenn die Reihenfolge keine Rolle spielt — ein Navigationsmenü, eine Feature-Liste, eine Sammlung von Tags.",
-        "expandedText": "📖 Navigationsmenüs werden fast universell aus `<ul>`-Elementen aufgebaut, weil **Navigationslinks konzeptionell eine ungeordnete Menge darstellen**. Kombiniert mit `<nav>` liefert dies Screenreadern sowohl eine Listenstruktur (für die Elementanzahl) als auch einen Navigations-Landmark. CSS entfernt die Listenmarkierungen und ordnet die Elemente horizontal mit `display: flex` an.\n\n📖 Das `<li>`-Element hat eine implizite `role=\"listitem\"`. Wenn `list-style: none` in CSS angewendet wird, kündigen einige Browser- und Screenreader-Kombinationen (insbesondere Safari mit VoiceOver) das Element möglicherweise nicht mehr als Liste an. Die Lösung ist das Hinzufügen von `role=\"list\"` zum `<ul>`-Element."
+        "expandedText": "📖 Navigationsmenüs werden fast universell aus `<ul>`-Elementen aufgebaut, weil **Navigationslinks konzeptionell eine ungeordnete Menge darstellen**. Kombiniert mit `<nav>` liefert dies Screenreadern sowohl eine Listenstruktur (für die Elementanzahl) als auch einen Navigations-Landmark. CSS entfernt die Listenmarkierungen und ordnet die Elemente horizontal mit `display: flex` an.\n\n📖 Das `<li>`-Element hat eine implizite `role=\"listitem\"`. Wenn `list-style: none` in CSS angewendet wird, kündigen einige Browser- und Screenreader-Kombinationen (insbesondere Safari mit VoiceOver) das Element möglicherweise nicht mehr als Liste an. Die Lösung ist das Hinzufügen von `role=\"list\"` zum `<ul>`-Element.",
+        "analogy": {
+          "title": "Schritt 1 — Ungeordnete Listen: eine Einkaufstasche",
+          "text": [
+            "Eine ungeordnete Liste ist wie eine Einkaufstasche — die Artikel sind alle zusammengehörig (Lebensmittel), aber es spielt keine Rolle, ob man zuerst Äpfel oder Brot nimmt.",
+            "Die Aufzählungspunkte werden automatisch vom Browser hinzugefügt. Man schreibt nie die Punkte selbst — das ist Aufgabe von CSS, wenn man sie ändern möchte."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Geordnete Listen",
         "text": "<ol> erstellt eine nummerierte Liste. Einträge sind ebenfalls <li>. Verwende geordnete Listen, wenn die Reihenfolge wichtig ist — Schritte in einem Tutorial, Ranglisten, ein Rezept. Der Browser übernimmt die Nummerierung automatisch.",
-        "expandedText": "📖 `<ol>` unterstützt die Attribute `start` und `reversed`. `start=\"5\"` beginnt die Nummerierung bei 5 statt bei 1 — nützlich, um eine Liste nach einer Unterbrechung fortzusetzen. `reversed` zählt abwärts statt aufwärts. Der Browser kümmert sich automatisch um die Nummerierungsanzeige, sodass Zahlen niemals hartcodiert im Inhalt werden müssen.\n\n📖 Das `type`-Attribut bei `<ol>` ändert den Nummerierungsstil: `\"a\"` für Kleinbuchstaben, `\"A\"` für Großbuchstaben, `\"i\"` für römische Kleinbuchstaben, `\"I\"` für Großbuchstaben. Diese sind zugunsten von `list-style-type` in CSS veraltet."
+        "expandedText": "📖 `<ol>` unterstützt die Attribute `start` und `reversed`. `start=\"5\"` beginnt die Nummerierung bei 5 statt bei 1 — nützlich, um eine Liste nach einer Unterbrechung fortzusetzen. `reversed` zählt abwärts statt aufwärts. Der Browser kümmert sich automatisch um die Nummerierungsanzeige, sodass Zahlen niemals hartcodiert im Inhalt werden müssen.\n\n📖 Das `type`-Attribut bei `<ol>` ändert den Nummerierungsstil: `\"a\"` für Kleinbuchstaben, `\"A\"` für Großbuchstaben, `\"i\"` für römische Kleinbuchstaben, `\"I\"` für Großbuchstaben. Diese sind zugunsten von `list-style-type` in CSS veraltet.",
+        "analogy": {
+          "title": "Schritt 2 — Geordnete Listen: ein Rezept",
+          "text": [
+            "Eine geordnete Liste ist ein Rezept: Schritt 1 vor Schritt 2, Schritt 2 vor Schritt 3. Die Reihenfolge ist Teil der Bedeutung — falsche Reihenfolge ergibt ein schlechtes Gericht.",
+            "Der Browser kümmert sich um die Nummerierung. Wenn man ein Element in der Mitte einfügt, aktualisieren sich alle Nummern automatisch — kein manuelles Umnummerieren."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Verschachtelte Listen",
         "text": "Listen können innerhalb von Listenelementen verschachtelt werden. Ein <li> kann ein weiteres <ul> oder <ol> enthalten. Dadurch entstehen hierarchische Strukturen — wie ein Inhaltsverzeichnis oder eine Gliederung.",
-        "expandedText": "📖 Eine verschachtelte Liste **muss** innerhalb eines `<li>`-Elements platziert werden — direkt innerhalb von `<ul>` oder `<ol>` ist ungültiges HTML. Der Browser korrigiert dies automatisch durch Einfügen eines impliziten `<li>`, aber der resultierende DOM unterscheidet sich von der beabsichtigten Struktur. Validatoren und Linter erkennen diesen Fehler, bevor er Layout- oder Barrierefreiheitsprobleme verursacht.\n\n📖 Verschachtelte Listen haben in der Praxis Tiefenbegrenzungen — jenseits von zwei oder drei Ebenen wird die Hierarchie für Benutzer schwer verständlich. Tiefe Verschachtelung mit Abschnittsüberschriften abflachen."
+        "expandedText": "📖 Eine verschachtelte Liste **muss** innerhalb eines `<li>`-Elements platziert werden — direkt innerhalb von `<ul>` oder `<ol>` ist ungültiges HTML. Der Browser korrigiert dies automatisch durch Einfügen eines impliziten `<li>`, aber der resultierende DOM unterscheidet sich von der beabsichtigten Struktur. Validatoren und Linter erkennen diesen Fehler, bevor er Layout- oder Barrierefreiheitsprobleme verursacht.\n\n📖 Verschachtelte Listen haben in der Praxis Tiefenbegrenzungen — jenseits von zwei oder drei Ebenen wird die Hierarchie für Benutzer schwer verständlich. Tiefe Verschachtelung mit Abschnittsüberschriften abflachen.",
+        "analogy": {
+          "title": "Schritt 3 — Verschachtelte Listen: ein Inhaltsverzeichnis",
+          "text": [
+            "Eine `<ul>` in einem `<li>` zu verschachteln erzeugt eine Unterliste — wie ein Inhaltsverzeichnis, wo ein Kapitel Unterabschnitte hat.",
+            "Die Schlüsselregel: Die verschachtelte Liste kommt innerhalb des `<li>`, nicht danach. Das `<li>` ist das Elternelement, kein Geschwister."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Block- vs. Inline-Elemente",
         "text": "Block-Elemente (<div>, <p>, <h1>, <ul>) beginnen auf einer neuen Zeile und nehmen die volle Breite ein. Inline-Elemente (<span>, <a>, <strong>, <img>) fließen im Text mit. Dies bestimmt, wie Elemente aneinandergereiht und umgebrochen werden.",
-        "expandedText": "📖 **Block-Elemente** erstellen einen neuen Formatierungskontext und stapeln sich standardmäßig vertikal. Sie dehnen sich so aus, dass sie die gesamte verfügbare Breite ihres Containers füllen, sofern sie nicht durch CSS eingeschränkt werden. **Inline-Elemente** fließen innerhalb der Textzeile und nehmen nur so viel Platz ein, wie ihr Inhalt benötigt.\n\n📖 Diese Unterscheidung steuert das CSS-Layout-Verhalten. `display: block` bei einem Inline-Element (wie `<span>`) verleiht ihm Block-Verhalten. `display: inline` bei einem Block-Element (wie `<div>`) lässt es wie Text fließen. `display: inline-block` kombiniert beides: es fließt inline, aber akzeptiert Breite und Höhe."
+        "expandedText": "📖 **Block-Elemente** erstellen einen neuen Formatierungskontext und stapeln sich standardmäßig vertikal. Sie dehnen sich so aus, dass sie die gesamte verfügbare Breite ihres Containers füllen, sofern sie nicht durch CSS eingeschränkt werden. **Inline-Elemente** fließen innerhalb der Textzeile und nehmen nur so viel Platz ein, wie ihr Inhalt benötigt.\n\n📖 Diese Unterscheidung steuert das CSS-Layout-Verhalten. `display: block` bei einem Inline-Element (wie `<span>`) verleiht ihm Block-Verhalten. `display: inline` bei einem Block-Element (wie `<div>`) lässt es wie Text fließen. `display: inline-block` kombiniert beides: es fließt inline, aber akzeptiert Breite und Höhe.",
+        "analogy": {
+          "title": "Schritt 4 — Block vs. Inline: gestapelte Boxen vs. Wörter in einem Satz",
+          "text": [
+            "Block-Elemente sind wie Versandboxen — jede nimmt eine volle Reihe im Lagerregal. Inline-Elemente sind wie Wörter — sie fließen nebeneinander, bis der Platz aufgebraucht ist.",
+            "Dieses Standard-Anzeigeverhalten bestimmt, wie Elemente stapeln und umbrechen. CSS kann es ändern: `display: inline-block`, `display: flex`, etc."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "<div> und <span>",
         "text": "<div> ist ein generischer Block-Container — keine semantische Bedeutung, nur Gruppierung. <span> ist ein generischer Inline-Container. Verwende sie als Styling-Hooks oder JavaScript-Ziele, wenn kein semantisches Element passt. Bevorzuge semantische Elemente, wenn möglich.",
-        "expandedText": "📖 `<div>` und `<span>` haben **keine implizite ARIA-Rolle** — Screenreader behandeln sie als anonyme Container. Übermäßige `<div>`-Verschachtelung (oft als \"div soup\" bezeichnet) erschwert DOM-Traversierung, CSS-Selektoren und Debugging, ohne semantischen Nutzen zu bieten.\n\n💡 Die Faustregel: zuerst das spezifischste semantische Element wählen. Wenn kein semantisches Element passt (z. B. ein Layout-Wrapper ohne Bedeutung), erst dann `<div>` verwenden. `<span>` ist für Inline-Styling-Hooks geeignet, wenn `<strong>`, `<em>`, `<code>` oder andere semantische Inline-Elemente nicht passen."
+        "expandedText": "📖 `<div>` und `<span>` haben **keine implizite ARIA-Rolle** — Screenreader behandeln sie als anonyme Container. Übermäßige `<div>`-Verschachtelung (oft als \"div soup\" bezeichnet) erschwert DOM-Traversierung, CSS-Selektoren und Debugging, ohne semantischen Nutzen zu bieten.\n\n💡 Die Faustregel: zuerst das spezifischste semantische Element wählen. Wenn kein semantisches Element passt (z. B. ein Layout-Wrapper ohne Bedeutung), erst dann `<div>` verwenden. `<span>` ist für Inline-Styling-Hooks geeignet, wenn `<strong>`, `<em>`, `<code>` oder andere semantische Inline-Elemente nicht passen.",
+        "analogy": {
+          "title": "Schritt 5 — div und span: generische Container",
+          "text": [
+            "`div` und `span` sind die einfachen Kartonboxen von HTML — kein Etikett, keine besondere Bedeutung. `div` ist eine Block-Level-Box; `span` ist eine Inline-Box.",
+            "Nur verwenden, wenn kein semantisches Element passt. Aber immer zuerst die semantische Wahl bevorzugen: `<nav>` statt `div.class=\"nav\"`, `<button>` statt `span.onclick`."
+          ]
+        }
       },
       {
         "animationStep": 5,
         "heading": "Beschreibungslisten",
         "text": "`<dl>` (Beschreibungsliste) verbindet Begriffe mit ihren Definitionen. `<dt>` ist der Begriff, `<dd>` die Beschreibung. Verwenden für Glossare, Metadaten-Panels und FAQ-Seiten — überall dort, wo ein Begriff und seine Erklärung zusammengehören.",
-        "expandedText": "📖 Das `<dl>`-Element ist **semantisch reichhaltiger als eine zweispaltige Tabelle** für Schlüssel-Wert-Daten, weil es die Zuordnung zwischen Begriffen und Beschreibungen kodiert. Screenreader kündigen `<dt>`- und `<dd>`-Paar-Beziehungen an, während eine Tabelle korrektes `<th>`- und `<td>`-Markup erfordert, um dieselbe Struktur zu vermitteln.\n\n📖 Ein `<dt>` kann mehrere `<dd>`-Elemente haben (ein Begriff mit mehreren Definitionen), und mehrere `<dt>`-Elemente können ein einziges `<dd>` teilen (synonyme Begriffe mit einer Erklärung). Diese Flexibilität macht es zu dem richtigen Element für Glossare, Metadaten und Eigenschaftslisten."
+        "expandedText": "📖 Das `<dl>`-Element ist **semantisch reichhaltiger als eine zweispaltige Tabelle** für Schlüssel-Wert-Daten, weil es die Zuordnung zwischen Begriffen und Beschreibungen kodiert. Screenreader kündigen `<dt>`- und `<dd>`-Paar-Beziehungen an, während eine Tabelle korrektes `<th>`- und `<td>`-Markup erfordert, um dieselbe Struktur zu vermitteln.\n\n📖 Ein `<dt>` kann mehrere `<dd>`-Elemente haben (ein Begriff mit mehreren Definitionen), und mehrere `<dt>`-Elemente können ein einziges `<dd>` teilen (synonyme Begriffe mit einer Erklärung). Diese Flexibilität macht es zu dem richtigen Element für Glossare, Metadaten und Eigenschaftslisten.",
+        "analogy": {
+          "title": "Schritt 6 — Beschreibungslisten: ein Schlüssel-Wert-Wörterbuch",
+          "text": [
+            "Eine Beschreibungsliste ist das HTML-Äquivalent eines Wörterbucheintrags: Begriff, dann seine Definition. Aber nicht auf Wörter beschränkt — für jede Schlüssel-Wert-Datenstruktur verwenden.",
+            "Metadaten-Panels (Autor: Jane Doe, Veröffentlicht: 26. März), FAQ-Abschnitte (Frage + Antwort) und Spezifikationsblätter (Breite: 120mm) sind perfekte Anwendungsfälle."
+          ]
+        }
       },
       {
         "animationStep": 6,
         "heading": "Eigene Listenmarker",
         "text": "CSS `list-style-type` ändert den Aufzählungszeichen- oder Nummerierungsstil: `disc`, `circle`, `decimal`, `lower-alpha` und mehr. `list-style: none` entfernt Marker komplett — wird in Navigationsmenüs verwendet. `list-style-image` nutzt ein eigenes Bild als Aufzählungszeichen.",
-        "expandedText": "📜 Das Entfernen von Listenmarkierungen mit `list-style: none` in Safari veranlasste in Kombination mit VoiceOver den Browser historisch dazu, das Element nicht mehr als Liste anzukündigen. Die Lösung ist das Hinzufügen von `role=\"list\"` zum `<ul>`. Dies ist ein **Browser-Barrierefreiheitsfehler**, kein CSS-Spezifikationsproblem, betrifft aber echte Benutzer.\n\n📖 Das `::marker`-Pseudo-Element bietet direkte Stilkontrolle über Listenaufzählungszeichen und Nummern ohne JavaScript. `content` überschreibt das Markierungszeichen, `color` und `font-size` passen dessen Erscheinungsbild an."
+        "expandedText": "📜 Das Entfernen von Listenmarkierungen mit `list-style: none` in Safari veranlasste in Kombination mit VoiceOver den Browser historisch dazu, das Element nicht mehr als Liste anzukündigen. Die Lösung ist das Hinzufügen von `role=\"list\"` zum `<ul>`. Dies ist ein **Browser-Barrierefreiheitsfehler**, kein CSS-Spezifikationsproblem, betrifft aber echte Benutzer.\n\n📖 Das `::marker`-Pseudo-Element bietet direkte Stilkontrolle über Listenaufzählungszeichen und Nummern ohne JavaScript. `content` überschreibt das Markierungszeichen, `color` und `font-size` passen dessen Erscheinungsbild an.",
+        "analogy": {
+          "title": "Schritt 7 — Benutzerdefinierte Listen-Marker: den Aufzählungsstil ändern",
+          "text": [
+            "Listen kommen mit Standard-Bullets, aber CSS gibt volle Kontrolle. Bullets entfernen (`list-style: none`) ist die Standardweise, eine ungeordnete Liste in eine horizontale Navigationsleiste umzuwandeln.",
+            "Das `::marker`-Pseudo-Element zielt nur auf den Bullet oder die Zahl. Man kann es umfärben, in der Größe anpassen oder durch ein Emoji ersetzen — ohne den Listeneintrag selbst zu berühren."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -357,42 +556,97 @@
       {
         "animationStep": 0,
         "heading": "HTML ist nur Text",
-        "text": "Wenn dein Browser eine HTML-Datei empfängt, sieht er reinen Text — Tags, Attribute, Inhalt. Das DOM ist das, was der Browser aus diesem Text aufbaut."
+        "text": "Wenn dein Browser eine HTML-Datei empfängt, sieht er reinen Text — Tags, Attribute, Inhalt. Das DOM ist das, was der Browser aus diesem Text aufbaut.",
+        "analogy": {
+          "title": "Schritt 1 — HTML als Text: ein Bauplan für ein Gebäude",
+          "text": [
+            "Rohes HTML ist wie ein Papierbauplan für ein Gebäude — es ist nur Tinte und Papier, noch kein echtes Gebäude. Der Browser liest diesen Plan und konstruiert daraus das DOM.",
+            "Das DOM (Document Object Model) ist das fertige Gebäude. Anders als der Papierbauplan kann man durch das Gebäude gehen, Wände verschieben und Räume hinzufügen — alles in Echtzeit."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "Das Parsen beginnt oben",
-        "text": "Der Browser liest dein HTML von oben nach unten und erstellt für jedes Element einen Knoten. Der <html>-Tag wird zur Wurzel."
+        "text": "Der Browser liest dein HTML von oben nach unten und erstellt für jedes Element einen Knoten. Der <html>-Tag wird zur Wurzel.",
+        "analogy": {
+          "title": "Schritt 2 — Top-down-Parsing: ein Rezept lesen",
+          "text": [
+            "Der Browser liest HTML genau wie man ein Rezept liest — von der ersten Zeile bis zur letzten. In dem Moment, wenn er auf ein Tag trifft, erstellt er den entsprechenden DOM-Knoten.",
+            "Deshalb ist das Platzieren von Skripten am Ende des Body (oder Verwenden von `defer`) wichtig: Wenn der Browser ein Skript trifft, bevor er das HTML verarbeitet hat, versucht das Skript, nicht existierende Elemente zu manipulieren."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Kinder verzweigen sich nach außen",
-        "text": "Verschachtelte Elemente werden zu Kindknoten. Der Baum wächst, während jedes Tag geparst wird."
+        "text": "Verschachtelte Elemente werden zu Kindknoten. Der Baum wächst, während jedes Tag geparst wird.",
+        "analogy": {
+          "title": "Schritt 3 — Kinder verzweigen nach außen: ein Stammbaum",
+          "text": [
+            "Der DOM-Baum ist genau wie ein Stammbaum. `<html>` ist das Familienoberhaupt an der Spitze. `<head>` und `<body>` sind direkte Kinder. Jedes Element, das innerhalb eines anderen ist, ist sein Kind.",
+            "Elternelement, Kind, Geschwister — das sind die echten Begriffe in der DOM-API: `element.parentElement`, `element.children`, `element.nextSibling`."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Text ist auch ein Knoten",
-        "text": "Jedes Textstück zwischen Tags ist sein eigener Textknoten im Baum."
+        "text": "Jedes Textstück zwischen Tags ist sein eigener Textknoten im Baum.",
+        "analogy": {
+          "title": "Schritt 4 — Textknoten: die eigentlichen Wörter auf der Seite",
+          "text": [
+            "Jedes Stück Text zwischen Tags ist ein Textknoten — ein separater Eintrag im DOM-Baum. Das Wort \"Hallo\" in `<p>Hallo</p>` ist nicht Teil des `<p>`-Elements — es ist ein Kind-Textknoten.",
+            "Deshalb verhalten sich `textContent` und der Markup-Setter unterschiedlich: `textContent` liest/schreibt rohe Textknoten; der Markup-Setter interpretiert Tags."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "Elemente auswählen",
-        "text": "`querySelector()` gibt das erste Element zurück, das einem CSS-Selektor entspricht. `querySelectorAll()` gibt alle Treffer als NodeList zurück. `getElementById()` ist schneller, aber auf ID-Selektoren beschränkt. `querySelector` für konsistente CSS-Syntax bevorzugen."
+        "text": "`querySelector()` gibt das erste Element zurück, das einem CSS-Selektor entspricht. `querySelectorAll()` gibt alle Treffer als NodeList zurück. `getElementById()` ist schneller, aber auf ID-Selektoren beschränkt. `querySelector` für konsistente CSS-Syntax bevorzugen.",
+        "analogy": {
+          "title": "Schritt 5 — Elemente selektieren: ein Bibliothekskatalog",
+          "text": [
+            "`querySelector` ist wie der Bibliothekskatalog: man beschreibt, was man möchte (\"ein Buch mit dieser ISBN\", \"alle Bücher über JavaScript\") und der Katalog liefert es zurück."
+          ]
+        }
       },
       {
         "animationStep": 5,
         "heading": "Inhalt lesen und ändern",
-        "text": "`textContent` liest und schreibt sicher reinen Text — kein HTML-Parsing, kein Sicherheitsrisiko. Immer `textContent` für nutzergenerierte Inhalte verwenden. `innerHTML` parst HTML, öffnet aber XSS-Lücken bei nicht vertrauenswürdigen Inhalten. `setAttribute()` fügt Attribute hinzu oder aktualisiert sie."
+        "text": "`textContent` liest und schreibt sicher reinen Text — kein HTML-Parsing, kein Sicherheitsrisiko. Immer `textContent` für nutzergenerierte Inhalte verwenden. `innerHTML` parst HTML, öffnet aber XSS-Lücken bei nicht vertrauenswürdigen Inhalten. `setAttribute()` fügt Attribute hinzu oder aktualisiert sie.",
+        "analogy": {
+          "title": "Schritt 6 — Inhalt ändern: ein Dokument bearbeiten",
+          "text": [
+            "`textContent` ist ein Nur-Text-Editor — was man schreibt ist was der Nutzer sieht, nichts mehr. Der Markup-Setter interpretiert Tags — man kann `<strong>Text</strong>` schreiben und es wird fett gerendert.",
+            "`classList` ist wie das Bearbeiten eines Namensschilds: `add(\"active\")` schreibt eine neue Klasse, `remove(\"hidden\")` löscht eine, `toggle(\"open\")` flippt sie an und aus."
+          ]
+        }
       },
       {
         "animationStep": 6,
         "heading": "Elemente erstellen und einfügen",
-        "text": "`document.createElement()` erstellt ein neues Element im Speicher. Eigenschaften setzen, dann mit `appendChild()` oder `insertBefore()` einfügen. `remove()` löscht ein Element. `cloneNode(true)` erstellt eine tiefe Kopie inklusive aller Kinder."
+        "text": "`document.createElement()` erstellt ein neues Element im Speicher. Eigenschaften setzen, dann mit `appendChild()` oder `insertBefore()` einfügen. `remove()` löscht ein Element. `cloneNode(true)` erstellt eine tiefe Kopie inklusive aller Kinder.",
+        "analogy": {
+          "title": "Schritt 7 — Elemente erstellen: Möbel aus Teilen bauen",
+          "text": [
+            "`createElement` ist wie das Schneiden einer Planke vom Brett — man hat das Stück, aber es ist noch nichts befestigt. `appendChild` ist das Einschrauben der Planke in das Möbelstück.",
+            "Dieses Muster (erstellen → konfigurieren → anhängen) ist der fundamentale Baustein dynamischer UI: Elemente in JavaScript erstellen, ihre Eigenschaften setzen, dann ins DOM einfügen."
+          ]
+        }
       },
       {
         "animationStep": 7,
         "heading": "Events",
-        "text": "Events ermöglichen die Reaktion auf Benutzeraktionen. `addEventListener('click', handler)` hängt einen Handler an ein Element. Das `event`-Objekt enthält Details wie `event.target` (das geklickte Element). `removeEventListener` entfernt die Subscription."
+        "text": "Events ermöglichen die Reaktion auf Benutzeraktionen. `addEventListener('click', handler)` hängt einen Handler an ein Element. Das `event`-Objekt enthält Details wie `event.target` (das geklickte Element). `removeEventListener` entfernt die Subscription.",
+        "analogy": {
+          "title": "Schritt 8 — Events: Briefkästen und Briefträger",
+          "text": [
+            "Events sind wie Briefkästen: man befestigt einen Kasten an einem Element (`addEventListener`), und immer wenn dieses Event passiert (Klick, Tastendruck, Absenden), liefert der Briefträger die Nachricht.",
+            "Das Event-Objekt enthält alle Details: welche Schaltfläche geklickt wurde, welche Taste gedrückt wurde, wo die Maus ist. Der Handler liest die Nachricht und antwortet."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -450,43 +704,93 @@
         "animationStep": 0,
         "heading": "Das Div-Suppen-Problem",
         "text": "Wenn man nur <div>-Elemente verwendet, teilt das Browsern und Screenreadern nichts über die Struktur der Seite mit. Jede Box sieht gleich aus.",
-        "expandedText": "📖 Eine Seite kann **mehrere `<header>`-Elemente** haben — eines für den seitenweiten Header und eines innerhalb jedes `<article>` oder `<section>`. Das oberste `<header>` wird auf ARIA `role=\"banner\"` (ein Landmark) abgebildet; Header innerhalb von Abschnitten erhalten diese Landmark-Rolle nicht.\n\n📖 Das `<header>`-Element ist für sichtbaren Seiteninhalt gedacht. Verwechsle es nicht mit dem `<head>`-Element, das unsichtbare Metadaten enthält. `<header>` kann das Logo, Navigation, Suche und Autorhinweise enthalten — alle Inhalte, die den Abschnitt einleiten oder kontextualisieren."
+        "expandedText": "📖 Eine Seite kann **mehrere `<header>`-Elemente** haben — eines für den seitenweiten Header und eines innerhalb jedes `<article>` oder `<section>`. Das oberste `<header>` wird auf ARIA `role=\"banner\"` (ein Landmark) abgebildet; Header innerhalb von Abschnitten erhalten diese Landmark-Rolle nicht.\n\n📖 Das `<header>`-Element ist für sichtbaren Seiteninhalt gedacht. Verwechsle es nicht mit dem `<head>`-Element, das unsichtbare Metadaten enthält. `<header>` kann das Logo, Navigation, Suche und Autorhinweise enthalten — alle Inhalte, die den Abschnitt einleiten oder kontextualisieren.",
+        "analogy": {
+          "title": "Schritt 1 — Div-Suppe: ein unbeschrifteter Aktenschrank",
+          "text": [
+            "Stell dir einen Aktenschrank vor, in dem jeder Ordner \"ORDNER\" beschriftet ist. Man hat keine Ahnung, welcher Steuerunterlagen vs. Familienfotos enthält.",
+            "HTML nur mit `div`s ist dasselbe Problem für Browser und Screen-Reader: Alles sieht wie eine generische Box aus. Semantisches HTML bringt Bedeutung in die Struktur."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "<header>",
         "text": "Das <header>-Element enthält einleitenden Inhalt — Logo, Seitenname, Hauptnavigation. Es kann einmal pro Seite oder einmal pro Abschnitt vorkommen.",
-        "expandedText": "📖 Eine Seite kann **mehrere `<header>`-Elemente** haben — eines für den seitenweiten Header und je eines innerhalb jedes `<article>` oder `<section>`. Der oberste `<header>` ist der ARIA-Rolle `role=\"banner\"` zugeordnet (ein Landmark); Header innerhalb von Abschnitten erhalten diese Landmark-Rolle nicht.\n\n📖 Das `<header>`-Element ist für sichtbare Seiteninhalte gedacht. Es nicht mit dem `<head>`-Element verwechseln, das unsichtbare Metadaten enthält. `<header>` kann das Site-Logo, Navigation, Suche und Bylines enthalten — alle Inhalte, die den Abschnitt, in dem sie sich befinden, einführen oder kontextualisieren."
+        "expandedText": "📖 Eine Seite kann **mehrere `<header>`-Elemente** haben — eines für den seitenweiten Header und je eines innerhalb jedes `<article>` oder `<section>`. Der oberste `<header>` ist der ARIA-Rolle `role=\"banner\"` zugeordnet (ein Landmark); Header innerhalb von Abschnitten erhalten diese Landmark-Rolle nicht.\n\n📖 Das `<header>`-Element ist für sichtbare Seiteninhalte gedacht. Es nicht mit dem `<head>`-Element verwechseln, das unsichtbare Metadaten enthält. `<header>` kann das Site-Logo, Navigation, Suche und Bylines enthalten — alle Inhalte, die den Abschnitt, in dem sie sich befinden, einführen oder kontextualisieren.",
+        "analogy": {
+          "title": "Schritt 2 — header: die Frontfassade eines Gebäudes",
+          "text": [
+            "Der Header ist wie die Front eines Gebäudes — das Namensschild, der Eingang, das Schild. Er identifiziert, was das Gebäude ist, bevor man es betritt.",
+            "Eine Seite kann mehrere Header haben: einen für die Site selbst und einen innerhalb jedes `<article>` oder `<section>` für dieses spezifische Inhaltsstück."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "<nav>",
         "text": "Das <nav>-Element markiert einen Block mit Navigationslinks. Screenreader und Suchmaschinen verwenden es, um die Seitenstruktur zu verstehen.",
-        "expandedText": "📖 Eine Seite kann **mehrere `<nav>`-Elemente** haben — Hauptnavigation, Breadcrumbs, Inhaltsverzeichnis. Screenreader stellen `<nav>` als \"Navigation\"-Landmark bereit, zu dem Benutzer direkt springen können. `aria-label` verwenden, um mehrere Nav-Landmarks zu unterscheiden: `<nav aria-label=\"Hauptnavigation\">` vs. `<nav aria-label=\"Breadcrumbs\">`.\n\n📖 Nicht jede Gruppe von Links erfordert ein `<nav>`-Element. Rechtliche Footer-Links oder Social-Media-Icon-Links sind keine primäre Navigation. `<nav>` für wichtige Navigationsblöcke reservieren, die Benutzern helfen, sich durch die primären Sektionen zu bewegen."
+        "expandedText": "📖 Eine Seite kann **mehrere `<nav>`-Elemente** haben — Hauptnavigation, Breadcrumbs, Inhaltsverzeichnis. Screenreader stellen `<nav>` als \"Navigation\"-Landmark bereit, zu dem Benutzer direkt springen können. `aria-label` verwenden, um mehrere Nav-Landmarks zu unterscheiden: `<nav aria-label=\"Hauptnavigation\">` vs. `<nav aria-label=\"Breadcrumbs\">`.\n\n📖 Nicht jede Gruppe von Links erfordert ein `<nav>`-Element. Rechtliche Footer-Links oder Social-Media-Icon-Links sind keine primäre Navigation. `<nav>` für wichtige Navigationsblöcke reservieren, die Benutzern helfen, sich durch die primären Sektionen zu bewegen.",
+        "analogy": {
+          "title": "Schritt 3 — nav: das Wegweiserschild",
+          "text": [
+            "Ein `<nav>`-Element ist wie das Wegweiserschild am Eingang eines Campus — es zeigt in die verschiedenen Bereiche: Bibliothek, Mensa, Verwaltungsgebäude.",
+            "Screen-Reader kündigen nav-Landmarken an, sodass Nutzer direkt zur Navigation springen oder sie überspringen können. Mehrere `<nav>`-Elemente können koexistieren — `aria-label` unterscheidet sie."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "<main> und <article>",
         "text": "<main> enthält den primären einzigartigen Inhalt der Seite. <article> ist für in sich abgeschlossenen Inhalt wie einen Blog-Beitrag oder eine Neuigkeit.",
-        "expandedText": "📖 Pro Seite darf es **nur ein `<main>`-Element** geben. Es ist der ARIA-Rolle `role=\"main\"` zugeordnet und ist das Ziel von \"Zum Hauptinhalt springen\"-Links — eine WCAG-Barrierefreiheitsanforderung, die es Tastaturnutzern ermöglicht, wiederholte Navigationselemente zu überspringen.\n\n📖 `<article>` stellt eigenständige Inhalte dar, die unabhängig verteilt oder syndiziert werden könnten — ein Blogbeitrag, ein Forumsbeitrag, eine Produktkarte. Jedes `<article>` kann sein eigenes `<header>` und `<footer>` haben. `<section>` gruppiert thematisch verwandte Inhalte, ist aber nicht unabhängig verteilbar — es benötigt immer seinen umgebenden Kontext."
+        "expandedText": "📖 Pro Seite darf es **nur ein `<main>`-Element** geben. Es ist der ARIA-Rolle `role=\"main\"` zugeordnet und ist das Ziel von \"Zum Hauptinhalt springen\"-Links — eine WCAG-Barrierefreiheitsanforderung, die es Tastaturnutzern ermöglicht, wiederholte Navigationselemente zu überspringen.\n\n📖 `<article>` stellt eigenständige Inhalte dar, die unabhängig verteilt oder syndiziert werden könnten — ein Blogbeitrag, ein Forumsbeitrag, eine Produktkarte. Jedes `<article>` kann sein eigenes `<header>` und `<footer>` haben. `<section>` gruppiert thematisch verwandte Inhalte, ist aber nicht unabhängig verteilbar — es benötigt immer seinen umgebenden Kontext.",
+        "analogy": {
+          "title": "Schritt 4 — main und article: die Haupthalle und Ausstellungen",
+          "text": [
+            "`<main>` ist die Haupthalle — der Grund, warum man in dieses Gebäude gekommen ist. Es gibt einen pro Seite und enthält den Primärinhalt.",
+            "`<article>` ist eine einzelne Ausstellung in der Halle — eigenständig, für sich sinnvoll. Ein Blog-Post, eine Nachrichtengeschichte, ein Produktkarten-Eintrag."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "Das Gesamtbild",
         "text": "Mit semantischem HTML verstehen Browser, Suchmaschinen und assistive Technologien die Seitenstruktur — ohne CSS-Klassen für die Bedeutung.",
-        "expandedText": "📖 Die **ARIA-Landmark-Rollen** sind direkt HTML5-Semantikelementen zugeordnet: `<main>` = `role=\"main\"`, `<nav>` = `role=\"navigation\"`, oberster `<header>` = `role=\"banner\"`, oberstes `<footer>` = `role=\"contentinfo\"`, `<aside>` = `role=\"complementary\"`. Screenreader-Benutzer navigieren Landmarks mit einem einzigen Tastendruck.\n\n📖 Suchmaschinen nutzen semantische Struktur zur Bestimmung der Inhaltshierarchie. Die `<h1>`-bis-`<h6>`-Gliederung, `<article>`-Grenzen und `<aside>`-Ausschlüsse beeinflussen alle, wie Inhalte indexiert und eingestuft werden. Semantisches Markup ist kostenlose SEO und Barrierefreiheit durch korrekte Elementwahl."
+        "expandedText": "📖 Die **ARIA-Landmark-Rollen** sind direkt HTML5-Semantikelementen zugeordnet: `<main>` = `role=\"main\"`, `<nav>` = `role=\"navigation\"`, oberster `<header>` = `role=\"banner\"`, oberstes `<footer>` = `role=\"contentinfo\"`, `<aside>` = `role=\"complementary\"`. Screenreader-Benutzer navigieren Landmarks mit einem einzigen Tastendruck.\n\n📖 Suchmaschinen nutzen semantische Struktur zur Bestimmung der Inhaltshierarchie. Die `<h1>`-bis-`<h6>`-Gliederung, `<article>`-Grenzen und `<aside>`-Ausschlüsse beeinflussen alle, wie Inhalte indexiert und eingestuft werden. Semantisches Markup ist kostenlose SEO und Barrierefreiheit durch korrekte Elementwahl.",
+        "analogy": {
+          "title": "Schritt 5 — Vollständiges semantisches Layout: eine gut organisierte Zeitung",
+          "text": [
+            "Eine gut gestaltete Zeitung hat den Titelkopf (header), ein Inhaltsverzeichnis (nav), Hauptartikel (main + article), Seitenleisten (aside) und die Impressumsseite (footer).",
+            "Mit semantischem HTML hat die Seite dieselbe klare Struktur — verständlich für Browser, Suchmaschinen, Screen-Reader und andere Entwickler."
+          ]
+        }
       },
       {
         "animationStep": 5,
         "heading": "section, aside und figure",
         "text": "`<section>` gruppiert verwandte Inhalte mit eigenem Überschrift — ein Kapitel innerhalb eines Hauptbereichs. `<aside>` enthält tangential verwandte Inhalte: Seitenleisten, Pullzitate, verwandte Links. `<figure>` und `<figcaption>` verbinden ein Bild mit seiner Bildunterschrift.",
-        "expandedText": "📖 `<section>` sollte immer eine **Überschrift** (`<h2>` bis `<h6>`) enthalten, da es eine thematische Gruppierung darstellt, die benennbar sein sollte. Ohne Überschrift bietet `<section>` keinen semantischen Mehrwert gegenüber `<div>`.\n\n📖 `<figure>` und `<figcaption>` erstellen eine Verbindung zwischen einem Bild (oder Codeblock, oder Diagramm) und dessen Beschriftung. Die Beschriftung ist optional — `<figure>` ohne `<figcaption>` ist gültig, wenn keine Beschriftung benötigt wird, der Inhalt aber eine eigenständige Illustration ist. Beide Elemente sind Block-Level; `<figcaption>` muss das erste oder letzte Kind von `<figure>` sein."
+        "expandedText": "📖 `<section>` sollte immer eine **Überschrift** (`<h2>` bis `<h6>`) enthalten, da es eine thematische Gruppierung darstellt, die benennbar sein sollte. Ohne Überschrift bietet `<section>` keinen semantischen Mehrwert gegenüber `<div>`.\n\n📖 `<figure>` und `<figcaption>` erstellen eine Verbindung zwischen einem Bild (oder Codeblock, oder Diagramm) und dessen Beschriftung. Die Beschriftung ist optional — `<figure>` ohne `<figcaption>` ist gültig, wenn keine Beschriftung benötigt wird, der Inhalt aber eine eigenständige Illustration ist. Beide Elemente sind Block-Level; `<figcaption>` muss das erste oder letzte Kind von `<figure>` sein.",
+        "analogy": {
+          "title": "Schritt 6 — section und aside: Zimmer und Flure",
+          "text": [
+            "Wenn `<main>` ein Gebäude ist, sind `<section>`-Elemente die Zimmer darin — jedes mit seinem eigenen Zweck und einem Türschild (der Überschrift).",
+            "`<aside>` ist der Flur oder die Nische — es enthält Dinge, die mit dem Gebäude zusammenhängen, aber nicht die Hauptattraktion sind: eine Garderobe, ein Aushang.",
+            "`<figure>` ist ein gerahmtes Foto an der Wand mit einer Beschriftungsplatte darunter — Bild und Beschreibung gehören zusammen."
+          ]
+        }
       },
       {
         "animationStep": 6,
         "heading": "time, address und details/summary",
         "text": "`<time>` markiert ein Datum/eine Uhrzeit mit einem maschinenlesbaren `datetime`-Attribut. `<address>` liefert Kontaktinformationen für den nächsten `<article>` oder das gesamte Dokument. `<details>` und `<summary>` erstellen ein natives aufklappbares Widget ohne JavaScript.",
-        "expandedText": "✅ Das `<details>`- und `<summary>`-Muster ist das einzige **native Disclosure-Widget** in HTML — es wechselt zwischen offen und geschlossen ohne JavaScript. Der Browser verwaltet das `open`-Attribut, den Umschalter und die Tastaturzugänglichkeit automatisch. Dieses native Widget ist barrierefreier als viele JavaScript-Accordion-Komponenten.\n\n📖 `<address>` stellt **Kontaktinformationen** für den nächsten `<article>`- oder `<body>`-Vorfahren dar — keine generische Postanschrift. Es sollte innerhalb des `<article>` erscheinen, das es beschreibt. Das `<time datetime>`-Attribut verwendet das ISO 8601-Format und ermöglicht es Suchmaschinen, Rich-Ergebnisse für Veranstaltungen, Artikel und Rezepte zu generieren."
+        "expandedText": "✅ Das `<details>`- und `<summary>`-Muster ist das einzige **native Disclosure-Widget** in HTML — es wechselt zwischen offen und geschlossen ohne JavaScript. Der Browser verwaltet das `open`-Attribut, den Umschalter und die Tastaturzugänglichkeit automatisch. Dieses native Widget ist barrierefreier als viele JavaScript-Accordion-Komponenten.\n\n📖 `<address>` stellt **Kontaktinformationen** für den nächsten `<article>`- oder `<body>`-Vorfahren dar — keine generische Postanschrift. Es sollte innerhalb des `<article>` erscheinen, das es beschreibt. Das `<time datetime>`-Attribut verwendet das ISO 8601-Format und ermöglicht es Suchmaschinen, Rich-Ergebnisse für Veranstaltungen, Artikel und Rezepte zu generieren.",
+        "analogy": {
+          "title": "Schritt 7 — time, address, details: maschinenlesbare Anmerkungen",
+          "text": [
+            "`<time datetime=\"2026-03-26\">` ist wie das Schreiben eines Datums in menschlichem und maschinenlesbarem Format: Der Anzeigetext ist für Leser, das `datetime`-Attribut ist für Maschinen.",
+            "`<details>`/`<summary>` ist das HTML-Äquivalent eines \"Mehr lesen\"-Buttons — vollständig nativ, kein JavaScript, keine Bibliothek, vollständig tastaturzugänglich."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -540,47 +844,109 @@
       {
         "animationStep": 0,
         "heading": "Das <form>-Element",
-        "text": "Ein <form> umschließt alle Eingabefelder und sendet Daten an einen Server. Das action-Attribut setzt die URL; method setzt GET oder POST."
+        "text": "Ein <form> umschließt alle Eingabefelder und sendet Daten an einen Server. Das action-Attribut setzt die URL; method setzt GET oder POST.",
+        "analogy": {
+          "title": "Schritt 1 — form-Element: ein Postumschlag",
+          "text": [
+            "Ein Formular ist wie ein Postumschlag: Es hält die Daten, gibt die Zieladresse an (`action`) und ob sie offen (GET) oder versiegelt (POST) gesendet werden.",
+            "Ohne einen `<form>`-Wrapper haben deine Eingaben nirgendwo hinzugehen. Das Formular ist der Container, der Eingaben gruppiert und das Absenden handhabt."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "<label> und <input>",
-        "text": "Jedes Eingabefeld sollte ein Label haben. Die Verbindung mit for/id macht das Label anklickbar und verbessert die Barrierefreiheit."
+        "text": "Jedes Eingabefeld sollte ein Label haben. Die Verbindung mit for/id macht das Label anklickbar und verbessert die Barrierefreiheit.",
+        "analogy": {
+          "title": "Schritt 2 — label und input: ein Hotelzimmerschlüssel",
+          "text": [
+            "Ein Label und sein passendes Input sind wie ein Hotelzimmerschlüssel — das Label hat die Zimmernummer aufgedruckt, und der Schlüssel (Input) hat denselben Code. Sie sind durch diesen Code verbunden.",
+            "Sie durch `for=\"id\"` zu verbinden bedeutet, dass ein Klick auf das Label den Input fokussiert. Das ist wichtig für Barrierefreiheit: Nutzer können überall in der Label-Input-Gruppe klicken."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "<select> und <option>",
-        "text": "<select> erstellt ein Dropdown-Menü. Jede <option> ist eine Auswahlmöglichkeit. Das value-Attribut ist das, was beim Absenden übertragen wird."
+        "text": "<select> erstellt ein Dropdown-Menü. Jede <option> ist eine Auswahlmöglichkeit. Das value-Attribut ist das, was beim Absenden übertragen wird.",
+        "analogy": {
+          "title": "Schritt 3 — select: ein Dropdown-Menü im Restaurant",
+          "text": [
+            "Ein `<select>` ist wie der Menübereich in einem Restaurant — der Kellner präsentiert vordefinierte Gerichte und man wählt eines. Anders als ein Text-Input schränkt es die Auswahl auf bekannte Optionen ein.",
+            "Der `option`-Wert ist das, was an den Server übermittelt wird. Der `option`-Inhalt ist das, was der Nutzer sieht. Diese können unterschiedlich sein: `value=\"en\"` zeigt \"Englisch\"."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "Checkbox und Radio",
-        "text": "Checkboxen erlauben Mehrfachauswahl. Radio-Buttons in derselben Gruppe erlauben nur eine Auswahl."
+        "text": "Checkboxen erlauben Mehrfachauswahl. Radio-Buttons in derselben Gruppe erlauben nur eine Auswahl.",
+        "analogy": {
+          "title": "Schritt 4 — checkbox und radio: Kippschalter und Radioknöpfe",
+          "text": [
+            "Checkboxen sind wie Lichtschalter — jede schaltet unabhängig. Man kann mehrere Lichter gleichzeitig an oder aus haben.",
+            "Radioknöpfe sind wie Autoradio-Vorwahlen — wenn man Vorwahl 3 drückt, geht Vorwahl 2 aus. Nur eine in der Gruppe kann gleichzeitig ausgewählt sein."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "<button type=\"submit\">",
-        "text": "Der Absende-Button sendet das Formular. type=\"submit\" ist die Standardeinstellung. type=\"button\" verhindert das Absenden — nützlich für JavaScript-Aktionen."
+        "text": "Der Absende-Button sendet das Formular. type=\"submit\" ist die Standardeinstellung. type=\"button\" verhindert das Absenden — nützlich für JavaScript-Aktionen.",
+        "analogy": {
+          "title": "Schritt 5 — Submit-Button: der Senden-Button in einer E-Mail",
+          "text": [
+            "Der Submit-Button ist der \"Senden\"-Button in einem E-Mail-Client — darauf drücken verpackt alles im Formular und liefert es an den Server.",
+            "`type=\"button\"` ist derselbe visuelle Knopf, aber ohne das Submit-Verhalten — nützlich für JavaScript-Aktionen, die keine Formular-Übermittlung auslösen sollen."
+          ]
+        }
       },
       {
         "animationStep": 5,
         "heading": "Eingebaute HTML5-Validierung",
-        "text": "Füge required, minlength, maxlength, pattern, min, max direkt in HTML ein — der Browser validiert vor dem Absenden, kein JavaScript nötig. required allein blockiert das Absenden leerer Felder."
+        "text": "Füge required, minlength, maxlength, pattern, min, max direkt in HTML ein — der Browser validiert vor dem Absenden, kein JavaScript nötig. required allein blockiert das Absenden leerer Felder.",
+        "analogy": {
+          "title": "Schritt 6 — HTML5-Validierung: ein Türsteher an der Tür",
+          "text": [
+            "HTML5-Validierung ist wie ein Türsteher, der Ausweise kontrolliert — der Browser prüft die Eingaben gegen die Regeln, bevor er sie einlässt.",
+            "`required` blockiert leere Felder. `type=\"email\"` lehnt Nicht-E-Mail-Formate ab. `minlength` lehnt zu kurze Werte ab. All das geschieht ohne eine einzige Zeile JavaScript."
+          ]
+        }
       },
       {
         "animationStep": 6,
         "heading": "Constraint Validation API",
-        "text": "Für benutzerdefinierte Fehlermeldungen oder Echtzeit-Feedback verwende die Constraint Validation API. setCustomValidity() überschreibt die Browser-Meldung. checkValidity() gibt true/false zurück, ohne das Formular abzusenden."
+        "text": "Für benutzerdefinierte Fehlermeldungen oder Echtzeit-Feedback verwende die Constraint Validation API. setCustomValidity() überschreibt die Browser-Meldung. checkValidity() gibt true/false zurück, ohne das Formular abzusenden.",
+        "analogy": {
+          "title": "Schritt 7 — Constraint Validation API: ein benutzerdefiniertes Regelwerk",
+          "text": [
+            "Wenn die eingebauten Regeln nicht ausreichen, kann man eigene schreiben — wie ein Türsteher mit einem benutzerdefinierten Regelwerk für die Veranstaltung."
+          ]
+        }
       },
       {
         "animationStep": 7,
         "heading": "fieldset und legend",
-        "text": "`<fieldset>` gruppiert verwandte Eingaben. `<legend>` beschriftet die Gruppe. Screen-Reader lesen die Legende vor jedem Eingabefeld der Gruppe — unverzichtbar für Radio- und Checkbox-Gruppen."
+        "text": "`<fieldset>` gruppiert verwandte Eingaben. `<legend>` beschriftet die Gruppe. Screen-Reader lesen die Legende vor jedem Eingabefeld der Gruppe — unverzichtbar für Radio- und Checkbox-Gruppen.",
+        "analogy": {
+          "title": "Schritt 8 — fieldset: eine beschriftete Box im Formular",
+          "text": [
+            "`fieldset` ist wie das Legen einer beschrifteten Box in den Umschlag für eine Teilmenge zusammengehöriger Elemente. Die `legend` ist das Etikett auf der Box.",
+            "Besonders für Radioknopf-Gruppen ist die `legend` wichtig: ohne sie lesen Screen-Reader jede Option als \"E-Mail (Radio)\", \"Telefon (Radio)\" ohne Gruppenkontext."
+          ]
+        }
       },
       {
         "animationStep": 8,
         "heading": "Spezialisierte input-Typen",
-        "text": "HTML5 hat viele `<input>`-Typen über Text hinaus hinzugefügt: `date` zeigt einen Datumspicker, `color` ein Farbrad, `range` einen Schieberegler, `number` beschränkt auf numerische Eingaben, `email` validiert das E-Mail-Format. Mobile Tastaturen passen sich automatisch an den Typ an."
+        "text": "HTML5 hat viele `<input>`-Typen über Text hinaus hinzugefügt: `date` zeigt einen Datumspicker, `color` ein Farbrad, `range` einen Schieberegler, `number` beschränkt auf numerische Eingaben, `email` validiert das E-Mail-Format. Mobile Tastaturen passen sich automatisch an den Typ an.",
+        "analogy": {
+          "title": "Schritt 9 — Spezialisierte Input-Typen: das richtige Werkzeug",
+          "text": [
+            "`type=\"date\"` statt `type=\"text\"` zu verwenden gibt einem einen kostenlosen Datepicker, native Datumsvalidierung und mobile-freundliche Datumseingabe auf iOS/Android.",
+            "Jeder spezialisierte Typ bringt Browser-native UI und Validierung. Nutzer erhalten die beste Erfahrung für ihr Gerät, und man schreibt weniger Code."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -647,40 +1013,89 @@
       {
         "animationStep": 0,
         "heading": "Wer braucht Barrierefreiheit?",
-        "text": "Etwa 15 % der Menschen haben eine Behinderung. Screenreader-Nutzer navigieren über Überschriften und Landmarks. Tastaturnutzer können keine Maus verwenden. Farbenblinde Nutzer benötigen ausreichend Kontrast. Semantisches HTML gibt dir das meiste kostenlos — ARIA füllt die Lücken."
+        "text": "Etwa 15 % der Menschen haben eine Behinderung. Screenreader-Nutzer navigieren über Überschriften und Landmarks. Tastaturnutzer können keine Maus verwenden. Farbenblinde Nutzer benötigen ausreichend Kontrast. Semantisches HTML gibt dir das meiste kostenlos — ARIA füllt die Lücken.",
+        "analogy": {
+          "title": "Schritt 1 — Barrierefreiheit: ein Gebäude für alle bauen",
+          "text": [
+            "Wenn Architekten ein Gebäude entwerfen, fügen sie Rampen neben Treppen ein, Aufzüge neben Rolltreppen, taktile Streifen für Sehbehinderte. Das Gebäude wird für alle zugänglicher.",
+            "Barrierefreiheit funktioniert genauso: Tastaturnavigation hilft Power-Usern, hoher Kontrast hilft bei hellem Sonnenlicht, Untertitel helfen in lauten Umgebungen."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "aria-label und aria-labelledby",
-        "text": "Wenn sichtbarer Text nicht ausreicht, liefert aria-label einen barrierefreien Namen. Nur-Icon-Buttons, Schließen-Buttons und Formular-Inputs benötigen alle beschreibende Labels."
+        "text": "Wenn sichtbarer Text nicht ausreicht, liefert aria-label einen barrierefreien Namen. Nur-Icon-Buttons, Schließen-Buttons und Formular-Inputs benötigen alle beschreibende Labels.",
+        "analogy": {
+          "title": "Schritt 2 — aria-label: ein Etikett auf einer Box ohne Text",
+          "text": [
+            "Manche Elemente haben keinen sichtbaren Text — ein Icon-only-Schließen-Button, ein Such-Icon. Für sehende Nutzer ist das Icon selbstverständlich. Für Screen-Reader-Nutzer ist es ein namenloser Button.",
+            "`aria-label` fügt einen unsichtbaren Namen hinzu: `aria-label=\"Dialog schließen\"` lässt den Button \"Dialog schließen, Button\" statt nur \"Button\" ansagen."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "Fokus-Verwaltung",
-        "text": "Tastaturnutzer navigieren mit Tab durch interaktive Elemente. Der Fokus muss sichtbar sein — entferne niemals :focus-Styles ohne Ersatz. Verwende :focus-visible, um Fokus-Ringe nur bei Tastaturnavigation anzuzeigen, nicht bei Mausklicks."
+        "text": "Tastaturnutzer navigieren mit Tab durch interaktive Elemente. Der Fokus muss sichtbar sein — entferne niemals :focus-Styles ohne Ersatz. Verwende :focus-visible, um Fokus-Ringe nur bei Tastaturnavigation anzuzeigen, nicht bei Mausklicks.",
+        "analogy": {
+          "title": "Schritt 3 — Fokus-Management: das Scheinwerferlicht auf der Bühne",
+          "text": [
+            "Fokus ist wie ein Scheinwerferlicht auf der Bühne — er hebt hervor, welches Element aktuell für Tastaturinteraktion aktiv ist. Tab bewegt das Licht zum nächsten Element.",
+            "Den Fokusring entfernen (`:focus { outline: none }`) ist wie das Ausschalten des Scheinwerfers. Tastaturnutzer können nicht sehen, wo sie sich auf der Seite befinden."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "tabindex",
         "text": "tabindex=\"0\" macht jedes Element in der natürlichen DOM-Reihenfolge per Tastatur fokussierbar. tabindex=\"-1\" erlaubt programmatischen Fokus (el.focus()), entfernt es aber aus der Tab-Sequenz. Verwende niemals tabindex > 0 — es bricht die natürliche Reihenfolge.",
-        "expandedText": "📜 Positive `tabindex`-Werte erstellen eine **separate, frühere Tab-Reihenfolge**, die vor allen `tabindex=\"0\"`-Elementen ausgeführt wird. Dies unterbricht den natürlichen Dokumentfluss für Tastaturbenutzer und ist fast immer ein Fehler. Die einzige gültige Verwendung für positives tabindex ist, wenn Legacy-HTML nicht neu geordnet werden kann.\n\n⚠️ `tabindex=\"-1\"` ist nützlich für Elemente, die programmatisch fokussiert werden sollen, aber nicht durch Tab-Navigation — wie ein modaler Dialog-Container oder eine Fehlerzusammenfassung, auf die der Fokus bei Übermittlungsfehlern springen soll. JavaScript ruft `element.focus()` auf, um den Fokus programmatisch zu verschieben."
+        "expandedText": "📜 Positive `tabindex`-Werte erstellen eine **separate, frühere Tab-Reihenfolge**, die vor allen `tabindex=\"0\"`-Elementen ausgeführt wird. Dies unterbricht den natürlichen Dokumentfluss für Tastaturbenutzer und ist fast immer ein Fehler. Die einzige gültige Verwendung für positives tabindex ist, wenn Legacy-HTML nicht neu geordnet werden kann.\n\n⚠️ `tabindex=\"-1\"` ist nützlich für Elemente, die programmatisch fokussiert werden sollen, aber nicht durch Tab-Navigation — wie ein modaler Dialog-Container oder eine Fehlerzusammenfassung, auf die der Fokus bei Übermittlungsfehlern springen soll. JavaScript ruft `element.focus()` auf, um den Fokus programmatisch zu verschieben.",
+        "analogy": {
+          "title": "Schritt 4 — tabindex: Tab-Reihenfolge kontrollieren",
+          "text": [
+            "`tabindex=\"0\"` fügt ein Element in die natürliche Tab-Reihenfolge ein, an seiner Position im DOM. `tabindex=\"-1\"` macht es durch JavaScript fokussierbar, aber nicht durch Tab erreichbar.",
+            "Werte über 0 (tabindex=\"2\", tabindex=\"10\") erzeugen eine benutzerdefinierte Reihenfolge, die die natürliche DOM-Reihenfolge überschreibt. Das ist fast immer ein Anti-Pattern."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "ARIA-Rollen und Live-Regionen",
-        "text": "role= überschreibt die implizite Rolle des Elements. ARIA-Live-Regionen kündigen dynamische Inhaltsänderungen für Screenreader an. aria-live='polite' wartet auf Stille, 'assertive' unterbricht sofort."
+        "text": "role= überschreibt die implizite Rolle des Elements. ARIA-Live-Regionen kündigen dynamische Inhaltsänderungen für Screenreader an. aria-live='polite' wartet auf Stille, 'assertive' unterbricht sofort.",
+        "analogy": {
+          "title": "Schritt 5 — ARIA-Live-Regionen: Push-Benachrichtigungen für Screen-Reader",
+          "text": [
+            "Ein Screen-Reader ist wie ein Telefon, das nur klingelt, wenn jemand anruft. Er kündigt nicht automatisch Dinge an, die sich auf dem Bildschirm ändern.",
+            "`aria-live=\"polite\"` ist wie eine höfliche Benachrichtigung, die wartet, bis man fertig gelesen hat, bevor das Update angekündigt wird. `aria-live=\"assertive\"` unterbricht sofort."
+          ]
+        }
       },
       {
         "animationStep": 5,
         "heading": "aria-expanded and aria-controls",
         "text": "Wenn ein Button ein Panel umschaltet (Akkordeon, Dropdown, Modal), kommunizieren ARIA-Attribute den Offen/Geschlossen-Zustand. `aria-expanded='false'` teilt Screen-Readern mit, dass das Panel zugeklappt ist. `aria-controls` verweist per ID auf das gesteuerte Element. Mit JavaScript aktualisieren.",
-        "expandedText": "📖 Das Umschalten von `aria-expanded` von `\"false\"` auf `\"true\"` teilt Screenreadern mit, dass der Button nun das Panel öffnet. Ohne dies kündigt der Screenreader den Button identisch an, egal ob das Panel offen oder geschlossen ist — Benutzer haben keine Möglichkeit, den aktuellen Zustand zu erkennen.\n\n📖 `aria-controls` verweist auf die `id` des gesteuerten Elements und erstellt eine programmatische Beziehung. Einige Screenreader bieten Navigationskürzel zwischen einem Controller und seiner gesteuerten Region. `aria-haspopup` signalisiert, dass die Aktivierung ein Menü, eine Listbox, einen Baum, ein Raster oder einen Dialog öffnet — dies bereitet den Screenreader-Benutzer vor der Aktivierung vor."
+        "expandedText": "📖 Das Umschalten von `aria-expanded` von `\"false\"` auf `\"true\"` teilt Screenreadern mit, dass der Button nun das Panel öffnet. Ohne dies kündigt der Screenreader den Button identisch an, egal ob das Panel offen oder geschlossen ist — Benutzer haben keine Möglichkeit, den aktuellen Zustand zu erkennen.\n\n📖 `aria-controls` verweist auf die `id` des gesteuerten Elements und erstellt eine programmatische Beziehung. Einige Screenreader bieten Navigationskürzel zwischen einem Controller und seiner gesteuerten Region. `aria-haspopup` signalisiert, dass die Aktivierung ein Menü, eine Listbox, einen Baum, ein Raster oder einen Dialog öffnet — dies bereitet den Screenreader-Benutzer vor der Aktivierung vor.",
+        "analogy": {
+          "title": "Schritt 6 — aria-expanded: Zustand an Screen-Reader senden",
+          "text": [
+            "Wenn sich ein Dropdown öffnet, sehen sehende Nutzer es. Screen-Reader-Nutzer können es nicht sehen — sie brauchen den Zustand übertragen. `aria-expanded=\"true\"` sagt \"ja, dieses Menü ist offen\".",
+            "Das ist das Kernmuster für jedes Toggle-Widget: `aria-expanded` am Auslöser aktualisieren, `hidden`/`aria-hidden` am Ziel aktualisieren. JavaScript nur für den Zustand, nicht für die Ankündigung."
+          ]
+        }
       },
       {
         "animationStep": 6,
         "heading": "Farbkontrast und visuelle Barrierefreiheit",
         "text": "Farbkontrast ist das Verhältnis zwischen Textfarbe und Hintergrundfarbe. WCAG AA fordert 4,5:1 für normalen Text und 3:1 für großen Text. Schlechter Kontrast betrifft farbenblinde Nutzer, Nutzer auf hellen Bildschirmen und ältere Nutzer. Niemals Informationen nur durch Farbe vermitteln.",
-        "expandedText": "⚠️ Farbkontrast-Fehler sind der **häufigste WCAG-Verstoß** in automatisierten Audits. Das Verhältnis von 4,5:1 für normalen Text und 3:1 für großen Text (18pt+ oder 14pt+ fett) sind Mindestanforderungen für AA. Die erweiterte AAA-Ebene erfordert 7:1. Browser-DevTools, axe und WAVE melden Kontrastfehler.\n\n⚠️ Keine Information ausschließlich durch Farbe vermitteln. Benutzer mit Farbenblindheit (betrifft etwa 8 % der Männer) können Rot nicht von Grün unterscheiden. Formularfehlerzustände sollten Fehlersymbole oder \"Fehler:\"-Textlabels zusätzlich zur roten Formatierung enthalten. Erfolgszustände sollten Häkchen oder \"Erfolg:\"-Text enthalten, nicht nur grüne Farbe."
+        "expandedText": "⚠️ Farbkontrast-Fehler sind der **häufigste WCAG-Verstoß** in automatisierten Audits. Das Verhältnis von 4,5:1 für normalen Text und 3:1 für großen Text (18pt+ oder 14pt+ fett) sind Mindestanforderungen für AA. Die erweiterte AAA-Ebene erfordert 7:1. Browser-DevTools, axe und WAVE melden Kontrastfehler.\n\n⚠️ Keine Information ausschließlich durch Farbe vermitteln. Benutzer mit Farbenblindheit (betrifft etwa 8 % der Männer) können Rot nicht von Grün unterscheiden. Formularfehlerzustände sollten Fehlersymbole oder \"Fehler:\"-Textlabels zusätzlich zur roten Formatierung enthalten. Erfolgszustände sollten Häkchen oder \"Erfolg:\"-Text enthalten, nicht nur grüne Farbe.",
+        "analogy": {
+          "title": "Schritt 7 — Farbkontrast: Lesbarkeit für alle",
+          "text": [
+            "Stell dir vor, eine Zeitung zu lesen, die in sehr hellem Grau auf weißem Papier gedruckt wurde. Man kann es technisch sehen, aber es ist anstrengend. Geringer Kontrast ist für Menschen mit Sehschwäche so.",
+            "WCAG-Kontrastverhältnisse sind keine willkürlichen Zahlen — sie basieren auf Forschung darüber, wie das menschliche Auge Unterschiede in der Leuchtdichte wahrnimmt."
+          ]
+        }
       }
     ],
     "cheatSheet": {
@@ -734,37 +1149,86 @@
       {
         "animationStep": 0,
         "heading": "<iframe> — Seite in einer Seite",
-        "text": "Ein <iframe> bettet ein weiteres HTML-Dokument in deine Seite ein. YouTube-Einbettungen, Google Maps und CodePen-Vorschauen verwenden alle iframes. Der eingebettete Inhalt läuft in seinem eigenen isolierten Browser-Kontext."
+        "text": "Ein <iframe> bettet ein weiteres HTML-Dokument in deine Seite ein. YouTube-Einbettungen, Google Maps und CodePen-Vorschauen verwenden alle iframes. Der eingebettete Inhalt läuft in seinem eigenen isolierten Browser-Kontext.",
+        "analogy": {
+          "title": "Schritt 1 — iframe: ein TV-Bildschirm in einer Webseite",
+          "text": [
+            "Ein `<iframe>` ist wie das Einbetten eines TV-Bildschirms in eine Webseite — der Bildschirm zeigt seinen eigenen unabhängigen Kanal. Die eingebettete Seite weiß nicht, was außen auf dem Bildschirm passiert.",
+            "Diese Isolation ist sowohl das Sicherheitsmerkmal als auch die Einschränkung von iFrames: YouTube kann die Cookies deiner Seite nicht lesen, aber man kann auch nicht einfach das eingebettete Video von außen stylen."
+          ]
+        }
       },
       {
         "animationStep": 1,
         "heading": "<video>",
-        "text": "Das <video>-Element bettet Video nativ ein. Das controls-Attribut fügt eine Play/Pause/Lautstärke-Oberfläche hinzu. Füge mehrere <source>-Elemente für Browser-Kompatibilität ein — der Browser wählt das erste Format, das er unterstützt."
+        "text": "Das <video>-Element bettet Video nativ ein. Das controls-Attribut fügt eine Play/Pause/Lautstärke-Oberfläche hinzu. Füge mehrere <source>-Elemente für Browser-Kompatibilität ein — der Browser wählt das erste Format, das er unterstützt.",
+        "analogy": {
+          "title": "Schritt 2 — video-Element: ein VHS-Player im Browser",
+          "text": [
+            "Das `<video>`-Element ist wie ein VHS-Player, der direkt in den Browser eingebaut ist. Man übergibt eine Kassette (`src`), er spielt sie ab. Das `controls`-Attribut gibt die Abspieltasten aus.",
+            "Mehrere `<source>`-Elemente sind wie das Haben desselben Films auf VHS und Betamax — der Browser wählt das Format, das er abspielen kann."
+          ]
+        }
       },
       {
         "animationStep": 2,
         "heading": "<audio>",
-        "text": "<audio> funktioniert genauso wie <video>, aber für Ton. Das controls-Attribut fügt einen Player hinzu. Ohne controls ist das Audio unsichtbar und spielt nur mit JavaScript."
+        "text": "<audio> funktioniert genauso wie <video>, aber für Ton. Das controls-Attribut fügt einen Player hinzu. Ohne controls ist das Audio unsichtbar und spielt nur mit JavaScript.",
+        "analogy": {
+          "title": "Schritt 3 — audio-Element: ein Radio im Browser",
+          "text": [
+            "Das `<audio>`-Element ist ein Radio in der Webseite. Ohne `controls` ist es ein verstecktes Radio, das nur JavaScript einschalten kann. Mit `controls` erscheinen die Bedientasten.",
+            "Der Fallback-Text zwischen den Tags wird nur in Browsern angezeigt, die das `<audio>`-Element nicht unterstützen — was praktisch kein moderner Browser ist."
+          ]
+        }
       },
       {
         "animationStep": 3,
         "heading": "<picture> — responsive Bilder",
-        "text": "<picture> liefert verschiedene Bilder je nach Bildschirmgröße oder Format-Unterstützung. Der Browser wählt die erste passende <source>. Das <img>-Fallback ist immer erforderlich — es ist das, was tatsächlich das Bild rendert."
+        "text": "<picture> liefert verschiedene Bilder je nach Bildschirmgröße oder Format-Unterstützung. Der Browser wählt die erste passende <source>. Das <img>-Fallback ist immer erforderlich — es ist das, was tatsächlich das Bild rendert.",
+        "analogy": {
+          "title": "Schritt 4 — picture-Element: ein smarter Bilderrahmen",
+          "text": [
+            "Das `<picture>`-Element ist wie ein smarter Bilderrahmen mit Sensor: Wenn der Raum klein ist, zeigt er einen kleineren Druck; wenn der Raum groß ist, zeigt er den Originaldruck.",
+            "Der Browser liest die `<source>`-Elemente von oben nach unten und wählt das erste, dessen Media-Query und Typ übereinstimmen. Das `<img>` ist der Pflicht-Fallback."
+          ]
+        }
       },
       {
         "animationStep": 4,
         "heading": "<code> und <pre>",
-        "text": "<code> zeigt Inline-Code in Monospace-Schrift an. Wickle es in <pre> ein, um Leerzeichen und Zeilenumbrüche für mehrzeilige Codeblöcke zu bewahren. So zeigen Dokumentationsseiten, READMEs und Tech-Blogs Codebeispiele."
+        "text": "<code> zeigt Inline-Code in Monospace-Schrift an. Wickle es in <pre> ein, um Leerzeichen und Zeilenumbrüche für mehrzeilige Codeblöcke zu bewahren. So zeigen Dokumentationsseiten, READMEs und Tech-Blogs Codebeispiele.",
+        "analogy": {
+          "title": "Schritt 5 — pre und code: eine Schreibmaschinenschrift mit erhaltenem Leerraum",
+          "text": [
+            "Das `<pre>`-Element ist wie eine Schreibmaschine: Jedes Leerzeichen, jeden Tab und jeden Zeilenumbruch, den man eingibt, wird genau so ausgedruckt. Normales HTML fasst alle Leerzeichen zu einem zusammen.",
+            "`<code>` teilt dem Browser mit \"das ist Code\" — er rendert ihn in einer Monospace-Schrift. Kombiniert als `<pre><code>` erhält man einen ordentlich formatierten, leerraumtreuen Code-Block."
+          ]
+        }
       },
       {
         "animationStep": 5,
         "heading": "loading=\"lazy\" für Bilder und iframes",
-        "text": "Das Attribut `loading='lazy'` verzögert Bilder und iframes, bis sie sich dem Viewport nähern. Der Browser lädt sie erst, wenn der Nutzer nah heranscrollt — das reduziert die initiale Ladezeit. Funktioniert nativ ohne JavaScript."
+        "text": "Das Attribut `loading='lazy'` verzögert Bilder und iframes, bis sie sich dem Viewport nähern. Der Browser lädt sie erst, wenn der Nutzer nah heranscrollt — das reduziert die initiale Ladezeit. Funktioniert nativ ohne JavaScript.",
+        "analogy": {
+          "title": "Schritt 6 — loading=\"lazy\": Just-in-Time-Lieferung",
+          "text": [
+            "Lazy Loading ist wie eine Just-in-Time-Lieferkette: Man bestellt nicht alle Vorräte im Voraus. Man bestellt, wenn der Kunde kurz davor ist, es zu brauchen.",
+            "Für eine Seite mit 50 Bildern werden beim Laden nur die ersten paar abgerufen. Der Rest kommt, wenn der Nutzer scrollt. Das kann die anfängliche Ladezeit erheblich reduzieren."
+          ]
+        }
       },
       {
         "animationStep": 6,
         "heading": "Autoplay-Regeln für Videos",
-        "text": "Browser blockieren standardmäßig automatisch abspielendes Video mit Ton. Zum automatischen Abspielen muss das Video `muted` sein. `loop` für Hintergrundvideos hinzufügen, die lautlos wiederholt werden. `playsinline` auf iOS verwenden, um Vollbild-Übernahme zu verhindern."
+        "text": "Browser blockieren standardmäßig automatisch abspielendes Video mit Ton. Zum automatischen Abspielen muss das Video `muted` sein. `loop` für Hintergrundvideos hinzufügen, die lautlos wiederholt werden. `playsinline` auf iOS verwenden, um Vollbild-Übernahme zu verhindern.",
+        "analogy": {
+          "title": "Schritt 7 — Autoplay-Regeln: die stille Vereinbarung",
+          "text": [
+            "Browser-Autoplay-Richtlinien kamen aus Nutzerbeschwerden: Niemand wollte eine Webseite laden und sie beginnt lautstark Audio abzuspielen. Die Browser haben eine stille Vereinbarung getroffen.",
+            "Die Regel ist einfach: Autoplay ist nur erlaubt, wenn das Video stummgeschaltet ist. Sobald der Nutzer mit der Seite interagiert hat (ein Klick, ein Tastendruck), darf man programmatisch abspielen."
+          ]
+        }
       }
     ],
     "cheatSheet": {
