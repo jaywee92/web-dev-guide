@@ -78,7 +78,7 @@ export default function AnalogyPanel({ analogy, color, AnalogyComp, step = 0 }: 
             {analogy!.text.map((paragraph, i) => (
               <p key={i} style={{
                 fontSize: 12.5,
-                color: i === analogy!.text.length - 1
+                color: i === analogy!.text.length - 1 && analogy!.text.length > 2
                   ? 'var(--text-faint)'
                   : 'var(--text-muted)',
                 lineHeight: 1.65, margin: 0,
