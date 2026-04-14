@@ -1,5 +1,7 @@
 # WBS Integration: Batch 3 — HTTP + Databases Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add 2 new topics (`db-intro` and `http-ssr-csr`) to `topics.ts` and `categories.ts`, enrich `postgres-queries` with 2 new steps (HAVING vs WHERE, Subqueries), update the `http-rest` nextTopicId chain, and add matching EN + DE locale entries.
@@ -30,11 +32,11 @@ Before implementing, verify:
 **Files:**
 - Modify: `src/data/topics.ts` (insert before `postgres-queries` at line ~3164)
 
-- [ ] **Step 1: Find the insertion point**
+- [x] **Step 1: Find the insertion point**
 
   Read `src/data/topics.ts` lines 3140–3170. Find the closing `},` of the topic immediately before `postgres-queries`. The new `db-intro` object goes between that closing brace and the `postgres-queries` object.
 
-- [ ] **Step 2: Insert db-intro topic object**
+- [x] **Step 2: Insert db-intro topic object**
 
   Insert the following topic object at that position:
 
@@ -119,7 +121,7 @@ Before implementing, verify:
   },
   ```
 
-- [ ] **Step 3: Verify the file still compiles**
+- [x] **Step 3: Verify the file still compiles**
 
   ```bash
   npx tsc --noEmit 2>&1 | grep -v supabase
@@ -127,7 +129,7 @@ Before implementing, verify:
 
   Expected: no errors.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
   ```bash
   git add src/data/topics.ts
@@ -141,7 +143,7 @@ Before implementing, verify:
 **Files:**
 - Modify: `src/data/topics.ts` (insert after http-rest ends, before http-status; update http-rest nextTopicId)
 
-- [ ] **Step 1: Update http-rest nextTopicId**
+- [x] **Step 1: Update http-rest nextTopicId**
 
   In `src/data/topics.ts`, find the `http-rest` topic (line ~3006). Change:
   ```typescript
@@ -152,11 +154,11 @@ Before implementing, verify:
   nextTopicId: 'http-ssr-csr',
   ```
 
-- [ ] **Step 2: Find the insertion point for http-ssr-csr**
+- [x] **Step 2: Find the insertion point for http-ssr-csr**
 
   Read `src/data/topics.ts` lines 3060–3095. Find the closing `},` of the `http-rest` topic object. The new `http-ssr-csr` object goes right after that closing brace, before `http-status`.
 
-- [ ] **Step 3: Insert http-ssr-csr topic object**
+- [x] **Step 3: Insert http-ssr-csr topic object**
 
   Insert the following topic object at that position:
 
@@ -233,7 +235,7 @@ Before implementing, verify:
   },
   ```
 
-- [ ] **Step 4: Verify the file still compiles**
+- [x] **Step 4: Verify the file still compiles**
 
   ```bash
   npx tsc --noEmit 2>&1 | grep -v supabase
@@ -241,7 +243,7 @@ Before implementing, verify:
 
   Expected: no errors.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
   ```bash
   git add src/data/topics.ts
@@ -255,11 +257,11 @@ Before implementing, verify:
 **Files:**
 - Modify: `src/data/topics.ts` (around line 3244, after animationStep 7 of postgres-queries)
 
-- [ ] **Step 1: Open topics.ts and find postgres-queries explanation steps**
+- [x] **Step 1: Open topics.ts and find postgres-queries explanation steps**
 
   Read `src/data/topics.ts` lines 3164–3250. Confirm the last step is `animationStep: 7` ("GROUP BY and HAVING").
 
-- [ ] **Step 2: Add steps 8–9 after animationStep 7**
+- [x] **Step 2: Add steps 8–9 after animationStep 7**
 
   In `src/data/topics.ts`, inside the `postgres-queries` topic's `sections[1].steps` array, add these 2 objects after the last step:
 
@@ -282,7 +284,7 @@ Before implementing, verify:
   },
   ```
 
-- [ ] **Step 3: Verify the file still compiles**
+- [x] **Step 3: Verify the file still compiles**
 
   ```bash
   npx tsc --noEmit 2>&1 | grep -v supabase
@@ -290,7 +292,7 @@ Before implementing, verify:
 
   Expected: no errors.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
   ```bash
   git add src/data/topics.ts
@@ -306,11 +308,11 @@ Before implementing, verify:
 **Files:**
 - Modify: `src/data/categories.ts`
 
-- [ ] **Step 1: Read categories.ts**
+- [x] **Step 1: Read categories.ts**
 
   Read `src/data/categories.ts` to confirm current state of `postgresql` topicIds (line ~177) and `http` topicIds (line ~167), plus the `TOPIC_ICONS` and `TOPIC_LABELS` records.
 
-- [ ] **Step 2: Add `db-intro` to postgresql topicIds**
+- [x] **Step 2: Add `db-intro` to postgresql topicIds**
 
   In `src/data/categories.ts`, inside the `postgresql` category, change:
   ```typescript
@@ -321,7 +323,7 @@ Before implementing, verify:
   topicIds: ['db-intro', 'postgres-queries', 'postgres-joins', 'postgres-crud'],
   ```
 
-- [ ] **Step 3: Add `http-ssr-csr` to http topicIds**
+- [x] **Step 3: Add `http-ssr-csr` to http topicIds**
 
   In `src/data/categories.ts`, inside the `http` category, change:
   ```typescript
@@ -332,7 +334,7 @@ Before implementing, verify:
   topicIds: ['http-request-cycle', 'http-rest', 'http-ssr-csr', 'http-status'],
   ```
 
-- [ ] **Step 4: Add TOPIC_ICONS entries**
+- [x] **Step 4: Add TOPIC_ICONS entries**
 
   In `src/data/categories.ts`, inside the `TOPIC_ICONS` record, add after the `'http-status'` line:
   ```typescript
@@ -344,7 +346,7 @@ Before implementing, verify:
   'db-intro':                  'BookOpen',
   ```
 
-- [ ] **Step 5: Add TOPIC_LABELS entries**
+- [x] **Step 5: Add TOPIC_LABELS entries**
 
   In `src/data/categories.ts`, inside the `TOPIC_LABELS` record, add after the `'http-status'` line:
   ```typescript
@@ -356,7 +358,7 @@ Before implementing, verify:
   'db-intro':                  'Databases & SQL Intro',
   ```
 
-- [ ] **Step 6: Verify the file still compiles**
+- [x] **Step 6: Verify the file still compiles**
 
   ```bash
   npx tsc --noEmit 2>&1 | grep -v supabase
@@ -364,7 +366,7 @@ Before implementing, verify:
 
   Expected: no errors.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
   ```bash
   git add src/data/categories.ts
@@ -380,11 +382,11 @@ Before implementing, verify:
 **Files:**
 - Modify: `src/i18n/locales/en/topics-other.json`
 
-- [ ] **Step 1: Read current topics-other.json structure**
+- [x] **Step 1: Read current topics-other.json structure**
 
   Read `src/i18n/locales/en/topics-other.json`. Identify the end of the file (it closes with `}`) and the `"postgres-queries"` entry (around line 87).
 
-- [ ] **Step 2: Add db-intro entry before postgres-queries**
+- [x] **Step 2: Add db-intro entry before postgres-queries**
 
   In `src/i18n/locales/en/topics-other.json`, add the following entry before `"postgres-queries"`:
 
@@ -438,7 +440,7 @@ Before implementing, verify:
   },
   ```
 
-- [ ] **Step 3: Add http-ssr-csr entry**
+- [x] **Step 3: Add http-ssr-csr entry**
 
   In `src/i18n/locales/en/topics-other.json`, add the following entry (for example after the `"http-rest"` or `"http-status"` entry, but before the closing `}`):
 
@@ -487,7 +489,7 @@ Before implementing, verify:
   },
   ```
 
-- [ ] **Step 4: Add postgres-queries steps 8–9 to EN locale**
+- [x] **Step 4: Add postgres-queries steps 8–9 to EN locale**
 
   In `src/i18n/locales/en/topics-other.json`, find `"postgres-queries" > "steps"`. Add after the last step (animationStep 7):
 
@@ -504,7 +506,7 @@ Before implementing, verify:
   }
   ```
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
   ```bash
   git add src/i18n/locales/en/topics-other.json
@@ -518,11 +520,11 @@ Before implementing, verify:
 **Files:**
 - Modify: `src/i18n/locales/en/categories.json`
 
-- [ ] **Step 1: Read current categories.json**
+- [x] **Step 1: Read current categories.json**
 
   Read `src/i18n/locales/en/categories.json`. Find the `"topicLabels"` key.
 
-- [ ] **Step 2: Add new topic label entries**
+- [x] **Step 2: Add new topic label entries**
 
   Inside `"topicLabels"`, add:
   ```json
@@ -530,7 +532,7 @@ Before implementing, verify:
   "http-ssr-csr": "SSR vs CSR"
   ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
   ```bash
   git add src/i18n/locales/en/categories.json
@@ -546,11 +548,11 @@ Before implementing, verify:
 **Files:**
 - Modify: `src/i18n/locales/de/topics-other.json`
 
-- [ ] **Step 1: Read current DE topics-other.json**
+- [x] **Step 1: Read current DE topics-other.json**
 
   Read `src/i18n/locales/de/topics-other.json`. Find the `"postgres-queries"` entry and any existing http entries.
 
-- [ ] **Step 2: Add db-intro DE entry before postgres-queries**
+- [x] **Step 2: Add db-intro DE entry before postgres-queries**
 
   In `src/i18n/locales/de/topics-other.json`, add the following entry before `"postgres-queries"`:
 
@@ -604,7 +606,7 @@ Before implementing, verify:
   },
   ```
 
-- [ ] **Step 3: Add http-ssr-csr DE entry**
+- [x] **Step 3: Add http-ssr-csr DE entry**
 
   In `src/i18n/locales/de/topics-other.json`, add:
 
@@ -653,7 +655,7 @@ Before implementing, verify:
   },
   ```
 
-- [ ] **Step 4: Add postgres-queries DE steps 8–9**
+- [x] **Step 4: Add postgres-queries DE steps 8–9**
 
   In `src/i18n/locales/de/topics-other.json`, find `"postgres-queries" > "steps"`. Add after the last step (animationStep 7):
 
@@ -670,7 +672,7 @@ Before implementing, verify:
   }
   ```
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
   ```bash
   git add src/i18n/locales/de/topics-other.json
@@ -684,11 +686,11 @@ Before implementing, verify:
 **Files:**
 - Modify: `src/i18n/locales/de/categories.json`
 
-- [ ] **Step 1: Read current DE categories.json**
+- [x] **Step 1: Read current DE categories.json**
 
   Read `src/i18n/locales/de/categories.json`. Find the `"topicLabels"` key.
 
-- [ ] **Step 2: Add new topic label entries**
+- [x] **Step 2: Add new topic label entries**
 
   Inside `"topicLabels"`, add:
   ```json
@@ -696,7 +698,7 @@ Before implementing, verify:
   "http-ssr-csr": "SSR vs. CSR"
   ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
   ```bash
   git add src/i18n/locales/de/categories.json
@@ -711,7 +713,7 @@ Before implementing, verify:
 
 **Files:** None (verification only)
 
-- [ ] **Step 1: Full TypeScript check**
+- [x] **Step 1: Full TypeScript check**
 
   ```bash
   npx tsc --noEmit 2>&1 | grep -v supabase
@@ -719,7 +721,7 @@ Before implementing, verify:
 
   Expected: no output (clean build).
 
-- [ ] **Step 2: Verify new topics appear in dev server**
+- [x] **Step 2: Verify new topics appear in dev server**
 
   ```bash
   npm run dev
@@ -735,7 +737,7 @@ Before implementing, verify:
 
   Navigate to `/topic/postgres-queries` — confirm 10 steps render (0–9), with the last two being HAVING vs WHERE and Subqueries.
 
-- [ ] **Step 3: Final commit if any fixes needed**
+- [x] **Step 3: Final commit if any fixes needed**
 
   ```bash
   git add -u

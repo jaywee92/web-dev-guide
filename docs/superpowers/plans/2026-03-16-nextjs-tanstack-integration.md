@@ -1,5 +1,7 @@
 # Next.js Category + TanStack Query Step Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add a new "Next.js" category with 1 topic (6 steps) to the app, and add 1 new step to the existing TanStack Query topic covering React Router loader integration.
@@ -19,7 +21,7 @@
 **Files:**
 - Modify: `src/types/index.ts`
 
-- [ ] **Step 1: Edit CategoryId union in `src/types/index.ts`**
+- [x] **Step 1: Edit CategoryId union in `src/types/index.ts`**
 
 Change:
 ```ts
@@ -30,7 +32,7 @@ To:
 | 'javascript' | 'javascript-oop' | 'javascript-async' | 'typescript' | 'react' | 'react-ecosystem' | 'webapis' | 'http' | 'postgresql' | 'nextjs'
 ```
 
-- [ ] **Step 2: Verify no TS errors yet** (build will confirm later)
+- [x] **Step 2: Verify no TS errors yet** (build will confirm later)
 
 ---
 
@@ -39,7 +41,7 @@ To:
 **Files:**
 - Modify: `src/data/categories.ts`
 
-- [ ] **Step 1: Add Next.js to the CATEGORIES array**
+- [x] **Step 1: Add Next.js to the CATEGORIES array**
 
 Insert after the `react-ecosystem` entry (before `webapis`):
 ```ts
@@ -55,14 +57,14 @@ Insert after the `react-ecosystem` entry (before `webapis`):
   },
 ```
 
-- [ ] **Step 2: Add Next.js to TECH_SECTION_META**
+- [x] **Step 2: Add Next.js to TECH_SECTION_META**
 
 Insert after the `'react-ecosystem'` entry:
 ```ts
   nextjs: { title: 'Next.js', subtitle: 'Fullstack React Framework', color: '#a3b4c6' },
 ```
 
-- [ ] **Step 3: Add `'nextjs'` to the FRAMEWORKS & WEB group categoryIds**
+- [x] **Step 3: Add `'nextjs'` to the FRAMEWORKS & WEB group categoryIds**
 
 Change:
 ```ts
@@ -82,7 +84,7 @@ categoryIds: ['react', 'react-ecosystem', 'nextjs', 'http', 'webapis', 'postgres
 **Files:**
 - Modify: `src/data/topics.ts` (around line 5224, inside `react-tanstack-query`)
 
-- [ ] **Step 1: Append new step to `react-tanstack-query` explanation steps**
+- [x] **Step 1: Append new step to `react-tanstack-query` explanation steps**
 
 The existing steps have `animationStep: 0–4`. Insert a 6th step (animationStep: 5) inside the `explanation` section's `steps` array, after the `useMutation` step (currently the last one):
 
@@ -106,7 +108,7 @@ The existing steps have `animationStep: 0–4`. Insert a 6th step (animationStep
 
 Insert the full topic block **before** the `// ─── Git ───` comment (currently around line 5248). The topic has 6 explanation steps drawn from the WBS source files.
 
-- [ ] **Step 1: Insert the nextjs-basics topic block**
+- [x] **Step 1: Insert the nextjs-basics topic block**
 
 ```ts
   // ─── Next.js ──────────────────────────────────────────────────────────────
@@ -214,7 +216,7 @@ Insert the full topic block **before** the `// ─── Git ───` comment 
 **Files:**
 - Modify: `src/i18n/locales/en/categories.json`
 
-- [ ] **Step 1: Add nextjs category entry** (after `react-ecosystem` block, before `topicLabels`)
+- [x] **Step 1: Add nextjs category entry** (after `react-ecosystem` block, before `topicLabels`)
 
 ```json
   "nextjs": {
@@ -224,13 +226,13 @@ Insert the full topic block **before** the `// ─── Git ───` comment 
   },
 ```
 
-- [ ] **Step 2: Add nextjs topicLabel entry** (inside `topicLabels`, after existing react entries)
+- [x] **Step 2: Add nextjs topicLabel entry** (inside `topicLabels`, after existing react entries)
 
 ```json
     "nextjs-basics": "Next.js",
 ```
 
-- [ ] **Step 3: Add nextjs techMeta entry** (inside `techMeta`, after `react-ecosystem`)
+- [x] **Step 3: Add nextjs techMeta entry** (inside `techMeta`, after `react-ecosystem`)
 
 ```json
     "nextjs": { "title": "Next.js", "subtitle": "Fullstack React Framework" },
@@ -243,7 +245,7 @@ Insert the full topic block **before** the `// ─── Git ───` comment 
 **Files:**
 - Modify: `src/i18n/locales/de/categories.json`
 
-- [ ] **Step 1: Add nextjs category entry** (after `react-ecosystem` block, before `topicLabels`)
+- [x] **Step 1: Add nextjs category entry** (after `react-ecosystem` block, before `topicLabels`)
 
 ```json
   "nextjs": {
@@ -253,13 +255,13 @@ Insert the full topic block **before** the `// ─── Git ───` comment 
   },
 ```
 
-- [ ] **Step 2: Add nextjs topicLabel entry** (inside `topicLabels`)
+- [x] **Step 2: Add nextjs topicLabel entry** (inside `topicLabels`)
 
 ```json
     "nextjs-basics": "Next.js",
 ```
 
-- [ ] **Step 3: Add nextjs techMeta entry** (inside `techMeta`)
+- [x] **Step 3: Add nextjs techMeta entry** (inside `techMeta`)
 
 ```json
     "nextjs": { "title": "Next.js", "subtitle": "Fullstack React Framework" },
@@ -271,7 +273,7 @@ Insert the full topic block **before** the `// ─── Git ───` comment 
 
 **Files:** none created; verification only
 
-- [ ] **Step 1: Run build**
+- [x] **Step 1: Run build**
 
 ```bash
 npm run build
@@ -279,7 +281,7 @@ npm run build
 
 Expected: `✓ built in X.XXs` with no TypeScript errors. If errors appear, check that `'nextjs'` is in `CategoryId` and `category: 'nextjs'` matches the type exactly.
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/types/index.ts src/data/categories.ts src/data/topics.ts \

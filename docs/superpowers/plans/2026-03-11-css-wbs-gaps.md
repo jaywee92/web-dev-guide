@@ -1,5 +1,7 @@
 # CSS WBS Gap-Fill Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Fill the four gaps identified between WBS course materials and the current CSS topic pages: a new `css-basics` topic ("How CSS Works"), expanded `SelectorsViz` with pseudo-class/pseudo-element steps, `text-shadow` in the Typography cheat sheet, and `display: none` in the Display & Positioning explanation.
@@ -17,7 +19,7 @@
 **Files:**
 - Modify: `src/data/topics.ts` — css-typography cheatSheet.syntax array
 
-- [ ] **Step 1: Edit topics.ts**
+- [x] **Step 1: Edit topics.ts**
 
 In `src/data/topics.ts`, find the `css-typography` cheatSheet syntax array (around line 648). Add a new entry **after** the `letter-spacing` entry:
 
@@ -25,14 +27,14 @@ In `src/data/topics.ts`, find the `css-typography` cheatSheet syntax array (arou
 { label: 'text-shadow', code: 'text-shadow: 2px 2px 4px rgba(0,0,0,0.4);\ntext-shadow: 0 0 8px #3b82f6; /* glow effect */', note: 'Offset-x offset-y blur color' },
 ```
 
-- [ ] **Step 2: TypeScript check**
+- [x] **Step 2: TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1
 ```
 Expected: 0 errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/data/topics.ts
@@ -46,7 +48,7 @@ git commit -m "feat: add text-shadow to css-typography cheat sheet"
 **Files:**
 - Modify: `src/data/topics.ts` — css-display-positioning explanation steps
 
-- [ ] **Step 1: Edit topics.ts**
+- [x] **Step 1: Edit topics.ts**
 
 In `src/data/topics.ts`, find the `css-display-positioning` explanation step 1 (`heading: 'display: inline'`, animationStep 1, around line 769). Update its `text` to mention `display: none`:
 
@@ -60,14 +62,14 @@ In `src/data/topics.ts`, find the `css-display-positioning` explanation step 1 (
 },
 ```
 
-- [ ] **Step 2: TypeScript check**
+- [x] **Step 2: TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1
 ```
 Expected: 0 errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/data/topics.ts
@@ -95,7 +97,7 @@ Changes:
 7. Update `stepLabels` with 2 new entries
 8. Update the render: `cfg.colorName` → `cfg.property` + `cfg.value`
 
-- [ ] **Step 1: Replace the file with the complete updated version**
+- [x] **Step 1: Replace the file with the complete updated version**
 
 ```tsx
 // src/topics/css/SelectorsViz.tsx
@@ -301,14 +303,14 @@ export default function SelectorsViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: TypeScript check**
+- [x] **Step 2: TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1
 ```
 Expected: 0 errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/topics/css/SelectorsViz.tsx
@@ -322,7 +324,7 @@ git commit -m "feat: SelectorsViz — add pseudo-class (a:hover) and pseudo-elem
 **Files:**
 - Modify: `src/data/topics.ts` — css-selectors explanation steps array
 
-- [ ] **Step 1: Add 2 new explanation steps**
+- [x] **Step 1: Add 2 new explanation steps**
 
 In `src/data/topics.ts`, find the css-selectors explanation steps array. After the last step (animationStep 4, heading 'Specificity — which rule wins'), add these two steps:
 
@@ -343,14 +345,14 @@ In `src/data/topics.ts`, find the css-selectors explanation steps array. After t
 },
 ```
 
-- [ ] **Step 2: TypeScript check**
+- [x] **Step 2: TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1
 ```
 Expected: 0 errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/data/topics.ts
@@ -373,7 +375,7 @@ git commit -m "feat: css-selectors — add pseudo-class and pseudo-element expla
 - Step 3: External `<link rel="stylesheet">`
 - Step 4: The Cascade — competing rules, specificity winner highlighted
 
-- [ ] **Step 1: Create the file**
+- [x] **Step 1: Create the file**
 
 ```tsx
 // src/topics/css/CSSBasicsViz.tsx
@@ -536,14 +538,14 @@ export default function CSSBasicsViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: TypeScript check**
+- [x] **Step 2: TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1
 ```
 Expected: 0 errors (the viz file exists but isn't registered yet — no error since registry uses dynamic imports).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/topics/css/CSSBasicsViz.tsx
@@ -559,7 +561,7 @@ git commit -m "feat: CSSBasicsViz — no CSS / inline / internal / external / ca
 
 Add the new topic **before** `css-box-model` (the first CSS topic, currently around line 1). The new topic should be the first in the CSS section.
 
-- [ ] **Step 1: Locate the start of CSS topics in topics.ts**
+- [x] **Step 1: Locate the start of CSS topics in topics.ts**
 
 ```bash
 grep -n "id: 'css-box-model'" /home/jaywee92/web-dev-guide/src/data/topics.ts
@@ -567,7 +569,7 @@ grep -n "id: 'css-box-model'" /home/jaywee92/web-dev-guide/src/data/topics.ts
 
 Note the line number. The new topic goes **immediately before** that line.
 
-- [ ] **Step 2: Insert the topic definition**
+- [x] **Step 2: Insert the topic definition**
 
 Insert this topic definition before `css-box-model`:
 
@@ -647,14 +649,14 @@ Insert this topic definition before `css-box-model`:
   },
 ```
 
-- [ ] **Step 3: TypeScript check**
+- [x] **Step 3: TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1
 ```
 Expected: 0 errors (CSSBasicsViz not yet in registry — dynamic import, no compile-time error).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/data/topics.ts
@@ -669,7 +671,7 @@ git commit -m "feat: add css-basics topic — How CSS Works (inline/internal/ext
 - Modify: `src/topics/registry.ts`
 - Modify: `src/data/categories.ts`
 
-- [ ] **Step 1: Add to registry.ts**
+- [x] **Step 1: Add to registry.ts**
 
 In `src/topics/registry.ts`, add `CSSBasicsViz` to the `lazyRegistry`. It should be placed near the other CSS viz entries. Find the line with `ColorsUnitsViz:` and add before it:
 
@@ -677,7 +679,7 @@ In `src/topics/registry.ts`, add `CSSBasicsViz` to the `lazyRegistry`. It should
 CSSBasicsViz: () => import('./css/CSSBasicsViz'),
 ```
 
-- [ ] **Step 2: Add `css-basics` as first CSS topic in categories.ts**
+- [x] **Step 2: Add `css-basics` as first CSS topic in categories.ts**
 
 In `src/data/categories.ts`, update the CSS `topicIds` array to include `'css-basics'` as the **first entry**:
 
@@ -697,14 +699,14 @@ topicIds: [
 ],
 ```
 
-- [ ] **Step 3: TypeScript check**
+- [x] **Step 3: TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1
 ```
 Expected: 0 errors.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/topics/registry.ts src/data/categories.ts
@@ -717,35 +719,35 @@ git commit -m "feat: register CSSBasicsViz, add css-basics as first CSS topic"
 
 ### Task 8: Build check + push
 
-- [ ] **Step 1: Full TypeScript build**
+- [x] **Step 1: Full TypeScript build**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1
 ```
 Expected: 0 errors.
 
-- [ ] **Step 2: Production build**
+- [x] **Step 2: Production build**
 
 ```bash
 npm run build 2>&1 | tail -10
 ```
 Expected: `✓ built in X.XXs` — no errors.
 
-- [ ] **Step 3: Verify CSS category count**
+- [x] **Step 3: Verify CSS category count**
 
 ```bash
 grep "css-" /home/jaywee92/web-dev-guide/src/data/categories.ts | wc -l
 ```
 Expected: 11 (css-basics + 10 existing topics).
 
-- [ ] **Step 4: Git log to confirm all commits**
+- [x] **Step 4: Git log to confirm all commits**
 
 ```bash
 git log --oneline -12
 ```
 Expected: 7 new commits on top of the last sprint's commits.
 
-- [ ] **Step 5: Push**
+- [x] **Step 5: Push**
 
 ```bash
 git push origin main

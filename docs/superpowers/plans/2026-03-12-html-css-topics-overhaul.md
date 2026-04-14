@@ -1,5 +1,7 @@
 # HTML & CSS Topics Overhaul Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Improve all HTML/CSS topics with before/after patterns, content depth, next-topic navigation, and add 4 new topics (css-shadows, css-overflow, html-accessibility, css-variables-theming).
@@ -39,7 +41,7 @@
 - Create: `src/components/ui/NextTopicCard.tsx`
 - Modify: `src/pages/TopicPage/index.tsx`
 
-- [ ] **Step 1: Extend Topic type**
+- [x] **Step 1: Extend Topic type**
 
 In `src/types/index.ts`, add `nextTopicId?: string` to the Topic interface:
 
@@ -62,7 +64,7 @@ export interface Topic {
 }
 ```
 
-- [ ] **Step 2: Create NextTopicCard component**
+- [x] **Step 2: Create NextTopicCard component**
 
 Create `src/components/ui/NextTopicCard.tsx`:
 
@@ -119,7 +121,7 @@ export default function NextTopicCard({ topic }: Props) {
 }
 ```
 
-- [ ] **Step 3: Wire NextTopicCard into TopicPage**
+- [x] **Step 3: Wire NextTopicCard into TopicPage**
 
 In `src/pages/TopicPage/index.tsx`, add after the playground section:
 
@@ -135,14 +137,14 @@ const nextTopic = topic.nextTopicId ? getTopicById(topic.nextTopicId) : undefine
 {nextTopic && <NextTopicCard topic={nextTopic} />}
 ```
 
-- [ ] **Step 4: Type check**
+- [x] **Step 4: Type check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit
 ```
 Expected: no errors.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/types/index.ts src/components/ui/NextTopicCard.tsx src/pages/TopicPage/index.tsx
@@ -158,7 +160,7 @@ git commit -m "feat: add NextTopicCard and nextTopicId to topic navigation"
 **Files:**
 - Create: `src/topics/css/FlexboxUseCasesViz.tsx`
 
-- [ ] **Step 1: Create FlexboxUseCasesViz**
+- [x] **Step 1: Create FlexboxUseCasesViz**
 
 Create `src/topics/css/FlexboxUseCasesViz.tsx`:
 
@@ -293,20 +295,20 @@ export default function FlexboxUseCasesViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Register in registry**
+- [x] **Step 2: Register in registry**
 
 In `src/topics/registry.ts`, add:
 ```typescript
 FlexboxUseCasesViz: () => import('./css/FlexboxUseCasesViz'),
 ```
 
-- [ ] **Step 3: Type check**
+- [x] **Step 3: Type check**
 
 ```bash
 npx tsc --noEmit
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/topics/css/FlexboxUseCasesViz.tsx src/topics/registry.ts
@@ -320,7 +322,7 @@ git commit -m "feat: add FlexboxUseCasesViz — navbar, card row, centered modal
 **Files:**
 - Create: `src/topics/css/GridAreasViz.tsx`
 
-- [ ] **Step 1: Create GridAreasViz**
+- [x] **Step 1: Create GridAreasViz**
 
 Create `src/topics/css/GridAreasViz.tsx`:
 
@@ -396,14 +398,14 @@ export default function GridAreasViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Register in registry**
+- [x] **Step 2: Register in registry**
 
 In `src/topics/registry.ts`, add:
 ```typescript
 GridAreasViz: () => import('./css/GridAreasViz'),
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/topics/css/GridAreasViz.tsx src/topics/registry.ts
@@ -420,7 +422,7 @@ git commit -m "feat: add GridAreasViz — grid-template-areas step-by-step"
 - Create: `src/topics/css/ThemingViz.tsx`
 - Create: `src/topics/html/AccessibilityViz.tsx`
 
-- [ ] **Step 1: Create ShadowsViz**
+- [x] **Step 1: Create ShadowsViz**
 
 Create `src/topics/css/ShadowsViz.tsx`:
 
@@ -477,7 +479,7 @@ export default function ShadowsViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Create OverflowViz**
+- [x] **Step 2: Create OverflowViz**
 
 Create `src/topics/css/OverflowViz.tsx`:
 
@@ -535,7 +537,7 @@ export default function OverflowViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 3: Create ThemingViz**
+- [x] **Step 3: Create ThemingViz**
 
 Create `src/topics/css/ThemingViz.tsx`:
 
@@ -596,7 +598,7 @@ export default function ThemingViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 4: Create AccessibilityViz**
+- [x] **Step 4: Create AccessibilityViz**
 
 Create `src/topics/html/AccessibilityViz.tsx`:
 
@@ -689,7 +691,7 @@ export default function AccessibilityViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 5: Register all 4 new Viz components**
+- [x] **Step 5: Register all 4 new Viz components**
 
 In `src/topics/registry.ts`, add:
 ```typescript
@@ -699,13 +701,13 @@ ThemingViz:       () => import('./css/ThemingViz'),
 AccessibilityViz: () => import('./html/AccessibilityViz'),
 ```
 
-- [ ] **Step 6: Type check**
+- [x] **Step 6: Type check**
 
 ```bash
 npx tsc --noEmit
 ```
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add src/topics/css/ShadowsViz.tsx src/topics/css/OverflowViz.tsx \
@@ -723,7 +725,7 @@ git commit -m "feat: add ShadowsViz, OverflowViz, ThemingViz, AccessibilityViz"
 **Files:**
 - Modify: `src/data/topics.ts` (css-flexbox and css-grid sections)
 
-- [ ] **Step 1: Update css-flexbox — add use-case steps and switch to FlexboxUseCasesViz**
+- [x] **Step 1: Update css-flexbox — add use-case steps and switch to FlexboxUseCasesViz**
 
 In `src/data/topics.ts`, find the `css-flexbox` topic and update:
 
@@ -764,7 +766,7 @@ steps: [
 ],
 ```
 
-- [ ] **Step 2: Update css-grid — add grid-template-areas steps and switch to GridAreasViz**
+- [x] **Step 2: Update css-grid — add grid-template-areas steps and switch to GridAreasViz**
 
 In `src/data/topics.ts`, find the `css-grid` topic and append these steps + switch animationComponent:
 
@@ -805,13 +807,13 @@ steps: [
 ],
 ```
 
-- [ ] **Step 3: Type check**
+- [x] **Step 3: Type check**
 
 ```bash
 npx tsc --noEmit
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/data/topics.ts
@@ -825,7 +827,7 @@ git commit -m "feat: enrich css-flexbox and css-grid topics with real-world use-
 **Files:**
 - Modify: `src/data/topics.ts` (html-forms)
 
-- [ ] **Step 1: Add validation steps to html-forms**
+- [x] **Step 1: Add validation steps to html-forms**
 
 Find `html-forms` in `src/data/topics.ts` and add these steps to the explanation section:
 
@@ -859,13 +861,13 @@ And `cheatSheet.commonMistakes` — append:
 'Using pattern without title= — browser shows generic "Please match format" without a hint',
 ```
 
-- [ ] **Step 2: Type check**
+- [x] **Step 2: Type check**
 
 ```bash
 npx tsc --noEmit
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/data/topics.ts
@@ -879,7 +881,7 @@ git commit -m "feat: add HTML5 validation steps to html-forms topic"
 **Files:**
 - Modify: `src/data/topics.ts` (css-animations, css-transitions)
 
-- [ ] **Step 1: Add fill-mode step to css-animations**
+- [x] **Step 1: Add fill-mode step to css-animations**
 
 Find `css-animations` and append:
 ```typescript
@@ -892,7 +894,7 @@ Find `css-animations` and append:
 },
 ```
 
-- [ ] **Step 2: Add GPU acceleration note to css-transitions**
+- [x] **Step 2: Add GPU acceleration note to css-transitions**
 
 Find `css-transitions` and append:
 ```typescript
@@ -905,7 +907,7 @@ Find `css-transitions` and append:
 },
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/data/topics.ts
@@ -922,7 +924,7 @@ git commit -m "feat: add fill-mode to css-animations, GPU note to css-transition
 - Modify: `src/data/topics.ts`
 - Modify: `src/data/categories.ts`
 
-- [ ] **Step 1: Add css-shadows topic data**
+- [x] **Step 1: Add css-shadows topic data**
 
 In `src/data/topics.ts`, add after `css-backgrounds-gradients`:
 
@@ -1007,18 +1009,18 @@ In `src/data/topics.ts`, add after `css-backgrounds-gradients`:
 },
 ```
 
-- [ ] **Step 2: Add css-shadows to css-basics category topicIds**
+- [x] **Step 2: Add css-shadows to css-basics category topicIds**
 
 In `src/data/categories.ts`, find `css-basics` and add `'css-shadows'` to `topicIds`.
 
-- [ ] **Step 3: Add css-shadows to TOPIC_LABELS**
+- [x] **Step 3: Add css-shadows to TOPIC_LABELS**
 
 In `src/data/categories.ts`, find the `TOPIC_LABELS` record (near the bottom) and add:
 ```typescript
 'css-shadows': 'Shadows',
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/data/topics.ts src/data/categories.ts
@@ -1033,7 +1035,7 @@ git commit -m "feat: add css-shadows topic with ShadowsViz"
 - Modify: `src/data/topics.ts`
 - Modify: `src/data/categories.ts`
 
-- [ ] **Step 1: Add css-overflow topic data**
+- [x] **Step 1: Add css-overflow topic data**
 
 In `src/data/topics.ts`, add after `css-shadows`:
 
@@ -1110,20 +1112,20 @@ In `src/data/topics.ts`, add after `css-shadows`:
 },
 ```
 
-- [ ] **Step 2: Add css-overflow to css-layout topicIds and update description**
+- [x] **Step 2: Add css-overflow to css-layout topicIds and update description**
 
 In `src/data/categories.ts`:
 1. Find `css-layout` category and add `'css-overflow'` to `topicIds`
 2. Update the `css-layout` category `description` to include Overflow, e.g. `'Flex · Grid · Overflow · Responsive'`
 
-- [ ] **Step 3: Add css-overflow to TOPIC_LABELS**
+- [x] **Step 3: Add css-overflow to TOPIC_LABELS**
 
 In `src/data/categories.ts`, find the `TOPIC_LABELS` record and add:
 ```typescript
 'css-overflow': 'Overflow',
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/data/topics.ts src/data/categories.ts
@@ -1138,7 +1140,7 @@ git commit -m "feat: add css-overflow topic with OverflowViz"
 - Modify: `src/data/topics.ts`
 - Modify: `src/data/categories.ts`
 
-- [ ] **Step 1: Add html-accessibility topic data**
+- [x] **Step 1: Add html-accessibility topic data**
 
 In `src/data/topics.ts`, add after `html-forms`:
 
@@ -1222,18 +1224,18 @@ In `src/data/topics.ts`, add after `html-forms`:
 },
 ```
 
-- [ ] **Step 2: Add html-accessibility to html-structure topicIds**
+- [x] **Step 2: Add html-accessibility to html-structure topicIds**
 
 In `src/data/categories.ts`, find `html-structure` and add `'html-accessibility'` to `topicIds`.
 
-- [ ] **Step 3: Add html-accessibility to TOPIC_LABELS**
+- [x] **Step 3: Add html-accessibility to TOPIC_LABELS**
 
 In `src/data/categories.ts`, find the `TOPIC_LABELS` record and add:
 ```typescript
 'html-accessibility': 'Accessibility',
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/data/topics.ts src/data/categories.ts
@@ -1248,7 +1250,7 @@ git commit -m "feat: add html-accessibility topic with AccessibilityViz"
 - Modify: `src/data/topics.ts`
 - Modify: `src/data/categories.ts`
 
-- [ ] **Step 1: Add css-variables-theming topic data**
+- [x] **Step 1: Add css-variables-theming topic data**
 
 In `src/data/topics.ts`, add after `css-custom-properties`:
 
@@ -1325,18 +1327,18 @@ In `src/data/topics.ts`, add after `css-custom-properties`:
 },
 ```
 
-- [ ] **Step 2: Add css-variables-theming to css-modern topicIds**
+- [x] **Step 2: Add css-variables-theming to css-modern topicIds**
 
 In `src/data/categories.ts`, find `css-modern` and add `'css-variables-theming'` to `topicIds`.
 
-- [ ] **Step 3: Add css-variables-theming to TOPIC_LABELS**
+- [x] **Step 3: Add css-variables-theming to TOPIC_LABELS**
 
 In `src/data/categories.ts`, find the `TOPIC_LABELS` record and add:
 ```typescript
 'css-variables-theming': 'Theming',
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/data/topics.ts src/data/categories.ts
@@ -1350,7 +1352,7 @@ git commit -m "feat: add css-variables-theming topic with ThemingViz"
 **Files:**
 - Modify: `src/data/topics.ts`
 
-- [ ] **Step 1: Add nextTopicId to HTML topics**
+- [x] **Step 1: Add nextTopicId to HTML topics**
 
 Add `nextTopicId` fields to create logical learning chains:
 
@@ -1365,7 +1367,7 @@ Add `nextTopicId` fields to create logical learning chains:
 | `html-forms` | `html-accessibility` |
 | `html-accessibility` | `html-media` |
 
-- [ ] **Step 2: Add nextTopicId to CSS topics**
+- [x] **Step 2: Add nextTopicId to CSS topics**
 
 | Topic | nextTopicId |
 |---|---|
@@ -1387,7 +1389,7 @@ Add `nextTopicId` fields to create logical learning chains:
 | `css-transforms` | `css-transitions` |
 | `css-transitions` | `css-animations` |
 
-- [ ] **Step 3: Full type check**
+- [x] **Step 3: Full type check**
 
 ```bash
 npx tsc --noEmit
@@ -1395,7 +1397,7 @@ npx tsc --noEmit
 
 Expected: no errors.
 
-- [ ] **Step 4: Final commit**
+- [x] **Step 4: Final commit**
 
 ```bash
 git add src/data/topics.ts
@@ -1406,13 +1408,13 @@ git commit -m "feat: wire nextTopicId chains for all HTML and CSS topics"
 
 ## Final Verification
 
-- [ ] **Run dev server**
+- [x] **Run dev server**
 
 ```bash
 npm exec vite -- --port 5173 --host 127.0.0.1 &
 ```
 
-- [ ] **Manual checks**
+- [x] **Manual checks**
 
 1. Open any HTML topic (e.g. `/topic/html-basics`) — NextTopicCard visible at bottom → click navigates to `html-text`
 2. Open `/topic/css-flexbox` — FlexboxUseCasesViz shows navbar / card row / centering use-cases
@@ -1425,7 +1427,7 @@ npm exec vite -- --port 5173 --host 127.0.0.1 &
 9. Check css-animations has fill-mode step
 10. Check css-transitions has GPU properties step
 
-- [ ] **Final commit if any last adjustments needed**
+- [x] **Final commit if any last adjustments needed**
 
 ```bash
 git add -p

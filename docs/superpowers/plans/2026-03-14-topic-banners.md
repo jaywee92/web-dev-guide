@@ -1,5 +1,7 @@
 # Topic Banners Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add a 220px concept-diagram SVG banner between the topic title and "How it works" section on every topic page (54 topics, 54 banner components).
@@ -20,7 +22,7 @@
 - Modify: `src/topics/registry.ts` — add `bannerLazyRegistry`, `getBannerComponent`, `preloadBanner`
 - Modify: `src/pages/TopicPage/index.tsx` — add state/effect, insert `<TopicBanner>`, fix `#explanation` margin
 
-- [ ] **Step 1: Add `bannerComponent` to the `Topic` interface**
+- [x] **Step 1: Add `bannerComponent` to the `Topic` interface**
 
 File: `src/types/index.ts`
 
@@ -45,7 +47,7 @@ export interface Topic {
 }
 ```
 
-- [ ] **Step 2: Create `TopicBanner.tsx`**
+- [x] **Step 2: Create `TopicBanner.tsx`**
 
 Create file `src/pages/TopicPage/TopicBanner.tsx` with this exact content:
 
@@ -91,7 +93,7 @@ export default function TopicBanner({ topic, BannerComp }: Props) {
 }
 ```
 
-- [ ] **Step 3: Extend `registry.ts` with banner lazy loading**
+- [x] **Step 3: Extend `registry.ts` with banner lazy loading**
 
 File: `src/topics/registry.ts`
 
@@ -121,7 +123,7 @@ export async function preloadBanner(name: string): Promise<void> {
 
 Also add `import type { ComponentType } from 'react'` at the top if not already present (it already is — `AnimComp` uses it).
 
-- [ ] **Step 4: Wire `TopicPage/index.tsx`**
+- [x] **Step 4: Wire `TopicPage/index.tsx`**
 
 File: `src/pages/TopicPage/index.tsx`
 
@@ -165,7 +167,7 @@ Replace with:
           <div id="explanation" style={{ marginTop: 0 }}>
 ```
 
-- [ ] **Step 5: TypeScript check — must pass clean**
+- [x] **Step 5: TypeScript check — must pass clean**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1
@@ -175,7 +177,7 @@ Expected: no output (zero errors). All topics show the fallback gradient banner 
 
 If errors appear, fix them before continuing.
 
-- [ ] **Step 6: Commit infrastructure**
+- [x] **Step 6: Commit infrastructure**
 
 ```bash
 git add src/types/index.ts src/pages/TopicPage/TopicBanner.tsx src/topics/registry.ts src/pages/TopicPage/index.tsx
@@ -235,7 +237,7 @@ Replace `COLOR` with the topic hex color. All text: `fontFamily="monospace"`, mi
 - `src/topics/banners/html/AccessibilityBanner.tsx`
 - `src/topics/banners/html/MediaEmbedsBanner.tsx`
 
-- [ ] **Step 1: Create `ElementsBanner.tsx`** — color `#f97316`
+- [x] **Step 1: Create `ElementsBanner.tsx`** — color `#f97316`
 
 Shows core HTML elements as labelled boxes in a horizontal row: `<h1>`, `<p>`, `<img>`, `<a>`, `<div>`, `<span>`. Each box ~90px wide, spaced evenly across 780px. Stroke `rgba(249,115,22,0.6)`, fill `rgba(249,115,22,0.08)`. Tag name inside each box in monospace.
 
@@ -283,39 +285,39 @@ export default function ElementsBanner() {
 }
 ```
 
-- [ ] **Step 2: Create `TextHeadingsBanner.tsx`** — color `#60a5fa`
+- [x] **Step 2: Create `TextHeadingsBanner.tsx`** — color `#60a5fa`
 
 Heading hierarchy: h1 → h2 → h3 → h4 as indented lines with decreasing font size. Left-aligned block starting at x=60. h1: fontSize 28, h2: 22, h3: 18, h4: 14. Each indented 20px more than previous. Stroke color per level (h1: full `#60a5fa`, h2: 80% opacity, h3: 60%, h4: 40%). On the right side (x=460) show a small `<div>` "div-soup" comparison with no hierarchy (all same size, gray, slightly blurred/faded).
 
-- [ ] **Step 3: Create `LinksImagesBanner.tsx`** — color `#34d399`
+- [x] **Step 3: Create `LinksImagesBanner.tsx`** — color `#34d399`
 
 Left half: an `<a>` tag box with `href="#"` label, an arrow pointing right, and a "destination page" box. Right half: an `<img>` tag with `src`, `alt`, `width` attributes listed as chips, and a placeholder image rectangle (gradient fill) with a small mountain/sun icon drawn in SVG.
 
-- [ ] **Step 4: Create `ListsBanner.tsx`** — color `#a78bfa`
+- [x] **Step 4: Create `ListsBanner.tsx`** — color `#a78bfa`
 
 Side by side: left = `<ul>` unordered list (3 items with bullet dots, label "unordered"), center = `<ol>` ordered list (3 items with numbers 1/2/3, label "ordered"), right = `<dl>` definition list (dt + dd pairs, label "definition"). Each is a rounded rect containing the list items.
 
-- [ ] **Step 5: Create `DomTreeBanner.tsx`** — color `#f59e0b`
+- [x] **Step 5: Create `DomTreeBanner.tsx`** — color `#f59e0b`
 
 DOM tree: `<html>` at top center → branches to `<head>` (left) and `<body>` (right). `<head>` branches to `<title>` and `<meta>`. `<body>` branches to `<header>`, `<main>`, `<footer>`. `<main>` branches to `<h1>` and `<p>`. Lines connect nodes. Each node is a rounded rectangle with the tag name. Root node slightly larger and brighter.
 
-- [ ] **Step 6: Create `SemanticBanner.tsx`** — color `#2dd4bf`
+- [x] **Step 6: Create `SemanticBanner.tsx`** — color `#2dd4bf`
 
 Two-column comparison. Left: semantic HTML — `<header>`, `<nav>`, `<main>`, `<article>`, `<footer>` as labelled nested blocks. Right: div soup — nested `<div>` blocks all labeled "div" in gray. Divider line between columns. Label "Semantic" (green) vs "Div soup" (gray/red) above each column.
 
-- [ ] **Step 7: Create `FormsBanner.tsx`** — color `#60a5fa`
+- [x] **Step 7: Create `FormsBanner.tsx`** — color `#60a5fa`
 
 A form mockup: label + text input (active/blue glow state), label + select dropdown (closed), submit button ("Submit →" in blue). Each element drawn as SVG rectangles. Floating label pattern shown on the input. On the right: a small validation state diagram showing empty → filled → valid (green checkmark) → invalid (red X).
 
-- [ ] **Step 8: Create `AccessibilityBanner.tsx`** — color `#f59e0b`
+- [x] **Step 8: Create `AccessibilityBanner.tsx`** — color `#f59e0b`
 
 Layered diagram (left to right): plain `<div>` box → `role="button"` chip added → `aria-label="..."` chip added → focus ring shown → screen reader output bubble ("Close, button" text). Arrows between each step. Color: amber `#f59e0b` for role/aria elements, blue `#60a5fa` for screen reader output.
 
-- [ ] **Step 9: Create `MediaEmbedsBanner.tsx`** — color `#ec4899`
+- [x] **Step 9: Create `MediaEmbedsBanner.tsx`** — color `#ec4899`
 
 Three boxes side by side: 1) Video player placeholder (rectangle with play ▶ button, `<video>` tag below), 2) Audio waveform placeholder (zigzag line, `<audio>` tag below), 3) iframe box (dashed border, "external content" label, `<iframe>` tag below). Each box ~190px wide.
 
-- [ ] **Step 10: Commit HTML banners**
+- [x] **Step 10: Commit HTML banners**
 
 ```bash
 git add src/topics/banners/html/
@@ -336,11 +338,11 @@ git commit -m "feat: HTML topic banner SVGs (9 banners)"
 - `src/topics/banners/css/OverflowBanner.tsx`
 - `src/topics/banners/css/ImagesBanner.tsx`
 
-- [ ] **Step 1: Create `CSSBasicsBanner.tsx`** — color `#60a5fa`
+- [x] **Step 1: Create `CSSBasicsBanner.tsx`** — color `#60a5fa`
 
 A CSS rule anatomy diagram: selector box → `{` → property + `:` + value + `;` line → `}`. Each part labeled below: "selector", "property", "value". Show 2-3 example rules stacked (e.g., `color: blue`, `font-size: 16px`, `margin: 0`). On the right side, show a cascade priority tower: inline → id → class → element, taller = higher priority, filled rectangles.
 
-- [ ] **Step 2: Create `BoxModelBanner.tsx`** — color `#60a5fa`
+- [x] **Step 2: Create `BoxModelBanner.tsx`** — color `#60a5fa`
 
 Full concentric-rectangle box model diagram, centered at (390, 110). Use the full 780×220 space. Layers:
 - margin (outermost, dashed yellow `#fbbf24`, label "margin")
@@ -405,15 +407,15 @@ export default function BoxModelBanner() {
 }
 ```
 
-- [ ] **Step 3: Create `FlexboxBanner.tsx`** — color `#a78bfa`
+- [x] **Step 3: Create `FlexboxBanner.tsx`** — color `#a78bfa`
 
 Flex container (dashed outer rect, label `display: flex`) containing 4 flex items (purple rectangles, labeled 1–4). Below: two rows showing `justify-content` variations: `flex-start` (items left), `center` (items centered), `space-between` (items spread). Main axis arrow along bottom. Cross axis arrow on left side.
 
-- [ ] **Step 4: Create `GridBanner.tsx`** — color `#34d399`
+- [x] **Step 4: Create `GridBanner.tsx`** — color `#34d399`
 
 3×3 CSS Grid showing named areas: header (top full width), sidebar (left col, 2 rows), main (center+right, 2 rows), footer (bottom full width). Each area is a rounded rect with the area name as label. Grid lines visible as light strokes. `grid-template-areas` snippet in top-right corner.
 
-- [ ] **Step 5: Create `DisplayPositioningBanner.tsx`** — color `#f59e0b`
+- [x] **Step 5: Create `DisplayPositioningBanner.tsx`** — color `#f59e0b`
 
 Four mini panels in a 2×2 grid, each showing a positioning mode:
 1. `position: static` — element in normal flow
@@ -423,11 +425,11 @@ Four mini panels in a 2×2 grid, each showing a positioning mode:
 
 Each panel is ~160×80px with a label.
 
-- [ ] **Step 6: Create `ResponsiveBanner.tsx`** — color `#2dd4bf`
+- [x] **Step 6: Create `ResponsiveBanner.tsx`** — color `#2dd4bf`
 
 Three device silhouettes side by side: mobile (small rect ~80px wide), tablet (~140px), desktop (~240px). Each shows a simplified page layout inside (header bar + content block). Breakpoint labels between devices: `@media (min-width: 768px)` and `@media (min-width: 1024px)`. The desktop layout shows a sidebar + main content.
 
-- [ ] **Step 7: Create `OverflowBanner.tsx`** — color `#f87171`
+- [x] **Step 7: Create `OverflowBanner.tsx`** — color `#f87171`
 
 A container box (fixed size, ~200×80px) with long text content. Four variations shown left to right:
 1. `overflow: visible` — text bleeds outside container (red indicator lines)
@@ -437,7 +439,7 @@ A container box (fixed size, ~200×80px) with long text content. Four variations
 
 Each has a label below.
 
-- [ ] **Step 8: Create `ImagesBanner.tsx`** — color `#ec4899`
+- [x] **Step 8: Create `ImagesBanner.tsx`** — color `#ec4899`
 
 A portrait-ratio placeholder image (gradient pink, ~120×160px tall) shown four times side by side in a landscape container, demonstrating `object-fit`:
 1. `stretch` — distorted wider
@@ -449,7 +451,7 @@ Labels below each. Container outline shown as dashed rect.
 
 > Note: `FlexboxBanner` covers the `css-flexbox` topic (which uses `FlexboxUseCasesViz` as its AnimComp). `GridBanner` covers `css-grid` (which uses `GridAreasViz`). There are 18 CSS topics total — one banner per topic, not per registry entry.
 
-- [ ] **Step 9: Commit CSS layout banners**
+- [x] **Step 9: Commit CSS layout banners**
 
 ```bash
 git add src/topics/banners/css/
@@ -474,23 +476,23 @@ git commit -m "feat: CSS layout banner SVGs (8 banners)"
 
 All follow the SVG template. Color notes and diagram descriptions:
 
-- [ ] **Step 1: Create `SelectorsBanner.tsx`** — color `#f59e0b`
+- [x] **Step 1: Create `SelectorsBanner.tsx`** — color `#f59e0b`
 
 Specificity tower (vertical bars, tallest = highest): `#id` (amber, tallest ~140px), `.class` (orange, ~90px), `element` (yellow, ~50px), `*` (gray, ~20px). Each bar labeled with the selector type and a specificity score (e.g., `(0,1,0)`). On the left: a CSS rule showing `.button#submit:hover` with each part highlighted in the matching color.
 
-- [ ] **Step 2: Create `ColorsUnitsBanner.tsx`** — color `#a78bfa`
+- [x] **Step 2: Create `ColorsUnitsBanner.tsx`** — color `#a78bfa`
 
 Two sections. Left: color representations — a swatch row showing the same purple in: `#a78bfa` (hex), `rgb(167,139,250)`, `hsl(252,90%,76%)`, `oklch(...)`. Each swatch is a filled circle. Right: units comparison — a horizontal bar showing `px` (fixed, ~120px), `rem` (relative, labeled "1rem = 16px"), `%` (relative, 100%), `vw` (viewport, labeled "50vw"). Bars with labels.
 
-- [ ] **Step 3: Create `TypographyBanner.tsx`** — color `#22d3ee`
+- [x] **Step 3: Create `TypographyBanner.tsx`** — color `#22d3ee`
 
 Font scale visual: text "Aa" shown at sizes 12, 16, 20, 28, 36px (increasing left to right). Below: line-height comparison — two text block rectangles, one cramped (1.0) and one open (1.6), with spacing indicators. Bottom row: font-weight progression from 300 (thin) to 900 (black) using the word "Bold" at each weight.
 
-- [ ] **Step 4: Create `BackgroundsBanner.tsx`** — color `#34d399`
+- [x] **Step 4: Create `BackgroundsBanner.tsx`** — color `#34d399`
 
 Four boxes in a 2×2 grid demonstrating: 1) `background-color: #34d399` (solid fill), 2) `background-image: linear-gradient(...)` (gradient from green to transparent), 3) `background-image: url(...)` (crosshatch pattern representing an image), 4) `background-size: cover / contain` (split box showing cover vs contain). Labels inside each box.
 
-- [ ] **Step 5: Create `ShadowsBanner.tsx`** — color `#60a5fa`
+- [x] **Step 5: Create `ShadowsBanner.tsx`** — color `#60a5fa`
 
 A single card box shown 5 times in a row, each with increasing shadow depth:
 1. No shadow (flat)
@@ -501,27 +503,27 @@ A single card box shown 5 times in a row, each with increasing shadow depth:
 
 Shadow effect drawn directly in SVG using blur filters or approximated with offset rect. CSS snippet below each card.
 
-- [ ] **Step 6: Create `CustomPropertiesBanner.tsx`** — color `#a78bfa`
+- [x] **Step 6: Create `CustomPropertiesBanner.tsx`** — color `#a78bfa`
 
 `:root {}` block on the left with `--primary`, `--spacing`, `--radius` variables listed. Three arrows fan out to the right → three usage sites (button, card, heading) each referencing `var(--primary)`. The primary color flows through all three. On the far right, a "change variable" arrow shows how updating `:root` affects all three simultaneously.
 
-- [ ] **Step 7: Create `ThemingBanner.tsx`** — color `#f5c542`
+- [x] **Step 7: Create `ThemingBanner.tsx`** — color `#f5c542`
 
 Split banner: left half = light theme card (white background, dark text, `[data-theme="light"]` label), right half = dark theme card (dark background, light text, `[data-theme="dark"]` label). Both cards show the same content (heading + paragraph + button) with theme tokens applied. Center divider with two SVG icons: left = sun (circle + 8 radial lines, yellow), right = moon (crescent drawn as two overlapping circles with subtraction, white/gray). Do NOT use emoji characters in SVG `<text>` — draw the icons as SVG shapes.
 
-- [ ] **Step 8: Create `TransformsBanner.tsx`** — color `#f97316`
+- [x] **Step 8: Create `TransformsBanner.tsx`** — color `#f97316`
 
 A reference square (outline only) on the left, then 4 transformed versions shown with arrows: `translate(40px, 20px)` (shifted), `rotate(45deg)` (rotated diamond), `scale(1.5)` (enlarged), `skew(20deg)` (skewed). Each transformation labeled below. 2D coordinate axis in background.
 
-- [ ] **Step 9: Create `TransitionsBanner.tsx`** — color `#2dd4bf`
+- [x] **Step 9: Create `TransitionsBanner.tsx`** — color `#2dd4bf`
 
 Before → after with transition arrow in the center. Left: button in default state (gray, `width: 120px`). Right: button in hover state (teal, wider, `width: 180px`, shadow). Arrow labeled `transition: all 0.3s ease`. Below: easing curve visualization — S-curve for `ease`, straight line for `linear`, steep start for `ease-in`.
 
-- [ ] **Step 10: Create `AnimationsBanner.tsx`** — color `#f59e0b`
+- [x] **Step 10: Create `AnimationsBanner.tsx`** — color `#f59e0b`
 
 `@keyframes` block on the left (showing `from { opacity: 0 }` → `to { opacity: 1 }`). In the center: a timeline bar with keyframe markers at 0%, 25%, 75%, 100% with animation properties at each stop. On the right: `animation:` shorthand syntax broken into labeled parts: `name | duration | easing | delay | iteration`.
 
-- [ ] **Step 11: Commit CSS style banners**
+- [x] **Step 11: Commit CSS style banners**
 
 ```bash
 git add src/topics/banners/css/
@@ -545,7 +547,7 @@ git commit -m "feat: CSS style banner SVGs (10 banners)"
 - `src/topics/banners/typescript/InterfacesBanner.tsx`
 - `src/topics/banners/typescript/GenericsBanner.tsx`
 
-- [ ] **Step 1: Create `EventLoopBanner.tsx`** — color `#f59e0b`
+- [x] **Step 1: Create `EventLoopBanner.tsx`** — color `#f59e0b`
 
 Three blocks connected left to right:
 - **Call Stack** (~190px wide, 180px tall): labeled rectangles stacking up — `console.log()`, `greet()`, `main()`. Label "LIFO stack" at bottom.
@@ -615,7 +617,7 @@ export default function EventLoopBanner() {
 }
 ```
 
-- [ ] **Step 2: Create `ClosureBanner.tsx`** — color `#4ade80`
+- [x] **Step 2: Create `ClosureBanner.tsx`** — color `#4ade80`
 
 Nested scope rectangles:
 - Outer rect (large, green stroke): `outer()` label top-left, contains `let count = 0` variable box
@@ -623,7 +625,7 @@ Nested scope rectangles:
 - A dashed arrow from `count++` curving back to `let count` with label "closure ↗"
 - Outside both rects: `inner()` being called externally, with "still has access" annotation
 
-- [ ] **Step 3: Create `VariablesBanner.tsx`** — color `#fb923c`
+- [x] **Step 3: Create `VariablesBanner.tsx`** — color `#fb923c`
 
 Three side-by-side scope boxes:
 1. `var` (orange) — function scope box, hoisting ghost shown above (faded copy at top), label "function scope + hoisting"
@@ -632,7 +634,7 @@ Three side-by-side scope boxes:
 
 Below each: 2-3 code snippet chips showing valid/invalid usage.
 
-- [ ] **Step 4: Create `ArraysBanner.tsx`** — color `#34d399`
+- [x] **Step 4: Create `ArraysBanner.tsx`** — color `#34d399`
 
 Array visual: `[42, "hi", true, null, []]` shown as index-labeled boxes (0–4). Below: three method operation diagrams:
 - `push / pop` — arrow adding/removing from right end
@@ -641,19 +643,19 @@ Array visual: `[42, "hi", true, null, []]` shown as index-labeled boxes (0–4).
 
 Each operation shown with mini before/after arrays.
 
-- [ ] **Step 5: Create `TypeScriptBanner.tsx`** — color `#3b82f6`
+- [x] **Step 5: Create `TypeScriptBanner.tsx`** — color `#3b82f6`
 
 Two-column: left = JS code (untyped, red underlines on implicit `any`), right = TS equivalent (typed, green checkmarks). Show: function parameter type annotation, return type annotation, variable type annotation. Center: TypeScript logo / "TS" badge. Bottom: compiler error message example in a styled error box.
 
-- [ ] **Step 6: Create `InterfacesBanner.tsx`** — color `#6366f1`
+- [x] **Step 6: Create `InterfacesBanner.tsx`** — color `#6366f1`
 
 An `interface User { ... }` block on the left showing: `id: number`, `name: string`, `email: string`, `role?: 'admin' | 'user'`. Arrow to the right → an object literal `{ id: 1, name: "Alice", ... }` showing how it implements the interface. Below: `interface extends` diagram showing `AdminUser extends User` adding an `adminSince` field. Type-check green ✓ or red ✗ indicators.
 
-- [ ] **Step 7: Create `GenericsBanner.tsx`** — color `#8b5cf6`
+- [x] **Step 7: Create `GenericsBanner.tsx`** — color `#8b5cf6`
 
 Generic function anatomy: `function identity<T>(value: T): T`. The `T` highlighted in purple. Below: three call sites showing type inference: `identity(42)` → `T = number`, `identity("hi")` → `T = string`, `identity(true)` → `T = boolean`. Arrows from call site to type inference box. On the right: `Array<T>` and `Promise<T>` as common generic types.
 
-- [ ] **Step 8: Commit JS + TS banners**
+- [x] **Step 8: Commit JS + TS banners**
 
 ```bash
 git add src/topics/banners/javascript/ src/topics/banners/typescript/
@@ -675,31 +677,31 @@ git commit -m "feat: JavaScript + TypeScript banner SVGs (7 banners)"
 
 All follow the SVG template. Colors and diagrams:
 
-- [ ] **Step 1: Create `ComponentsBanner.tsx`** — color `#61dafb`
+- [x] **Step 1: Create `ComponentsBanner.tsx`** — color `#61dafb`
 
 Component tree: `<App>` at top center → children: `<Header>`, `<Main>`, `<Footer>`. `<Main>` → `<ProductList>` → `<ProductCard>` (×3). Each component is a rounded rect. Props shown as small downward arrows labeled "props". State shown as a circular badge on `<ProductList>`. JSX snippet: `<ProductCard title={...} price={...} />` below the tree.
 
-- [ ] **Step 2: Create `StateBanner.tsx`** — color `#61dafb`
+- [x] **Step 2: Create `StateBanner.tsx`** — color `#61dafb`
 
 Left: `useState` hook call — `const [count, setCount] = useState(0)`. Center: state value box `count = 3`. Right: re-render cycle — component box with "re-render" circular arrow. Below: `setCount(count + 1)` call → state update → new render. Shows the unidirectional data flow: state → render → event → setState → re-render.
 
-- [ ] **Step 3: Create `UseEffectBanner.tsx`** — color `#61dafb`
+- [x] **Step 3: Create `UseEffectBanner.tsx`** — color `#61dafb`
 
 Timeline diagram (horizontal): component mounts → effect runs (green ▶) → cleanup runs (red ⏹) on unmount. Dependency array shown: `[]` (run once), `[dep]` (run on dep change), no array (run every render). Three rows for each case. `useEffect(() => { ... }, [deps])` anatomy in top-right.
 
-- [ ] **Step 4: Create `RouterBanner.tsx`** — color `#f59e0b`
+- [x] **Step 4: Create `RouterBanner.tsx`** — color `#f59e0b`
 
 URL bar at top showing changing paths: `/` → `/about` → `/products/42`. Below: routing table showing `<Route path="/" → <Home>`, `<Route path="/about" → <About>`, `<Route path="/products/:id" → <Product>`. Arrow from active URL to matched route highlighted. `useParams()` shown extracting `id: "42"` from the URL.
 
-- [ ] **Step 5: Create `FetchBanner.tsx`** — color `#34d399`
+- [x] **Step 5: Create `FetchBanner.tsx`** — color `#34d399`
 
 Left-to-right flow: Browser → `fetch(url)` call → HTTP GET arrow → Server/API box → JSON response arrow back → `.then(res => res.json())` → data object `{ id: 1, name: "..." }`. Loading state (spinner) and error state (red X) shown as branches. `async/await` alternative shown below as a parallel path.
 
-- [ ] **Step 6: Create `DomEventsBanner.tsx`** — color `#f97316`
+- [x] **Step 6: Create `DomEventsBanner.tsx`** — color `#f97316`
 
 Event bubbling diagram: inner `<button>` click → bubble up through `<div>` → `<section>` → `<body>`. Each level shown as nested rectangles. `addEventListener('click', handler)` shown on one level. `event.stopPropagation()` shown blocking the bubble with a barrier. Event delegation pattern shown in a side panel.
 
-- [ ] **Step 7: Create `StorageBanner.tsx`** — color `#a78bfa`
+- [x] **Step 7: Create `StorageBanner.tsx`** — color `#a78bfa`
 
 Three storage types side by side:
 1. **localStorage** — persistent icon (💾), shows `setItem / getItem`, label "persists across sessions"
@@ -708,7 +710,7 @@ Three storage types side by side:
 
 Each as a labelled box with key-value pair examples inside.
 
-- [ ] **Step 8: Commit React + WebAPIs banners**
+- [x] **Step 8: Commit React + WebAPIs banners**
 
 ```bash
 git add src/topics/banners/react/ src/topics/banners/webapis/
@@ -727,15 +729,15 @@ git commit -m "feat: React + Web APIs banner SVGs (7 banners)"
 - `src/topics/banners/postgresql/JoinsBanner.tsx`
 - `src/topics/banners/postgresql/CrudBanner.tsx`
 
-- [ ] **Step 1: Create `AnimatedFlowBanner.tsx`** — color `#60a5fa`
+- [x] **Step 1: Create `AnimatedFlowBanner.tsx`** — color `#60a5fa`
 
 Generic request-response cycle: Browser box → HTTP Request arrow (labeled `GET /api/data`) → Server box → Database cylinder → Response arrow back → JSON data object. Status code badge `200 OK` on the response arrow. TLS lock icon on the connection. Latency annotation on the arrows.
 
-- [ ] **Step 2: Create `RestBanner.tsx`** — color `#34d399`
+- [x] **Step 2: Create `RestBanner.tsx`** — color `#34d399`
 
 REST methods table: four rows showing `GET`, `POST`, `PUT`, `DELETE` with: method badge (colored), endpoint example (`/users`, `/users`, `/users/42`, `/users/42`), CRUD operation label (Read, Create, Update, Delete), HTTP status code (`200`, `201`, `200`, `204`). Clean table layout.
 
-- [ ] **Step 3: Create `StatusCodesBanner.tsx`** — color `#f59e0b`
+- [x] **Step 3: Create `StatusCodesBanner.tsx`** — color `#f59e0b`
 
 Five status code groups as horizontal bars with example codes:
 - `1xx` (gray, "Informational") — `100 Continue`
@@ -746,11 +748,11 @@ Five status code groups as horizontal bars with example codes:
 
 Each group as a labelled colored rectangle with code examples inside.
 
-- [ ] **Step 4: Create `QueriesBanner.tsx`** — color `#38bdf8`
+- [x] **Step 4: Create `QueriesBanner.tsx`** — color `#38bdf8`
 
 SQL `SELECT` anatomy: each clause labeled — `SELECT` (columns), `FROM` (table name), `WHERE` (condition), `ORDER BY` (column + direction), `LIMIT` (number). A mini result table shown on the right: 3 columns, 3 rows, one row highlighted as matching the WHERE clause. Query: `SELECT name, age FROM users WHERE age > 18 ORDER BY name LIMIT 10`.
 
-- [ ] **Step 5: Create `JoinsBanner.tsx`** — color `#38bdf8`
+- [x] **Step 5: Create `JoinsBanner.tsx`** — color `#38bdf8`
 
 Two table Venn-diagram style: Table A (users) overlapping Table B (orders). Four join types shown as small diagrams:
 - `INNER JOIN` — only intersection highlighted
@@ -760,7 +762,7 @@ Two table Venn-diagram style: Table A (users) overlapping Table B (orders). Four
 
 Each with its name label. The overlapping foreign key (`user_id`) shown as the join condition.
 
-- [ ] **Step 6: Create `CrudBanner.tsx`** — color `#38bdf8`
+- [x] **Step 6: Create `CrudBanner.tsx`** — color `#38bdf8`
 
 Four operation panels:
 1. `CREATE` — `INSERT INTO users (name) VALUES ('Alice')` → new row appears in table (green +)
@@ -770,7 +772,7 @@ Four operation panels:
 
 Each in a compact rounded panel with the SQL snippet and table visualization.
 
-- [ ] **Step 7: Commit HTTP + PostgreSQL banners**
+- [x] **Step 7: Commit HTTP + PostgreSQL banners**
 
 ```bash
 git add src/topics/banners/http/ src/topics/banners/postgresql/
@@ -792,27 +794,27 @@ git commit -m "feat: HTTP + PostgreSQL banner SVGs (6 banners)"
 
 Color for all Git banners: `#2dd4bf` (teal).
 
-- [ ] **Step 1: Create `GitIntroBanner.tsx`**
+- [x] **Step 1: Create `GitIntroBanner.tsx`**
 
 Git object model: four box types connected: `Working Directory` → (git add) → `Staging Area` → (git commit) → `Local Repo` → (git push) → `Remote Repo`. Each box with an icon (folder, clipboard, cylinder, cloud). Arrow labels with the git commands. Horizontal flow left-to-right across 780px.
 
-- [ ] **Step 2: Create `GitWorkflowBanner.tsx`**
+- [x] **Step 2: Create `GitWorkflowBanner.tsx`**
 
 Branch timeline (horizontal): main branch line from left to right with commits (circles). Feature branch arcs above main. Commits on feature: c3, c4, c5. Merge commit on main labeled "M". `git checkout -b feature` label at branch point. `git merge feature` label at merge point. Commit labels: c1, c2 on main before branch, M after merge, HEAD at tip.
 
-- [ ] **Step 3: Create `GitIgnoreBanner.tsx`**
+- [x] **Step 3: Create `GitIgnoreBanner.tsx`**
 
 Left: `.gitignore` file box showing 5-6 pattern lines: `node_modules/`, `*.log`, `.env`, `dist/`, `.DS_Store`. Right: file tree with matching files shown as ✗ (ignored, red) vs ✓ (tracked, green). Arrow from each pattern to the matching file(s). Pattern syntax chips: `*` (wildcard), `/` (directory), `!` (negation).
 
-- [ ] **Step 4: Create `GitHubBanner.tsx`**
+- [x] **Step 4: Create `GitHubBanner.tsx`**
 
 Repository lifecycle: Local Repo box → `git push` → GitHub cloud box (with Octocat-style logo) → `Pull Request` flow (PR box with diff visualization: green + lines and red - lines) → `Merge` → main branch updated. Issue tracker icon and star/fork counts shown on the GitHub box.
 
-- [ ] **Step 5: Create `GitCollabSetupBanner.tsx`**
+- [x] **Step 5: Create `GitCollabSetupBanner.tsx`**
 
 Three developer avatars (Dev A, Dev B, Dev C) with their local repo boxes, all connected via arrows to a central GitHub cloud box (remote repo). Branch protection shield shown on main. PR arrows from dev branches to the remote with "review required" badge.
 
-- [ ] **Step 6: Create `GitConflictBanner.tsx`**
+- [x] **Step 6: Create `GitConflictBanner.tsx`**
 
 Conflict diagram: two branches diverge from a common commit → both modify the same file (different changes shown as colored blocks) → merge attempt → conflict marker visualization:
 ```
@@ -824,7 +826,7 @@ Conflict diagram: two branches diverge from a common commit → both modify the 
 ```
 Resolution arrow → merged result. Colors: blue for branch A, purple for branch B, green for resolved.
 
-- [ ] **Step 7: Create `GitUndoBanner.tsx`**
+- [x] **Step 7: Create `GitUndoBanner.tsx`**
 
 Three "undo" operations shown as panels:
 1. `git restore file.txt` — working directory change discarded (arrow back to last commit state)
@@ -833,7 +835,7 @@ Three "undo" operations shown as panels:
 
 Each in a compact panel with commit graph showing before/after.
 
-- [ ] **Step 8: Commit Git banners**
+- [x] **Step 8: Commit Git banners**
 
 ```bash
 git add src/topics/banners/git/
@@ -909,11 +911,11 @@ Add `bannerComponent: 'XxxBanner'` field to each topic. The field goes immediate
 | `git-merge-conflicts` | `GitConflictBanner` |
 | `git-undo-stash` | `GitUndoBanner` |
 
-- [ ] **Step 1: Add bannerComponent fields to all 54 topics in `src/data/topics.ts`**
+- [x] **Step 1: Add bannerComponent fields to all 54 topics in `src/data/topics.ts`**
 
 For each topic, find the line `animationComponent: 'XxxViz',` and add `bannerComponent: 'XxxBanner',` on the next line.
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/data/topics.ts
@@ -928,7 +930,7 @@ git commit -m "feat: add bannerComponent field to all 54 topics in topics.ts"
 
 Replace the empty `bannerLazyRegistry` (added in Task 1) with all 54 entries:
 
-- [ ] **Step 1: Populate `bannerLazyRegistry` with all 54 entries**
+- [x] **Step 1: Populate `bannerLazyRegistry` with all 54 entries**
 
 ```ts
 const bannerLazyRegistry: Record<string, () => Promise<{ default: BannerComp }>> = {
@@ -998,7 +1000,7 @@ const bannerLazyRegistry: Record<string, () => Promise<{ default: BannerComp }>>
 }
 ```
 
-- [ ] **Step 2: TypeScript check**
+- [x] **Step 2: TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1
@@ -1006,7 +1008,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1
 
 Expected: no output (zero errors).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/topics/registry.ts
@@ -1017,7 +1019,7 @@ git commit -m "feat: populate bannerLazyRegistry with all 54 banner entries"
 
 ### Task 11: Final check + push
 
-- [ ] **Step 1: Full TypeScript check**
+- [x] **Step 1: Full TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1
@@ -1025,7 +1027,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1
 
 Expected: no output.
 
-- [ ] **Step 2: Verify banner file count**
+- [x] **Step 2: Verify banner file count**
 
 ```bash
 find /home/jaywee92/web-dev-guide/src/topics/banners -name "*.tsx" | wc -l
@@ -1033,12 +1035,12 @@ find /home/jaywee92/web-dev-guide/src/topics/banners -name "*.tsx" | wc -l
 
 Expected: `54`
 
-- [ ] **Step 3: Push**
+- [x] **Step 3: Push**
 
 ```bash
 git push origin main
 ```
 
-- [ ] **Step 4: Done**
+- [x] **Step 4: Done**
 
 Every topic page now shows a 220px concept-diagram SVG banner between the title and "How it works" section, with a fade-in animation on mount and topic-color glow.

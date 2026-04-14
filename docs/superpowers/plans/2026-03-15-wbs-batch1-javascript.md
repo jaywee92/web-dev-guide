@@ -1,5 +1,7 @@
 # WBS Integration: Batch 1 — JavaScript Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add Default & Rest Parameters step to `js-functions` topic (only remaining JS gap after audit — all other JS topics already fully populated).
@@ -27,11 +29,11 @@ Also confirm: `js-variables` (line ~2365), `js-arrays` (line ~2551), `js-oop` (l
 **Files:**
 - Modify: `src/data/topics.ts` (around line 2751, after the last step of js-functions)
 
-- [ ] **Step 1: Open topics.ts and find js-functions explanation steps**
+- [x] **Step 1: Open topics.ts and find js-functions explanation steps**
 
   Read `src/data/topics.ts` lines 2699–2760 to find the explanation steps array for `js-functions`. Confirm the last step is `animationStep: 4` ("Lexical this in Arrow Functions").
 
-- [ ] **Step 2: Add step 5 after animationStep 4**
+- [x] **Step 2: Add step 5 after animationStep 4**
 
   In `src/data/topics.ts`, inside the `js-functions` topic's `sections[1].steps` array (the explanation section), add this object after the last step (animationStep 4):
 
@@ -46,7 +48,7 @@ Also confirm: `js-variables` (line ~2365), `js-arrays` (line ~2551), `js-oop` (l
   },
   ```
 
-- [ ] **Step 3: Verify the file still compiles**
+- [x] **Step 3: Verify the file still compiles**
 
   ```bash
   npx tsc --noEmit 2>&1 | grep -v supabase
@@ -54,7 +56,7 @@ Also confirm: `js-variables` (line ~2365), `js-arrays` (line ~2551), `js-oop` (l
 
   Expected: no errors (the supabase.ts ImportMeta error is pre-existing and unrelated).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
   ```bash
   git add src/data/topics.ts
@@ -68,11 +70,11 @@ Also confirm: `js-variables` (line ~2365), `js-arrays` (line ~2551), `js-oop` (l
 **Files:**
 - Modify: `src/i18n/locales/en/topics-js.json`
 
-- [ ] **Step 1: Read current js-functions locale entry**
+- [x] **Step 1: Read current js-functions locale entry**
 
   Read `src/i18n/locales/en/topics-js.json`. Find the `"js-functions"` key. Its `"steps"` array currently has entries for animationSteps 0–4.
 
-- [ ] **Step 2: Add step 5 to the steps array**
+- [x] **Step 2: Add step 5 to the steps array**
 
   In `src/i18n/locales/en/topics-js.json`, inside `"js-functions" > "steps"`, add this object as the last element:
 
@@ -84,7 +86,7 @@ Also confirm: `js-variables` (line ~2365), `js-arrays` (line ~2551), `js-oop` (l
   }
   ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
   ```bash
   git add src/i18n/locales/en/topics-js.json
@@ -98,11 +100,11 @@ Also confirm: `js-variables` (line ~2365), `js-arrays` (line ~2551), `js-oop` (l
 **Files:**
 - Modify: `src/i18n/locales/de/topics-js.json`
 
-- [ ] **Step 1: Read current js-functions DE locale entry**
+- [x] **Step 1: Read current js-functions DE locale entry**
 
   Read `src/i18n/locales/de/topics-js.json`. Find `"js-functions" > "steps"`. Confirm steps 0–4 exist.
 
-- [ ] **Step 2: Add step 5 to DE steps array**
+- [x] **Step 2: Add step 5 to DE steps array**
 
   In `src/i18n/locales/de/topics-js.json`, inside `"js-functions" > "steps"`, add:
 
@@ -114,7 +116,7 @@ Also confirm: `js-variables` (line ~2365), `js-arrays` (line ~2551), `js-oop` (l
   }
   ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
   ```bash
   git add src/i18n/locales/de/topics-js.json
@@ -127,7 +129,7 @@ Also confirm: `js-variables` (line ~2365), `js-arrays` (line ~2551), `js-oop` (l
 
 **Files:** None (verification only)
 
-- [ ] **Step 1: Full TypeScript check**
+- [x] **Step 1: Full TypeScript check**
 
   ```bash
   npx tsc --noEmit 2>&1 | grep -v supabase
@@ -135,7 +137,7 @@ Also confirm: `js-variables` (line ~2365), `js-arrays` (line ~2551), `js-oop` (l
 
   Expected: no output (clean build).
 
-- [ ] **Step 2: Verify step renders in dev server**
+- [x] **Step 2: Verify step renders in dev server**
 
   ```bash
   npm run dev
@@ -143,7 +145,7 @@ Also confirm: `js-variables` (line ~2365), `js-arrays` (line ~2551), `js-oop` (l
 
   Navigate to the `js-functions` topic page. Confirm the explanation section now shows 6 steps (0–5), with the last step showing "Default & Rest Parameters" content.
 
-- [ ] **Step 3: Final commit if any fixes needed**
+- [x] **Step 3: Final commit if any fixes needed**
 
   ```bash
   git add -u

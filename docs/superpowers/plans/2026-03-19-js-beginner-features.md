@@ -1,5 +1,7 @@
 # JS Beginner Features Implementation Plan
 
+> ⚠️ **PARTIAL** — AnalogyPanel, CommonErrorsPanel, RealWorldPanel components exist and pilot topic (js-closures) is wired. Analogy/commonErrors/realWorldExamples data added to all JS topics. Playground named tabs may be incomplete. Full cross-topic wiring needs verification.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add four beginner-friendly features to all JavaScript topics: per-step analogies in the animation column, a Common Errors accordion panel, a Real-World "In the Wild" section, and named playground example tabs.

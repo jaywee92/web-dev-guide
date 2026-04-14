@@ -1,5 +1,7 @@
 # Resource Votes Implementation Plan
 
+> ⚠️ **PARTIAL** — ResourcesPage exists but Supabase vote integration (useResourceVotes hook, optimistic updates, top-5 home section) not yet verified as fully wired. Needs review.
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add a Supabase-backed upvote system to the Resources page, with per-browser duplicate prevention via localStorage, and show the top 5 voted resources on the home page.

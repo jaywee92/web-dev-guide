@@ -1,5 +1,7 @@
 # WBS Curriculum Integration Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Integrate 62 WBS Coding School curriculum files into the web-dev-guide by extending 10 existing topics with new explanation steps and creating 6 new topics, while splitting the `javascript` category into 3 subcategories.
@@ -19,7 +21,7 @@
 **Files:**
 - Modify: `src/data/categories.ts`
 
-- [ ] **Step 1: Replace the `javascript` category object with 3 subcategory objects**
+- [x] **Step 1: Replace the `javascript` category object with 3 subcategory objects**
 
 In `CATEGORIES` array, replace:
 ```ts
@@ -68,12 +70,12 @@ With:
 },
 ```
 
-- [ ] **Step 2: Add `webapi-dom` to the `webapis` category topicIds**
+- [x] **Step 2: Add `webapi-dom` to the `webapis` category topicIds**
 
 Change `topicIds: ['webapi-fetch', 'webapi-events', 'webapi-storage']`
 to `topicIds: ['webapi-fetch', 'webapi-dom', 'webapi-events', 'webapi-storage']`
 
-- [ ] **Step 3: Add `css-frameworks` category after `css-modern`**
+- [x] **Step 3: Add `css-frameworks` category after `css-modern`**
 
 Insert after the `css-modern` object:
 ```ts
@@ -89,7 +91,7 @@ Insert after the `css-modern` object:
 },
 ```
 
-- [ ] **Step 4: Update `CATEGORY_GROUPS`**
+- [x] **Step 4: Update `CATEGORY_GROUPS`**
 
 In `programmierung` group, replace `'javascript'` with `'javascript', 'javascript-oop', 'javascript-async'`:
 ```ts
@@ -101,7 +103,7 @@ In `markup-style` group, add `'css-frameworks'` after `'css-modern'`:
 { key: 'markup-style', label: 'MARKUP & STYLE', categoryIds: ['html-core', 'html-structure', 'html-interactive', 'css-basics', 'css-layout', 'css-modern', 'css-frameworks'] },
 ```
 
-- [ ] **Step 5: Add entries to `TECH_SECTION_META`**
+- [x] **Step 5: Add entries to `TECH_SECTION_META`**
 
 Add after the `javascript` entry:
 ```ts
@@ -110,7 +112,7 @@ Add after the `javascript` entry:
 'css-frameworks':   { title: 'CSS',         subtitle: 'Utility Frameworks', color: '#06b6d4' },
 ```
 
-- [ ] **Step 6: Update `getTechKey` for new JS subcategories**
+- [x] **Step 6: Update `getTechKey` for new JS subcategories**
 
 Add before the final `return categoryId`:
 ```ts
@@ -118,7 +120,7 @@ if (categoryId === 'javascript-oop' || categoryId === 'javascript-async') return
 if (categoryId === 'css-frameworks') return 'css'
 ```
 
-- [ ] **Step 7: Add new topic IDs to `TOPIC_ICONS`**
+- [x] **Step 7: Add new topic IDs to `TOPIC_ICONS`**
 
 ```ts
 'js-control-flow': 'GitBranch',
@@ -129,7 +131,7 @@ if (categoryId === 'css-frameworks') return 'css'
 'css-tailwind':    'Wind',
 ```
 
-- [ ] **Step 8: Add new topic IDs to `TOPIC_LABELS`**
+- [x] **Step 8: Add new topic IDs to `TOPIC_LABELS`**
 
 ```ts
 'js-control-flow': 'Control Flow',
@@ -140,12 +142,12 @@ if (categoryId === 'css-frameworks') return 'css'
 'css-tailwind':    'Tailwind CSS',
 ```
 
-- [ ] **Step 9: Type-check**
+- [x] **Step 9: Type-check**
 
 Run: `cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -30`
 Expected: no errors related to `CategoryId` or `categories.ts`
 
-- [ ] **Step 10: Commit**
+- [x] **Step 10: Commit**
 
 ```bash
 git add src/data/categories.ts
@@ -163,11 +165,11 @@ git commit -m "feat: split javascript category into 3 subcategories, add css-fra
 
 All 6 new topics get `animationComponent: undefined` and `bannerComponent: undefined` as per spec.
 
-- [ ] **Step 1: Read the top of `topics.ts` to understand the file structure**
+- [x] **Step 1: Read the top of `topics.ts` to understand the file structure**
 
 Run: `head -60 src/data/topics.ts` to see imports and first topic shape.
 
-- [ ] **Step 2: Add `js-control-flow` stub after `js-variables` topic**
+- [x] **Step 2: Add `js-control-flow` stub after `js-variables` topic**
 
 Find the `js-variables` topic object and after its closing `}` insert:
 ```ts
@@ -226,7 +228,7 @@ if (score >= 90) {
 },
 ```
 
-- [ ] **Step 3: Add `js-oop` stub in `javascript-oop` category**
+- [x] **Step 3: Add `js-oop` stub in `javascript-oop` category**
 
 Insert after the last topic in the original `javascript` group (or logically near `js-destructuring`):
 ```ts
@@ -286,7 +288,7 @@ dog.speak();`,
 },
 ```
 
-- [ ] **Step 4: Add `js-timers` stub**
+- [x] **Step 4: Add `js-timers` stub**
 
 ```ts
 {
@@ -346,7 +348,7 @@ const intervalId = setInterval(() => {
 },
 ```
 
-- [ ] **Step 5: Add `js-modules` stub**
+- [x] **Step 5: Add `js-modules` stub**
 
 ```ts
 {
@@ -411,7 +413,7 @@ console.log(greet('World'));`,
 },
 ```
 
-- [ ] **Step 6: Add `webapi-dom` stub**
+- [x] **Step 6: Add `webapi-dom` stub**
 
 ```ts
 {
@@ -471,7 +473,7 @@ console.log(heading.getAttribute('id'));`,
 },
 ```
 
-- [ ] **Step 7: Add `css-tailwind` stub**
+- [x] **Step 7: Add `css-tailwind` stub**
 
 ```ts
 {
@@ -528,11 +530,11 @@ console.log(heading.getAttribute('id'));`,
 },
 ```
 
-- [ ] **Step 8: Type-check**
+- [x] **Step 8: Type-check**
 
 Run: `cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -40`
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add src/data/topics.ts
@@ -590,9 +592,9 @@ console.log(!true);         // false`,
 },
 ```
 
-- [ ] Add the 3 steps above to `js-variables` explanation steps array
-- [ ] Type-check: `npx tsc --noEmit 2>&1 | head -20`
-- [ ] Commit: `git add src/data/topics.ts && git commit -m "feat: extend js-variables with arithmetic, comparison, try/catch steps"`
+- [x] Add the 3 steps above to `js-variables` explanation steps array
+- [x] Type-check: `npx tsc --noEmit 2>&1 | head -20`
+- [x] Commit: `git add src/data/topics.ts && git commit -m "feat: extend js-variables with arithmetic, comparison, try/catch steps"`
 
 ### Task 4: Extend `js-arrays`
 
@@ -693,9 +695,9 @@ console.log(scores.every(s => s >= 80)); // false (55 fails)`,
 },
 ```
 
-- [ ] Add the 8 steps above to `js-arrays` explanation steps array
-- [ ] Type-check: `npx tsc --noEmit 2>&1 | head -20`
-- [ ] Commit: `git add src/data/topics.ts && git commit -m "feat: extend js-arrays with mutation methods, HOFs (map/filter/reduce/some/every)"`
+- [x] Add the 8 steps above to `js-arrays` explanation steps array
+- [x] Type-check: `npx tsc --noEmit 2>&1 | head -20`
+- [x] Commit: `git add src/data/topics.ts && git commit -m "feat: extend js-arrays with mutation methods, HOFs (map/filter/reduce/some/every)"`
 
 ### Task 5: Extend `js-functions`
 
@@ -736,8 +738,8 @@ console.log(double3(5)); // 10`,
 },
 ```
 
-- [ ] Add 2 steps to `js-functions` explanation steps
-- [ ] Commit: `git add src/data/topics.ts && git commit -m "feat: extend js-functions with arrow function syntax and lexical this"`
+- [x] Add 2 steps to `js-functions` explanation steps
+- [x] Commit: `git add src/data/topics.ts && git commit -m "feat: extend js-functions with arrow function syntax and lexical this"`
 
 ### Task 6: Extend `js-destructuring`
 
@@ -765,8 +767,8 @@ console.log(s.includes('World'));    // true`,
 },
 ```
 
-- [ ] Add 1 step to `js-destructuring` explanation steps
-- [ ] Commit: `git add src/data/topics.ts && git commit -m "feat: extend js-destructuring with built-in objects (Math, Date, String)"`
+- [x] Add 1 step to `js-destructuring` explanation steps
+- [x] Commit: `git add src/data/topics.ts && git commit -m "feat: extend js-destructuring with built-in objects (Math, Date, String)"`
 
 ---
 
@@ -809,8 +811,8 @@ getUser(1).then(u => console.log(u));`,
 },
 ```
 
-- [ ] Add 2 steps to `js-promises` explanation steps
-- [ ] Commit: `git add src/data/topics.ts && git commit -m "feat: extend js-promises with async/await syntax and error handling"`
+- [x] Add 2 steps to `js-promises` explanation steps
+- [x] Commit: `git add src/data/topics.ts && git commit -m "feat: extend js-promises with async/await syntax and error handling"`
 
 ### Task 8: Extend `js-event-loop`
 
@@ -855,8 +857,8 @@ Promise.resolve().then(() => console.log('2 - microtask'));
 },
 ```
 
-- [ ] Add 3 steps to `js-event-loop` explanation steps
-- [ ] Commit: `git add src/data/topics.ts && git commit -m "feat: extend js-event-loop with call stack, microtask queue, event loop phases"`
+- [x] Add 3 steps to `js-event-loop` explanation steps
+- [x] Commit: `git add src/data/topics.ts && git commit -m "feat: extend js-event-loop with call stack, microtask queue, event loop phases"`
 
 ### Task 9: Extend `webapi-fetch`
 
@@ -901,8 +903,8 @@ console.log(created.id);`,
 },
 ```
 
-- [ ] Add 3 steps to `webapi-fetch` explanation steps
-- [ ] Commit: `git add src/data/topics.ts && git commit -m "feat: extend webapi-fetch with GET/POST/DELETE patterns and REST principles"`
+- [x] Add 3 steps to `webapi-fetch` explanation steps
+- [x] Commit: `git add src/data/topics.ts && git commit -m "feat: extend webapi-fetch with GET/POST/DELETE patterns and REST principles"`
 
 ### Task 10: Extend `webapi-storage`
 
@@ -940,8 +942,8 @@ localStorage.clear();`,
 },
 ```
 
-- [ ] Add 2 steps to `webapi-storage` explanation steps
-- [ ] Commit: `git add src/data/topics.ts && git commit -m "feat: extend webapi-storage with localStorage vs sessionStorage and CRUD methods"`
+- [x] Add 2 steps to `webapi-storage` explanation steps
+- [x] Commit: `git add src/data/topics.ts && git commit -m "feat: extend webapi-storage with localStorage vs sessionStorage and CRUD methods"`
 
 ### Task 11: Extend `webapi-events`
 
@@ -978,8 +980,8 @@ document.querySelector('#child').addEventListener('click', (e) => {
 },
 ```
 
-- [ ] Add 2 steps to `webapi-events` explanation steps
-- [ ] Commit: `git add src/data/topics.ts && git commit -m "feat: extend webapi-events with EventTarget interface and event propagation"`
+- [x] Add 2 steps to `webapi-events` explanation steps
+- [x] Commit: `git add src/data/topics.ts && git commit -m "feat: extend webapi-events with EventTarget interface and event propagation"`
 
 ### Task 12: Extend `postgres-queries`
 
@@ -1025,8 +1027,8 @@ ORDER BY count DESC;`,
 },
 ```
 
-- [ ] Add 3 steps to `postgres-queries` explanation steps
-- [ ] Commit: `git add src/data/topics.ts && git commit -m "feat: extend postgres-queries with WHERE/ORDER BY, aggregate functions, GROUP BY/HAVING"`
+- [x] Add 3 steps to `postgres-queries` explanation steps
+- [x] Commit: `git add src/data/topics.ts && git commit -m "feat: extend postgres-queries with WHERE/ORDER BY, aggregate functions, GROUP BY/HAVING"`
 
 ---
 
@@ -1109,8 +1111,8 @@ do {
 },
 ```
 
-- [ ] Set `sections.explanation.steps` for `js-control-flow` to the 5 steps above
-- [ ] Commit: `git add src/data/topics.ts && git commit -m "feat: fill js-control-flow explanation steps (if/else, switch, for, while, break/continue)"`
+- [x] Set `sections.explanation.steps` for `js-control-flow` to the 5 steps above
+- [x] Commit: `git add src/data/topics.ts && git commit -m "feat: fill js-control-flow explanation steps (if/else, switch, for, while, break/continue)"`
 
 ### Task 14: Fill `js-oop` explanation steps
 
@@ -1192,8 +1194,8 @@ const inc = c.increment;
 },
 ```
 
-- [ ] Set `sections.explanation.steps` for `js-oop` to the 5 steps above
-- [ ] Commit: `git add src/data/topics.ts && git commit -m "feat: fill js-oop explanation steps (OOP concepts, classes, inheritance, prototype, this)"`
+- [x] Set `sections.explanation.steps` for `js-oop` to the 5 steps above
+- [x] Commit: `git add src/data/topics.ts && git commit -m "feat: fill js-oop explanation steps (OOP concepts, classes, inheritance, prototype, this)"`
 
 ### Task 15: Fill `js-timers` explanation steps
 
@@ -1237,8 +1239,8 @@ clearTimeout(id); // cancels before it fires
 },
 ```
 
-- [ ] Set `sections.explanation.steps` for `js-timers` to the 3 steps above
-- [ ] Commit: `git add src/data/topics.ts && git commit -m "feat: fill js-timers explanation steps (setTimeout, setInterval, clear functions)"`
+- [x] Set `sections.explanation.steps` for `js-timers` to the 3 steps above
+- [x] Commit: `git add src/data/topics.ts && git commit -m "feat: fill js-timers explanation steps (setTimeout, setInterval, clear functions)"`
 
 ### Task 16: Fill `js-modules` explanation steps
 
@@ -1296,8 +1298,8 @@ npm run build # production bundle in dist/`,
 },
 ```
 
-- [ ] Set `sections.explanation.steps` for `js-modules` to the 4 steps above
-- [ ] Commit: `git add src/data/topics.ts && git commit -m "feat: fill js-modules explanation steps (CommonJS/ESM, exports, npm, bundlers)"`
+- [x] Set `sections.explanation.steps` for `js-modules` to the 4 steps above
+- [x] Commit: `git add src/data/topics.ts && git commit -m "feat: fill js-modules explanation steps (CommonJS/ESM, exports, npm, bundlers)"`
 
 ---
 
@@ -1365,8 +1367,8 @@ el.style.color = 'red';`,
 },
 ```
 
-- [ ] Set `sections.explanation.steps` for `webapi-dom` to the 4 steps above
-- [ ] Commit: `git add src/data/topics.ts && git commit -m "feat: fill webapi-dom explanation steps (tree, selecting, creating, properties)"`
+- [x] Set `sections.explanation.steps` for `webapi-dom` to the 4 steps above
+- [x] Commit: `git add src/data/topics.ts && git commit -m "feat: fill webapi-dom explanation steps (tree, selecting, creating, properties)"`
 
 ### Task 18: Fill `css-tailwind` explanation steps
 
@@ -1431,8 +1433,8 @@ el.style.color = 'red';`,
 },
 ```
 
-- [ ] Set `sections.explanation.steps` for `css-tailwind` to the 4 steps above
-- [ ] Commit: `git add src/data/topics.ts && git commit -m "feat: fill css-tailwind explanation steps (utility-first, responsive, common classes, setup)"`
+- [x] Set `sections.explanation.steps` for `css-tailwind` to the 4 steps above
+- [x] Commit: `git add src/data/topics.ts && git commit -m "feat: fill css-tailwind explanation steps (utility-first, responsive, common classes, setup)"`
 
 ---
 
@@ -1443,41 +1445,41 @@ el.style.color = 'red';`,
 **Files:**
 - Modify: `src/data/topics.ts`
 
-- [ ] **Step 1: Set `js-variables` nextTopicId to `js-control-flow`**
+- [x] **Step 1: Set `js-variables` nextTopicId to `js-control-flow`**
 
 Find the `js-variables` topic and set `nextTopicId: 'js-control-flow'`
 
-- [ ] **Step 2: Set `js-control-flow` nextTopicId to `js-arrays`** (already set in stub — verify)
+- [x] **Step 2: Set `js-control-flow` nextTopicId to `js-arrays`** (already set in stub — verify)
 
-- [ ] **Step 3: Set `js-arrays` nextTopicId to `js-functions`** (update if currently different)
+- [x] **Step 3: Set `js-arrays` nextTopicId to `js-functions`** (update if currently different)
 
-- [ ] **Step 4: Set `js-functions` nextTopicId to `js-destructuring`**
+- [x] **Step 4: Set `js-functions` nextTopicId to `js-destructuring`**
 
-- [ ] **Step 5: Set `js-closures` nextTopicId to `js-promises`**
+- [x] **Step 5: Set `js-closures` nextTopicId to `js-promises`**
 
-- [ ] **Step 6: Set `js-timers` nextTopicId to `js-event-loop`**
+- [x] **Step 6: Set `js-timers` nextTopicId to `js-event-loop`**
 
-- [ ] **Step 7: Set `js-event-loop` nextTopicId to `js-closures`**
+- [x] **Step 7: Set `js-event-loop` nextTopicId to `js-closures`**
 
-- [ ] **Step 8: Set `js-promises` nextTopicId to `js-modules`**
+- [x] **Step 8: Set `js-promises` nextTopicId to `js-modules`**
 
-- [ ] **Step 9: Set `webapi-fetch` nextTopicId to `webapi-dom`**
+- [x] **Step 9: Set `webapi-fetch` nextTopicId to `webapi-dom`**
 
-- [ ] **Step 10: Set `webapi-dom` nextTopicId to `webapi-events`** (already in stub — verify)
+- [x] **Step 10: Set `webapi-dom` nextTopicId to `webapi-events`** (already in stub — verify)
 
-- [ ] **Step 11: Set `webapi-events` nextTopicId to `webapi-storage`** (verify existing value)
+- [x] **Step 11: Set `webapi-events` nextTopicId to `webapi-storage`** (verify existing value)
 
-- [ ] **Step 12: Run TypeScript check**
+- [x] **Step 12: Run TypeScript check**
 
 Run: `cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1`
 Expected: 0 errors
 
-- [ ] **Step 13: Run dev server smoke test**
+- [x] **Step 13: Run dev server smoke test**
 
 Run: `cd /home/jaywee92/web-dev-guide && npm run build 2>&1 | tail -20`
 Expected: successful build, no type errors
 
-- [ ] **Step 14: Final commit**
+- [x] **Step 14: Final commit**
 
 ```bash
 git add src/data/topics.ts

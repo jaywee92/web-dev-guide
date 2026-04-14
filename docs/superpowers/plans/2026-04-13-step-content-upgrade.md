@@ -1,5 +1,7 @@
 # Step Content Upgrade Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Visually upgrade all step cards — add thematic emoji icons to every step header, and give each `expandedText` paragraph a colour-coded type card (📜 context, 💡 tip, ⚠️ warning, 🔬 deep-dive, ✅ pattern) — improving scannability and visual hierarchy across all 97 topics in both EN and DE.
@@ -31,7 +33,7 @@
 **Files:**
 - Modify: `src/pages/TopicPage/SyncExplanation.tsx`
 
-- [ ] **Step 1: Add CARD_STYLES map and detectCardEmoji helper**
+- [x] **Step 1: Add CARD_STYLES map and detectCardEmoji helper**
 
 Insert directly above the `renderInlineText` function (before line 144):
 
@@ -51,7 +53,7 @@ function detectCardEmoji(text: string): string | null {
 }
 ```
 
-- [ ] **Step 2: Upgrade step text styling**
+- [x] **Step 2: Upgrade step text styling**
 
 In `StepBlock`, find the step text `<p>` (currently around line 257–259):
 
@@ -69,7 +71,7 @@ Replace with:
 </p>
 ```
 
-- [ ] **Step 3: Replace expanded card rendering block**
+- [x] **Step 3: Replace expanded card rendering block**
 
 Find the current expanded cards block (lines 262–291) — the entire `{step.expandedText && expanded && (...)}` block:
 
@@ -158,14 +160,14 @@ Replace the entire block with:
 )}
 ```
 
-- [ ] **Step 4: TypeScript check**
+- [x] **Step 4: TypeScript check**
 
 ```bash
 npx tsc --noEmit
 ```
 Expected: no output (0 errors).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/pages/TopicPage/SyncExplanation.tsx
@@ -181,7 +183,7 @@ git commit -m "feat: emoji-typed expanded cards + step text upgrade in SyncExpla
 
 The `icon?: string` field already exists on `ExplanationStep` and is already rendered in `StepBlock`. It just hasn't been populated. This task fills in all 453 steps.
 
-- [ ] **Step 1: Create and run the icons script**
+- [x] **Step 1: Create and run the icons script**
 
 Save as `add_step_icons.py` and run with `python3 add_step_icons.py`:
 
@@ -456,7 +458,7 @@ with open('src/data/topics.ts', 'w') as f:
 print(f'Applied {len(replacements)} icon insertions')
 ```
 
-- [ ] **Step 2: Verify icon count**
+- [x] **Step 2: Verify icon count**
 
 ```bash
 python3 -c "
@@ -469,13 +471,13 @@ print(f'icon fields in topics.ts: {count} (expected ~453)')
 
 Expected: `icon fields in topics.ts: 453` (or close — some steps may already have icons).
 
-- [ ] **Step 3: TypeScript check**
+- [x] **Step 3: TypeScript check**
 
 ```bash
 npx tsc --noEmit
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/data/topics.ts
@@ -493,7 +495,7 @@ Each `expandedText` paragraph is prefixed with one of: `📖 ` (default/explanat
 
 The renderer (Task 1) strips the prefix before display and uses it to choose the card colour.
 
-- [ ] **Step 1: Create and run the classification + insertion script**
+- [x] **Step 1: Create and run the classification + insertion script**
 
 Save as `add_expandedtext_prefixes.py` and run:
 
@@ -571,7 +573,7 @@ count = len(re.findall(r"[📖💡⚠️🔬✅📜] ", new_content))
 print(f'Emoji prefixes in topics.ts expandedText: {count}')
 ```
 
-- [ ] **Step 2: Verify prefix count**
+- [x] **Step 2: Verify prefix count**
 
 ```bash
 python3 -c "
@@ -585,13 +587,13 @@ for e in ['📖','💡','⚠️','🔬','✅','📜']:
 
 Expected: all 6 emoji appear, total across all ~782 paragraphs.
 
-- [ ] **Step 3: TypeScript check**
+- [x] **Step 3: TypeScript check**
 
 ```bash
 npx tsc --noEmit
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/data/topics.ts
@@ -610,7 +612,7 @@ git commit -m "feat: add emoji type prefixes to all EN expandedText paragraphs (
 
 The **same heuristic** is applied to the German `expandedText` values. German keyword set is already included in the classifier above (stammt, früher, fehler, falle, achtung, niemals, vorsicht, tipp, merkhilfe, faustregel, intern, technisch, muster, konvention).
 
-- [ ] **Step 1: Create and run the DE prefix script**
+- [x] **Step 1: Create and run the DE prefix script**
 
 Save as `add_de_expandedtext_prefixes.py` and run:
 
@@ -672,7 +674,7 @@ for path in FILES:
     print(f'{path.split("/")[-1]}: {changed} steps updated')
 ```
 
-- [ ] **Step 2: Verify DE prefix coverage**
+- [x] **Step 2: Verify DE prefix coverage**
 
 ```bash
 python3 -c "
@@ -700,7 +702,7 @@ for path in [
 
 Expected: all paragraphs prefixed in all 4 files.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/i18n/locales/de/topics-js.json src/i18n/locales/de/topics-css.json \
@@ -712,14 +714,14 @@ git commit -m "feat: add emoji type prefixes to all DE expandedText paragraphs"
 
 ## Task 5: Final verification + push
 
-- [ ] **Step 1: TypeScript check**
+- [x] **Step 1: TypeScript check**
 
 ```bash
 npx tsc --noEmit
 ```
 Expected: no output (0 errors).
 
-- [ ] **Step 2: Full summary check**
+- [x] **Step 2: Full summary check**
 
 ```bash
 python3 - << 'EOF'
@@ -753,7 +755,7 @@ print(f'DE expandedText prefixed paragraphs: {de_total}')
 EOF
 ```
 
-- [ ] **Step 3: Push**
+- [x] **Step 3: Push**
 
 ```bash
 git push

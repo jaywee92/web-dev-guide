@@ -1,5 +1,7 @@
 # Knowledge Base Redesign Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Redesign the web-dev-guide as an animated knowledge base — split CSS into 3 categories, add homepage group headers, redesign category pages as numbered reference indexes, and add on-page nav to topic pages.
@@ -21,7 +23,7 @@
 **Files:**
 - Modify: `src/types/index.ts:4`
 
-- [ ] **Step 1: Update CategoryId union**
+- [x] **Step 1: Update CategoryId union**
 
 In `src/types/index.ts`, replace line 4:
 
@@ -34,7 +36,7 @@ export type CategoryId = 'html' | 'css-grundlagen' | 'css-layout' | 'css-modern'
   | 'javascript' | 'typescript' | 'react' | 'webapis' | 'http' | 'postgresql'
 ```
 
-- [ ] **Step 2: Run type-check — expect errors (CSS topics still have old category)**
+- [x] **Step 2: Run type-check — expect errors (CSS topics still have old category)**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc -b 2>&1 | grep "error TS" | head -20
@@ -42,7 +44,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc -b 2>&1 | grep "error TS" | head -20
 
 Expected: Errors like `Type '"css"' is not assignable to type 'CategoryId'` on every CSS topic in `topics.ts`. This is correct — the next tasks fix these.
 
-- [ ] **Step 3: Update categories.ts — remove css, add 3 new categories + CATEGORY_GROUPS**
+- [x] **Step 3: Update categories.ts — remove css, add 3 new categories + CATEGORY_GROUPS**
 
 Replace the entire `src/data/categories.ts` file with:
 
@@ -183,7 +185,7 @@ export function getCategoryForTopic(topicId: string): Category | undefined {
 }
 ```
 
-- [ ] **Step 4: Update App.tsx — remove /css, add 3 new CSS routes**
+- [x] **Step 4: Update App.tsx — remove /css, add 3 new CSS routes**
 
 In `src/App.tsx`, replace the `/css` route line with three new routes:
 
@@ -218,7 +220,7 @@ The `src/App.tsx` Routes block should now look like:
 </Routes>
 ```
 
-- [ ] **Step 5: Update CategoryGrid.tsx — add LayoutGrid and Sparkles icons**
+- [x] **Step 5: Update CategoryGrid.tsx — add LayoutGrid and Sparkles icons**
 
 `CategoryGrid.tsx` imports icons from lucide-react. The new categories use `LayoutGrid` and `Sparkles`. Add them to the import and the `ICONS` map:
 
@@ -245,7 +247,7 @@ const ICONS: Record<string, ComponentType<{ size?: number; color?: string }>> = 
 }
 ```
 
-- [ ] **Step 6: Verify type errors are now only about css topic categories**
+- [x] **Step 6: Verify type errors are now only about css topic categories**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc -b 2>&1 | grep "error TS"
@@ -253,7 +255,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc -b 2>&1 | grep "error TS"
 
 Expected: Still errors on `topics.ts` lines with `category: 'css'`. No new errors anywhere else.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -288,11 +290,11 @@ The 15 CSS topics are currently all `category: 'css'`. Mapping (topic id → new
 | css-transitions | css-modern | 1170 |
 | css-animations | css-modern | 1212 |
 
-- [ ] **Step 1: Locate each topic by its id and update its category field**
+- [x] **Step 1: Locate each topic by its id and update its category field**
 
 For each of the 15 topic objects in `src/data/topics.ts`, change `category: 'css'` to the value in the table above. The id field immediately precedes the category field in each object. Use the approximate line numbers from the table as a starting point; search for the id string to locate exactly.
 
-- [ ] **Step 2: Run type-check — must pass clean**
+- [x] **Step 2: Run type-check — must pass clean**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc -b 2>&1
@@ -300,7 +302,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc -b 2>&1
 
 Expected: `0 errors`. If any errors remain, they will point to a topic whose category was not updated.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -319,7 +321,7 @@ git commit -m "feat: update CSS topic categories to css-grundlagen / css-layout 
 
 The current file iterates `CATEGORIES` and renders `CategoryRow` for each. After this task it iterates `CATEGORY_GROUPS` and renders a group header + rows per group. Categories with ≤ 4 topics render as compact cards.
 
-- [ ] **Step 1: Replace CategoryGrid.tsx**
+- [x] **Step 1: Replace CategoryGrid.tsx**
 
 Replace the entire `src/pages/Home/CategoryGrid.tsx` with:
 
@@ -494,7 +496,7 @@ export default function CategoryGrid() {
 }
 ```
 
-- [ ] **Step 2: Run type-check**
+- [x] **Step 2: Run type-check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc -b 2>&1
@@ -502,7 +504,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc -b 2>&1
 
 Expected: 0 errors.
 
-- [ ] **Step 3: Visual check — start dev server**
+- [x] **Step 3: Visual check — start dev server**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npm run dev
@@ -514,7 +516,7 @@ Open `http://localhost:5173` (or whatever port Vite prints). Verify:
 - Under `PROGRAMMIERUNG`: JavaScript (full, 4 chips), TypeScript (compact, "3 topics")
 - Under `FRAMEWORKS & WEB`: React, Web APIs, HTTP, PostgreSQL — all compact
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -531,7 +533,7 @@ git commit -m "feat: homepage — group section headers + compact cards for smal
 **Files:**
 - Modify: `src/pages/CategoryPage/index.tsx`
 
-- [ ] **Step 1: Replace CategoryPage/index.tsx**
+- [x] **Step 1: Replace CategoryPage/index.tsx**
 
 Replace the entire `src/pages/CategoryPage/index.tsx` with:
 
@@ -703,7 +705,7 @@ export default function CategoryPage() {
 }
 ```
 
-- [ ] **Step 2: Run type-check**
+- [x] **Step 2: Run type-check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc -b 2>&1
@@ -711,7 +713,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc -b 2>&1
 
 Expected: 0 errors.
 
-- [ ] **Step 3: Visual check**
+- [x] **Step 3: Visual check**
 
 With dev server running, navigate to `/#/css-layout`. Verify:
 - Breadcrumb shows `Docs / CSS Layout`
@@ -722,7 +724,7 @@ With dev server running, navigate to `/#/css-layout`. Verify:
 - Navigate to `/#/html` → reference link appears; `/#/css-grundlagen` → reference link points to `/reference/css`
 - Navigate to `/#/javascript` → no reference link
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -739,7 +741,7 @@ git commit -m "feat: category page — breadcrumb + numbered reference cards + f
 **Files:**
 - Modify: `src/pages/TopicPage/index.tsx`
 
-- [ ] **Step 1: Update TopicPage/index.tsx**
+- [x] **Step 1: Update TopicPage/index.tsx**
 
 The changes are:
 1. Add a breadcrumb (`Docs / {category.title} / {topic.title}`) below the back button
@@ -881,7 +883,7 @@ export default function TopicPage() {
 
 Note: `TopicSidebar` now receives 3 new props (`hasCheatSheet`, `hasPlayground`, `topicTitle`) — Task 6 adds these to the sidebar. Until Task 6 is done, TypeScript will error on these props. Complete Task 5 and Task 6 together before running type-check.
 
-- [ ] **Step 2: Proceed immediately to Task 6 — do NOT run tsc yet**
+- [x] **Step 2: Proceed immediately to Task 6 — do NOT run tsc yet**
 
 ---
 
@@ -890,7 +892,7 @@ Note: `TopicSidebar` now receives 3 new props (`hasCheatSheet`, `hasPlayground`,
 **Files:**
 - Modify: `src/components/layout/TopicSidebar.tsx`
 
-- [ ] **Step 1: Replace TopicSidebar.tsx**
+- [x] **Step 1: Replace TopicSidebar.tsx**
 
 Replace the entire `src/components/layout/TopicSidebar.tsx` with:
 
@@ -1057,7 +1059,7 @@ export default function TopicSidebar({
 }
 ```
 
-- [ ] **Step 2: Run type-check — must pass clean**
+- [x] **Step 2: Run type-check — must pass clean**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc -b 2>&1
@@ -1065,7 +1067,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc -b 2>&1
 
 Expected: 0 errors.
 
-- [ ] **Step 3: Visual check**
+- [x] **Step 3: Visual check**
 
 With dev server running, navigate to any topic page (e.g., `/#/topic/css-flexbox`). Verify:
 - Breadcrumb shows `Docs / CSS Layout / Flexbox`
@@ -1074,7 +1076,7 @@ With dev server running, navigate to any topic page (e.g., `/#/topic/css-flexbox
 - Clicking `Cheat Sheet` scrolls to cheat sheet (if topic has one)
 - Back button returns to `/#/css-layout`
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -1086,7 +1088,7 @@ git commit -m "feat: topic page — breadcrumb + section IDs + on-page anchor na
 
 ## Final Verification
 
-- [ ] **Run full build**
+- [x] **Run full build**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npm run build 2>&1
@@ -1094,7 +1096,7 @@ cd /home/jaywee92/web-dev-guide && npm run build 2>&1
 
 Expected: `✓ built in X.XXs` with no errors.
 
-- [ ] **Smoke test key routes**
+- [x] **Smoke test key routes**
 
 With `npm run dev`:
 1. `/#/` — homepage shows 3 groups, CSS is split into 3 rows
@@ -1105,7 +1107,7 @@ With `npm run dev`:
 6. `/#/topic/html-dom` — breadcrumb shows `Docs / HTML / ...`, HTML reference link works
 7. Old `/#/css` — shows "Category not found." (expected — route removed)
 
-- [ ] **Push to GitHub**
+- [x] **Push to GitHub**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && git push origin main

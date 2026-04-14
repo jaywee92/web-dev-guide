@@ -1,5 +1,7 @@
 # Resources Page Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add a standalone `/resources` page listing 10 curated external web dev resources in 5 labeled groups, each rendered as a responsive 3-column showcase grid.
@@ -17,7 +19,7 @@
 **Files:**
 - Create: `src/data/resources.tsx`
 
-- [ ] **Step 1: Create `src/data/resources.tsx` with interfaces and data**
+- [x] **Step 1: Create `src/data/resources.tsx` with interfaces and data**
 
 ```tsx
 import type { ReactNode } from 'react'
@@ -157,7 +159,7 @@ export const RESOURCE_GROUPS: ResourceGroup[] = [
 ]
 ```
 
-- [ ] **Step 2: TypeScript check**
+- [x] **Step 2: TypeScript check**
 
 ```bash
 pnpm tsgo
@@ -165,7 +167,7 @@ pnpm tsgo
 
 Expected: no errors related to `resources.tsx`.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/data/resources.tsx
@@ -179,7 +181,7 @@ git commit -m "feat: add resources data (RESOURCE_GROUPS with 10 entries, 5 grou
 **Files:**
 - Create: `src/pages/ResourcesPage/index.tsx`
 
-- [ ] **Step 1: Create `src/pages/ResourcesPage/index.tsx`**
+- [x] **Step 1: Create `src/pages/ResourcesPage/index.tsx`**
 
 ```tsx
 import PageWrapper from '@/components/layout/PageWrapper'
@@ -356,7 +358,7 @@ export default function ResourcesPage() {
 }
 ```
 
-- [ ] **Step 2: TypeScript check**
+- [x] **Step 2: TypeScript check**
 
 ```bash
 pnpm tsgo
@@ -364,7 +366,7 @@ pnpm tsgo
 
 Expected: no errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/pages/ResourcesPage/index.tsx
@@ -380,7 +382,7 @@ git commit -m "feat: add ResourcesPage component"
 **Files:**
 - Modify: `src/App.tsx`
 
-- [ ] **Step 1: Add import and route**
+- [x] **Step 1: Add import and route**
 
 In `src/App.tsx`:
 
@@ -394,7 +396,7 @@ Add route inside `<Routes>` directly after `<Route path="/git-collab" element={<
 <Route path="/resources" element={<ResourcesPage />} />
 ```
 
-- [ ] **Step 2: TypeScript check**
+- [x] **Step 2: TypeScript check**
 
 ```bash
 pnpm tsgo
@@ -402,7 +404,7 @@ pnpm tsgo
 
 Expected: no errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/App.tsx
@@ -416,7 +418,7 @@ git commit -m "feat: register /resources route"
 **Files:**
 - Modify: `src/components/layout/Navbar.tsx`
 
-- [ ] **Step 1: Add Resources link**
+- [x] **Step 1: Add Resources link**
 
 In `src/components/layout/Navbar.tsx`, add `Link` to the existing imports from `react-router-dom` (it's already imported — confirm it's present, otherwise add it).
 
@@ -455,7 +457,7 @@ Insert the following directly before the `{/* Search */}` comment block (which s
 </Link>
 ```
 
-- [ ] **Step 2: TypeScript check**
+- [x] **Step 2: TypeScript check**
 
 ```bash
 pnpm tsgo
@@ -463,7 +465,7 @@ pnpm tsgo
 
 Expected: no errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/components/layout/Navbar.tsx
@@ -474,7 +476,7 @@ git commit -m "feat: add Resources nav link to Navbar"
 
 ### Task 5: Final check and push
 
-- [ ] **Step 1: Full TypeScript + lint check**
+- [x] **Step 1: Full TypeScript + lint check**
 
 ```bash
 pnpm check
@@ -482,7 +484,7 @@ pnpm check
 
 Expected: no errors or warnings **introduced by this change** (pre-existing warnings unrelated to resources are acceptable).
 
-- [ ] **Step 2: Push**
+- [x] **Step 2: Push**
 
 ```bash
 git push

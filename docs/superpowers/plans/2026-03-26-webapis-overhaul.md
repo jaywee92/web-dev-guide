@@ -1,5 +1,7 @@
 # Web APIs Section Overhaul Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Overhaul all 4 Web API topics with per-step analogies, 2 new steps each, commonErrors, and realWorldExamples; create a dedicated DomViz component to replace the mismatched DomEventsViz on the webapi-dom topic.
@@ -32,7 +34,7 @@
 **Files:**
 - Create: `src/topics/webapis/DomViz.tsx`
 
-- [ ] **Step 1: Create the full component**
+- [x] **Step 1: Create the full component**
 
 Create `src/topics/webapis/DomViz.tsx`. Follow the established viz pattern from `FetchViz.tsx` and `DomEventsViz.tsx`:
 
@@ -359,7 +361,7 @@ export default function DomViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Register DomViz in registry.ts**
+- [x] **Step 2: Register DomViz in registry.ts**
 
 In `src/topics/registry.ts`, find the webapis entries (around line 59):
 ```ts
@@ -374,7 +376,7 @@ Insert DomViz between them:
   DomEventsViz: () => import('./webapis/DomEventsViz'),
 ```
 
-- [ ] **Step 3: Wire webapi-dom to DomViz**
+- [x] **Step 3: Wire webapi-dom to DomViz**
 
 In `src/data/topics.ts` line 6566, change:
 ```ts
@@ -385,7 +387,7 @@ to:
     animationComponent: 'DomViz',
 ```
 
-- [ ] **Step 4: TypeScript check + commit**
+- [x] **Step 4: TypeScript check + commit**
 
 ```bash
 npx tsc --noEmit 2>&1 | head -20
@@ -400,7 +402,7 @@ git commit -m "feat: add DomViz component and wire to webapi-dom topic"
 **Files:**
 - Modify: `src/data/topics.ts` (lines 6675–6792)
 
-- [ ] **Step 1: Add analogies to all steps (0–7)**
+- [x] **Step 1: Add analogies to all steps (0–7)**
 
 For each ExplanationStep in the webapi-fetch `explanation` section, add an `analogy` field:
 
@@ -500,7 +502,7 @@ analogy: {
 },
 ```
 
-- [ ] **Step 2: Add new steps 8 and 9**
+- [x] **Step 2: Add new steps 8 and 9**
 
 Append to the end of the `explanation` steps array:
 
@@ -539,7 +541,7 @@ Append to the end of the `explanation` steps array:
 },
 ```
 
-- [ ] **Step 3: Add commonErrors and realWorldExamples**
+- [x] **Step 3: Add commonErrors and realWorldExamples**
 
 Add these fields to the webapi-fetch topic object (alongside `cheatSheet`, `sections`, etc.):
 
@@ -580,7 +582,7 @@ realWorldExamples: [
 ],
 ```
 
-- [ ] **Step 4: TypeScript check + commit**
+- [x] **Step 4: TypeScript check + commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
@@ -595,7 +597,7 @@ git commit -m "feat: add analogies, new steps, commonErrors and realWorldExample
 **Files:**
 - Modify: `src/data/topics.ts` (lines 6564–6674)
 
-- [ ] **Step 1: Add analogies to all 7 existing steps of webapi-dom**
+- [x] **Step 1: Add analogies to all 7 existing steps of webapi-dom**
 
 **Step 0** (DOM Tree Structure):
 ```ts
@@ -681,7 +683,7 @@ analogy: {
 },
 ```
 
-- [ ] **Step 2: Add new steps 7 and 8 to webapi-dom**
+- [x] **Step 2: Add new steps 7 and 8 to webapi-dom**
 
 Append to the end of the explanation steps array:
 
@@ -720,7 +722,7 @@ Append to the end of the explanation steps array:
 },
 ```
 
-- [ ] **Step 3: Add commonErrors and realWorldExamples to webapi-dom**
+- [x] **Step 3: Add commonErrors and realWorldExamples to webapi-dom**
 
 ```ts
 commonErrors: [
@@ -759,7 +761,7 @@ realWorldExamples: [
 ],
 ```
 
-- [ ] **Step 4: TypeScript check + commit**
+- [x] **Step 4: TypeScript check + commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
@@ -774,7 +776,7 @@ git commit -m "feat: add analogies, new steps, commonErrors and realWorldExample
 **Files:**
 - Modify: `src/data/topics.ts` (lines 6793–6902)
 
-- [ ] **Step 1: Add analogies to all 7 existing steps of webapi-events**
+- [x] **Step 1: Add analogies to all 7 existing steps of webapi-events**
 
 **Step 0** (Events are user actions):
 ```ts
@@ -860,7 +862,7 @@ analogy: {
 },
 ```
 
-- [ ] **Step 2: Add new steps 7 and 8 to webapi-events**
+- [x] **Step 2: Add new steps 7 and 8 to webapi-events**
 
 ```ts
 {
@@ -897,7 +899,7 @@ analogy: {
 },
 ```
 
-- [ ] **Step 3: Add commonErrors and realWorldExamples to webapi-events**
+- [x] **Step 3: Add commonErrors and realWorldExamples to webapi-events**
 
 Note: `commonErrors` is a separate field from `cheatSheet.commonMistakes`. They coexist — commonMistakes are brief cheat sheet one-liners; commonErrors are full entries with fix code shown in a dedicated panel.
 
@@ -938,7 +940,7 @@ realWorldExamples: [
 ],
 ```
 
-- [ ] **Step 4: TypeScript check + commit**
+- [x] **Step 4: TypeScript check + commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
@@ -953,7 +955,7 @@ git commit -m "feat: add analogies, new steps, commonErrors and realWorldExample
 **Files:**
 - Modify: `src/data/topics.ts` (lines 6903+)
 
-- [ ] **Step 1: Add analogies to all 7 existing steps of webapi-storage**
+- [x] **Step 1: Add analogies to all 7 existing steps of webapi-storage**
 
 **Step 0** (Browser storage intro):
 ```ts
@@ -1039,7 +1041,7 @@ analogy: {
 },
 ```
 
-- [ ] **Step 2: Add new steps 7 and 8 to webapi-storage**
+- [x] **Step 2: Add new steps 7 and 8 to webapi-storage**
 
 ```ts
 {
@@ -1076,7 +1078,7 @@ analogy: {
 },
 ```
 
-- [ ] **Step 3: Add commonErrors and realWorldExamples to webapi-storage**
+- [x] **Step 3: Add commonErrors and realWorldExamples to webapi-storage**
 
 ```ts
 commonErrors: [
@@ -1115,7 +1117,7 @@ realWorldExamples: [
 ],
 ```
 
-- [ ] **Step 4: TypeScript check + commit**
+- [x] **Step 4: TypeScript check + commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
@@ -1132,7 +1134,7 @@ git commit -m "feat: add analogies, new steps, commonErrors and realWorldExample
 
 For each topic, append to the `steps` array. Do NOT modify existing steps 0–6.
 
-- [ ] **Step 1: Append to webapi-fetch steps**
+- [x] **Step 1: Append to webapi-fetch steps**
 
 Find the last step object in webapi-fetch (animationStep: 7). Append after it:
 
@@ -1149,7 +1151,7 @@ Find the last step object in webapi-fetch (animationStep: 7). Append after it:
 }
 ```
 
-- [ ] **Step 2: Append to webapi-dom steps**
+- [x] **Step 2: Append to webapi-dom steps**
 
 Find the last step in webapi-dom (animationStep: 6). Append:
 
@@ -1166,7 +1168,7 @@ Find the last step in webapi-dom (animationStep: 6). Append:
 }
 ```
 
-- [ ] **Step 3: Append to webapi-events steps**
+- [x] **Step 3: Append to webapi-events steps**
 
 Find the last step in webapi-events (animationStep: 6). Append:
 
@@ -1183,7 +1185,7 @@ Find the last step in webapi-events (animationStep: 6). Append:
 }
 ```
 
-- [ ] **Step 4: Append to webapi-storage steps**
+- [x] **Step 4: Append to webapi-storage steps**
 
 Find the last step in webapi-storage (animationStep: 6). Append:
 
@@ -1200,7 +1202,7 @@ Find the last step in webapi-storage (animationStep: 6). Append:
 }
 ```
 
-- [ ] **Step 5: Validate JSON + commit**
+- [x] **Step 5: Validate JSON + commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -1218,7 +1220,7 @@ git commit -m "feat: append new step entries (animationStep 7+8) for all 4 webap
 
 Mirror every addition from Task 6 with German translations.
 
-- [ ] **Step 1: Append to webapi-fetch steps DE**
+- [x] **Step 1: Append to webapi-fetch steps DE**
 
 ```json
 {
@@ -1233,7 +1235,7 @@ Mirror every addition from Task 6 with German translations.
 }
 ```
 
-- [ ] **Step 2: Append to webapi-dom steps DE**
+- [x] **Step 2: Append to webapi-dom steps DE**
 
 ```json
 {
@@ -1248,7 +1250,7 @@ Mirror every addition from Task 6 with German translations.
 }
 ```
 
-- [ ] **Step 3: Append to webapi-events steps DE**
+- [x] **Step 3: Append to webapi-events steps DE**
 
 ```json
 {
@@ -1263,7 +1265,7 @@ Mirror every addition from Task 6 with German translations.
 }
 ```
 
-- [ ] **Step 4: Append to webapi-storage steps DE**
+- [x] **Step 4: Append to webapi-storage steps DE**
 
 ```json
 {
@@ -1278,7 +1280,7 @@ Mirror every addition from Task 6 with German translations.
 }
 ```
 
-- [ ] **Step 5: Validate JSON + commit**
+- [x] **Step 5: Validate JSON + commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -1291,7 +1293,7 @@ git commit -m "feat: append German translations for new webapi step entries (ani
 
 ## Task 8: Final Verification
 
-- [ ] **Step 1: Full TypeScript check**
+- [x] **Step 1: Full TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1
@@ -1299,7 +1301,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1
 
 Expected: no output (zero errors).
 
-- [ ] **Step 2: Verify webapi-dom uses DomViz**
+- [x] **Step 2: Verify webapi-dom uses DomViz**
 
 ```bash
 grep -n "animationComponent" /home/jaywee92/web-dev-guide/src/data/topics.ts | grep -E "webapi|DomViz" | head -5
@@ -1308,7 +1310,7 @@ grep "DomViz" /home/jaywee92/web-dev-guide/src/topics/registry.ts
 
 Expected: webapi-dom shows `DomViz`, not `DomEventsViz`. Registry shows `DomViz` registered.
 
-- [ ] **Step 3: Verify all locale JSON valid**
+- [x] **Step 3: Verify all locale JSON valid**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -1319,7 +1321,7 @@ node -e "
 "
 ```
 
-- [ ] **Step 4: Spot-check commonErrors structure**
+- [x] **Step 4: Spot-check commonErrors structure**
 
 ```bash
 grep -c "fixLabel" /home/jaywee92/web-dev-guide/src/data/topics.ts
@@ -1327,7 +1329,7 @@ grep -c "fixLabel" /home/jaywee92/web-dev-guide/src/data/topics.ts
 
 Expected: ≥ 12 (3 commonErrors × 4 topics, plus any existing ones from JS/HTML topics).
 
-- [ ] **Step 5: Commit if any loose changes remain**
+- [x] **Step 5: Commit if any loose changes remain**
 
 ```bash
 cd /home/jaywee92/web-dev-guide

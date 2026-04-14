@@ -1,5 +1,7 @@
 # CSS Interactive Playground Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add a live CSS playground (Monaco editor + iframe preview), One Dark Pro syntax highlighting on code blocks, 4 new CSS topics, and reorder all CSS topics into 4 logical groups.
@@ -20,7 +22,7 @@
 - Modify: `src/types/index.ts` (lines 1-5 PlaygroundType, lines 43-55 Topic)
 - Modify: `src/data/categories.ts` (lines 18-30 CSS topicIds)
 
-- [ ] **Step 1: Add `'css-live'` to PlaygroundType and `defaultCSS`/`previewHTML` to Topic**
+- [x] **Step 1: Add `'css-live'` to PlaygroundType and `defaultCSS`/`previewHTML` to Topic**
 
 Open `src/types/index.ts` and make these exact changes:
 
@@ -35,7 +37,7 @@ Inside the Topic interface, after the `playgroundType` line, add two optional fi
   previewHTML?: string     // fixed HTML template for css-live preview
 ```
 
-- [ ] **Step 2: Reorder CSS topicIds in categories.ts**
+- [x] **Step 2: Reorder CSS topicIds in categories.ts**
 
 Replace the CSS `topicIds` array in `src/data/categories.ts`:
 ```ts
@@ -62,12 +64,12 @@ topicIds: [
 ],
 ```
 
-- [ ] **Step 3: Type-check**
+- [x] **Step 3: Type-check**
 
 Run: `npx tsc --noEmit`
 Expected: 0 errors
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -87,7 +89,7 @@ git commit -m "feat: add css-live PlaygroundType, defaultCSS/previewHTML to Topi
 
 Security: User CSS is injected into an iframe with `sandbox="allow-scripts"`. The CSS is scoped to the iframe — it cannot affect the parent document. This is the standard safe pattern for live code editors.
 
-- [ ] **Step 1: Create `src/playgrounds/CSSLivePlayground.tsx`**
+- [x] **Step 1: Create `src/playgrounds/CSSLivePlayground.tsx`**
 
 ```tsx
 import { useState, useCallback, useRef } from 'react'
@@ -255,7 +257,7 @@ export default function CSSLivePlayground({ defaultCSS, previewHTML, topicId }: 
 }
 ```
 
-- [ ] **Step 2: Wire `css-live` in PlaygroundSection**
+- [x] **Step 2: Wire `css-live` in PlaygroundSection**
 
 Replace `src/pages/TopicPage/PlaygroundSection.tsx` with:
 
@@ -307,12 +309,12 @@ export default function PlaygroundSection({ topic }: Props) {
 }
 ```
 
-- [ ] **Step 3: Type-check**
+- [x] **Step 3: Type-check**
 
 Run: `npx tsc --noEmit`
 Expected: 0 errors
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -332,7 +334,7 @@ git commit -m "feat: CSSLivePlayground — Monaco editor + sandboxed iframe, res
 
 Security note: `dangerouslySetInnerHTML` is used only with Shiki output. Shiki receives the `code` prop which comes from static topic data in `topics.ts` — it is not user input and cannot contain malicious content.
 
-- [ ] **Step 1: Install shiki**
+- [x] **Step 1: Install shiki**
 
 ```bash
 pnpm add shiki
@@ -340,7 +342,7 @@ pnpm add shiki
 
 Expected: shiki added to package.json dependencies.
 
-- [ ] **Step 2: Create `src/lib/shiki.ts`**
+- [x] **Step 2: Create `src/lib/shiki.ts`**
 
 ```ts
 import { createHighlighter, type Highlighter } from 'shiki'
@@ -360,7 +362,7 @@ export function getHighlighter(): Promise<Highlighter> {
 export const SUPPORTED_LANGS = new Set(['css', 'html', 'javascript', 'typescript', 'python', 'sql', 'bash'])
 ```
 
-- [ ] **Step 3: Update `src/components/ui/CodeBlock.tsx`**
+- [x] **Step 3: Update `src/components/ui/CodeBlock.tsx`**
 
 ```tsx
 import { useEffect, useState } from 'react'
@@ -430,12 +432,12 @@ export default function CodeBlock({ code, language = 'code', label }: Props) {
 }
 ```
 
-- [ ] **Step 4: Type-check**
+- [x] **Step 4: Type-check**
 
 Run: `npx tsc --noEmit`
 Expected: 0 errors
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -452,7 +454,7 @@ git commit -m "feat: Shiki One Dark Pro syntax highlighting for CodeBlock"
 **Files:**
 - Create: `src/topics/css/CustomPropertiesViz.tsx`
 
-- [ ] **Step 1: Create `src/topics/css/CustomPropertiesViz.tsx`**
+- [x] **Step 1: Create `src/topics/css/CustomPropertiesViz.tsx`**
 
 ```tsx
 import { motion, AnimatePresence } from 'framer-motion'
@@ -558,7 +560,7 @@ export default function CustomPropertiesViz({ step, compact = false }: Props) {
 **Files:**
 - Create: `src/topics/css/TransformsViz.tsx`
 
-- [ ] **Step 1: Create `src/topics/css/TransformsViz.tsx`**
+- [x] **Step 1: Create `src/topics/css/TransformsViz.tsx`**
 
 ```tsx
 import { motion, AnimatePresence } from 'framer-motion'
@@ -640,7 +642,7 @@ export default function TransformsViz({ step, compact = false }: Props) {
 **Files:**
 - Create: `src/topics/css/TransitionsViz.tsx`
 
-- [ ] **Step 1: Create `src/topics/css/TransitionsViz.tsx`**
+- [x] **Step 1: Create `src/topics/css/TransitionsViz.tsx`**
 
 ```tsx
 import { motion, AnimatePresence } from 'framer-motion'
@@ -705,7 +707,7 @@ export default function TransitionsViz({ step, compact = false }: Props) {
 **Files:**
 - Create: `src/topics/css/AnimationsViz.tsx`
 
-- [ ] **Step 1: Create `src/topics/css/AnimationsViz.tsx`**
+- [x] **Step 1: Create `src/topics/css/AnimationsViz.tsx`**
 
 ```tsx
 import { motion, AnimatePresence } from 'framer-motion'
@@ -776,7 +778,7 @@ export default function AnimationsViz({ step, compact = false }: Props) {
 **Files:**
 - Modify: `src/topics/registry.ts`
 
-- [ ] **Step 1: Add 4 entries to lazyRegistry after the `ImagesViz` line**
+- [x] **Step 1: Add 4 entries to lazyRegistry after the `ImagesViz` line**
 
 ```ts
   CustomPropertiesViz: () => import('./css/CustomPropertiesViz'),
@@ -785,12 +787,12 @@ export default function AnimationsViz({ step, compact = false }: Props) {
   AnimationsViz: () => import('./css/AnimationsViz'),
 ```
 
-- [ ] **Step 2: Type-check**
+- [x] **Step 2: Type-check**
 
 Run: `npx tsc --noEmit`
 Expected: 0 errors
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -899,14 +901,14 @@ defaultCSS: '.avatar {\n  width: 120px;\n  height: 120px;\n  border-radius: 50%;
 previewHTML: '<img class="avatar" src="https://picsum.photos/200/200" alt="avatar">',
 ```
 
-- [ ] **Step 1: Apply all 11 edits to src/data/topics.ts** (using Edit tool per topic)
+- [x] **Step 1: Apply all 11 edits to src/data/topics.ts** (using Edit tool per topic)
 
-- [ ] **Step 2: Type-check**
+- [x] **Step 2: Type-check**
 
 Run: `npx tsc --noEmit`
 Expected: 0 errors
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -1109,19 +1111,19 @@ Find the `id: 'css-images'` topic. After its closing `},`, insert all four topic
 },
 ```
 
-- [ ] **Step 1: Apply all 4 new topic insertions to src/data/topics.ts**
+- [x] **Step 1: Apply all 4 new topic insertions to src/data/topics.ts**
 
-- [ ] **Step 2: Type-check**
+- [x] **Step 2: Type-check**
 
 Run: `npx tsc --noEmit`
 Expected: 0 errors
 
-- [ ] **Step 3: Build check**
+- [x] **Step 3: Build check**
 
 Run: `pnpm build`
 Expected: successful build, 0 errors
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -1133,7 +1135,7 @@ git commit -m "feat: add css-custom-properties, css-transforms, css-transitions,
 
 ## Final: Commit docs
 
-- [ ] **Step 1: Commit design and plan docs**
+- [x] **Step 1: Commit design and plan docs**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -1148,12 +1150,12 @@ git commit -m "docs: CSS interactive playground design spec and implementation p
 
 After all tasks complete, verify in browser (`pnpm dev`):
 
-- [ ] CSS category shows 15 topics in correct order (4 groups: Grundlagen, Styling, Layout, Moderne CSS)
-- [ ] All CSS topics show a live playground with Monaco editor + iframe split
-- [ ] Typing CSS in editor updates iframe in real time
-- [ ] Reset button restores the original pre-filled CSS
-- [ ] Show HTML toggles to read-only HTML view
-- [ ] Code blocks in explanation steps show One Dark Pro colors
-- [ ] New topics (css-custom-properties, css-transforms, css-transitions, css-animations) are accessible and their viz components animate through all 5 steps
-- [ ] `pnpm build` completes with 0 errors
+- [x] CSS category shows 15 topics in correct order (4 groups: Grundlagen, Styling, Layout, Moderne CSS)
+- [x] All CSS topics show a live playground with Monaco editor + iframe split
+- [x] Typing CSS in editor updates iframe in real time
+- [x] Reset button restores the original pre-filled CSS
+- [x] Show HTML toggles to read-only HTML view
+- [x] Code blocks in explanation steps show One Dark Pro colors
+- [x] New topics (css-custom-properties, css-transforms, css-transitions, css-animations) are accessible and their viz components animate through all 5 steps
+- [x] `pnpm build` completes with 0 errors
 

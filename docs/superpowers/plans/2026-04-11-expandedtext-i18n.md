@@ -1,5 +1,7 @@
 # expandedText i18n Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Translate all 472 `expandedText` fields (the "Learn more" deeper explanations) into German so the app is fully localised when DE is active.
@@ -29,7 +31,7 @@ EN files are intentionally **not** changed — EN falls back to `topics.ts` base
 **Files:**
 - Modify: `src/i18n/hooks.ts`
 
-- [ ] **Step 1: Add expandedText to StepTranslation interface**
+- [x] **Step 1: Add expandedText to StepTranslation interface**
 
 In `src/i18n/hooks.ts`, update the `StepTranslation` interface (currently line 63–68):
 
@@ -43,7 +45,7 @@ interface StepTranslation {
 }
 ```
 
-- [ ] **Step 2: Merge expandedText in useTopic**
+- [x] **Step 2: Merge expandedText in useTopic**
 
 In the `useTopic` function (step merge, currently lines 125–135), add `expandedText`:
 
@@ -59,7 +61,7 @@ return {
 }
 ```
 
-- [ ] **Step 3: Merge expandedText in useTopics**
+- [x] **Step 3: Merge expandedText in useTopics**
 
 Same change in the `useTopics` function (same pattern, currently lines 188–198):
 
@@ -75,14 +77,14 @@ return {
 }
 ```
 
-- [ ] **Step 4: Verify TypeScript compiles clean**
+- [x] **Step 4: Verify TypeScript compiles clean**
 
 ```bash
 npx tsc --noEmit
 ```
 Expected: no output (0 errors).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/i18n/hooks.ts
@@ -101,7 +103,7 @@ Topics and step counts:
 - `js-destructuring` (4), `js-oop` (5), `js-timers` (3), `js-event-loop` (8)
 - `js-closures` (5), `js-promises` (4), `js-modules` (4), `js-npm-bundlers` (5), `js-vs-python` (7)
 
-- [ ] **Step 1: Extract source expandedText for all JS topics**
+- [x] **Step 1: Extract source expandedText for all JS topics**
 
 ```bash
 python3 - << 'EOF'
@@ -137,7 +139,7 @@ for i, tm in enumerate(topic_matches):
 EOF
 ```
 
-- [ ] **Step 2: Write a Python update script with all German translations and run it**
+- [x] **Step 2: Write a Python update script with all German translations and run it**
 
 Create and run a script that loads `src/i18n/locales/de/topics-js.json`, adds `expandedText` to each matching step, and writes it back. Pattern from previous sessions:
 
@@ -165,7 +167,7 @@ with open('src/i18n/locales/de/topics-js.json', 'w') as f:
     f.write('\n')
 ```
 
-- [ ] **Step 3: Verify all 77 expandedText present**
+- [x] **Step 3: Verify all 77 expandedText present**
 
 ```bash
 python3 -c "
@@ -178,7 +180,7 @@ print(f'expandedText in topics-js DE: {count}/77')
 
 Expected: `expandedText in topics-js DE: 77/77`
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/i18n/locales/de/topics-js.json
@@ -199,11 +201,11 @@ Topics and step counts:
 - `css-variables-theming` (3), `css-transforms` (5), `css-transitions` (6), `css-animations` (6)
 - `css-tailwind` (5), `css-tailwind-layout` (4), `css-tailwind-states` (1)
 
-- [ ] **Step 1: Extract source expandedText for all CSS topics** (same pattern as Task 2 Step 1)
+- [x] **Step 1: Extract source expandedText for all CSS topics** (same pattern as Task 2 Step 1)
 
-- [ ] **Step 2: Write and run DE update script for topics-css.json** (same pattern as Task 2 Step 2)
+- [x] **Step 2: Write and run DE update script for topics-css.json** (same pattern as Task 2 Step 2)
 
-- [ ] **Step 3: Verify all 78 expandedText present**
+- [x] **Step 3: Verify all 78 expandedText present**
 
 ```bash
 python3 -c "
@@ -214,7 +216,7 @@ print(f'expandedText in topics-css DE: {count}/78')
 "
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/i18n/locales/de/topics-css.json
@@ -232,9 +234,9 @@ Topics and step counts:
 - `html-basics` (7), `html-text` (7), `html-links-images` (7), `html-lists` (7)
 - `html-semantic` (6), `html-accessibility` (3)
 
-- [ ] **Step 1: Extract + translate + write for topics-html.json** (same pattern)
+- [x] **Step 1: Extract + translate + write for topics-html.json** (same pattern)
 
-- [ ] **Step 2: Verify all 37 expandedText present**
+- [x] **Step 2: Verify all 37 expandedText present**
 
 ```bash
 python3 -c "
@@ -245,7 +247,7 @@ print(f'expandedText in topics-html DE: {count}/37')
 "
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/i18n/locales/de/topics-html.json
@@ -264,9 +266,9 @@ Topics in this batch:
 - `db-intro` (5), `postgres-queries` (10), `postgres-joins` (5), `postgres-crud` (5)
 - `webapi-dom` (9), `webapi-fetch` (10), `webapi-events` (9), `webapi-storage` (9)
 
-- [ ] **Step 1: Extract + translate + write for topics-other.json** (HTTP+DB+WebAPI keys only)
-- [ ] **Step 2: Verify step count for these topics**
-- [ ] **Step 3: Commit**
+- [x] **Step 1: Extract + translate + write for topics-other.json** (HTTP+DB+WebAPI keys only)
+- [x] **Step 2: Verify step count for these topics**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/i18n/locales/de/topics-other.json
@@ -279,9 +281,9 @@ git commit -m "feat: add DE expandedText translations for HTTP/DB/WebAPI topics 
 
 Topics: `ts-basics` (6), `ts-interfaces` (5), `ts-generics` (5), `ts-narrowing` (6), `ts-utility-types` (4), `ts-arrays` (4), `ts-classes` (5), `ts-enums` (4), `ts-type-assertion` (3), `ts-react` (6)
 
-- [ ] **Step 1: Extract + translate + write for topics-other.json** (TS keys)
-- [ ] **Step 2: Verify step count**
-- [ ] **Step 3: Commit**
+- [x] **Step 1: Extract + translate + write for topics-other.json** (TS keys)
+- [x] **Step 2: Verify step count**
+- [x] **Step 3: Commit**
 
 ```bash
 git commit -m "feat: add DE expandedText translations for TypeScript topics (43 fields)"
@@ -299,9 +301,9 @@ Topics:
 - `nextjs-server-components` (4), `nextjs-client-components` (4), `nextjs-suspense` (3)
 - `nextjs-data-fetching` (4), `nextjs-server-actions` (4), `nextjs-route-handlers` (3)
 
-- [ ] **Step 1: Extract + translate + write for topics-other.json** (React+Next.js keys)
-- [ ] **Step 2: Verify step count**
-- [ ] **Step 3: Commit**
+- [x] **Step 1: Extract + translate + write for topics-other.json** (React+Next.js keys)
+- [x] **Step 2: Verify step count**
+- [x] **Step 3: Commit**
 
 ```bash
 git commit -m "feat: add DE expandedText translations for React/Next.js topics (93 fields)"
@@ -317,8 +319,8 @@ Topics:
 - `testing-basics` (5), `testing-react` (5), `testing-ci` (4)
 - `ts-zod` (4) ← in topics-other
 
-- [ ] **Step 1: Extract + translate + write for topics-other.json** (Git+Testing+Zod keys)
-- [ ] **Step 2: Verify all 280 fields for topics-other total**
+- [x] **Step 1: Extract + translate + write for topics-other.json** (Git+Testing+Zod keys)
+- [x] **Step 2: Verify all 280 fields for topics-other total**
 
 ```bash
 python3 -c "
@@ -329,7 +331,7 @@ print(f'expandedText in topics-other DE: {count}/280')
 "
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git commit -m "feat: add DE expandedText translations for Git/Testing topics (46 fields)"
@@ -339,14 +341,14 @@ git commit -m "feat: add DE expandedText translations for Git/Testing topics (46
 
 ## Task 9: Final verification + push
 
-- [ ] **Step 1: TypeScript check**
+- [x] **Step 1: TypeScript check**
 
 ```bash
 npx tsc --noEmit
 ```
 Expected: no output.
 
-- [ ] **Step 2: Full coverage check**
+- [x] **Step 2: Full coverage check**
 
 ```bash
 python3 - << 'EOF'
@@ -368,7 +370,7 @@ EOF
 ```
 Expected: `Total: 472/472`
 
-- [ ] **Step 3: Push**
+- [x] **Step 3: Push**
 
 ```bash
 git push

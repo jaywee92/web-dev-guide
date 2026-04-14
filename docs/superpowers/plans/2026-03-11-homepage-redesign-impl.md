@@ -1,5 +1,7 @@
 # Homepage TechSection Redesign — Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Redesign the homepage CategoryGrid to show tech sections (CSS groups its 3 sub-categories under one header) with an Aurora WebGL background and hover-tooltip topic previews on category cards.
@@ -56,7 +58,7 @@ The spec is already largely implemented:
 
 **Context:** The `Category` interface in `types/index.ts` needs two new optional fields. The `categories.ts` needs values for every category plus a `TECH_SECTION_META` lookup and `getTechKey` helper used by CategoryGrid.
 
-- [ ] **Step 1: Add fields to Category interface**
+- [x] **Step 1: Add fields to Category interface**
 
 In `src/types/index.ts`, add `cardLabel` and `cardEmoji` to the `Category` interface:
 
@@ -73,7 +75,7 @@ export interface Category {
 }
 ```
 
-- [ ] **Step 2: Add `cardLabel` + `cardEmoji` to every Category in `src/data/categories.ts`**
+- [x] **Step 2: Add `cardLabel` + `cardEmoji` to every Category in `src/data/categories.ts`**
 
 Add the two fields to each object in the `CATEGORIES` array:
 
@@ -109,7 +111,7 @@ Add the two fields to each object in the `CATEGORIES` array:
 { ..., cardLabel: 'SQL Grundlagen', cardEmoji: '📖' }
 ```
 
-- [ ] **Step 3: Add `TECH_SECTION_META` and `getTechKey` to `src/data/categories.ts`**
+- [x] **Step 3: Add `TECH_SECTION_META` and `getTechKey` to `src/data/categories.ts`**
 
 Add at the bottom of the file (before the `getCategoryById` helper):
 
@@ -139,7 +141,7 @@ export function getTechKey(categoryId: CategoryId): string {
 }
 ```
 
-- [ ] **Step 4: Type-check**
+- [x] **Step 4: Type-check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -30
@@ -147,7 +149,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -30
 
 Expected: no errors (or only pre-existing unrelated errors). If there are new errors about missing `cardLabel`/`cardEmoji`, add them to any Category objects that were missed.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -168,7 +170,7 @@ git commit -m "feat: add cardLabel/cardEmoji to Category, add TECH_SECTION_META 
 
 The GLSL fragment shader uses simplex noise to create flowing aurora bands. The vertex shader is a passthrough. A fullscreen triangle (`[-1,-1, 3,-1, -1,3]`) is used instead of a quad (standard WebGL trick).
 
-- [ ] **Step 1: Create the file**
+- [x] **Step 1: Create the file**
 
 Create `src/pages/Home/AuroraBackground.tsx`:
 
@@ -337,7 +339,7 @@ export default function AuroraBackground({
 }
 ```
 
-- [ ] **Step 2: Type-check**
+- [x] **Step 2: Type-check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -30
@@ -345,7 +347,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -30
 
 Expected: no new errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -369,7 +371,7 @@ git commit -m "feat: AuroraBackground — WebGL2 simplex noise aurora canvas"
 
 #### Sub-task 3a: Create `CategoryTooltip.tsx`
 
-- [ ] **Step 1: Create `src/pages/Home/CategoryTooltip.tsx`**
+- [x] **Step 1: Create `src/pages/Home/CategoryTooltip.tsx`**
 
 ```typescript
 import { useEffect, useRef } from 'react'
@@ -502,7 +504,7 @@ export default function CategoryTooltip({ category, anchorRect, onMouseEnter, on
 
 #### Sub-task 3b: Create `CategoryCard.tsx`
 
-- [ ] **Step 2: Create `src/pages/Home/CategoryCard.tsx`**
+- [x] **Step 2: Create `src/pages/Home/CategoryCard.tsx`**
 
 ```typescript
 import { useRef } from 'react'
@@ -589,7 +591,7 @@ export default function CategoryCard({ category, onHoverStart, onHoverEnd, onCli
 }
 ```
 
-- [ ] **Step 3: Type-check**
+- [x] **Step 3: Type-check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -30
@@ -597,7 +599,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -30
 
 Expected: no new errors.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -626,7 +628,7 @@ The `CATEGORY_GROUPS` from `categories.ts` is defined with flat `categoryIds`. W
 
 **Tooltip state:** `useState<{ category: Category; rect: DOMRect } | null>(null)` at the grid level. A `hideTimer` ref (120ms delay on leave) keeps the tooltip open when the mouse moves from card to tooltip.
 
-- [ ] **Step 1: Rewrite `src/pages/Home/CategoryGrid.tsx`**
+- [x] **Step 1: Rewrite `src/pages/Home/CategoryGrid.tsx`**
 
 ```typescript
 import { type ComponentType, useState, useRef } from 'react'
@@ -830,7 +832,7 @@ export default function CategoryGrid() {
 }
 ```
 
-- [ ] **Step 2: Type-check**
+- [x] **Step 2: Type-check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -30
@@ -840,7 +842,7 @@ Expected: no new errors. Common issues to fix:
 - If TypeScript reports unknown category IDs in `CATEGORY_GROUPS.categoryIds`, update the `CategoryId` union type in `src/types/index.ts` to include the missing IDs
 - `cardLabel`/`cardEmoji` are optional so no break from new fields
 
-- [ ] **Step 3: Build to catch any remaining issues**
+- [x] **Step 3: Build to catch any remaining issues**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npm run build 2>&1 | tail -20
@@ -848,7 +850,7 @@ cd /home/jaywee92/web-dev-guide && npm run build 2>&1 | tail -20
 
 Expected: build succeeds or shows only pre-existing warnings.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -867,7 +869,7 @@ git commit -m "feat: CategoryGrid — TechSection layout with grouped CSS sub-ca
 
 **Context:** The Aurora canvas needs to sit behind the category grid content. The `Home` component renders `HeroSection` + `CategoryGrid` inside a `PageWrapper`. Add a wrapper `div` with `position:relative` that contains the `AuroraBackground` canvas (absolute, `pointer-events:none`) and the content above it.
 
-- [ ] **Step 1: Update `src/pages/Home/index.tsx`**
+- [x] **Step 1: Update `src/pages/Home/index.tsx`**
 
 ```typescript
 import PageWrapper from '@/components/layout/PageWrapper'
@@ -894,7 +896,7 @@ export default function Home() {
 }
 ```
 
-- [ ] **Step 2: Verify the canvas covers the full section**
+- [x] **Step 2: Verify the canvas covers the full section**
 
 The `AuroraBackground` canvas has `position:absolute; inset:0` and inherits the parent's height via `height:100%`. The parent div needs explicit height from its children — this works because `HeroSection + CategoryGrid` give it natural height, and the canvas matches via `inset:0`.
 
@@ -903,13 +905,13 @@ If the canvas appears cut off, add `minHeight` to the wrapper:
 style={{ position: 'relative', overflow: 'visible', minHeight: '100vh' }}
 ```
 
-- [ ] **Step 3: Type-check + build**
+- [x] **Step 3: Type-check + build**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
 ```
 
-- [ ] **Step 4: Build verification**
+- [x] **Step 4: Build verification**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npm run build 2>&1 | tail -10
@@ -919,7 +921,7 @@ Expected: build exits with code 0.
 
 > **MANUAL STEP (skip in automated runs):** Start `npm run dev`, open `http://localhost:5173`, and visually confirm: (1) Aurora visible behind grid, (2) CSS section shows 3 cards (Grundlagen/Layout/Modern), (3) hovering a card shows topic tooltip, (4) clicking a card navigates to the category page.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -933,11 +935,11 @@ git commit -m "feat: Home page — Aurora WebGL background behind CategoryGrid"
 
 After all tasks complete:
 
-- [ ] Run `npm run build` — must succeed with no TypeScript errors
-- [ ] Open the app, check all 8 tech sections render
-- [ ] CSS section shows 3 cards (Grundlagen, Layout, Modern) with correct emoji
-- [ ] All other sections show 1 card
-- [ ] Hover on any card shows topic tooltip
-- [ ] Aurora visible in hero and grid area
-- [ ] Navigate to CSS Grundlagen, CSS Layout, CSS Modern via card click — each opens correct category page
-- [ ] Navigate via topic tooltip — opens correct topic page
+- [x] Run `npm run build` — must succeed with no TypeScript errors
+- [x] Open the app, check all 8 tech sections render
+- [x] CSS section shows 3 cards (Grundlagen, Layout, Modern) with correct emoji
+- [x] All other sections show 1 card
+- [x] Hover on any card shows topic tooltip
+- [x] Aurora visible in hero and grid area
+- [x] Navigate to CSS Grundlagen, CSS Layout, CSS Modern via card click — each opens correct category page
+- [x] Navigate via topic tooltip — opens correct topic page

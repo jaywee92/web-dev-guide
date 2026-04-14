@@ -1,5 +1,7 @@
 # WBS Integration: Batch 2 — CSS + Web APIs Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add 5 new explanation steps to `css-tailwind` (steps 4–8) and 3 new steps to `webapi-dom` (steps 4–6), plus matching EN and DE locale entries.
@@ -28,11 +30,11 @@ Before implementing, verify step counts:
 **Files:**
 - Modify: `src/data/topics.ts` (around line 4969, after the last step of css-tailwind)
 
-- [ ] **Step 1: Open topics.ts and find css-tailwind explanation steps**
+- [x] **Step 1: Open topics.ts and find css-tailwind explanation steps**
 
   Read `src/data/topics.ts` lines 4922–4975. Confirm the last step is `animationStep: 3` ("Setup: CDN and npm").
 
-- [ ] **Step 2: Add steps 4–8 after animationStep 3**
+- [x] **Step 2: Add steps 4–8 after animationStep 3**
 
   In `src/data/topics.ts`, inside the `css-tailwind` topic's `sections[1].steps` array (explanation section), add these 5 objects after the last step:
 
@@ -79,7 +81,7 @@ Before implementing, verify step counts:
   },
   ```
 
-- [ ] **Step 3: Verify the file still compiles**
+- [x] **Step 3: Verify the file still compiles**
 
   ```bash
   npx tsc --noEmit 2>&1 | grep -v supabase
@@ -87,7 +89,7 @@ Before implementing, verify step counts:
 
   Expected: no errors.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
   ```bash
   git add src/data/topics.ts
@@ -103,11 +105,11 @@ Before implementing, verify step counts:
 **Files:**
 - Modify: `src/data/topics.ts` (around line 3558, after the last step of webapi-dom)
 
-- [ ] **Step 1: Open topics.ts and find webapi-dom explanation steps**
+- [x] **Step 1: Open topics.ts and find webapi-dom explanation steps**
 
   Read `src/data/topics.ts` lines 3511–3565. Confirm the last step is `animationStep: 3` ("Reading and Changing Element Properties").
 
-- [ ] **Step 2: Add steps 4–6 after animationStep 3**
+- [x] **Step 2: Add steps 4–6 after animationStep 3**
 
   In `src/data/topics.ts`, inside the `webapi-dom` topic's `sections[1].steps` array (explanation section), add these 3 objects after the last step:
 
@@ -138,7 +140,7 @@ Before implementing, verify step counts:
   },
   ```
 
-- [ ] **Step 3: Verify the file still compiles**
+- [x] **Step 3: Verify the file still compiles**
 
   ```bash
   npx tsc --noEmit 2>&1 | grep -v supabase
@@ -146,7 +148,7 @@ Before implementing, verify step counts:
 
   Expected: no errors.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
   ```bash
   git add src/data/topics.ts
@@ -162,11 +164,11 @@ Before implementing, verify step counts:
 **Files:**
 - Modify: `src/i18n/locales/en/topics-css.json`
 
-- [ ] **Step 1: Read current css-tailwind locale entry**
+- [x] **Step 1: Read current css-tailwind locale entry**
 
   Read `src/i18n/locales/en/topics-css.json` around line 886. Find `"css-tailwind" > "steps"` — currently has entries for animationSteps 0–3.
 
-- [ ] **Step 2: Add steps 4–8 to the steps array**
+- [x] **Step 2: Add steps 4–8 to the steps array**
 
   In `src/i18n/locales/en/topics-css.json`, inside `"css-tailwind" > "steps"`, add these 5 objects after animationStep 3:
 
@@ -198,7 +200,7 @@ Before implementing, verify step counts:
   }
   ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
   ```bash
   git add src/i18n/locales/en/topics-css.json
@@ -212,11 +214,11 @@ Before implementing, verify step counts:
 **Files:**
 - Modify: `src/i18n/locales/en/topics-other.json`
 
-- [ ] **Step 1: Read current webapi-dom locale entry**
+- [x] **Step 1: Read current webapi-dom locale entry**
 
   Read `src/i18n/locales/en/topics-other.json` around line 210. Find `"webapi-dom" > "steps"` — currently has entries for animationSteps 0–3.
 
-- [ ] **Step 2: Add steps 4–6 to the steps array**
+- [x] **Step 2: Add steps 4–6 to the steps array**
 
   In `src/i18n/locales/en/topics-other.json`, inside `"webapi-dom" > "steps"`, add these 3 objects after animationStep 3:
 
@@ -238,7 +240,7 @@ Before implementing, verify step counts:
   }
   ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
   ```bash
   git add src/i18n/locales/en/topics-other.json
@@ -254,11 +256,11 @@ Before implementing, verify step counts:
 **Files:**
 - Modify: `src/i18n/locales/de/topics-css.json`
 
-- [ ] **Step 1: Read current css-tailwind DE locale entry**
+- [x] **Step 1: Read current css-tailwind DE locale entry**
 
   Read `src/i18n/locales/de/topics-css.json`. Find `"css-tailwind" > "steps"` — confirm steps 0–3 exist.
 
-- [ ] **Step 2: Add steps 4–8 to DE steps array**
+- [x] **Step 2: Add steps 4–8 to DE steps array**
 
   In `src/i18n/locales/de/topics-css.json`, inside `"css-tailwind" > "steps"`, add:
 
@@ -290,7 +292,7 @@ Before implementing, verify step counts:
   }
   ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
   ```bash
   git add src/i18n/locales/de/topics-css.json
@@ -304,11 +306,11 @@ Before implementing, verify step counts:
 **Files:**
 - Modify: `src/i18n/locales/de/topics-other.json`
 
-- [ ] **Step 1: Read current webapi-dom DE locale entry**
+- [x] **Step 1: Read current webapi-dom DE locale entry**
 
   Read `src/i18n/locales/de/topics-other.json`. Find `"webapi-dom" > "steps"` — confirm steps 0–3 exist.
 
-- [ ] **Step 2: Add steps 4–6 to DE steps array**
+- [x] **Step 2: Add steps 4–6 to DE steps array**
 
   In `src/i18n/locales/de/topics-other.json`, inside `"webapi-dom" > "steps"`, add:
 
@@ -330,7 +332,7 @@ Before implementing, verify step counts:
   }
   ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
   ```bash
   git add src/i18n/locales/de/topics-other.json
@@ -345,7 +347,7 @@ Before implementing, verify step counts:
 
 **Files:** None (verification only)
 
-- [ ] **Step 1: Full TypeScript check**
+- [x] **Step 1: Full TypeScript check**
 
   ```bash
   npx tsc --noEmit 2>&1 | grep -v supabase
@@ -353,7 +355,7 @@ Before implementing, verify step counts:
 
   Expected: no output (clean build).
 
-- [ ] **Step 2: Verify steps render in dev server**
+- [x] **Step 2: Verify steps render in dev server**
 
   ```bash
   npm run dev
@@ -363,7 +365,7 @@ Before implementing, verify step counts:
 
   Navigate to the `webapi-dom` topic page. Confirm explanation section now shows 7 steps (0–6), with the last step showing "NodeList vs Array" content.
 
-- [ ] **Step 3: Final commit if any fixes needed**
+- [x] **Step 3: Final commit if any fixes needed**
 
   ```bash
   git add -u

@@ -1,5 +1,7 @@
 # Viz Upgrade — 10 Weak AnimComp Components
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Rewrite 10 underperforming animation components so each step produces a meaningful visual change that teaches the concept through layout, motion, and structure — not just text fades or opacity toggles.
@@ -58,7 +60,7 @@ export default function XxxViz({ step, compact = false }: Props) {
 4: 'Screen reader reads: "Submit form, button"'
 ```
 
-- [ ] **Step 1: Rewrite AccessibilityViz**
+- [x] **Step 1: Rewrite AccessibilityViz**
 
 ```tsx
 import { motion, AnimatePresence } from 'framer-motion'
@@ -255,13 +257,13 @@ export default function AccessibilityViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Build check**
+- [x] **Step 2: Build check**
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | grep AccessibilityViz
 ```
 Expected: no errors
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 ```bash
 git add src/topics/html/AccessibilityViz.tsx
 git commit -m "feat: AccessibilityViz — layered a11y: role → aria-label → focus → screen reader"
@@ -294,7 +296,7 @@ git commit -m "feat: AccessibilityViz — layered a11y: role → aria-label → 
 4: 'Semantic structure vs visual-only markup'
 ```
 
-- [ ] **Step 1: Rewrite TextHeadingsViz**
+- [x] **Step 1: Rewrite TextHeadingsViz**
 
 ```tsx
 import { motion, AnimatePresence } from 'framer-motion'
@@ -483,12 +485,12 @@ export default function TextHeadingsViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Build check**
+- [x] **Step 2: Build check**
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | grep TextHeadingsViz
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 ```bash
 git add src/topics/html/TextHeadingsViz.tsx
 git commit -m "feat: TextHeadingsViz — heading hierarchy tree + semantic vs div-soup comparison"
@@ -522,7 +524,7 @@ git commit -m "feat: TextHeadingsViz — heading hierarchy tree + semantic vs di
 4: 'One variable change propagates to every usage'
 ```
 
-- [ ] **Step 1: Rewrite ThemingViz**
+- [x] **Step 1: Rewrite ThemingViz**
 
 ```tsx
 import { motion, AnimatePresence } from 'framer-motion'
@@ -706,12 +708,12 @@ export default function ThemingViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Build check**
+- [x] **Step 2: Build check**
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | grep ThemingViz
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 ```bash
 git add src/topics/css/ThemingViz.tsx
 git commit -m "feat: ThemingViz — CSS token cascade + animated light/dark theme switch"
@@ -743,7 +745,7 @@ git commit -m "feat: ThemingViz — CSS token cascade + animated light/dark them
 4: 'Override in a local scope — only that subtree changes'
 ```
 
-- [ ] **Step 1: Rewrite CustomPropertiesViz**
+- [x] **Step 1: Rewrite CustomPropertiesViz**
 
 ```tsx
 import { motion, AnimatePresence } from 'framer-motion'
@@ -902,7 +904,7 @@ export default function CustomPropertiesViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Build check + commit**
+- [x] **Step 2: Build check + commit**
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | grep CustomPropertiesViz
 git add src/topics/css/CustomPropertiesViz.tsx
@@ -937,7 +939,7 @@ git commit -m "feat: CustomPropertiesViz — token declaration → fan-out usage
 4: 'Each scope has its own copy — changes don\'t leak out'
 ```
 
-- [ ] **Step 1: Rewrite VariablesViz**
+- [x] **Step 1: Rewrite VariablesViz**
 
 ```tsx
 import { motion, AnimatePresence } from 'framer-motion'
@@ -1135,7 +1137,7 @@ export default function VariablesViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Build check + commit**
+- [x] **Step 2: Build check + commit**
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | grep VariablesViz
 git add src/topics/javascript/VariablesViz.tsx
@@ -1168,7 +1170,7 @@ git commit -m "feat: VariablesViz — scope boxes for var/let/const + types pill
 4: 'font-weight and letter-spacing — emphasis and rhythm'
 ```
 
-- [ ] **Step 1: Rewrite TypographyViz**
+- [x] **Step 1: Rewrite TypographyViz**
 
 ```tsx
 import { motion, AnimatePresence } from 'framer-motion'
@@ -1335,7 +1337,7 @@ export default function TypographyViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Build check + commit**
+- [x] **Step 2: Build check + commit**
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | grep TypographyViz
 git add src/topics/css/TypographyViz.tsx
@@ -1369,7 +1371,7 @@ git commit -m "feat: TypographyViz — readable vs unreadable contrast + family/
 4: 'text-overflow: ellipsis — truncate with ...'
 ```
 
-- [ ] **Step 1: Rewrite OverflowViz**
+- [x] **Step 1: Rewrite OverflowViz**
 
 ```tsx
 import { motion, AnimatePresence } from 'framer-motion'
@@ -1528,7 +1530,7 @@ export default function OverflowViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Build check + commit**
+- [x] **Step 2: Build check + commit**
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | grep OverflowViz
 git add src/topics/css/OverflowViz.tsx
@@ -1564,7 +1566,7 @@ git commit -m "feat: OverflowViz — visible bleed, hidden clip, scroll indicato
 4: 'aspect-ratio — container maintains its shape at any width'
 ```
 
-- [ ] **Step 1: Rewrite ImagesViz**
+- [x] **Step 1: Rewrite ImagesViz**
 
 ```tsx
 import { motion, AnimatePresence } from 'framer-motion'
@@ -1779,7 +1781,7 @@ export default function ImagesViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Build check + commit**
+- [x] **Step 2: Build check + commit**
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | grep ImagesViz
 git add src/topics/css/ImagesViz.tsx
@@ -1815,7 +1817,7 @@ Show the shadow property code beneath the card updating each step.
 4: 'Multiple shadows — stack them with commas'
 ```
 
-- [ ] **Step 1: Rewrite ShadowsViz**
+- [x] **Step 1: Rewrite ShadowsViz**
 
 ```tsx
 import { motion, AnimatePresence } from 'framer-motion'
@@ -1926,7 +1928,7 @@ export default function ShadowsViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Build check + commit**
+- [x] **Step 2: Build check + commit**
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | grep ShadowsViz
 git add src/topics/css/ShadowsViz.tsx
@@ -1960,7 +1962,7 @@ git commit -m "feat: ShadowsViz — animated shadow depth progression + layered 
 4: 'Submit lifecycle — loading → success'
 ```
 
-- [ ] **Step 1: Rewrite FormsViz**
+- [x] **Step 1: Rewrite FormsViz**
 
 ```tsx
 import { motion, AnimatePresence } from 'framer-motion'
@@ -2176,7 +2178,7 @@ export default function FormsViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Build check + commit**
+- [x] **Step 2: Build check + commit**
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | grep FormsViz
 git add src/topics/html/FormsViz.tsx
@@ -2187,19 +2189,19 @@ git commit -m "feat: FormsViz — input states empty/focus/invalid/valid/submit 
 
 ## Final Step: Full build verification + push
 
-- [ ] **Run full TypeScript build**
+- [x] **Run full TypeScript build**
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1
 ```
 Expected: 0 errors
 
-- [ ] **Run dev build**
+- [x] **Run dev build**
 ```bash
 cd /home/jaywee92/web-dev-guide && npm run build 2>&1 | tail -20
 ```
 Expected: build succeeds
 
-- [ ] **Push**
+- [x] **Push**
 ```bash
 git push origin main
 ```

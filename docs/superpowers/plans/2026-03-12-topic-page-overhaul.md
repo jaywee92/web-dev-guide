@@ -1,5 +1,7 @@
 # Topic Page Overhaul — Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Improve the Topic page UX with five targeted changes: remove the redundant IntroAnimation, add a progress indicator to the header, make active steps use the topic's own color, add a Key Takeaways section, and replace sequential CheatSheet + Playground with a tab layout.
@@ -31,7 +33,7 @@
 
 **Context:** `IntroAnimation` is rendered at line 101–103 of `index.tsx` inside `<div id="viz">`. The sidebar has a `{ id: 'viz', label: 'Visualization' }` anchor link. Both must go together so the sidebar doesn't point at a missing element. The `AnimComp` state and `preloadAnimation` effect are still needed for `SyncExplanation` — do NOT remove those.
 
-- [ ] **Step 1: Remove IntroAnimation from TopicPage/index.tsx**
+- [x] **Step 1: Remove IntroAnimation from TopicPage/index.tsx**
 
 In `src/pages/TopicPage/index.tsx`, delete the import and the entire `<div id="viz">` block:
 
@@ -53,7 +55,7 @@ The `<div id="explanation">` that follows should get `style={{ marginTop: 32 }}`
 </div>
 ```
 
-- [ ] **Step 2: Remove 'viz' anchor from TopicSidebar**
+- [x] **Step 2: Remove 'viz' anchor from TopicSidebar**
 
 In `src/components/layout/TopicSidebar.tsx`, remove the `{ id: 'viz', label: 'Visualization' }` entry from `anchorLinks`:
 
@@ -66,7 +68,7 @@ const anchorLinks: Array<{ id: string; label: string }> = [
 ]
 ```
 
-- [ ] **Step 3: Type-check**
+- [x] **Step 3: Type-check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
@@ -74,7 +76,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
 
 Expected: no errors.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -91,7 +93,7 @@ git commit -m "feat: remove IntroAnimation — animation only shown in SyncExpla
 
 **Context:** `topic.category` is a `CategoryId`. `getCategoryForTopic(topic.id)` already returns the category. `category.topicIds` is an ordered array. The topic's position is `category.topicIds.indexOf(topic.id) + 1`. `topic.estimatedMinutes` already exists on the type. The progress bar goes between the breadcrumb and the LevelBadge (before line ~77 in the current file, after the `<div id="intro">` opens).
 
-- [ ] **Step 1: Add progress info to the intro header in `index.tsx`**
+- [x] **Step 1: Add progress info to the intro header in `index.tsx`**
 
 After the breadcrumb `<div>` and before `<LevelBadge ...>`, insert:
 
@@ -138,7 +140,7 @@ Add `Clock` to the existing lucide import at the top of `index.tsx`:
 import { ArrowLeft, ExternalLink, Clock } from 'lucide-react'
 ```
 
-- [ ] **Step 2: Type-check**
+- [x] **Step 2: Type-check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
@@ -146,7 +148,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
 
 Expected: no errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -163,7 +165,7 @@ git commit -m "feat: topic header progress bar — position N of M + estimated r
 
 **Context:** `SyncExplanation` receives `topic` as a prop. Currently the active step uses `var(--blue)` in three places in `StepBlock`: the step-number circle background, the border, and the `borderLeft`. Replace all three with `topic.color`. The `StepBlock` already receives `active: boolean` and `onActivate`; it needs the color passed in too.
 
-- [ ] **Step 1: Thread `color` through to StepBlock**
+- [x] **Step 1: Thread `color` through to StepBlock**
 
 Change the `StepBlock` interface and calls to pass the topic color:
 
@@ -191,7 +193,7 @@ In the render inside `SyncExplanation`, pass the color:
 ))}
 ```
 
-- [ ] **Step 2: Replace `var(--blue)` with `color` inside StepBlock**
+- [x] **Step 2: Replace `var(--blue)` with `color` inside StepBlock**
 
 Three replacements in the JSX of `StepBlock`:
 
@@ -213,13 +215,13 @@ background: ctrl.step === steps.length - 1 ? 'var(--surface)' : topic.color,
 border: `1px solid ${ctrl.step === steps.length - 1 ? 'var(--border)' : topic.color}`,
 ```
 
-- [ ] **Step 3: Type-check**
+- [x] **Step 3: Type-check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -237,7 +239,7 @@ git commit -m "feat: SyncExplanation active step uses topic color instead of har
 
 **Context:** Key Takeaways shows the step headings from the `explanation` section as a compact "what you learned" summary. It renders after `SyncExplanation` and before the tab section. Uses the topic color for the accent. Only renders if there are at least 2 steps.
 
-- [ ] **Step 1: Create `src/pages/TopicPage/KeyTakeaways.tsx`**
+- [x] **Step 1: Create `src/pages/TopicPage/KeyTakeaways.tsx`**
 
 ```tsx
 // src/pages/TopicPage/KeyTakeaways.tsx
@@ -291,7 +293,7 @@ export default function KeyTakeaways({ topic }: Props) {
 }
 ```
 
-- [ ] **Step 2: Wire into `index.tsx`**
+- [x] **Step 2: Wire into `index.tsx`**
 
 Add import:
 ```tsx
@@ -304,13 +306,13 @@ Add after the `<div id="explanation">` block:
 <KeyTakeaways topic={topic} />
 ```
 
-- [ ] **Step 3: Type-check**
+- [x] **Step 3: Type-check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -331,7 +333,7 @@ git commit -m "feat: KeyTakeaways section after explanation — step headings as
 
 The tab component receives children mapped by label, plus the topic color for active tab styling.
 
-- [ ] **Step 1: Create `src/pages/TopicPage/ContentTabs.tsx`**
+- [x] **Step 1: Create `src/pages/TopicPage/ContentTabs.tsx`**
 
 ```tsx
 // src/pages/TopicPage/ContentTabs.tsx
@@ -417,7 +419,7 @@ export default function ContentTabs({ tabs, color, defaultTab }: Props) {
 }
 ```
 
-- [ ] **Step 2: Replace sequential CheatSheet + Playground with ContentTabs in `index.tsx`**
+- [x] **Step 2: Replace sequential CheatSheet + Playground with ContentTabs in `index.tsx`**
 
 Remove the existing separate blocks:
 ```tsx
@@ -462,7 +464,7 @@ Add the import:
 import ContentTabs from './ContentTabs'
 ```
 
-- [ ] **Step 3: Update sidebar anchor click to switch tab + scroll**
+- [x] **Step 3: Update sidebar anchor click to switch tab + scroll**
 
 In `src/components/layout/TopicSidebar.tsx`, the `scrollToSection` function currently calls `el.scrollIntoView`. For the tab IDs (`cheatsheet`, `playground`), the element is now the tab *button* inside `ContentTabs`. Clicking the tab button and scrolling to it is correct behavior — no change needed in the sidebar since `id={tab.id}` is set on the tab button element itself.
 
@@ -473,7 +475,7 @@ Verify the anchor links are still correct (cheatsheet and playground IDs exist a
 ...(hasPlayground ? [{ id: 'playground', label: 'Playground' }] : []),
 ```
 
-- [ ] **Step 4: Type-check + build**
+- [x] **Step 4: Type-check + build**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
@@ -485,7 +487,7 @@ cd /home/jaywee92/web-dev-guide && npm run build 2>&1 | tail -5
 
 Expected: both pass with no errors.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -497,10 +499,10 @@ git commit -m "feat: CheatSheet + Playground as ContentTabs — tab layout repla
 
 ## Final verification
 
-- [ ] Open any topic (e.g. `/topic/css-box-model`) — no intro animation, progress bar visible
-- [ ] Progress bar shows correct position (e.g. "Topic 4 of 8 in CSS Basics")
-- [ ] Active step uses topic color (green for HTML, blue for CSS, yellow for JS)
-- [ ] Key Takeaways box appears after explanation steps
-- [ ] Cheat Sheet and Playground appear as tabs — switching works
-- [ ] Sidebar "Cheat Sheet" link scrolls to and activates the Cheat Sheet tab
-- [ ] Run `npm run build` — must succeed
+- [x] Open any topic (e.g. `/topic/css-box-model`) — no intro animation, progress bar visible
+- [x] Progress bar shows correct position (e.g. "Topic 4 of 8 in CSS Basics")
+- [x] Active step uses topic color (green for HTML, blue for CSS, yellow for JS)
+- [x] Key Takeaways box appears after explanation steps
+- [x] Cheat Sheet and Playground appear as tabs — switching works
+- [x] Sidebar "Cheat Sheet" link scrolls to and activates the Cheat Sheet tab
+- [x] Run `npm run build` — must succeed

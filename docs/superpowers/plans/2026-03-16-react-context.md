@@ -1,5 +1,7 @@
 # React Context & useReducer Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add a new `react-context` topic (Context API + useReducer, 7 steps) to the React category, complete with banner, EN/DE locale, and category wiring.
@@ -38,7 +40,7 @@ print('nextTopicId in router:', 'nextTopicId' in chunk)
 The `react-router` topic starts at ~line 4708. It currently has NO `nextTopicId` field.
 Insert `react-context` block between the closing `},` of `react-router` and the `// ─── Git` comment.
 
-- [ ] **Step 1: Patch react-router — add nextTopicId**
+- [x] **Step 1: Patch react-router — add nextTopicId**
 
 Find the line `id: 'react-router',` and add `nextTopicId: 'react-context',` on the next line.
 
@@ -55,7 +57,7 @@ Change to:
     title: 'React Router',
 ```
 
-- [ ] **Step 2: Insert react-context topic block before `// ─── Git`**
+- [x] **Step 2: Insert react-context topic block before `// ─── Git`**
 
 Insert the following block immediately before `  // ─── Git ──────` (which follows the closing `},` of react-router):
 
@@ -160,7 +162,7 @@ Insert the following block immediately before `  // ─── Git ────�
   },
 ```
 
-- [ ] **Step 3: Verify TypeScript compiles cleanly**
+- [x] **Step 3: Verify TypeScript compiles cleanly**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | grep "error TS" | grep -v supabase; echo "done"
@@ -168,7 +170,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | grep "error TS" | gre
 
 Expected: only `done`.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && git add src/data/topics.ts && git commit -m "feat: add react-context topic and patch react-router nextTopicId"
@@ -185,7 +187,7 @@ cd /home/jaywee92/web-dev-guide && git add src/data/topics.ts && git commit -m "
 
 Three edits in the same file:
 
-- [ ] **Step 1: Add react-context to react.topicIds**
+- [x] **Step 1: Add react-context to react.topicIds**
 
 Find `topicIds: ['react-components', 'react-state', 'react-useeffect', 'react-router'],` (line ~147).
 
@@ -194,21 +196,21 @@ Change to:
     topicIds: ['react-components', 'react-state', 'react-useeffect', 'react-router', 'react-context'],
 ```
 
-- [ ] **Step 2: Add react-context to TOPIC_ICONS**
+- [x] **Step 2: Add react-context to TOPIC_ICONS**
 
 Find `'react-router':              'Route',` in the `TOPIC_ICONS` object. Add after it:
 ```typescript
   'react-context':             'Share2',
 ```
 
-- [ ] **Step 3: Add react-context to TOPIC_LABELS**
+- [x] **Step 3: Add react-context to TOPIC_LABELS**
 
 Find `'react-router':                'Router',` in the `TOPIC_LABELS` object. Add after it:
 ```typescript
   'react-context':               'Context & useReducer',
 ```
 
-- [ ] **Step 4: Verify TypeScript compiles cleanly**
+- [x] **Step 4: Verify TypeScript compiles cleanly**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | grep "error TS" | grep -v supabase; echo "done"
@@ -216,7 +218,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | grep "error TS" | gre
 
 Expected: only `done`.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && git add src/data/categories.ts && git commit -m "feat: wire react-context in categories.ts"
@@ -235,7 +237,7 @@ The React topics end at the `react-router` key (~line 532). Add `react-context` 
 
 **Pattern:** Only `animationStep`, `heading`, `text` — no `icon`, no `codeExample`.
 
-- [ ] **Step 1: Add react-context entry to EN topics-other.json**
+- [x] **Step 1: Add react-context entry to EN topics-other.json**
 
 Find the `"react-router"` key and its closing `}`. Insert after it:
 
@@ -281,7 +283,7 @@ Find the `"react-router"` key and its closing `}`. Insert after it:
   },
 ```
 
-- [ ] **Step 2: Validate JSON**
+- [x] **Step 2: Validate JSON**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && python3 -m json.tool src/i18n/locales/en/topics-other.json > /dev/null && echo "valid JSON"
@@ -289,7 +291,7 @@ cd /home/jaywee92/web-dev-guide && python3 -m json.tool src/i18n/locales/en/topi
 
 Expected: `valid JSON`
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && git add src/i18n/locales/en/topics-other.json && git commit -m "feat: add EN locale for react-context (7 steps)"
@@ -304,7 +306,7 @@ cd /home/jaywee92/web-dev-guide && git add src/i18n/locales/en/topics-other.json
 
 Same structure as EN. React topics end at `react-router` (~line 528).
 
-- [ ] **Step 1: Add react-context entry to DE topics-other.json**
+- [x] **Step 1: Add react-context entry to DE topics-other.json**
 
 Find `"react-router"` and its closing `}`. Insert after it:
 
@@ -350,7 +352,7 @@ Find `"react-router"` and its closing `}`. Insert after it:
   },
 ```
 
-- [ ] **Step 2: Validate JSON**
+- [x] **Step 2: Validate JSON**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && python3 -m json.tool src/i18n/locales/de/topics-other.json > /dev/null && echo "valid JSON"
@@ -358,7 +360,7 @@ cd /home/jaywee92/web-dev-guide && python3 -m json.tool src/i18n/locales/de/topi
 
 Expected: `valid JSON`
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && git add src/i18n/locales/de/topics-other.json && git commit -m "feat: add DE locale for react-context (7 steps)"
@@ -372,7 +374,7 @@ cd /home/jaywee92/web-dev-guide && git add src/i18n/locales/de/topics-other.json
 - Modify: `src/i18n/locales/en/categories.json`
 - Modify: `src/i18n/locales/de/categories.json`
 
-- [ ] **Step 1: Add react-context to EN topicLabels**
+- [x] **Step 1: Add react-context to EN topicLabels**
 
 In `src/i18n/locales/en/categories.json`, find `"react-router": "Router"` inside `topicLabels`. Add after it:
 
@@ -380,7 +382,7 @@ In `src/i18n/locales/en/categories.json`, find `"react-router": "Router"` inside
     "react-context":             "Context & useReducer",
 ```
 
-- [ ] **Step 2: Add react-context to DE topicLabels**
+- [x] **Step 2: Add react-context to DE topicLabels**
 
 In `src/i18n/locales/de/categories.json`, find `"react-router": "Router"` inside `topicLabels`. Add after it:
 
@@ -388,7 +390,7 @@ In `src/i18n/locales/de/categories.json`, find `"react-router": "Router"` inside
     "react-context":             "Context & useReducer",
 ```
 
-- [ ] **Step 3: Validate both JSON files**
+- [x] **Step 3: Validate both JSON files**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && python3 -m json.tool src/i18n/locales/en/categories.json > /dev/null && python3 -m json.tool src/i18n/locales/de/categories.json > /dev/null && echo "both valid"
@@ -396,7 +398,7 @@ cd /home/jaywee92/web-dev-guide && python3 -m json.tool src/i18n/locales/en/cate
 
 Expected: `both valid`
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && git add src/i18n/locales/en/categories.json src/i18n/locales/de/categories.json && git commit -m "feat: add react-context topicLabel to EN and DE categories.json"
@@ -416,7 +418,7 @@ Three-panel 780×220px SVG, pink theme `#f472b6`. Panels:
 2. **Center** — context solution: same tree, Provider bracket on the left, `useContext()` arc bypassing middle nodes
 3. **Right** — useReducer cycle: three boxes (state → dispatch → reducer) with arrows cycling back
 
-- [ ] **Step 1: Create ContextBanner.tsx**
+- [x] **Step 1: Create ContextBanner.tsx**
 
 ```tsx
 export default function ContextBanner() {
@@ -548,7 +550,7 @@ export default function ContextBanner() {
 }
 ```
 
-- [ ] **Step 2: Verify file exists**
+- [x] **Step 2: Verify file exists**
 
 ```bash
 ls /home/jaywee92/web-dev-guide/src/topics/banners/react/ContextBanner.tsx && echo "exists"
@@ -556,7 +558,7 @@ ls /home/jaywee92/web-dev-guide/src/topics/banners/react/ContextBanner.tsx && ec
 
 Expected: path printed + `exists`
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && git add src/topics/banners/react/ContextBanner.tsx && git commit -m "feat: add ContextBanner SVG for react-context topic"
@@ -574,7 +576,7 @@ The React section of `bannerLazyRegistry` currently ends at:
   RouterBanner:     () => import('./banners/react/RouterBanner'),
 ```
 
-- [ ] **Step 1: Add ContextBanner to bannerLazyRegistry**
+- [x] **Step 1: Add ContextBanner to bannerLazyRegistry**
 
 Find `RouterBanner:     () => import('./banners/react/RouterBanner'),` and add after it:
 
@@ -582,7 +584,7 @@ Find `RouterBanner:     () => import('./banners/react/RouterBanner'),` and add a
   ContextBanner:    () => import('./banners/react/ContextBanner'),
 ```
 
-- [ ] **Step 2: Verify TypeScript compiles cleanly**
+- [x] **Step 2: Verify TypeScript compiles cleanly**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | grep "error TS" | grep -v supabase; echo "done"
@@ -590,7 +592,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | grep "error TS" | gre
 
 Expected: only `done`.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && git add src/topics/registry.ts && git commit -m "feat: wire ContextBanner in registry.ts"
@@ -604,7 +606,7 @@ cd /home/jaywee92/web-dev-guide && git add src/topics/registry.ts && git commit 
 
 **Files:** None (verification + push only)
 
-- [ ] **Step 1: Full TypeScript check**
+- [x] **Step 1: Full TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | grep "error TS" | grep -v supabase; echo "done"
@@ -612,7 +614,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | grep "error TS" | gre
 
 Expected: only `done`.
 
-- [ ] **Step 2: Verify react-context step count**
+- [x] **Step 2: Verify react-context step count**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && python3 -c "
@@ -627,7 +629,7 @@ print(f'react-context: {len(steps)} steps (0-{max(int(s) for s in steps)})')
 
 Expected: `react-context: 7 steps (0-6)`
 
-- [ ] **Step 3: Verify react-router nextTopicId**
+- [x] **Step 3: Verify react-router nextTopicId**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && python3 -c "
@@ -641,7 +643,7 @@ print('nextTopicId found:', 'react-context' in chunk)
 
 Expected: `nextTopicId found: True`
 
-- [ ] **Step 4: Push**
+- [x] **Step 4: Push**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && git push origin main

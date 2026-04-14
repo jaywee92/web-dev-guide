@@ -1,5 +1,7 @@
 # HTML Topics Expansion — Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Expand the HTML category from 3 topics to 8, sourced from WBS school materials and MDN, each with an animated Viz component, topic definition, and registry entry.
@@ -20,7 +22,7 @@
 **Files:**
 - Modify: `src/data/categories.ts`
 
-- [ ] **Step 1: Update html topicIds array and add TOPIC_LABELS entries**
+- [x] **Step 1: Update html topicIds array and add TOPIC_LABELS entries**
 
 In `src/data/categories.ts`, change the `html` category's `topicIds` from:
 ```ts
@@ -37,7 +39,7 @@ cardLabel: 'Foundation to Forms',
 cardEmoji: '🏗',
 ```
 
-- [ ] **Step 2: Add new labels to TOPIC_LABELS**
+- [x] **Step 2: Add new labels to TOPIC_LABELS**
 
 In the `TOPIC_LABELS` export, add after the existing html entries:
 ```ts
@@ -57,7 +59,7 @@ In the `TOPIC_LABELS` export, add after the existing html entries:
 
 Insert the following 5 topic objects **before** the existing `html-dom` entry (at line 4, right after `export const TOPICS: Topic[] = [`).
 
-- [ ] **Step 1: Insert `html-basics` topic**
+- [x] **Step 1: Insert `html-basics` topic**
 
 ```ts
   {
@@ -138,7 +140,7 @@ Insert the following 5 topic objects **before** the existing `html-dom` entry (a
   },
 ```
 
-- [ ] **Step 2: Insert `html-text` topic**
+- [x] **Step 2: Insert `html-text` topic**
 
 ```ts
   {
@@ -218,7 +220,7 @@ Insert the following 5 topic objects **before** the existing `html-dom` entry (a
   },
 ```
 
-- [ ] **Step 3: Insert `html-links-images` topic**
+- [x] **Step 3: Insert `html-links-images` topic**
 
 ```ts
   {
@@ -298,7 +300,7 @@ Insert the following 5 topic objects **before** the existing `html-dom` entry (a
   },
 ```
 
-- [ ] **Step 4: Insert `html-lists` topic**
+- [x] **Step 4: Insert `html-lists` topic**
 
 ```ts
   {
@@ -378,7 +380,7 @@ Insert the following 5 topic objects **before** the existing `html-dom` entry (a
   },
 ```
 
-- [ ] **Step 5: Insert `html-media` topic**
+- [x] **Step 5: Insert `html-media` topic**
 
 Add this after the `html-forms` topic (at the end of the html topics block):
 
@@ -460,7 +462,7 @@ Add this after the `html-forms` topic (at the end of the html topics block):
   },
 ```
 
-- [ ] **Step 6: Commit data layer changes**
+- [x] **Step 6: Commit data layer changes**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -477,7 +479,7 @@ git commit -m "feat: add 5 HTML topics to data layer (basics, text, links, lists
 **Files:**
 - Create: `src/topics/html/ElementsViz.tsx`
 
-- [ ] **Step 1: Create ElementsViz.tsx**
+- [x] **Step 1: Create ElementsViz.tsx**
 
 ```tsx
 // src/topics/html/ElementsViz.tsx
@@ -656,7 +658,7 @@ export default function ElementsViz({ step, compact = false }: Props) {
 **Files:**
 - Create: `src/topics/html/TextHeadingsViz.tsx`
 
-- [ ] **Step 1: Create TextHeadingsViz.tsx**
+- [x] **Step 1: Create TextHeadingsViz.tsx**
 
 ```tsx
 // src/topics/html/TextHeadingsViz.tsx
@@ -894,7 +896,7 @@ export default function TextHeadingsViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/topics/html/ElementsViz.tsx src/topics/html/TextHeadingsViz.tsx
@@ -910,7 +912,7 @@ git commit -m "feat: ElementsViz and TextHeadingsViz animation components"
 **Files:**
 - Create: `src/topics/html/LinksImagesViz.tsx`
 
-- [ ] **Step 1: Create LinksImagesViz.tsx**
+- [x] **Step 1: Create LinksImagesViz.tsx**
 
 ```tsx
 // src/topics/html/LinksImagesViz.tsx
@@ -1170,7 +1172,7 @@ export default function LinksImagesViz({ step, compact = false }: Props) {
 **Files:**
 - Create: `src/topics/html/ListsViz.tsx`
 
-- [ ] **Step 1: Create ListsViz.tsx**
+- [x] **Step 1: Create ListsViz.tsx**
 
 ```tsx
 // src/topics/html/ListsViz.tsx
@@ -1409,7 +1411,7 @@ export default function ListsViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/topics/html/LinksImagesViz.tsx src/topics/html/ListsViz.tsx
@@ -1425,7 +1427,7 @@ git commit -m "feat: LinksImagesViz and ListsViz animation components"
 **Files:**
 - Create: `src/topics/html/MediaEmbedsViz.tsx`
 
-- [ ] **Step 1: Create MediaEmbedsViz.tsx**
+- [x] **Step 1: Create MediaEmbedsViz.tsx**
 
 ```tsx
 // src/topics/html/MediaEmbedsViz.tsx
@@ -1734,7 +1736,7 @@ export default function MediaEmbedsViz({ step, compact = false }: Props) {
 **Files:**
 - Modify: `src/topics/registry.ts`
 
-- [ ] **Step 1: Add 5 imports to registry**
+- [x] **Step 1: Add 5 imports to registry**
 
 In `src/topics/registry.ts`, add after the existing html imports:
 ```ts
@@ -1764,7 +1766,7 @@ The full `lazyRegistry` block should have these html entries together:
 **Files:**
 - Modified: `src/topics/registry.ts`
 
-- [ ] **Step 1: Run TypeScript build check**
+- [x] **Step 1: Run TypeScript build check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide
@@ -1773,14 +1775,14 @@ npm run build 2>&1 | tail -30
 
 Expected: build succeeds with no TypeScript errors. If there are errors, fix them before proceeding.
 
-- [ ] **Step 2: Commit remaining files**
+- [x] **Step 2: Commit remaining files**
 
 ```bash
 git add src/topics/html/MediaEmbedsViz.tsx src/topics/registry.ts
 git commit -m "feat: MediaEmbedsViz and registry — all 5 HTML viz components complete"
 ```
 
-- [ ] **Step 3: Push and verify deploy**
+- [x] **Step 3: Push and verify deploy**
 
 ```bash
 git push origin main

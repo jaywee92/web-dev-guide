@@ -1,5 +1,7 @@
 # Homepage Redesign — Galaxy + MagicBento Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Replace the WebGL2 AuroraBackground with an animated Galaxy canvas and add MagicBento-style glassmorphism, 3D tilt, cursor spotlight, and a color-synced cursor trail to the homepage.
@@ -29,7 +31,7 @@
 **Files:**
 - Create: `src/pages/Home/GalaxyBackground.tsx`
 
-- [ ] **Step 1: Create the file with star initialization**
+- [x] **Step 1: Create the file with star initialization**
 
 ```tsx
 // src/pages/Home/GalaxyBackground.tsx
@@ -60,7 +62,7 @@ function initStars(w: number, h: number): Star[] {
 }
 ```
 
-- [ ] **Step 2: Add hex→rgb helper and zone function**
+- [x] **Step 2: Add hex→rgb helper and zone function**
 
 ```tsx
 function hexToRgb(hex: string): [number, number, number] {
@@ -82,7 +84,7 @@ function inZone(sx: number, sy: number, rect: { left: number; top: number; width
 }
 ```
 
-- [ ] **Step 3: Add the forwardRef component with RAF loop**
+- [x] **Step 3: Add the forwardRef component with RAF loop**
 
 ```tsx
 const GalaxyBackground = forwardRef<GalaxyHandle>(function GalaxyBackground(_props, ref) {
@@ -209,7 +211,7 @@ const GalaxyBackground = forwardRef<GalaxyHandle>(function GalaxyBackground(_pro
 export default GalaxyBackground
 ```
 
-- [ ] **Step 4: Verify TypeScript compiles**
+- [x] **Step 4: Verify TypeScript compiles**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && pnpm tsgo 2>&1 | grep -E 'error|GalaxyBackground' | head -20
@@ -217,7 +219,7 @@ cd /home/jaywee92/web-dev-guide && pnpm tsgo 2>&1 | grep -E 'error|GalaxyBackgro
 
 Expected: no errors mentioning `GalaxyBackground.tsx`
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/pages/Home/GalaxyBackground.tsx
@@ -233,7 +235,7 @@ git commit -m "feat: GalaxyBackground — 2D canvas galaxy with star zone illumi
 **Files:**
 - Create: `src/pages/Home/CursorTrail.tsx`
 
-- [ ] **Step 1: Create the file**
+- [x] **Step 1: Create the file**
 
 ```tsx
 // src/pages/Home/CursorTrail.tsx
@@ -363,7 +365,7 @@ const CursorTrail = forwardRef<TrailHandle>(function CursorTrail(_props, ref) {
 export default CursorTrail
 ```
 
-- [ ] **Step 2: Verify TypeScript compiles**
+- [x] **Step 2: Verify TypeScript compiles**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && pnpm tsgo 2>&1 | grep -E 'error|CursorTrail' | head -20
@@ -371,7 +373,7 @@ cd /home/jaywee92/web-dev-guide && pnpm tsgo 2>&1 | grep -E 'error|CursorTrail' 
 
 Expected: no errors mentioning `CursorTrail.tsx`
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/pages/Home/CursorTrail.tsx
@@ -389,7 +391,7 @@ Remove `SpotlightCard` and `motion.div`. Replace with a pure CSS `.tsec` div wit
 **Files:**
 - Modify: `src/pages/Home/CategoryGrid.tsx`
 
-- [ ] **Step 1: Replace CategoryGrid.tsx**
+- [x] **Step 1: Replace CategoryGrid.tsx**
 
 ```tsx
 // src/pages/Home/CategoryGrid.tsx
@@ -612,7 +614,7 @@ export default function CategoryGrid({ galaxyRef, trailRef }: CategoryGridProps)
 }
 ```
 
-- [ ] **Step 2: Add CSS for tsec, subcat, group-label to `src/index.css`**
+- [x] **Step 2: Add CSS for tsec, subcat, group-label to `src/index.css`**
 
 Add at the end of `src/index.css`:
 
@@ -802,7 +804,7 @@ Add at the end of `src/index.css`:
 }
 ```
 
-- [ ] **Step 3: Verify TypeScript compiles and dev server starts**
+- [x] **Step 3: Verify TypeScript compiles and dev server starts**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && pnpm tsgo 2>&1 | grep error | head -20
@@ -810,7 +812,7 @@ cd /home/jaywee92/web-dev-guide && pnpm tsgo 2>&1 | grep error | head -20
 
 Expected: no type errors
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/pages/Home/CategoryGrid.tsx src/index.css
@@ -827,7 +829,7 @@ git commit -m "feat: CategoryGrid — glassmorphism TechSection, 3D tilt, spotli
 - Modify: `src/pages/Home/index.tsx`
 - Delete: `src/pages/Home/AuroraBackground.tsx`
 
-- [ ] **Step 1: Rewrite Home/index.tsx**
+- [x] **Step 1: Rewrite Home/index.tsx**
 
 ```tsx
 // src/pages/Home/index.tsx
@@ -890,13 +892,13 @@ export default function Home() {
 }
 ```
 
-- [ ] **Step 2: Delete AuroraBackground.tsx**
+- [x] **Step 2: Delete AuroraBackground.tsx**
 
 ```bash
 git rm src/pages/Home/AuroraBackground.tsx
 ```
 
-- [ ] **Step 3: Full TypeScript check**
+- [x] **Step 3: Full TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && pnpm tsgo 2>&1 | grep error | head -20
@@ -904,7 +906,7 @@ cd /home/jaywee92/web-dev-guide && pnpm tsgo 2>&1 | grep error | head -20
 
 Expected: no errors
 
-- [ ] **Step 4: Commit** *(agent: skip to this step after Step 3 passes)*
+- [x] **Step 4: Commit** *(agent: skip to this step after Step 3 passes)*
 
 ```bash
 git add src/pages/Home/index.tsx
@@ -919,7 +921,7 @@ git commit -m "feat: Home — GalaxyBackground + CursorTrail wired, film grain, 
 > - Film grain visible as subtle texture
 > - Layout centered at ~680px
 
-- [ ] **Step 5: Final build check**
+- [x] **Step 5: Final build check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && pnpm build 2>&1 | tail -20
@@ -927,7 +929,7 @@ cd /home/jaywee92/web-dev-guide && pnpm build 2>&1 | tail -20
 
 Expected: build succeeds with no errors
 
-- [ ] **Step 6: Commit build artifacts if any**
+- [x] **Step 6: Commit build artifacts if any**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && git status --short

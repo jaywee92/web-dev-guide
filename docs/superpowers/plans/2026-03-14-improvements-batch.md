@@ -1,5 +1,7 @@
 # Improvements Batch Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Seven improvements: "category complete" card, animation loading spinner, styled 404 page, keyboard navigation, memoization, 5 new topic stubs, and SearchPalette enhancements.
@@ -22,7 +24,7 @@
 
 The `TopicPage` already has `category` (from `getCategoryForTopic`) and `topic` in scope, so the call site becomes `<NextTopicCard topic={nextTopic} currentTopic={topic} />`.
 
-- [ ] **Step 1: Update `NextTopicCard.tsx`**
+- [x] **Step 1: Update `NextTopicCard.tsx`**
 
 Replace the entire file content:
 
@@ -132,7 +134,7 @@ export default function NextTopicCard({ topic, currentTopic }: Props) {
 }
 ```
 
-- [ ] **Step 2: Update call site in `TopicPage/index.tsx`**
+- [x] **Step 2: Update call site in `TopicPage/index.tsx`**
 
 Find lines 186–190:
 ```tsx
@@ -150,14 +152,14 @@ Replace with:
       </div>
 ```
 
-- [ ] **Step 3: TypeScript check**
+- [x] **Step 3: TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
 ```
 Expected: zero errors.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/components/ui/NextTopicCard.tsx src/pages/TopicPage/index.tsx
@@ -176,7 +178,7 @@ git commit -m "feat: NextTopicCard category-complete fallback when no next topic
 
 The loading state lives in `SyncExplanation` (it receives `AnimComp` prop). Add an `isLoading` signal: pass `animLoading` prop. In `TopicPage`, `animLoading` is true from topic mount until `preloadAnimation` resolves.
 
-- [ ] **Step 1: Add `animLoading` state to `TopicPage/index.tsx`**
+- [x] **Step 1: Add `animLoading` state to `TopicPage/index.tsx`**
 
 After the existing `AnimComp` state (line 23):
 ```tsx
@@ -203,7 +205,7 @@ Pass to `SyncExplanation`:
 <SyncExplanation topic={topic} AnimComp={AnimComp} animLoading={animLoading} />
 ```
 
-- [ ] **Step 2: Update `SyncExplanation.tsx` to accept and use `animLoading`**
+- [x] **Step 2: Update `SyncExplanation.tsx` to accept and use `animLoading`**
 
 Add `animLoading?: boolean` to the `Props` interface:
 ```tsx
@@ -248,7 +250,7 @@ Wrap the return in a fragment and add a `<style>` tag at the top of the JSX outp
 
 Note: the `<style>` tag goes at the top level of the existing return fragment — do not nest it inside the animation panel div.
 
-- [ ] **Step 3: Replace the "Topic not found" page in `TopicPage/index.tsx`**
+- [x] **Step 3: Replace the "Topic not found" page in `TopicPage/index.tsx`**
 
 Note: `PageWrapper` is already imported at the top of `TopicPage/index.tsx` — no new import needed.
 
@@ -294,14 +296,14 @@ Replace with:
   }
 ```
 
-- [ ] **Step 4: TypeScript check**
+- [x] **Step 4: TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
 ```
 Expected: zero errors.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/pages/TopicPage/index.tsx src/pages/TopicPage/SyncExplanation.tsx
@@ -319,7 +321,7 @@ git commit -m "feat: animation loading spinner + styled 404 topic-not-found page
 - Modify: `src/components/layout/TopicSidebar.tsx:98-136` (tech toggles) + `:149-176` (cat toggles)
 - Modify: `src/components/layout/Navbar.tsx:24-32` (escape key for reference dropdown)
 
-- [ ] **Step 1: Add keyboard support to step dots in `SyncExplanation.tsx`**
+- [x] **Step 1: Add keyboard support to step dots in `SyncExplanation.tsx`**
 
 Find the step dot buttons (lines 53–69). Add `tabIndex`, `aria-label`, `aria-current`, and `onKeyDown` to each dot button:
 
@@ -352,7 +354,7 @@ Find the step dot buttons (lines 53–69). Add `tabIndex`, `aria-label`, `aria-c
 ))}
 ```
 
-- [ ] **Step 2: Add `aria-expanded` to tech group toggles in `TopicSidebar.tsx`**
+- [x] **Step 2: Add `aria-expanded` to tech group toggles in `TopicSidebar.tsx`**
 
 Find the tech group toggle button (line 98). Add `aria-expanded`:
 ```tsx
@@ -363,7 +365,7 @@ Find the tech group toggle button (line 98). Add `aria-expanded`:
 >
 ```
 
-- [ ] **Step 3: Add `aria-expanded` to category toggles in `TopicSidebar.tsx`**
+- [x] **Step 3: Add `aria-expanded` to category toggles in `TopicSidebar.tsx`**
 
 Find the category toggle button (line 149). Add `aria-expanded`:
 ```tsx
@@ -374,7 +376,7 @@ Find the category toggle button (line 149). Add `aria-expanded`:
 >
 ```
 
-- [ ] **Step 4: Add Escape key handler to Reference dropdown in `Navbar.tsx`**
+- [x] **Step 4: Add Escape key handler to Reference dropdown in `Navbar.tsx`**
 
 Find the existing mousedown `useEffect` (lines 24–32). Add a second `useEffect` for Escape:
 
@@ -397,14 +399,14 @@ Also add `aria-expanded` to the Reference button:
 >
 ```
 
-- [ ] **Step 5: TypeScript check**
+- [x] **Step 5: TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
 ```
 Expected: zero errors.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/pages/TopicPage/SyncExplanation.tsx src/components/layout/TopicSidebar.tsx src/components/layout/Navbar.tsx
@@ -421,13 +423,13 @@ git commit -m "feat: keyboard nav — step dots tabIndex/aria, sidebar aria-expa
 
 **Context:** `CategoryGrid` recreates `showTooltip`/`scheduleHide`/`cancelHide` handlers on every render. `TopicSidebar` re-runs `buildTechSections()` on every render (though it's module-level already — see Step 2).
 
-- [ ] **Step 1: Read `CategoryGrid.tsx` fully to find tooltip handlers**
+- [x] **Step 1: Read `CategoryGrid.tsx` fully to find tooltip handlers**
 
 ```bash
 grep -n "showTooltip\|scheduleHide\|cancelHide\|onCardHover\|onCardLeave\|useCallback\|useMemo" /home/jaywee92/web-dev-guide/src/pages/Home/CategoryGrid.tsx
 ```
 
-- [ ] **Step 2: Add `useCallback` to tooltip handlers in `CategoryGrid.tsx`**
+- [x] **Step 2: Add `useCallback` to tooltip handlers in `CategoryGrid.tsx`**
 
 First read the file to find the exact current bodies of `showTooltip`, `scheduleHide`, and `cancelHide`:
 
@@ -469,7 +471,7 @@ const allTechSections = useMemo(() =>
 )
 ```
 
-- [ ] **Step 3: Wrap `TechSection` in `React.memo` in `CategoryGrid.tsx`**
+- [x] **Step 3: Wrap `TechSection` in `React.memo` in `CategoryGrid.tsx`**
 
 Find the `TechSection` function definition and wrap it:
 
@@ -493,7 +495,7 @@ import React, { ... } from 'react'
 ```
 (Keep all other existing named imports.)
 
-- [ ] **Step 4: Verify `TopicSidebar.tsx` — no changes needed**
+- [x] **Step 4: Verify `TopicSidebar.tsx` — no changes needed**
 
 First confirm `TopicSidebar.tsx` has no inline component that needs memoizing:
 
@@ -512,14 +514,14 @@ Expected: `const TECH_SECTIONS = buildTechSections()` at module scope (outside a
 
 Note: The spec mentions `React.memo` for `TechSection` and `useMemo` for `buildTechSections()` in `TopicSidebar.tsx` — these are satisfied in `CategoryGrid.tsx` (where `TechSection` actually lives) and by the module-level constant respectively. Both spec items are addressed without modification to `TopicSidebar.tsx`.
 
-- [ ] **Step 5: TypeScript check**
+- [x] **Step 5: TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
 ```
 Expected: zero errors.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/pages/Home/CategoryGrid.tsx
@@ -555,7 +557,7 @@ js-arrays → js-functions → js-promises → js-destructuring (end)
 ts-generics → ts-narrowing → ts-utility-types (end)
 ```
 
-- [ ] **Step 1: Wire `nextTopicId` into existing JS topics**
+- [x] **Step 1: Wire `nextTopicId` into existing JS topics**
 
 Note: Git topics already have `nextTopicId` wired — no Git changes needed here.
 
@@ -566,7 +568,7 @@ In `src/data/topics.ts`, find each JS topic object and add `nextTopicId` to it (
 - `js-variables`: add `nextTopicId: 'js-arrays',`
 - `js-arrays`: add `nextTopicId: 'js-functions',`
 
-- [ ] **Step 2: Wire `nextTopicId` into existing TS topics**
+- [x] **Step 2: Wire `nextTopicId` into existing TS topics**
 
 In `src/data/topics.ts`, find each TS topic object and add `nextTopicId` to it:
 
@@ -574,14 +576,14 @@ In `src/data/topics.ts`, find each TS topic object and add `nextTopicId` to it:
 - `ts-interfaces`: add `nextTopicId: 'ts-generics',`
 - `ts-generics`: add `nextTopicId: 'ts-narrowing',`
 
-- [ ] **Step 3: Wire `nextTopicId` into existing React topics**
+- [x] **Step 3: Wire `nextTopicId` into existing React topics**
 
 - `react-components`: add `nextTopicId: 'react-state',`
 - `react-state`: add `nextTopicId: 'react-useeffect',`
 - `react-useeffect`: add `nextTopicId: 'react-router',`
 (react-router is chain end — no nextTopicId)
 
-- [ ] **Step 4: Wire `nextTopicId` into existing WebAPI, HTTP, PostgreSQL topics**
+- [x] **Step 4: Wire `nextTopicId` into existing WebAPI, HTTP, PostgreSQL topics**
 
 WebAPI:
 - `webapi-fetch`: add `nextTopicId: 'webapi-events',`
@@ -598,14 +600,14 @@ PostgreSQL:
 - `postgres-joins`: add `nextTopicId: 'postgres-crud',`
 (postgres-crud is chain end)
 
-- [ ] **Step 5: Record baseline topic count before edits**
+- [x] **Step 5: Record baseline topic count before edits**
 
 ```bash
 grep -c "^  {$" /home/jaywee92/web-dev-guide/src/data/topics.ts
 ```
 Expected: 54. Record this number — it will be used in Step 12 to verify 5 topics were added. If the result is not 54, note the actual number and adjust Step 12 accordingly (expected = baseline + 5).
 
-- [ ] **Step 6: Append `js-functions` stub topic after `js-arrays` in `src/data/topics.ts`**
+- [x] **Step 6: Append `js-functions` stub topic after `js-arrays` in `src/data/topics.ts`**
 
 After the closing `},` of the `js-arrays` topic object, insert:
 
@@ -668,7 +670,7 @@ Substitutions used across all 5 stubs (assuming `AnimatedFlowViz` is not registe
   },
 ```
 
-- [ ] **Step 7: Append `js-promises` stub topic**
+- [x] **Step 7: Append `js-promises` stub topic**
 
 After `js-functions`, insert:
 
@@ -716,7 +718,7 @@ After `js-functions`, insert:
   },
 ```
 
-- [ ] **Step 8: Append `js-destructuring` stub topic**
+- [x] **Step 8: Append `js-destructuring` stub topic**
 
 After `js-promises`, insert:
 
@@ -763,7 +765,7 @@ After `js-promises`, insert:
   },
 ```
 
-- [ ] **Step 9: Append `ts-narrowing` stub topic after `ts-generics`**
+- [x] **Step 9: Append `ts-narrowing` stub topic after `ts-generics`**
 
 Find the closing `},` of the `ts-generics` topic and after it insert:
 
@@ -811,7 +813,7 @@ Find the closing `},` of the `ts-generics` topic and after it insert:
   },
 ```
 
-- [ ] **Step 10: Append `ts-utility-types` stub topic**
+- [x] **Step 10: Append `ts-utility-types` stub topic**
 
 After `ts-narrowing`, insert:
 
@@ -858,14 +860,14 @@ After `ts-narrowing`, insert:
   },
 ```
 
-- [ ] **Step 11: TypeScript check**
+- [x] **Step 11: TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
 ```
 Expected: zero errors.
 
-- [ ] **Step 12: Verify topic counts**
+- [x] **Step 12: Verify topic counts**
 
 ```bash
 grep -c "^  {$" /home/jaywee92/web-dev-guide/src/data/topics.ts
@@ -873,7 +875,7 @@ grep -c "^  {$" /home/jaywee92/web-dev-guide/src/data/topics.ts
 
 Should equal baseline (from Step 5) + 5. If baseline was 54, expect 59. If it doesn't match, use `grep -n "js-functions\|js-promises\|js-destructuring\|ts-narrowing\|ts-utility-types" src/data/topics.ts` to confirm all 5 IDs are present.
 
-- [ ] **Step 13: Commit**
+- [x] **Step 13: Commit**
 
 ```bash
 git add src/data/topics.ts
@@ -893,7 +895,7 @@ git commit -m "feat: wire nextTopicId chains (JS/TS/React/HTTP/PG/WebAPI) + 5 ne
 
 Read `src/data/categories.ts` to find how to get a category's label from `CategoryId`.
 
-- [ ] **Step 1: Read `SearchPalette.tsx` and `src/data/categories.ts`**
+- [x] **Step 1: Read `SearchPalette.tsx` and `src/data/categories.ts`**
 
 Read both files fully. In `categories.ts`, confirm:
 - `CATEGORIES` is an array of `Category` objects exported as a named export
@@ -902,7 +904,7 @@ Read both files fully. In `categories.ts`, confirm:
 
 Expected: `CATEGORIES.find(c => c.id === topic.category)?.title` will return the display label.
 
-- [ ] **Step 2: Add `activeIdx` state and keyboard handler**
+- [x] **Step 2: Add `activeIdx` state and keyboard handler**
 
 In `SearchPalette.tsx`, add after the existing state:
 
@@ -944,7 +946,7 @@ const go = useCallback((topicId: string) => {
 }, [navigate, setSearchOpen])
 ```
 
-- [ ] **Step 3: Add category badge to each result row**
+- [x] **Step 3: Add category badge to each result row**
 
 Add import: `import { CATEGORIES } from '@/data/categories'`
 
@@ -961,7 +963,7 @@ const cat = CATEGORIES.find(c => c.id === topic.category)
 
 Note: `cat.title` is the correct field — `Category` entries use `.title` (e.g., `"JavaScript"`, `"HTML Basics"`). There is no `.label` field on `Category`.
 
-- [ ] **Step 4: Add match highlight helper and apply to title**
+- [x] **Step 4: Add match highlight helper and apply to title**
 
 Add a helper function above the component:
 
@@ -995,7 +997,7 @@ Apply to the title display:
 </div>
 ```
 
-- [ ] **Step 5: Apply active highlight to result rows**
+- [x] **Step 5: Apply active highlight to result rows**
 
 In the results map, apply active background via `activeIdx` state (state-driven render, no inline mutation):
 ```tsx
@@ -1012,14 +1014,14 @@ In the results map, apply active background via `activeIdx` state (state-driven 
 
 Note: do NOT add `onMouseLeave` style mutation — the re-render triggered by `setActiveIdx` on `onMouseEnter` will handle background changes correctly without stale-closure bugs. The `i` is the map index — make sure `.map((topic, i) => ...)` has the index parameter.
 
-- [ ] **Step 6: TypeScript check**
+- [x] **Step 6: TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
 ```
 Expected: zero errors.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add src/components/ui/SearchPalette.tsx
@@ -1030,7 +1032,7 @@ git commit -m "feat: SearchPalette — keyboard nav (↑↓ Enter), category bad
 
 ## Final Step
 
-- [ ] **Push to remote**
+- [x] **Push to remote**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && git push origin main

@@ -1,5 +1,7 @@
 # CSS Topics + Gradient Playground Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add 6 new CSS topic pages (each with viz animation + cheat sheet + playground) and a custom interactive gradient generator playground for the "Backgrounds & Gradients" topic.
@@ -18,14 +20,14 @@
 - Modify: `src/types/index.ts:3`
 - Modify: `src/data/categories.ts:18`
 
-- [ ] **Step 1: Update PlaygroundType union**
+- [x] **Step 1: Update PlaygroundType union**
 
 In `src/types/index.ts`, change line 3:
 ```ts
 export type PlaygroundType = 'visual-controls' | 'monaco' | 'none' | 'gradient'
 ```
 
-- [ ] **Step 2: Add 6 new topic IDs to css category**
+- [x] **Step 2: Add 6 new topic IDs to css category**
 
 In `src/data/categories.ts`, change the `topicIds` array for the css category:
 ```ts
@@ -43,14 +45,14 @@ topicIds: [
 ],
 ```
 
-- [ ] **Step 3: Verify TypeScript compiles**
+- [x] **Step 3: Verify TypeScript compiles**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
 ```
 Expected: no errors (only the new `'gradient'` type is used in PlaygroundSection next task).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/types/index.ts src/data/categories.ts
@@ -64,7 +66,7 @@ git commit -m "feat: add gradient PlaygroundType, register 6 css topic IDs in ca
 **Files:**
 - Modify: `src/pages/TopicPage/PlaygroundSection.tsx`
 
-- [ ] **Step 1: Update PlaygroundSection to handle gradient type**
+- [x] **Step 1: Update PlaygroundSection to handle gradient type**
 
 Replace the file content:
 ```tsx
@@ -106,13 +108,13 @@ export default function PlaygroundSection({ topic }: Props) {
 }
 ```
 
-- [ ] **Step 2: Verify TypeScript compiles** (GradientPlayground doesn't exist yet, expect one import error only)
+- [x] **Step 2: Verify TypeScript compiles** (GradientPlayground doesn't exist yet, expect one import error only)
 
 ```bash
 npx tsc --noEmit 2>&1 | grep -v GradientPlayground | head -10
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/pages/TopicPage/PlaygroundSection.tsx
@@ -126,7 +128,7 @@ git commit -m "feat: PlaygroundSection handles gradient playground type"
 **Files:**
 - Modify: `src/topics/registry.ts`
 
-- [ ] **Step 1: Add 6 new entries to lazyRegistry**
+- [x] **Step 1: Add 6 new entries to lazyRegistry**
 
 Add after the `SelectorsViz` line:
 ```ts
@@ -138,7 +140,7 @@ ResponsiveViz: () => import('./css/ResponsiveViz'),
 ImagesViz: () => import('./css/ImagesViz'),
 ```
 
-- [ ] **Step 2: Commit** (files don't exist yet; TS will warn but not break)
+- [x] **Step 2: Commit** (files don't exist yet; TS will warn but not break)
 
 ```bash
 git add src/topics/registry.ts
@@ -154,7 +156,7 @@ git commit -m "feat: register 6 new CSS viz components in lazy registry"
 
 Find the end of the `css-selectors` topic entry, then append the following 6 topic objects into the `TOPICS` array.
 
-- [ ] **Step 1: Add `css-colors-units` topic**
+- [x] **Step 1: Add `css-colors-units` topic**
 
 ```ts
 {
@@ -236,7 +238,7 @@ Find the end of the `css-selectors` topic entry, then append the following 6 top
 },
 ```
 
-- [ ] **Step 2: Add `css-typography` topic**
+- [x] **Step 2: Add `css-typography` topic**
 
 ```ts
 {
@@ -318,7 +320,7 @@ Find the end of the `css-selectors` topic entry, then append the following 6 top
 },
 ```
 
-- [ ] **Step 3: Add `css-backgrounds-gradients` topic**
+- [x] **Step 3: Add `css-backgrounds-gradients` topic**
 
 ```ts
 {
@@ -399,7 +401,7 @@ Find the end of the `css-selectors` topic entry, then append the following 6 top
 },
 ```
 
-- [ ] **Step 4: Add `css-display-positioning` topic**
+- [x] **Step 4: Add `css-display-positioning` topic**
 
 ```ts
 {
@@ -480,7 +482,7 @@ Find the end of the `css-selectors` topic entry, then append the following 6 top
 },
 ```
 
-- [ ] **Step 5: Add `css-responsive` topic**
+- [x] **Step 5: Add `css-responsive` topic**
 
 ```ts
 {
@@ -559,7 +561,7 @@ Find the end of the `css-selectors` topic entry, then append the following 6 top
 },
 ```
 
-- [ ] **Step 6: Add `css-images` topic**
+- [x] **Step 6: Add `css-images` topic**
 
 ```ts
 {
@@ -639,7 +641,7 @@ Find the end of the `css-selectors` topic entry, then append the following 6 top
 },
 ```
 
-- [ ] **Step 7: Verify TypeScript and run dev server to check topics appear**
+- [x] **Step 7: Verify TypeScript and run dev server to check topics appear**
 
 ```bash
 npx tsc --noEmit 2>&1 | head -20
@@ -648,7 +650,7 @@ npm run dev
 # New topics will show an error when clicked (viz components don't exist yet)
 ```
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add src/data/topics.ts
@@ -666,7 +668,7 @@ git commit -m "feat: add 6 CSS topic definitions (colors, typography, background
 
 The gradient playground has its own internal state (no `usePlayground` hook needed — gradient state is complex and doesn't need persistence).
 
-- [ ] **Step 1: Create the component**
+- [x] **Step 1: Create the component**
 
 ```tsx
 // src/playgrounds/GradientPlayground.tsx
@@ -897,7 +899,7 @@ export default function GradientPlayground() {
 }
 ```
 
-- [ ] **Step 2: Start dev server and navigate to `/topic/css-backgrounds-gradients`**
+- [x] **Step 2: Start dev server and navigate to `/topic/css-backgrounds-gradients`**
 
 ```bash
 npm run dev
@@ -905,7 +907,7 @@ npm run dev
 # color pickers update stops, position sliders work, Copy CSS copies to clipboard
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/playgrounds/GradientPlayground.tsx
@@ -921,7 +923,7 @@ git commit -m "feat: GradientPlayground — linear/radial/conic with color stops
 **Files:**
 - Create: `src/topics/css/ColorsUnitsViz.tsx`
 
-- [ ] **Step 1: Create the component**
+- [x] **Step 1: Create the component**
 
 ```tsx
 // src/topics/css/ColorsUnitsViz.tsx
@@ -1095,9 +1097,9 @@ export default function ColorsUnitsViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Verify in browser** — navigate to `/topic/css-colors-units`, step through all 5 steps.
+- [x] **Step 2: Verify in browser** — navigate to `/topic/css-colors-units`, step through all 5 steps.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/topics/css/ColorsUnitsViz.tsx
@@ -1111,7 +1113,7 @@ git commit -m "feat: ColorsUnitsViz — color format swatches + units comparison
 **Files:**
 - Create: `src/topics/css/TypographyViz.tsx`
 
-- [ ] **Step 1: Create the component**
+- [x] **Step 1: Create the component**
 
 ```tsx
 // src/topics/css/TypographyViz.tsx
@@ -1252,9 +1254,9 @@ export default function TypographyViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Verify in browser** — navigate to `/topic/css-typography`.
+- [x] **Step 2: Verify in browser** — navigate to `/topic/css-typography`.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/topics/css/TypographyViz.tsx
@@ -1268,7 +1270,7 @@ git commit -m "feat: TypographyViz — live text style evolution across 5 steps"
 **Files:**
 - Create: `src/topics/css/BackgroundsViz.tsx`
 
-- [ ] **Step 1: Create the component**
+- [x] **Step 1: Create the component**
 
 ```tsx
 // src/topics/css/BackgroundsViz.tsx
@@ -1370,9 +1372,9 @@ export default function BackgroundsViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Verify in browser** — navigate to `/topic/css-backgrounds-gradients`, check viz + gradient playground.
+- [x] **Step 2: Verify in browser** — navigate to `/topic/css-backgrounds-gradients`, check viz + gradient playground.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/topics/css/BackgroundsViz.tsx
@@ -1388,7 +1390,7 @@ git commit -m "feat: BackgroundsViz — background-color → image → gradient 
 **Files:**
 - Create: `src/topics/css/DisplayPositioningViz.tsx`
 
-- [ ] **Step 1: Create the component**
+- [x] **Step 1: Create the component**
 
 ```tsx
 // src/topics/css/DisplayPositioningViz.tsx
@@ -1501,9 +1503,9 @@ export default function DisplayPositioningViz({ step, compact = false }: Props) 
 }
 ```
 
-- [ ] **Step 2: Verify in browser** — navigate to `/topic/css-display-positioning`.
+- [x] **Step 2: Verify in browser** — navigate to `/topic/css-display-positioning`.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/topics/css/DisplayPositioningViz.tsx
@@ -1517,7 +1519,7 @@ git commit -m "feat: DisplayPositioningViz — block/inline/inline-block/relativ
 **Files:**
 - Create: `src/topics/css/ResponsiveViz.tsx`
 
-- [ ] **Step 1: Create the component**
+- [x] **Step 1: Create the component**
 
 ```tsx
 // src/topics/css/ResponsiveViz.tsx
@@ -1636,9 +1638,9 @@ export default function ResponsiveViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Verify in browser** — navigate to `/topic/css-responsive`.
+- [x] **Step 2: Verify in browser** — navigate to `/topic/css-responsive`.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/topics/css/ResponsiveViz.tsx
@@ -1652,7 +1654,7 @@ git commit -m "feat: ResponsiveViz — responsive grid with breakpoint simulatio
 **Files:**
 - Create: `src/topics/css/ImagesViz.tsx`
 
-- [ ] **Step 1: Create the component**
+- [x] **Step 1: Create the component**
 
 ```tsx
 // src/topics/css/ImagesViz.tsx
@@ -1813,9 +1815,9 @@ export default function ImagesViz({ step, compact = false }: Props) {
 }
 ```
 
-- [ ] **Step 2: Verify in browser** — navigate to `/topic/css-images`, step through all 5 steps.
+- [x] **Step 2: Verify in browser** — navigate to `/topic/css-images`, step through all 5 steps.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/topics/css/ImagesViz.tsx
@@ -1828,14 +1830,14 @@ git commit -m "feat: ImagesViz — overflow → max-width → object-fit → bor
 
 ### Task 12: Full CSS category review and push
 
-- [ ] **Step 1: TypeScript clean build**
+- [x] **Step 1: TypeScript clean build**
 
 ```bash
 npx tsc --noEmit 2>&1
 ```
 Expected: 0 errors.
 
-- [ ] **Step 2: Dev server walkthrough**
+- [x] **Step 2: Dev server walkthrough**
 
 ```bash
 npm run dev
@@ -1850,14 +1852,14 @@ Visit each new topic and verify:
 - `/topic/css-images` — image container transitions work
 - All topics have cheat sheets visible
 
-- [ ] **Step 3: Build check**
+- [x] **Step 3: Build check**
 
 ```bash
 npm run build 2>&1 | tail -20
 ```
 Expected: build succeeds with no errors.
 
-- [ ] **Step 4: Push to GitHub**
+- [x] **Step 4: Push to GitHub**
 
 ```bash
 git push origin main

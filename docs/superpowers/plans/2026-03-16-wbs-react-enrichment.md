@@ -1,5 +1,7 @@
 # WBS React Enrichment Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add 10 new explanation steps across 4 existing React topics from WBS `wbs-sources/new/React/` and `wbs-sources/new/React Router/` source material.
@@ -65,7 +67,7 @@ Find the `react-components` topic (search for `id: 'react-components'`). Inside 
           },
 ```
 
-- [ ] **Step 1: Add steps 5–7 after animationStep 4 in react-components**
+- [x] **Step 1: Add steps 5–7 after animationStep 4 in react-components**
 
 Insert the following 3 objects after the animationStep 4 object (before the closing `],` of the steps array):
 
@@ -96,7 +98,7 @@ Insert the following 3 objects after the animationStep 4 object (before the clos
           },
 ```
 
-- [ ] **Step 2: Verify TypeScript compiles cleanly**
+- [x] **Step 2: Verify TypeScript compiles cleanly**
 
 ```bash
 npx tsc --noEmit 2>&1 | grep "error TS" | grep -v supabase; echo "done"
@@ -104,7 +106,7 @@ npx tsc --noEmit 2>&1 | grep "error TS" | grep -v supabase; echo "done"
 
 Expected: only `done` (no errors).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/data/topics.ts
@@ -129,7 +131,7 @@ Find `id: 'react-state'`. The last step is:
           },
 ```
 
-- [ ] **Step 1: Add steps 5–7 after animationStep 4 in react-state**
+- [x] **Step 1: Add steps 5–7 after animationStep 4 in react-state**
 
 ```typescript
           {
@@ -158,7 +160,7 @@ Find `id: 'react-state'`. The last step is:
           },
 ```
 
-- [ ] **Step 2: Verify TypeScript compiles cleanly**
+- [x] **Step 2: Verify TypeScript compiles cleanly**
 
 ```bash
 npx tsc --noEmit 2>&1 | grep "error TS" | grep -v supabase; echo "done"
@@ -166,7 +168,7 @@ npx tsc --noEmit 2>&1 | grep "error TS" | grep -v supabase; echo "done"
 
 Expected: only `done`.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/data/topics.ts
@@ -184,7 +186,7 @@ git commit -m "feat: add Updater functions, Object/Array state, Lifting state st
 
 Find `id: 'react-useeffect'`. Last step is animationStep 4 "Common use cases".
 
-- [ ] **Step 1: Add steps 5–6 after animationStep 4 in react-useeffect**
+- [x] **Step 1: Add steps 5–6 after animationStep 4 in react-useeffect**
 
 ```typescript
           {
@@ -205,13 +207,13 @@ Find `id: 'react-useeffect'`. Last step is animationStep 4 "Common use cases".
           },
 ```
 
-- [ ] **Step 2: Verify TypeScript compiles cleanly**
+- [x] **Step 2: Verify TypeScript compiles cleanly**
 
 ```bash
 npx tsc --noEmit 2>&1 | grep "error TS" | grep -v supabase; echo "done"
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/data/topics.ts
@@ -227,7 +229,7 @@ git commit -m "feat: add Fetch race conditions and When NOT to use useEffect ste
 
 Find `id: 'react-router'` (~line 4644). Last step is animationStep 4 "useParams — dynamic segments".
 
-- [ ] **Step 1: Add steps 5–6 after animationStep 4 in react-router**
+- [x] **Step 1: Add steps 5–6 after animationStep 4 in react-router**
 
 ```typescript
           {
@@ -248,13 +250,13 @@ Find `id: 'react-router'` (~line 4644). Last step is animationStep 4 "useParams 
           },
 ```
 
-- [ ] **Step 2: Verify TypeScript compiles cleanly**
+- [x] **Step 2: Verify TypeScript compiles cleanly**
 
 ```bash
 npx tsc --noEmit 2>&1 | grep "error TS" | grep -v supabase; echo "done"
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/data/topics.ts
@@ -274,7 +276,7 @@ The React topic keys live in this file. Each topic has a `"steps"` array. Add ne
 
 **Pattern:** Only `animationStep`, `heading`, and `text` fields. No `icon`, no `codeExample` (those live in topics.ts only).
 
-- [ ] **Step 1: Add steps 5–7 to react-components steps array**
+- [x] **Step 1: Add steps 5–7 to react-components steps array**
 
 Find `"react-components"` key (~line 436). Add after animationStep 4:
 
@@ -296,7 +298,7 @@ Find `"react-components"` key (~line 436). Add after animationStep 4:
       }
 ```
 
-- [ ] **Step 2: Add steps 5–7 to react-state steps array**
+- [x] **Step 2: Add steps 5–7 to react-state steps array**
 
 Find `"react-state"` key (~line 466). Add after animationStep 4:
 
@@ -318,7 +320,7 @@ Find `"react-state"` key (~line 466). Add after animationStep 4:
       }
 ```
 
-- [ ] **Step 3: Add steps 5–6 to react-useeffect steps array**
+- [x] **Step 3: Add steps 5–6 to react-useeffect steps array**
 
 Find `"react-useeffect"` key (~line 495). Add after animationStep 4:
 
@@ -335,7 +337,7 @@ Find `"react-useeffect"` key (~line 495). Add after animationStep 4:
       }
 ```
 
-- [ ] **Step 4: Add steps 5–6 to react-router steps array**
+- [x] **Step 4: Add steps 5–6 to react-router steps array**
 
 Find `"react-router"` key (~line 524). Add after animationStep 4:
 
@@ -352,7 +354,7 @@ Find `"react-router"` key (~line 524). Add after animationStep 4:
       }
 ```
 
-- [ ] **Step 5: Validate JSON is valid**
+- [x] **Step 5: Validate JSON is valid**
 
 ```bash
 python3 -m json.tool src/i18n/locales/en/topics-other.json > /dev/null && echo "valid JSON"
@@ -360,7 +362,7 @@ python3 -m json.tool src/i18n/locales/en/topics-other.json > /dev/null && echo "
 
 Expected: `valid JSON`
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/i18n/locales/en/topics-other.json
@@ -378,7 +380,7 @@ git commit -m "feat: add EN locale for 10 new React explanation steps"
 
 Same structure as EN. React topic keys at ~line 440 (react-components), ~470 (react-state), ~499 (react-useeffect), ~528 (react-router).
 
-- [ ] **Step 1: Add steps 5–7 to react-components (DE)**
+- [x] **Step 1: Add steps 5–7 to react-components (DE)**
 
 Find `"react-components"` (~line 440). Add after animationStep 4:
 
@@ -400,7 +402,7 @@ Find `"react-components"` (~line 440). Add after animationStep 4:
       }
 ```
 
-- [ ] **Step 2: Add steps 5–7 to react-state (DE)**
+- [x] **Step 2: Add steps 5–7 to react-state (DE)**
 
 Find `"react-state"` (~line 470). Add after animationStep 4:
 
@@ -422,7 +424,7 @@ Find `"react-state"` (~line 470). Add after animationStep 4:
       }
 ```
 
-- [ ] **Step 3: Add steps 5–6 to react-useeffect (DE)**
+- [x] **Step 3: Add steps 5–6 to react-useeffect (DE)**
 
 Find `"react-useeffect"` (~line 499). Add after animationStep 4:
 
@@ -439,7 +441,7 @@ Find `"react-useeffect"` (~line 499). Add after animationStep 4:
       }
 ```
 
-- [ ] **Step 4: Add steps 5–6 to react-router (DE)**
+- [x] **Step 4: Add steps 5–6 to react-router (DE)**
 
 Find `"react-router"` (~line 528). Add after animationStep 4:
 
@@ -456,7 +458,7 @@ Find `"react-router"` (~line 528). Add after animationStep 4:
       }
 ```
 
-- [ ] **Step 5: Validate JSON**
+- [x] **Step 5: Validate JSON**
 
 ```bash
 python3 -m json.tool src/i18n/locales/de/topics-other.json > /dev/null && echo "valid JSON"
@@ -464,7 +466,7 @@ python3 -m json.tool src/i18n/locales/de/topics-other.json > /dev/null && echo "
 
 Expected: `valid JSON`
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/i18n/locales/de/topics-other.json
@@ -479,7 +481,7 @@ git commit -m "feat: add DE locale for 10 new React explanation steps"
 
 **Files:** None (verification only)
 
-- [ ] **Step 1: Full TypeScript check**
+- [x] **Step 1: Full TypeScript check**
 
 ```bash
 npx tsc --noEmit 2>&1 | grep "error TS" | grep -v supabase; echo "done"
@@ -487,7 +489,7 @@ npx tsc --noEmit 2>&1 | grep "error TS" | grep -v supabase; echo "done"
 
 Expected: only `done`.
 
-- [ ] **Step 2: Verify step counts**
+- [x] **Step 2: Verify step counts**
 
 ```bash
 python3 -c "
@@ -512,7 +514,7 @@ react-useeffect: 7 steps (0-6)
 react-router: 7 steps (0-6)
 ```
 
-- [ ] **Step 3: Push**
+- [x] **Step 3: Push**
 
 ```bash
 git push origin main

@@ -1,5 +1,7 @@
 # Analogy Animation Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Replace the static text-only `AnalogyPanel` with animated hybrid visualizations for the `js-variables` topic, building an extensible registry system for future topics.
@@ -31,7 +33,7 @@
 - Modify: `src/types/index.ts:38-56`
 - Modify: `src/data/topics.ts` (js-variables entry, around line 2804)
 
-- [ ] **Step 1: Add `analogyComponent` to Topic interface**
+- [x] **Step 1: Add `analogyComponent` to Topic interface**
 
 In `src/types/index.ts`, find the `Topic` interface (line 38). Add after `bannerComponent`:
 
@@ -51,7 +53,7 @@ export interface Topic {
 }
 ```
 
-- [ ] **Step 2: Add `analogyComponent` to js-variables topic**
+- [x] **Step 2: Add `analogyComponent` to js-variables topic**
 
 In `src/data/topics.ts`, find the `js-variables` entry (id: `'js-variables'`, around line 2804). Add `analogyComponent` after `bannerComponent`:
 
@@ -69,7 +71,7 @@ In `src/data/topics.ts`, find the `js-variables` entry (id: `'js-variables'`, ar
 }
 ```
 
-- [ ] **Step 3: Type-check**
+- [x] **Step 3: Type-check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && pnpm tsgo
@@ -77,7 +79,7 @@ cd /home/jaywee92/web-dev-guide && pnpm tsgo
 
 Expected: no errors. (A "cannot find module" for `VariablesAnalogyViz` is acceptable at this stage.)
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/types/index.ts src/data/topics.ts
@@ -91,7 +93,7 @@ git commit -m "feat: add analogyComponent field to Topic type and js-variables d
 **Files:**
 - Modify: `src/topics/registry.ts` (append after line 87, before the banner registry section)
 
-- [ ] **Step 1: Add the analogy registry block**
+- [x] **Step 1: Add the analogy registry block**
 
 In `src/topics/registry.ts`, find the comment `// ─── Banner registry` (around line 88). Insert the following block **before** it:
 
@@ -120,7 +122,7 @@ export async function preloadAnalogyAnimation(name: string | undefined): Promise
 
 Note: `ComponentType` is already imported at the top of `registry.ts` (line 1).
 
-- [ ] **Step 2: Type-check**
+- [x] **Step 2: Type-check**
 
 ```bash
 pnpm tsgo
@@ -128,7 +130,7 @@ pnpm tsgo
 
 Expected: no new errors (module missing for `VariablesAnalogyViz` is OK — file doesn't exist yet).
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/topics/registry.ts
@@ -142,7 +144,7 @@ git commit -m "feat: add analogy component registry with lazy load + cache"
 **Files:**
 - Modify: `src/pages/TopicPage/AnalogyPanel.tsx`
 
-- [ ] **Step 1: Rewrite AnalogyPanel with new props**
+- [x] **Step 1: Rewrite AnalogyPanel with new props**
 
 Replace the entire file with:
 
@@ -237,7 +239,7 @@ export default function AnalogyPanel({ analogy, color: _color, AnalogyComp, step
 }
 ```
 
-- [ ] **Step 2: Type-check**
+- [x] **Step 2: Type-check**
 
 ```bash
 pnpm tsgo
@@ -245,7 +247,7 @@ pnpm tsgo
 
 Expected: no errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/pages/TopicPage/AnalogyPanel.tsx
@@ -259,7 +261,7 @@ git commit -m "feat: extend AnalogyPanel to render animated component with capti
 **Files:**
 - Modify: `src/pages/TopicPage/SyncExplanation.tsx`
 
-- [ ] **Step 1: Add imports**
+- [x] **Step 1: Add imports**
 
 At the top of `SyncExplanation.tsx`, the existing import is:
 ```ts
@@ -285,7 +287,7 @@ import {
 } from '@/topics/registry'
 ```
 
-- [ ] **Step 2: Add AnalogyComp state + loading effect**
+- [x] **Step 2: Add AnalogyComp state + loading effect**
 
 In `SyncExplanation`, after the existing `ctrl` line, add:
 
@@ -302,7 +304,7 @@ useEffect(() => {
 }, [topic?.analogyComponent])
 ```
 
-- [ ] **Step 3: Pass AnalogyComp and step to AnalogyPanel**
+- [x] **Step 3: Pass AnalogyComp and step to AnalogyPanel**
 
 Find the existing `<AnalogyPanel>` call (around line 102):
 ```tsx
@@ -319,7 +321,7 @@ Replace with:
 />
 ```
 
-- [ ] **Step 4: Type-check**
+- [x] **Step 4: Type-check**
 
 ```bash
 pnpm tsgo
@@ -327,7 +329,7 @@ pnpm tsgo
 
 Expected: no errors. (Module `VariablesAnalogyViz` still missing — OK.)
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/pages/TopicPage/SyncExplanation.tsx
@@ -351,7 +353,7 @@ Color palette (matches js-variables: amber + supporting):
 - `RED = '#f87171'` — error/forbidden
 - `MUTED = '#64748b'`
 
-- [ ] **Step 1: Create the file**
+- [x] **Step 1: Create the file**
 
 Create `src/topics/javascript/VariablesAnalogyViz.tsx` with the full component:
 
@@ -669,7 +671,7 @@ export default function VariablesAnalogyViz({ step }: Props) {
 }
 ```
 
-- [ ] **Step 2: Type-check**
+- [x] **Step 2: Type-check**
 
 ```bash
 pnpm tsgo
@@ -677,7 +679,7 @@ pnpm tsgo
 
 Expected: no errors.
 
-- [ ] **Step 3: Build check**
+- [x] **Step 3: Build check**
 
 ```bash
 pnpm build
@@ -685,7 +687,7 @@ pnpm build
 
 Expected: clean build, no TypeScript or Vite errors.
 
-- [ ] **Step 4: Visual verification**
+- [x] **Step 4: Visual verification**
 
 Run the dev server:
 ```bash
@@ -705,7 +707,7 @@ Open `http://localhost:5173/#/topic/js-variables`. Scroll through the 8 explanat
 - Step 7: try/catch/finally flow
 - Other topics (e.g. js-control-flow) still show text-only analogy (fallback working)
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/topics/javascript/VariablesAnalogyViz.tsx

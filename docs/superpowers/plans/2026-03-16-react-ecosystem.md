@@ -1,5 +1,7 @@
 # React Ecosystem Category Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add a new `react-ecosystem` category with 4 topics (React Router Advanced, Data Fetching Strategies, Data Mutations, TanStack Query) including full topic data, EN/DE locales, 4 SVG banners, and registry wiring.
@@ -19,7 +21,7 @@
 **Files:**
 - Modify: `src/data/categories.ts`
 
-- [ ] **Step 1: Add react-ecosystem to CATEGORIES array**
+- [x] **Step 1: Add react-ecosystem to CATEGORIES array**
 
 In `src/data/categories.ts`, after the `react` entry (after line ending `cardEmoji: '📖',`), add:
 
@@ -36,7 +38,7 @@ In `src/data/categories.ts`, after the `react` entry (after line ending `cardEmo
   },
 ```
 
-- [ ] **Step 2: Add react-ecosystem to CATEGORY_GROUPS**
+- [x] **Step 2: Add react-ecosystem to CATEGORY_GROUPS**
 
 In the `frameworks-web` group, change `categoryIds` from:
 ```typescript
@@ -47,14 +49,14 @@ to:
 categoryIds: ['react', 'react-ecosystem', 'webapis', 'http', 'postgresql'],
 ```
 
-- [ ] **Step 3: Add react-ecosystem to TECH_SECTION_META**
+- [x] **Step 3: Add react-ecosystem to TECH_SECTION_META**
 
 After the `react` entry in `TECH_SECTION_META`, add:
 ```typescript
   'react-ecosystem': { title: 'React', subtitle: 'Ecosystem & Patterns', color: '#a78bfa' },
 ```
 
-- [ ] **Step 4: Add 4 entries to TOPIC_ICONS**
+- [x] **Step 4: Add 4 entries to TOPIC_ICONS**
 
 After `'react-context': 'Share2',` add:
 ```typescript
@@ -64,7 +66,7 @@ After `'react-context': 'Share2',` add:
   'react-tanstack-query':  'Database',
 ```
 
-- [ ] **Step 5: Add 4 entries to TOPIC_LABELS**
+- [x] **Step 5: Add 4 entries to TOPIC_LABELS**
 
 After `'react-context': 'Context & useReducer',` add:
 ```typescript
@@ -74,14 +76,14 @@ After `'react-context': 'Context & useReducer',` add:
   'react-tanstack-query':  'TanStack Query',
 ```
 
-- [ ] **Step 6: TypeScript check**
+- [x] **Step 6: TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
 ```
 Expected: no errors (or only pre-existing errors unrelated to categories.ts)
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add src/data/categories.ts
@@ -97,7 +99,7 @@ git commit -m "feat: add react-ecosystem category to categories.ts"
 
 Insert the following 4 topic blocks immediately before the `// ─── Git ───` comment (around line 4903). Add them after the closing `},` of the `react-context` topic.
 
-- [ ] **Step 1: Add react-router-advanced topic**
+- [x] **Step 1: Add react-router-advanced topic**
 
 ```typescript
   // ─── React Ecosystem ──────────────────────────────────────────────────────
@@ -201,7 +203,7 @@ Insert the following 4 topic blocks immediately before the `// ─── Git ─
   },
 ```
 
-- [ ] **Step 2: Add react-data-fetching topic**
+- [x] **Step 2: Add react-data-fetching topic**
 
 Append immediately after the react-router-advanced closing `},`:
 
@@ -286,7 +288,7 @@ Append immediately after the react-router-advanced closing `},`:
   },
 ```
 
-- [ ] **Step 3: Add react-mutations topic**
+- [x] **Step 3: Add react-mutations topic**
 
 ```typescript
   {
@@ -379,7 +381,7 @@ Append immediately after the react-router-advanced closing `},`:
   },
 ```
 
-- [ ] **Step 4: Add react-tanstack-query topic**
+- [x] **Step 4: Add react-tanstack-query topic**
 
 ```typescript
   {
@@ -464,14 +466,14 @@ Append immediately after the react-router-advanced closing `},`:
   },
 ```
 
-- [ ] **Step 5: TypeScript check**
+- [x] **Step 5: TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1 | head -20
 ```
 Expected: no errors
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/data/topics.ts
@@ -489,7 +491,7 @@ git commit -m "feat: add 4 react-ecosystem topics to topics.ts"
 
 Add the following entries to the JSON object (before the closing `}`). Each entry has `title`, `description`, and `steps` (animationStep + heading + text only — no icon or codeExample).
 
-- [ ] **Step 1: Add react-router-advanced EN locale**
+- [x] **Step 1: Add react-router-advanced EN locale**
 
 ```json
   "react-router-advanced": {
@@ -541,14 +543,14 @@ Add the following entries to the JSON object (before the closing `}`). Each entr
   }
 ```
 
-- [ ] **Step 2: Validate JSON**
+- [x] **Step 2: Validate JSON**
 
 ```bash
 python3 -c "import json; json.load(open('src/i18n/locales/en/topics-other.json')); print('valid')"
 ```
 Expected: `valid`
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/i18n/locales/en/topics-other.json
@@ -562,7 +564,7 @@ git commit -m "feat: add EN locale for 4 react-ecosystem topics"
 **Files:**
 - Modify: `src/i18n/locales/de/topics-other.json`
 
-- [ ] **Step 1: Add DE locale entries**
+- [x] **Step 1: Add DE locale entries**
 
 ```json
   "react-router-advanced": {
@@ -614,13 +616,13 @@ git commit -m "feat: add EN locale for 4 react-ecosystem topics"
   }
 ```
 
-- [ ] **Step 2: Validate JSON**
+- [x] **Step 2: Validate JSON**
 
 ```bash
 python3 -c "import json; json.load(open('src/i18n/locales/de/topics-other.json')); print('valid')"
 ```
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/i18n/locales/de/topics-other.json
@@ -635,7 +637,7 @@ git commit -m "feat: add DE locale for 4 react-ecosystem topics"
 - Modify: `src/i18n/locales/en/categories.json`
 - Modify: `src/i18n/locales/de/categories.json`
 
-- [ ] **Step 1: Add EN entries**
+- [x] **Step 1: Add EN entries**
 
 In `src/i18n/locales/en/categories.json`:
 
@@ -664,7 +666,7 @@ In `src/i18n/locales/en/categories.json`:
     },
 ```
 
-- [ ] **Step 2: Add DE entries**
+- [x] **Step 2: Add DE entries**
 
 In `src/i18n/locales/de/categories.json`:
 
@@ -693,13 +695,13 @@ In `src/i18n/locales/de/categories.json`:
     },
 ```
 
-- [ ] **Step 3: Validate both JSON files**
+- [x] **Step 3: Validate both JSON files**
 
 ```bash
 python3 -c "import json; json.load(open('src/i18n/locales/en/categories.json')); json.load(open('src/i18n/locales/de/categories.json')); print('both valid')"
 ```
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/i18n/locales/en/categories.json src/i18n/locales/de/categories.json
@@ -717,7 +719,7 @@ All banners go in `src/topics/banners/react-ecosystem/`. Create the directory �
 **Files:**
 - Create: `src/topics/banners/react-ecosystem/RouterAdvancedBanner.tsx`
 
-- [ ] **Step 1: Create the banner**
+- [x] **Step 1: Create the banner**
 
 ```tsx
 export default function RouterAdvancedBanner() {
@@ -806,7 +808,7 @@ export default function RouterAdvancedBanner() {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/topics/banners/react-ecosystem/RouterAdvancedBanner.tsx
@@ -820,7 +822,7 @@ git commit -m "feat: add RouterAdvancedBanner"
 **Files:**
 - Create: `src/topics/banners/react-ecosystem/DataFetchingBanner.tsx`
 
-- [ ] **Step 1: Create the banner**
+- [x] **Step 1: Create the banner**
 
 ```tsx
 export default function DataFetchingBanner() {
@@ -910,7 +912,7 @@ export default function DataFetchingBanner() {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/topics/banners/react-ecosystem/DataFetchingBanner.tsx
@@ -924,7 +926,7 @@ git commit -m "feat: add DataFetchingBanner"
 **Files:**
 - Create: `src/topics/banners/react-ecosystem/MutationsBanner.tsx`
 
-- [ ] **Step 1: Create the banner**
+- [x] **Step 1: Create the banner**
 
 ```tsx
 export default function MutationsBanner() {
@@ -1015,7 +1017,7 @@ export default function MutationsBanner() {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/topics/banners/react-ecosystem/MutationsBanner.tsx
@@ -1029,7 +1031,7 @@ git commit -m "feat: add MutationsBanner"
 **Files:**
 - Create: `src/topics/banners/react-ecosystem/TanStackQueryBanner.tsx`
 
-- [ ] **Step 1: Create the banner**
+- [x] **Step 1: Create the banner**
 
 ```tsx
 export default function TanStackQueryBanner() {
@@ -1118,7 +1120,7 @@ export default function TanStackQueryBanner() {
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/topics/banners/react-ecosystem/TanStackQueryBanner.tsx
@@ -1134,7 +1136,7 @@ git commit -m "feat: add TanStackQueryBanner"
 **Files:**
 - Modify: `src/topics/registry.ts`
 
-- [ ] **Step 1: Add 4 banners to bannerLazyRegistry**
+- [x] **Step 1: Add 4 banners to bannerLazyRegistry**
 
 In `src/topics/registry.ts`, after the `ContextBanner` entry in the React section:
 
@@ -1146,7 +1148,7 @@ In `src/topics/registry.ts`, after the `ContextBanner` entry in the React sectio
   TanStackQueryBanner:   () => import('./banners/react-ecosystem/TanStackQueryBanner'),
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add src/topics/registry.ts
@@ -1157,28 +1159,28 @@ git commit -m "feat: register 4 react-ecosystem banners in registry.ts"
 
 ### Task 11: Final TypeScript check + push
 
-- [ ] **Step 1: Run TypeScript check**
+- [x] **Step 1: Run TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit 2>&1
 ```
 Expected: no errors
 
-- [ ] **Step 2: Verify topics count**
+- [x] **Step 2: Verify topics count**
 
 ```bash
 grep -c "id: 'react-" src/data/topics.ts
 ```
 Expected: count includes react-components, react-state, react-useeffect, react-router, react-context, react-router-advanced, react-data-fetching, react-mutations, react-tanstack-query (9 topics)
 
-- [ ] **Step 3: Verify banners exist**
+- [x] **Step 3: Verify banners exist**
 
 ```bash
 ls src/topics/banners/react-ecosystem/
 ```
 Expected: `DataFetchingBanner.tsx  MutationsBanner.tsx  RouterAdvancedBanner.tsx  TanStackQueryBanner.tsx`
 
-- [ ] **Step 4: Push**
+- [x] **Step 4: Push**
 
 ```bash
 git push

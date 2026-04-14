@@ -1,5 +1,7 @@
 # Guestbook Widget Implementation Plan
 
+> ✅ **COMPLETED** — implemented and deployed to main
+
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add a site-wide floating envelope widget that lets visitors leave a Name + Emoji + Text guestbook entry, backed by Supabase, with a permanent nav link and a full feed page.
@@ -19,7 +21,7 @@
 
 The table stores entries. Rate-limiting is enforced client-side via localStorage; Supabase side allows public insert/read with no IP tracking (appropriate for a low-stakes guestbook).
 
-- [ ] **Step 1: Create the migration file**
+- [x] **Step 1: Create the migration file**
 
 ```sql
 -- supabase/migrations/20260316_guestbook.sql
@@ -68,13 +70,13 @@ END;
 $$;
 ```
 
-- [ ] **Step 2: Apply migration to Supabase**
+- [x] **Step 2: Apply migration to Supabase**
 
 Run in Supabase SQL Editor (Dashboard → SQL Editor → paste file contents → Run).
 
 Verify: In Supabase Table Editor, `guestbook_entries` table exists with columns `id`, `name`, `emoji`, `message`, `created_at`.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add supabase/migrations/20260316_guestbook.sql
@@ -90,7 +92,7 @@ git commit -m "feat: add guestbook_entries table + insert RPC"
 
 Pattern mirrors `src/hooks/useResourceVotes.ts`. Rate-limit key `wdvg-gb-last` stores ISO timestamp in localStorage.
 
-- [ ] **Step 1: Create the hook**
+- [x] **Step 1: Create the hook**
 
 ```typescript
 // src/hooks/useGuestbook.ts
@@ -203,7 +205,7 @@ export function useGuestbook(): UseGuestbookResult {
 }
 ```
 
-- [ ] **Step 2: TypeScript check**
+- [x] **Step 2: TypeScript check**
 
 ```bash
 cd /home/jaywee92/web-dev-guide && npx tsc --noEmit --project tsconfig.app.json 2>&1 | grep -i "useGuestbook"
@@ -211,7 +213,7 @@ cd /home/jaywee92/web-dev-guide && npx tsc --noEmit --project tsconfig.app.json 
 
 Expected: no errors referencing `useGuestbook.ts`.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/hooks/useGuestbook.ts
@@ -229,7 +231,7 @@ git commit -m "feat: add useGuestbook hook with rate-limit + optimistic updates"
 - Create: `src/i18n/locales/de/guestbook.json`
 - Modify: `src/i18n/index.ts`
 
-- [ ] **Step 1: Create EN locale**
+- [x] **Step 1: Create EN locale**
 
 ```json
 // src/i18n/locales/en/guestbook.json
@@ -253,7 +255,7 @@ git commit -m "feat: add useGuestbook hook with rate-limit + optimistic updates"
 }
 ```
 
-- [ ] **Step 2: Create DE locale**
+- [x] **Step 2: Create DE locale**
 
 ```json
 // src/i18n/locales/de/guestbook.json
@@ -277,7 +279,7 @@ git commit -m "feat: add useGuestbook hook with rate-limit + optimistic updates"
 }
 ```
 
-- [ ] **Step 3: Register namespace in `src/i18n/index.ts`**
+- [x] **Step 3: Register namespace in `src/i18n/index.ts`**
 
 Add these imports after the last `deTopicsOther` import:
 
@@ -322,7 +324,7 @@ de: {
 },
 ```
 
-- [ ] **Step 4: TypeScript check**
+- [x] **Step 4: TypeScript check**
 
 ```bash
 npx tsc --noEmit --project tsconfig.app.json 2>&1 | grep -E "guestbook|i18n/index"
@@ -330,7 +332,7 @@ npx tsc --noEmit --project tsconfig.app.json 2>&1 | grep -E "guestbook|i18n/inde
 
 Expected: no errors.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/i18n/locales/en/guestbook.json src/i18n/locales/de/guestbook.json src/i18n/index.ts
@@ -346,7 +348,7 @@ git commit -m "feat: add guestbook i18n (EN + DE)"
 
 The panel renders inside the widget overlay. It receives entries + hook state as props (no data fetching here — parent provides the hook). Framer Motion for the spring-entry animation.
 
-- [ ] **Step 1: Create the component**
+- [x] **Step 1: Create the component**
 
 ```tsx
 // src/components/guestbook/GuestbookPanel.tsx
@@ -520,7 +522,7 @@ export default function GuestbookPanel({ onClose, hook }: Props) {
 }
 ```
 
-- [ ] **Step 2: TypeScript check**
+- [x] **Step 2: TypeScript check**
 
 ```bash
 npx tsc --noEmit --project tsconfig.app.json 2>&1 | grep "GuestbookPanel"
@@ -528,7 +530,7 @@ npx tsc --noEmit --project tsconfig.app.json 2>&1 | grep "GuestbookPanel"
 
 Expected: no errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/components/guestbook/GuestbookPanel.tsx
@@ -544,7 +546,7 @@ git commit -m "feat: add GuestbookPanel component"
 
 Handles: envelope float/jiggle/flap CSS animation, panel open/close via `AnimatePresence`, first-visit auto-open (localStorage key `wdvg-gb-seen`), `createPortal` into `document.body`.
 
-- [ ] **Step 1: Add CSS keyframes to `src/index.css`**
+- [x] **Step 1: Add CSS keyframes to `src/index.css`**
 
 Append at the end of `src/index.css`:
 
@@ -593,7 +595,7 @@ Append at the end of `src/index.css`:
 }
 ```
 
-- [ ] **Step 2: Create the widget component**
+- [x] **Step 2: Create the widget component**
 
 ```tsx
 // src/components/guestbook/GuestbookWidget.tsx
@@ -700,7 +702,7 @@ export default function GuestbookWidget() {
 }
 ```
 
-- [ ] **Step 3: TypeScript check**
+- [x] **Step 3: TypeScript check**
 
 ```bash
 npx tsc --noEmit --project tsconfig.app.json 2>&1 | grep -E "GuestbookWidget|GuestbookPanel|useGuestbook"
@@ -708,7 +710,7 @@ npx tsc --noEmit --project tsconfig.app.json 2>&1 | grep -E "GuestbookWidget|Gue
 
 Expected: no errors.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/index.css src/components/guestbook/GuestbookWidget.tsx
@@ -724,7 +726,7 @@ git commit -m "feat: add GuestbookWidget with envelope animation + portal"
 **Files:**
 - Create: `src/pages/GuestbookPage/index.tsx`
 
-- [ ] **Step 1: Create the page**
+- [x] **Step 1: Create the page**
 
 ```tsx
 // src/pages/GuestbookPage/index.tsx
@@ -801,7 +803,7 @@ export default function GuestbookPage() {
 }
 ```
 
-- [ ] **Step 2: TypeScript check**
+- [x] **Step 2: TypeScript check**
 
 ```bash
 npx tsc --noEmit --project tsconfig.app.json 2>&1 | grep "GuestbookPage"
@@ -809,7 +811,7 @@ npx tsc --noEmit --project tsconfig.app.json 2>&1 | grep "GuestbookPage"
 
 Expected: no errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/pages/GuestbookPage/index.tsx
@@ -823,7 +825,7 @@ git commit -m "feat: add GuestbookPage full feed"
 **Files:**
 - Modify: `src/App.tsx`
 
-- [ ] **Step 1: Add imports and wire**
+- [x] **Step 1: Add imports and wire**
 
 Add to imports in `src/App.tsx`:
 ```typescript
@@ -842,7 +844,7 @@ Add the route inside `<Routes>`, after the `/search` route:
 <Route path="/guestbook" element={<GuestbookPage />} />
 ```
 
-- [ ] **Step 2: TypeScript check**
+- [x] **Step 2: TypeScript check**
 
 ```bash
 npx tsc --noEmit --project tsconfig.app.json 2>&1 | grep -E "App\.tsx|GuestbookWidget|GuestbookPage"
@@ -850,7 +852,7 @@ npx tsc --noEmit --project tsconfig.app.json 2>&1 | grep -E "App\.tsx|GuestbookW
 
 Expected: no errors.
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/App.tsx
@@ -866,14 +868,14 @@ git commit -m "feat: mount GuestbookWidget globally + add /guestbook route"
 
 The button goes between the Resources link and the Search button. It navigates to `#/guestbook` (HashRouter). Style matches the Resources link (same `nav-btn` inline style pattern, purple hover).
 
-- [ ] **Step 1: Add import**
+- [x] **Step 1: Add import**
 
 Add to imports in `Navbar.tsx`:
 ```typescript
 import { Mail } from 'lucide-react'
 ```
 
-- [ ] **Step 2: Add the button**
+- [x] **Step 2: Add the button**
 
 In the JSX, between the Resources `<Link>` and the Search `<button>`, insert:
 
@@ -911,7 +913,7 @@ In the JSX, between the Resources `<Link>` and the Search `<button>`, insert:
 </Link>
 ```
 
-- [ ] **Step 3: Add `guestbook` key to `src/i18n/locales/en/common.json` and `src/i18n/locales/de/common.json`**
+- [x] **Step 3: Add `guestbook` key to `src/i18n/locales/en/common.json` and `src/i18n/locales/de/common.json`**
 
 In `common.json` (EN), add:
 ```json
@@ -923,7 +925,7 @@ In `common.json` (DE), add:
 "guestbook": "GUESTBOOK"
 ```
 
-- [ ] **Step 4: TypeScript check**
+- [x] **Step 4: TypeScript check**
 
 ```bash
 npx tsc --noEmit --project tsconfig.app.json 2>&1 | grep "Navbar"
@@ -931,7 +933,7 @@ npx tsc --noEmit --project tsconfig.app.json 2>&1 | grep "Navbar"
 
 Expected: no errors.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/components/layout/Navbar.tsx src/i18n/locales/en/common.json src/i18n/locales/de/common.json
@@ -942,7 +944,7 @@ git commit -m "feat: add Guestbook nav link to Navbar"
 
 ### Task 9: Final TypeScript check + manual smoke test + push
 
-- [ ] **Step 1: Full TypeScript check**
+- [x] **Step 1: Full TypeScript check**
 
 ```bash
 npx tsc --noEmit --project tsconfig.app.json 2>&1
@@ -950,7 +952,7 @@ npx tsc --noEmit --project tsconfig.app.json 2>&1
 
 Expected: 0 errors (or only pre-existing `supabase.ts` env errors if they persist — those don't block runtime).
 
-- [ ] **Step 2: Dev server smoke test**
+- [x] **Step 2: Dev server smoke test**
 
 ```bash
 npm run dev
@@ -966,13 +968,13 @@ Open `http://localhost:5173/web-dev-guide/`. Verify:
 7. Second submit within 24h → button disabled, shows wait time
 8. Language switch (EN↔DE) → all strings translate
 
-- [ ] **Step 3: Push**
+- [x] **Step 3: Push**
 
 ```bash
 git push
 ```
 
-- [ ] **Step 4: Sync to dist (VPS)**
+- [x] **Step 4: Sync to dist (VPS)**
 
 ```bash
 npm run build 2>&1 | tail -5
