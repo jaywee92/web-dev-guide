@@ -563,7 +563,8 @@
             "Rohes HTML ist wie ein Papierbauplan für ein Gebäude — es ist nur Tinte und Papier, noch kein echtes Gebäude. Der Browser liest diesen Plan und konstruiert daraus das DOM.",
             "Das DOM (Document Object Model) ist das fertige Gebäude. Anders als der Papierbauplan kann man durch das Gebäude gehen, Wände verschieben und Räume hinzufügen — alles in Echtzeit."
           ]
-        }
+        },
+        "expandedText": "Der Browser empfängt deine HTML-Datei als einfache Textzeichenkette über HTTP. Bevor JavaScript läuft, liest der HTML-Parser diesen Text Zeichen für Zeichen und baut das DOM (Document Object Model) auf -- einen lebendigen In-Memory-Baum aus JavaScript-Objekten der jedes Element, Attribut und Textknoten repräsentiert.\n\nDas DOM ist nicht HTML -- es ist die Browser-Interpretation davon. Fehlerhaftes HTML (nicht geschlossene Tags) wird stillschweigend korrigiert. Das DOM kann per JavaScript verändert werden, und diese Änderungen spiegeln sich sofort auf der gerenderten Seite wider -- aber die ursprüngliche HTML-Datei auf dem Server bleibt unverändert."
       },
       {
         "animationStep": 1,
@@ -575,7 +576,8 @@
             "Der Browser liest HTML genau wie man ein Rezept liest — von der ersten Zeile bis zur letzten. In dem Moment, wenn er auf ein Tag trifft, erstellt er den entsprechenden DOM-Knoten.",
             "Deshalb ist das Platzieren von Skripten am Ende des Body (oder Verwenden von `defer`) wichtig: Wenn der Browser ein Skript trifft, bevor er das HTML verarbeitet hat, versucht das Skript, nicht existierende Elemente zu manipulieren."
           ]
-        }
+        },
+        "expandedText": "Der Parser liest HTML von oben nach unten. Skripte in head ohne defer oder async blockieren das Parsing -- der Browser stoppt den DOM-Aufbau bis das Skript ausgeführt wurde. Deshalb werden script-Tags traditionell am Ende von body oder mit defer platziert.\n\ndefer bewahrt die Ausführungsreihenfolge und führt Skripte nach dem Parsing aus. async lädt parallel und läuft sofort wenn bereit, möglicherweise außer der Reihenfolge. type=module Skripte sind standardmäßig defer. Performance-kritische Inline-Skripte unten platzieren; defer für alles andere."
       },
       {
         "animationStep": 2,
@@ -587,7 +589,8 @@
             "Der DOM-Baum ist genau wie ein Stammbaum. `<html>` ist das Familienoberhaupt an der Spitze. `<head>` und `<body>` sind direkte Kinder. Jedes Element, das innerhalb eines anderen ist, ist sein Kind.",
             "Elternelement, Kind, Geschwister — das sind die echten Begriffe in der DOM-API: `element.parentElement`, `element.children`, `element.nextSibling`."
           ]
-        }
+        },
+        "expandedText": "Jedes HTML-Element wird zu einem Knoten im DOM-Baum. Verschachtelung erstellt Eltern-Kind-Beziehungen: body ist Elternteil von header und main. Die Baumstruktur entspricht direkt der visuellen Hierarchie auf dem Bildschirm.\n\nDOM-Traversal-Methoden: parentElement, children (nur Element-Knoten), childNodes (inkl. Textknoten), firstElementChild, lastElementChild, nextElementSibling. Jede Änderung am Baum -- Knoten hinzufügen, entfernen oder umordnen -- löst ein Re-Render der betroffenen Teile aus."
       },
       {
         "animationStep": 3,
@@ -599,7 +602,8 @@
             "Jedes Stück Text zwischen Tags ist ein Textknoten — ein separater Eintrag im DOM-Baum. Das Wort \"Hallo\" in `<p>Hallo</p>` ist nicht Teil des `<p>`-Elements — es ist ein Kind-Textknoten.",
             "Deshalb verhalten sich `textContent` und der Markup-Setter unterschiedlich: `textContent` liest/schreibt rohe Textknoten; der Markup-Setter interpretiert Tags."
           ]
-        }
+        },
+        "expandedText": "Im DOM ist der Text zwischen HTML-Tags nicht nur eine Eigenschaft -- er ist ein separater Textknoten als Kind des Elternelements. Ein p-Tag mit 'Hallo' und einem strong-Tag enthält drei Kind-Knoten: einen Textknoten, das strong-Element und einen weiteren Textknoten. Whitespace zwischen Tags erstellt ebenfalls Textknoten.\n\nelement.textContent gibt den Text aller descendant Textknoten kombiniert zurück. element.childNodes zeigt alle Knotentypen inkl. Textknoten (nodeType === 3). Für die meisten Manipulationsaufgaben verwende element.textContent statt Textknoten direkt zu navigieren."
       },
       {
         "animationStep": 4,
@@ -610,7 +614,8 @@
           "text": [
             "`querySelector` ist wie der Bibliothekskatalog: man beschreibt, was man möchte (\"ein Buch mit dieser ISBN\", \"alle Bücher über JavaScript\") und der Katalog liefert es zurück."
           ]
-        }
+        },
+        "expandedText": "document.querySelector(selector) gibt das erste passende Element oder null zurück. document.querySelectorAll(selector) gibt eine statische NodeList aller Treffer zurück -- mit forEach iterieren. Beide akzeptieren jeden gültigen CSS-Selektor: '#hero', '.card', '[data-id=42]', 'header nav > a'.\n\nPerformance-Hinweis: getElementById ist für ID-Lookups marginal schneller. Referenzen cachen -- querySelector nicht in einer Schleife oder bei jedem Event aufrufen. NodeList von querySelectorAll ist keine Live-Liste (anders als getElementsByClassName das live ist)."
       },
       {
         "animationStep": 5,
@@ -622,7 +627,8 @@
             "`textContent` ist ein Nur-Text-Editor — was man schreibt ist was der Nutzer sieht, nichts mehr. Der Markup-Setter interpretiert Tags — man kann `<strong>Text</strong>` schreiben und es wird fett gerendert.",
             "`classList` ist wie das Bearbeiten eines Namensschilds: `add(\"active\")` schreibt eine neue Klasse, `remove(\"hidden\")` löscht eine, `toggle(\"open\")` flippt sie an und aus."
           ]
-        }
+        },
+        "expandedText": "textContent liest/setzt den reinen Text eines Elements und all seiner Nachkommen. Das Setzen ersetzt alle Kinder durch einen einzelnen Textknoten -- HTML-Tags im String werden escaped, nicht interpretiert, was es sicher für Benutzer-Eingaben macht. Für Dateneinfügung immer textContent bevorzugen.\n\nFür das Einfügen von HTML, sichere DOM-Erstellungsmethoden verwenden: createElement, appendChild, textContent auf Kind-Knoten. insertAdjacentHTML fügt angrenzenden HTML ein ohne Kinder zu ersetzen. innerText respektiert CSS-Sichtbarkeit und löst Layout aus -- langsamer, textContent für Datenmanipulation bevorzugen."
       },
       {
         "animationStep": 6,
@@ -634,7 +640,8 @@
             "`createElement` ist wie das Schneiden einer Planke vom Brett — man hat das Stück, aber es ist noch nichts befestigt. `appendChild` ist das Einschrauben der Planke in das Möbelstück.",
             "Dieses Muster (erstellen → konfigurieren → anhängen) ist der fundamentale Baustein dynamischer UI: Elemente in JavaScript erstellen, ihre Eigenschaften setzen, dann ins DOM einfügen."
           ]
-        }
+        },
+        "expandedText": "document.createElement('div') erstellt ein neues Element im Speicher -- noch nicht im DOM. Eigenschaften vor dem Einfügen setzen für Performance (nur ein Reflow). element.appendChild(newEl) hängt am Ende der Kinder an. parent.insertBefore(newEl, referenceEl) fügt vor einem bestimmten Kind ein.\n\nModerne Alternativen: element.append(node, 'text') akzeptiert mehrere Knoten und Strings. element.prepend() fügt am Anfang ein. referenceEl.before() und referenceEl.after() fügen als Geschwister ein. Für Massen-Einfügungen DocumentFragment verwenden -- off-DOM aufbauen, dann einmal einfügen um Reflows zu minimieren."
       },
       {
         "animationStep": 7,
@@ -646,7 +653,8 @@
             "Events sind wie Briefkästen: man befestigt einen Kasten an einem Element (`addEventListener`), und immer wenn dieses Event passiert (Klick, Tastendruck, Absenden), liefert der Briefträger die Nachricht.",
             "Das Event-Objekt enthält alle Details: welche Schaltfläche geklickt wurde, welche Taste gedrückt wurde, wo die Maus ist. Der Handler liest die Nachricht und antwortet."
           ]
-        }
+        },
+        "expandedText": "addEventListener(event, handler) hängt eine Funktion für den Event an. Immer gegenüber onclick-Attributen bevorzugen -- unterstützt mehrere Handler auf demselben Event. removeEventListener benötigt genau dieselbe Funktionsreferenz -- Arrow-Funktionen erstellen jedes Mal neue Referenzen, also Handler in Variablen speichern.\n\nEvent-Delegation: statt Listener an viele Kinder zu hängen, einen Listener am Elternelement anhängen und event.target prüfen. Performanter für dynamische Listen. event.preventDefault() stoppt die Browser-Standardaktion. event.stopPropagation() stoppt das Bubbling zum Elternelement."
       }
     ],
     "cheatSheet": {
@@ -851,7 +859,8 @@
             "Ein Formular ist wie ein Postumschlag: Es hält die Daten, gibt die Zieladresse an (`action`) und ob sie offen (GET) oder versiegelt (POST) gesendet werden.",
             "Ohne einen `<form>`-Wrapper haben deine Eingaben nirgendwo hinzugehen. Das Formular ist der Container, der Eingaben gruppiert und das Absenden handhabt."
           ]
-        }
+        },
+        "expandedText": "Das form-Element gruppiert Controls und definiert das Submit-Verhalten. action setzt die URL die die Daten empfängt (Standard: aktuelle Seite). method=get hängt Daten als URL-Query-Params an (sichtbar, bookmarkbar). method=post sendet Daten im Request-Body (versteckt, keine Größenbeschränkung -- für Passwörter und große Daten).\n\nOhne JavaScript submitten Formulare standardmäßig bei Button-Klick und verursachen ein Neuladen. event.preventDefault() fängt das ab. Das name-Attribut auf jedem Input ist der Schlüssel in den gesendeten Daten -- Inputs ohne name werden ausgeschlossen. enctype=multipart/form-data ist für File-Uploads erforderlich."
       },
       {
         "animationStep": 1,
@@ -863,7 +872,8 @@
             "Ein Label und sein passendes Input sind wie ein Hotelzimmerschlüssel — das Label hat die Zimmernummer aufgedruckt, und der Schlüssel (Input) hat denselben Code. Sie sind durch diesen Code verbunden.",
             "Sie durch `for=\"id\"` zu verbinden bedeutet, dass ein Klick auf das Label den Input fokussiert. Das ist wichtig für Barrierefreiheit: Nutzer können überall in der Label-Input-Gruppe klicken."
           ]
-        }
+        },
+        "expandedText": "Jedes Input sollte ein zugehöriges Label haben. Das for-Attribut auf label muss mit der id auf input übereinstimmen. Das macht das Label anklickbar und teilt Screenreadern mit, wofür der Input ist. Die Alternative: umschließendes label ohne for/id.\n\nHäufige Attribute: placeholder (wird angezeigt wenn leer -- kein Ersatz für Labels), value (Anfangswert), name (Schlüssel für Submit), required, disabled, readonly. disabled-Felder werden vom Submit ausgeschlossen; readonly-Felder werden eingeschlossen. Immer autocomplete-Attribute für Browser-Autofill verwenden."
       },
       {
         "animationStep": 2,
@@ -875,7 +885,8 @@
             "Ein `<select>` ist wie der Menübereich in einem Restaurant — der Kellner präsentiert vordefinierte Gerichte und man wählt eines. Anders als ein Text-Input schränkt es die Auswahl auf bekannte Optionen ein.",
             "Der `option`-Wert ist das, was an den Server übermittelt wird. Der `option`-Inhalt ist das, was der Nutzer sieht. Diese können unterschiedlich sein: `value=\"en\"` zeigt \"Englisch\"."
           ]
-        }
+        },
+        "expandedText": "select erstellt eine Dropdown-Liste. Jedes option bietet einen Wert (gesendet) und ein Anzeige-Label. Wenn value weggelassen wird, wird der Text-Inhalt gesendet. optgroup gruppiert verwandte Optionen. Das multiple-Attribut erlaubt Mehrfachauswahl.\n\nDie initial ausgewählte Option: selected-Attribut verwenden oder select.value per JavaScript setzen. Für barrierefreie Custom-Dropdowns: role=combobox oder role=listbox mit vollständigen ARIA-Attributen -- komplex umzusetzen, native select bevorzugen. datalist bietet Autocomplete-Vorschläge für input mit freier Texteingabe."
       },
       {
         "animationStep": 3,
@@ -887,7 +898,8 @@
             "Checkboxen sind wie Lichtschalter — jede schaltet unabhängig. Man kann mehrere Lichter gleichzeitig an oder aus haben.",
             "Radioknöpfe sind wie Autoradio-Vorwahlen — wenn man Vorwahl 3 drückt, geht Vorwahl 2 aus. Nur eine in der Gruppe kann gleichzeitig ausgewählt sein."
           ]
-        }
+        },
+        "expandedText": "Checkboxen sind unabhängig -- jede kann separat angehakt werden. Der value wird gesendet wenn angehakt; nichts wenn nicht. Radio-Buttons müssen denselben name teilen um eine Gruppe zu bilden -- nur einer kann gleichzeitig ausgewählt sein.\n\nStatus einer Checkbox prüfen: input.checked (JavaScript-Eigenschaft). Mit dem checked-Attribut im HTML vorangehakt setzen. Die :checked CSS-Pseudoklasse stylt den angehakten Zustand -- ermöglicht CSS-only Toggle-Muster ohne JavaScript."
       },
       {
         "animationStep": 4,
@@ -899,7 +911,8 @@
             "Der Submit-Button ist der \"Senden\"-Button in einem E-Mail-Client — darauf drücken verpackt alles im Formular und liefert es an den Server.",
             "`type=\"button\"` ist derselbe visuelle Knopf, aber ohne das Submit-Verhalten — nützlich für JavaScript-Aktionen, die keine Formular-Übermittlung auslösen sollen."
           ]
-        }
+        },
+        "expandedText": "button type=submit löst das Formular-Submit aus. type=reset setzt alle Felder zurück. type=button macht standardmäßig nichts -- mit JavaScript verwenden. Innerhalb eines form hat ein button ohne explizites type standardmäßig type=submit -- das kann unerwartete Submits verursachen.\n\nSubmit-Button während der Verarbeitung deaktivieren: button.disabled = true um Doppel-Submits zu verhindern. Niemals a-Tags als gestylte Buttons für Formular-Aktionen verwenden -- sie sind Links, keine Buttons, und fehlen Tastatur-Semantik."
       },
       {
         "animationStep": 5,
@@ -911,7 +924,8 @@
             "HTML5-Validierung ist wie ein Türsteher, der Ausweise kontrolliert — der Browser prüft die Eingaben gegen die Regeln, bevor er sie einlässt.",
             "`required` blockiert leere Felder. `type=\"email\"` lehnt Nicht-E-Mail-Formate ab. `minlength` lehnt zu kurze Werte ab. All das geschieht ohne eine einzige Zeile JavaScript."
           ]
-        }
+        },
+        "expandedText": "HTML5-Validierungsattribute: required (muss einen Wert haben), minlength/maxlength (Zeichenanzahl), min/max (numerischer Bereich), pattern (Regex), type=email (validiert E-Mail-Format). Der Browser zeigt native Fehlermeldungen und verhindert Submit wenn Validierung fehlschlägt.\n\nNative Validierung feuert beim Submit, nicht bei jedem Tastendruck. novalidate auf form deaktiviert Browser-Validierung. Ungültige Felder mit :invalid und :valid Pseudoklassen stylen. HTML-Validierung ist ein UX-Komfort -- niemals für Sicherheit verwenden. Immer serverseitig validieren."
       },
       {
         "animationStep": 6,
@@ -922,7 +936,8 @@
           "text": [
             "Wenn die eingebauten Regeln nicht ausreichen, kann man eigene schreiben — wie ein Türsteher mit einem benutzerdefinierten Regelwerk für die Veranstaltung."
           ]
-        }
+        },
+        "expandedText": "Die Constraint Validation API gibt programmatische Kontrolle: input.validity ist ein ValidityState-Objekt mit Boolean-Flags (valueMissing, typeMismatch, patternMismatch, tooShort). input.setCustomValidity(message) setzt einen benutzerdefinierten Fehler der Submit blockiert; ein leerer String löscht ihn.\n\nFür Echtzeit-Validierung: auf input- oder blur-Events hören, input.validity prüfen und ein Fehler-span aktualisieren. aria-describedby verwenden um die Fehlermeldung mit dem Input zu verknüpfen -- Screenreader lesen dann den Fehler vor wenn das Feld fokussiert ist."
       },
       {
         "animationStep": 7,
@@ -934,7 +949,8 @@
             "`fieldset` ist wie das Legen einer beschrifteten Box in den Umschlag für eine Teilmenge zusammengehöriger Elemente. Die `legend` ist das Etikett auf der Box.",
             "Besonders für Radioknopf-Gruppen ist die `legend` wichtig: ohne sie lesen Screen-Reader jede Option als \"E-Mail (Radio)\", \"Telefon (Radio)\" ohne Gruppenkontext."
           ]
-        }
+        },
+        "expandedText": "fieldset gruppiert verwandte Formular-Controls visuell und semantisch. legend ist das Label für die Gruppe -- Screenreader stellen es jedem Control-Label voran: 'Zahlungsmethode, Visa-Radio-Button'. Immer fieldset + legend für Gruppen von Radio-Buttons und Checkboxen verwenden.\n\nfieldset disabled deaktiviert alle enthaltenen Controls auf einmal. Das native Styling (eingesenkter Rahmen) kann mit border: none; padding: 0; margin: 0 zurückgesetzt werden. Fieldsets nicht wegen des Standard-Stylings meiden -- zurücksetzen und semantisch korrekt verwenden."
       },
       {
         "animationStep": 8,
@@ -946,7 +962,8 @@
             "`type=\"date\"` statt `type=\"text\"` zu verwenden gibt einem einen kostenlosen Datepicker, native Datumsvalidierung und mobile-freundliche Datumseingabe auf iOS/Android.",
             "Jeder spezialisierte Typ bringt Browser-native UI und Validierung. Nutzer erhalten die beste Erfahrung für ihr Gerät, und man schreibt weniger Code."
           ]
-        }
+        },
+        "expandedText": "HTML5 hat spezialisierte input-Typen hinzugefügt die native Browser-UI auslösen: date/time/datetime-local/month/week zeigen Picker, color zeigt einen Farbwähler, range zeigt einen Schieberegler. Browser die den Typ nicht unterstützen fallen auf type=text zurück -- für kritische Validierung immer ein pattern-Fallback einschließen.\n\nMobile Browser zeigen entsprechende Tastaturen: tel zeigt Nummernpad, email zeigt Tastatur mit @, url zeigt URL-Tastatur. type=file öffnet den Datei-Picker; multiple erlaubt mehrere Dateien; accept filtert nach MIME-Typ. type=hidden sendet Daten ohne UI -- für Tokens oder Metadaten verwenden."
       }
     ],
     "cheatSheet": {
@@ -1020,7 +1037,8 @@
             "Wenn Architekten ein Gebäude entwerfen, fügen sie Rampen neben Treppen ein, Aufzüge neben Rolltreppen, taktile Streifen für Sehbehinderte. Das Gebäude wird für alle zugänglicher.",
             "Barrierefreiheit funktioniert genauso: Tastaturnavigation hilft Power-Usern, hoher Kontrast hilft bei hellem Sonnenlicht, Untertitel helfen in lauten Umgebungen."
           ]
-        }
+        },
+        "expandedText": "Etwa 15% der Weltbevölkerung hat eine Behinderung -- visuell, motorisch, kognitiv oder auditiv. Screenreader-Nutzer navigieren über Überschriften und Landmarks. Tastatur-Nutzer verlassen sich auf die Fokus-Reihenfolge. Sehschwache Nutzer können Hochkontrast-Modus oder bis zu 400% Zoom verwenden.\n\nBarrierefreiheit ist kein separates Feature -- sie ist in HTML-Semantik eingebaut. button ist standardmäßig tastatur-fokussierbar; ein div mit onclick nicht. img mit alt-Text kommuniziert Bedeutung an Screenreader; ein CSS-Hintergrundbild nicht. Semantisches HTML korrekt zu schreiben löst die meisten Barrierefreiheitsanforderungen."
       },
       {
         "animationStep": 1,
@@ -1032,7 +1050,8 @@
             "Manche Elemente haben keinen sichtbaren Text — ein Icon-only-Schließen-Button, ein Such-Icon. Für sehende Nutzer ist das Icon selbstverständlich. Für Screen-Reader-Nutzer ist es ein namenloser Button.",
             "`aria-label` fügt einen unsichtbaren Namen hinzu: `aria-label=\"Dialog schließen\"` lässt den Button \"Dialog schließen, Button\" statt nur \"Button\" ansagen."
           ]
-        }
+        },
+        "expandedText": "aria-label bietet direkt am Element einen barrierefreien Namen -- es überschreibt sichtbaren Text für Screenreader. Verwenden wenn kein sichtbarer Text vorhanden ist: Icon-Buttons (button mit aria-label='Schließen'). aria-labelledby referenziert die ID eines anderen Elements als Label.\n\naria-describedby fügt ergänzende Beschreibung hinzu -- für Fehlermeldungen, Hilfstext, Hinweise. Screenreader kündigen Element-Name an, dann nach einer Pause die Beschreibung. Niemals aria-label und sichtbaren Text duplizieren -- beide aktualisieren oder sie weichen voneinander ab. aria-hidden='true' versteckt dekorative Elemente vollständig."
       },
       {
         "animationStep": 2,
@@ -1044,7 +1063,8 @@
             "Fokus ist wie ein Scheinwerferlicht auf der Bühne — er hebt hervor, welches Element aktuell für Tastaturinteraktion aktiv ist. Tab bewegt das Licht zum nächsten Element.",
             "Den Fokusring entfernen (`:focus { outline: none }`) ist wie das Ausschalten des Scheinwerfers. Tastaturnutzer können nicht sehen, wo sie sich auf der Seite befinden."
           ]
-        }
+        },
+        "expandedText": "Tastatur-Nutzer navigieren mit Tab (vorwärts) und Shift+Tab (rückwärts). Fokus muss immer sichtbar sein -- den Standard-Rahmen verbessern: :focus-visible { outline: 3px solid #5b9cf5; outline-offset: 2px; }. :focus-visible zeigt den Fokus-Ring nur bei Tastatur-Navigation, nicht beim Mausklick.\n\nFokus-Reihenfolge sollte der logischen Lese-Reihenfolge folgen -- durch DOM-Reihenfolge kontrolliert. tabindex > 0 nicht verwenden (bricht die natürliche Reihenfolge). tabindex=0 macht nicht-interaktive Elemente fokussierbar. tabindex=-1 macht Elemente per element.focus() fokussierbar aber nicht per Tab erreichbar."
       },
       {
         "animationStep": 3,
@@ -1069,7 +1089,8 @@
             "Ein Screen-Reader ist wie ein Telefon, das nur klingelt, wenn jemand anruft. Er kündigt nicht automatisch Dinge an, die sich auf dem Bildschirm ändern.",
             "`aria-live=\"polite\"` ist wie eine höfliche Benachrichtigung, die wartet, bis man fertig gelesen hat, bevor das Update angekündigt wird. `aria-live=\"assertive\"` unterbricht sofort."
           ]
-        }
+        },
+        "expandedText": "ARIA role überschreibt die implizite Rolle eines Elements: role=button auf einem div lässt es als Button ankündigen. Das fügt aber kein Verhalten hinzu -- Tastatur-Event-Handling muss manuell hinzugefügt werden. Native Elemente bevorzugen. ARIA-Rollen für Custom-Widgets ohne natives HTML-Äquivalent.\n\nLive-Regionen kündigen dynamische Inhaltsänderungen ohne erforderlichen Fokus an. aria-live=polite wartet bis der Benutzer fertig ist. aria-live=assertive unterbricht sofort (sparsam verwenden). Kurzform-Rollen: role=status (polite), role=alert (assertive). Für: Formular-Validierungsmeldungen, Ladeabschlüsse, Chat-Nachrichten, Benachrichtigungs-Toasts."
       },
       {
         "animationStep": 5,
@@ -1156,7 +1177,8 @@
             "Ein `<iframe>` ist wie das Einbetten eines TV-Bildschirms in eine Webseite — der Bildschirm zeigt seinen eigenen unabhängigen Kanal. Die eingebettete Seite weiß nicht, was außen auf dem Bildschirm passiert.",
             "Diese Isolation ist sowohl das Sicherheitsmerkmal als auch die Einschränkung von iFrames: YouTube kann die Cookies deiner Seite nicht lesen, aber man kann auch nicht einfach das eingebettete Video von außen stylen."
           ]
-        }
+        },
+        "expandedText": "iframe bettet ein anderes Dokument in deine Seite ein. Das title-Attribut ist für Barrierefreiheit erforderlich -- Screenreader kündigen es an wenn der iframe den Fokus bekommt. sandbox schränkt ein was die eingebettete Seite tun kann: sandbox='allow-scripts allow-same-origin' blockiert Formulare, Popups und Top-Frame-Navigation.\n\nSicherheit: Cross-Origin-iframes können nicht auf das JavaScript deiner Seite zugreifen. allow='camera; microphone' gewährt Berechtigungen. Für SEO-wichtige Inhalte keine iframes verwenden. Iframes nur für Drittanbieter-Embeds (Karten, Social-Widgets, Zahlungsformulare)."
       },
       {
         "animationStep": 1,
@@ -1168,7 +1190,8 @@
             "Das `<video>`-Element ist wie ein VHS-Player, der direkt in den Browser eingebaut ist. Man übergibt eine Kassette (`src`), er spielt sie ab. Das `controls`-Attribut gibt die Abspieltasten aus.",
             "Mehrere `<source>`-Elemente sind wie das Haben desselben Films auf VHS und Betamax — der Browser wählt das Format, das er abspielen kann."
           ]
-        }
+        },
+        "expandedText": "video mit src oder mit source-Kindern für mehrere Formate. controls fügt native Wiedergabe-UI hinzu. autoplay muted erlaubt Autoplay (Browser blockieren Autoplay mit Ton). loop wiederholt unbegrenzt.\n\nFür Browser-Kompatibilität mehrere Formate anbieten: MP4 (H.264) funktioniert überall, WebM ist kleiner. poster zeigt ein Standbild vor dem Abspielen. JavaScript-Steuerung: video.play(), video.pause(), video.currentTime = 30. Das track-Element fügt Untertitel hinzu -- für Barrierefreiheit erforderlich."
       },
       {
         "animationStep": 2,
@@ -1180,7 +1203,8 @@
             "Das `<audio>`-Element ist ein Radio in der Webseite. Ohne `controls` ist es ein verstecktes Radio, das nur JavaScript einschalten kann. Mit `controls` erscheinen die Bedientasten.",
             "Der Fallback-Text zwischen den Tags wird nur in Browsern angezeigt, die das `<audio>`-Element nicht unterstützen — was praktisch kein moderner Browser ist."
           ]
-        }
+        },
+        "expandedText": "audio mit src oder mit source-Kindern. controls fügt native UI hinzu. Ohne controls ist das Audio unsichtbar -- nützlich für Hintergrundtöne. autoplay wird ohne muted blockiert; play() aus einem Benutzer-Interaktions-Event aufrufen.\n\nMehrere Formate für Kompatibilität anbieten: MP3 (universal) und OGG oder WebM. loop für Hintergrundmusik. preload=none schiebt das Laden auf. audio.volume = 0.5 (0-1), audio.playbackRate = 1.5 für Geschwindigkeit. Wenn Audio wichtige Informationen vermittelt, ein Transkript bereitstellen."
       },
       {
         "animationStep": 3,
@@ -1192,7 +1216,8 @@
             "Das `<picture>`-Element ist wie ein smarter Bilderrahmen mit Sensor: Wenn der Raum klein ist, zeigt er einen kleineren Druck; wenn der Raum groß ist, zeigt er den Originaldruck.",
             "Der Browser liest die `<source>`-Elemente von oben nach unten und wählt das erste, dessen Media-Query und Typ übereinstimmen. Das `<img>` ist der Pflicht-Fallback."
           ]
-        }
+        },
+        "expandedText": "picture gibt dem Browser Optionen und der Browser wählt die beste: Format (webp über jpg wenn unterstützt) oder Größe (kleineres Bild für kleine Bildschirme). source-Elemente listen Alternativen auf. Das img-Fallback ist erforderlich und immer als letztes -- es ist die Quelle für alt-Text.\n\nsrcset auf img behandelt Auflösungs-Switching: srcset='img-400.jpg 400w, img-800.jpg 800w'. sizes teilt dem Browser mit wie breit das Bild gerendert wird. Moderner Ansatz: WebP/AVIF mit picture und loading=lazy kombinieren."
       },
       {
         "animationStep": 4,
@@ -1204,7 +1229,8 @@
             "Das `<pre>`-Element ist wie eine Schreibmaschine: Jedes Leerzeichen, jeden Tab und jeden Zeilenumbruch, den man eingibt, wird genau so ausgedruckt. Normales HTML fasst alle Leerzeichen zu einem zusammen.",
             "`<code>` teilt dem Browser mit \"das ist Code\" — er rendert ihn in einer Monospace-Schrift. Kombiniert als `<pre><code>` erhält man einen ordentlich formatierten, leerraumtreuen Code-Block."
           ]
-        }
+        },
+        "expandedText": "code rendert Text in einer Monospace-Schriftart und vermittelt semantische Bedeutung: das ist Computer-Code. Für mehrzeilige Code-Blöcke in pre einwickeln: pre bewahrt Whitespace und Zeilenumbrüche, code liefert die semantische Bedeutung.\n\nHTML-Entities in Code-Beispielen escapen: < wird zu &lt;, & wird zu &amp;. Syntax-Highlighting-Bibliotheken fügen Sprachklassen zu code hinzu. samp ist für Programmausgabe; kbd für Tastatureingabe. Semantisch korrekt verwenden -- verbessert Barrierefreiheit."
       },
       {
         "animationStep": 5,
@@ -1216,7 +1242,8 @@
             "Lazy Loading ist wie eine Just-in-Time-Lieferkette: Man bestellt nicht alle Vorräte im Voraus. Man bestellt, wenn der Kunde kurz davor ist, es zu brauchen.",
             "Für eine Seite mit 50 Bildern werden beim Laden nur die ersten paar abgerufen. Der Rest kommt, wenn der Nutzer scrollt. Das kann die anfängliche Ladezeit erheblich reduzieren."
           ]
-        }
+        },
+        "expandedText": "loading=lazy schiebt das Laden von Bildern und iframes auf bis sie sich in der Nähe des Viewports befinden. Das reduziert die initiale Ladezeit auf Seiten mit vielen Bildern erheblich. loading=eager (Standard) lädt sofort. Niemals das LCP-Bild (Largest Contentful Paint) lazy-loaden -- es ist above the fold.\n\nloading=lazy wird in allen modernen Browsern ohne JavaScript-Polyfills unterstützt. Explizite width- und height-Attribute kombinieren um Layout-Verschiebungen (CLS) zu verhindern. Für Bilder unterhalb des sichtbaren Bereichs kann Lazy Loading die Datenmenge um 50% oder mehr reduzieren."
       },
       {
         "animationStep": 6,
@@ -1228,7 +1255,8 @@
             "Browser-Autoplay-Richtlinien kamen aus Nutzerbeschwerden: Niemand wollte eine Webseite laden und sie beginnt lautstark Audio abzuspielen. Die Browser haben eine stille Vereinbarung getroffen.",
             "Die Regel ist einfach: Autoplay ist nur erlaubt, wenn das Video stummgeschaltet ist. Sobald der Nutzer mit der Seite interagiert hat (ein Klick, ein Tastendruck), darf man programmatisch abspielen."
           ]
-        }
+        },
+        "expandedText": "Browser blockieren Autoplay-Video mit Ton. Für Autoplay: muted hinzufügen -- video autoplay muted loop funktioniert überall. Für die Wiedergabe mit Ton: video.play() innerhalb eines Benutzer-Gesten-Handlers aufrufen (click, keydown).\n\nplaysinline ist auf iOS Safari erforderlich um Vollbild-Video zu verhindern -- immer für Inline-Video einschließen. loop wiederholt nahtlos -- für Hintergrund-Hero-Videos. Für barrierefreie Hintergrund-Videos: aria-hidden=true hinzufügen und prefers-reduced-motion unterstützen: @media (prefers-reduced-motion: reduce) { video { display: none; } }."
       }
     ],
     "cheatSheet": {

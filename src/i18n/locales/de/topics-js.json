@@ -1445,7 +1445,8 @@
             "Ohne Sicherheitsnetz bringt eine unbehandelte Ablehnung dein Programm zum Absturz (oder verschwindet lautlos in manchen Umgebungen).",
             "Wichtig: fetch() lehnt die Promise nur bei Netzwerkfehlern ab. Eine 404- oder 500-Antwort wird trotzdem aufgelöst — du musst response.ok manuell prüfen."
           ]
-        }
+        },
+        "expandedText": "fetch() lehnt Promises nur bei Netzwerkfehlern ab -- eine 404- oder 500-Antwort löst das Promise trotzdem auf. Prüfe immer response.ok bevor du den Body parsierst, sonst verarbeitest du Fehlerantworten als gültige Daten.\n\nWickle den gesamten async-Funktions-Body in try/catch für globale Fehlerbehandlung. Der catch-Block fängt alle Fehler: Netzwerk-Timeout, manuell geworfene Fehler, JSON-Parse-Fehler. Lass Promise-Rejections nie unbehandelt -- sie erscheinen als Warnungen im Browser und crashen Node.js-Prozesse."
       }
     ],
     "commonErrors": [
@@ -1837,7 +1838,8 @@
             "Eine Schere ist eine Schere. Ob der Griff rot oder blau ist — sie macht dieselben Schnitte.",
             "Beide haben upper/toUpperCase, strip/trim, split, replace. Python nutzt f-Strings; JS verwendet Template-Literale (Backticks)."
           ]
-        }
+        },
+        "expandedText": "Beide Sprachen behandeln Strings als unveränderlich -- jede Methode gibt einen neuen String zurück, ohne das Original zu verändern. Python: 'hello'.upper() gibt 'HELLO', '  hi  '.strip() gibt 'hi'. JavaScript: 'hello'.toUpperCase(), '  hi  '.trim() -- fast dieselben Operationen, leicht abweichende Namen.\n\nInterpolation unterscheidet sich: Python f-Strings f'Hi {name}' und JS Template-Literale Hi ${name} sind beide lesbar. JS Template-Literale unterstützen auch mehrzeilige Strings nativ. JS .replace() akzeptiert Regex oder String; Python .replace() ist nur für Strings -- für Regex-Ersetzungen verwendet Python re.sub()."
       },
       {
         "animationStep": 8,
@@ -1849,7 +1851,8 @@
             "Beide haben dasselbe essentielle Werkzeugset: hinzufügen, entfernen, suchen, sortieren. Die Methodennamen unterscheiden sich leicht.",
             "Python: `append()`, `pop()`, List Comprehensions. JS: `push()`, `pop()`, `.map()/.filter()/.reduce()`. Beide haben `sort()`, `reverse()`, `includes()`/`in`."
           ]
-        }
+        },
+        "expandedText": "Python-Listen und JS-Arrays teilen dieselben Kernoperationen: append/push, pop, sort, slice, length. Wichtiger Unterschied: JavaScript .sort() nutzt standardmäßig lexikografische Reihenfolge -- [10, 2, 1].sort() ergibt [1, 10, 2]. Immer einen Komparator angeben: .sort((a, b) => a - b) für aufsteigende Zahlen.\n\nPython hat .insert(index, value) und .remove(value); JS nutzt .splice(). Python List Comprehensions [x*2 for x in nums] vs JS .map(x => x*2) -- funktional gleichwertig, stilistisch unterschiedlich. Beide unterstützen Länge und indexbasierten Zugriff."
       },
       {
         "animationStep": 9,
@@ -1860,7 +1863,8 @@
           "text": [
             "Ein Fließband: Jedes Element transformieren (map), Ausschuss entfernen (filter), zu einem Gesamtwert zusammenführen (reduce)."
           ]
-        }
+        },
+        "expandedText": "JavaScript Array-Methoden map, filter, find, some, every, reduce sind verkettbar und geben immer neue Arrays zurück -- sie mutieren das Original nie. Python-Äquivalente: List Comprehensions werden meistens bevorzugt. any() und all() sind eingebaute Funktionen in Python; .some() und .every() sind Array-Methoden in JS.\n\n.find() in JS gibt undefined zurück wenn nichts gefunden -- Python nutzt next((x for x in items if cond), default). .reduce() in JS braucht einen Startwert als zweites Argument. Verketten in JS ist idiomatisch: items.filter(x => x > 0).map(x => x * 2) vs Python [x*2 for x in items if x > 0]."
       },
       {
         "animationStep": 10,
@@ -1872,7 +1876,8 @@
             "Beide Küchen haben Feuerlöscher. Einer sagt \"extincteur\", der andere \"fire extinguisher\". Im Notfall ist die Aktion dieselbe.",
             "Python: `try/except Exception as e`. JavaScript: `try/catch (e)`. Beide haben `finally`. Python verwendet spezifische Exception-Klassen; JS wirft jeden Wert (typischerweise eine Error-Instanz)."
           ]
-        }
+        },
+        "expandedText": "Python nutzt try/except ExceptionType as e: -- du kannst spezifische Exception-Typen abfangen und die else-Klausel läuft nur wenn kein Fehler aufgetreten ist. JavaScript nutzt try/catch (e) -- keine else-Klausel und kein typisiertes catch. Für spezifische Fehlertypen in JS: e instanceof TypeError oder e.message im catch-Block prüfen.\n\nBeide haben finally, das bedingungslos läuft -- für Cleanup wie Verbindungen schließen. Python raise wirft die aktuelle Exception erneut; JS nutzt throw. Leere catch-Blöcke die Fehler schlucken immer vermeiden -- immer loggen oder neu werfen."
       }
     ],
     "cheatSheet": {

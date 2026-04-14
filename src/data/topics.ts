@@ -816,6 +816,9 @@ export const TOPICS: Topic[] = [
             icon: '🌐',
             heading: 'HTML is just text',
             text: 'When your browser receives an HTML file, it sees plain text — tags, attributes, content. The DOM is what the browser builds from that text.',
+            expandedText: 'The browser receives your HTML file as a plain text string over HTTP. Before any JavaScript runs, the browser HTML parser reads this text character by character and constructs the DOM (Document Object Model) -- a live, in-memory tree of JavaScript objects representing each element, attribute, and text node.
+
+The DOM is not HTML -- it is the browser interpretation of it. Malformed HTML (unclosed tags, missing tbody) gets corrected silently. The DOM can be modified via JavaScript, and those changes are reflected in the rendered page immediately -- but the original HTML file on the server is never changed.',
             codeExample: '<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Hello</h1>\n  </body>\n</html>',
             language: 'html',
             analogy: {
@@ -832,6 +835,9 @@ export const TOPICS: Topic[] = [
             icon: '🎯',
             heading: 'Parsing starts at the top',
             text: 'The browser reads your HTML top to bottom, creating a node for each element. The `<html>` tag becomes the root.',
+            expandedText: 'The parser reads HTML top-to-bottom, left-to-right. When it encounters html, it creates the root node. Scripts in head without defer or async block parsing -- the browser stops building the DOM until the script downloads and executes. This is why script tags are traditionally placed at the end of body or given defer.
+
+defer preserves execution order and runs scripts after parsing is complete. async downloads in parallel and runs immediately when ready, potentially out of order. For modern projects, type=module scripts are defer by default. Place performance-critical inline scripts at the bottom; use defer for everything else.',
             analogy: {
               icon: '🔝',
               title: 'Step 2 — Top-down parsing: reading a recipe',
@@ -846,6 +852,9 @@ export const TOPICS: Topic[] = [
             icon: '✏️',
             heading: 'Children branch outward',
             text: 'Nested elements become child nodes. The tree grows as each tag is parsed.',
+            expandedText: 'Each HTML element becomes a node in the DOM tree. Nesting creates parent-child relationships: body is the parent of header and main; main is the parent of section elements inside it. The tree structure maps directly to the visual hierarchy on screen.
+
+DOM traversal methods: parentElement, children (only element nodes), childNodes (includes text nodes), firstElementChild, lastElementChild, nextElementSibling, previousElementSibling. Every modification to the tree -- adding, removing, or reordering nodes -- triggers a re-render of affected parts of the page.',
             analogy: {
               icon: '🌳',
               title: 'Step 3 — Children branch outward: a family tree',
@@ -860,6 +869,9 @@ export const TOPICS: Topic[] = [
             icon: '⚡',
             heading: 'Text is a node too',
             text: 'Every piece of text content between tags is its own text node in the tree.',
+            expandedText: 'In the DOM, the text between HTML tags is not just a property -- it is a separate Text node that is a child of its parent element. A p tag containing Hello and a strong tag contains three child nodes: a text node Hello, the strong element, and another text node. Whitespace between tags also creates text nodes.
+
+element.textContent returns the text of all descendant text nodes combined. element.childNodes shows all node types including text nodes (nodeType === 3). For most manipulation tasks, use element.textContent or set content via safe DOM methods rather than navigating text nodes directly.',
             analogy: {
               icon: '📝',
               title: 'Step 4 — Text nodes: the actual words on the page',
@@ -874,6 +886,9 @@ export const TOPICS: Topic[] = [
             icon: '🔍',
             heading: 'Selecting elements',
             text: '`querySelector()` returns the first element matching a CSS selector. `querySelectorAll()` returns all matches as a NodeList. These are the standard way to find elements. Older `getElementById()` and `getElementsByClassName()` still work but return live HTMLCollections.',
+            expandedText: 'document.querySelector(selector) returns the first matching element or null. document.querySelectorAll(selector) returns a static NodeList of all matches -- iterate with forEach. Both accept any valid CSS selector: \'#hero\', \'.card\', \'[data-id=42]\', \'header nav > a\'.
+
+Performance note: getElementById is marginally faster for ID lookups (direct hash map access). querySelector is convenient and flexible. Cache references -- do not call querySelector in a loop or on every event. NodeList from querySelectorAll is not a live list (unlike getElementsByClassName which is live) -- it will not update if the DOM changes after the call.',
             codeExample: '// First match\nconst btn = document.querySelector("#submit")\nconst first = document.querySelector(".card")\n\n// All matches → NodeList (static snapshot)\nconst allCards = document.querySelectorAll(".card")\n\n// Convert to array for .map(), .filter()\nconst cards = Array.from(allCards)',
             language: 'javascript',
             analogy: {
@@ -890,6 +905,9 @@ export const TOPICS: Topic[] = [
             icon: '✏️',
             heading: 'Reading and modifying content',
             text: '`textContent` safely reads and writes plain text — no HTML parsing, no security risk. Always prefer `textContent` for user-supplied strings. `setAttribute()` and `classList` modify attributes and CSS classes.',
+            expandedText: 'textContent gets/sets the raw text of an element and all its descendants. Setting it replaces all children with a single text node -- HTML tags in the string are escaped, not interpreted, making it safe for user-provided content. Always prefer textContent over setting markup directly when inserting plain text.
+
+For inserting markup, use safe DOM creation methods: createElement, appendChild, textContent on child nodes. The insertAdjacentHTML method inserts adjacent HTML without replacing children -- useful for appending content. innerText is similar to textContent but respects CSS visibility and triggers layout -- slower, use textContent for data manipulation.',
             codeExample: 'const el = document.querySelector(".title")\n\n// Safe: plain text\nel.textContent = "New title"\n\n// CSS classes\nel.classList.add("highlighted")\nel.classList.remove("hidden")\nel.classList.toggle("active")\n\n// Attributes\nel.setAttribute("aria-label", "Main title")\nel.getAttribute("id") // read',
             language: 'javascript',
             analogy: {
@@ -906,6 +924,9 @@ export const TOPICS: Topic[] = [
             icon: '🌱',
             heading: 'Creating and inserting elements',
             text: '`document.createElement()` creates a new element in memory. Set its properties, then insert it with `appendChild()` or `insertBefore()`. Modern code often uses `element.append()` for simpler insertion. `element.remove()` deletes from the DOM.',
+            expandedText: 'document.createElement(\'div\') creates a new element in memory -- not yet in the DOM. Set properties before inserting for performance (only one reflow). element.appendChild(newEl) appends at the end of children. parent.insertBefore(newEl, referenceEl) inserts before a specific child.
+
+Modern alternatives: element.append(node, \'text\') accepts multiple nodes and strings. element.prepend() inserts at the beginning. referenceEl.before() and referenceEl.after() insert as siblings. element.replaceWith(newEl) replaces the element. For bulk insertions, use DocumentFragment -- build the whole structure off-DOM, then insert once to minimize reflows.',
             codeExample: 'const li = document.createElement("li")\nli.textContent = "New item"\nli.classList.add("todo-item")\n\n// Append to end of list\nconst ul = document.querySelector("ul")\nul.appendChild(li)\n\n// Or modern shorthand\nul.append(li)\n\n// Remove\nli.remove()',
             language: 'javascript',
             analogy: {
@@ -922,6 +943,9 @@ export const TOPICS: Topic[] = [
             icon: '⚡',
             heading: 'Events',
             text: 'Events let you react to user actions. `addEventListener` attaches a handler function to an element. The `event` object contains details about what happened (which key, where the mouse clicked, the form data). Use `event.preventDefault()` to block default browser behavior.',
+            expandedText: 'addEventListener(event, handler) attaches a function to be called when the event fires. Always prefer this over onclick attributes or properties -- it supports multiple handlers on the same event. removeEventListener requires the exact same function reference -- arrow functions create new references each time, so store handlers in variables.
+
+Event delegation: instead of attaching listeners to many children, attach one listener to the parent and check event.target. More performant for dynamic lists. event.preventDefault() stops the browser default action (form submit, link navigation). event.stopPropagation() stops the event from bubbling to parent elements.',
             codeExample: 'const btn = document.querySelector("#save")\n\nbtn.addEventListener("click", (event) => {\n  console.log("Button clicked!")\n  event.preventDefault() // stop form submit\n})\n\n// Keyboard events\ndocument.addEventListener("keydown", (e) => {\n  if (e.key === "Escape") closeModal()\n})',
             language: 'javascript',
             analogy: {
@@ -1216,6 +1240,9 @@ export const TOPICS: Topic[] = [
             icon: '📋',
             heading: 'The <form> element',
             text: 'A `<form>` wraps all input controls and submits data to a server. The `action` attribute sets the URL; `method` sets `GET` or `POST`.',
+            expandedText: 'The form element groups controls and defines submission behavior. action sets the URL that receives the data (defaults to current page). method=get appends data as URL query params (visible, bookmarkable, limited size). method=post sends data in the request body (hidden, no size limit -- use for passwords and large data).
+
+Without JavaScript, forms submit by default on button click, causing a page reload. event.preventDefault() in a submit listener intercepts this for SPA behavior. The name attribute on each input is the key in the submitted data -- inputs without name are excluded. enctype=multipart/form-data is required for file uploads.',
             codeExample: '<form action="/submit" method="post">\n  <!-- inputs go here -->\n</form>',
             language: 'html',
             analogy: {
@@ -1232,6 +1259,9 @@ export const TOPICS: Topic[] = [
             icon: '🖊️',
             heading: '<label> and <input>',
             text: 'Every input should have a label. Connecting them with `for`/`id` makes the label clickable and improves accessibility.',
+            expandedText: 'Every input should have an associated label. The for attribute on label must match the id on input. This makes the label clickable (expands click target) and tells screen readers what the input is for. The alternative wrapping label also works without for/id.
+
+Common input attributes: placeholder (shown when empty -- not a substitute for labels), value (initial value), name (key for form submission), required, disabled, readonly. disabled fields are excluded from form submission; readonly fields are included. Always use autocomplete attributes (email, username, current-password) for browser autofill support.',
             codeExample: '<label for="email">Email</label>\n<input type="text" id="email" name="email" placeholder="you@example.com">',
             language: 'html',
             analogy: {
@@ -1248,6 +1278,9 @@ export const TOPICS: Topic[] = [
             icon: '🏷️',
             heading: '<select> and <option>',
             text: '`<select>` creates a dropdown. Each `<option>` is a choice. The `value` attribute is what gets submitted.',
+            expandedText: 'select creates a dropdown list. Each option provides a value (submitted) and a display label (shown to user). If value is omitted, the text content is submitted. optgroup groups related options. The multiple attribute allows multi-selection (renders as a list box, not dropdown).
+
+The initially selected option: use the selected attribute or set select.value in JavaScript. For accessible custom dropdowns, use role=combobox or role=listbox with full ARIA attributes -- building accessible custom selects is complex, prefer native select when possible. datalist provides autocomplete suggestions for input while allowing free-text entry.',
             codeExample: '<label for="role">Role</label>\n<select id="role" name="role">\n  <option value="dev">Developer</option>\n  <option value="design">Designer</option>\n</select>',
             language: 'html',
             analogy: {
@@ -1264,6 +1297,9 @@ export const TOPICS: Topic[] = [
             icon: '✅',
             heading: 'Checkbox and radio',
             text: 'Checkboxes allow multiple selections. Radio buttons in the same group allow only one selection.',
+            expandedText: 'Checkboxes are independent -- each can be checked or unchecked separately. Submit the value attribute when checked; nothing when unchecked. Group related checkboxes with the same name -- multiple selections send multiple key-value pairs. Radio buttons must share the same name to form a group -- only one can be selected at a time.
+
+Checking whether a checkbox is checked: input.checked (JavaScript property). Pre-check with the checked attribute in HTML. The :checked CSS pseudo-class styles checked state -- enables CSS-only toggle patterns without JavaScript.',
             codeExample: '<!-- Checkbox -->\n<input type="checkbox" id="agree" name="agree">\n<label for="agree">I agree</label>\n\n<!-- Radio -->\n<input type="radio" name="plan" value="free"> Free\n<input type="radio" name="plan" value="pro"> Pro',
             language: 'html',
             analogy: {
@@ -1280,6 +1316,9 @@ export const TOPICS: Topic[] = [
             icon: '📋',
             heading: '<button type="submit">',
             text: 'The submit button sends the form. `type="submit"` is the default. `type="button"` prevents submission — useful for JavaScript actions.',
+            expandedText: 'button type=submit triggers form submission. type=reset clears all fields to default values. type=button does nothing by default -- use with JavaScript. Inside a form, a button without an explicit type defaults to type=submit -- which can cause unexpected form submissions.
+
+Disable a submit button during processing: button.disabled = true to prevent double-submits. Show loading state: update button.textContent or add a spinner. Never use a tags styled as buttons for form actions -- they are links, not buttons, and lack proper keyboard and semantic behavior. Use button for actions, a for navigation.',
             codeExample: '<button type="submit">Create Account</button>\n<button type="button" onclick="validate()">Check</button>',
             language: 'html',
             analogy: {
@@ -1296,6 +1335,9 @@ export const TOPICS: Topic[] = [
             icon: '✅',
             heading: 'HTML5 built-in validation',
             text: 'Add `required`, `minlength`, `maxlength`, `pattern`, `min`, `max` directly in HTML — the browser validates before submit, no JavaScript needed. `required` alone blocks empty submission.',
+            expandedText: 'HTML5 validation attributes: required (must have a value), minlength/maxlength (character count), min/max (numeric range or date range), pattern (regex), type=email (validates email format). The browser shows native error messages and prevents submission if validation fails.
+
+Native validation fires on submit, not on each keystroke. novalidate on form disables browser validation (use when implementing custom validation). Style invalid fields with :invalid and :valid pseudo-classes. Note: HTML validation is a UX convenience -- never rely on it for security. Always validate on the server; client-side validation is easily bypassed.',
             codeExample: `<input\n  type="email"\n  required\n  placeholder="you@example.com"\n>\n<input\n  type="password"\n  required\n  minlength="8"\n  pattern="(?=.*\\d)(?=.*[a-z]).{8,}"\n>`,
             language: 'html',
             analogy: {
@@ -1312,6 +1354,9 @@ export const TOPICS: Topic[] = [
             icon: '✅',
             heading: 'Constraint validation API',
             text: 'For custom error messages or real-time feedback, use the Constraint Validation API. `setCustomValidity()` overrides the browser message. `checkValidity()` returns `true`/`false` without submitting.',
+            expandedText: 'The Constraint Validation API gives you programmatic control: input.validity is a ValidityState object with boolean flags (valueMissing, typeMismatch, patternMismatch, tooShort, tooLong). input.setCustomValidity(message) sets a custom error that blocks submission; an empty string clears it. input.reportValidity() shows the browser native tooltip for the current error.
+
+For real-time validation: listen to input or blur events, check input.validity, and update a sibling error span with the message. Use aria-describedby to link the error message to the input -- ensures screen readers announce the error when the field is focused.',
             codeExample: `const input = document.querySelector('#email')\n\n// Custom message\ninput.setCustomValidity('Must be a company email')\n\n// Real-time check\ninput.addEventListener('input', () => {\n  if (input.validity.valid) {\n    input.setCustomValidity('')\n  }\n})`,
             language: 'javascript',
             analogy: {
@@ -1328,6 +1373,9 @@ export const TOPICS: Topic[] = [
             icon: '🗂️',
             heading: 'fieldset and legend',
             text: '`<fieldset>` groups related inputs. `<legend>` labels the group. Screen readers read the legend before each input in the group, providing context. This is especially important for radio button groups and checkbox groups where each input makes no sense without the group label.',
+            expandedText: 'fieldset groups related form controls visually (with a border) and semantically. legend is the label for the group -- screen readers prepend it to each control label: Payment method, Visa radio button. Always use fieldset + legend for groups of radio buttons and checkboxes.
+
+fieldset disabled disables all controls inside it at once -- useful for showing read-only sections of a form. The fieldset native styling (inset border, default legend positioning) can be reset with border: none; padding: 0; margin: 0 -- then restyle with CSS. Do not avoid fieldsets due to default styling -- reset it and use them for semantic correctness.',
             codeExample: '<fieldset>\n  <legend>Preferred contact method</legend>\n\n  <input type="radio" name="contact" id="email-radio" value="email">\n  <label for="email-radio">Email</label>\n\n  <input type="radio" name="contact" id="phone-radio" value="phone">\n  <label for="phone-radio">Phone</label>\n\n  <input type="radio" name="contact" id="post-radio" value="post">\n  <label for="post-radio">Post</label>\n</fieldset>',
             language: 'html',
             analogy: {
@@ -1344,6 +1392,9 @@ export const TOPICS: Topic[] = [
             icon: '📅',
             heading: 'Specialized input types',
             text: 'HTML5 added many `<input>` types beyond text: `date` shows a date picker, `color` shows a color wheel, `range` renders a slider, `number` restricts to numbers with optional min/max/step, `file` lets users upload files. Each type gets native browser UI and validation for free.',
+            expandedText: 'HTML5 added specialized input types that trigger native browser UI: date/time/datetime-local/month/week show pickers, color shows a color chooser, range shows a slider, number shows a numeric spinner. Browsers that do not support the type fall back to type=text -- always include a pattern fallback for critical validation.
+
+Mobile browsers show appropriate keyboards based on type: tel shows a numeric keypad, email shows a keyboard with @, url shows a URL keyboard. type=search adds a clear button. type=file opens the file picker; multiple allows several files; accept filters by MIME type or extension. type=hidden sends data without UI -- use for tokens or metadata.',
             codeExample: '<input type="date" name="dob" min="1900-01-01">\n<input type="color" name="brand-color" value="#3b82f6">\n<input type="range" name="volume" min="0" max="100" step="5">\n<input type="number" name="quantity" min="1" max="99">\n<input type="file" name="avatar" accept="image/*">',
             language: 'html',
             analogy: {
@@ -1445,6 +1496,9 @@ export const TOPICS: Topic[] = [
             icon: '♿',
             heading: 'Who needs accessibility?',
             text: "About 15% of people have a disability. Screen reader users navigate by headings and landmarks. Keyboard users can't use a mouse. Color-blind users need contrast. Semantic HTML gives you most of this for free — ARIA fills the gaps.",
+            expandedText: 'About 15% of people have a disability -- visual, motor, cognitive, or auditory. Screen reader users navigate by headings and landmarks. Keyboard users (including power users and people with motor impairments) rely on focus order and keyboard shortcuts. Low-vision users may use high contrast mode or zoom up to 400%.
+
+Accessibility is not a separate feature -- it is baked into HTML semantics. button is keyboard-focusable by default; a div with onclick is not. img with alt text communicates meaning to screen readers; a CSS background image does not. Writing semantic HTML correctly solves most accessibility requirements before any ARIA is needed.',
             codeExample: `<!-- Screen readers announce this correctly -->\n<button type="button">Delete item</button>\n\n<!-- This has no semantics — avoid it -->\n<div onclick="deleteItem()">Delete item</div>`,
             language: 'html',
             analogy: {
@@ -1461,6 +1515,9 @@ export const TOPICS: Topic[] = [
             icon: '🏷️',
             heading: 'aria-label and aria-labelledby',
             text: "When visible text isn't enough, `aria-label` provides an accessible name. Icons-only buttons, close buttons, and form inputs all need descriptive labels.",
+            expandedText: 'aria-label provides an accessible name directly on the element -- it overrides visible text for screen readers. Use when there is no visible text: icon buttons (button with aria-label=\'Close\'). aria-labelledby references another element ID as the label -- use when the label text already exists in the DOM. Multiple IDs can be combined.
+
+aria-describedby adds supplementary description (not the primary name) -- use for error messages, helper text, hints. Screen readers announce the element name then, after a pause, the description. Never duplicate aria-label and visible text -- update both or they diverge. aria-hidden=\'true\' hides decorative elements (icons, dividers) from the accessibility tree entirely.',
             codeExample: `<!-- Icon-only button needs aria-label -->\n<button aria-label="Close dialog">\n  <svg><!-- X icon --></svg>\n</button>\n\n<!-- Connect to visible label text -->\n<div id="section-heading">Search results</div>\n<ul aria-labelledby="section-heading">...</ul>`,
             language: 'html',
             analogy: {
@@ -1477,6 +1534,9 @@ export const TOPICS: Topic[] = [
             icon: '⌨️',
             heading: 'Focus management',
             text: "Keyboard users Tab through interactive elements. Focus must be visible — never remove `:focus` styles without replacing them. Use `:focus-visible` to show rings only for keyboard navigation, not clicks.",
+            expandedText: 'Keyboard users navigate with Tab (forward) and Shift+Tab (backward) through interactive elements. Focus must always be visible -- enhance the default outline: :focus-visible { outline: 3px solid #5b9cf5; outline-offset: 2px; }. :focus-visible only shows the focus ring for keyboard navigation, not on mouse click.
+
+Focus order should follow visual/logical reading order -- controlled by DOM order, not CSS position. Do not use tabindex > 0 (breaks natural order). tabindex=0 makes non-interactive elements focusable (use sparingly). tabindex=-1 makes elements programmatically focusable via element.focus() but not tab-reachable -- useful for modals, skip links, and focus management in SPAs.',
             codeExample: `/* Never do this */\n* { outline: none; }\n\n/* Instead: custom focus ring */\n.btn:focus-visible {\n  outline: none;\n  box-shadow: 0 0 0 3px #3b82f666;\n}`,
             language: 'css',
             analogy: {
@@ -1510,6 +1570,9 @@ export const TOPICS: Topic[] = [
             icon: '🔍',
             heading: 'ARIA roles and live regions',
             text: "`role=` overrides the element's implicit role. ARIA live regions announce dynamic content changes to screen readers. `aria-live='polite'` waits for silence, `'assertive'` interrupts immediately.",
+            expandedText: 'ARIA role overrides the implicit role of an element: role=button on a div makes it announced as a button. But this does not add behavior -- keyboard event handling must be added manually. Prefer native elements: button over div with role=button. Use ARIA roles when you build custom widgets that have no native HTML equivalent.
+
+Live regions announce dynamic content changes without requiring focus. aria-live=polite waits for the user to finish before announcing. aria-live=assertive interrupts immediately (use sparingly -- for critical errors only). Shorthand roles: role=status (polite), role=alert (assertive). Use for: form validation messages, loading completions, chat messages, notification toasts.',
             codeExample: `<!-- Status message announced without focus -->\n<div\n  role="status"\n  aria-live="polite"\n  aria-atomic="true"\n>\n  3 results found\n</div>\n\n<!-- Alert: urgent message -->\n<div role="alert">\n  Form submission failed\n</div>`,
             language: 'html',
             analogy: {
@@ -1639,6 +1702,9 @@ export const TOPICS: Topic[] = [
             icon: '🖼️',
             heading: '<iframe> — page within a page',
             text: 'An `<iframe>` embeds another HTML document inside your page. YouTube embeds, Google Maps, and CodePen previews all use iframes. The embedded content runs in its own isolated browsing context.',
+            expandedText: 'iframe embeds another HTML document inside your page. The title attribute is required for accessibility -- screen readers announce it when the iframe receives focus. sandbox restricts what the embedded page can do: sandbox=\'allow-scripts allow-same-origin\' blocks forms, popups, and top-frame navigation.
+
+Security: cross-origin iframes cannot access your page JavaScript (same-origin policy). Your page cannot read the embedded page content either. allow=\'camera; microphone\' grants permissions to the embedded document. For SEO-important content (articles, products), avoid iframes -- search engines may not index them. Prefer iframes only for third-party embeds (maps, social widgets, payment forms).',
             codeExample: '<iframe\n  src="https://www.youtube.com/embed/dQw4w9WgXcQ"\n  width="560"\n  height="315"\n  title="Video title"\n  allowfullscreen\n></iframe>',
             language: 'html',
             analogy: {
@@ -1655,6 +1721,9 @@ export const TOPICS: Topic[] = [
             icon: '🎬',
             heading: '<video>',
             text: 'The `<video>` element embeds video natively. The `controls` attribute adds play/pause/volume UI. Include multiple `<source>` elements for browser compatibility — the browser picks the first format it supports.',
+            expandedText: 'video with src or with source children for multiple formats. controls adds native playback UI. autoplay muted allows autoplay (browsers block autoplay with sound). loop repeats indefinitely. preload=metadata downloads only video dimensions and duration upfront; preload=auto loads the whole file.
+
+For cross-browser compatibility, provide multiple formats: source with mp4 and source with webm. WebM is smaller but less universally supported; MP4 (H.264) works everywhere. poster attribute shows a still image before play. The track element adds subtitles and captions -- required for accessibility.',
             codeExample: '<video controls width="640" height="360">\n  <source src="video.mp4" type="video/mp4">\n  <source src="video.webm" type="video/webm">\n  Your browser does not support video.\n</video>',
             language: 'html',
             analogy: {
@@ -1671,6 +1740,9 @@ export const TOPICS: Topic[] = [
             icon: '🔊',
             heading: '<audio>',
             text: '`<audio>` works the same as `<video>` but for sound. The `controls` attribute adds a player. Without `controls`, the audio is invisible and plays only with JavaScript.',
+            expandedText: 'audio with src or with source children. controls adds native UI (play, pause, volume, progress). Without controls, the audio is invisible -- useful for background sound controlled via JavaScript. autoplay is blocked without muted; use play() from a user interaction event instead.
+
+Provide multiple formats for compatibility: MP3 (universal) and OGG or WebM for open formats. loop for background music. preload=none defers loading entirely -- good for optional sounds. Control playback: audio.volume = 0.5 (0-1), audio.playbackRate = 1.5 for speed. If the audio conveys important information, provide a transcript.',
             codeExample: '<audio controls>\n  <source src="podcast.mp3" type="audio/mpeg">\n  <source src="podcast.ogg" type="audio/ogg">\n  Your browser does not support audio.\n</audio>',
             language: 'html',
             analogy: {
@@ -1687,6 +1759,9 @@ export const TOPICS: Topic[] = [
             icon: '🪟',
             heading: '<picture> — responsive images',
             text: '`<picture>` serves different images based on screen size or format support. The browser picks the first matching `<source>`. The `<img>` fallback is always required — it\'s what actually renders the image.',
+            expandedText: 'picture gives the browser choices, and the browser picks the best: format (webp over jpg if supported) or size (serve a smaller image for small screens). source elements list alternatives with type (format) or media (condition). The img fallback is required and always last -- it is the source of truth for alt text and other attributes.
+
+srcset on img handles resolution switching: srcset=\'img-400.jpg 400w, img-800.jpg 800w\' -- the browser picks the most appropriate size based on device pixel ratio and layout width. sizes tells the browser how wide the image will actually render. Modern approach: serve WebP/AVIF with picture and combine with loading=lazy.',
             codeExample: '<picture>\n  <source media="(min-width: 800px)" srcset="large.webp" type="image/webp">\n  <source media="(min-width: 400px)" srcset="medium.jpg">\n  <img src="small.jpg" alt="A mountain landscape">\n</picture>',
             language: 'html',
             analogy: {
@@ -1703,6 +1778,9 @@ export const TOPICS: Topic[] = [
             icon: '🖼️',
             heading: '<code> and <pre>',
             text: '`<code>` displays inline code in monospace font. Wrap it in `<pre>` to preserve whitespace and newlines for multi-line snippets. This is how documentation sites, READMEs, and tech blogs show code examples.',
+            expandedText: 'code renders text in a monospace font and conveys semantic meaning: this is computer code. Use for inline code in prose. For multi-line code blocks, wrap in pre: pre with code inside -- pre preserves whitespace and line breaks, code provides the semantic meaning.
+
+Escape HTML entities in code examples: less-than becomes &lt;, ampersand becomes &amp;. Syntax highlighting libraries (Prism, Highlight.js, Shiki) add language classes to code and inject span wrappers for colors -- they do not affect semantics. samp is for program output; kbd is for keyboard input. Use these semantically -- they improve accessibility and allow targeted styling.',
             codeExample: '<p>Use the <code>console.log()</code> function.</p>\n\n<pre><code>function greet(name) {\n  return `Hello, ${name}!`\n}</code></pre>',
             language: 'html',
             analogy: {
@@ -1719,6 +1797,9 @@ export const TOPICS: Topic[] = [
             icon: '⚡',
             heading: 'loading="lazy" for images and iframes',
             text: 'The `loading="lazy"` attribute defers images and iframes until they near the viewport. The browser only fetches them when the user scrolls close — significantly reducing initial page load. Use `loading="eager"` (or omit it) for above-the-fold content that must load immediately.',
+            expandedText: 'loading=lazy defers loading images and iframes until they are near the viewport -- the browser decides the threshold (typically ~1 screen-height away). This reduces initial page load time significantly on image-heavy pages. loading=eager (default) loads immediately. Never lazy-load the LCP (Largest Contentful Paint) image -- it is above the fold and critical for performance.
+
+loading=lazy is now supported in all modern browsers without JavaScript polyfills. Combine with explicit width and height attributes to reserve space and prevent layout shifts (CLS). For below-the-fold images, lazy loading can reduce data usage by 50% or more on long pages.',
             codeExample: '<!-- Above the fold: load immediately -->\n<img src="hero.jpg" alt="Hero" loading="eager">\n\n<!-- Below the fold: defer until near viewport -->\n<img src="article-photo.jpg" alt="Article" loading="lazy">\n\n<!-- Lazy iframe (map, YouTube embed below fold) -->\n<iframe\n  src="https://maps.example.com/embed"\n  loading="lazy"\n  title="Store location map"\n></iframe>',
             language: 'html',
             analogy: {
@@ -1735,6 +1816,9 @@ export const TOPICS: Topic[] = [
             icon: '🎥',
             heading: 'Video autoplay rules',
             text: 'Browsers block autoplay video with sound by default. To autoplay, the video must be `muted`. Add `loop` for background videos, `playsinline` for iOS Safari (prevents fullscreen on mobile). For user-initiated autoplay (after a click), sound is allowed.',
+            expandedText: 'Browsers block autoplay video with sound to prevent unwanted noise. To autoplay: add muted -- video autoplay muted loop works universally. To play with sound, trigger video.play() inside a user gesture handler (click, keydown) -- not from DOMContentLoaded or setTimeout.
+
+playsinline is required on iOS Safari to prevent fullscreen video on mobile -- always include it for inline video. loop repeats seamlessly -- use for background hero videos. For accessible background video: add aria-hidden=true and support prefers-reduced-motion: @media (prefers-reduced-motion: reduce) { video { display: none; } }.',
             codeExample: '<!-- Background video loop (hero section) -->\n<video\n  autoplay\n  muted\n  loop\n  playsinline\n  preload="auto"\n>\n  <source src="bg-video.mp4" type="video/mp4">\n</video>\n\n<!-- User-triggered play with sound -->\n<video controls preload="none">\n  <source src="tutorial.mp4" type="video/mp4">\n</video>',
             language: 'html',
             analogy: {
@@ -2158,6 +2242,9 @@ export const TOPICS: Topic[] = [
             icon: '↔️',
             heading: 'Perfect centering',
             text: "The most searched CSS question: how do I center this? With flexbox it's two properties on the parent. `justify-content` centers on the main axis, `align-items` on the cross axis.",
+            expandedText: 'The classic centering solution: display: flex; justify-content: center; align-items: center on the container. justify-content aligns along the main axis (horizontal by default); align-items aligns along the cross axis (vertical by default). Together they center children in both directions.
+
+This replaces the old techniques of margin: auto (horizontal only), display: table-cell; vertical-align: middle (verbose), and the notorious negative margin + transform hack. For single-element centering in a full-page layout: min-height: 100vh; display: flex; justify-content: center; align-items: center on body. For centering text within a button: display: inline-flex keeps the button inline while centering its content.',
             codeExample: `.container {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  height: 100vh;\n}`,
             language: 'css',            analogy: {
               icon: '🎯',
@@ -2315,6 +2402,9 @@ export const TOPICS: Topic[] = [
             icon: '📱',
             heading: 'fr unit and auto-fit',
             text: '`fr` (fractional unit) fills remaining space proportionally. Combine with `repeat(auto-fill, minmax())` for grids that automatically adapt their column count.',
+            expandedText: 'The fr (fractional unit) distributes remaining space proportionally. grid-template-columns: 1fr 2fr 1fr creates three columns where the middle is twice as wide as the others. Unlike %, fr accounts for gap -- no manual gap subtraction needed.
+
+repeat(auto-fill, minmax(250px, 1fr)) creates a fully responsive grid: items are at least 250px wide, fill available space, and automatically add/remove columns as the container resizes -- with no media queries. auto-fill creates as many columns as fit (may leave empty columns); auto-fit collapses empty columns and stretches items. This pattern replaces most responsive grid media queries.',
             codeExample: `/* 3 equal columns */\ngrid-template-columns: 1fr 1fr 1fr;\n\n/* Auto-responsive cards */\ngrid-template-columns:\n  repeat(auto-fill, minmax(250px, 1fr));`,
             language: 'css',            analogy: {
               icon: '📏',
@@ -2504,6 +2594,9 @@ export const TOPICS: Topic[] = [
             icon: '✨',
             heading: 'Pseudo-elements — virtual sub-parts',
             text: 'Pseudo-elements style a part of an element that doesn\'t exist in the HTML. `::before` and `::after` inject generated content. `::first-line` and `::first-letter` target text. Always use `content: ""` with `::before`/`::after`.',
+            expandedText: 'Pseudo-elements create virtual sub-parts of an element that do not exist in the HTML but can be styled. ::before inserts content before the element content; ::after inserts after. The content property is required -- even content: \'\' for decorative use. They are rendered as inline boxes by default.
+
+Common uses: decorative icons without extra HTML, clearfix hacks (::after { content:\'\'; display:block; clear:both }), styled list markers, quote marks around blockquote. Pseudo-elements have the same specificity as the base selector. ::first-line and ::first-letter target the first line/character of block-level text -- useful for drop caps or typographic emphasis.',
             codeExample: 'p::first-line { font-weight: bold; }\n\n.card::before {\n  content: "";\n  display: block;\n  width: 4px;\n  background: #3b82f6;\n}\n\na::after { content: " →"; }',
             language: 'css',            analogy: {
               icon: '🎩',
@@ -2612,6 +2705,9 @@ export const TOPICS: Topic[] = [
             icon: '👻',
             heading: 'HEX codes',
             text: 'Six hex digits encode red, green, and blue channels (#RRGGBB). The most common format you\'ll see in designs. Shorthand: #RGB when each pair repeats.',
+            expandedText: 'HEX codes encode color as three two-digit hexadecimal numbers: #RRGGBB. Each channel (red, green, blue) ranges from 00 (none) to ff (full). #ff0000 = pure red, #000000 = black, #ffffff = white. The shorthand #RGB expands each digit: #f0c becomes #ff00cc.
+
+HEX supports an optional alpha channel as a fourth pair: #RRGGBBAA. #ff000080 is 50% transparent red. HEX is the most common format in design tools and copy-pasted values, but HSL is often more intuitive for adjusting brightness or saturation programmatically. Browsers accept all formats interchangeably.',
             codeExample: 'color: #ef4444;       /* red */\ncolor: #3b82f6;       /* blue */\ncolor: #fff;          /* white shorthand */',
             language: 'css',            analogy: {
               icon: '🔢',
@@ -2659,6 +2755,9 @@ export const TOPICS: Topic[] = [
             icon: '🎛️',
             heading: 'CSS Units',
             text: '`px` is absolute. `em` is relative to the parent\'s font-size. `rem` is relative to the root `<html>` font-size (usually 16px). `%` is relative to the parent\'s size. Use `rem` for font sizes, `px` for borders, `%` for widths.',
+            expandedText: 'px is an absolute unit -- 1px is 1 physical (or logical) pixel. em is relative to the current element font-size: 1.5em on a 16px element equals 24px. rem is relative to the root html font-size -- consistent throughout the page, making it the preferred unit for spacing and typography.
+
+% is relative to the parent container size -- useful for fluid widths. vw/vh are 1% of the viewport width/height respectively. ch equals the width of the 0 character -- great for sizing text inputs (e.g. width: 30ch). Rule of thumb: use rem for font sizes and spacing, % or fr for layouts, px only for borders, shadows, or when you need exact pixel control.',
             codeExample: 'font-size: 16px;    /* absolute */\npadding: 1rem;      /* 16px if root = 16px */\nwidth: 50%;         /* half of parent */\nmargin: 0.5em;      /* half of parent font-size */',
             language: 'css',            analogy: {
               icon: '📏',
@@ -2913,6 +3012,9 @@ export const TOPICS: Topic[] = [
             heading: 'background-color',
           icon: '🎨',
             text: 'The simplest background — a solid color fill. Accepts any CSS color value: named, hex, rgb, hsl.',
+            expandedText: 'background-color accepts any CSS color value -- named colors (red), hex (#ff0000), rgb(), hsl(), or transparent. It fills the element padding box (content + padding area) but not the margin. If a background-image is also set, background-color shows through where the image is transparent.
+
+For accessible design, always ensure sufficient contrast between background color and text (WCAG AA requires 4.5:1 for normal text). The background shorthand can set color and image together, but use separate properties when only changing one -- the shorthand resets all background sub-properties to their defaults.',
             codeExample: '.box {\n  background-color: #3b82f6;\n  /* or: background: #3b82f6; (shorthand) */\n}',
             language: 'css',            analogy: {
               icon: '🖼️',
@@ -2928,6 +3030,9 @@ export const TOPICS: Topic[] = [
             heading: 'background-image',
           icon: '🖼️',
             text: 'Load an image as a background using `url()`. The image doesn\'t affect the document flow — it\'s purely decorative. Always pair with a fallback `background-color`.',
+            expandedText: 'background-image: url(\'image.jpg\') loads an external image as a background. The image does not resize the element -- it fills (or tiles) within the existing dimensions. Unlike img, background images have no semantic meaning and are invisible to screen readers -- use img for meaningful images.
+
+Multiple background images stack: background-image: url(\'overlay.png\'), url(\'base.jpg\') -- the first listed is on top. Gradients count as images too: background-image: linear-gradient(...), url(\'texture.png\'). Background images load separately from HTML and may flash in -- consider using CSS variables or data URIs for critical backgrounds.',
             codeExample: '.hero {\n  background-image: url("photo.jpg");\n  background-color: #1e293b; /* fallback */\n}',
             language: 'css',            analogy: {
               icon: '🖼️',
@@ -2943,6 +3048,9 @@ export const TOPICS: Topic[] = [
             heading: 'repeat, position & size',
           icon: '📐',
             text: '`background-repeat` controls tiling. `background-position` sets origin. `background-size: cover` fills the container, `contain` fits within it.',
+            expandedText: 'background-repeat: repeat (default) tiles in both directions, no-repeat shows it once, repeat-x/repeat-y tile in one direction only. background-position takes keywords (center, top right) or coordinates (50% 50%, 20px 40px). Position 0 0 is top-left.
+
+background-size: cover scales the image to fill the container, cropping if needed -- the image never shrinks below the container. contain scales the image to fit entirely within the container, possibly leaving gaps. 100% 100% stretches the image to fill -- avoid this for photos (distorts aspect ratio). For hero images, background-size: cover; background-position: center is the standard pattern.',
             codeExample: '.hero {\n  background-image: url("photo.jpg");\n  background-repeat: no-repeat;\n  background-position: center;\n  background-size: cover;\n}',
             language: 'css',            analogy: {
               icon: '🗺️',
@@ -2958,6 +3066,9 @@ export const TOPICS: Topic[] = [
             heading: 'linear-gradient()',
           icon: '🌅',
             text: 'Gradients are generated images — no image file needed. `linear-gradient()` transitions between colors in a straight line. Specify the angle and two or more color stops.',
+            expandedText: 'linear-gradient(direction, color1, color2, ...) creates a gradient between two or more color stops. Direction: to right, to bottom right, or an angle like 45deg. Color stops can include a position: linear-gradient(to right, red 0%, blue 50%, green 100%). The generated image tiles like a background image.
+
+Hard stops create sharp color boundaries: linear-gradient(to right, red 50%, blue 50%) is a solid split -- no fade. You can repeat gradients with repeating-linear-gradient() for stripes and patterns. Gradients stack like images -- combine a semi-transparent gradient with a photo to create a darkening overlay.',
             codeExample: 'background: linear-gradient(135deg, #6366f1, #ec4899);\nbackground: linear-gradient(to right, #1e293b, #3b82f6 50%, #6366f1);',
             language: 'css',            analogy: {
               icon: '🌅',
@@ -2973,6 +3084,9 @@ export const TOPICS: Topic[] = [
             heading: 'radial-gradient()',
           icon: '🌟',
             text: '`radial-gradient()` radiates from a center point outward. Great for spotlight effects and subtle depth. Combine with transparency for overlays.',
+            expandedText: 'radial-gradient(shape size at position, color1, color2) radiates from a center point. Shape: circle or ellipse. Size keywords: closest-side, farthest-corner (default). Position: at center, at 30% 70%. Example: radial-gradient(circle at 30% 30%, white, transparent) creates a soft spotlight.
+
+Common use cases: subtle depth/shadow effects on cards, spotlight highlights, glowing button effects. conic-gradient() is a related type that rotates around the center -- useful for pie charts and color wheels. All gradient types are performance-friendly as they are generated by the GPU without extra HTTP requests.',
             codeExample: 'background: radial-gradient(circle, #6366f1, #0f172a);\nbackground: radial-gradient(ellipse at top left, #6366f1 0%, transparent 60%);',
             language: 'css',            analogy: {
               icon: '💡',
@@ -3363,6 +3477,9 @@ export const TOPICS: Topic[] = [
             icon: '📦',
             heading: 'Block flow',
             text: 'Block elements stack vertically — each one starts on a new line and stretches to fill available width. div, p, h1–h6, and section are block elements by default.',
+            expandedText: 'Block elements occupy the full available width by default and stack vertically -- each starts on a new line. div, p, h1-h6, section are all block by default. Width, height, margin, and padding all apply normally.
+
+Block flow is the browser default layout algorithm. Margins between block elements collapse -- the larger of two adjacent vertical margins wins, not their sum. This is intentional for readable text: two stacked paragraphs with margin: 1em get 1em gap, not 2em. Horizontal margins never collapse. Understanding block flow is essential before learning Flexbox and Grid.',
             codeExample: 'div { display: block; } /* default */\n/* Each div starts on its own line */',
             language: 'css',            analogy: {
               icon: '📦',
@@ -3378,6 +3495,9 @@ export const TOPICS: Topic[] = [
             icon: '🧱',
             heading: 'display: inline',
             text: '`display: inline` elements sit side by side in the text flow. They only take up as much width as their content. You can\'t set width or height on inline elements.',
+            expandedText: 'display: inline elements flow like words in a sentence -- they sit side-by-side and wrap to the next line. They ignore width, height, margin-top, and margin-bottom. Only horizontal margins and padding apply visually.
+
+Inline elements are meant for text-level styling: span, a, strong, em. Giving an inline element display: block (or flex/grid) converts it to block behavior. The gap between inline elements in HTML is caused by whitespace in source code -- a quirk that Flexbox and Grid eliminate entirely.',
             codeExample: 'span { display: inline; } /* default */\na, strong, em { display: inline; }',
             language: 'css',            analogy: {
               icon: '🔤',
@@ -3393,6 +3513,9 @@ export const TOPICS: Topic[] = [
             icon: '📌',
             heading: 'display: inline-block',
             text: '`display: inline-block` — the best of both worlds. Sits inline like text, but accepts width, height, padding, and margin like a block.',
+            expandedText: 'display: inline-block behaves inline (no forced line break, sits in text flow) but respects width, height, margin-top, margin-bottom, and all padding. It is the middle ground between inline and block. Historically used for navigation menus and button layouts.
+
+Today, inline-block is largely replaced by Flexbox for layouts, but it remains useful for: inline buttons that need padding, centering icons next to text, and making img respond to vertical-align. The whitespace-gap problem (extra space between inline-block elements from HTML whitespace) is solved by removing whitespace in HTML, setting font-size: 0 on the parent, or just using Flexbox instead.',
             codeExample: '.badge {\n  display: inline-block;\n  width: 80px;\n  padding: 4px 12px;\n}',
             language: 'css',            analogy: {
               icon: '🍱',
@@ -3408,6 +3531,9 @@ export const TOPICS: Topic[] = [
             icon: '🖇️',
             heading: 'position: relative',
             text: 'The element stays in the normal flow but can be nudged using `top`, `right`, `bottom`, `left`. The space it would have occupied is preserved. Commonly used as a positioning anchor for absolute children.',
+            expandedText: 'position: relative keeps the element in the normal document flow -- other elements still see it in its original position. The top/right/bottom/left offsets move it visually without affecting surrounding layout. Crucially, position: relative creates a positioning context for absolutely-positioned children.
+
+Common pattern: a parent has position: relative with no offsets (just to create the context), and a child has position: absolute to position within the parent. Without a relative parent, absolute children position relative to the viewport or nearest positioned ancestor. z-index only works on positioned elements (relative, absolute, fixed, sticky).',
             codeExample: '.nudged {\n  position: relative;\n  top: 10px;   /* moves down 10px */\n  left: 20px;  /* moves right 20px */\n}',
             language: 'css',            analogy: {
               icon: '📌',
@@ -3423,6 +3549,9 @@ export const TOPICS: Topic[] = [
             icon: '🗂️',
             heading: 'position: absolute',
             text: 'Removes the element from the normal flow — other elements ignore it. Positions relative to the nearest ancestor with `position: relative` (or the viewport if none). Essential for tooltips, dropdowns, and overlays.',
+            expandedText: 'position: absolute removes the element from normal flow -- no space is reserved for it. It positions relative to the nearest ancestor with position set to anything other than static. If none exists, it positions relative to the initial containing block (the viewport).
+
+Common uses: tooltips, dropdown menus, badges/counters over avatars, close buttons in modals. Always ensure the intended parent has position: relative -- a missing positioning context is one of the most common CSS bugs. position: fixed works like absolute but always positions relative to the viewport, staying visible while scrolling. position: sticky is a hybrid: scrolls normally until it hits a threshold, then sticks.',
             codeExample: '.parent { position: relative; }\n\n.tooltip {\n  position: absolute;\n  top: 100%;\n  left: 0;\n  /* anchored to .parent corner */\n}',
             language: 'css',            analogy: {
               icon: '🪟',
@@ -3720,6 +3849,9 @@ export const TOPICS: Topic[] = [
             heading: 'border-radius',
           icon: '⭕',
             text: 'Round any element\'s corners with border-radius. 50% on a square element creates a perfect circle — great for avatars.',
+            expandedText: 'border-radius rounds element corners. A single value rounds all four corners equally: border-radius: 8px. Individual corners: border-top-left-radius: 4px. The shorthand accepts 1-4 values (TL, TR, BR, BL). border-radius: 50% on a square creates a perfect circle.
+
+You can create elliptical corners with the slash syntax: border-radius: 50px / 20px (horizontal/vertical radii). Border-radius clips any background, border, and box-shadow to the rounded shape. overflow: hidden plus border-radius on a parent clips child images cleanly -- useful for avatar cards. border-radius: 100vmax on a rectangular element creates a pill shape regardless of dimensions.',
             codeExample: '.card-image { border-radius: 12px; }\n.avatar {\n  border-radius: 50%;\n  width: 64px;\n  height: 64px;\n  object-fit: cover;\n}',
             language: 'css',            analogy: {
               icon: '🌑',
@@ -3735,6 +3867,9 @@ export const TOPICS: Topic[] = [
             heading: 'aspect-ratio',
           icon: '📐',
             text: '`aspect-ratio` locks a container\'s proportions. The image fills it with `object-fit: cover`. This prevents layout shift while images load.',
+            expandedText: 'aspect-ratio: 16 / 9 locks the ratio between width and height. If you set a width, the height is calculated automatically to maintain the ratio -- and vice versa. Before this property existed, developers used the padding-top hack (padding-top: 56.25% for 16:9) which is now obsolete.
+
+Essential for responsive media: images, videos, iframes and map embeds should maintain their ratio as the container resizes. Combine with object-fit: cover on img or video to fill the container without distortion. aspect-ratio: 1 creates a square. An iframe for YouTube needs width: 100%; aspect-ratio: 16 / 9 to be fully responsive.',
             codeExample: '.card-image {\n  aspect-ratio: 16 / 9; /* widescreen */\n  width: 100%;\n  object-fit: cover;\n}\n\n.square { aspect-ratio: 1; }',
             language: 'css',            analogy: {
               icon: '🌫️',
@@ -3992,6 +4127,9 @@ export const TOPICS: Topic[] = [
             icon: '⚡',
             heading: 'prefers-color-scheme',
             text: "Respect the user's OS preference automatically. `prefers-color-scheme` reads the system setting and activates the dark token overrides — no JavaScript needed for the initial state.",
+            expandedText: '@media (prefers-color-scheme: dark) detects the OS-level dark mode setting. Override your custom properties inside the media query: all components using var(--bg) and var(--text) switch automatically -- no JS needed.
+
+Combine system preference with a user toggle: use a [data-theme=\'dark\'] attribute on html overridden by JavaScript, falling back to prefers-color-scheme for the default. This gives users control while respecting system preference. CSS color-scheme: light dark tells the browser to also adapt native form elements (inputs, scrollbars) to match.',
             codeExample: `@media (prefers-color-scheme: dark) {\n  :root {\n    --color-primary:  #818cf8;\n    --color-bg:       #0f172a;\n    --color-text:     #e2e8f0;\n    --color-surface:  #1e293b;\n  }\n}`,
             language: 'css',            analogy: {
               icon: '🧰',
@@ -6263,6 +6401,9 @@ scheduleUpdate(() => updateCounter(2))
             icon: '🛡️',
             heading: 'Error Handling in async Functions',
             text: 'Use `try`/`catch` inside `async` functions to handle both network errors and non-2xx responses. Check `response.ok` before parsing the body — `fetch` only rejects on network failure, not on 404 or 500 status codes.',
+            expandedText: 'WARN fetch() only rejects on network failure -- a 404 or 500 response still resolves the Promise. Always check response.ok before parsing the body, otherwise you may silently process error responses as valid data.
+
+Wrap the entire async function body in try/catch for global error handling, or wrap individual awaits for granular recovery. The catch block receives any error: network timeout, non-ok response you threw manually, or JSON parse failure. Never leave Promise rejections unhandled -- they surface as warnings in browsers and crash Node.js processes.',
             codeExample: `async function fetchData(url) {\n  try {\n    const res = await fetch(url);\n    if (!res.ok) throw new Error(\`HTTP \${res.status}\`);\n    return await res.json();\n  } catch (err) {\n    console.error('Fetch failed:', err.message);\n    return null;\n  }\n}`,
             language: 'javascript',
             analogy: {
@@ -7103,6 +7244,9 @@ fetchData(url)`,
             icon: '🔤',
             heading: 'String methods',
             text: 'Most string method names differ slightly between Python and JavaScript. Both languages treat strings as immutable — methods always return a new string. Python uses f-strings for interpolation; JavaScript uses template literals with backticks.',
+            expandedText: 'Both languages treat strings as immutable -- every method returns a new string, never modifying the original. Python: \'hello\'.upper() gives \'HELLO\', \'  hi  \'.strip() gives \'hi\', \',\'.join([\'a\',\'b\']) gives \'a,b\'. JavaScript: \'hello\'.toUpperCase(), \'  hi  \'.trim(), [\'a\',\'b\'].join(\',\') -- almost the same operations, slightly different names.
+
+Interpolation differs: Python f-strings f\'Hi {name}\' and JS template literals Hi ${name} are both readable. JS template literals also support multiline strings natively. JS .replace() accepts a regex or string; Python .replace() is string-only -- use re.sub() for regex replacements.',
             codeExample: `# Python
 "hello".upper()        # "HELLO"
 "  hi  ".strip()       # "hi"
@@ -7130,6 +7274,9 @@ f"Hi {name}"           # f-string
             icon: '📋',
             heading: 'List / Array methods',
             text: 'Python lists and JavaScript arrays have similar capabilities but different method names. Important behavior difference: Python\'s `.sort()` modifies the array in-place, while JavaScript\'s `.sort()` also mutates but requires a comparator function for numbers. JS methods like `.map()` and `.filter()` always return new arrays.',
+            expandedText: 'Python lists and JavaScript arrays share the same core operations: append/push, pop, sort, slice, length. Key difference: Python .sort() modifies the list in-place. JavaScript .sort() also mutates the array and uses lexicographic order by default -- [10, 2, 1].sort() gives [1, 10, 2]. Always pass a comparator: .sort((a, b) => a - b) for ascending numbers.
+
+Python has .insert(index, value) and .remove(value); JS uses .splice(index, 0, value) and .splice(index, 1) for the same. Python list comprehensions [x*2 for x in nums] vs JS .map(x => x*2) -- functionally equivalent, stylistically different. Both support length and index-based access.',
             codeExample: `# Python
 nums = [3, 1, 2]
 nums.append(4)      # mutates: [3,1,2,4]
@@ -7159,6 +7306,9 @@ nums.map(x => x*2)  // returns NEW array`,
             icon: '🔍',
             heading: 'Functional Array Methods',
             text: 'JavaScript has dedicated methods where Python uses built-ins or generator expressions. `map()` transforms every element, `filter()` keeps matching items, `find()` returns the first match (or `undefined`). `some()` is Python\'s `any()` — `true` if at least one passes. `every()` is Python\'s `all()` — `true` if all pass. For accumulation, Python has `sum()` and `functools.reduce()`; JS uses `.reduce()`.',
+            expandedText: 'JavaScript array methods map, filter, find, some, every, reduce are chainable and always return new arrays -- they never mutate the original. Python equivalents: built-in map() and filter() return lazy iterators, list comprehensions are usually preferred for readability. any() and all() are built-ins in Python; .some() and .every() are array methods in JS.
+
+.find() in JS returns undefined if no match is found; Python uses next((x for x in items if cond), default). .reduce() in JS needs an initial value as the second argument to handle empty arrays safely. Chaining filter + map in JS is idiomatic: items.filter(x => x > 0).map(x => x * 2) vs Python [x*2 for x in items if x > 0].',
             codeExample: `# Python
 [x*2 for x in nums]                     # map
 [x for x in nums if x > 1]              # filter
@@ -7190,6 +7340,9 @@ nums.reduce((acc, x) => acc + x, 0)`,
             icon: '🛡️',
             heading: 'Error handling',
             text: 'Both languages use `try`/`except` (Python) or `try`/`catch` (JS) with a `finally` block. Python has a unique `else` clause on try blocks — it runs only if no exception was raised. JavaScript has no equivalent; place that code after the catch block instead.',
+            expandedText: 'Python uses try/except ExceptionType as e: -- you can catch specific exception types and the else clause runs only if no exception was raised. JavaScript uses try/catch (e) -- there is no else clause and no typed catch (catch catches everything). To handle specific error types in JS, check e instanceof TypeError or e.message inside the catch block.
+
+Both have finally which runs unconditionally -- for cleanup like closing connections. Python raise re-throws the current exception; JS uses throw. Custom exceptions in Python extend Exception; in JS you extend Error. Avoid empty except / catch blocks that swallow errors silently -- always log or re-throw.',
             codeExample: `# Python — has "else" clause
 try:
     result = int("42")
@@ -7617,6 +7770,9 @@ for (let i = 0; i < 5; i++) {
             icon: '📦',
             heading: 'Static Site Generation (SSG)',
             text: 'SSG runs your app at build time, pre-renders HTML, and deploys it to a CDN. No server needed at runtime — pages are served in milliseconds from the edge. Great for content that rarely changes: marketing pages, blogs, documentation. ISR (Incremental Static Regeneration) extends SSG by letting pages rebuild on demand or on a schedule without a full redeploy.',
+            expandedText: 'Static Site Generation (SSG) runs the app at build time, pre-renders every page to HTML files, and serves them from a CDN. No server needed at runtime -- maximum performance, near-zero server costs. The downside: content is only as fresh as the last build. Incremental Static Regeneration (ISR) in Next.js rebuilds individual pages on a schedule.
+
+Hybrid approaches combine strategies per route: marketing pages as SSG (fast, cacheable), product pages as SSR (fresh inventory/prices), dashboard as CSR (user-specific, no SEO needed). Next.js, Nuxt, and SvelteKit all support per-page strategy selection. Choose based on: data freshness requirements, personalization needs, and SEO importance.',
             codeExample: `// SSG: HTML is built once at deploy time\n// Next.js (App Router) — default behaviour\nexport default async function ProductPage() {\n  const product = await db.getProduct(id) // runs at build time\n  return <Product data={product} />\n}\n\n// ISR — rebuild this page every 60 seconds\nexport const revalidate = 60\n\n// Force SSG explicitly\nexport const dynamic = 'force-static'`,
             language: 'javascript',            analogy: {
               icon: '📸',
@@ -12420,6 +12576,9 @@ function validate(data: unknown) {
             icon: '🔄',
             heading: 'Reducer + Context together',
             text: 'Combine both patterns: put `useReducer` inside a Provider and expose `[state, dispatch]` through context. Any child can read state or fire actions without prop drilling. A custom hook gives consumers a clean, error-safe API.',
+            expandedText: 'The pattern: create a context, create a custom hook that calls useContext, wrap with a Provider that uses useReducer internally. Export the custom hook -- consumers never see the context object directly. This encapsulation means you can change the internals (switch from useReducer to Zustand) without updating every consumer.
+
+const [state, dispatch] = useReducer(reducer, initialState) goes inside the Provider component. Both state and dispatch are passed as the context value. Consumer components call const { state, dispatch } = useAppContext() -- clean, typed, and testable. Split into two contexts (StateContext and DispatchContext) if some components only need to read state, avoiding re-renders on dispatch.',
             codeExample: `const CartContext = createContext(null)\n\nexport function CartProvider({ children }) {\n  const [state, dispatch] = useReducer(cartReducer, initialState)\n  return (\n    <CartContext.Provider value={{ state, dispatch }}>\n      {children}\n    </CartContext.Provider>\n  )\n}\n\n// Custom hook — throws if used outside CartProvider:\nexport function useCart() {\n  const ctx = useContext(CartContext)\n  if (!ctx) throw new Error('useCart must be inside CartProvider')\n  return ctx\n}\n\n// Usage anywhere in the tree:\nfunction ProductCard({ product }) {\n  const { dispatch } = useCart()\n  return (\n    <button onClick={() =>\n      dispatch({ type: 'ADD_ITEM', payload: product })\n    }>Add to cart</button>\n  )\n}`,
             language: 'jsx',            analogy: {
               icon: '🎛️',
@@ -15967,6 +16126,9 @@ function validate(data: unknown) {
             icon: '🌙',
             heading: 'Dark Mode',
             text: 'Enable dark mode by adding `darkMode: \'class\'` to `tailwind.config.js`. Then toggle the `dark` class on the `<html>` element (via JavaScript). Any class prefixed with `dark:` activates only when the `dark` class is present on a parent — letting you theme your entire app with a single toggle.',
+            expandedText: 'Tailwind dark mode variant applies styles when the dark class is present on html (class strategy) or when prefers-color-scheme: dark is detected (media strategy). The class strategy is recommended -- it lets you toggle dark mode programmatically via JavaScript regardless of system preference.
+
+Toggle dark mode: document.documentElement.classList.toggle(\'dark\'). Persist the choice with localStorage. In Next.js, use next-themes to avoid a flash of unstyled content on first load. Every utility can have a dark variant: bg-white dark:bg-gray-900. Dark mode variants can be combined with other variants: dark:hover:bg-gray-700.',
             codeExample: `// tailwind.config.js\nmodule.exports = { darkMode: 'class', content: ['./src/**/*.{html,js}'] }\n\n// Toggle dark mode\ndocument.documentElement.classList.toggle('dark');\n\n<!-- In your HTML -->\n<div class="bg-white dark:bg-gray-900 text-black dark:text-white p-6">\n  <p class="text-gray-700 dark:text-gray-300">Content</p>\n</div>`,
             language: 'html',            analogy: {
               icon: '🌙',
@@ -16112,6 +16274,9 @@ function validate(data: unknown) {
             icon: '🎯',
             heading: 'Arbitrary Values',
             text: 'When you need an exact value outside the design system, use square bracket syntax. Works on any utility property: widths, colors, spacing, grid templates, even CSS `calc()` expressions. Use sparingly — prefer design tokens for consistency across the project.',
+            expandedText: 'Arbitrary values escape the design system when you need a one-off measurement: top-[13px], bg-[#1da1f2], grid-cols-[1fr_2fr_1fr]. Underscores inside brackets become spaces in the CSS output. Any utility that accepts a value supports arbitrary syntax -- even custom properties: bg-[var(--brand-color)].
+
+Use arbitrary values sparingly -- they bypass the design system and make future token updates harder. If you use the same arbitrary value in three or more places, add it as a design token in your theme config instead. Tailwind v4 makes this easier with CSS-first @theme blocks.',
             codeExample: `<!-- Arbitrary pixel value -->\n<div class="w-[347px] h-[200px]">\n\n<!-- Arbitrary hex color -->\n<div class="bg-[#1da1f2] text-[#ffffff]">\n\n<!-- Arbitrary calc -->\n<div class="mt-[calc(100vh-4rem)]">\n\n<!-- Arbitrary grid template -->\n<div class="grid grid-cols-[1fr_2fr_1fr]">`,
             language: 'html',            analogy: {
               icon: '🎯',
@@ -16127,6 +16292,9 @@ function validate(data: unknown) {
             icon: '🔧',
             heading: '@layer & @apply',
             text: '`@layer` organises your CSS into three buckets: `base` (global resets), `components` (reusable UI patterns), `utilities` (single-purpose custom classes). `@apply` lets you compose Tailwind utilities into a custom class — useful when a pattern repeats across many elements but you still want Tailwind\'s design tokens.',
+            expandedText: '@layer base targets global HTML resets (headings, links, body font). @layer components defines reusable UI classes that can be overridden by utilities. @layer utilities adds custom utilities at the same specificity as Tailwind. Without @layer, custom CSS has higher specificity than utilities, causing override issues.
+
+@apply pulls Tailwind utilities into a custom class: .btn { @apply px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600; }. Use @apply sparingly -- it negates many benefits of utility-first CSS and creates an indirection layer. Prefer component abstractions in your framework instead. Reserved for cases like styling third-party HTML you cannot add classes to.',
             codeExample: `/* In your main CSS file */\n@layer base {\n  h1 { @apply text-3xl font-bold text-gray-900; }\n  a  { @apply text-blue-600 hover:underline; }\n}\n\n@layer components {\n  .btn-primary {\n    @apply flex items-center gap-2 px-4 py-2\n           rounded-lg bg-blue-500 text-white\n           hover:bg-blue-600 transition-colors;\n  }\n}\n\n@layer utilities {\n  .scrollbar-hidden { scrollbar-width: none; }\n}`,
             language: 'css',            analogy: {
               icon: '🏗️',
@@ -16142,6 +16310,9 @@ function validate(data: unknown) {
             icon: '🎨',
             heading: '@theme — Custom Design Tokens (v4)',
             text: 'Tailwind v4 replaces `tailwind.config.js` with a CSS-first approach. Define custom design tokens in `@theme` — Tailwind automatically generates matching utility classes for colors, spacing, fonts, and more. Use `--color-*` for colors, `--font-*` for fonts, `--breakpoint-*` for responsive variants. Reset a namespace with `--color-*: initial` to replace all defaults.',
+            expandedText: 'Tailwind v4 eliminates tailwind.config.js for design tokens in favor of a CSS-first @theme block in your CSS file: @theme { --color-brand: #5b9cf5; --spacing-18: 4.5rem; }. These become CSS custom properties AND Tailwind utility names simultaneously -- bg-brand, p-18 work automatically.
+
+The @theme approach keeps all design decisions in CSS, makes them available as CSS variables for JavaScript and non-Tailwind code, and is tree-shaken so unused values do not appear in the output. The old extend pattern in tailwind.config.js still works for v3 but v4 projects should prefer @theme.',
             codeExample: `/* app.css — Tailwind v4 CSS-first config */
 @import "tailwindcss";
 
@@ -16181,6 +16352,9 @@ function validate(data: unknown) {
             icon: '📦',
             heading: 'Container Queries',
             text: 'Container queries let a component respond to its own container\'s size — not the viewport. Mark a parent with `@container`, then prefix child classes with `@sm:`, `@md:`, `@lg:` etc. This makes truly reusable components that adapt regardless of where they are placed on the page.',
+            expandedText: 'Container queries (@container) let an element respond to the size of its parent container rather than the viewport. This solves the sidebar component problem: the same component needs different layouts at different container widths, regardless of viewport size. Add @container to the parent, then use @md: prefix variants on children.
+
+Tailwind v3.2+ supports container queries via the @tailwindcss/container-queries plugin; v4 includes them natively. Named containers (@container/sidebar) allow nested containers to target a specific ancestor. Container queries are now widely supported across all modern browsers.',
             codeExample: `<!-- @container marks the resizable parent -->
 <div class="@container rounded-xl border p-4">
 

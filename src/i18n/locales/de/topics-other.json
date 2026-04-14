@@ -167,7 +167,8 @@
             "Ein Dokument in den Schredder werfen entfernt es dauerhaft.",
             "DELETE entfernt eine Ressource. `DELETE /users/42` entfernt Benutzer 42. Gibt 204 No Content bei Erfolg zurück."
           ]
-        }
+        },
+        "expandedText": "DELETE /users/42 entfernt die durch den URI identifizierte Ressource. Eine erfolgreiche Löschung gibt 204 No Content (leerer Body) oder 200 OK zurück. 404 Not Found wenn die Ressource nicht existiert. DELETE ist idempotent -- eine bereits gelöschte Ressource zu löschen gibt konsistent 404 zurück.\n\nIn RESTful APIs sollte DELETE nur die spezifische Ressource entfernen -- niemals stille Kaskaden-Löschungen ohne Dokumentation. Soft-Deletes (als inaktiv markieren) sind häufig für Datenaufbewahrung. Niemals DELETE über GET implementieren -- GET-Anfragen können vom Browser vorgeladen werden."
       }
     ],
     "cheatSheet": {
@@ -361,7 +362,8 @@
             "Ein Fotobuch, das gedruckt und verschickt wird, bevor das Event stattfindet. Schnell auszuhändigen, weil die ganze Arbeit im Voraus erledigt wurde.",
             "SSG rendert HTML zur Build-Zeit. Seiten sind vorgebaut und werden von einem CDN ausgeliefert. Schnellste Auslieferung, kein Server zur Laufzeit."
           ]
-        }
+        },
+        "expandedText": "Static Site Generation (SSG) führt die App zur Build-Zeit aus, rendert jede Seite zu HTML-Dateien vor, und liefert sie von einem CDN. Kein Server zur Laufzeit nötig -- maximale Performance, nahezu null Server-Kosten. Der Nachteil: Inhalt ist nur so frisch wie der letzte Build. Incremental Static Regeneration (ISR) in Next.js baut einzelne Seiten nach einem Zeitplan neu.\n\nHybride Ansätze kombinieren Strategien pro Route: Marketing-Seiten als SSG, Produktseiten als SSR (frischer Lagerbestand), Dashboard als CSR (benutzerspezifisch). Next.js, Nuxt und SvelteKit unterstützen alle die Auswahl der Strategie pro Seite."
       },
       {
         "animationStep": 4,
@@ -373,7 +375,8 @@
             "Eine Hybridküche: Der Koch bereitet die langsamen Teile in der Küche vor, der Kellner vollendet am Tisch. Jeder Teil wird dort erledigt, wo er am effizientesten ist.",
             "React Server Components laufen auf dem Server, ohne ihr JS zum Browser zu senden. Client-Komponenten übernehmen die Interaktivität."
           ]
-        }
+        },
+        "expandedText": "React Server Components (RSC) laufen auf dem Server pro Request, sind aber anders als SSR: sie rendern zu einem speziellen serialisierten Format (nicht HTML), hydrieren niemals im Browser und haben null JavaScript-Bundle-Auswirkungen. Sie können Datenbankaufrufe direkt ausführen ohne separate API-Schicht.\n\nRSC und SSR ergänzen sich: RSC reduziert die JS-Bundle-Größe; SSR generiert HTML für schnelles First Paint und SEO. Client-Komponenten ('use client') behandeln Interaktivität. Das mentale Modell: Server-Komponenten sind der Standard -- 'use client' nur hinzufügen wo State, Effects oder Browser-APIs benötigt werden."
       }
     ],
     "cheatSheet": {
@@ -2417,7 +2420,8 @@
             "🏭 Eine Lagerhaltung hat eine zentrale Datenbank (Context) und definierte Ein-/Auslagerungs-Prozesse (Reducer) — klar, nachvollziehbar, skalierbar.",
             "🔗 useReducer liefert [state, dispatch]; beides wird über Context verteilt. Alle Komponenten lesen State und können Actions dispatchen — ohne Prop Drilling."
           ]
-        }
+        },
+        "expandedText": "Das Muster: Context erstellen, einen Custom-Hook der useContext aufruft erstellen, mit einem Provider umhüllen der intern useReducer verwendet. Den Custom-Hook exportieren -- Verbraucher sehen das Context-Objekt nie direkt. Diese Kapselung bedeutet du kannst die Interna ändern ohne jeden Verbraucher zu aktualisieren.\n\nconst [state, dispatch] = useReducer(reducer, initialState) geht in die Provider-Komponente. Verbraucher rufen const { state, dispatch } = useAppContext() auf -- sauber, typisiert und testbar. In zwei Contexts aufteilen (StateContext und DispatchContext) wenn manche Komponenten nur State lesen müssen, um Re-Renders bei dispatch zu vermeiden."
       }
     ]
   },

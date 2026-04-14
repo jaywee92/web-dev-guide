@@ -193,7 +193,8 @@
             "Ein Zauberer produziert ein Taschentuch aus dem Nichts — es sieht echt aus, ist aber nicht in der echten Tasche.",
             "Pseudo-Elemente wie `::before` und `::after` fügen virtuelle Elemente ein. `p::before { content: \"★\" }` fügt einen Stern vor jedem Absatz ein — keine HTML-Änderung nötig."
           ]
-        }
+        },
+        "expandedText": "Pseudo-Elemente erstellen virtuelle Unterteile eines Elements die nicht im HTML existieren, aber gestylt werden können. ::before fügt Inhalt vor dem Element-Inhalt ein; ::after danach. Die content-Eigenschaft ist erforderlich -- auch content: '' für dekorative Verwendung. Standardmäßig als Inline-Boxen gerendert.\n\nHäufige Verwendungen: dekorative Icons ohne extra HTML, Clearfix-Hacks, gestylte Listen-Marker, Anführungszeichen um blockquote. Pseudo-Elemente haben dieselbe Spezifität wie der Basis-Selektor. ::first-line und ::first-letter zielen auf die erste Zeile/den ersten Buchstaben -- nützlich für Drop Caps."
       }
     ],
     "cheatSheet": {
@@ -267,7 +268,8 @@
             "Ein interner Herstellercode für exakte Reproduktion: R=59, G=130, B=246 geschrieben als #3B82F6.",
             "Hex kodiert Rot, Grün, Blau als zweistellige Hex-Zahlen: `#RRGGBB`. Zwei weitere Stellen für Alpha: `#ff000080` ist halb-transparentes Rot."
           ]
-        }
+        },
+        "expandedText": "HEX-Codes kodieren Farbe als drei zweistellige Hexadezimalzahlen: #RRGGBB. Jeder Kanal reicht von 00 (kein) bis ff (voll). #ff0000 = reines Rot, #000000 = Schwarz, #ffffff = Weiß. Die Kurzform #RGB erweitert jede Ziffer: #f0c wird zu #ff00cc.\n\nHEX unterstützt einen optionalen Alpha-Kanal als viertes Paar: #RRGGBBAA. #ff000080 ist 50% transparentes Rot. HEX ist das häufigste Format in Design-Tools, aber HSL ist oft intuitiver um Helligkeit oder Sättigung programmatisch anzupassen. Browser akzeptieren alle Formate gleichwertig."
       },
       {
         "animationStep": 2,
@@ -279,7 +281,8 @@
             "Ein Bühnenlichtpult: drei Farbregler (RGB) und ein Helligkeitsdimmer (Alpha).",
             "RGB: `rgb(59, 130, 246)`. RGBA fügt Alpha hinzu: `rgba(59, 130, 246, 0.5)` für 50% Transparenz. Lesbarer als Hex, wenn man einen Kanal anpassen möchte."
           ]
-        }
+        },
+        "expandedText": "rgb(r, g, b) nimmt drei Ganzzahlen von 0-255. rgba(r, g, b, a) fügt einen Alpha-Kanal von 0 (vollständig transparent) bis 1 (vollständig opak) hinzu. Modernes CSS akzeptiert auch rgb(r g b / a) ohne Kommas. RGB ist lesbarer als HEX wenn du einzelne Kanäle im Code anpassen möchtest.\n\nHäufige Anwendungsfälle: rgba(0, 0, 0, 0.5) für halb-transparente schwarze Overlays, rgba(255, 255, 255, 0.1) für subtile Frost-Glas-Effekte. Für Farben die sich ändern (Dark Mode, Theming), bevorzuge CSS Custom Properties (var(--color)) über hardcodierte rgb()-Werte."
       },
       {
         "animationStep": 3,
@@ -304,7 +307,8 @@
             "Ein Tischler nutzt mm für Präzision, ein Architekt Meter für Räume, ein Kartograph Kilometer. Die richtige Einheit für den richtigen Kontext.",
             "CSS-Einheiten: `px` fest, `em`/`rem` schriftgrößen-relativ, `%` container-relativ, `vw`/`vh` viewport-relativ. Nutze `rem` für Schriften."
           ]
-        }
+        },
+        "expandedText": "px ist eine absolute Einheit -- 1px entspricht einem physischen Pixel. em ist relativ zur aktuellen Element-Schriftgröße: 1.5em bei einem 16px-Element = 24px. rem ist relativ zur Root-Schriftgröße (html) -- konsistent auf der gesamten Seite, die bevorzugte Einheit für Abstände und Typografie.\n\n% ist relativ zur übergeordneten Container-Größe. vw/vh sind 1% der Viewport-Breite/-Höhe. ch entspricht der Breite des 0-Zeichens -- ideal für Text-Inputs (width: 30ch). Faustregel: rem für Schriftgrößen und Abstände, % oder fr für Layouts, px nur für Rahmen oder exakte Pixelkontrolle."
       }
     ],
     "cheatSheet": {
@@ -589,7 +593,8 @@
             "Eine Zimmerwand zu streichen ist die einfachste Dekoration: eine Farbe, füllt den Raum. Alles andere kommt obendrauf.",
             "`background-color` füllt den Element-Hintergrund mit einer Volltonfarbe. Es liegt hinter allen anderen Hintergrundebenen."
           ]
-        }
+        },
+        "expandedText": "background-color akzeptiert jeden CSS-Farbwert -- benannte Farben (red), Hex (#ff0000), rgb(), hsl() oder transparent. Es füllt die Padding-Box des Elements, nicht die Margin. Wenn auch ein background-image gesetzt ist, scheint background-color dort durch, wo das Bild transparent ist.\n\nFür barrierefreies Design immer ausreichenden Kontrast zwischen Hintergrundfarbe und Text sicherstellen (WCAG AA: 4,5:1 für normalen Text). Das background-Kurzform-Attribut kann Farbe und Bild zusammen setzen, aber verwende separate Eigenschaften wenn du nur eine änderst -- die Kurzform setzt alle Hintergrunds-Untereigenschaften zurück."
       },
       {
         "animationStep": 1,
@@ -601,7 +606,8 @@
             "Nach dem Streichen hängt man ein Foto auf. Das Foto liegt auf der Wandfarbe, ersetzt sie aber nicht.",
             "`background-image: url(photo.jpg)` wird über `background-color` gerendert. Nutze `<img>` für bedeutungsvolle Bilder, die Screen-Reader lesen sollen."
           ]
-        }
+        },
+        "expandedText": "background-image: url('bild.jpg') lädt ein externes Bild als Hintergrund. Das Bild verändert die Elementgröße nicht -- es füllt innerhalb der bestehenden Dimensionen. Anders als img hat ein Hintergrundbild keine semantische Bedeutung und ist für Screenreader unsichtbar -- verwende img für bedeutungstragende Bilder.\n\nMehrere Hintergrundbilder stapeln sich: background-image: url('overlay.png'), url('base.jpg') -- das zuerst genannte liegt oben. Verläufe zählen als Bilder: background-image: linear-gradient(...), url('texture.png')."
       },
       {
         "animationStep": 2,
@@ -613,7 +619,8 @@
             "Ein Gemälde aufzuhängen erfordert drei Entscheidungen: Kachelt es? Wo kommt es hin? Wie groß?",
             "`background-repeat: no-repeat; background-position: center; background-size: cover` — skaliert um den Container zu füllen, schneidet bei Bedarf zu."
           ]
-        }
+        },
+        "expandedText": "background-repeat: repeat (Standard) kachelt in beide Richtungen, no-repeat zeigt es einmal, repeat-x/repeat-y kacheln in eine Richtung. background-position nimmt Keywords (center, top right) oder Koordinaten (50% 50%, 20px 40px).\n\nbackground-size: cover skaliert das Bild, um den Container zu füllen und schneidet bei Bedarf ab. contain skaliert das Bild, um es vollständig einzupassen und lässt möglicherweise Lücken. Für Hero-Bilder ist background-size: cover; background-position: center das Standardmuster."
       },
       {
         "animationStep": 3,
@@ -625,7 +632,8 @@
             "Ein Sonnenuntergang wechselt sanft von Orange am Horizont zu Tiefblau oben.",
             "`background: linear-gradient(135deg, #f97316, #3b82f6)` — gleichmäßiger Übergang in 45 Grad. Mehrere Farbstopps möglich."
           ]
-        }
+        },
+        "expandedText": "linear-gradient(Richtung, Farbe1, Farbe2, ...) erstellt einen Verlauf zwischen zwei oder mehr Farbstopps. Richtung: to right, to bottom right oder ein Winkel wie 45deg. Farbstopps können eine Position enthalten: linear-gradient(to right, red 0%, blue 50%, green 100%).\n\nHarte Stopps erstellen scharfe Farbgrenzen: linear-gradient(to right, red 50%, blue 50%) ist eine solide Teilung. Mit repeating-linear-gradient() kannst du Verlaufs-Streifen und -Muster erstellen. Verlaufe stapeln sich wie Bilder -- kombiniere einen halb-transparenten Verlauf mit einem Foto für einen Verdunkelungseffekt."
       },
       {
         "animationStep": 4,
@@ -637,7 +645,8 @@
             "Ein Scheinwerfer erzeugt einen hellen Lichtkreis, der zu den Rändern hin ins Dunkle verblasst.",
             "`background: radial-gradient(circle, #fbbf24, #1e1e2e)` — helle Mitte, dunkle Ränder. Perfekt für Glüheffekte."
           ]
-        }
+        },
+        "expandedText": "radial-gradient(Form Größe at Position, Farbe1, Farbe2) strahlt von einem Mittelpunkt aus. Form: circle oder ellipse. Beispiel: radial-gradient(circle at 30% 30%, white, transparent) erstellt einen weichen Spotlicht-Effekt.\n\nHäufige Anwendungen: subtile Tiefe/Schatten-Effekte auf Karten, Spotlight-Highlights, leuchtende Button-Effekte. conic-gradient() rotiert rund um den Mittelpunkt -- nützlich für Tortendiagramme und Farbräder. Alle Verlauf-Typen sind GPU-beschleunigt und erfordern keine HTTP-Requests."
       }
     ],
     "cheatSheet": {
@@ -845,7 +854,8 @@
             "Ein Instagram-Filter wendet eine Farbkorrektur mit einem Tap an — kein Photoshop nötig.",
             "`filter: grayscale(100%)` konvertiert in Schwarz-Weiß. `blur(4px)` macht unscharf. `brightness(1.2)` erhellt. Verketten mit Leerzeichen: `filter: contrast(1.1) saturate(1.2)`."
           ]
-        }
+        },
+        "expandedText": "border-radius rundet Elementecken ab. Ein einzelner Wert rundet alle vier Ecken gleichmäßig: border-radius: 8px. border-radius: 50% auf einem Quadrat ergibt einen perfekten Kreis.\n\nMit der Slash-Syntax kannst du elliptische Ecken erstellen: border-radius: 50px / 20px (horizontal/vertikal). Border-Radius schneidet Hintergrund und Box-Schatten auf die gerundete Form zu. overflow: hidden plus border-radius auf einem Elternelement schneidet Kind-Bilder sauber ab. border-radius: 100vmax ergibt immer eine Pillenform."
       },
       {
         "animationStep": 4,
@@ -857,7 +867,8 @@
             "Milchglas verwischt alles dahinter, während das Glaspanel selbst scharf bleibt.",
             "`backdrop-filter: blur(12px)` verwischt Hintergrundselemente, die durch das Element sichtbar sind — ideal für schwebende Navigation oder Modal-Overlays."
           ]
-        }
+        },
+        "expandedText": "aspect-ratio: 16 / 9 sperrt das Verhältnis zwischen Breite und Höhe. Wenn du eine Breite setzt, wird die Höhe automatisch berechnet -- und umgekehrt. Vor dieser Eigenschaft nutzten Entwickler den Padding-Top-Hack (padding-top: 56.25% für 16:9), der jetzt veraltet ist.\n\nUnverzichtbar für responsive Medien: Bilder, Videos, iframes sollten ihr Verhältnis beim Skalieren beibehalten. Kombiniere mit object-fit: cover auf img oder video um den Container ohne Verzerrung zu füllen. aspect-ratio: 1 erstellt ein Quadrat. Ein YouTube-iframe braucht width: 100%; aspect-ratio: 16 / 9."
       }
     ],
     "cheatSheet": {
@@ -913,7 +924,8 @@
             "Steine in einer Spalte stapeln — jeder Stein beginnt eine neue Reihe und streckt sich auf volle Breite.",
             "Block-Elemente (div, p, h1) nehmen die volle Zeilenbreite ein und stapeln sich vertikal. `display: block` erzwingt dieses Verhalten."
           ]
-        }
+        },
+        "expandedText": "Block-Elemente nehmen standardmäßig die gesamte verfügbare Breite ein und stapeln sich vertikal -- jedes beginnt auf einer neuen Zeile. div, p, h1-h6, section sind standardmäßig Block-Elemente. Breite, Höhe, Margin und Padding wirken normal.\n\nBlock-Fluss ist der Standard-Layout-Algorithmus des Browsers. Margins zwischen Block-Elementen kollabieren -- der größere von zwei angrenzenden vertikalen Margins gewinnt, nicht die Summe. Das ist beabsichtigt: zwei gestapelte Absätze mit margin: 1em bekommen 1em Abstand, nicht 2em."
       },
       {
         "animationStep": 1,
@@ -925,7 +937,8 @@
             "Wörter in einem Satz fließen nebeneinander und umbrechen natürlich auf die nächste Zeile.",
             "Inline-Elemente (span, a, em) liegen im Textfluss. Sie ignorieren width/height-Eigenschaften. `display: inline` lässt jedes Element im Text fließen."
           ]
-        }
+        },
+        "expandedText": "display: inline Elemente fließen wie Wörter in einem Satz -- sie sitzen nebeneinander und umbrechen zur nächsten Zeile. Sie ignorieren width, height, margin-top und margin-bottom. Nur horizontale Margins und Padding wirken sichtbar.\n\nInline-Elemente sind für Text-Level-Styling gedacht: span, a, strong, em. Ein Inline-Element mit display: block zu versehen konvertiert es zu Block-Verhalten. Der Abstand zwischen Inline-Elementen entsteht durch Whitespace im HTML-Quelltext -- eine Eigenart die Flexbox und Grid vollständig eliminieren."
       },
       {
         "animationStep": 2,
@@ -937,7 +950,8 @@
             "Beschriftete Boxen nebeneinander in einem Regal angeordnet — jede Box ist eigenständig, kann bemessen werden und sitzt in einer Reihe mit anderen.",
             "`display: inline-block` kombiniert beides: fließt mit Text, respektiert aber width/height. Verwendet für Navigationspunkte und Bild+Text-Kombinationen."
           ]
-        }
+        },
+        "expandedText": "display: inline-block verhält sich wie Inline (kein erzwungener Zeilenumbruch), respektiert aber width, height, margin-top und margin-bottom. Es ist der Mittelweg zwischen inline und block. Früher häufig für Navigationsmenüs und Button-Layouts verwendet.\n\nHeute größtenteils durch Flexbox ersetzt, aber inline-block ist weiterhin nützlich für Inline-Buttons mit Padding und Icons neben Text. Das Whitespace-Gap-Problem zwischen inline-block-Elementen löst man durch font-size: 0 am Elternelement, oder einfach Flexbox verwenden."
       },
       {
         "animationStep": 3,
@@ -949,7 +963,8 @@
             "Ein Mitarbeiter bleibt an seinem zugewiesenen Schreibtisch, bewegt sich aber 20cm nach links. Der Schreibtisch ist noch reserviert — niemand sonst füllt ihn.",
             "`position: relative` verschiebt das Element visuell ohne es aus dem Fluss zu entfernen. Andere Elemente behalten den ursprünglichen Platz. `top/left/right/bottom` setzen den Versatz."
           ]
-        }
+        },
+        "expandedText": "position: relative lässt das Element im normalen Dokumentfluss -- andere Elemente sehen es noch an seiner ursprünglichen Position. Die top/right/bottom/left-Offsets verschieben es visuell ohne das umgebende Layout zu beeinflussen. Entscheidend: position: relative erstellt einen Positionierungskontext für absolut positionierte Kinder.\n\nHäufiges Muster: ein Elternelement hat position: relative ohne Offsets, und ein Kind hat position: absolute für die Positionierung innerhalb des Elternelements. Ohne ein relatives Elternelement positionieren sich absolute Kinder relativ zum Viewport. z-index funktioniert nur auf positionierten Elementen."
       },
       {
         "animationStep": 4,
@@ -961,7 +976,8 @@
             "Anker haben verschiedene Modi: an einer Zimmerecke verankern (absolute), am Fenster verankern (fixed), bis zum Scrollen vorbei verankern (sticky).",
             "`absolute` verankert am nächsten positionierten Vorfahren. `fixed` verankert am Viewport — bleibt beim Scrollen auf dem Bildschirm. `sticky` haftet beim Scrollen."
           ]
-        }
+        },
+        "expandedText": "position: absolute entfernt das Element aus dem normalen Fluss -- kein Platz wird für es reserviert. Es positioniert sich relativ zum nächsten Vorfahren dessen position auf etwas anderes als static gesetzt ist. Wenn keiner existiert, positioniert es sich relativ zum Viewport.\n\nHäufige Verwendungen: Tooltips, Dropdown-Menüs, Badges über Avataren, Schließen-Buttons in Modals. Stelle immer sicher, dass das beabsichtigte Elternelement position: relative hat -- ein fehlender Positionierungskontext ist einer der häufigsten CSS-Bugs. position: fixed positioniert sich immer relativ zum Viewport und bleibt beim Scrollen sichtbar."
       }
     ],
     "cheatSheet": {
@@ -1047,7 +1063,8 @@
             "Einen Punkt genau in der Mitte einer Zielscheibe platzieren — gleicher Abstand zu jeder Kante, horizontal und vertikal.",
             "Zwei Zeilen: `display: flex; align-items: center; justify-content: center`. Die sauberste Zentrierlösung in CSS."
           ]
-        }
+        },
+        "expandedText": "Die klassische Zentrierlösung: display: flex; justify-content: center; align-items: center am Container. justify-content richtet entlang der Hauptachse aus (standardmäßig horizontal); align-items entlang der Querachse (standardmäßig vertikal). Zusammen zentrieren sie Kinder in beide Richtungen.\n\nDas ersetzt alte Techniken: margin: auto (nur horizontal) und display: table-cell; vertical-align: middle (umständlich). Für Vollseiten-Zentrierungen: min-height: 100vh; display: flex; justify-content: center; align-items: center auf body. Für Buttons: display: inline-flex hält den Button inline."
       },
       {
         "animationStep": 3,
@@ -1059,7 +1076,8 @@
             "Ein Mischpult hat drei Schlüsselregler: wie Elemente verteilt werden (justify-content), wie sie ausgerichtet werden (align-items) und ob sie umbrechen (flex-wrap).",
             "Das Kern-Trio: `justify-content` (Hauptachse), `align-items` (Querachse), `flex-wrap`. `gap` fügt Abstände ohne Margins hinzu."
           ]
-        }
+        },
+        "expandedText": "Die sechs meistgenutzten Flex-Eigenschaften -- Container: flex-direction (row/column), justify-content (Hauptachsen-Ausrichtung), align-items (Querachsen-Ausrichtung), flex-wrap (Umbruch erlauben). Kind: flex-grow, flex-shrink, flex-basis. Kurzform: flex: 1 setzt flex-grow: 1; flex-shrink: 1; flex-basis: 0%.\n\nflex: 1 auf alle Kinder macht sie gleich breit unabhängig vom Inhalt. flex: 0 0 200px setzt eine feste 200px-Breite. margin-left: auto auf einem Flex-Kind schiebt es ans entgegengesetzte Ende -- nützlich für einen Button rechts in der Nav. gap funktioniert auf Flex-Containern."
       }
     ],
     "cheatSheet": {
@@ -1148,7 +1166,8 @@
             "Dieselben Möbel, anderes Apartment-Layout für klein vs. groß. Die Möbel-Etiketten bleiben gleich; nur der Bauplan ändert sich.",
             "In einer Media-Query `grid-template-areas` neu definieren. Dieselben Kinder, dieselben `grid-area`-Werte — aber das Layout ändert sich vollständig."
           ]
-        }
+        },
+        "expandedText": "grid-template-areas erlaubt es, Bereiche zu benennen und Items per Name zu platzieren. Definiere Namen mit grid-area auf jedem Kind, dann zeichne das Layout als ASCII-Art in der Template-Eigenschaft. Leere Zellen verwenden Punkte. Ein wiederholter Name lässt das Item über mehrere Zellen spannen.\n\nAreas mit Media Queries kombinieren: redefine grid-template-areas innerhalb von @media um das Layout komplett umzustrukturieren -- Sidebar unterhalb des Inhalts auf Mobile, daneben auf Desktop -- ohne das HTML zu ändern. Bereiche müssen ein Rechteck bilden."
       },
       {
         "animationStep": 3,
@@ -1160,7 +1179,8 @@
             "Elastische Regale, die den verfügbaren Platz mit gleich breiten Slots füllen. Ein Regal hinzufügen und jeder Slot schrumpft, um den Platz zu teilen.",
             "Die `fr`-Einheit bedeutet Anteil des verbleibenden Platzes. `repeat(auto-fit, minmax(200px, 1fr))` erzeugt so viele Spalten wie passen — responsive ohne Media-Queries."
           ]
-        }
+        },
+        "expandedText": "Die fr-Einheit (Fractional) verteilt den verbleibenden Platz proportional. grid-template-columns: 1fr 2fr 1fr erstellt drei Spalten wobei die mittlere doppelt so breit ist. Anders als % berücksichtigt fr den gap -- keine manuelle Gap-Subtraktion nötig.\n\nrepeat(auto-fill, minmax(250px, 1fr)) erstellt ein vollständig responsives Grid ohne Media Queries: Items sind mindestens 250px breit und Spalten werden automatisch hinzugefügt/entfernt. auto-fill kann leere Spalten hinterlassen; auto-fit kollabiert leere Spalten und streckt Items."
       }
     ],
     "cheatSheet": {
@@ -1550,7 +1570,8 @@
             "Ein Werkzeugkasten enthält beschriftete Werkzeuge. Das richtige Werkzeug nach Namen auswählen, nicht nach Schubladenposition merken.",
             "Utility-Klassen wie `text-muted` mappen auf Token-Variablen. `--text-muted` einmal ändern und alle `text-muted`-Verwendungen in der App aktualisieren sich."
           ]
-        }
+        },
+        "expandedText": "@media (prefers-color-scheme: dark) erkennt die Dark-Mode-Einstellung auf OS-Ebene. Überschreibe deine Custom Properties innerhalb der Media Query -- alle Komponenten die var(--bg) und var(--text) verwenden, wechseln automatisch, kein JS nötig.\n\nSystemeinstellung mit einem Benutzer-Toggle kombinieren: verwende ein [data-theme='dark']-Attribut auf html das per JavaScript überschrieben wird, mit prefers-color-scheme als Standard-Fallback. CSS color-scheme: light dark weist den Browser an, auch native Formularelemente anzupassen."
       }
     ],
     "cheatSheet": {
@@ -2180,7 +2201,8 @@
             "Ein Smart Home, das bei Sonnenuntergang alle Lichter auf ein warmes Dämmerlicht umstellt. Ein Auslöser ändert die gesamte Umgebung.",
             "`darkMode: class` in der Konfiguration hinzufügen. `dark`-Klasse auf `<html>` umschalten. Dann: `bg-white dark:bg-gray-900`. System-Präferenz: `darkMode: media`."
           ]
-        }
+        },
+        "expandedText": "Tailwinds Dark-Mode-Variante wendet Styles an wenn die dark-Klasse auf html vorhanden ist (Class-Strategie) oder wenn prefers-color-scheme: dark erkannt wird (Media-Strategie). Die Class-Strategie wird empfohlen -- sie erlaubt das programmatische Umschalten per JavaScript.\n\nDark Mode umschalten: document.documentElement.classList.toggle('dark'). Wahl mit localStorage persistieren. In Next.js next-themes verwenden um einen Flash beim ersten Laden zu vermeiden. Jedes Utility kann eine Dark-Variante haben: bg-white dark:bg-gray-900. Dark-Mode-Varianten kombinierbar: dark:hover:bg-gray-700."
       },
       {
         "animationStep": 2,
@@ -2240,7 +2262,8 @@
           "text": [
             "Wenn das Standard-Lineal deine Maßeinheit nicht hat, nimmst du einen Bleistift und schreibst sie rein."
           ]
-        }
+        },
+        "expandedText": "Beliebige Werte verlassen das Design-System für Einzelmessungen: top-[13px], bg-[#1da1f2], grid-cols-[1fr_2fr_1fr]. Unterstriche innerhalb von Klammern werden im CSS-Output zu Leerzeichen. Jedes Utility das einen Wert akzeptiert unterstützt die beliebige Syntax -- auch Custom Properties: bg-[var(--brand-color)].\n\nBeliebige Werte sparsam verwenden -- sie umgehen das Design-System. Wenn du denselben beliebigen Wert an drei oder mehr Stellen verwendest, füge ihn als Design-Token in deiner Theme-Konfiguration hinzu. Tailwind v4 vereinfacht das mit CSS-first @theme-Blöcken."
       },
       {
         "animationStep": 1,
@@ -2252,7 +2275,8 @@
             "Ein Schreibtisch mit beschrifteten Schubladen: Basis-Styles in einer, Komponenten-Styles in einer anderen, Utility-Überschreibungen in der dritten.",
             "`@layer base` für HTML-Resets, `@layer components` für wiederverwendbare Muster, `@layer utilities` für benutzerdefinierte Utilities. Tailwinds Spezifitätsreihenfolge bleibt erhalten."
           ]
-        }
+        },
+        "expandedText": "@layer base zielt auf globale HTML-Resets. @layer components definiert wiederverwendbare UI-Klassen die von Utilities überschrieben werden können. @layer utilities fügt benutzerdefinierte Utilities mit derselben Spezifität wie Tailwinds hinzu. Ohne @layer hat benutzerdefiniertes CSS höhere Spezifität als Utilities.\n\n@apply zieht Tailwind-Utilities in eine benutzerdefinierte Klasse: .btn { @apply px-4 py-2 bg-blue-500 text-white rounded; }. @apply sparsam verwenden -- bevorzuge Komponenten-Abstraktionen in deinem Framework. Reserviert für Fälle wie das Stylen von Drittanbieter-HTML."
       },
       {
         "animationStep": 2,
@@ -2264,7 +2288,8 @@
             "Ein Tresor, in dem jede Design-Entscheidung gespeichert ist. Einen Eintrag ändern und jede Referenz aktualisiert sich.",
             "Tailwind v4 ersetzt `tailwind.config.js` durch CSS-First `@theme { --color-brand: #3b82f6 }`. Tokens werden zu CSS Custom Properties."
           ]
-        }
+        },
+        "expandedText": "Tailwind v4 ersetzt tailwind.config.js für Design-Tokens durch einen CSS-first @theme-Block: @theme { --color-brand: #5b9cf5; --spacing-18: 4.5rem; }. Diese werden gleichzeitig zu CSS Custom Properties UND Tailwind-Utility-Namen -- bg-brand, p-18 funktionieren automatisch.\n\nDer @theme-Ansatz hält alle Design-Entscheidungen in CSS, macht sie als CSS-Variablen für JavaScript verfügbar, und wird tree-geShaked. Das alte extend-Muster in tailwind.config.js funktioniert noch für v3, aber v4-Projekte sollten @theme bevorzugen."
       },
       {
         "animationStep": 3,
@@ -2276,7 +2301,8 @@
             "Ein Designer, der das Layout basierend auf der eigenen Karten-Breite anpasst — nicht der Seitenbreite.",
             "`@container` Queries reagieren auf die Größe eines Elternelements, nicht des Viewports. `<div class=\"@container\">` aktiviert es. Kinder verwenden `@sm:flex-row`."
           ]
-        }
+        },
+        "expandedText": "Container Queries (@container) lassen ein Element auf die Größe seines Eltern-Containers reagieren, nicht auf den Viewport. Das löst das Sidebar-Komponenten-Problem: dieselbe Komponente braucht unterschiedliche Layouts bei verschiedenen Container-Breiten. @container zum Elternelement hinzufügen, dann @md:-Präfix-Varianten auf Kindern verwenden.\n\nTailwind v3.2+ unterstützt Container Queries via Plugin; v4 enthält sie nativ. Benannte Container (@container/sidebar) erlauben verschachtelten Containern ein spezifisches übergeordnetes Element anzusprechen. Container Queries werden von allen modernen Browsern unterstützt."
       }
     ],
     "cheatSheet": {
