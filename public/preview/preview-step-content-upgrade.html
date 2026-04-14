@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step Content Upgrade — Preview</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface-bright: #1e2230;
+    --border: #2e3348;
+    --text: #e2e4ed;
+    --tm: #8b8fa7;
+    --tf: #555a73;
+    --mono: 'JetBrains Mono', 'Fira Code', monospace;
+    --radius: 13px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    padding: 40px 24px 120px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+  .sub { font-size: 13px; color: var(--tm); margin-bottom: 52px; line-height: 1.6; }
+  .sub a { color: #7c8cf8; text-decoration: none; }
+
+  .section-header {
+    font-size: 9px;
+    font-family: var(--mono);
+    font-weight: 800;
+    letter-spacing: .15em;
+    color: var(--tf);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-header .badge {
+    padding: 2px 8px; border-radius: 20px; font-size: 8px;
+  }
+  .badge-before { background: #55577320; border: 1px solid #55577340; color: var(--tf); }
+  .badge-after  { background: #7c8cf820; border: 1px solid #7c8cf840; color: #7c8cf8; }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-bottom: 64px; }
+  @media (max-width: 780px) { .cols { grid-template-columns: 1fr; } }
+
+  /* ── STEP CARD ── */
+  .step {
+    border-radius: 13px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    background: var(--surface);
+    position: relative;
+  }
+  .step.active { border-color: COLOR33; box-shadow: 0 4px 28px COLOR12; }
+  .step-accent { position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
+
+  .step-header {
+    display: flex; align-items: center; gap: 13px;
+    padding: 14px 18px 12px 21px;
+    border-bottom: 1px solid var(--border);
+  }
+  .icon-box {
+    width: 38px; height: 38px; flex-shrink: 0; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; line-height: 1;
+  }
+  .step-meta { display: flex; flex-direction: column; gap: 3px; }
+  .step-pill {
+    display: inline-flex; align-self: flex-start;
+    font-family: var(--mono); font-size: 9px; font-weight: 800; letter-spacing: .1em;
+    padding: 2px 7px; border-radius: 20px; text-transform: uppercase;
+  }
+  .step-heading { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.25; }
+
+  .step-body { padding: 13px 18px 15px 21px; display: flex; flex-direction: column; gap: 8px; }
+  .step-text { font-size: 13px; color: var(--tm); line-height: 1.75; }
+  .step-text code {
+    font-family: var(--mono); font-size: 11px;
+    padding: 1px 5px; border-radius: 3px;
+  }
+  .step-text strong { color: var(--text); font-weight: 650; }
+
+  .learn-more-btn {
+    background: none; border: none; cursor: pointer;
+    font-size: 12px; font-weight: 600; font-family: inherit;
+    align-self: flex-start; padding: 0;
+    opacity: .8;
+  }
+
+  /* ── EXPANDED CARDS — BEFORE ── */
+  .cards-before { display: flex; flex-direction: column; gap: 7px; border-top: 1px solid var(--border); padding-top: 10px; }
+  .card-before {
+    border-radius: 8px; border: 1px solid var(--border);
+    background: var(--surface-bright); padding: 9px 12px;
+  }
+  .card-before-label {
+    font-size: 9px; font-family: var(--mono); font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase; margin-bottom: 4px;
+  }
+  .card-before-text { font-size: 12.5px; color: var(--tm); line-height: 1.65; }
+
+  /* ── EXPANDED CARDS — AFTER A (emoji-typed) ── */
+  .cards-after { display: flex; flex-direction: column; gap: 9px; border-top: 1px solid #ffffff10; padding-top: 12px; }
+
+  .card-after {
+    border-radius: 10px; padding: 11px 14px;
+    display: flex; gap: 11px; align-items: flex-start;
+  }
+  .card-after-icon {
+    font-size: 16px; line-height: 1; flex-shrink: 0;
+    margin-top: 1px; filter: saturate(1.1);
+  }
+  .card-after-body { flex: 1; min-width: 0; }
+  .card-after-label {
+    font-size: 8.5px; font-family: var(--mono); font-weight: 800;
+    letter-spacing: .12em; text-transform: uppercase; margin-bottom: 5px;
+  }
+  .card-after-text { font-size: 12.5px; line-height: 1.68; color: var(--tm); }
+  .card-after-text code {
+    font-family: var(--mono); font-size: 10.5px;
+    padding: 1px 4px; border-radius: 3px;
+  }
+  .card-after-text strong { font-weight: 650; }
+
+  /* card type: default / explanation */
+  .card-type-default {
+    background: #1e2230;
+    border: 1px solid #2e334820;
+  }
+  .card-type-default .card-after-label { color: #8b8fa7; }
+
+  /* card type: tip 💡 */
+  .card-type-tip {
+    background: #1e1a0c;
+    border: 1px solid #fbbf2430;
+  }
+  .card-type-tip .card-after-label { color: #fbbf24cc; }
+  .card-type-tip .card-after-text strong { color: #fbbf24dd; }
+  .card-type-tip .card-after-text code { background: #fbbf2415; border: 1px solid #fbbf2430; color: #fbbf24; }
+
+  /* card type: warning ⚠️ */
+  .card-type-warning {
+    background: #1e130a;
+    border: 1px solid #f9731630;
+  }
+  .card-type-warning .card-after-label { color: #f97316cc; }
+  .card-type-warning .card-after-text strong { color: #f97316dd; }
+  .card-type-warning .card-after-text code { background: #f9731615; border: 1px solid #f9731630; color: #f97316; }
+
+  /* card type: deep dive 🔬 */
+  .card-type-deep {
+    background: #0f1420;
+    border: 1px solid #7c8cf830;
+  }
+  .card-type-deep .card-after-label { color: #7c8cf8cc; }
+  .card-type-deep .card-after-text strong { color: #7c8cf8dd; }
+  .card-type-deep .card-after-text code { background: #7c8cf815; border: 1px solid #7c8cf830; color: #7c8cf8; }
+
+  /* card type: history / context 📜 */
+  .card-type-history {
+    background: #141319;
+    border: 1px solid #a78bfa30;
+  }
+  .card-type-history .card-after-label { color: #a78bfacc; }
+  .card-type-history .card-after-text strong { color: #a78bfadd; }
+  .card-type-history .card-after-text code { background: #a78bfa15; border: 1px solid #a78bfa30; color: #a78bfa; }
+
+  /* card type: pattern / best practice ✅ */
+  .card-type-pattern {
+    background: #0d1a12;
+    border: 1px solid #22c55e30;
+  }
+  .card-type-pattern .card-after-label { color: #22c55ecc; }
+  .card-type-pattern .card-after-text strong { color: #22c55edd; }
+  .card-type-pattern .card-after-text code { background: #22c55e15; border: 1px solid #22c55e30; color: #22c55e; }
+
+  /* ── AFTER B: icon-enhanced step header ── */
+  .step-text-upgraded {
+    font-size: 14px; /* slightly larger */
+    color: #c5c8d8;  /* slightly brighter than --tm */
+    line-height: 1.8;
+    letter-spacing: -.01em;
+  }
+
+  /* ── OPTION TABLE ── */
+  .options-table { display: flex; flex-direction: column; gap: 12px; margin-bottom: 64px; }
+  .option-row {
+    display: grid; grid-template-columns: auto 1fr auto;
+    gap: 16px; align-items: center;
+    padding: 14px 18px; border-radius: 10px;
+    border: 1px solid var(--border); background: var(--surface);
+  }
+  .option-badge {
+    font-family: var(--mono); font-size: 8px; font-weight: 800;
+    letter-spacing: .1em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 20px; white-space: nowrap;
+  }
+  .option-desc { font-size: 13px; color: var(--tm); line-height: 1.55; }
+  .option-desc strong { color: var(--text); }
+  .option-effort {
+    font-size: 10px; font-family: var(--mono); color: var(--tf);
+    white-space: nowrap;
+  }
+
+  /* ── CARD TYPE LEGEND ── */
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+  .legend-item {
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 12px; border-radius: 20px; font-size: 11px;
+  }
+  .legend-emoji { font-size: 14px; }
+
+  hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+</style>
+</head>
+<body>
+
+<h1>Step Content Upgrade — Preview</h1>
+<p class="sub">
+  Vorschläge für visuell ansprechendere Step-Beschreibungen und Expanded Cards.<br>
+  Zeigt 3 Optionen — von minimal bis vollständig. Basiert auf echtem Inhalt aus <code>js-variables</code> und <code>css-flexbox</code>.
+</p>
+
+<!-- ═══════════════════════════════════════════════════════ OPTION OVERVIEW -->
+<div class="section-header">
+  <span>Optionen im Überblick</span>
+</div>
+
+<div class="options-table">
+  <div class="option-row" style="border-color: #555a7340;">
+    <span class="option-badge" style="background:#55577320; border:1px solid #55577340; color:var(--tf)">Jetzt</span>
+    <div class="option-desc"><strong>Aktueller Zustand</strong> — Nur `**bold**` und `` `code` `` in Fließtext. Expanded cards mit extrahiertem Bold-Label.</div>
+    <span class="option-effort">—</span>
+  </div>
+  <div class="option-row" style="border-color: #fbbf2440;">
+    <span class="option-badge" style="background:#fbbf2420; border:1px solid #fbbf2440; color:#fbbf24">Option A</span>
+    <div class="option-desc">
+      <strong>Schritt-Icons</strong> — Jeder Step bekommt ein thematisches Emoji als Icon (schon im Typ/Renderer vorhanden, nur nicht befüllt).<br>
+      <span style="font-size:11px;">→ Nur Datenbefüllung nötig, kein Renderer-Code.</span>
+    </div>
+    <span class="option-effort">~472 Felder</span>
+  </div>
+  <div class="option-row" style="border-color: #7c8cf840;">
+    <span class="option-badge" style="background:#7c8cf820; border:1px solid #7c8cf840; color:#7c8cf8">Option B</span>
+    <div class="option-desc">
+      <strong>Emoji-typisierte Expanded Cards</strong> — Paragraphen in expandedText bekommen Emoji-Präfixe (💡 Tipp, ⚠️ Falle, 🔬 Detail, 📜 Kontext, ✅ Pattern). Renderer erkennt diese und styled entsprechend farbig.<br>
+      <span style="font-size:11px;">→ Renderer-Update + Inhaltsbefüllung in topics.ts + DE-JSON.</span>
+    </div>
+    <span class="option-effort">~472 × 2–4 Paras</span>
+  </div>
+  <div class="option-row" style="border-color: #22c55e40;">
+    <span class="option-badge" style="background:#22c55e20; border:1px solid #22c55e40; color:#22c55e">Option C</span>
+    <div class="option-desc">
+      <strong>Vollständig (A + B)</strong> — Icons auf jedem Step + typisierte Expanded Cards + leicht aufgewertetes Fließtext-Styling (größer, heller).<br>
+      <span style="font-size:11px;">→ Empfohlen für maximalen visuellen Impact.</span>
+    </div>
+    <span class="option-effort">Vollständig</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ CARD TYPE LEGEND -->
+<div class="section-header">
+  <span>Expanded Card Typen (Option B)</span>
+</div>
+
+<div class="legend" style="margin-bottom: 40px;">
+  <div class="legend-item" style="background:#1e2230; border:1px solid #2e3348;">
+    <span class="legend-emoji">📖</span>
+    <span style="font-size:10px; color:var(--tm);">Standard-Erklärung</span>
+  </div>
+  <div class="legend-item" style="background:#1e1a0c; border:1px solid #fbbf2430;">
+    <span class="legend-emoji">💡</span>
+    <span style="font-size:10px; color:#fbbf24cc;">Tipp / Best Practice</span>
+  </div>
+  <div class="legend-item" style="background:#1e130a; border:1px solid #f9731630;">
+    <span class="legend-emoji">⚠️</span>
+    <span style="font-size:10px; color:#f97316cc;">Häufige Falle</span>
+  </div>
+  <div class="legend-item" style="background:#0f1420; border:1px solid #7c8cf830;">
+    <span class="legend-emoji">🔬</span>
+    <span style="font-size:10px; color:#7c8cf8cc;">Deep Dive</span>
+  </div>
+  <div class="legend-item" style="background:#141319; border:1px solid #a78bfa30;">
+    <span class="legend-emoji">📜</span>
+    <span style="font-size:10px; color:#a78bfacc;">Historischer Kontext</span>
+  </div>
+  <div class="legend-item" style="background:#0d1a12; border:1px solid #22c55e30;">
+    <span class="legend-emoji">✅</span>
+    <span style="font-size:10px; color:#22c55ecc;">Muster / Pattern</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ BEFORE vs AFTER: js-variables -->
+
+<div class="section-header">
+  <span>js-variables — Step 1: var — the old way</span>
+  <span style="color:#fbbf24; font-size:9px;">Farbe: #fbbf24 (JS)</span>
+</div>
+
+<div class="cols">
+
+  <!-- BEFORE -->
+  <div>
+    <div class="section-header" style="border:none; margin-bottom:10px;">
+      <span>Vorher</span><span class="badge badge-before">Jetzt</span>
+    </div>
+    <div class="step active" style="border-color:#fbbf2433; box-shadow:0 4px 28px #fbbf2412;">
+      <div class="step-accent" style="background:#fbbf24;"></div>
+      <div class="step-header" style="background:linear-gradient(135deg,#fbbf241e 0%,#fbbf2408 100%); border-bottom-color:#fbbf2426;">
+        <!-- no icon box -->
+        <div class="step-meta">
+          <span class="step-pill" style="background:#fbbf242e; border:1px solid #fbbf2466; color:#fbbf24;">INFO 01</span>
+          <span class="step-heading">var — the old way</span>
+        </div>
+      </div>
+      <div class="step-body">
+        <p class="step-text">
+          <code style="background:#fbbf2414; border:1px solid #fbbf2433; color:#fbbf24;">var</code> is function-scoped and <code style="background:#fbbf2414; border:1px solid #fbbf2433; color:#fbbf24;">hoisted</code>, which causes unexpected bugs. Modern JavaScript avoids it.
+        </p>
+
+        <!-- Expanded (shown) -->
+        <div class="cards-before">
+          <div class="card-before">
+            <div class="card-before-label" style="color:#fbbf2499;">var</div>
+            <p class="card-before-text"><strong>var</strong> is <strong>function-scoped</strong>: it leaks out of <code style="font-family:var(--mono); font-size:10px; background:#fbbf2414; border:1px solid #fbbf2433; color:#fbbf24;">if</code> blocks and <code style="font-family:var(--mono); font-size:10px; background:#fbbf2414; border:1px solid #fbbf2433; color:#fbbf24;">for</code> loops into the nearest enclosing function. The engine also <strong>hoists</strong> <code style="font-family:var(--mono); font-size:10px; background:#fbbf2414; border:1px solid #fbbf2433; color:#fbbf24;">var</code> declarations to the top of the function, initialising them to <code style="font-family:var(--mono); font-size:10px; background:#fbbf2414; border:1px solid #fbbf2433; color:#fbbf24;">undefined</code>.</p>
+          </div>
+          <div class="card-before">
+            <div class="card-before-label" style="color:#fbbf2499;">let & const</div>
+            <p class="card-before-text"><strong>let</strong> and <strong>const</strong> are block-scoped. Reading them before their declaration throws a <code style="font-family:var(--mono); font-size:10px; background:#fbbf2414; border:1px solid #fbbf2433; color:#fbbf24;">ReferenceError</code>. This is the "temporal dead zone" — the period between entering the block and the declaration line.</p>
+          </div>
+        </div>
+
+        <button class="learn-more-btn" style="color:#fbbf24b3;">Show less</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AFTER C (icons + emoji-typed cards + better text) -->
+  <div>
+    <div class="section-header" style="border:none; margin-bottom:10px;">
+      <span>Nachher</span><span class="badge badge-after">Option C</span>
+    </div>
+    <div class="step active" style="border-color:#fbbf2433; box-shadow:0 4px 28px #fbbf2412;">
+      <div class="step-accent" style="background:#fbbf24;"></div>
+      <div class="step-header" style="background:linear-gradient(135deg,#fbbf241e 0%,#fbbf2408 100%); border-bottom-color:#fbbf2426;">
+        <!-- WITH icon box -->
+        <div class="icon-box" style="background:#fbbf2433; border:1px solid #fbbf2473; box-shadow:0 0 14px #fbbf242e;">
+          ⏮️
+        </div>
+        <div class="step-meta">
+          <span class="step-pill" style="background:#fbbf242e; border:1px solid #fbbf2466; color:#fbbf24;">INFO 01</span>
+          <span class="step-heading">var — the old way</span>
+        </div>
+      </div>
+      <div class="step-body">
+        <p class="step-text step-text-upgraded">
+          <code style="background:#fbbf2414; border:1px solid #fbbf2433; color:#fbbf24;">var</code> is function-scoped and <code style="background:#fbbf2414; border:1px solid #fbbf2433; color:#fbbf24;">hoisted</code>, which causes unexpected bugs. Modern JavaScript avoids it.
+        </p>
+
+        <!-- Expanded (shown) — emoji-typed cards -->
+        <div class="cards-after">
+
+          <div class="card-after card-type-history">
+            <span class="card-after-icon">📜</span>
+            <div class="card-after-body">
+              <div class="card-after-label">Historischer Kontext</div>
+              <p class="card-after-text"><strong>var</strong> ist <strong>funktionsgebunden</strong>: Es leckt aus <code>if</code>-Blöcken und <code>for</code>-Schleifen in die nächste Funktion. Der Interpreter <strong>hoistet</strong> <code>var</code>-Deklarationen an den Anfang der Funktion.</p>
+            </div>
+          </div>
+
+          <div class="card-after card-type-tip">
+            <span class="card-after-icon">💡</span>
+            <div class="card-after-body">
+              <div class="card-after-label">Best Practice</div>
+              <p class="card-after-text"><strong>let</strong> und <strong>const</strong> sind block-scoped. Das Lesen vor der Deklaration wirft einen <code>ReferenceError</code> — das ist die "Temporal Dead Zone".</p>
+            </div>
+          </div>
+
+          <div class="card-after card-type-warning">
+            <span class="card-after-icon">⚠️</span>
+            <div class="card-after-body">
+              <div class="card-after-label">Häufige Falle</div>
+              <p class="card-after-text">Nutze <strong>niemals</strong> <code>var</code> in modernem Code. ESLint-Regel <code>no-var</code> verhindert das automatisch.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <button class="learn-more-btn" style="color:#fbbf24b3;">Show less</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ BEFORE vs AFTER: css-flexbox -->
+
+<div class="section-header">
+  <span>css-flexbox — Step 1: The classic navbar</span>
+  <span style="color:#38bdf8; font-size:9px;">Farbe: #38bdf8 (CSS)</span>
+</div>
+
+<div class="cols">
+
+  <!-- BEFORE -->
+  <div>
+    <div class="section-header" style="border:none; margin-bottom:10px;">
+      <span>Vorher</span><span class="badge badge-before">Jetzt</span>
+    </div>
+    <div class="step active" style="border-color:#38bdf833; box-shadow:0 4px 28px #38bdf812;">
+      <div class="step-accent" style="background:#38bdf8;"></div>
+      <div class="step-header" style="background:linear-gradient(135deg,#38bdf81e 0%,#38bdf808 100%); border-bottom-color:#38bdf826;">
+        <div class="step-meta">
+          <span class="step-pill" style="background:#38bdf82e; border:1px solid #38bdf866; color:#38bdf8;">INFO 01</span>
+          <span class="step-heading">The classic navbar</span>
+        </div>
+      </div>
+      <div class="step-body">
+        <p class="step-text">
+          Flexbox solves the navbar in 2 lines: <code style="background:#38bdf814; border:1px solid #38bdf833; color:#38bdf8;">display: flex</code> on the container, then <code style="background:#38bdf814; border:1px solid #38bdf833; color:#38bdf8;">justify-content: space-between</code> pushes the logo left and links right.
+        </p>
+        <div class="cards-before">
+          <div class="card-before">
+            <div class="card-before-label" style="color:#38bdf899;">Flexbox</div>
+            <p class="card-before-text"><strong>Flexbox</strong> replaced older techniques like float-based navbars. The two-line pattern <code style="font-family:var(--mono); font-size:10px; background:#38bdf814; border:1px solid #38bdf833; color:#38bdf8;">display: flex; justify-content: space-between</code> achieves what previously required calculating widths, adding clearfix hacks, and fighting mysterious whitespace issues.</p>
+          </div>
+          <div class="card-before">
+            <div class="card-before-label" style="color:#38bdf899;">Flex formatting</div>
+            <p class="card-before-text">The flex container establishes a <strong>flex formatting context</strong>. Direct children become flex items and gain access to flex properties (<code style="font-family:var(--mono); font-size:10px;">flex-grow</code>, <code style="font-family:var(--mono); font-size:10px;">flex-shrink</code>, etc.).</p>
+          </div>
+        </div>
+        <button class="learn-more-btn" style="color:#38bdf8b3;">Show less</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AFTER C -->
+  <div>
+    <div class="section-header" style="border:none; margin-bottom:10px;">
+      <span>Nachher</span><span class="badge badge-after">Option C</span>
+    </div>
+    <div class="step active" style="border-color:#38bdf833; box-shadow:0 4px 28px #38bdf812;">
+      <div class="step-accent" style="background:#38bdf8;"></div>
+      <div class="step-header" style="background:linear-gradient(135deg,#38bdf81e 0%,#38bdf808 100%); border-bottom-color:#38bdf826;">
+        <div class="icon-box" style="background:#38bdf833; border:1px solid #38bdf873; box-shadow:0 0 14px #38bdf82e;">
+          🧭
+        </div>
+        <div class="step-meta">
+          <span class="step-pill" style="background:#38bdf82e; border:1px solid #38bdf866; color:#38bdf8;">INFO 01</span>
+          <span class="step-heading">The classic navbar</span>
+        </div>
+      </div>
+      <div class="step-body">
+        <p class="step-text step-text-upgraded">
+          Flexbox solves the navbar in 2 lines: <code style="background:#38bdf814; border:1px solid #38bdf833; color:#38bdf8;">display: flex</code> on the container, then <code style="background:#38bdf814; border:1px solid #38bdf833; color:#38bdf8;">justify-content: space-between</code> pushes the logo left and links right.
+        </p>
+        <div class="cards-after">
+          <div class="card-after card-type-history">
+            <span class="card-after-icon">📜</span>
+            <div class="card-after-body">
+              <div class="card-after-label">Warum Flexbox?</div>
+              <p class="card-after-text"><strong>Flexbox</strong> löste float-basierte Navbars ab — was früher berechnete Breiten, Clearfix-Hacks und mysteriöse Whitespace-Probleme brauchte, geht jetzt in zwei Zeilen.</p>
+            </div>
+          </div>
+          <div class="card-after card-type-deep">
+            <span class="card-after-icon">🔬</span>
+            <div class="card-after-body">
+              <div class="card-after-label">Flex Formatting Context</div>
+              <p class="card-after-text">Der Flex-Container erzeugt einen <strong>Flex Formatting Context</strong>. Direkte Kinder werden Flex Items und erhalten Zugriff auf <code>flex-grow</code>, <code>flex-shrink</code>, <code>align-self</code> etc.</p>
+            </div>
+          </div>
+          <div class="card-after card-type-tip">
+            <span class="card-after-icon">💡</span>
+            <div class="card-after-body">
+              <div class="card-after-label">Merkhilfe</div>
+              <p class="card-after-text"><strong>Hauptachse vs. Querachse</strong>: <code>justify-content</code> steuert die Hauptachse, <code>align-items</code> die Querachse. Mit <code>flex-direction: column</code> drehen sich beide.</p>
+            </div>
+          </div>
+        </div>
+        <button class="learn-more-btn" style="color:#38bdf8b3;">Show less</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ BEFORE vs AFTER: react-state -->
+
+<div class="section-header">
+  <span>react-state — Step 1: State is dynamic data</span>
+  <span style="color:#61dafb; font-size:9px;">Farbe: #61dafb (React)</span>
+</div>
+
+<div class="cols">
+
+  <!-- BEFORE -->
+  <div>
+    <div class="section-header" style="border:none; margin-bottom:10px;">
+      <span>Vorher</span><span class="badge badge-before">Jetzt</span>
+    </div>
+    <div class="step active" style="border-color:#61dafb33; box-shadow:0 4px 28px #61dafb12;">
+      <div class="step-accent" style="background:#61dafb;"></div>
+      <div class="step-header" style="background:linear-gradient(135deg,#61dafb1e 0%,#61dafb08 100%); border-bottom-color:#61dafb26;">
+        <div class="step-meta">
+          <span class="step-pill" style="background:#61dafb2e; border:1px solid #61dafb66; color:#61dafb;">INFO 01</span>
+          <span class="step-heading">State is dynamic data</span>
+        </div>
+      </div>
+      <div class="step-body">
+        <p class="step-text">State is data that can change over time and causes the component to re-render when it does. Props come from outside; state lives inside.</p>
+        <div class="cards-before">
+          <div class="card-before">
+            <div class="card-before-label" style="color:#61dafb99;">useState</div>
+            <p class="card-before-text"><strong><code style="font-family:var(--mono); font-size:10px; background:#61dafb14; border:1px solid #61dafb33; color:#61dafb;">useState</code></strong> is the fundamental hook for managing local component state. Without it, variables declared inside a function component reset to their initial value on every render.</p>
+          </div>
+          <div class="card-before">
+            <div class="card-before-label" style="color:#61dafb99;">Re-render</div>
+            <p class="card-before-text">Every time you call the setter, React <strong>schedules a re-render</strong>. State updates are <em>asynchronous</em> — the new value is not immediately available in the same event handler call.</p>
+          </div>
+        </div>
+        <button class="learn-more-btn" style="color:#61dafbb3;">Show less</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AFTER C -->
+  <div>
+    <div class="section-header" style="border:none; margin-bottom:10px;">
+      <span>Nachher</span><span class="badge badge-after">Option C</span>
+    </div>
+    <div class="step active" style="border-color:#61dafb33; box-shadow:0 4px 28px #61dafb12;">
+      <div class="step-accent" style="background:#61dafb;"></div>
+      <div class="step-header" style="background:linear-gradient(135deg,#61dafb1e 0%,#61dafb08 100%); border-bottom-color:#61dafb26;">
+        <div class="icon-box" style="background:#61dafb33; border:1px solid #61dafb73; box-shadow:0 0 14px #61dafb2e;">
+          🔄
+        </div>
+        <div class="step-meta">
+          <span class="step-pill" style="background:#61dafb2e; border:1px solid #61dafb66; color:#61dafb;">INFO 01</span>
+          <span class="step-heading">State is dynamic data</span>
+        </div>
+      </div>
+      <div class="step-body">
+        <p class="step-text step-text-upgraded">State is data that can change over time and causes the component to re-render when it does. <strong style="color:#e2e4ed;">Props come from outside</strong>; state lives inside.</p>
+        <div class="cards-after">
+          <div class="card-after card-type-deep">
+            <span class="card-after-icon">🔬</span>
+            <div class="card-after-body">
+              <div class="card-after-label">Wie useState funktioniert</div>
+              <p class="card-after-text"><code>useState</code> speichert den Wert in einem <strong>React-internen Slot</strong>, der zwischen Renders erhalten bleibt — normale Variablen im Funktionskörper werden bei jedem Render neu initialisiert.</p>
+            </div>
+          </div>
+          <div class="card-after card-type-warning">
+            <span class="card-after-icon">⚠️</span>
+            <div class="card-after-body">
+              <div class="card-after-label">State-Updates sind asynchron</div>
+              <p class="card-after-text">Nach dem Setter-Aufruf ist der neue Wert <strong>nicht sofort</strong> verfügbar — React <em>schedulet</em> einen Re-render. Nutze den funktionalen Update <code>setCount(c => c + 1)</code> wenn du auf den vorherigen Wert angewiesen bist.</p>
+            </div>
+          </div>
+          <div class="card-after card-type-pattern">
+            <span class="card-after-icon">✅</span>
+            <div class="card-after-body">
+              <div class="card-after-label">Wann State, wann Props?</div>
+              <p class="card-after-text">Faustregel: Kann der Wert von außen gesteuert werden? → <strong>Props</strong>. Gehört der Wert nur diesem Component? → <strong>State</strong>. State nach oben zu heben ist immer möglich; nach unten schieben kaum.</p>
+            </div>
+          </div>
+        </div>
+        <button class="learn-more-btn" style="color:#61dafbb3;">Show less</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ OPTION A: Icons only -->
+
+<hr>
+
+<div class="section-header">
+  <span>Option A — Nur Icons (kein Expanded-Card-Upgrade)</span>
+  <span class="badge badge-before">Minimal</span>
+</div>
+
+<div style="display:flex; flex-direction:column; gap:12px; max-width:560px; margin-bottom:60px;">
+
+  <!-- Step 1 with icon -->
+  <div class="step active" style="border-color:#fbbf2433; box-shadow:0 4px 28px #fbbf2412;">
+    <div class="step-accent" style="background:#fbbf24;"></div>
+    <div class="step-header" style="background:linear-gradient(135deg,#fbbf241e 0%,#fbbf2408 100%); border-bottom-color:#fbbf2426;">
+      <div class="icon-box" style="background:#fbbf2433; border:1px solid #fbbf2473; box-shadow:0 0 14px #fbbf242e;">⏮️</div>
+      <div class="step-meta">
+        <span class="step-pill" style="background:#fbbf242e; border:1px solid #fbbf2466; color:#fbbf24;">INFO 01</span>
+        <span class="step-heading">var — the old way</span>
+      </div>
+    </div>
+    <div class="step-body">
+      <p class="step-text"><code style="background:#fbbf2414; border:1px solid #fbbf2433; color:#fbbf24;">var</code> is function-scoped and <code style="background:#fbbf2414; border:1px solid #fbbf2433; color:#fbbf24;">hoisted</code>. Modern JavaScript avoids it.</p>
+      <button class="learn-more-btn" style="color:#fbbf24b3;">+ Learn more</button>
+    </div>
+  </div>
+
+  <!-- Step 2 with icon -->
+  <div class="step" style="opacity:0.35; border-color:var(--border);">
+    <div class="step-accent" style="background:#fbbf2430;"></div>
+    <div class="step-header" style="background:linear-gradient(135deg,#fbbf240f 0%,#fbbf2404 100%); border-bottom-color:#fbbf240f;">
+      <div class="icon-box" style="background:#fbbf241a; border:1px solid #fbbf2433;">📦</div>
+      <div class="step-meta">
+        <span class="step-pill" style="background:#fbbf241a; border:1px solid #fbbf242e; color:#fbbf248c;">INFO 02</span>
+        <span class="step-heading">let — block-scoped</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3 with icon -->
+  <div class="step" style="opacity:0.35; border-color:var(--border);">
+    <div class="step-accent" style="background:#fbbf2430;"></div>
+    <div class="step-header" style="background:linear-gradient(135deg,#fbbf240f 0%,#fbbf2404 100%); border-bottom-color:#fbbf240f;">
+      <div class="icon-box" style="background:#fbbf241a; border:1px solid #fbbf2433;">🔒</div>
+      <div class="step-meta">
+        <span class="step-pill" style="background:#fbbf241a; border:1px solid #fbbf242e; color:#fbbf248c;">INFO 03</span>
+        <span class="step-heading">const — immutable binding</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ ALLE CARD-TYPEN SHOWCASE -->
+
+<hr>
+
+<div class="section-header">
+  <span>Alle Card-Typen — Übersicht</span>
+</div>
+
+<div style="display:flex; flex-direction:column; gap:9px; max-width:560px;">
+  <div class="card-after card-type-default" style="border-radius:10px; padding:11px 14px; display:flex; gap:11px; align-items:flex-start;">
+    <span class="card-after-icon">📖</span>
+    <div class="card-after-body">
+      <div class="card-after-label" style="font-size:8.5px; font-family:var(--mono); font-weight:800; letter-spacing:.12em; text-transform:uppercase; margin-bottom:5px; color:#8b8fa7;">Standard</div>
+      <p class="card-after-text">Allgemeine Erklärung ohne speziellen Typ. Neutral gestylt.</p>
+    </div>
+  </div>
+
+  <div class="card-after card-type-tip" style="border-radius:10px; padding:11px 14px; display:flex; gap:11px; align-items:flex-start;">
+    <span class="card-after-icon">💡</span>
+    <div class="card-after-body">
+      <div class="card-after-label">Tipp / Best Practice</div>
+      <p class="card-after-text">Gute Praxis oder Empfehlung. Zeigt <code>bevorzugte Muster</code> und warum sie besser sind.</p>
+    </div>
+  </div>
+
+  <div class="card-after card-type-warning" style="border-radius:10px; padding:11px 14px; display:flex; gap:11px; align-items:flex-start;">
+    <span class="card-after-icon">⚠️</span>
+    <div class="card-after-body">
+      <div class="card-after-label">Häufige Falle</div>
+      <p class="card-after-text">Typischer Fehler oder Fallstrick. <strong>Besondere Vorsicht</strong> bei <code>dieser API</code>.</p>
+    </div>
+  </div>
+
+  <div class="card-after card-type-deep" style="border-radius:10px; padding:11px 14px; display:flex; gap:11px; align-items:flex-start;">
+    <span class="card-after-icon">🔬</span>
+    <div class="card-after-body">
+      <div class="card-after-label">Deep Dive</div>
+      <p class="card-after-text">Detailwissen für Interessierte. Erklärt wie <strong>unter der Haube</strong> funktioniert was <code>passiert</code>.</p>
+    </div>
+  </div>
+
+  <div class="card-after card-type-history" style="border-radius:10px; padding:11px 14px; display:flex; gap:11px; align-items:flex-start;">
+    <span class="card-after-icon">📜</span>
+    <div class="card-after-body">
+      <div class="card-after-label">Historischer Kontext</div>
+      <p class="card-after-text">Warum existiert das so? Zeigt die <strong>Entwicklung</strong> und warum alte Patterns heute vermieden werden.</p>
+    </div>
+  </div>
+
+  <div class="card-after card-type-pattern" style="border-radius:10px; padding:11px 14px; display:flex; gap:11px; align-items:flex-start;">
+    <span class="card-after-icon">✅</span>
+    <div class="card-after-body">
+      <div class="card-after-label">Pattern / Muster</div>
+      <p class="card-after-text">Etabliertes Muster das sich in der Praxis bewährt hat. Oft mit <code>konkretem Beispiel</code>.</p>
+    </div>
+  </div>
+</div>
+
+<br><br>
+<p style="font-size:11px; color:var(--tf); text-align:center;">
+  Preview — web-dev-guide step content upgrade proposals
+</p>
+
+</body>
+</html>

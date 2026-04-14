@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Single Step Preview</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface-bright: #1e2230;
+    --border: #2e3348;
+    --text: #e2e4ed;
+    --tm: #8b8fa7;
+    --tf: #555a73;
+    --mono: 'JetBrains Mono', 'Fira Code', monospace;
+    --c: #fbbf24;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+  }
+
+  .wrapper {
+    width: 100%;
+    max-width: 540px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* ── Topic label ── */
+  .topic-label {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 11px; color: var(--tf);
+    font-family: var(--mono); letter-spacing: .08em;
+  }
+  .topic-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--c);
+    box-shadow: 0 0 8px var(--c);
+  }
+
+  /* ── STEP CARD ── */
+  .step {
+    border-radius: 13px;
+    border: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
+    overflow: hidden;
+    background: var(--surface);
+    position: relative;
+    box-shadow: 0 4px 32px color-mix(in srgb, var(--c) 10%, transparent),
+                0 1px 0 color-mix(in srgb, var(--c) 8%, transparent) inset;
+  }
+
+  /* Left accent */
+  .step-accent {
+    position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--c);
+    border-radius: 3px 0 0 3px;
+  }
+
+  /* Header */
+  .step-header {
+    display: flex; align-items: center; gap: 13px;
+    padding: 16px 20px 14px 22px;
+    background: linear-gradient(135deg,
+      color-mix(in srgb, var(--c) 14%, transparent) 0%,
+      color-mix(in srgb, var(--c) 4%, transparent) 100%);
+    border-bottom: 1px solid color-mix(in srgb, var(--c) 18%, transparent);
+  }
+
+  .icon-box {
+    width: 40px; height: 40px; flex-shrink: 0;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--c) 22%, transparent);
+    border: 1px solid color-mix(in srgb, var(--c) 48%, transparent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 19px; line-height: 1;
+    box-shadow: 0 0 18px color-mix(in srgb, var(--c) 20%, transparent);
+  }
+
+  .step-meta { display: flex; flex-direction: column; gap: 4px; }
+
+  .step-pill {
+    display: inline-flex; align-self: flex-start;
+    font-family: var(--mono); font-size: 9px; font-weight: 800; letter-spacing: .1em;
+    padding: 2px 8px; border-radius: 20px; text-transform: uppercase;
+    background: color-mix(in srgb, var(--c) 20%, transparent);
+    border: 1px solid color-mix(in srgb, var(--c) 44%, transparent);
+    color: var(--c);
+  }
+
+  .step-heading {
+    font-size: 15px; font-weight: 700; color: var(--text);
+    line-height: 1.25; letter-spacing: -.01em;
+  }
+
+  /* Body */
+  .step-body {
+    padding: 14px 20px 16px 22px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+
+  .step-text {
+    font-size: 13.5px;
+    color: #c5c8d8;
+    line-height: 1.8;
+    letter-spacing: -.01em;
+  }
+  .step-text code {
+    font-family: var(--mono); font-size: 11px;
+    background: color-mix(in srgb, var(--c) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--c) 22%, transparent);
+    border-radius: 3px; padding: 1px 5px;
+    color: var(--c);
+  }
+  .step-text strong { color: var(--text); font-weight: 650; }
+
+  /* Divider */
+  .cards-divider {
+    height: 1px;
+    background: linear-gradient(90deg,
+      color-mix(in srgb, var(--c) 18%, transparent),
+      transparent 80%);
+    margin: 2px 0;
+  }
+
+  /* Expanded cards */
+  .cards { display: flex; flex-direction: column; gap: 8px; }
+
+  .card {
+    border-radius: 10px; padding: 11px 14px;
+    display: flex; gap: 11px; align-items: flex-start;
+    transition: border-color .2s;
+  }
+  .card-icon { font-size: 16px; line-height: 1; flex-shrink: 0; margin-top: 1px; }
+  .card-body { flex: 1; min-width: 0; }
+  .card-label {
+    font-size: 8.5px; font-family: var(--mono); font-weight: 800;
+    letter-spacing: .12em; text-transform: uppercase; margin-bottom: 5px;
+  }
+  .card-text { font-size: 12.5px; line-height: 1.68; color: var(--tm); }
+  .card-text code {
+    font-family: var(--mono); font-size: 10.5px;
+    padding: 1px 4px; border-radius: 3px;
+  }
+  .card-text strong { font-weight: 650; }
+
+  /* Card variants */
+  .card-history {
+    background: #141319;
+    border: 1px solid #a78bfa28;
+  }
+  .card-history .card-label  { color: #a78bfaaa; }
+  .card-history .card-text strong { color: #a78bfadd; }
+  .card-history .card-text code { background: #a78bfa12; border: 1px solid #a78bfa28; color: #a78bfa; }
+
+  .card-tip {
+    background: #1b1a0e;
+    border: 1px solid #fbbf2428;
+  }
+  .card-tip .card-label  { color: #fbbf24aa; }
+  .card-tip .card-text strong { color: #fbbf24dd; }
+  .card-tip .card-text code { background: #fbbf2412; border: 1px solid #fbbf2428; color: #fbbf24; }
+
+  .card-warning {
+    background: #1b120a;
+    border: 1px solid #f9731628;
+  }
+  .card-warning .card-label  { color: #f97316aa; }
+  .card-warning .card-text strong { color: #f97316dd; }
+  .card-warning .card-text code { background: #f9731612; border: 1px solid #f9731628; color: #f97316; }
+
+  /* Learn more toggle */
+  .toggle-btn {
+    background: none; border: none; cursor: pointer; padding: 0;
+    font-size: 12px; font-weight: 600; font-family: inherit;
+    color: color-mix(in srgb, var(--c) 72%, transparent);
+    align-self: flex-start;
+    display: flex; align-items: center; gap: 5px;
+    transition: color .15s;
+  }
+  .toggle-btn:hover { color: var(--c); }
+  .toggle-arrow { font-size: 10px; transition: transform .2s; }
+  .toggle-arrow.open { transform: rotate(180deg); }
+
+  /* Step dots */
+  .dots {
+    display: flex; gap: 6px; justify-content: center;
+  }
+  .dot {
+    height: 8px; border-radius: 4px; border: none; cursor: pointer; padding: 0;
+    transition: all .25s;
+  }
+  .dot.active {
+    width: 24px;
+    background: var(--c);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--c) 50%, transparent);
+  }
+  .dot.inactive {
+    width: 8px;
+    background: var(--border);
+  }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- Topic context label -->
+  <div class="topic-label">
+    <div class="topic-dot"></div>
+    JavaScript · js-variables
+  </div>
+
+  <!-- THE STEP CARD -->
+  <div class="step">
+    <div class="step-accent"></div>
+
+    <div class="step-header">
+      <div class="icon-box">⏮️</div>
+      <div class="step-meta">
+        <span class="step-pill">INFO 01</span>
+        <span class="step-heading">var — the old way</span>
+      </div>
+    </div>
+
+    <div class="step-body">
+      <!-- Main description -->
+      <p class="step-text">
+        <code>var</code> is <strong>function-scoped</strong> and <strong>hoisted</strong>, which causes unexpected bugs in loops and conditionals. Modern JavaScript avoids it entirely.
+      </p>
+
+      <!-- Divider -->
+      <div class="cards-divider"></div>
+
+      <!-- Expanded cards -->
+      <div class="cards">
+
+        <div class="card card-history">
+          <span class="card-icon">📜</span>
+          <div class="card-body">
+            <div class="card-label">Historischer Kontext</div>
+            <p class="card-text">
+              <code>var</code> stammt aus dem ersten JavaScript-Standard (1995). Damals gab es kein Block-Scoping — <strong>jede Variable galt in der gesamten Funktion</strong>, unabhängig davon, in welchem <code>if</code>-Block oder <code>for</code>-Loop sie deklariert wurde.
+            </p>
+          </div>
+        </div>
+
+        <div class="card card-warning">
+          <span class="card-icon">⚠️</span>
+          <div class="card-body">
+            <div class="card-label">Häufige Falle: Hoisting</div>
+            <p class="card-text">
+              Der Interpreter <strong>hoistet</strong> <code>var</code>-Deklarationen an den Funktionsanfang und initialisiert sie mit <code>undefined</code>. Das Lesen einer <code>var</code> vor ihrer Zeile ergibt lautlos <code>undefined</code> — kein Fehler, nur ein stiller Bug.
+            </p>
+          </div>
+        </div>
+
+        <div class="card card-tip">
+          <span class="card-icon">💡</span>
+          <div class="card-body">
+            <div class="card-label">Temporal Dead Zone</div>
+            <p class="card-text">
+              <code>let</code> und <code>const</code> sind block-scoped und werfen einen <code>ReferenceError</code>, wenn du sie vor der Deklaration liest — das ist die <strong>Temporal Dead Zone</strong>. Dieser Fehler ist <em>gewollt</em>: Er deckt Bugs auf, statt sie zu verstecken.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Toggle button -->
+      <button class="toggle-btn">
+        <span>Weniger anzeigen</span>
+        <span class="toggle-arrow open">▲</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Step dots -->
+  <div class="dots">
+    <button class="dot active"></button>
+    <button class="dot inactive"></button>
+    <button class="dot inactive"></button>
+    <button class="dot inactive"></button>
+    <button class="dot inactive"></button>
+    <button class="dot inactive"></button>
+    <button class="dot inactive"></button>
+    <button class="dot inactive"></button>
+  </div>
+
+</div>
+
+</body>
+</html>
