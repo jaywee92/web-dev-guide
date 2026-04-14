@@ -11600,7 +11600,7 @@ for (let i = 0; i < 5; i++) {
   },
   {
     id: 'ts-type-assertion',
-    nextTopicId: 'ts-react',
+    nextTopicId: 'ts-null-handling',
     title: 'Type Assertion',
     description: 'Override TypeScript\'s inferred type with as — and when to use it safely',
     category: 'typescript-advanced',
@@ -11730,6 +11730,170 @@ for (let i = 0; i < 5; i++) {
         heading: 'as const for route config objects',
         description: 'Use as const to narrow string literals in configuration objects so TypeScript knows the exact values, not just string.',
         code: 'const routes = {\n  home:    \"/\",\n  users:   \"/users\",\n  profile: \"/users/profile\",\n} as const\n\ntype RoutePath = typeof routes[keyof typeof routes]\n// \"/\" | \"/users\" | \"/users/profile\"\n\nfunction navigate(path: RoutePath) {\n  window.location.href = path\n}\n\nnavigate(routes.home)  // OK\nnavigate(\"/about\")   // Error: not a valid route path',
+      },
+    ],
+  },
+  {
+    id: 'ts-null-handling',
+    nextTopicId: 'ts-react',
+    title: 'Null, Undefined & Unknown',
+    description: 'Handle missing values safely with union types, optional chaining, nullish coalescing, and the unknown type',
+    category: 'typescript-advanced',
+    color: '#a78bfa',
+    estimatedMinutes: 8,
+    animationComponent: undefined,
+    bannerComponent: undefined,
+    playgroundType: 'monaco' as const,
+    sections: [
+      { id: 'intro', type: 'intro' as const, steps: [] },
+      {
+        id: 'explanation',
+        type: 'explanation' as const,
+        steps: [
+          {
+            animationStep: 0,
+            icon: '❓',
+            heading: 'undefined vs null',
+            text: 'JavaScript has two "nothing" values. `undefined` means a variable was declared but never assigned. `null` means you explicitly set a value to nothing. TypeScript lets you allow or disallow both using union types — and with strictNullChecks enabled, TypeScript will warn you whenever you try to use a value that could be missing.',
+            expandedText: '📖 **`undefined`** is the default state: a variable declared with `let x: string` but never assigned has value `undefined` at runtime. TypeScript with `strictNullChecks` prevents you from using it as if it were a string.\n\n📖 **`null`** is an intentional absence of value — you assign it explicitly: `let age: number | null = null`. The key difference: `undefined` usually means "not yet set", while `null` means "deliberately empty". In practice, `null` is used to signal "this field exists but has no value", while `undefined` appears when a property is missing entirely.\n\n📜 Enable `"strictNullChecks": true` in `tsconfig.json` — it is the single most impactful TypeScript setting. Without it, `null` and `undefined` are assignable to every type silently.',
+            codeExample: 'let username: string | undefined   // not yet set\nlet age: number | null = null      // explicitly nothing\n\n// TypeScript catches usage before narrowing:\n// console.log(username.toUpperCase())  // Error!\n\n// Narrow first:\nif (username !== undefined) {\n  console.log(username.toUpperCase())  // OK\n}\n\n// Optional parameter (implicitly string | undefined):\nfunction greet(name?: string) {\n  if (name) {\n    console.log(`Hello, ${name.toUpperCase()}`)\n  } else {\n    console.log("No name provided")\n  }\n}',
+            language: 'typescript',
+            analogy: {
+              icon: '📭',
+              title: 'undefined vs null — the empty mailbox',
+              text: [
+                'A mailbox that was never opened (undefined) vs. one you deliberately left empty after removing everything (null). Both are "nothing", but for different reasons.',
+                'TypeScript treats both as distinct from real values — you must check before using.',
+              ],
+            },
+          },
+          {
+            animationStep: 1,
+            icon: '⛓️',
+            heading: 'Optional chaining (?.)',
+            text: 'Optional chaining (`?.`) short-circuits to `undefined` instead of throwing a TypeError when a value is null or undefined. It works on property access, method calls, and array indexes. Use it when a value might legitimately be absent.',
+            expandedText: '📖 **Optional chaining** (`?.`) is syntactic sugar for "access this property only if the left side is not null or undefined". Without it you would write `user && user.address && user.address.street`. With it: `user?.address?.street`. If any step in the chain is null or undefined, the entire expression evaluates to `undefined` — no crash.\n\n📖 It works for three access patterns: property access `obj?.prop`, method calls `obj?.method()`, and array index `arr?.[0]`. This is especially useful for deeply nested API responses where any level might be missing. However, avoid overusing `?.` to suppress errors you should handle — if a value must exist, a proper null check with an error is safer than silently returning `undefined`.',
+            codeExample: 'type User = {\n  name: string\n  address?: {\n    street: string\n    zipCode: string\n  }\n}\n\nconst user: User = { name: "Onur", }\n\n// Without optional chaining — crashes:\n// console.log(user.address.street)  // TypeError!\n\n// With optional chaining — safe:\nconsole.log(user.address?.street)   // undefined (no crash)\nconsole.log(user.address?.zipCode)  // undefined\n\n// On method calls:\nconst upper = user.address?.street?.toUpperCase()  // undefined',
+            language: 'typescript',
+            analogy: {
+              icon: '🔑',
+              title: 'Optional chaining — the polite knock',
+              text: [
+                'Instead of barging through a locked door (crash), you knock first. If nobody answers, you walk away gracefully.',
+                '`user?.address?.street` — each `?.` checks if the door is open before going further. If any step is missing, you get `undefined`, not a crash.',
+              ],
+            },
+          },
+          {
+            animationStep: 2,
+            icon: '🔀',
+            heading: 'Nullish coalescing (??)',
+            text: 'The nullish coalescing operator (`??`) returns the right-hand value when the left side is `null` or `undefined` — but not for other falsy values like `0`, `""`, or `false`. This makes it safer than `||` for providing defaults.',
+            expandedText: '📖 **Nullish coalescing** (`??`) is the correct operator for fallback values when you only want to fall back on `null` or `undefined`. The older `||` operator falls back on any falsy value: `0 || 42` returns `42`, but `0 ?? 42` returns `0`. This matters when `0`, `false`, or `""` are valid values you want to keep.\n\n📜 Combine with optional chaining for elegant safe access: `user?.address?.street ?? "Street not provided"`. If `address` is absent, `?.` gives `undefined`, then `??` provides the fallback. This is the idiomatic TypeScript pattern for reading optional nested data with sensible defaults.',
+            codeExample: 'const user = {\n  name: "Onur",\n  contact: { email: "user@example.com" },\n  address: undefined,\n}\n\n// ?? falls back only on null/undefined:\nconst street   = user.address?.street  ?? "Street not provided"\nconst zip      = user.address?.zipCode ?? "00000"\nconst phone    = user.contact.phoneNumber ?? "No phone"\n\nconsole.log(street)  // "Street not provided"\nconsole.log(phone)   // "No phone"\n\n// Contrast with ||:\nconst count = 0\nconsole.log(count || 10)   // 10 — 0 is falsy!\nconsole.log(count ?? 10)   // 0  — only null/undefined trigger ??',
+            language: 'typescript',
+            analogy: {
+              icon: '🔀',
+              title: 'Nullish coalescing — the specific substitute',
+              text: [
+                'A restaurant that replaces your meal only if it truly never arrived — not just because it was small (0 items) or came on a plain plate (empty string).',
+                '`??` substitutes only for `null` or `undefined`, unlike `||` which replaces any falsy value. Prefer `??` when 0 or "" are valid.',
+              ],
+            },
+          },
+          {
+            animationStep: 3,
+            icon: '🔒',
+            heading: 'The unknown type',
+            text: '`unknown` is the type-safe alternative to `any`. You can assign anything to `unknown`, but TypeScript forces you to narrow the type before using it. This is the correct type for values from `try/catch` blocks, external APIs, and user input.',
+            expandedText: '📖 **`unknown`** forces you to prove what a value is before using it. With `any`, you can call any method or access any property — TypeScript looks away. With `unknown`, every operation requires narrowing first: `if (error instanceof Error)` or `typeof value === "string"`.\n\n📖 The canonical use case is `catch (error)` blocks. In JavaScript, anything can be thrown — a string, an object, a number. Since TypeScript 4.0, `catch` binds `error` as `unknown` (with `useUnknownInCatchVariables`). The correct pattern is always to check `if (error instanceof Error)` before accessing `.message`.\n\n📜 Rule of thumb: reach for `unknown` when a value\'s type is genuinely unknown at compile time (API responses, catch clauses, JSON.parse results). Reach for `any` only when migrating legacy JS code and you have no better option.',
+            codeExample: 'type Post = { id: number; title: string }\n\ntry {\n  const response = await fetch("https://api.example.com/posts")\n  const data = await response.json()  // type: any\n  const posts = data as Post[]        // assertion — be careful!\n\n  posts.forEach(post => {\n    console.log(`Post #${post.id}: ${post.title}`)\n  })\n} catch (error) {\n  // error is unknown — check before using:\n  if (error instanceof Error) {\n    console.error("Fetch failed:", error.message)\n  } else {\n    console.error("Unknown error occurred")\n  }\n}',
+            language: 'typescript',
+            analogy: {
+              icon: '🔒',
+              title: 'unknown — the sealed box',
+              text: [
+                'A sealed box labelled "contents unknown". Before you can use what is inside, you must open and inspect it.',
+                '`unknown` makes TypeScript demand proof before use. `any` is the same box but unlabelled and unsealed — TypeScript lets you reach in blindly.',
+              ],
+            },
+          },
+        ],
+      },
+      { id: 'playground', type: 'playground' as const, steps: [] },
+    ],
+    cheatSheet: {
+      syntax: [
+        { label: 'Union with null/undefined', code: 'let name: string | undefined\nlet age:  number | null = null', note: 'Requires strictNullChecks: true in tsconfig' },
+        { label: 'Optional chaining', code: 'user?.address?.street\nuser?.getName?.()\narr?.[0]', note: 'Returns undefined instead of throwing TypeError' },
+        { label: 'Nullish coalescing', code: 'const name = user?.name ?? "Anonymous"\nconst count = input ?? 0', note: 'Falls back only on null/undefined — not 0 or ""' },
+        { label: 'unknown in catch', code: 'catch (error) {\n  if (error instanceof Error) {\n    console.error(error.message)\n  }\n}', note: 'Always narrow error before using — anything can be thrown' },
+      ],
+      patterns: [
+        {
+          title: 'Safe nested access with fallback',
+          code: 'type Config = {\n  server?: {\n    host?: string\n    port?: number\n  }\n}\n\nfunction getHost(config: Config): string {\n  return config.server?.host ?? "localhost"\n}\n\nfunction getPort(config: Config): number {\n  return config.server?.port ?? 3000\n}',
+          language: 'typescript',
+        },
+        {
+          title: 'unknown in error handling',
+          code: 'async function fetchData(url: string) {\n  try {\n    const res = await fetch(url)\n    if (!res.ok) throw new Error(`HTTP ${res.status}`)\n    return await res.json()\n  } catch (error: unknown) {\n    if (error instanceof Error) {\n      console.error("Request failed:", error.message)\n    } else {\n      console.error("Unexpected error:", error)\n    }\n    throw error\n  }\n}',
+          language: 'typescript',
+        },
+      ],
+      whenToUse: 'Use optional chaining when a value might legitimately be absent and you want to short-circuit gracefully. Use nullish coalescing to provide defaults for null/undefined — prefer it over || when 0, false, or "" are valid values. Prefer unknown over any for externally typed values like catch clauses and raw API responses.',
+      commonMistakes: [
+        'Using || instead of ?? for defaults — 0 || fallback returns fallback, but 0 ?? fallback correctly returns 0',
+        'Using any in catch blocks — TypeScript 4.0+ types error as unknown; always narrow with instanceof Error',
+        'Overusing ?. to silence errors — if a value must exist, a null check with a thrown error is better than silently returning undefined',
+      ],
+    },
+    playgroundExamples: [
+      {
+        label: 'Optional chaining',
+        code: '// ⛓️ Optional Chaining (?.) — safe property access\n// Returns undefined instead of throwing TypeError\n\ntype User = {\n  name: string\n  address?: {\n    city: string\n    street?: string\n  }\n}\n\nconst userA: User = { name: "Alice", address: { city: "Berlin" } }\nconst userB: User = { name: "Bob" }\n\n// Safe nested access:\nconsole.log(userA.address?.city)    // "Berlin"\nconsole.log(userA.address?.street)  // undefined (not crash)\nconsole.log(userB.address?.city)    // undefined\n\n// Chain with method calls:\nconst city = userA.address?.city?.toUpperCase()\nconsole.log(city)  // "BERLIN"',
+      },
+      {
+        label: 'Nullish coalescing',
+        code: '// 🔀 Nullish Coalescing (??) — fallback for null/undefined only\n// Unlike ||, it does NOT treat 0, false, or "" as fallback triggers\n\nconst score: number | null = 0\n\nconsole.log(score || 10)   // 10 — oops! 0 is falsy\nconsole.log(score ?? 10)   // 0  — correct! only null/undefined triggers ??\n\nconst config = {\n  timeout: 0,        // 0 is a valid value\n  retries: null,     // explicitly no retries set\n  host: undefined,   // not configured\n}\n\nconst timeout = config.timeout ?? 30000  // 0 (keeps the 0!)\nconst retries = config.retries ?? 3      // 3 (was null)\nconst host    = config.host    ?? "localhost"  // "localhost"\n\nconsole.log({ timeout, retries, host })',
+      },
+      {
+        label: 'unknown type',
+        code: '// 🔒 The unknown type — safe alternative to any\n// Forces you to narrow before using\n\nfunction processInput(value: unknown) {\n  // value is unknown — TypeScript blocks direct use:\n  // console.log(value.toUpperCase())  // Error!\n\n  // Narrow first:\n  if (typeof value === "string") {\n    console.log("String:", value.toUpperCase())\n  } else if (typeof value === "number") {\n    console.log("Number:", value.toFixed(2))\n  } else if (Array.isArray(value)) {\n    console.log("Array length:", value.length)\n  } else {\n    console.log("Unknown type:", value)\n  }\n}\n\nprocessInput("hello")    // String: HELLO\nprocessInput(3.14159)    // Number: 3.14\nprocessInput([1, 2, 3])  // Array length: 3\nprocessInput(true)       // Unknown type: true',
+      },
+    ],
+    commonErrors: [
+      {
+        title: 'Using || instead of ?? for numeric/boolean defaults',
+        why: 'The || operator returns the right side for any falsy value — including 0, false, and "". This silently replaces valid zero or empty-string values with your fallback.',
+        fixLabel: 'Fix — use ?? instead of || when 0, false, or "" are valid',
+        fixCode: '// ❌ Wrong — 0 is falsy, so || replaces it with the default\nconst delay = config.delay || 500  // delay is 500 even when config.delay is 0!\n\n// ✅ Right — ?? only replaces null and undefined\nconst delay = config.delay ?? 500  // delay is 0 when config.delay is 0',
+      },
+      {
+        title: 'Accessing error.message without narrowing in catch blocks',
+        why: 'Anything can be thrown in JavaScript — strings, numbers, plain objects. TypeScript types catch variables as unknown because accessing .message on a non-Error crashes at runtime.',
+        fixLabel: 'Fix — narrow with instanceof Error before accessing .message',
+        fixCode: '// ❌ Wrong — assumes error is always an Error object\ncatch (error) {\n  console.error(error.message)  // TypeError if someone threw a string!\n}\n\n// ✅ Right — narrow first\ncatch (error: unknown) {\n  if (error instanceof Error) {\n    console.error(error.message)  // safe\n  } else {\n    console.error("Unexpected error:", String(error))\n  }\n}',
+      },
+      {
+        title: 'Using optional chaining where a missing value is a real error',
+        why: 'Optional chaining silently returns undefined when something is missing. If the missing value indicates a bug or broken state, suppressing the error makes the code harder to debug.',
+        fixLabel: 'Fix — use an explicit null check and throw when the value must exist',
+        fixCode: '// ❌ Wrong — silently ignores a missing user that should always exist\nfunction getUserEmail(userId: string) {\n  const user = db.find(u => u.id === userId)\n  return user?.email  // returns undefined if user not found — no signal!\n}\n\n// ✅ Right — make the error visible when user must exist\nfunction getUserEmail(userId: string) {\n  const user = db.find(u => u.id === userId)\n  if (!user) throw new Error(`User ${userId} not found`)\n  return user.email\n}',
+      },
+    ],
+    realWorldExamples: [
+      {
+        context: 'React',
+        heading: 'Safe access to optional API response fields',
+        description: 'Combine optional chaining and nullish coalescing to safely render data from an API that may return incomplete objects.',
+        code: 'type Product = {\n  id: number\n  title: string\n  discount?: {\n    percent: number\n    label?: string\n  }\n}\n\nfunction ProductCard({ product }: { product: Product }) {\n  const discountLabel =\n    product.discount?.label ?? `${product.discount?.percent}% off`\n\n  return (\n    <div>\n      <h2>{product.title}</h2>\n      {product.discount && (\n        <span className="badge">{discountLabel}</span>\n      )}\n    </div>\n  )\n}',
+      },
+      {
+        context: 'Fetch API',
+        heading: 'Safe error handling with unknown catch type',
+        description: 'Type-safe fetch wrapper that narrows the unknown catch error before reporting it.',
+        code: 'async function fetchUser(id: number) {\n  try {\n    const res = await fetch(`/api/users/${id}`)\n    if (!res.ok) {\n      throw new Error(`HTTP error: ${res.status} ${res.statusText}`)\n    }\n    return await res.json() as { id: number; name: string; email: string }\n  } catch (error: unknown) {\n    const message = error instanceof Error\n      ? error.message\n      : "Unknown fetch error"\n    console.error("fetchUser failed:", message)\n    return null\n  }\n}',
       },
     ],
   },

@@ -5622,5 +5622,35 @@
         }
       }
     ]
+  },
+  "ts-null-handling": {
+    "title": "Null, Undefined & Unknown",
+    "description": "Fehlende Werte sicher behandeln mit Union Types, optionaler Verkettung, Nullish Coalescing und dem unknown-Typ",
+    "steps": [
+      {
+        "animationStep": 0,
+        "heading": "undefined vs null",
+        "text": "JavaScript hat zwei Arten von 'Nichts'. `undefined` bedeutet: Eine Variable wurde deklariert, aber nie zugewiesen. `null` bedeutet: Du hast explizit nichts gesetzt. TypeScript erlaubt dir, beide Werte per Union Type zuzulassen oder auszuschliessen - mit `strictNullChecks` warnt TypeScript, wenn du einen moeglicherweise fehlenden Wert verwendest.",
+        "expandedText": "📖 **`undefined`** ist der Standardzustand: Eine mit `let x: string` deklarierte, aber nie zugewiesene Variable hat zur Laufzeit den Wert `undefined`. TypeScript mit `strictNullChecks` verhindert, dass du sie wie einen echten String verwendest.\n\n📖 **`null`** ist eine absichtliche Abwesenheit von Wert - du weist ihn explizit zu: `let age: number | null = null`. Aktiviere `\"strictNullChecks\": true` in der `tsconfig.json` - es ist die wichtigste TypeScript-Einstellung."
+      },
+      {
+        "animationStep": 1,
+        "heading": "Optionale Verkettung (?.)",
+        "text": "Die optionale Verkettung (`?.`) gibt `undefined` zurueck, anstatt einen TypeError zu werfen, wenn ein Wert null oder undefined ist. Sie funktioniert bei Property-Zugriff, Methodenaufrufen und Array-Indizes.",
+        "expandedText": "📖 **Optionale Verkettung** (`?.`) ist syntaktischer Zucker fuer: greife auf diese Eigenschaft nur zu, wenn die linke Seite nicht null oder undefined ist. Ohne sie wuerdest du schreiben: `user && user.address && user.address.street`. Mit ihr: `user?.address?.street`.\n\n📜 Vermeide es, `?.` uebermassig einzusetzen. Wenn ein Wert vorhanden sein muss, ist eine Null-Pruefung mit einem geworfenen Fehler sicherer als das stille Zurueckgeben von `undefined`."
+      },
+      {
+        "animationStep": 2,
+        "heading": "Nullish Coalescing (??)",
+        "text": "Der Nullish-Coalescing-Operator (`??`) gibt den rechten Wert zurueck, wenn die linke Seite `null` oder `undefined` ist - aber nicht fuer andere falsy-Werte wie `0`, `\"\"` oder `false`. Damit ist er sicherer als `||` fuer Standardwerte.",
+        "expandedText": "📖 **Nullish Coalescing** (`??`) ist der richtige Operator fuer Fallback-Werte, wenn du nur bei `null` oder `undefined` zurueckfallen willst. Der aeltere `||`-Operator faellt bei jedem falsy-Wert zurueck: `0 || 42` ergibt `42`, aber `0 ?? 42` ergibt `0`. Das ist wichtig, wenn `0`, `false` oder `\"\"` gueltige Werte sind.\n\n📜 Kombiniere mit optionaler Verkettung: `user?.address?.street ?? \"Strasse nicht angegeben\"`. Das ist das idiomatische TypeScript-Muster."
+      },
+      {
+        "animationStep": 3,
+        "heading": "Der unknown-Typ",
+        "text": "`unknown` ist die typsichere Alternative zu `any`. Du kannst alles `unknown` zuweisen, aber TypeScript zwingt dich, den Typ einzugrenzen, bevor du ihn verwendest. Das ist der richtige Typ fuer Werte aus `try/catch`-Bloecken, externen APIs und Benutzereingaben.",
+        "expandedText": "📖 **`unknown`** zwingt dich zu beweisen, was ein Wert ist, bevor du ihn verwendest. Mit `any` kannst du jede Methode aufrufen - TypeScript schaut weg. Mit `unknown` erfordert jede Operation eine Eingrenzung: `if (error instanceof Error)` oder `typeof value === \"string\"`.\n\n📖 Der klassische Anwendungsfall sind `catch`-Bloecke. In JavaScript kann alles geworfen werden. Das korrekte Muster ist immer, `if (error instanceof Error)` zu pruefen, bevor du auf `.message` zugreifst.\n\n📜 Faustregel: Verwende `unknown` bei API-Antworten, catch-Klauseln und JSON.parse. Verwende `any` nur beim Migrieren von Legacy-Code."
+      }
+    ]
   }
 }
