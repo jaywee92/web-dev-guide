@@ -2,7 +2,11 @@ export type PlaygroundType = 'visual-controls' | 'monaco' | 'none' | 'gradient' 
 export type ThemeMode = 'dark' | 'light'
 export type CategoryId = 'html-core' | 'html-structure' | 'html-interactive'
   | 'css-basics' | 'css-layout' | 'css-modern' | 'css-frameworks'
-  | 'javascript' | 'javascript-oop' | 'javascript-async' | 'typescript' | 'typescript-oop' | 'typescript-advanced' | 'react' | 'react-ecosystem' | 'webapis' | 'http' | 'postgresql' | 'nextjs' | 'nextjs-rendering' | 'nextjs-data'
+  | 'javascript' | 'javascript-oop' | 'javascript-async' | 'javascript-python'
+  | 'typescript' | 'typescript-advanced' | 'typescript-react'
+  | 'react' | 'react-ecosystem'
+  | 'nextjs' | 'nextjs-rendering' | 'nextjs-data'
+  | 'webapis' | 'http' | 'postgresql'
   | 'git' | 'git-collab' | 'testing'
 
 export interface Category {

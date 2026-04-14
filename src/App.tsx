@@ -29,14 +29,25 @@ export default function App() {
               <Route path="/css-basics" element={<CategoryPage />} />
               <Route path="/css-layout" element={<CategoryPage />} />
               <Route path="/css-modern" element={<CategoryPage />} />
+              <Route path="/css-frameworks" element={<CategoryPage />} />
               <Route path="/javascript" element={<CategoryPage />} />
+              <Route path="/javascript-oop" element={<CategoryPage />} />
+              <Route path="/javascript-async" element={<CategoryPage />} />
+              <Route path="/javascript-python" element={<CategoryPage />} />
               <Route path="/typescript" element={<CategoryPage />} />
+              <Route path="/typescript-advanced" element={<CategoryPage />} />
+              <Route path="/typescript-react" element={<CategoryPage />} />
               <Route path="/react" element={<CategoryPage />} />
+              <Route path="/react-ecosystem" element={<CategoryPage />} />
+              <Route path="/nextjs" element={<CategoryPage />} />
+              <Route path="/nextjs-rendering" element={<CategoryPage />} />
+              <Route path="/nextjs-data" element={<CategoryPage />} />
               <Route path="/webapis" element={<CategoryPage />} />
               <Route path="/http" element={<CategoryPage />} />
               <Route path="/postgresql" element={<CategoryPage />} />
               <Route path="/git" element={<CategoryPage />} />
               <Route path="/git-collab" element={<CategoryPage />} />
+              <Route path="/testing" element={<CategoryPage />} />
               <Route path="/resources" element={<ResourcesPage />} />
               <Route path="/topic/:topicId" element={<TopicPage />} />
               <Route path="/search" element={<SearchPage />} />
