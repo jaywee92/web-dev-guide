@@ -6,5 +6,7 @@
   "stepOf": "Schritt {{current}} von {{total}}",
   "keyTakeaways": "Wichtigste Erkenntnisse",
   "learnMore": "+ Mehr erfahren",
-  "showLess": "▲ Weniger anzeigen"
+  "showLess": "▲ Weniger anzeigen",
+  "commonErrors": "Häufige Fehler",
+  "realWorldExamples": "In der Praxis"
 }

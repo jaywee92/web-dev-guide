@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { CommonError } from '@/types'
 import CodeBlock from '@/components/ui/CodeBlock'
 
@@ -8,12 +9,13 @@ interface Props {
 }
 
 export default function CommonErrorsPanel({ errors, color: _color }: Props) {
+  const { t } = useTranslation('topic')
   const [openIdx, setOpenIdx] = useState<number>(0)
 
   return (
-    <section style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px 80px' }}>
+    <div style={{ marginTop: 48 }}>
       <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 24, color: 'var(--text)' }}>
-        Häufige Fehler
+        {t('commonErrors')}
       </h2>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {errors.map((err, i) => {
@@ -69,6 +71,6 @@ export default function CommonErrorsPanel({ errors, color: _color }: Props) {
           )
         })}
       </div>
-    </section>
+    </div>
   )
 }

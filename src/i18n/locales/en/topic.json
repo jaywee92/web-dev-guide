@@ -6,5 +6,7 @@
   "stepOf": "Step {{current}} of {{total}}",
   "keyTakeaways": "Key Takeaways",
   "learnMore": "+ Learn more",
-  "showLess": "▲ Show less"
+  "showLess": "▲ Show less",
+  "commonErrors": "Common Errors",
+  "realWorldExamples": "In the Wild"
 }

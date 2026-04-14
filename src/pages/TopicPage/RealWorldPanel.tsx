@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import type { RealWorldExample } from '@/types'
 import CodeBlock from '@/components/ui/CodeBlock'
 
@@ -7,10 +8,12 @@ interface Props {
 }
 
 export default function RealWorldPanel({ examples, color }: Props) {
+  const { t } = useTranslation('topic')
+
   return (
-    <section style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px 80px' }}>
+    <div style={{ marginTop: 48 }}>
       <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 24, color: 'var(--text)' }}>
-        In the Wild
+        {t('realWorldExamples')}
       </h2>
       <div style={{
         display: 'grid',
@@ -44,6 +47,6 @@ export default function RealWorldPanel({ examples, color }: Props) {
           </div>
         ))}
       </div>
-    </section>
+    </div>
   )
 }
