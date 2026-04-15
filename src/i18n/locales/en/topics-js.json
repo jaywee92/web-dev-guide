@@ -6,27 +6,27 @@
       {
         "animationStep": 0,
         "heading": "var — the old way",
-        "text": "var is function-scoped and hoisted, which causes unexpected bugs. Modern JavaScript avoids it."
+        "text": "`var` is function-scoped rather than block-scoped — it leaks out of `if` blocks and `for` loops into the surrounding function. The engine also hoists `var` declarations to the top of the function and initialises them to `undefined`, so reading a `var` before its declaration gives `undefined` silently instead of an error. These silent behaviours cause subtle, hard-to-trace bugs; modern JavaScript replaces `var` entirely with `let` and `const`."
       },
       {
         "animationStep": 1,
         "heading": "let — block-scoped",
-        "text": "let creates a variable that lives only in the block where it is declared. You can reassign it."
+        "text": "`let` declares a block-scoped variable that exists only between the `{` and `}` where it was created — it cannot leak into outer scopes the way `var` does. You can reassign it freely after declaration. Inside a `for` loop, `let` creates a fresh, independent binding per iteration, which is why closures captured in a `let`-based loop each see their own copy of the counter."
       },
       {
         "animationStep": 2,
         "heading": "const — cannot be reassigned",
-        "text": "const bindings cannot be reassigned after creation. For objects and arrays, the contents can still change."
+        "text": "`const` prevents the binding from being reassigned to a different value after declaration — the name is permanently locked to that first value. However, `const` does not make the value itself immutable: the properties of a `const` object and the elements of a `const` array can both still be changed freely. Use `const` by default and reach for `let` only when you genuinely need to reassign the variable."
       },
       {
         "animationStep": 3,
         "heading": "Primitive types",
-        "text": "JavaScript has six primitive types. They are immutable values — not objects."
+        "text": "JavaScript has six primitive types: `string`, `number`, `boolean`, `null`, `undefined`, and `symbol`. They are immutable values — not objects — and are compared by value, so two strings with the same characters are always strictly equal. When you call methods on a primitive, JavaScript temporarily wraps it in an object and discards the wrapper."
       },
       {
         "animationStep": 4,
         "heading": "typeof operator",
-        "text": "The typeof operator returns a string describing the type. Watch out: typeof null returns \"object\" — a known JavaScript quirk."
+        "text": "The `typeof` operator returns a lowercase string describing the type — even for undeclared variables, making it safe for feature detection. Watch out: `typeof null` returns `\"object\"` — a 30-year-old bug frozen in the language. Always use `=== null` to test for null explicitly."
       },
       {
         "animationStep": 5,
@@ -90,27 +90,27 @@
       {
         "animationStep": 0,
         "heading": "Arrays — ordered lists",
-        "text": "An array holds ordered values accessible by numeric index starting at 0."
+        "text": "An array holds an ordered list of values accessible by zero-based numeric index — `arr[0]` is the first element, `arr[arr.length - 1]` is the last. Arrays in JavaScript are dynamic objects: they can hold mixed types, grow or shrink at runtime, and come with dozens of built-in methods on `Array.prototype` for transforming, searching, and sorting data."
       },
       {
         "animationStep": 1,
         "heading": "push and pop",
-        "text": "push() adds to the end; pop() removes from the end. There is also unshift/shift for the beginning."
+        "text": "`.push()` appends one or more elements to the end and returns the new length; `.pop()` removes and returns the last element. Together they implement a stack (LIFO). `.unshift()` and `.shift()` do the same at the beginning (queue/FIFO), but are slower on large arrays because every existing index must be renumbered. All four methods mutate the array in place."
       },
       {
         "animationStep": 2,
         "heading": "map — transform every element",
-        "text": "map() returns a new array with each element transformed by a callback. The original array is not modified."
+        "text": "`.map()` passes every element through a callback and collects the results into a new array of the same length — the original is never mutated. It is one of the most-used array methods in React, where you map data arrays to JSX elements: `items.map(item => <li key={item.id}>{item.name}</li>)`. Always return a value from the callback; forgetting `return` silently fills the result with `undefined`."
       },
       {
         "animationStep": 3,
         "heading": "filter — keep matching elements",
-        "text": "filter() returns a new array containing only elements where the callback returns true."
+        "text": "`.filter()` returns a new array containing only the elements for which the callback returns a truthy value — the original is unchanged. It never returns `null` or `undefined`; an array with no matches simply comes back empty, so callers can always safely call `.length` on the result. Chain `.filter()` before `.map()` to first narrow the set then transform it."
       },
       {
         "animationStep": 4,
         "heading": "Objects — key-value pairs",
-        "text": "Objects store named properties. Access them with dot notation or bracket notation."
+        "text": "Objects store an unordered collection of named properties (key-value pairs) where keys are strings or Symbols. Access properties with dot notation (`obj.name`) for static keys, or bracket notation (`obj[\"key\"]`) when the key is dynamic or contains special characters. Objects are reference types — two variables can point to the same object, so changes through one variable are visible through the other."
       },
       {
         "animationStep": 5,
@@ -125,12 +125,12 @@
       {
         "animationStep": 7,
         "heading": "splice — insert and remove in place",
-        "text": "splice(start, deleteCount, ...items) mutates the array: removes deleteCount elements at start, then inserts any provided items. It returns the removed elements."
+        "text": "`.splice(start, deleteCount, ...items)` mutates the array: removes `deleteCount` elements at `start`, then inserts any provided items at that position. It returns the removed elements. Pass `0` as `deleteCount` to insert without deleting. In React, prefer the immutable spread alternatives to avoid mutating state directly."
       },
       {
         "animationStep": 8,
         "heading": "reverse",
-        "text": "reverse() reverses the array in place and returns the same array (mutates the original). To reverse without mutation, spread into a new array first."
+        "text": "`reverse()` reverses the array in place and returns a reference to the same (now-reversed) array. To reverse without mutation, spread into a new array first: `[...arr].reverse()`. In modern JavaScript (ES2023+), `.toReversed()` returns a new array without touching the original."
       },
       {
         "animationStep": 9,
@@ -140,7 +140,7 @@
       {
         "animationStep": 10,
         "heading": "find and filter",
-        "text": "find returns the first element that matches the predicate (or undefined). filter returns a new array of all matching elements. Both are non-mutating."
+        "text": "`find` returns the first element that matches the predicate (or `undefined` if none match). `filter` returns a new array of all matching elements. Both are non-mutating. Use `find` when looking for a unique match by ID; use `filter` when multiple matches are expected."
       },
       {
         "animationStep": 11,
@@ -211,17 +211,17 @@
       {
         "animationStep": 0,
         "heading": "Function declarations vs expressions",
-        "text": "Functions can be declared with the function keyword or assigned as expressions. Declarations are hoisted; expressions are not."
+        "text": "Functions can be declared with the `function` keyword or assigned as expressions. Declarations are hoisted — the whole definition is available before the line where it appears. Expressions (including arrow functions) are only available from the line of assignment onwards. Arrow functions also lack their own `this`, making them ideal for callbacks."
       },
       {
         "animationStep": 1,
         "heading": "Scope and the scope chain",
-        "text": "Each function creates a new scope. Inner functions can access variables from outer scopes — this chain of scopes is called the scope chain."
+        "text": "Each function creates a new scope. Inner functions can access variables from outer scopes — this chain of outward-looking scopes is called the scope chain. JavaScript resolves a variable name by searching inward-to-outward until it finds a match or reaches the global scope. Variables in inner scopes can shadow outer ones with the same name."
       },
       {
         "animationStep": 2,
         "heading": "Higher-order functions",
-        "text": "Functions are first-class values in JavaScript. A higher-order function takes a function as argument or returns one."
+        "text": "Functions are first-class values in JavaScript — they can be stored in variables, passed as arguments, and returned from other functions. A higher-order function takes a function as an argument (a callback) or returns one. Built-in array methods `map`, `filter`, and `reduce` are all higher-order functions you use every day."
       },
       {
         "animationStep": 3,
@@ -247,17 +247,17 @@
       {
         "animationStep": 0,
         "heading": "Array destructuring",
-        "text": "Extract values from an array by position. Use _ or skip commas to skip elements."
+        "text": "Array destructuring extracts values by position — `const [first, second] = arr` pulls out the first two elements. Skip positions you don't need with empty commas: `const [, , third] = arr`. Default values fill in when a slot is `undefined`: `const [a = 10] = []` gives `a = 10`. The rest element `const [head, ...tail] = arr` collects everything after the first element into a new array."
       },
       {
         "animationStep": 1,
         "heading": "Object destructuring",
-        "text": "Extract properties from an object by name. You can rename while destructuring and set defaults."
+        "text": "Object destructuring extracts properties by name — `const { name, age } = user` creates two variables from the object's properties. Rename during destructuring with `{ role: userRole }`, and provide defaults for missing keys with `{ age = 0 }`. Destructuring in function parameters is especially expressive: `function render({ title, body, author = \"Unknown\" })` documents exactly what the function needs while setting defaults inline."
       },
       {
         "animationStep": 2,
         "heading": "Spread and rest",
-        "text": "The spread operator (...) expands iterables. Rest syntax collects remaining elements into an array."
+        "text": "The spread operator (`...`) expands an iterable into individual elements — `[...arr1, ...arr2]` merges arrays, `{ ...obj1, ...obj2 }` shallow-merges objects with later keys winning. Rest syntax uses the same `...` token but in reverse: it collects multiple values into an array (in function parameters or destructuring). One token, two opposite operations depending on context."
       },
       {
         "animationStep": 3,
@@ -455,27 +455,27 @@
       {
         "animationStep": 0,
         "heading": "JavaScript is single-threaded",
-        "text": "JavaScript runs on a single thread — one operation at a time. The Call Stack tracks what is currently executing."
+        "text": "JavaScript runs on a single thread — one operation at a time. The Call Stack tracks what is currently executing, pushing frames on entry and popping them on return. Blocking this thread with a long loop freezes the entire runtime, including the UI — this is why long synchronous work must be broken up or offloaded."
       },
       {
         "animationStep": 1,
         "heading": "Synchronous code runs immediately",
-        "text": "Regular function calls push onto the Call Stack. When they return, they pop off."
+        "text": "Regular function calls push a new frame onto the Call Stack containing the function's local variables and return address. When the function returns, its frame is popped and execution resumes in the caller. This LIFO (last-in, first-out) structure means the most recently called function always completes first — deeply nested calls build a tall stack, which is why unbounded recursion causes a \"Maximum call stack size exceeded\" error."
       },
       {
         "animationStep": 2,
         "heading": "Async code goes to Web APIs",
-        "text": "setTimeout, fetch, and event listeners are handled by Web APIs — outside the JS engine. The callback waits in the Task Queue."
+        "text": "`setTimeout`, `fetch`, and event listeners are delegated to Web APIs built into the browser — they run outside the JavaScript engine so they do not block it. When the timer fires or the network response arrives, the callback is placed in the Task Queue (macrotask queue) to wait its turn. This design is why JavaScript can handle network requests without freezing: the actual waiting happens in the browser runtime, not in your code."
       },
       {
         "animationStep": 3,
         "heading": "Stack must be empty first",
-        "text": "Even with a 0ms timeout, the callback waits. The Call Stack must finish all synchronous work before the Event Loop picks up queued tasks."
+        "text": "Even a `setTimeout(fn, 0)` callback does not run immediately — the Call Stack must completely empty first before the Event Loop picks up anything from the Task Queue. This means all currently-running synchronous code must finish before any async callback runs, no matter how short the timeout. This guarantee is what lets JavaScript code never be interrupted mid-execution by another callback."
       },
       {
         "animationStep": 4,
         "heading": "The Event Loop",
-        "text": "The Event Loop continuously checks: is the Call Stack empty? If yes, it moves the next task from the Queue to the Stack."
+        "text": "The Event Loop continuously monitors: is the Call Stack empty? If yes, it takes the next task from the Queue and pushes it onto the Stack to execute. After each macrotask completes, the Event Loop drains all pending microtasks (Promise callbacks) before moving on to the next macrotask — so Promise `.then()` callbacks always run before the next `setTimeout` fires."
       },
       {
         "animationStep": 5,
@@ -535,27 +535,27 @@
       {
         "animationStep": 0,
         "heading": "A function with local state",
-        "text": "When a function runs, it creates a local scope. Variables inside that scope normally disappear when the function returns."
+        "text": "When a function runs, it creates a local scope. Variables inside that scope normally disappear when the function returns — the JavaScript engine garbage-collects them because nothing else can reach them. A closure prevents this by keeping a reference to the outer scope alive inside an inner function."
       },
       {
         "animationStep": 1,
         "heading": "Returning an inner function",
-        "text": "If we define and return a function inside makeCounter, that inner function can see count — it is in its scope chain."
+        "text": "If we define and return a function inside `makeCounter`, that inner function can see `count` — it is in its scope chain. When the inner function is returned, it carries a persistent reference to the outer scope with it. This is the essence of a closure: the inner function \"closes over\" the variables it references from the enclosing scope."
       },
       {
         "animationStep": 2,
         "heading": "The outer function returns",
-        "text": "makeCounter() finishes executing, but count is NOT garbage collected. The returned function still holds a reference to it — this is the closure."
+        "text": "`makeCounter()` finishes executing, but `count` is NOT garbage collected. The returned function still holds a live reference to it — this is the closure in action. The outer scope persists in memory as long as the returned function exists. Setting the closure variable to `null` releases the reference and allows garbage collection."
       },
       {
         "animationStep": 3,
         "heading": "The closure in action",
-        "text": "Calling increment() accesses and modifies count — even though we are outside makeCounter. The closure remembers the original scope."
+        "text": "Calling `increment()` accesses and modifies `count` — even though we are outside `makeCounter`. The closure remembers the original scope and its current state. This provides effective encapsulation: `count` is private, only reachable through the returned functions. External code has no direct way to read or reset it."
       },
       {
         "animationStep": 4,
         "heading": "Independent closures",
-        "text": "Each call to makeCounter() creates a fresh scope with its own count. Two counters do not share state."
+        "text": "Each call to `makeCounter()` creates a fresh scope with its own `count` — two counters do not share state. This independence makes factory functions a clean alternative to classes for objects with private internal state. The pattern underpins memoization, the module pattern, and how React hooks manage per-instance state internally."
       }
     ],
     "cheatSheet": {
@@ -596,17 +596,17 @@
       {
         "animationStep": 0,
         "heading": "What is a Promise?",
-        "text": "A Promise represents a value that will be available in the future. It can be pending, fulfilled, or rejected."
+        "text": "A Promise represents the eventual result of an asynchronous operation. It is always in one of three states: pending (still in progress), fulfilled (succeeded with a value), or rejected (failed with a reason). Once a Promise settles to fulfilled or rejected, it never changes state, and any `.then()` or `.catch()` handlers attached later still receive the original outcome."
       },
       {
         "animationStep": 1,
         "heading": "Chaining with .then()",
-        "text": "Promises can be chained: each .then() receives the previous result and returns a new Promise."
+        "text": "Promises can be chained: each `.then()` receives the previous step's resolved value and returns a new Promise, so the next `.then()` waits for it automatically. A `.catch()` at the end captures any rejection from any step in the chain. This linear structure replaced deeply-nested callback patterns (known as \"callback hell\"), making async code read top-to-bottom instead of inside-out."
       },
       {
         "animationStep": 2,
         "heading": "async/await syntax",
-        "text": "async/await is syntactic sugar over Promises. An async function always returns a Promise; await pauses execution until the Promise settles."
+        "text": "`async`/`await` is syntactic sugar over Promises that makes asynchronous code read like synchronous code. An `async` function always returns a Promise; `await` pauses that function's execution until the awaited Promise settles, then resumes with the resolved value. Wrap `await` calls in `try`/`catch` for error handling — a rejected Promise throws just like a synchronous error, which makes the pattern very intuitive."
       },
       {
         "animationStep": 3,
@@ -758,7 +758,7 @@
       {
         "animationStep": 2,
         "heading": "Control flow",
-        "text": "Python uses indentation to define code blocks — no braces. JavaScript uses curly braces `{}` to delimit blocks and requires parentheses around `if` conditions."
+        "text": "Python uses indentation to define code blocks — no braces. JavaScript uses curly braces `{}` to delimit blocks and requires parentheses around the condition. `elif` in Python becomes `else if` in JS."
       },
       {
         "animationStep": 3,

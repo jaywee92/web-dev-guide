@@ -6,22 +6,22 @@
       {
         "animationStep": 0,
         "heading": "HTML is made of elements",
-        "text": "Every visible thing on a webpage is an HTML element — a heading, a paragraph, a link, an image. Elements tell the browser what the content means, not just how it looks."
+        "text": "Every visible thing on a webpage is an HTML element — a heading, a paragraph, a link, an image. Elements tell the browser what the content means, not just how it looks. Choosing the right element is the most important HTML decision you make because it affects accessibility, SEO, and default browser behavior."
       },
       {
         "animationStep": 1,
         "heading": "Opening tag",
-        "text": "The opening tag names the element. <p> means paragraph. <h1> means main heading. <a> means anchor (link). The name determines how the browser renders the content."
+        "text": "The opening tag names the element. `<p>` means paragraph. `<h1>` means main heading. `<a>` means anchor (link). The name determines how the browser renders the content and maps to an implicit ARIA role that screen readers use to identify what the element is."
       },
       {
         "animationStep": 2,
         "heading": "Content",
-        "text": "Content lives between the tags. It can be text, other elements, or a mix of both. Nesting elements inside each other builds the tree structure of the page."
+        "text": "Content lives between the tags. It can be text, other elements, or a mix of both. Nesting elements inside each other builds the tree structure of the page. Invalid nesting — like a block element inside an inline — triggers silent browser error correction that can break layout in unexpected ways."
       },
       {
         "animationStep": 3,
         "heading": "Closing tag",
-        "text": "The closing tag has a slash before the name. It ends the element. Some elements — like <img>, <br>, <hr>, <input> — are void elements with no content and no closing tag."
+        "text": "The closing tag has a slash before the name. It ends the element. Some elements — like `<img>`, `<br>`, `<hr>`, `<input>` — are void elements with no content and no closing tag."
       },
       {
         "animationStep": 4,
@@ -169,7 +169,7 @@
       {
         "animationStep": 0,
         "heading": "The anchor element",
-        "text": "The <a> (anchor) tag creates a link. The href attribute holds the destination — a URL, a path, or even an email address. Without href, it's not a link."
+        "text": "The `<a>` (anchor) tag creates a link. The `href` attribute holds the destination — a URL, a path, an email address, or a `#fragment` for same-page jumps. The element has an implicit `role=\"link\"` and is keyboard-navigable by default. Using `<div onclick>` as a fake link breaks keyboard access and requires ARIA remediation."
       },
       {
         "animationStep": 1,
@@ -249,7 +249,7 @@
       {
         "animationStep": 0,
         "heading": "Unordered lists",
-        "text": "<ul> creates a bulleted list. Each item is wrapped in <li>. Use unordered lists when the order doesn't matter — a navigation menu, a feature list, a set of tags."
+        "text": "`<ul>` creates a bulleted list. Each item is wrapped in an `<li>` element. Use unordered lists when order doesn't matter — navigation menus, feature lists, tag sets. Screen readers announce the item count, so users know how many links or items to expect before diving in."
       },
       {
         "animationStep": 1,
@@ -259,7 +259,7 @@
       {
         "animationStep": 2,
         "heading": "Nested lists",
-        "text": "Lists can be nested inside list items. An <li> can contain another <ul> or <ol>. This creates hierarchical structures — like a table of contents or an outline."
+        "text": "Lists can be nested inside list items. An `<li>` can contain another `<ul>` or `<ol>`, creating hierarchical structures like a table of contents. The nested list must go inside the `<li>`, not after it — placing it outside creates invalid HTML that browsers silently repair in unpredictable ways."
       },
       {
         "animationStep": 3,
@@ -329,22 +329,22 @@
       {
         "animationStep": 0,
         "heading": "HTML is just text",
-        "text": "When your browser receives an HTML file, it sees plain text — tags, attributes, content. The DOM is what the browser builds from that text."
+        "text": "When your browser receives an HTML file, it sees plain text — tags, attributes, content. The DOM is the live, in-memory tree of JavaScript objects the browser builds from that text. The DOM is not HTML: malformed markup is silently corrected, and JavaScript modifications to the DOM never change the original HTML file."
       },
       {
         "animationStep": 1,
         "heading": "Parsing starts at the top",
-        "text": "The browser reads your HTML top to bottom, creating a node for each element. The <html> tag becomes the root."
+        "text": "The browser reads your HTML top to bottom, creating a node for each element and connecting it to the tree. The `<html>` tag becomes the root. Scripts without `defer` or `async` block parsing — the browser stops building the DOM until the script downloads and executes, which is why scripts belong at the end of `<body>` or use `defer`."
       },
       {
         "animationStep": 2,
         "heading": "Children branch outward",
-        "text": "Nested elements become child nodes. The tree grows as each tag is parsed."
+        "text": "Nested elements become child nodes of the element that wraps them — this creates the tree structure. The tree grows depth-first as the parser reads each opening tag, creates a node, and connects it to the current parent. Proper nesting is essential: an unclosed tag disrupts the parent-child chain and the browser silently repairs it, sometimes in unexpected ways."
       },
       {
         "animationStep": 3,
         "heading": "Text is a node too",
-        "text": "Every piece of text content between tags is its own text node in the tree."
+        "text": "Every piece of text content between tags is its own text node in the DOM tree — a distinct node type separate from element nodes. This means `<p>Hello</p>` has two nodes: a `<p>` element node and a child text node containing \"Hello\". Whitespace between elements also becomes text nodes, which is why `element.children` (element nodes only) and `element.childNodes` (all nodes including text) return different results."
       },
       {
         "animationStep": 4,
@@ -421,27 +421,27 @@
       {
         "animationStep": 0,
         "heading": "The div soup problem",
-        "text": "Using only <div> elements tells browsers and screen readers nothing about your page's structure. Every box looks the same."
+        "text": "Using only `<div>` elements tells browsers and screen readers nothing about your page's structure — every box looks the same. Semantic elements like `<header>`, `<main>`, and `<nav>` communicate purpose to assistive technology and search engines. They also create accessible landmarks that screen reader users can jump between directly."
       },
       {
         "animationStep": 1,
         "heading": "<header>",
-        "text": "The <header> element contains introductory content — logo, site name, top navigation. There can be one per page or one per section."
+        "text": "The `<header>` element contains introductory content — logo, site name, top navigation. There can be one per page or one per `<article>` or `<section>`. The top-level `<header>` maps to the ARIA `banner` landmark that screen reader users can jump to directly."
       },
       {
         "animationStep": 2,
         "heading": "<nav>",
-        "text": "The <nav> element marks a block of navigation links. Screen readers and search engines use it to understand site structure."
+        "text": "The `<nav>` element marks a block of navigation links — a landmark that screen readers expose so users can jump directly to navigation. A page can have multiple `<nav>` elements; use `aria-label` to distinguish them. Not every group of links warrants `<nav>` — reserve it for major site navigation."
       },
       {
         "animationStep": 3,
         "heading": "<main> and <article>",
-        "text": "<main> contains the primary unique content of the page. <article> is for self-contained content like a blog post or news story."
+        "text": "`<main>` contains the primary unique content of the page — there must be only one per page. `<article>` is for self-contained content like a blog post or news story that could be independently distributed. `<section>` groups thematically related content but always needs its surrounding context to be meaningful."
       },
       {
         "animationStep": 4,
         "heading": "The full picture",
-        "text": "With semantic HTML, browsers, search engines, and assistive technologies all understand your page structure — no CSS classes required for meaning."
+        "text": "With semantic HTML, browsers, search engines, and assistive technologies all understand your page structure — no CSS classes required for meaning. ARIA landmark roles map directly to HTML5 elements, giving screen reader users one-keystroke navigation. Search engines use the heading hierarchy and `<article>` boundaries to determine content relevance."
       },
       {
         "animationStep": 5,
@@ -505,27 +505,27 @@
       {
         "animationStep": 0,
         "heading": "The <form> element",
-        "text": "A <form> wraps all input controls and submits data to a server. The action attribute sets the URL; method sets GET or POST."
+        "text": "A `<form>` wraps all input controls and submits data to a server. The `action` attribute sets the URL; `method` sets `GET` (data visible in URL) or `POST` (data in request body). Inputs without a `name` attribute are excluded from submission, which is a common source of missing data bugs."
       },
       {
         "animationStep": 1,
         "heading": "<label> and <input>",
-        "text": "Every input should have a label. Connecting them with for/id makes the label clickable and improves accessibility."
+        "text": "Every input should have a label. Connecting them with `for`/`id` makes the label clickable — expanding the tap target — and tells screen readers what the input is for. `placeholder` is not a substitute for a label: it disappears on focus and has poor contrast in most browsers."
       },
       {
         "animationStep": 2,
         "heading": "<select> and <option>",
-        "text": "<select> creates a dropdown. Each <option> is a choice. The value attribute is what gets submitted."
+        "text": "`<select>` creates a dropdown list where users pick from predefined choices. Each `<option>` provides a display label (shown to the user) and a `value` attribute (submitted to the server) — these can differ, e.g. `value=\"en\"` displayed as \"English\". Use `<optgroup>` to visually group related options and the `multiple` attribute to allow multi-selection."
       },
       {
         "animationStep": 3,
         "heading": "Checkbox and radio",
-        "text": "Checkboxes allow multiple selections. Radio buttons in the same group allow only one selection."
+        "text": "Checkboxes are independent — each can be checked or unchecked regardless of the others, making them ideal for multi-select scenarios like \"pick all that apply\". Radio buttons that share the same `name` attribute form a group where only one can be active at a time, enforced automatically by the browser. The `checked` attribute sets the initial state, and the `:checked` CSS pseudo-class lets you style the selected state without JavaScript."
       },
       {
         "animationStep": 4,
         "heading": "<button type=\"submit\">",
-        "text": "The submit button sends the form. type=\"submit\" is the default. type=\"button\" prevents submission — useful for JavaScript actions."
+        "text": "The submit button sends the form. `type=\"submit\"` is the default for all `<button>` elements inside a form — a button without an explicit type will accidentally trigger submission. `type=\"button\"` prevents submission and is safe to use for JavaScript-driven actions. Disable the button during processing to prevent double-submits."
       },
       {
         "animationStep": 5,
@@ -540,7 +540,7 @@
       {
         "animationStep": 7,
         "heading": "fieldset and legend",
-        "text": "`<fieldset>` groups related inputs. `<legend>` labels the group. Screen readers read the legend before each input in the group — essential for radio and checkbox groups."
+        "text": "`<fieldset>` groups related inputs. `<legend>` labels the group. Screen readers read the legend before each input in the group, providing context. This is especially important for radio button groups and checkbox groups where each input makes no sense without the group label."
       },
       {
         "animationStep": 8,
@@ -706,7 +706,7 @@
       {
         "animationStep": 2,
         "heading": "<audio>",
-        "text": "<audio> works the same as <video> but for sound. The controls attribute adds a player. Without controls, the audio is invisible and plays only with JavaScript."
+        "text": "`<audio>` works the same as `<video>` but for sound. The `controls` attribute adds a native player. Without `controls`, the audio is invisible and plays only via JavaScript — useful for background music. Provide multiple formats (`mp3` and `ogg`) for broadest browser compatibility."
       },
       {
         "animationStep": 3,

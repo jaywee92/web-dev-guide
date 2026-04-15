@@ -6,27 +6,27 @@
       {
         "animationStep": 0,
         "heading": "The client sends a request",
-        "text": "Your browser (the client) sends an HTTP request to a server. It includes the method (GET, POST), the URL, and headers."
+        "text": "Your browser (the client) sends an HTTP request to a server. It includes the method (`GET`, `POST`, etc.), the URL, headers (content type, auth token), and an optional body for POST/PUT. Before the request reaches the server it passes through DNS resolution, TCP handshaking, and TLS negotiation."
       },
       {
         "animationStep": 1,
         "heading": "DNS resolution",
-        "text": "The domain name is resolved to an IP address by a DNS server. Like a phone book lookup."
+        "text": "DNS (Domain Name System) translates a human-readable domain like `api.example.com` into the IP address routers actually use to deliver packets. The lookup checks multiple caches in order — browser cache, OS cache, local resolver — before contacting upstream nameservers, so repeated requests for the same domain are nearly instant. A low DNS TTL enables fast failover during outages; a high TTL reduces lookup latency for stable services."
       },
       {
         "animationStep": 2,
         "heading": "The server processes",
-        "text": "The server receives the request, runs your application code (Flask, Node.js), may query a database."
+        "text": "The server receives the request and passes it through your application code (Node.js, Python Flask, etc.) which determines what to do — validate authentication, apply business logic, and typically query a database. The server then assembles a response with the appropriate status code, headers, and body. The entire processing time from receiving the request to sending the response is often called \"server latency\" or \"time to first byte\" (TTFB)."
       },
       {
         "animationStep": 3,
         "heading": "Database query",
-        "text": "The app queries the database (PostgreSQL, SQLite) and waits for results."
+        "text": "The application queries the database (PostgreSQL, SQLite, etc.) with SQL statements and waits for the results before continuing. Database queries are often the largest contributor to server response time — poorly written queries, missing indexes, or N+1 query patterns can slow responses significantly. Always use parameterized queries (`$1`, `$2` placeholders) to pass user-supplied values safely, preventing SQL injection."
       },
       {
         "animationStep": 4,
         "heading": "Response sent back",
-        "text": "The server sends an HTTP response: status code (200 OK, 404 Not Found), headers, and the body (HTML, JSON)."
+        "text": "The server sends an HTTP response: a status code (200 OK, 404 Not Found), headers, and the body (`HTML`, `JSON`). The `Content-Type` header tells the browser how to parse the body. Caching headers like `Cache-Control` and `ETag` let the browser avoid redundant re-fetches for unchanged resources."
       }
     ],
     "cheatSheet": {
@@ -68,27 +68,27 @@
       {
         "animationStep": 0,
         "heading": "REST — resources as URLs",
-        "text": "REST (Representational State Transfer) is a convention for designing APIs. Resources are represented as URLs, and HTTP methods express the action."
+        "text": "REST (Representational State Transfer) is a convention for designing APIs. Resources are represented as URLs, and HTTP methods (`GET`, `POST`, `PUT`, `DELETE`) express the action."
       },
       {
         "animationStep": 1,
         "heading": "GET — retrieve data",
-        "text": "GET requests data from the server. They should be safe (no side effects) and idempotent (same result every time). No request body."
+        "text": "`GET` requests data from the server. It should be safe (no side effects) and idempotent (same result every time, no matter how often called). There is no request body — filters go in query parameters. Browsers, CDNs, and proxies can cache `GET` responses, making it the most performant verb."
       },
       {
         "animationStep": 2,
         "heading": "POST — create a resource",
-        "text": "POST sends data to create a new resource. The server returns the created resource with status 201 Created."
+        "text": "`POST` sends data to create a new resource. The server assigns the ID and returns the created resource with status `201 Created` and a `Location` header. `POST` is not idempotent — calling it twice creates two separate resources. Always protect POST endpoints with authentication."
       },
       {
         "animationStep": 3,
         "heading": "PUT and PATCH",
-        "text": "PUT replaces the entire resource. PATCH updates only the specified fields. Both target a specific resource by ID in the URL."
+        "text": "`PUT` replaces the entire resource — omitted fields are set to null or removed. `PATCH` updates only the specified fields and leaves the rest unchanged. Both target a specific resource by ID in the URL. Use `PATCH` for partial updates in APIs to avoid accidentally wiping fields."
       },
       {
         "animationStep": 4,
         "heading": "DELETE — remove a resource",
-        "text": "DELETE removes the specified resource. A successful delete typically returns 204 No Content."
+        "text": "`DELETE` removes the specified resource identified by the URL. A successful delete typically returns `204 No Content` — meaning the operation succeeded and there is nothing to return. `DELETE` is idempotent: deleting an already-deleted resource should return `404`, but the caller's intent is satisfied either way. Always require authentication for delete operations to prevent unauthorized data loss."
       }
     ],
     "cheatSheet": {
@@ -134,22 +134,22 @@
       {
         "animationStep": 0,
         "heading": "Every response has a status code",
-        "text": "HTTP status codes are 3-digit numbers grouped by category. The first digit indicates success, redirect, or error."
+        "text": "HTTP status codes are 3-digit numbers that tell the client what happened with their request, without needing to parse the response body. The first digit groups them by category: 2xx success, 3xx redirection, 4xx client error, 5xx server error. Using the correct code makes APIs self-documenting and enables generic client behaviour — retry on 503, redirect on 301, show \"not found\" on 404."
       },
       {
         "animationStep": 1,
         "heading": "2xx — Success",
-        "text": "200 OK is the standard success response. 201 Created is returned after a successful POST. 204 No Content means success with no body."
+        "text": "`200 OK` is the standard success response for `GET`, `PUT`, and `PATCH` requests that return a body. `201 Created` signals that a `POST` created a new resource — pair it with a `Location` header pointing to the new URL. `204 No Content` indicates success but no body to return, typically after `DELETE` or a write operation where echoing back the resource is unnecessary."
       },
       {
         "animationStep": 2,
         "heading": "3xx — Redirection",
-        "text": "301 Moved Permanently tells the client the resource has a new URL. 302 Found is a temporary redirect."
+        "text": "`301 Moved Permanently` signals that a URL has changed forever — browsers and search engines cache this and use the new URL on all future visits. `302 Found` is a temporary redirect that clients follow but do not cache. `304 Not Modified` is used for caching: the server confirms the client's cached copy is still valid, so no response body needs to be transferred, saving bandwidth."
       },
       {
         "animationStep": 3,
         "heading": "4xx — Client errors",
-        "text": "4xx errors mean the client made a mistake. 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found."
+        "text": "4xx errors signal that the client made a mistake — the request was wrong or the client lacks permission. `400 Bad Request` covers invalid or malformed input. `401 Unauthorized` means authentication is missing or invalid. `403 Forbidden` means authenticated but lacking permission. `404 Not Found` means the resource does not exist. `422 Unprocessable Entity` is preferred for semantic validation failures like a duplicate email."
       },
       {
         "animationStep": 4,
@@ -312,27 +312,27 @@
       {
         "animationStep": 0,
         "heading": "Tables store rows of data",
-        "text": "A database table is like a spreadsheet — rows are records, columns are fields. Each table has a defined schema."
+        "text": "A database table organises data as rows (individual records) and columns (fields with defined types) — similar to a spreadsheet but with strict type enforcement. Every table has a schema that defines column names and types upfront; the database rejects any row that violates those types or constraints. A `SERIAL PRIMARY KEY` column auto-increments so the database assigns unique IDs to each row automatically."
       },
       {
         "animationStep": 1,
         "heading": "SELECT",
-        "text": "SELECT retrieves data. * means all columns. You can specify column names to return only what you need."
+        "text": "`SELECT` is the most-used SQL statement — it retrieves rows from one or more tables. `SELECT *` returns every column, which is convenient for exploration but wasteful in production since it transfers data you may not need. Always name the specific columns you need: `SELECT id, name, email FROM users` is faster, self-documenting, and insulates your code from future schema additions."
       },
       {
         "animationStep": 2,
         "heading": "WHERE — filter rows",
-        "text": "WHERE adds conditions to filter which rows are returned. Use AND and OR for multiple conditions."
+        "text": "`WHERE` filters rows before they are returned — only rows where the condition is true make it into the result set. Combine multiple conditions with `AND` (both must be true) and `OR` (either must be true), using parentheses to control precedence. Always use parameterized queries (`$1`, `$2`) rather than string interpolation to prevent SQL injection when condition values come from user input."
       },
       {
         "animationStep": 3,
         "heading": "ORDER BY — sort results",
-        "text": "ORDER BY sorts the result set. ASC is ascending (default), DESC is descending. Sort by multiple columns."
+        "text": "`ORDER BY` sorts the returned rows before delivery. `ASC` (ascending, smallest first) is the default; `DESC` reverses it. Sort by multiple columns to handle ties: `ORDER BY department ASC, salary DESC` sorts by department first and breaks ties by salary. Without `ORDER BY`, PostgreSQL makes no guarantee about row order — results that look sorted today may not be after a table vacuum."
       },
       {
         "animationStep": 4,
         "heading": "LIMIT — control result count",
-        "text": "LIMIT caps the number of rows returned. Combined with OFFSET, it implements pagination."
+        "text": "`LIMIT` caps how many rows are returned, which is essential for performance on large tables — without it a single query can return millions of rows and exhaust memory. Combined with `OFFSET`, it implements page-based pagination: page 1 is `LIMIT 10 OFFSET 0`, page 2 is `LIMIT 10 OFFSET 10`. For large datasets, keyset pagination (`WHERE id > last_seen_id`) is faster than OFFSET because it uses the index directly."
       },
       {
         "animationStep": 5,
@@ -402,27 +402,27 @@
       {
         "animationStep": 0,
         "heading": "Data lives in separate tables",
-        "text": "In a relational database, data is split across tables to avoid duplication. A users table and a posts table are linked by a foreign key."
+        "text": "In a relational database, data is split across tables to avoid duplication — each fact is stored in exactly one place. A `users` table stores user info; a `posts` table stores posts with a `user_id` column referencing users. This normalisation means updating a user's name in one place updates it everywhere automatically. JOINs reassemble this split data at query time when you need information from multiple tables together."
       },
       {
         "animationStep": 1,
         "heading": "Foreign keys link tables",
-        "text": "The foreign key is a column that references the primary key of another table. This is how relationships are defined."
+        "text": "A foreign key is a column that holds the primary key value of a related row in another table, creating a link between the two. Declaring it with `REFERENCES users(id)` tells PostgreSQL to enforce referential integrity — inserting a `user_id` that does not exist in `users` is rejected with a constraint violation. This server-side enforcement is more reliable than application-level checks because it protects data even from direct database access."
       },
       {
         "animationStep": 2,
         "heading": "INNER JOIN",
-        "text": "INNER JOIN returns rows where there is a match in both tables. If a user has no posts, they do not appear in the result."
+        "text": "`INNER JOIN` returns only rows where a match exists in both tables — the intersection. If a user has no posts, they are silently excluded from the result. For each match found, one output row is produced, so a user with three posts will appear on three output rows. Use `INNER JOIN` when both sides of the relationship must exist for the result to be meaningful."
       },
       {
         "animationStep": 3,
         "heading": "LEFT JOIN",
-        "text": "LEFT JOIN returns all rows from the left table, with NULLs for missing matches. Use this when you want results even if no match exists."
+        "text": "`LEFT JOIN` returns all rows from the left (first) table, regardless of whether a matching row exists in the right table. Where no match is found, right-side columns are filled with `NULL`. This makes it ideal for \"users and their orders, including users with zero orders\" — a `LEFT JOIN` keeps everyone visible. Adding `WHERE right_table.id IS NULL` then finds rows with no match at all."
       },
       {
         "animationStep": 4,
         "heading": "Aliases and multiple joins",
-        "text": "Use aliases to shorten table names. You can chain multiple JOINs to combine three or more tables."
+        "text": "Table aliases (e.g. `FROM users u`) shorten repetitive qualified column names from `users.name` to `u.name`, keeping multi-join queries readable. You can chain multiple `JOIN`s to combine three or more tables in a single query — each `JOIN` adds another table and its `ON` condition. Indexing all foreign key columns used in `ON` clauses is critical; unindexed joins trigger full table scans and can be catastrophically slow on large datasets."
       }
     ],
     "cheatSheet": {
@@ -467,27 +467,27 @@
       {
         "animationStep": 0,
         "heading": "CREATE TABLE",
-        "text": "CREATE TABLE defines the structure (schema) of a table: column names, types, and constraints."
+        "text": "`CREATE TABLE` defines the schema of a table — the column names, their data types, and any constraints that enforce data integrity. Choose types carefully: `TEXT` for strings, `INTEGER` for whole numbers, `TIMESTAMPTZ` for timestamps, and `DECIMAL` for money. Column constraints like `NOT NULL` and `UNIQUE` are enforced by the database engine on every insert and update, regardless of where the data comes from."
       },
       {
         "animationStep": 1,
         "heading": "INSERT — add rows",
-        "text": "INSERT INTO adds new rows. You can insert one row or multiple rows in a single statement."
+        "text": "`INSERT INTO` adds one or more new rows to a table. Always list the column names explicitly so the query is resilient to future schema changes and self-documents what data it provides. Use `RETURNING id` (or `RETURNING *`) to get the auto-generated primary key and any server-set defaults back immediately, avoiding a second round-trip query to fetch the new row."
       },
       {
         "animationStep": 2,
         "heading": "UPDATE — modify rows",
-        "text": "UPDATE changes existing rows. Always use WHERE — without it, every row in the table is updated."
+        "text": "`UPDATE` modifies the values of existing rows. The `WHERE` clause determines which rows are affected — omitting it updates every single row in the table, which is one of the most common and destructive SQL mistakes. Always verify the `WHERE` clause before running an `UPDATE` in production, and use `RETURNING *` to confirm exactly which rows were changed."
       },
       {
         "animationStep": 3,
         "heading": "DELETE — remove rows",
-        "text": "DELETE removes rows. Always use WHERE — without it, all rows are deleted."
+        "text": "`DELETE FROM` permanently removes rows that match the `WHERE` condition. Like `UPDATE`, omitting `WHERE` deletes every row in the table — the structure remains but all data is gone with no built-in undo. For preserving history, consider a soft delete: add a `deleted_at` column and filter with `WHERE deleted_at IS NULL` rather than physically removing rows."
       },
       {
         "animationStep": 4,
         "heading": "Constraints protect data",
-        "text": "Constraints enforce rules at the database level. PRIMARY KEY, NOT NULL, UNIQUE, and FOREIGN KEY prevent invalid data from being stored."
+        "text": "Constraints enforce data integrity rules at the database level — they apply regardless of which application, migration script, or user connects. `PRIMARY KEY` gives each row a unique identifier. `NOT NULL` rejects missing values. `UNIQUE` prevents duplicates. `FOREIGN KEY` (`REFERENCES`) rejects values that reference non-existent rows in another table. Constraints catch data errors that application validation might miss."
       }
     ],
     "cheatSheet": {
@@ -540,27 +540,27 @@
       {
         "animationStep": 0,
         "heading": "JavaScript types are implicit",
-        "text": "In JavaScript, variables have types at runtime, but you never declare them. The type is inferred from the value."
+        "text": "In JavaScript, variables have types at runtime but you never declare them — the engine infers the type from whatever value is assigned. This flexibility is convenient for small scripts but means type errors only surface when the code actually runs, often in production. TypeScript adds an optional static type layer that catches these mismatches before the code ever executes."
       },
       {
         "animationStep": 1,
         "heading": "TypeScript makes types explicit",
-        "text": "TypeScript adds type annotations using a colon after the variable name. This tells the compiler exactly what type is expected."
+        "text": "TypeScript adds type annotations written after a colon — `let age: number = 25` tells the compiler the variable must always hold a number. Annotations are most valuable on function parameters and return types where TypeScript cannot always infer the type automatically. In practice, you omit annotations on local variables where TypeScript can infer the type from the assigned value, keeping code clean."
       },
       {
         "animationStep": 2,
         "heading": "Type errors caught at compile time",
-        "text": "If you try to assign the wrong type, TypeScript flags it immediately — before the code ever runs."
+        "text": "If you try to assign the wrong type, TypeScript flags it immediately with a red squiggle in your editor — before the code ever runs. The error message names the exact variable and describes the conflict: \"Type 'string' is not assignable to type 'number'.\" This turns runtime surprises that would crash in production into compile-time errors you see while writing code."
       },
       {
         "animationStep": 3,
         "heading": "Interfaces define object shapes",
-        "text": "An interface describes what properties an object must have. TypeScript will error if a required property is missing or has the wrong type."
+        "text": "An `interface` is a named description of an object shape — it lists the required properties and their types. Any object assigned that interface type must have all required properties with matching types; TypeScript errors if a property is missing or has the wrong type. Interfaces use structural typing: an object is compatible if it has at least all required properties, regardless of how it was created."
       },
       {
         "animationStep": 4,
         "heading": "Generics — reusable typed functions",
-        "text": "Generics allow functions and classes to work with any type while still enforcing type safety. T is a placeholder that is filled in at call time."
+        "text": "Generics allow a function, class, or interface to work with any type while still preserving type information — unlike `any` which discards it. The type parameter `<T>` is a placeholder filled in at call time, usually inferred automatically from what you pass in. The key benefit: `first<T>(arr: T[]): T` guarantees the return type matches the array element type, so TypeScript knows `first([1,2,3])` returns a `number`."
       },
       {
         "animationStep": 5,
@@ -703,27 +703,27 @@
       {
         "animationStep": 0,
         "heading": "The Fetch API",
-        "text": "fetch() is the modern browser API for making HTTP requests. It replaced XMLHttpRequest and returns a Promise."
+        "text": "`fetch()` is the modern browser API for making HTTP requests — it replaced the verbose `XMLHttpRequest` API with a clean Promise-based interface. It sends the request and returns a `Promise<Response>` that resolves when the server replies, while your other JavaScript continues running unblocked. The same API works in all modern browsers and in Node.js 18+ natively, with no library required."
       },
       {
         "animationStep": 1,
         "heading": "fetch() returns a Promise",
-        "text": "The request is sent immediately but the response arrives later. fetch() returns a Promise that resolves when the server responds."
+        "text": "The request is sent immediately but the response arrives asynchronously. `fetch()` returns a `Promise` that resolves to a `Response` object when the server replies. This two-stage process — first the Promise for the response headers, then another `.json()` or `.text()` call to read the body — allows inspecting status codes before downloading the full body, which is useful for streaming large responses."
       },
       {
         "animationStep": 2,
         "heading": "The Response object",
-        "text": "The resolved value is a Response. It contains status, headers, and the body — but the body must be explicitly parsed."
+        "text": "The `Response` object contains everything the server sent back: `status` (HTTP code like 200 or 404), `ok` (true for 2xx), `headers`, and the body as a readable stream. The body must be explicitly parsed with `.json()`, `.text()`, or `.blob()` — calling the wrong one or calling it twice on the same response throws an error. The most important check: `response.ok` being false means success resolved but the request failed (e.g. 404 or 500)."
       },
       {
         "animationStep": 3,
         "heading": "Parsing the response body",
-        "text": "response.json() parses the body as JSON and returns another Promise. response.text() returns raw text."
+        "text": "`response.json()` reads the entire response body and parses it as JSON, returning another `Promise` — that is why you need two `await` calls in a typical fetch pattern. `response.text()` returns the raw string, and `response.blob()` returns binary data for images or files. The body can only be consumed once; calling `.json()` after `.text()` on the same response throws because the stream is already exhausted."
       },
       {
         "animationStep": 4,
         "heading": "async/await syntax",
-        "text": "async/await makes fetch code read like synchronous code. Always wrap in try/catch for error handling."
+        "text": "`async`/`await` makes fetch code read like sequential, synchronous code rather than nested `.then()` chains. Always wrap in `try`/`catch` to handle network failures. One important gotcha: `fetch()` only rejects (throws) on network errors — HTTP errors like 404 and 500 still resolve successfully with `ok: false`, so always check `if (!res.ok) throw new Error(...)` before reading the body."
       },
       {
         "animationStep": 5,
@@ -733,7 +733,7 @@
       {
         "animationStep": 6,
         "heading": "POST / PUT / DELETE with a Body",
-        "text": "To send data, pass an options object as the second argument to fetch. Set the method, a Content-Type header, and serialize the body to JSON with JSON.stringify."
+        "text": "To send data, pass an options object as the second argument to `fetch`. Set the `method`, a `Content-Type: application/json` header, and serialize the body to JSON with `JSON.stringify`. Without the `Content-Type` header, many servers will not know how to parse the request body."
       },
       {
         "animationStep": 7,
@@ -793,27 +793,27 @@
       {
         "animationStep": 0,
         "heading": "Events are user actions",
-        "text": "The browser fires events when users interact — clicking, typing, scrolling, hovering. JavaScript can listen and respond."
+        "text": "The browser fires events whenever users interact — clicking buttons, typing in fields, scrolling, hovering, submitting forms. JavaScript registers listener functions that are called automatically when a matching event occurs, without needing to constantly poll for changes. Events cover user input, browser lifecycle (page load, before unload), network status, and more."
       },
       {
         "animationStep": 1,
         "heading": "addEventListener",
-        "text": "addEventListener attaches a callback function to an element. The callback runs every time the event fires."
+        "text": "`addEventListener(type, handler)` attaches a callback that runs every time the specified event fires on that element. Multiple listeners can be added to the same element and event type — they all fire independently in the order added. To remove a listener later with `removeEventListener`, you must pass the same function reference that was originally added; inline arrow functions cannot be removed because each creates a new object."
       },
       {
         "animationStep": 2,
         "heading": "The Event object",
-        "text": "The callback receives an Event object with information about what happened: the target element, mouse position, key pressed, and more."
+        "text": "Every event listener receives an `Event` object describing what happened: `type` (the event name), `target` (the element the event originated on), and event-specific properties. `MouseEvent` adds `clientX`/`clientY` for mouse position; `KeyboardEvent` adds `key` and modifier flags. Note that `target` (where the event originated) can differ from `currentTarget` (where the listener is attached) when using event delegation."
       },
       {
         "animationStep": 3,
         "heading": "Event bubbling",
-        "text": "Events bubble up the DOM tree by default. A click on an inner element also fires on all its ancestors — unless stopped."
+        "text": "Events bubble up the DOM tree by default — a click on a `<button>` also fires on the parent `<div>`, then `<body>`, then `document`. This enables event delegation: instead of attaching listeners to every child, attach one listener to a parent and use `event.target` to identify which child was clicked. Delegation is more efficient and automatically covers dynamically added children. Call `stopPropagation()` when a nested element should handle the event exclusively."
       },
       {
         "animationStep": 4,
         "heading": "stopPropagation and preventDefault",
-        "text": "stopPropagation() stops the event from bubbling. preventDefault() cancels the browser's default action (e.g. following a link, submitting a form)."
+        "text": "`stopPropagation()` stops the event from bubbling up through the DOM so parent handlers don't also fire. `preventDefault()` cancels the browser's built-in action — preventing navigation on a link click or page reload on a form submit. The two methods are independent: you can call one, both, or neither depending on what you need."
       },
       {
         "animationStep": 5,
@@ -878,27 +878,27 @@
       {
         "animationStep": 0,
         "heading": "Browser storage",
-        "text": "Browsers provide built-in key-value storage that works without any server. Useful for preferences, cached data, and offline state."
+        "text": "Browsers provide built-in key-value storage that persists data locally without any server involvement. `localStorage` retains data indefinitely across browser restarts; `sessionStorage` is cleared when the tab closes. Both are scoped to the origin (protocol + domain + port) and ideal for storing user preferences, cached responses, and session state that should survive page refreshes."
       },
       {
         "animationStep": 1,
         "heading": "setItem",
-        "text": "setItem(key, value) stores a string value. Non-string values must be serialized with JSON.stringify."
+        "text": "`setItem(key, value)` stores the value under the given key — both must be strings. Non-string values are coerced, so objects become `\"[object Object]\"` and are unreadable on retrieval. Always serialize complex values with `JSON.stringify` before storing, and deserialize with `JSON.parse` when reading. Namespace your keys (e.g. `\"myapp:theme\"`) to avoid collisions with other scripts sharing the same storage."
       },
       {
         "animationStep": 2,
         "heading": "getItem",
-        "text": "getItem(key) retrieves the stored value. Returns null if the key does not exist. Parse JSON values with JSON.parse."
+        "text": "`getItem(key)` returns the stored string value, or `null` if the key has never been set or was removed. Always check for `null` before parsing: passing `null` to `JSON.parse` will throw a `SyntaxError`. A safe pattern is `JSON.parse(localStorage.getItem(\"key\") ?? \"{}\")` — the nullish coalescing operator provides a valid JSON fallback when the key is absent."
       },
       {
         "animationStep": 3,
         "heading": "localStorage persists",
-        "text": "Data in localStorage survives page refreshes, tab closes, and browser restarts. It stays until explicitly cleared."
+        "text": "Data in `localStorage` persists permanently — it survives page refreshes, tab closes, and full browser restarts until explicitly cleared with `removeItem(key)` or `clear()`. This makes it suitable for long-lived preferences like theme, language, or user settings. A useful side effect: the `storage` event fires on other open tabs when `localStorage` changes, enabling cross-tab state synchronisation."
       },
       {
         "animationStep": 4,
         "heading": "sessionStorage — tab-scoped",
-        "text": "sessionStorage has the same API as localStorage but is cleared when the tab or window is closed."
+        "text": "`sessionStorage` has the exact same `setItem`/`getItem`/`removeItem` API as `localStorage`, but data is cleared automatically when the tab or window closes. Each tab gets its own completely isolated `sessionStorage` — two tabs on the same site cannot share it. Use `sessionStorage` for temporary UI state like multi-step form progress or wizard steps that should reset when the user is done."
       },
       {
         "animationStep": 5,
@@ -908,7 +908,7 @@
       {
         "animationStep": 6,
         "heading": "setItem / getItem / removeItem / clear",
-        "text": "The Web Storage API is a simple key/value store. All values are stored as strings — use JSON.stringify and JSON.parse to store and retrieve objects."
+        "text": "The Web Storage API is a simple key/value store. All values are stored as strings — use `JSON.stringify` and `JSON.parse` to store and retrieve objects. The API is synchronous and blocks the main thread, so avoid storing large data sets; use IndexedDB for anything beyond small config or preferences."
       },
       {
         "animationStep": 7,
@@ -1029,27 +1029,27 @@
       {
         "animationStep": 0,
         "heading": "HTML is static markup",
-        "text": "Plain HTML defines the structure once. To reuse a button, you copy-paste the markup — which quickly becomes hard to maintain."
+        "text": "Plain HTML defines the structure once. To reuse a button, you copy-paste the markup — which quickly becomes hard to maintain. If the button style changes, every copy has to be updated manually. React solves this by letting you define a component once and use it anywhere."
       },
       {
         "animationStep": 1,
         "heading": "JSX — HTML in JavaScript",
-        "text": "JSX lets you write HTML-like syntax inside JavaScript. It looks like HTML but it is transformed to JavaScript function calls by Babel."
+        "text": "`JSX` lets you write HTML-like syntax inside JavaScript. It looks like HTML but is transformed into JavaScript function calls by a build tool like Vite or Babel. This means you can use the full power of JavaScript — variables, conditionals, loops — directly inside your markup."
       },
       {
         "animationStep": 2,
         "heading": "A component is a function",
-        "text": "A React component is a function that accepts props and returns JSX. The function name must start with a capital letter."
+        "text": "A React component is a function that accepts `props` and returns `JSX`. The function name must start with a capital letter so React can distinguish it from a plain HTML tag. You define a component once and render it as many times as needed — each instance is independent."
       },
       {
         "animationStep": 3,
         "heading": "Components compose",
-        "text": "You build complex UIs by nesting components. Each component can contain other components — forming a tree."
+        "text": "You build complex UIs by nesting components inside one another — forming a component tree. The top-level component (usually `App`) is the root; everything else branches from it. Each component only knows about its direct children, which keeps the codebase modular and easy to navigate."
       },
       {
         "animationStep": 4,
         "heading": "Props — data flows down",
-        "text": "Props are arguments passed to components. They flow only from parent to child — never the other way."
+        "text": "`props` are the arguments you pass to a component, just like function arguments. They flow only from parent to child — never the other way — which makes data flow predictable. A component should treat its props as read-only and never modify them directly."
       },
       {
         "animationStep": 5,
@@ -1059,7 +1059,7 @@
       {
         "animationStep": 6,
         "heading": "Conditional Rendering",
-        "text": "Use plain JavaScript inside JSX to conditionally show UI. Ternary for either/or, && for show-or-nothing, early return for complex branches."
+        "text": "Use plain JavaScript inside JSX to conditionally show UI. Ternary for either/or, `&&` for show-or-nothing, and early return for complex branches. Watch out: if the condition is `0`, the `&&` operator renders the number `0` in the DOM rather than nothing — use `!!count` to coerce to boolean."
       },
       {
         "animationStep": 7,
@@ -1113,27 +1113,27 @@
       {
         "animationStep": 0,
         "heading": "State is dynamic data",
-        "text": "State is data that can change over time and causes the component to re-render when it does. Props come from outside; state lives inside."
+        "text": "State is data that can change over time and causes the component to re-render when it does. Props come from outside; state lives inside the component. Without state, variables reset to their initial value on every render because React calls the component function fresh each time. The `useState` hook stores values in a persistent slot so they survive re-renders."
       },
       {
         "animationStep": 1,
         "heading": "useState",
-        "text": "useState is a Hook that returns the current value and a setter function. React tracks the value between renders."
+        "text": "`useState` is a Hook that returns a pair: the current value and a setter function. React stores the value outside the component so it survives re-renders. Call the setter to update the value — React will re-render the component with the new state on the next cycle."
       },
       {
         "animationStep": 2,
         "heading": "Calling the setter re-renders",
-        "text": "When you call setCount, React schedules a re-render. The component function runs again with the new state value."
+        "text": "When you call `setCount`, React schedules a re-render — it does not update the variable immediately. The component function runs again from top to bottom with the new state value. State updates within the same event handler are batched together so React only re-renders once."
       },
       {
         "animationStep": 3,
         "heading": "State is local to each instance",
-        "text": "If you render two <Counter /> components, each has its own independent count. State is not shared unless you lift it up."
+        "text": "If you render two `<Counter />` components, each has its own independent count — state is local to the component instance, not to the component type. State is not shared unless you lift it up to a common parent and pass it down as props. This is the fundamental mechanism for coordinating state between sibling components in React."
       },
       {
         "animationStep": 4,
         "heading": "Rules of Hooks",
-        "text": "Hooks must always be called at the top level of a component — never inside conditions, loops, or nested functions."
+        "text": "Hooks must always be called at the top level of a component — never inside conditions, loops, or nested functions. React relies on the order of Hook calls to associate state with the right variable. Breaking this rule causes bugs that are difficult to track down. ESLint's `eslint-plugin-react-hooks` enforces this automatically."
       },
       {
         "animationStep": 5,
@@ -1193,27 +1193,27 @@
       {
         "animationStep": 0,
         "heading": "Side effects happen after render",
-        "text": "A side effect is any work that affects something outside the component: network requests, timers, DOM manipulation. useEffect runs these after the render."
+        "text": "A side effect is any work that affects something outside the component: network requests, timers, DOM manipulation, event subscriptions. `useEffect` runs these after the render so the render function stays pure. Running side effects directly in the render body causes them to fire on every re-render, including those triggered by unrelated state changes."
       },
       {
         "animationStep": 1,
         "heading": "Empty deps — run once",
-        "text": "Passing an empty array [] as the second argument tells React to run the effect only once — when the component first mounts."
+        "text": "Passing an empty array `[]` as the second argument tells React to run the effect only once — when the component first mounts. Without a dependency array the effect runs after every render, which is almost never what you want. The array signals to React which values the effect depends on; an empty array means it depends on nothing and therefore never needs to re-run."
       },
       {
         "animationStep": 2,
         "heading": "Deps array — re-run on change",
-        "text": "List the values the effect depends on. React re-runs the effect whenever any of those values change."
+        "text": "List the values the effect depends on in the second argument. React re-runs the effect whenever any of those values change between renders. If you reference a variable inside the effect but omit it from the array, you risk the effect reading a stale value — ESLint's exhaustive-deps rule catches this."
       },
       {
         "animationStep": 3,
         "heading": "Cleanup function",
-        "text": "Return a function from useEffect to clean up before the next run or on unmount. Essential for timers, subscriptions, and event listeners."
+        "text": "Return a function from `useEffect` to clean up before the next run or on unmount. Essential for `setInterval`/`clearInterval`, subscriptions, and event listeners. Without cleanup, an unmounted component that still has an active subscription will trigger React's \"state update on unmounted component\" warning."
       },
       {
         "animationStep": 4,
         "heading": "Common use cases",
-        "text": "useEffect is for anything that needs to happen outside the render cycle: data fetching, subscriptions, DOM manipulation, analytics."
+        "text": "`useEffect` is for anything that needs to happen outside the render cycle: data fetching, subscriptions, DOM manipulation, analytics. Each use case typically needs both the setup and the corresponding cleanup — fetch requests should be aborted, intervals cleared, event listeners removed. Getting cleanup right is what separates a correct effect from a leaky one."
       },
       {
         "animationStep": 5,
@@ -1268,27 +1268,27 @@
       {
         "animationStep": 0,
         "heading": "Client-side routing",
-        "text": "Traditional websites load a new HTML page on every navigation. React Router intercepts the URL change and swaps components instead — no full page reload."
+        "text": "Traditional websites load a new HTML page on every navigation. React Router intercepts the URL change and swaps components instead — no full page reload. This preserves JavaScript state in memory and makes transitions feel instant because only the changed components re-render. The browser History API updates the URL bar so the back button and bookmarks still work as expected."
       },
       {
         "animationStep": 1,
         "heading": "BrowserRouter wraps your app",
-        "text": "BrowserRouter provides routing context to your entire app. It uses the HTML5 History API to keep the URL in sync with the UI."
+        "text": "`BrowserRouter` provides routing context to your entire app — it must wrap the root of your component tree exactly once. It uses the HTML5 History API to keep the URL in sync with the UI. In production, the server must be configured to serve `index.html` for all paths, or a hard refresh on any route other than `/` will return a 404."
       },
       {
         "animationStep": 2,
         "heading": "Routes and Route",
-        "text": "Routes picks the first matching Route and renders its element. Each Route maps a URL path to a component."
+        "text": "`Routes` scans its children and renders the first `Route` whose `path` matches the current URL. Each `Route` maps a path pattern to a component via the `element` prop. Wrapping all routes inside a single `<Routes>` ensures only one route is active at a time."
       },
       {
         "animationStep": 3,
         "heading": "Link — navigate without reload",
-        "text": "Use Link instead of <a href>. Link updates the URL and renders the matching component without a full page reload."
+        "text": "Use `Link` instead of `<a href>` for in-app navigation. `Link` updates the URL and swaps the matched component without a full page reload — preserving JavaScript state and avoiding a network round-trip. The `to` prop accepts both static strings and dynamic expressions."
       },
       {
         "animationStep": 4,
         "heading": "useParams — dynamic segments",
-        "text": "URL segments prefixed with : are dynamic. useParams returns an object with the matched values."
+        "text": "URL segments prefixed with `:` are dynamic — they match any value in that position. `useParams` returns an object containing the matched values, keyed by the segment name. Use them to load the right data for a specific user, product, or post based on the URL."
       },
       {
         "animationStep": 5,
@@ -1392,27 +1392,27 @@
       {
         "animationStep": 0,
         "heading": "Interfaces describe object shapes",
-        "text": "An interface defines a contract: any object assigned that type must have exactly those properties with those types. It documents intent and lets TypeScript enforce it."
+        "text": "An interface defines a contract: any object assigned that type must have exactly those properties with those types. It documents intent and lets TypeScript enforce it. TypeScript uses structural typing — it checks the shape of the value, not which class it comes from, so any object with the right properties satisfies the interface."
       },
       {
         "animationStep": 1,
         "heading": "Optional and readonly properties",
-        "text": "Mark a property with ? to make it optional. Mark it with readonly to prevent mutation after creation."
+        "text": "Mark a property with `?` to make it optional — TypeScript will not complain if it is absent, but will require a null check before you use it. Mark it with `readonly` to prevent reassignment after the object is created, communicating that the property is immutable and catching accidental mutations at compile time. Optional and readonly can be combined on the same property."
       },
       {
         "animationStep": 2,
         "heading": "Extending interfaces",
-        "text": "Use extends to build on an existing interface. The child interface inherits all parent properties and adds its own."
+        "text": "Use `extends` to build a new interface on top of an existing one — the child interface inherits all parent properties and adds its own. You can extend multiple interfaces at once: `interface C extends A, B`. This models type hierarchies cleanly: a `Post` interface might extend a base `Entity` interface that provides `id` and `createdAt`, keeping shared fields in one place."
       },
       {
         "animationStep": 3,
         "heading": "Implementing an interface",
-        "text": "A class can implement an interface, promising to provide all the required properties and methods. TypeScript errors if anything is missing."
+        "text": "A class can `implement` an interface, making a compile-time promise to provide all required properties and methods with compatible signatures. Unlike `extends`, `implements` gives the class nothing from the interface — it must write its own implementation. This decouples the contract from the implementation, making it easy to swap one class for another as long as both implement the same interface."
       },
       {
         "animationStep": 4,
         "heading": "Index signatures for dynamic keys",
-        "text": "When you don't know all property names up front, use an index signature to allow any string key with a specific value type."
+        "text": "When you don't know all property names up front, use an index signature (`[key: string]: T`) to allow any string key with a consistent value type. This models dictionaries, lookup tables, and config maps. All named properties on the same interface must also match that value type. `Record<string, T>` is the cleaner shorthand for the same pattern."
       }
     ],
     "cheatSheet": {
@@ -1465,27 +1465,27 @@
       {
         "animationStep": 0,
         "heading": "The problem: rigid types",
-        "text": "Without generics you need a separate function for each type — firstNumber, firstString, firstBoolean. This violates DRY."
+        "text": "Without generics you must choose between writing a separate function for every type (`firstNumber`, `firstString`, `firstBoolean`) or using `any` which discards all type information. Both options are poor at scale: the first violates DRY with identical logic repeated, the second removes the safety that makes TypeScript valuable. Generics solve this by making the type itself a parameter."
       },
       {
         "animationStep": 1,
         "heading": "Generic functions with <T>",
-        "text": "A type parameter <T> is a placeholder that gets replaced with a real type at call time. One function works for all types."
+        "text": "A type parameter `<T>` is a compile-time placeholder that gets substituted with a concrete type each time the function is called. TypeScript infers `T` from the argument — call `first([1, 2, 3])` and TypeScript concludes `T = number`, making the return type `number` automatically. One generic function provides type-safe behaviour for every type, with zero duplication."
       },
       {
         "animationStep": 2,
         "heading": "TypeScript infers T automatically",
-        "text": "You rarely need to write the type argument explicitly — TypeScript infers it from what you pass in."
+        "text": "TypeScript infers `T` automatically from the argument you pass — you rarely need to write the type argument explicitly. Explicit type arguments like `first<number>([1,2,3])` are only needed when inference is ambiguous, such as `useState<User | null>(null)` where `null` alone does not reveal the intended type. In all other cases, let the compiler infer and keep the call site clean."
       },
       {
         "animationStep": 3,
         "heading": "Generic interfaces",
-        "text": "Interfaces can also have type parameters. The type is specified when you use the interface."
+        "text": "Interfaces can also have type parameters, making the shape itself reusable across different data types. `interface ApiResponse<T> { data: T; status: number }` can be used as `ApiResponse<User>`, `ApiResponse<Post[]>`, or any other type — the same response wrapper shape with different payload types. Generic interfaces are the foundation of the TypeScript standard library: `Array<T>`, `Promise<T>`, `Map<K,V>`."
       },
       {
         "animationStep": 4,
         "heading": "Constraints with extends",
-        "text": "Use extends to restrict what types T can be. This lets you safely access properties that are guaranteed to exist."
+        "text": "Use `extends` to constrain what types `T` can be — without a constraint, TypeScript assumes `T` is anything, so you cannot safely access any property on it. `<T extends { length: number }>` guarantees `T` has a `.length`, making `val.length` type-safe. The pattern `<K extends keyof T>` enables typed property lookup: `getProperty<T, K extends keyof T>(obj: T, key: K): T[K]`."
       }
     ],
     "cheatSheet": {
@@ -1534,22 +1534,22 @@
       {
         "animationStep": 0,
         "heading": "typeof and instanceof guards",
-        "text": "TypeScript narrows types inside conditional blocks. After typeof check, the type is refined automatically."
+        "text": "TypeScript narrows the inferred type inside conditional blocks based on the checks you perform. After `typeof val === \"string\"`, TypeScript knows `val` is `string` in the true branch — no type cast needed. This narrowing is automatic: TypeScript tracks which types are possible after each check and refines the type accordingly throughout the block."
       },
       {
         "animationStep": 1,
         "heading": "Discriminated unions",
-        "text": "A discriminated union uses a shared literal property to distinguish between types. TypeScript narrows based on that field."
+        "text": "A discriminated union is a union of object types that each have a shared literal-typed property (the \"discriminant\") with a unique value per variant. Checking that property narrows the union to the specific variant in each branch automatically. This pattern is ideal for state machines, Redux actions, and any situation with a fixed set of mutually exclusive variants — a `switch` over the discriminant handles them all exhaustively."
       },
       {
         "animationStep": 2,
         "heading": "Custom type guards",
-        "text": "A type predicate function (x is T) tells TypeScript the exact narrowed type when the function returns true."
+        "text": "A type predicate function has a return type of the form `param is Type` — when the function returns `true`, TypeScript narrows `param` to `Type` at every call site. This encapsulates reusable runtime type checks with proper TypeScript narrowing semantics. TypeScript trusts the predicate without verifying its body, so the function must actually perform a correct check."
       },
       {
         "animationStep": 3,
         "heading": "Equality narrowing",
-        "text": "TypeScript narrows the type when you compare with === or !==. When both sides are checked for equality, TypeScript eliminates impossible types."
+        "text": "TypeScript narrows the type when you compare with `===` or `!==`. If one side is a literal value, TypeScript eliminates all union members that cannot equal it, leaving only the compatible types in the true branch. This composes naturally with discriminated unions — `if (x.kind === \"circle\")` narrows the entire object type — and with null checks: `if (x !== null)` makes `x` non-nullable inside the block."
       },
       {
         "animationStep": 4,
@@ -1604,17 +1604,17 @@
       {
         "animationStep": 0,
         "heading": "Partial and Required",
-        "text": "Partial<T> makes all properties optional. Required<T> makes all properties required. Both derive a new type from an existing interface."
+        "text": "`Partial<T>` transforms every property in `T` to optional, creating a \"draft\" version of the type — ideal for `PATCH` request bodies or partially-filled form state. `Required<T>` is the inverse: it removes `?` from every property, giving you a fully-populated version. Both derive a new type from an existing interface without rewriting the property list, keeping your types in sync automatically."
       },
       {
         "animationStep": 1,
         "heading": "Pick and Omit",
-        "text": "Pick<T, K> keeps only the listed keys. Omit<T, K> removes the listed keys. Both create a subset type."
+        "text": "`Pick<T, K>` creates a new type containing only the property names you list — ideal for focused view models or component props. `Omit<T, K>` is the complement: it copies all properties except the listed keys. Use `Omit<User, \"password\">` for safe public-facing types, or `Omit<User, \"id\" | \"createdAt\">` for creation payloads where those fields are generated by the database."
       },
       {
         "animationStep": 2,
         "heading": "Record, Readonly, and ReturnType",
-        "text": "Record<K, V> creates an object type with keys K and values V. Readonly<T> prevents mutation. ReturnType<F> extracts a function's return type."
+        "text": "`Record<K, V>` creates an object type where every key is `K` and every value is `V` — the canonical way to type dictionaries. `Readonly<T>` marks all properties as immutable at the type level. `ReturnType<F>` extracts a function's return type so you don't duplicate it. Combine them: `Readonly<Partial<User>>` builds a safe update payload in one expression."
       },
       {
         "animationStep": 3,
@@ -1680,12 +1680,12 @@
       {
         "animationStep": 0,
         "heading": "Typed arrays",
-        "text": "TypeScript allows you to specify that an array should only contain elements of a particular type. Use the T[] syntax or the generic Array<T> form — both are equivalent."
+        "text": "TypeScript allows you to specify that an array should only contain elements of a particular type. Use the `T[]` syntax or the generic `Array<T>` form — both are equivalent. TypeScript uses this information to type the return values of array methods: `scores.map(s => s * 2)` returns `number[]` automatically. The compiler also catches type violations like pushing a string into a `number[]` array before the code runs."
       },
       {
         "animationStep": 1,
         "heading": "Arrays of objects",
-        "text": "You can type arrays of custom object shapes. TypeScript checks each element against the type, and gives you autocomplete for all properties when you iterate."
+        "text": "You can type arrays of custom object shapes. TypeScript checks each element against the type, and gives you autocomplete for all properties when you iterate. Iteration methods like `map`, `filter`, and `find` preserve the element type through the chain — `users.filter(u => u.active)` returns `User[]` and `users.find(u => u.id === id)` returns `User | undefined`. You get full type safety at every step without writing extra annotations."
       },
       {
         "animationStep": 2,
@@ -1749,7 +1749,7 @@
       {
         "animationStep": 1,
         "heading": "readonly and optional properties",
-        "text": "Mark a property readonly to prevent mutation after construction. Mark it optional with ? when it may not always be provided. TypeScript checks both at compile time."
+        "text": "Mark a property `readonly` to prevent mutation after construction — it can only be assigned inside the constructor. Mark it optional with `?` when it may not always be provided; TypeScript then requires an `undefined` check before accessing it. You can combine both modifiers: `readonly email?: string` is a property that is set once and may be absent."
       },
       {
         "animationStep": 2,
@@ -1832,7 +1832,7 @@
       {
         "animationStep": 3,
         "heading": "Real-world use: RBAC roles",
-        "text": "String enums are well-suited for roles, statuses, and configuration constants that appear in logs, APIs, and databases — the string value is self-documenting."
+        "text": "String enums are well-suited for roles, statuses, and configuration constants that appear in logs, APIs, and databases — the string value is self-documenting rather than an opaque number. TypeScript catches any attempt to pass a plain string literal where the enum type is expected, preventing typos at compile time."
       }
     ],
     "cheatSheet": {
@@ -2274,7 +2274,7 @@
       {
         "animationStep": 1,
         "heading": "Working Directory",
-        "text": "Your local files on disk. This is where you write and edit code. Git watches this folder but does not automatically save anything — you decide what gets tracked."
+        "text": "Your local files on disk. This is where you write and edit code. Git watches this folder but does not automatically save anything — you decide what gets tracked. Every commit is a snapshot of the entire project, identified by a SHA-1 hash that makes the history immutable and tamper-evident."
       },
       {
         "animationStep": 2,
@@ -2289,7 +2289,7 @@
       {
         "animationStep": 4,
         "heading": "All 4 areas together",
-        "text": "The full Git flow: Working Directory → Staging Area → Local Repo → Remote Repo. Changes move forward through these areas and can flow back (checkout, pull) when needed."
+        "text": "The full Git flow: Working Directory → Staging Area → Local Repo → Remote Repo. Changes move forward through these areas and can flow back (`git checkout`, `git pull`) when needed."
       }
     ],
     "cheatSheet": {
@@ -2334,17 +2334,17 @@
       {
         "animationStep": 0,
         "heading": "The daily Git loop",
-        "text": "Every day in a development team follows the same pattern: get the latest code, create a branch, make changes, stage them, commit, then push to share with the team."
+        "text": "Every day in a development team follows the same pattern: get the latest code, create a branch, make changes, stage them, commit, then push to share with the team. The `main` branch always stays deployable — feature branches keep work in progress isolated until it is ready for review."
       },
       {
         "animationStep": 1,
         "heading": "Start: init or clone",
-        "text": "For a brand new project use git init. To work on an existing project, git clone downloads the full history. You only do this once per project."
+        "text": "For a brand new project use `git init`. To work on an existing project, `git clone` downloads the full history and sets up the remote tracking automatically. You only do this once per project — from then on, `git pull` stays in sync. `HEAD` is the pointer tracking which branch you are currently on."
       },
       {
         "animationStep": 2,
         "heading": "Create a branch",
-        "text": "Always work in a branch — never directly on main. A branch is an isolated copy of the codebase. Your changes stay contained until you decide to merge them back."
+        "text": "Always work in a branch — never directly on `main`. A branch is an isolated copy of the codebase where your changes stay contained until you decide to merge them back. Branches are lightweight in Git — creating one just adds a pointer and costs nothing. Delete them freely after merging."
       },
       {
         "animationStep": 3,
@@ -2354,7 +2354,7 @@
       {
         "animationStep": 4,
         "heading": "Push to remote",
-        "text": "Push your branch to the remote repository so teammates can see it. The -u flag sets the upstream so future pushes just need git push."
+        "text": "Push your branch to the remote repository so teammates can see it and you can open a pull request. The `-u` flag sets the upstream tracking so future pushes just need `git push`. After the PR is merged, pull the updated `main` and delete the merged branch locally."
       }
     ],
     "cheatSheet": {
@@ -2412,12 +2412,12 @@
       {
         "animationStep": 2,
         "heading": "Pattern syntax",
-        "text": "Each line is a pattern. Use / to match directories, * as a wildcard, ! to un-ignore something specific. Patterns are matched from the project root."
+        "text": "Each line is a pattern. Use `/` to match directories, `*` as a wildcard, `**` to cross directory boundaries, and `!` to un-ignore a specific file. Patterns are matched from the project root. GitHub provides a collection of standard templates for every language and framework."
       },
       {
         "animationStep": 3,
         "heading": "With .gitignore — only your code is tracked",
-        "text": "After adding .gitignore, git add . only stages your actual source files. Secrets stay local, node_modules stays off GitHub, and your repo stays lean and clean."
+        "text": "After adding `.gitignore`, `git add .` only stages your actual source files. Secrets stay local, `node_modules` stays off GitHub, and your repo stays lean. If you accidentally committed a file before ignoring it, use `git rm --cached` to stop tracking it — and rotate any secrets that were exposed."
       }
     ],
     "cheatSheet": {
@@ -2593,7 +2593,7 @@
       {
         "animationStep": 3,
         "heading": "Mark resolved and finish the merge",
-        "text": "After editing all conflicted files, stage them to tell Git they're resolved, then run git commit. Git creates the merge commit automatically with a default message."
+        "text": "After editing all conflicted files, stage them with `git add` to mark them resolved, then run `git commit`. Git writes a default merge commit message like \"Merge branch 'feature' into main\". Before committing, confirm no conflict markers (`<<<<<<<`) remain — staging a file that still contains them silently puts broken code in your repo."
       }
     ],
     "cheatSheet": {
@@ -2638,17 +2638,17 @@
       {
         "animationStep": 1,
         "heading": "git restore — discard working directory changes",
-        "text": "Throws away all edits to a file and restores it to its last committed state. Use --staged to unstage without discarding changes. Warning: this cannot be undone."
+        "text": "Throws away all edits to a file and restores it to its last committed state. Use `--staged` to unstage without discarding changes. Warning: this cannot be undone — uncommitted changes that have never been committed cannot be recovered. Use `git stash` instead if you want to save the changes temporarily."
       },
       {
         "animationStep": 2,
         "heading": "git stash — shelve work temporarily",
-        "text": "Stash saves your uncommitted changes on a stack and gives you a clean working directory. Perfect when you need to switch branches mid-work without losing anything."
+        "text": "`git stash` saves your uncommitted changes on a stack and gives you a clean working directory. Perfect when you need to switch branches mid-work without losing anything. `git stash pop` re-applies the most recent stash and removes it from the stack. The stash persists across Git operations, so you can stash, switch branches, fix a bug, switch back, and pop to resume exactly where you left off."
       },
       {
         "animationStep": 3,
         "heading": "git revert — safe undo on shared branches",
-        "text": "git revert creates a new commit that undoes a previous commit. It never rewrites history, so it's safe to use on main or any branch others are working on."
+        "text": "`git revert <hash>` creates a new commit that undoes a previous commit — the original commit stays in history. Because no history is rewritten, the result pushes normally without force. It's the correct tool for undoing mistakes on shared branches like `main`. Use `git reset` only for commits that have never been pushed."
       }
     ],
     "cheatSheet": {
