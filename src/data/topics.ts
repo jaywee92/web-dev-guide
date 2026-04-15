@@ -6933,7 +6933,7 @@ export default defineConfig({
   },
   {
     id: 'js-vs-python',
-    category: 'javascript-async',
+    category: 'javascript',
     nextTopicId: undefined,
     title: 'JavaScript vs Python',
     description: 'Side-by-side syntax comparison: variables, functions, loops, dicts, async and more',

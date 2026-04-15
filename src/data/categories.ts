@@ -104,7 +104,7 @@ export const CATEGORIES: Category[] = [
     description: 'Variables · Arrays · Functions · Control Flow',
     color: '#fbbf24',
     icon: 'Zap',
-    topicIds: ['js-variables', 'js-control-flow', 'js-arrays', 'js-functions', 'js-destructuring'],
+    topicIds: ['js-variables', 'js-control-flow', 'js-arrays', 'js-functions', 'js-destructuring', 'js-vs-python'],
     cardLabel: 'Basics',
     cardEmoji: '📖',
   },
@@ -127,16 +127,6 @@ export const CATEGORIES: Category[] = [
     topicIds: ['js-promises', 'js-modules', 'js-npm-bundlers'],
     cardLabel: 'Async',
     cardEmoji: '⚡',
-  },
-  {
-    id: 'javascript-python',
-    title: 'JS vs Python',
-    description: 'JavaScript from a Python developer\'s perspective',
-    color: '#fbbf24',
-    icon: 'ArrowLeftRight',
-    topicIds: ['js-vs-python'],
-    cardLabel: 'Crossover',
-    cardEmoji: '🐍',
   },
   {
     id: 'typescript',
@@ -289,7 +279,7 @@ export const CATEGORY_GROUPS: CategoryGroup[] = [
   {
     key: 'programmierung',
     label: 'PROGRAMMING',
-    categoryIds: ['javascript', 'javascript-oop', 'javascript-async', 'javascript-python', 'typescript', 'typescript-advanced', 'typescript-react'],
+    categoryIds: ['javascript', 'javascript-oop', 'javascript-async', 'typescript', 'typescript-advanced', 'typescript-react'],
   },
   {
     key: 'frameworks-web',
@@ -319,7 +309,7 @@ export const TECH_SECTION_META: Record<string, TechSectionMeta> = {
   typescript:           { title: 'TypeScript', subtitle: 'Typed JavaScript',              color: '#818cf8' },
   'typescript-advanced': { title: 'TypeScript', subtitle: 'Advanced Types & Classes',   color: '#818cf8' },
   'typescript-react':    { title: 'TypeScript', subtitle: 'Typing React Components',    color: '#818cf8' },
-  'javascript-python':   { title: 'JavaScript', subtitle: 'For Python Developers',      color: '#fbbf24' },
+
   react:                { title: 'React',      subtitle: 'UI Component Framework',      color: '#f472b6' },
   'react-ecosystem':    { title: 'React',      subtitle: 'Ecosystem & Patterns',        color: '#a78bfa' },
   nextjs:               { title: 'Next.js',    subtitle: 'Fullstack React Framework',   color: '#a3b4c6' },
@@ -340,7 +330,7 @@ export function getTechKey(categoryId: CategoryId): string {
   if (categoryId.startsWith('html-')) return 'html'
   if (categoryId.startsWith('css-')) return 'css'
   if (categoryId === 'git' || categoryId.startsWith('git-')) return 'git'
-  if (categoryId === 'javascript-oop' || categoryId === 'javascript-async' || categoryId === 'javascript-python') return 'javascript'
+  if (categoryId === 'javascript-oop' || categoryId === 'javascript-async') return 'javascript'
   if (categoryId === 'typescript-advanced' || categoryId === 'typescript-react') return 'typescript'
   if (categoryId === 'react-ecosystem') return 'react'
   if (categoryId === 'nextjs-rendering' || categoryId === 'nextjs-data') return 'nextjs'

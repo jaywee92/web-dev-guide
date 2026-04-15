@@ -9,7 +9,7 @@
   "javascript":         { "title": "JavaScript-Grundlagen","description": "Variablen · Arrays · Funktionen · Kontrollfluss",           "cardLabel": "Grundlagen"     },
   "javascript-oop":     { "title": "Objekte & Klassen",    "description": "OOP · Klassen · Prototypen · Zeitgeber",                    "cardLabel": "OOP"            },
   "javascript-async":    { "title": "Async & Module",          "description": "Promises · Async/Await · ESM · npm",                              "cardLabel": "Async"          },
-  "javascript-python":   { "title": "JS vs Python",           "description": "JavaScript aus der Perspektive eines Python-Entwicklers",          "cardLabel": "Crossover"      },
+
   "typescript":          { "title": "TypeScript Core",        "description": "Primitive · Interfaces · Generics · Hilfstypen",                    "cardLabel": "Core"           },
   "typescript-advanced": { "title": "TypeScript Advanced",    "description": "Arrays · Klassen · Enums · Typassertion · Null-Behandlung",         "cardLabel": "Advanced"       },
   "typescript-react":    { "title": "TypeScript in React",    "description": "Komponenten · Hooks · Zod-Validierung typisieren",                  "cardLabel": "React"          },
@@ -153,7 +153,7 @@
     "typescript":          { "title": "TypeScript", "subtitle": "Typisiertes JavaScript"          },
     "typescript-advanced": { "title": "TypeScript", "subtitle": "Erweiterte Typen & Klassen"     },
     "typescript-react":    { "title": "TypeScript", "subtitle": "React-Komponenten typisieren"   },
-    "javascript-python":   { "title": "JavaScript", "subtitle": "Für Python-Entwickler"          },
+
     "react":               { "title": "React",      "subtitle": "UI-Komponenten-Framework"       },
     "react-ecosystem":     { "title": "React",      "subtitle": "Ökosystem & Muster"             },
     "nextjs":              { "title": "Next.js",    "subtitle": "Fullstack React Framework"      },

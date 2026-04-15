@@ -33,7 +33,6 @@ export default function App() {
               <Route path="/javascript" element={<CategoryPage />} />
               <Route path="/javascript-oop" element={<CategoryPage />} />
               <Route path="/javascript-async" element={<CategoryPage />} />
-              <Route path="/javascript-python" element={<CategoryPage />} />
               <Route path="/typescript" element={<CategoryPage />} />
               <Route path="/typescript-advanced" element={<CategoryPage />} />
               <Route path="/typescript-react" element={<CategoryPage />} />
