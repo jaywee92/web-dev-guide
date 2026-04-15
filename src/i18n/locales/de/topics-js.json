@@ -6,7 +6,7 @@
       {
         "animationStep": 0,
         "heading": "var — die alte Methode",
-        "text": "`var` ist funktionsscoped und wird `gehoisted`, was zu unerwarteten Fehlern führt. Modernes JavaScript vermeidet es.",
+        "text": "`var` ist funktionsscoped und wird gehoisted — es kann vor der Deklaration gelesen werden, was zu schwer nachvollziehbaren Bugs führt. Verwende heute `let` und `const` statt `var`. Moderner JavaScript-Code vermeidet `var` vollständig.",
         "analogy": {
           "title": "Schritt 1 — var: der löchrige Eimer",
           "text": [
@@ -20,7 +20,7 @@
       {
         "animationStep": 1,
         "heading": "let — blockscoped",
-        "text": "`let` erstellt eine Variable, die nur im Block existiert, in dem sie deklariert wurde. Du kannst sie neu zuweisen.",
+        "text": "`let` erstellt eine Variable, die nur im Block existiert, in dem sie deklariert wurde. Im Gegensatz zu `var` ist `let` blockscoped — außerhalb des `{}`-Blocks ist die Variable nicht zugänglich. `let` kann neu zugewiesen werden, aber nicht wie `var` versehentlich aus einem anderen Scope heraus gelesen werden.",
         "analogy": {
           "title": "Schritt 2 — let: der versiegelte Raum",
           "text": [
@@ -34,7 +34,7 @@
       {
         "animationStep": 2,
         "heading": "const — kann nicht neu zugewiesen werden",
-        "text": "`const`-Bindungen können nach der Erstellung nicht neu zugewiesen werden. Bei Objekten und Arrays kann der Inhalt jedoch weiterhin verändert werden.",
+        "text": "`const`-Bindungen können nach der Erstellung nicht neu zugewiesen werden. Bei Objekten und Arrays verhindert `const` die Neuzuweisung, nicht die Mutation — du kannst Eigenschaften ändern, aber nicht die Variable auf ein neues Objekt zeigen lassen. Verwende `const` standardmäßig und wechsle zu `let` nur wenn du neu zuweisen musst.",
         "analogy": {
           "title": "Schritt 3 — const: das Namensschild, nicht der Inhalt",
           "text": [
@@ -48,7 +48,7 @@
       {
         "animationStep": 3,
         "heading": "Primitive Typen",
-        "text": "JavaScript hat sechs primitive Typen: `string`, `number`, `boolean`, `null`, `undefined` und `symbol`. Sie sind unveränderliche Werte — keine Objekte.",
+        "text": "JavaScript hat sechs primitive Typen: `string`, `number`, `boolean`, `null`, `undefined`, `bigint` und `symbol`. Primitives sind unveränderlich und werden per Wert kopiert. Alles andere (Arrays, Objekte, Funktionen) sind Objekte und werden per Referenz übergeben.",
         "analogy": {
           "title": "Schritt 4 — Primitive: die Atome der Daten",
           "text": [
@@ -62,7 +62,7 @@
       {
         "animationStep": 4,
         "heading": "typeof-Operator",
-        "text": "Der `typeof`-Operator gibt einen String zurück, der den Typ beschreibt. Achtung: `typeof null` gibt `\"object\"` zurück — eine bekannte JavaScript-Eigenheit.",
+        "text": "Der `typeof`-Operator gibt einen String zurück, der den Typ beschreibt. Achtung: `typeof null` gibt `'object'` zurück — ein bekannter Fehler in JavaScript seit Version 1. Für präzise Null-Checks verwende `=== null` direkt.",
         "analogy": {
           "title": "Schritt 5 — typeof: das Versandetikett lesen",
           "text": [
@@ -200,7 +200,7 @@
       {
         "animationStep": 0,
         "heading": "Arrays — geordnete Listen",
-        "text": "Ein Array enthält geordnete Werte, die über einen numerischen Index ab 0 zugänglich sind.",
+        "text": "Ein Array enthält geordnete Werte, auf die über einen numerischen Index ab 0 zugegriffen wird. Arrays in JavaScript können gemischte Typen enthalten und wachsen dynamisch. `array.length` gibt die Anzahl der Elemente zurück — der letzte Index ist immer `length - 1`.",
         "analogy": {
           "title": "Die nummerierte Einkaufsliste",
           "text": [
@@ -212,7 +212,7 @@
       {
         "animationStep": 1,
         "heading": "push und pop",
-        "text": "push() fügt am Ende hinzu; pop() entfernt vom Ende. Es gibt auch unshift/shift für den Anfang.",
+        "text": "`push()` fügt am Ende hinzu, `pop()` entfernt vom Ende. `unshift()` fügt am Anfang hinzu, `shift()` entfernt vom Anfang. Diese Methoden verändern das Original-Array direkt — sie sind die Grundoperationen für Stack- (push/pop) und Queue-Strukturen (push/shift).",
         "analogy": {
           "title": "Das Fließband mit Qualitätsprüfung",
           "text": [
@@ -224,7 +224,7 @@
       {
         "animationStep": 2,
         "heading": "map — jedes Element transformieren",
-        "text": "map() gibt ein neues Array zurück, bei dem jedes Element durch eine Callback-Funktion transformiert wurde. Das ursprüngliche Array wird nicht verändert.",
+        "text": "`map()` gibt ein neues Array zurück, bei dem jedes Element durch die Callback-Funktion transformiert wurde. Das Original-Array bleibt unverändert. `map()` ist die bevorzugte Methode in React um Listen in JSX zu rendern.",
         "analogy": {
           "title": "Der Übersetzer",
           "text": [
@@ -236,7 +236,7 @@
       {
         "animationStep": 3,
         "heading": "filter — passende Elemente behalten",
-        "text": "filter() gibt ein neues Array zurück, das nur Elemente enthält, bei denen der Callback true zurückgibt.",
+        "text": "`filter()` gibt ein neues Array zurück, das nur Elemente enthält, für die der Callback `true` zurückgibt. Das Original bleibt unverändert. Kombiniere `filter()` und `map()` um zuerst zu filtern und dann zu transformieren.",
         "analogy": {
           "title": "Der Buchhalter",
           "text": [
@@ -248,7 +248,7 @@
       {
         "animationStep": 4,
         "heading": "Objekte — Schlüssel-Wert-Paare",
-        "text": "Objekte speichern benannte Eigenschaften. Greife mit Punktnotation oder Klammernotation darauf zu.",
+        "text": "Objekte speichern benannte Eigenschaften als Schlüssel-Wert-Paare. Greife mit Punktnotation (`obj.name`) oder Klammernotation (`obj['name']`) zu. Klammernotation ist nötig bei dynamischen Schlüsseln oder Schlüsseln mit Sonderzeichen.",
         "expandedText": "📖 `map` transformiert jedes Element und gibt ein **neues Array derselben Länge** zurück. `filter` behält nur Elemente, bei denen der Callback `true` zurückgibt. `reduce` akkumuliert alle Elemente zu einem einzelnen Wert — der `initialValue`-Parameter (zweites Argument von `reduce`) ist entscheidend und sollte immer angegeben werden, um Fehler bei leeren Arrays zu vermeiden.\n\n📖 Diese drei Methoden bilden den Kern der **funktionalen Array-Transformation**. Zusammengekettet: `arr.filter(predicate).map(transform).reduce(akkumulator, start)` verarbeitet Daten in lesbaren Stufen ohne Variablenmutation.",
         "analogy": {
           "title": "Schritt 5 — Objekte: der beschriftete Hängeordner",
@@ -302,7 +302,7 @@
       {
         "animationStep": 8,
         "heading": "reverse",
-        "text": "reverse() dreht das Array in-place um und gibt dasselbe Array zurück (das Original wird verändert). Um ohne Mutation umzukehren, zuerst in ein neues Array spreaden.",
+        "text": "`reverse()` dreht das Array in-place um und gibt dasselbe Array zurück — das Original wird verändert. Erstelle zuerst eine Kopie wenn du das Original behalten willst: `[...arr].reverse()`. `sort()` verhält sich ähnlich: in-place und gibt dasselbe Array zurück.",
         "expandedText": "📖 `concat` gibt ein **neues Array** zurück, das aus dem Zusammenfügen von zwei oder mehr Arrays (oder Werten) besteht. Der Spread-Operator `[...a, ...b]` ist moderner und expressive; er klont und kombiniert in einem einzigen Ausdruck.\n\n📖 Zum Erstellen einer flachen Kopie ist `[...original]` oder `Array.from(original)` idiomatisch. Diese sind jedoch **flache** Kopien: verschachtelte Objekte werden immer noch referenziert, nicht geklont. Für tiefes Klonen verwende `structuredClone(obj)` (eingebaut, modern) oder eine Bibliothek.",
         "analogy": {
           "title": "Schritt 9 — reverse: der Spiegel",
@@ -463,7 +463,7 @@
       {
         "animationStep": 0,
         "heading": "Funktionsdeklarationen vs. Ausdrücke",
-        "text": "Funktionen können mit dem Schlüsselwort function deklariert oder als Ausdrücke zugewiesen werden. Deklarationen werden gehoisted; Ausdrücke nicht.",
+        "text": "Funktionen können mit dem `function`-Schlüsselwort deklariert oder als Ausdrücke zugewiesen werden. Deklarierte Funktionen werden gehoisted — sie können vor ihrer Deklaration aufgerufen werden. Funktionsausdrücke (`const fn = function() {}`) und Arrow Functions werden nicht gehoisted.",
         "analogy": {
           "title": "Das Rezept",
           "text": [
@@ -475,7 +475,7 @@
       {
         "animationStep": 1,
         "heading": "Scope und die Scope-Kette",
-        "text": "Jede Funktion erstellt einen neuen Scope. Innere Funktionen können auf Variablen aus äußeren Scopes zugreifen — diese Kette von Scopes wird Scope-Kette genannt.",
+        "text": "Jede Funktion erstellt einen neuen Scope. Innere Funktionen können auf Variablen äußerer Scopes zugreifen, aber nicht umgekehrt. Wenn zwei Scopes eine gleichnamige Variable haben, verdeckt die innere die äußere — das nennt sich Shadowing.",
         "analogy": {
           "title": "Der Roboter mit Standardeinstellungen",
           "text": [
@@ -487,7 +487,7 @@
       {
         "animationStep": 2,
         "heading": "Higher-Order Functions",
-        "text": "Funktionen sind erstklassige Werte in JavaScript. Eine Higher-Order Function nimmt eine Funktion als Argument entgegen oder gibt eine zurück.",
+        "text": "Funktionen sind erstklassige Werte in JavaScript — sie können als Argumente übergeben, aus Funktionen zurückgegeben und in Variablen gespeichert werden. Eine Higher-Order Function nimmt eine Funktion als Argument oder gibt eine zurück. `map`, `filter` und `reduce` sind die bekanntesten Beispiele.",
         "analogy": {
           "title": "Das Schweizer Taschenmesser",
           "text": [
@@ -583,7 +583,7 @@
       {
         "animationStep": 0,
         "heading": "Array-Destructuring",
-        "text": "Extrahiere Werte aus einem Array nach Position. Verwende _ oder überspringe Kommas, um Elemente zu überspringen.",
+        "text": "Extrahiere Werte aus einem Array nach Position. Verwende `_` oder überspringe Kommas um Elemente zu ignorieren. Der Rest-Operator `...rest` sammelt alle übrigen Elemente in ein neues Array.",
         "analogy": {
           "title": "Das Auspacken",
           "text": [
@@ -595,7 +595,7 @@
       {
         "animationStep": 1,
         "heading": "Objekt-Destructuring",
-        "text": "Extrahiere Eigenschaften aus einem Objekt nach Name. Du kannst beim Destructuring umbenennen und Standardwerte setzen.",
+        "text": "Extrahiere Eigenschaften aus einem Objekt nach Name. Du kannst beim Destructuring umbenennen: `const { name: firstName } = user`. Standardwerte für fehlende Eigenschaften: `const { role = 'user' } = profile`.",
         "analogy": {
           "title": "Die Etiketten-Tausch",
           "text": [
@@ -607,7 +607,7 @@
       {
         "animationStep": 2,
         "heading": "Spread und Rest",
-        "text": "Der Spread-Operator (...) expandiert Iterables. Die Rest-Syntax sammelt verbleibende Elemente in einem Array.",
+        "text": "Der Spread-Operator `...` expandiert Iterables in Einzelwerte — nützlich zum Kopieren von Arrays und Objekten. Die Rest-Syntax sammelt verbleibende Elemente: `const [first, ...rest] = arr`. Spread beim Objekt-Merge: `{ ...defaults, ...overrides }` — spätere Eigenschaften überschreiben frühere.",
         "analogy": {
           "title": "Der Standardwert-Aufkleber",
           "text": [
@@ -1079,7 +1079,7 @@
       {
         "animationStep": 0,
         "heading": "JavaScript ist single-threaded",
-        "text": "JavaScript läuft in einem einzigen Thread — eine Operation nach der anderen. Der Call Stack verfolgt, was gerade ausgeführt wird.",
+        "text": "JavaScript läuft in einem einzigen Thread — eine Operation nach der anderen. Der Event Loop verwaltet, welcher Code als nächstes ausgeführt wird. Das macht JavaScript einfach zu programmieren, bedeutet aber dass lang laufender Code die gesamte UI einfriert.",
         "analogy": {
           "title": "Der Kellner mit Bestellblock",
           "text": [
@@ -1091,7 +1091,7 @@
       {
         "animationStep": 1,
         "heading": "Synchroner Code wird sofort ausgeführt",
-        "text": "Reguläre Funktionsaufrufe werden auf den Call Stack geschoben. Wenn sie zurückkehren, werden sie herausgenommen.",
+        "text": "Reguläre Funktionsaufrufe werden auf den Call Stack geschoben. Wenn sie zurückkehren, werden sie entfernt. Der Stack ist LIFO (Last In, First Out) — die zuletzt hinzugefügte Funktion wird zuerst ausgeführt.",
         "analogy": {
           "title": "Das Förderband im Lager",
           "text": [
@@ -1103,7 +1103,7 @@
       {
         "animationStep": 2,
         "heading": "Asynchroner Code geht zu Web APIs",
-        "text": "setTimeout, fetch und Event-Listener werden von Web APIs verarbeitet — außerhalb der JS-Engine. Der Callback wartet in der Task-Queue.",
+        "text": "setTimeout, fetch und Event-Listener werden von Web APIs verarbeitet — außerhalb des JavaScript-Threads. Wenn sie fertig sind, landen ihre Callbacks in der Callback Queue. Der Event Loop verschiebt sie zum Call Stack, sobald dieser leer ist.",
         "analogy": {
           "title": "Die Dringlichkeitsstufen",
           "text": [
@@ -1115,7 +1115,7 @@
       {
         "animationStep": 3,
         "heading": "Stack muss zuerst leer sein",
-        "text": "Selbst bei einem 0ms-Timeout wartet der Callback. Der Call Stack muss alle synchrone Arbeit abschließen, bevor die Event Loop die eingereihten Tasks aufnimmt.",
+        "text": "Selbst bei einem 0ms-Timeout wartet der Callback. Der Call Stack muss alle synchronen Aufgaben abschließen bevor der Event Loop einen Callback aus der Queue nehmen kann. Das erklärt warum `setTimeout(() => {}, 0)` nicht sofort ausgeführt wird.",
         "expandedText": "📖 Die **Microtask-Queue** hat **höhere Priorität** als die Task-Queue. Nach dem Abschluss des aktuellen Tasks (oder des synchronen Codes) verarbeitet die Event Loop die gesamte Microtask-Queue, bevor sie den nächsten Makro-Task aufnimmt. Microtasks beinhalten Promise-Callbacks (`.then`/`.catch`/`.finally`) und `queueMicrotask`-Callbacks.\n\n📖 Praktische Konsequenz: Promises lösen sich immer nach dem aktuellen synchronen Code, aber vor dem nächsten setTimeout auf. Das bedeutet: Wenn du `await` verwendest, wird der Code nach dem `await` als Microtask fortgesetzt — nicht nach dem nächsten Browser-Rendering-Zyklus.",
         "analogy": {
           "title": "Schritt 4 — Der Kellner liefert erst, wenn du frei bist",
@@ -1129,7 +1129,7 @@
       {
         "animationStep": 4,
         "heading": "Die Event Loop",
-        "text": "Die Event Loop prüft kontinuierlich: Ist der Call Stack leer? Wenn ja, verschiebt sie den nächsten Task aus der Queue auf den Stack.",
+        "text": "Die Event Loop prüft kontinuierlich: Ist der Call Stack leer? Wenn ja, verschiebt sie den nächsten Callback aus der Queue. Microtasks (Promise-Callbacks, queueMicrotask) haben höhere Priorität als Makrotasks (setTimeout, setInterval) und werden zuerst abgearbeitet.",
         "expandedText": "📖 Eine **asynchrone** Operation startet eine Aufgabe (I/O, Timer, Netzwerk), gibt die Kontrolle sofort zurück und liefert das Ergebnis später über einen Callback, Promise oder Event. Das ist das Gegenteil von **synchronem** Code, der blockiert, bis ein Ergebnis produziert wird.\n\n✅ Asynchrones Muster ermöglicht es JavaScript, während das Warten auf I/O zu anderen Dingen zu tun — das ist der Kern der **Non-blocking I/O**-Architektur von Node.js. Ein Web-Server kann Tausende gleichzeitiger Verbindungen ohne Threads verarbeiten, indem er Event Loop und Non-blocking System-Calls nutzt.",
         "analogy": {
           "title": "Schritt 5 — Der rotierende Hausmeister",
@@ -1247,7 +1247,7 @@
       {
         "animationStep": 0,
         "heading": "Eine Funktion mit lokalem Zustand",
-        "text": "Wenn eine Funktion ausgeführt wird, erstellt sie einen lokalen Scope. Variablen in diesem Scope verschwinden normalerweise, wenn die Funktion zurückkehrt.",
+        "text": "Wenn eine Funktion ausgeführt wird, erstellt sie einen lokalen Scope. Variablen in diesem Scope leben, solange die Funktion läuft — danach werden sie normalerweise garbage collected. Eine Closure entsteht, wenn eine innere Funktion auf den Scope der äußeren Funktion verweist und dadurch deren Variablen am Leben hält.",
         "analogy": {
           "title": "Das unsichtbare Notizbuch",
           "text": [
@@ -1260,7 +1260,7 @@
       {
         "animationStep": 1,
         "heading": "Eine innere Funktion zurückgeben",
-        "text": "Wenn wir eine Funktion innerhalb von makeCounter definieren und zurückgeben, kann diese innere Funktion count sehen — sie befindet sich in ihrer Scope-Kette.",
+        "text": "Wenn wir eine Funktion innerhalb von `makeCounter` definieren und zurückgeben, kann die innere Funktion auf `count` zugreifen — auch nachdem `makeCounter` beendet wurde. Die innere Funktion trägt den Scope der äußeren mit sich. Das ist eine Closure: eine Funktion zusammen mit ihrem lexikalischen Kontext.",
         "analogy": {
           "title": "Der persönliche Tresor",
           "text": [
@@ -1273,7 +1273,7 @@
       {
         "animationStep": 2,
         "heading": "Die äußere Funktion kehrt zurück",
-        "text": "makeCounter() beendet die Ausführung, aber count wird NICHT garbage collected. Die zurückgegebene Funktion hält noch eine Referenz darauf — das ist die Closure.",
+        "text": "`makeCounter()` beendet die Ausführung, aber `count` wird NICHT garbage collected. Die zurückgegebene Funktion hält eine Referenz auf den Scope, der `count` enthält. Solange die zurückgegebene Funktion erreichbar ist, bleibt `count` im Speicher.",
         "analogy": {
           "title": "Der Zählerstand im Gedächtnis",
           "text": [
@@ -1285,7 +1285,7 @@
       {
         "animationStep": 3,
         "heading": "Die Closure in Aktion",
-        "text": "increment() aufzurufen greift auf count zu und verändert es — obwohl wir uns außerhalb von makeCounter befinden. Die Closure merkt sich den ursprünglichen Scope.",
+        "text": "`increment()` greift auf `count` zu und verändert es — obwohl wir uns außerhalb von `makeCounter` befinden. Jeder Aufruf von `increment()` liest den aktuellen Wert von `count` aus dem gespeicherten Scope. Closures ermöglichen damit privaten, persistenten Zustand ohne globale Variablen.",
         "analogy": {
           "title": "Eigene Schublade für jede Fabrik",
           "text": [
@@ -1298,7 +1298,7 @@
       {
         "animationStep": 4,
         "heading": "Unabhängige Closures",
-        "text": "Jeder Aufruf von makeCounter() erstellt einen neuen Scope mit einem eigenen count. Zwei Zähler teilen keinen Zustand.",
+        "text": "Jeder Aufruf von `makeCounter()` erstellt einen neuen Scope mit einem eigenen `count`. Die zurückgegebenen Funktionen teilen sich nicht denselben `count`. Das macht Closures zum Grundbaustein für Kapselung und das Factory-Pattern in JavaScript.",
         "analogy": {
           "title": "Die versiegelte Kapsel",
           "text": [
@@ -1389,7 +1389,7 @@
       {
         "animationStep": 0,
         "heading": "Was ist ein Promise?",
-        "text": "Ein Promise repräsentiert einen Wert, der in der Zukunft verfügbar sein wird. Er kann pending (ausstehend), fulfilled (erfüllt) oder rejected (abgelehnt) sein.",
+        "text": "Ein Promise repräsentiert einen Wert, der in der Zukunft verfügbar sein wird. Es hat drei Zustände: `pending` (ausstehend), `fulfilled` (erfüllt mit einem Wert) oder `rejected` (abgelehnt mit einem Fehler). Einmal resolved oder rejected ändert sich der Zustand nie mehr.",
         "analogy": {
           "title": "Der Bestellzettel",
           "text": [
@@ -1401,7 +1401,7 @@
       {
         "animationStep": 1,
         "heading": "Verkettung mit .then()",
-        "text": "Promises können verkettet werden: Jedes .then() erhält das vorherige Ergebnis und gibt ein neues Promise zurück.",
+        "text": "Promises können verkettet werden: jedes `.then()` erhält das Ergebnis des vorherigen und kann einen neuen Wert zurückgeben. Fehler breiten sich durch die Chain aus bis zu einem `.catch()`. Das verhindert tief verschachtelte Callbacks (Callback Hell).",
         "analogy": {
           "title": "Die Kettenbriefe",
           "text": [
@@ -1413,7 +1413,7 @@
       {
         "animationStep": 2,
         "heading": "async/await-Syntax",
-        "text": "async/await ist syntaktischer Zucker über Promises. Eine async-Funktion gibt immer ein Promise zurück; await pausiert die Ausführung, bis das Promise aufgelöst wird.",
+        "text": "`async/await` ist syntaktischer Zucker über Promises — eine `async`-Funktion gibt immer ein Promise zurück. `await` pausiert die Ausführung der `async`-Funktion, blockiert aber nicht den Thread. Verwende immer `try/catch` um Fehler in async Funktionen abzufangen.",
         "analogy": {
           "title": "Die Synchronisierung im Orchester",
           "text": [
@@ -1741,7 +1741,7 @@
       {
         "animationStep": 0,
         "heading": "Variablen",
-        "text": "Python benötigt kein Schlüsselwort — einfach name = \"Alice\" schreiben. JavaScript verwendet const für unveränderliche Werte und let für veränderliche.",
+        "text": "Python benötigt kein Schlüsselwort — einfach `name = 'Alice'` schreiben. JavaScript erfordert `let`, `const` oder (veraltet) `var` vor der ersten Zuweisung. In Python ist jede Zuweisung automatisch eine Deklaration — in JavaScript ist das nur im globalen Scope so (und sollte vermieden werden).",
         "expandedText": "📖 JavaScript und Python haben **ähnliche C-artige Syntax** für Variablen, Schleifen und Funktionen, aber unterscheiden sich in der philosophischen Ausrichtung. JavaScript wurde für **Browser-Interaktivität** entwickelt — asynchrones, event-getriebenes Programmieren ist fundamental. Python wurde für **Lesbarkeit und Scripting** entwickelt — synchrones, imperatatives Programmieren ist der Standard.\n\n📖 Beide sind dynamisch typisiert, aber JavaScript hat mehr implizite Typkonvertierung (Coercion). Python ist strenger: `1 + \"1\"` wirft einen `TypeError`; JavaScript gibt `\"11\"` zurück. Diese Philosophie-Unterschiede sind auf modernen Codebasen zu sehen: TypeScript fügt statische Typen zu JavaScript hinzu (wie mypy für Python).",
         "analogy": {
           "title": "Schritt 0 — Variablen: gleiche Idee, andere Syntax",
@@ -1767,7 +1767,7 @@
       {
         "animationStep": 2,
         "heading": "Kontrollfluss",
-        "text": "Python definiert Blöcke durch Einrückung — keine geschweiften Klammern. JavaScript verwendet geschweifte Klammern {} und erfordert Klammern um die Bedingung.",
+        "text": "Python definiert Blöcke durch Einrückung — keine geschweiften Klammern. JavaScript verwendet `{}` für alle Blöcke: if, for, while, Funktionen. Falsche Einrückung in Python ist ein Syntaxfehler; in JavaScript ist sie erlaubt, aber schlechter Stil.",
         "expandedText": "📖 Pythons **List Comprehensions** (`[x*2 for x in items if x > 0]`) haben kein direktes Äquivalent in JavaScript — verwende `arr.filter(pred).map(fn)` stattdessen. Beide sind ausdrucksstark, aber JavaScript's Chaining ist verbaler.\n\n📖 Pythons **Dictionary Comprehensions** (`{k: v for k, v in items.items()}`) entsprechen JavaScript's `Object.fromEntries(Object.entries(obj).map(...))`. Für Simple-Objekt-Transformationen ist Pythons Syntax kompakter. JavaScript kompensiert mit Spread-Operator-Patterns und verständlichem Chaining.",
         "analogy": {
           "title": "Schritt 2 — Kontrollfluss: if/else und Schleifen sind universell",
@@ -1780,7 +1780,7 @@
       {
         "animationStep": 3,
         "heading": "Datentypen",
-        "text": "Beide Sprachen haben Strings, Zahlen, Booleans und einen 'Nichts'-Wert. Python schreibt True/False/None groß; JavaScript verwendet true/false/null.",
+        "text": "Beide Sprachen haben Strings, Zahlen, Booleans und einen 'Nichts'-Wert. Python trennt `None` (kein Wert) und JavaScript hat sowohl `null` (explizit kein Wert) als auch `undefined` (nicht initialisiert). Python hat eingebaute Ganzzahlen ohne Größenlimit; JavaScript nutzt IEEE 754 Gleitkommazahlen für alle Zahlen.",
         "expandedText": "📖 Python ist standardmäßig **synchron** — bei netzwerkschweren Code musst du `asyncio` und `async/await` explizit einsetzen. JavaScript ist **nativ asynchron** mit event-getriebenem I/O — `async/await` ist überall, und der Event Loop läuft immer.\n\n📖 Python's GIL (Global Interpreter Lock) verhindert echtes Multithreading in CPU-gebundenem Code — nutze `multiprocessing` für parallele Berechnungen. JavaScript hat keine GIL, ist aber single-threaded — nutze Worker Threads (Node.js) oder Web Workers (Browser) für CPU-gebundene Arbeit. Beide Sprachen verwenden Non-blocking I/O für I/O-gebundene Concurrency-Szenarien.",
         "analogy": {
           "title": "Schritt 3 — Datentypen: die gleichen Atome mit anderen Etiketten",
@@ -1818,7 +1818,7 @@
       {
         "animationStep": 6,
         "heading": "Async / await",
-        "text": "Beide Sprachen verwenden async/await für asynchronen Code. Python benötigt asyncio; JavaScripts async ist in Browser und Node.js-Eventloop eingebaut.",
+        "text": "Beide Sprachen verwenden `async/await` für asynchronen Code. Python benötigt `asyncio` und einen Event Loop, der explizit gestartet werden muss. In JavaScript ist der Event Loop immer aktiv — asynchroner Code ist in JavaScript allgegenwärtig, da Browser-APIs und I/O grundsätzlich asynchron sind.",
         "expandedText": "📖 Python hat umfangreiche **Standardbibliothek** (`os`, `json`, `datetime`, `pathlib`, etc.) — \"batteries included\". JavaScript hat eine minimalistischere integrierte API, verlässt sich mehr auf npm-Pakete, aber Node.js bietet `fs`, `path`, `http`, etc. für Server-seitige Programmierung.\n\n📖 **Python-Ökosystem**: NumPy, Pandas, TensorFlow/PyTorch für Data Science/ML; Django/FastAPI/Flask für Web. **JavaScript-Ökosystem**: React/Vue/Angular für Frontend; Express/Fastify/Next.js für Backend. JavaScript dominiert Browser-Entwicklung; Python dominiert Data Science/ML. Beide Sprachen konvergieren in Full-Stack-Webentwicklung (Next.js vs. Django, Node.js vs. FastAPI).",
         "analogy": {
           "title": "Schritt 6 — Async/await: das gleiche Warte-Modell",

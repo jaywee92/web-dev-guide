@@ -6,7 +6,7 @@
       {
         "animationStep": 0,
         "heading": "Der Client sendet eine Anfrage",
-        "text": "Dein Browser (der Client) sendet eine HTTP-Anfrage an einen Server. Sie enthält die Methode (`GET`, `POST`), die URL und Header.",
+        "text": "Dein Browser (der Client) sendet eine HTTP-Anfrage an einen Server — einen Computer, der die Anwendung hostet und auf Anfragen wartet. Die Anfrage enthält die Methode (GET, POST), den Pfad und optionale Header. HTTP definiert Format und Reihenfolge der Nachrichten zwischen Client und Server.",
         "expandedText": "📖 Jede Web-Interaktion beginnt damit, dass der **Client** (Browser, Mobile-App oder CLI) eine **HTTP-Anfrage** an einen Server sendet. Die Anfrage enthält eine **Methode** (GET, POST, PUT, DELETE), eine **URL**, **Header** (Content-Type, Auth-Token, akzeptierte Kodierungen) und einen optionalen **Body** bei POST/PUT.\n\n📖 Der Client hat noch keine direkte Verbindung – er muss zunächst DNS-Auflösung, TCP-Handshake und (bei HTTPS) TLS-Aushandlung durchlaufen. Dieses mehrstufige Setup erklärt, warum die **erste Anfrage** langsamer ist als folgende und warum **Connection-Reuse** (HTTP Keep-Alive, HTTP/2-Multiplexing) eine wichtige Performance-Optimierung ist.",
         "analogy": {
           "title": "Schritt 0 — Client sendet Anfrage: einen Brief aufgeben",
@@ -19,7 +19,7 @@
       {
         "animationStep": 1,
         "heading": "DNS-Auflösung",
-        "text": "Der Domainname wird von einem DNS-Server in eine IP-Adresse aufgelöst. Wie eine Telefonbuchsuche.",
+        "text": "Der Domainname wird von einem DNS-Server in eine IP-Adresse aufgelöst — wie ein Telefonbuch für das Internet. DNS-Einträge werden gecacht für schnellere Folgezugriffe. Die aufgelöste IP-Adresse wird genutzt, um eine TCP-Verbindung zum Zielserver herzustellen.",
         "expandedText": "📖 **DNS** (Domain Name System) übersetzt einen Hostnamen wie `api.example.com` in eine IP-Adresse (`203.0.113.42`), die Router zum Weiterleiten von Paketen verwenden. Die Suche kaskadiert: Browser-Cache → OS-Cache → lokaler DNS-Resolver → Root-Nameserver → TLD-Nameserver → autoritative Nameserver.\n\n📖 Jeder Eintrag hat eine **TTL** (Time-to-Live), die die Cache-Dauer steuert. Eine niedrige TTL ermöglicht schnelles Failover; eine hohe TTL reduziert die Lookup-Latenz. **DNS-Prefetching** (`<link rel=\"dns-prefetch\" href=\"//api.example.com\">`) weist den Browser an, eine Domain im Hintergrund aufzulösen, bevor eine Ressource angefordert wird – das reduziert die wahrgenommene Latenz bei Drittanbieter-API-Aufrufen.",
         "analogy": {
           "title": "Schritt 1 — DNS-Auflösung: im Telefonbuch nachschlagen",
@@ -32,7 +32,7 @@
       {
         "animationStep": 2,
         "heading": "Der Server verarbeitet",
-        "text": "Der Server empfängt die Anfrage, führt deinen Anwendungscode aus (Flask, Node.js) und kann eine Datenbank abfragen.",
+        "text": "Der Server empfängt die Anfrage und führt Anwendungscode aus (Flask, Node.js etc.), der URL und Methode liest, Berechtigungen prüft und Daten vorbereitet. Typischerweise werden Datenbankabfragen gestellt, bevor die Antwort zusammengestellt wird. Diese serverseitige Verarbeitung dauert üblicherweise Millisekunden.",
         "expandedText": "📖 **TCP** stellt eine zuverlässige Verbindung über einen **Drei-Wege-Handshake** her: Client sendet SYN, Server antwortet mit SYN-ACK, Client sendet ACK. Erst danach können Daten fließen. **HTTPS** fügt einen **TLS-Handshake** obenauf, der die Verschlüsselung aushandelt, bevor Anwendungsdaten übertragen werden.\n\n📖 **HTTP/2** multiplext mehrere Anfrage-/Antwort-Paare über eine einzelne TCP-Verbindung und beseitigt Head-of-Line-Blocking. **HTTP/3** ersetzt TCP durch **QUIC** (UDP-basiert) und kombiniert Transport- und TLS-Handshakes in einen einzigen Round-Trip – wichtig für Mobile-Clients in Hochlatenz-Netzwerken. Die meisten CDNs und Server unterstützen HTTP/2 heute standardmäßig.",
         "analogy": {
           "title": "Schritt 2 — Server verarbeitet: die Fabrik erhält die Bestellung",
@@ -45,7 +45,7 @@
       {
         "animationStep": 3,
         "heading": "Datenbankabfrage",
-        "text": "Die App fragt die Datenbank (PostgreSQL, SQLite) ab und wartet auf Ergebnisse.",
+        "text": "Die App fragt die Datenbank (PostgreSQL, SQLite) ab und wartet auf Ergebnisse. Datenbankabfragen sind meist der langsamste Teil des Request-Zyklus — Indizes und Caching reduzieren die Wartezeit. Der Server kann nicht mit anderen Anfragen fortfahren, bis die Datenbankoperation abgeschlossen ist (bei synchronem Code).",
         "expandedText": "📖 Eine **HTTP-Anfrage** hat vier Teile: die **Anfragezeile** (Methode + URL + HTTP-Version), **Header** (Schlüssel-Wert-Metadaten), eine Leerzeile und einen optionalen **Body**. Gängige Header: `Content-Type` (Body-Format), `Authorization` (Bearer-Token), `Accept` (akzeptierte Antwortformate) und `Cookie` (Session-Daten).\n\n⚠️ **HTTPS** verschlüsselt die gesamte Anfrage – Header, Body und URL-Pfad – sodass Angreifer nur den Hostnamen (aus TLS SNI) und das Datenvolumen sehen. Sensible Daten wie API-Schlüssel dürfen selbst über HTTPS niemals in URL-Query-Strings erscheinen – immer Header oder POST-Body verwenden, wo der Inhalt verschlüsselt und nicht in Server-Zugriffs-Logs protokolliert wird.",
         "analogy": {
           "title": "Schritt 3 — Datenbankabfrage: den Lagerbestand prüfen",
@@ -58,7 +58,7 @@
       {
         "animationStep": 4,
         "heading": "Antwort zurückgesendet",
-        "text": "Der Server sendet eine HTTP-Antwort: Statuscode (200 OK, 404 Not Found), Header und den Body (HTML, JSON).",
+        "text": "Der Server sendet eine HTTP-Antwort: Statuscode (200 OK, 404 Not Found), Header und den Body (HTML, JSON etc.). Der Body enthält die eigentlichen Daten — HTML für Webseiten, JSON für APIs. Der Browser verarbeitet die Antwort und zeigt entweder die Seite an oder übergibt die Daten an JavaScript.",
         "expandedText": "📖 Eine **HTTP-Antwort** hat eine **Statuszeile** (HTTP-Version + Statuscode + Reason-Phrase), **Header** (Content-Type, Cache-Control, Set-Cookie, CORS-Header), eine Leerzeile und den **Body** (HTML, JSON, Binärdaten). `Content-Type` teilt dem Client mit, wie der Body zu parsen ist.\n\n📖 **Caching-Header** beeinflussen die Performance erheblich: `Cache-Control: max-age=3600` erlaubt Clients und CDNs, Inhalte eine Stunde zu cachen. `ETag` liefert einen Fingerabdruck für bedingte Anfragen – der Server kann mit `304 Not Modified` und leerem Body antworten, wenn sich der Inhalt nicht geändert hat. Gut gestaltetes Caching reduziert die Serverlast um Größenordnungen und verbessert die wahrgenommene Performance für wiederkehrende Besucher.",
         "analogy": {
           "title": "Schritt 4 — Antwort zurückgesendet: das Paket kommt an",
@@ -108,7 +108,7 @@
       {
         "animationStep": 0,
         "heading": "REST — Ressourcen als URLs",
-        "text": "REST (Representational State Transfer) ist eine Konvention für das Entwerfen von APIs. Ressourcen werden als URLs dargestellt, und HTTP-Methoden drücken die Aktion aus.",
+        "text": "REST (Representational State Transfer) ist eine Konvention für das Entwerfen von Web-APIs. Eine RESTful API organisiert Daten als Ressourcen, auf die über vorhersehbare URLs zugegriffen wird. HTTP-Methoden (GET, POST, PUT, DELETE) definieren die Operation — die URL die Ressource.",
         "expandedText": "📖 **REST** (Representational State Transfer) ist ein **Architekturstil** für APIs, kein Protokoll. Kernidee: Serverseitige Daten als **Ressourcen** an stabilen URLs behandeln (`/users`, `/users/42`). HTTP-Verben drücken die Aktion aus – GET ruft ab, POST erstellt, PUT/PATCH aktualisiert, DELETE entfernt. URLs sollten Ressourcen benennen (Substantive), keine Aktionen (Verben).\n\n📖 Eine RESTful API ist **zustandslos**: jede Anfrage trägt alle Informationen, die der Server benötigt – kein Session-State wird zwischen Anfragen gespeichert. Das macht REST-APIs **horizontal skalierbar** und cachefähig. Authentifizierung erfolgt über `Authorization`-Header bei jeder Anfrage statt über serverseitig gespeicherte Sessions.",
         "analogy": {
           "title": "Schritt 0 — Ressourcen als URLs: jedes Substantiv hat eine Adresse",
@@ -121,7 +121,7 @@
       {
         "animationStep": 1,
         "heading": "GET — Daten abrufen",
-        "text": "`GET` fragt Daten vom Server ab. `GET`-Anfragen sollten sicher (keine Seiteneffekte) und idempotent (gleiches Ergebnis jedes Mal) sein. Kein Anfrage-Body.",
+        "text": "`GET` fragt Daten vom Server ab — sicher (keine Seiteneffekte) und idempotent (mehrfach aufrufbar mit demselben Ergebnis). Browser und CDNs können GET-Antworten cachen, da sie keine Daten verändern. Parameter werden in der URL als Query-String übergeben: `/users?role=admin`.",
         "expandedText": "📖 `GET` ist das **sichere und idempotente** Leseverb – es beliebig oft aufzurufen erzeugt dasselbe Ergebnis ohne serverseitige Änderungen. Browser, CDNs und Caches nutzen das aus, indem sie `GET`-Antworten cachen. Verwende `GET` nie für Operationen, die den Zustand ändern – die URL könnte von Browsern oder Sicherheitsscannern vorab abgerufen werden.\n\n📖 `GET`-Anfragen haben keinen Body. Query-Parameter (`?page=2&limit=10`) übergeben Filterung und Paginierung. Da URLs gespeichert und geteilt werden können, ist `GET` korrekt für alles, worauf ein Benutzer verlinken möchte. Wenn ein CDN eine `GET`-Antwort cached, werden Folge-Anfragen beantwortet, ohne den Anwendungsserver zu treffen – ein enormer Performance-Gewinn.",
         "analogy": {
           "title": "Schritt 1 — GET: ein Bibliotheksbuch lesen",
@@ -134,7 +134,7 @@
       {
         "animationStep": 2,
         "heading": "POST — eine Ressource erstellen",
-        "text": "`POST` sendet Daten, um eine neue Ressource zu erstellen. Der Server gibt die erstellte Ressource mit Status 201 Created zurück.",
+        "text": "`POST` sendet Daten, um eine neue Ressource zu erstellen. Der Server gibt die erstellte Ressource mit `201 Created` zurück. POST ist nicht idempotent — mehrfaches Senden ohne Kontrolle erstellt mehrere Ressourcen.",
         "expandedText": "📖 `POST` ist **nicht idempotent**: zweifaches Aufrufen erstellt zwei Ressourcen. Verwende es zum Erstellen neuer serverseitiger Ressourcen – der Request-Body enthält die Daten und der Server vergibt die ID. Antworte mit `201 Created` plus einem `Location`-Header, der auf die neue Ressourcen-URL zeigt.\n\n📖 `POST` wird auch für **Aktionen** verwendet, die nicht ins CRUD-Schema passen: Passwort-Resets, Datei-Uploads, komplexe Suchanfragen oder Hintergrundaufgaben. Schütze `POST`-Endpunkte immer mit Authentifizierung. Für Browser-Clients sollten CSRF-Tokens verwendet werden, um Cross-Site-Request-Forgery-Angriffe zu verhindern, bei denen eine bösartige Seite den authentifizierten Browser des Nutzers zu unbeabsichtigten Anfragen veranlasst.",
         "analogy": {
           "title": "Schritt 2 — POST: einen neuen Brief in den Briefkasten einwerfen",
@@ -147,7 +147,7 @@
       {
         "animationStep": 3,
         "heading": "PUT und PATCH",
-        "text": "`PUT` ersetzt die gesamte Ressource. `PATCH` aktualisiert nur die angegebenen Felder. Beide zielen auf eine bestimmte Ressource per ID in der URL ab.",
+        "text": "`PUT` ersetzt die gesamte Ressource, `PATCH` aktualisiert nur die angegebenen Felder — beide sind idempotent. Verwende `PATCH` für partielle Updates (z.B. nur den Namen ändern) und `PUT` wenn du die vollständige Ressource ersetzt. Idempotent bedeutet: dasselbe Request mehrfach senden hat denselben Effekt wie einmal senden.",
         "expandedText": "📖 **HTTP-Statuscodes** ermöglichen es Clients, Ergebnisse programmgesteuert zu behandeln. `200 OK` – allgemeiner Erfolg. `201 Created` – Ressource erstellt. `204 No Content` – Erfolg, kein Body. `400 Bad Request` – ungültige Daten. `401 Unauthorized` – nicht authentifiziert. `403 Forbidden` – fehlende Berechtigung. `404 Not Found`. `422 Unprocessable` – Validierung fehlgeschlagen. `500 Internal Server Error`.\n\n⚠️ Die richtigen Codes zu verwenden macht deine API **selbstdokumentierend**. Ein Client kann bei `401` weiterleiten, bei `503` mit Backoff erneut versuchen und bei `422` einen Validierungsfehler anzeigen, ohne etwas Spezifisches über den Endpunkt zu wissen. Gib immer konsistente Fehlerformate zurück (`{ error: { code, message } }`), damit Clients hilfreiche Rückmeldungen anzeigen können.",
         "analogy": {
           "title": "Schritt 3 — PUT und PATCH: ein Formular ersetzen vs. bearbeiten",
@@ -160,7 +160,7 @@
       {
         "animationStep": 4,
         "heading": "DELETE — eine Ressource entfernen",
-        "text": "`DELETE` entfernt die angegebene Ressource. Ein erfolgreicher Löschvorgang gibt typischerweise 204 No Content zurück.",
+        "text": "`DELETE` entfernt die angegebene Ressource und gibt `204 No Content` oder `200 OK` zurück. DELETE ist idempotent: eine bereits gelöschte Ressource erneut zu löschen gibt `404 Not Found` zurück, verursacht aber keinen Fehler auf Serverseite. Löschoperationen sollten durch Authentifizierung und Autorisierung geschützt sein.",
         "analogy": {
           "title": "Schritt 4 — DELETE: ein Dokument schreddern",
           "text": [
@@ -214,7 +214,7 @@
       {
         "animationStep": 0,
         "heading": "Jede Antwort hat einen Statuscode",
-        "text": "HTTP-Statuscodes sind dreistellige Zahlen, die nach Kategorien gruppiert sind. Die erste Ziffer zeigt Erfolg, Weiterleitung oder Fehler an.",
+        "text": "HTTP-Statuscodes sind dreistellige Zahlen, gruppiert nach Kategorie: 2xx Erfolg, 3xx Weiterleitung, 4xx Client-Fehler, 5xx Server-Fehler. Die erste Ziffer verrät sofort wer für einen Fehler verantwortlich ist — Client oder Server. Du siehst diese Codes in Browser DevTools, Server-Logs und API-Antworten.",
         "expandedText": "⚠️ **HTTP-Statuscodes** sind dreistellige Zahlen, die Maschinen nutzen, um Request-Ergebnisse zu verstehen, ohne den Response-Body zu parsen. Sie werden nach der ersten Ziffer gruppiert: **1xx** informativ, **2xx** Erfolg, **3xx** Weiterleitung, **4xx** Client-Fehler, **5xx** Server-Fehler.\n\n📖 Den richtigen Code zu verwenden macht APIs **selbstdokumentierend** und ermöglicht generisches Client-Verhalten: eine freundliche Meldung für jeden `404` anzeigen, bei `503` mit Backoff erneut versuchen oder bei `301` Weiterleitungen folgen – ohne etwas Spezifisches über die API zu wissen. `200 OK` mit einem Fehler-Body zurückzugeben (ein häufiger Fehler) bricht Tooling, Logging und Monitoring, die sich auf den Statuscode verlassen.",
         "analogy": {
           "title": "Schritt 0 — Statuscodes: der Liefernachweis",
@@ -227,7 +227,7 @@
       {
         "animationStep": 1,
         "heading": "2xx — Erfolg",
-        "text": "200 OK ist die Standard-Erfolgsantwort. 201 Created wird nach einem erfolgreichen POST zurückgegeben. 204 No Content bedeutet Erfolg ohne Body.",
+        "text": "200 OK ist die Standard-Erfolgsantwort. 201 Created wird nach einem erfolgreichen POST zurückgegeben. 204 No Content signalisiert Erfolg ohne Antwort-Body — typisch für DELETE-Operationen.",
         "expandedText": "📖 **`200 OK`** ist der generische Erfolgscode für `GET`-, `PUT`- und `PATCH`-Anfragen, die einen Body zurückgeben. **`201 Created`** sollte einem `POST` folgen, der eine Ressource erstellt – ein `Location`-Header sollte auf die neue URL zeigen. **`204 No Content`** signalisiert Erfolg ohne Body, verwendet nach `DELETE` oder einem `PUT` ohne Rückgabedaten.\n\n📖 **`202 Accepted`** ist für asynchrone Operationen: Die Anfrage wurde empfangen und wird später verarbeitet – verwendet für Hintergrundaufgaben und Warteschlangen. Dokumentiere immer, ob Operationen synchron (`200`/`201`) oder asynchron (`202`) sind, damit Konsumenten wissen, ob sie einen Status-Endpunkt pollen oder direkt auf die Antwort warten sollen.",
         "analogy": {
           "title": "Schritt 1 — 2xx: die Lieferung war erfolgreich",
@@ -240,7 +240,7 @@
       {
         "animationStep": 2,
         "heading": "3xx — Weiterleitung",
-        "text": "301 Moved Permanently teilt dem Client mit, dass die Ressource eine neue URL hat. 302 Found ist eine temporäre Weiterleitung.",
+        "text": "301 Moved Permanently teilt dem Browser mit, dass die Ressource dauerhaft umgezogen ist — Browser cachen diese Weiterleitung. 302 Found ist temporär — Browser und Suchmaschinen merken sich die ursprüngliche URL. Weiterleitungen sind nützlich nach URL-Umstrukturierungen oder in Login-Flows.",
         "expandedText": "📜 **`301 Moved Permanently`** teilt Clients und Suchmaschinen mit, dass sich eine URL dauerhaft geändert hat – Browser und Crawler cachen dies und verwenden bei allen zukünftigen Anfragen die neue URL. **`302 Found`** ist eine temporäre Weiterleitung; Clients folgen ihr, behalten aber die ursprüngliche URL.\n\n📖 **`304 Not Modified`** wird mit Caching verwendet: Wenn ein Client `If-None-Match` sendet und sich die Ressource nicht geändert hat, antwortet der Server mit `304` ohne Body – spart Bandbreite. **`307`** und **`308`** sind moderne Entsprechungen von `302` und `301`, die garantieren, dass die HTTP-**Methode** bei der Weiterleitung erhalten bleibt (ein `POST` bleibt ein `POST`), im Gegensatz zum mehrdeutigen ursprünglichen `302`-Verhalten.",
         "analogy": {
           "title": "Schritt 2 — 3xx: der Weiterleitungshinweis folgen",
@@ -253,7 +253,7 @@
       {
         "animationStep": 3,
         "heading": "4xx — Client-Fehler",
-        "text": "4xx-Fehler bedeuten, dass der Client einen Fehler gemacht hat. 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found.",
+        "text": "4xx-Fehler bedeuten, dass der Client einen Fehler gemacht hat: 400 Bad Request (ungültige Daten), 401 Unauthorized (nicht authentifiziert), 403 Forbidden (kein Zugriff), 404 Not Found. 422 Unprocessable Entity wird für Validierungsfehler genutzt, 429 Too Many Requests für Rate-Limiting. Bei 4xx-Fehlern muss der Client seine Anfrage korrigieren.",
         "expandedText": "⚠️ **`400 Bad Request`** bedeutet, dass der Server die Anfrage nicht parsen oder validieren konnte – fehlende Felder, ungültiges JSON oder Werte außerhalb des gültigen Bereichs. Liefere einen hilfreichen Fehler-Body mit. **`401 Unauthorized`** bedeutet, dass die Authentifizierung fehlt oder ungültig ist. **`403 Forbidden`** bedeutet authentifiziert, aber ohne Berechtigung – verrate nicht, ob die Ressource existiert.\n\n⚠️ **`422 Unprocessable Entity`** ist für semantische Validierungsfehler bevorzugt (E-Mail bereits vergeben), wo `400` zu generisch ist. **`429 Too Many Requests`** signalisiert Rate-Limiting – `Retry-After` einschließen. **`409 Conflict`** zeigt eine Zustandskollision an: Erstellen einer bereits vorhandenen Ressource oder ein veraltetes Optimistic-Lock-Update.",
         "analogy": {
           "title": "Schritt 3 — 4xx: du hast einen Fehler gemacht",
@@ -266,7 +266,7 @@
       {
         "animationStep": 4,
         "heading": "5xx — Server-Fehler",
-        "text": "5xx-Fehler bedeuten, dass auf der Serverseite etwas schief gelaufen ist — nicht der Fehler des Clients.",
+        "text": "5xx-Fehler bedeuten, dass auf der Serverseite etwas schief gelaufen ist — nicht durch den Client verursacht. 500 Internal Server Error ist der allgemeine Server-Fehler bei unbehandelten Ausnahmen. 503 Service Unavailable signalisiert einen überlasteten Server — der Client kann es später erneut versuchen.",
         "expandedText": "📖 **`500 Internal Server Error`** ist der generische Auffangcode für unbehandelte Server-Ausnahmen. **`502 Bad Gateway`** bedeutet, dass der Server eine ungültige Antwort von einem vorgelagerten Dienst erhalten hat. **`503 Service Unavailable`** bedeutet, dass der Server vorübergehend überlastet oder in Wartung ist – ein `Retry-After`-Header sollte mitgegeben werden.\n\n⚠️ **`504 Gateway Timeout`** tritt auf, wenn ein vorgelagerter Dienst zu lange braucht, häufig wenn eine Datenbankabfrage das konfigurierte Timeout überschreitet. Anders als 4xx-Codes sind 5xx-Fehler Serverfehler, nicht Clientfehler. Gut gestaltete APIs geben detaillierte Fehlerobjekte zum Debuggen zurück, lecken aber in Produktion niemals Stack-Traces oder interne Details an nicht vertrauenswürdige Clients.",
         "analogy": {
           "title": "Schritt 4 — 5xx: das Geschäft hat ein Problem",
@@ -512,7 +512,7 @@
       {
         "animationStep": 0,
         "heading": "Tabellen speichern Datenzeilen",
-        "text": "Eine Datenbanktabelle ist wie eine Tabellenkalkulation — Zeilen sind Datensätze, Spalten sind Felder. Jede Tabelle hat ein definiertes Schema.",
+        "text": "Eine Datenbanktabelle ist wie eine Tabellenkalkulation — Zeilen sind Datensätze, Spalten sind Felder. Im Gegensatz zu Tabellen haben Datenbanken strenge Typen, Constraints und Beziehungen zwischen Tabellen. SQL ist die standardisierte Abfragesprache für alle relationalen Datenbanken.",
         "expandedText": "🔬 Jede PostgreSQL-**Tabelle** ist ein strukturiertes Raster typisierter Spalten. Das **Schema** – Spaltennamen und -typen – wird einmalig bei der Erstellung der Tabelle definiert. Jede hinzugefügte Zeile muss diesem Schema entsprechen – die Datenbank-Engine lehnt Zeilen ab, die Typen oder Constraints verletzen.\n\n📖 Die `id`-Spalte ist typischerweise ein `SERIAL PRIMARY KEY`: `SERIAL` inkrementiert automatisch, sodass man sie nie angeben muss, und `PRIMARY KEY` erstellt einen eindeutigen Index für schnelle Lookups. Betrachte den Primärschlüssel als permanente Adresse einer Zeile – andere Tabellen referenzieren ihn über **Fremdschlüssel**.",
         "analogy": {
           "title": "Schritt 0 — SELECT: aus einer Tabelle lesen",
@@ -525,7 +525,7 @@
       {
         "animationStep": 1,
         "heading": "SELECT",
-        "text": "`SELECT` ruft Daten ab. `*` bedeutet alle Spalten. Du kannst Spaltennamen angeben, um nur das zurückzugeben, was du benötigst.",
+        "text": "`SELECT` ruft Daten ab. `*` bedeutet alle Spalten — besser ist es, konkrete Spaltennamen zu nennen. `SELECT first_name, email FROM users` gibt nur diese zwei Spalten zurück, was effizienter ist und Bandbreite spart.",
         "expandedText": "📖 `SELECT` ist die meistverwendete SQL-Anweisung. `SELECT *` gibt jede Spalte zurück – nützlich in der Entwicklung, aber in Produktion teuer, da es Spalten überträgt, die man möglicherweise nicht benötigt. Bestimmte Spalten zu benennen reduziert den Netzwerkverkehr und macht die Abfrage selbstdokumentierend.\n\n📖 Spalten-Aliase (`AS`) benennen Spalten im Ergebnissatz um, ohne die Tabelle zu ändern. Sie sind unverzichtbar, wenn zwei verknüpfte Tabellen einen Spaltennamen teilen, oder wenn ein Ausdruck sonst mit einem automatisch generierten Label erscheinen würde. Liste immer nur die Spalten auf, die deine Anwendung tatsächlich verwendet – das schützt auch vor Brüchen bei Schema-Erweiterungen.",
         "analogy": {
           "title": "Schritt 1 — WHERE: der Suchfilter",
@@ -538,7 +538,7 @@
       {
         "animationStep": 2,
         "heading": "WHERE — Zeilen filtern",
-        "text": "`WHERE` fügt Bedingungen hinzu, um zu filtern, welche Zeilen zurückgegeben werden. Verwende `AND` und `OR` für mehrere Bedingungen.",
+        "text": "`WHERE` filtert Zeilen anhand von Bedingungen: `=`, `!=`, `>`, `<`, `LIKE`. `LIKE 'A%'` findet alle Werte, die mit A beginnen. Mehrere Bedingungen lassen sich mit `AND` und `OR` kombinieren.",
         "expandedText": "📖 `WHERE` ist das Herzstück der SQL-Filterung. Bedingungen können Gleichheit (`=`), Vergleich (`>`, `<`, `>=`, `<=`), Negation (`!=`), Musterabgleich (`LIKE`, `ILIKE`) und Mengenzugehörigkeit (`IN`, `NOT IN`) testen. Bedingungen mit `AND` und `OR` kombinieren; Klammern zur Steuerung der Präzedenz verwenden.\n\n📖 `NULL`-Vergleiche erfordern besondere Syntax: `IS NULL` und `IS NOT NULL` – der Vergleich mit `= NULL` gibt in SQL immer false zurück. `BETWEEN low AND high` als Kurzschreibweise für Bereichsprüfungen verwenden. Immer **parametrierte Abfragen** (`$1`, `$2`) statt String-Interpolation verwenden, um SQL-Injection zu verhindern.",
         "analogy": {
           "title": "Schritt 2 — ORDER BY und LIMIT: sortieren und seitenweise anzeigen",
@@ -551,7 +551,7 @@
       {
         "animationStep": 3,
         "heading": "ORDER BY — Ergebnisse sortieren",
-        "text": "`ORDER BY` sortiert das Ergebnis. `ASC` ist aufsteigend (Standard), `DESC` ist absteigend. Nach mehreren Spalten sortieren möglich.",
+        "text": "`ORDER BY` sortiert das Ergebnis — `ASC` aufsteigend (Standard), `DESC` absteigend. Mehrere Spalten als Sortierkriterium: `ORDER BY last_name ASC, first_name ASC`. Ohne `ORDER BY` ist die Reihenfolge der Zeilen undefiniert.",
         "expandedText": "📖 `ORDER BY` sortiert die Ergebniszeilen, bevor sie zurückgegeben werden. Die Standardrichtung ist `ASC` (aufsteigend, kleinste zuerst). `DESC` kehrt sie um. Man kann nach mehreren Spalten sortieren: Die zweite Spalte wird als Tiebreaker verwendet, wenn die erste Spalte gleiche Werte hat.\n\n📖 Sortierung erfolgt **nach** dem Filtern (`WHERE`) und **nach** dem Gruppieren (`GROUP BY`), aber **vor** `LIMIT`. Ohne `ORDER BY` garantiert PostgreSQL keine bestimmte Zeilenreihenfolge – selbst wenn Ergebnisse heute geordnet aussehen, müssen sie es nach einem Table-Rewrite oder Vacuum nicht mehr sein.",
         "analogy": {
           "title": "Schritt 3 — Aggregatfunktionen: die Zusammenfassungszeile",
@@ -564,7 +564,7 @@
       {
         "animationStep": 4,
         "heading": "LIMIT — Ergebnisanzahl steuern",
-        "text": "`LIMIT` begrenzt die Anzahl der zurückgegebenen Zeilen. In Kombination mit `OFFSET` implementiert es Paginierung.",
+        "text": "`LIMIT` begrenzt die Anzahl der zurückgegebenen Zeilen. In Kombination mit `OFFSET` lässt sich Pagination implementieren: `LIMIT 10 OFFSET 20` gibt die Zeilen 21–30 zurück. Bei großen Datensätzen ist `LIMIT` wichtig um Tausende von Zeilen auf einmal zu verhindern.",
         "expandedText": "📖 `LIMIT n` stoppt die Rückgabe von Zeilen nach `n` Ergebnissen – kritisch für die Performance bei großen Tabellen. `OFFSET k` überspringt die ersten `k` Zeilen und ermöglicht **Paginierung**: Seite 1 ist `LIMIT 10 OFFSET 0`, Seite 2 ist `LIMIT 10 OFFSET 10` und so weiter.\n\n📖 Bei großen Datensätzen verlangsamt `OFFSET`-basierte Paginierung, wenn der Offset wächst, da PostgreSQL die übersprungenen Zeilen trotzdem lesen und verwerfen muss. **Keyset-Paginierung** (mit `WHERE id > last_seen_id ORDER BY id LIMIT 10`) ist schneller für tiefe Seiten, da sie direkt den Primärschlüssel-Index nutzt.",
         "analogy": {
           "title": "Schritt 4 — GROUP BY: Zwischensummen pro Kategorie",
@@ -695,7 +695,7 @@
       {
         "animationStep": 1,
         "heading": "Fremdschlüssel verknüpfen Tabellen",
-        "text": "Der Fremdschlüssel ist eine Spalte, die auf den Primärschlüssel einer anderen Tabelle verweist. So werden Beziehungen definiert.",
+        "text": "Der Fremdschlüssel ist eine Spalte, die auf den Primärschlüssel einer anderen Tabelle verweist und so Beziehungen zwischen Tabellen herstellt. Ein Fremdschlüssel-Constraint verhindert ungültige Verweise — du kannst keine Bestellung ohne gültige Benutzer-ID einfügen. Dieses referenzielle Integritätsprinzip ist eine Kernstärke relationaler Datenbanken.",
         "expandedText": "📖 Eine **Fremdschlüssel**-Spalte enthält den Primärschlüsselwert einer verwandten Zeile in einer anderen Tabelle. Die Deklaration mit `REFERENCES table(column)` weist PostgreSQL an, referentielle Integrität zu erzwingen: Das Einfügen einer `user_id`, die nicht in `users` existiert, wird mit einem Constraint-Verletzungsfehler abgelehnt.\n\n📜 Diese serverseitige Durchsetzung ist weitaus zuverlässiger als Prüfungen auf Anwendungsebene. Wenn zwei Anwendungen dieselbe Datenbank teilen oder ein Migrationsskript direkt läuft, schützt der Constraint die Daten trotzdem. Das Weglassen von Fremdschlüsseln ist ein häufiger früher Fehler, der zu verwaisten Zeilen und Daten-Inkonsistenzen führt, die später teuer zu bereinigen sind.",
         "analogy": {
           "title": "Schritt 1 — INNER JOIN: nur die Übereinstimmungen",
@@ -708,7 +708,7 @@
       {
         "animationStep": 2,
         "heading": "INNER JOIN",
-        "text": "INNER JOIN gibt Zeilen zurück, bei denen in beiden Tabellen eine Übereinstimmung vorliegt. Wenn ein Benutzer keine Beiträge hat, erscheint er nicht im Ergebnis.",
+        "text": "INNER JOIN gibt Zeilen zurück, bei denen in beiden Tabellen eine Übereinstimmung vorliegt. Kunden ohne Bestellungen werden dabei nicht einbezogen — das ist der häufigste JOIN-Typ. Verwende LEFT JOIN wenn du alle Zeilen der linken Tabelle behalten willst, auch ohne Match.",
         "expandedText": "⚠️ `INNER JOIN` ist der häufigste Join. Er erzeugt eine Zeile in der Ausgabe für jedes Paar von Zeilen aus den beiden Tabellen, bei dem die `ON`-Bedingung wahr ist. Zeilen aus beiden Tabellen, die keine Entsprechung haben, werden stillschweigend aus dem Ergebnis ausgeschlossen.\n\n📖 Die `ON`-Klausel vergleicht typischerweise den Fremdschlüssel mit dem Primärschlüssel: `ON users.id = posts.user_id`. Wenn ein Benutzer drei Posts hat, erscheint er auf drei Ausgabezeilen – eine pro Post. Das ist erwartet und kann mit Aggregation (`GROUP BY`) adressiert werden, wenn man eine Zusammenfassungszeile pro Benutzer möchte.",
         "analogy": {
           "title": "Schritt 2 — LEFT JOIN: alle Mitarbeiter einschließlich nicht zugewiesener",
@@ -734,7 +734,7 @@
       {
         "animationStep": 4,
         "heading": "Aliase und mehrere Joins",
-        "text": "Verwende Aliase, um Tabellennamen zu kürzen. Du kannst mehrere JOINs verketten, um drei oder mehr Tabellen zu kombinieren.",
+        "text": "Aliase kürzen Tabellennamen (`users u`, `orders o`) und machen komplexe Abfragen lesbarer. Mehrere JOINs lassen sich verketten um Daten aus drei oder mehr Tabellen zu kombinieren. Achte auf Performance bei komplexen JOINs auf großen Tabellen — Indizes auf Fremdschlüsseln sind entscheidend.",
         "expandedText": "📖 Tabellen-**Aliase** (z.B. `FROM users u`) verkürzen repetitive qualifizierte Spaltennamen wie `users.name` zu `u.name`. Sie sind erforderlich, wenn eine Tabelle mit sich selbst verknüpft wird (Self-Join), weil beide Seiten unterschiedliche Namen benötigen, um eindeutig zu sein.\n\n📖 Mehrere `JOIN`s zu verketten kombiniert drei oder mehr Tabellen in einer einzigen Abfrage. Die Datenbank verarbeitet Joins von links nach rechts und baut bei jedem Schritt ein Zwischenergebnissatz auf. Das Indizieren von Join-Spalten – besonders Fremdschlüssel – ist kritisch: Nicht indizierte Joins bei großen Tabellen führen für jede Zeile einen Full-Table-Scan durch, was katastrophal langsam sein kann.",
         "analogy": {
           "title": "Schritt 4 — JOIN-Performance: der Index-Handschlag",
@@ -787,7 +787,7 @@
       {
         "animationStep": 0,
         "heading": "CREATE TABLE",
-        "text": "`CREATE TABLE` definiert die Struktur (Schema) einer Tabelle: Spaltennamen, Typen und Constraints.",
+        "text": "`CREATE TABLE` definiert die Struktur einer Tabelle: Spaltennamen, Typen und Constraints. Jede Spalte hat einen Typ wie `TEXT`, `INTEGER`, `BOOLEAN` oder `TIMESTAMP`. Constraints wie `NOT NULL` und `PRIMARY KEY` erzwingen Datenintegrität auf Datenbankebene.",
         "expandedText": "📖 `CREATE TABLE` ist eine **DDL**-Anweisung (Data Definition Language) – sie ändert die Datenbankstruktur statt die Daten. Spaltentypen schränken ein, welche Werte gespeichert werden können: `TEXT` für Zeichenketten variabler Länge, `INTEGER` für ganze Zahlen, `DECIMAL(p, s)` für Festkommazahlen wie Geldbeträge, `BOOLEAN` für true/false und `TIMESTAMPTZ` für Zeitstempel mit Zeitzone.\n\n📖 `NOT NULL` verhindert, dass eine Spalte den Abwesenheitswert enthält. Nur dann `NULL` erlauben, wenn das Fehlen eines Werts für diese Spalte wirklich sinnvoll ist. `UNIQUE` erstellt einen Index und verhindert doppelte Werte – unverzichtbar für E-Mail-Adressen, Benutzernamen und andere natürliche Schlüssel.",
         "analogy": {
           "title": "Schritt 0 — CREATE TABLE: die Tabelle entwerfen",
@@ -800,7 +800,7 @@
       {
         "animationStep": 1,
         "heading": "INSERT — Zeilen hinzufügen",
-        "text": "`INSERT INTO` fügt neue Zeilen hinzu. Du kannst eine oder mehrere Zeilen in einer einzigen Anweisung einfügen.",
+        "text": "`INSERT INTO` fügt neue Zeilen hinzu — eine oder mehrere in einer Abfrage. Die `RETURNING`-Klausel gibt die eingefügte Zeile zurück: nützlich um die automatisch generierte ID zu erhalten. Ohne `RETURNING` wäre eine separate Abfrage nötig.",
         "expandedText": "📖 `INSERT INTO` ist das SQL-Verb zum Erstellen von Zeilen. Spaltennamen explizit aufzulisten (statt sich auf die Positionsreihenfolge zu verlassen) schützt die Abfrage davor, zu brechen, wenn Spalten umsortiert werden oder neue Spalten mit Defaults hinzugefügt werden.\n\n📖 `RETURNING` verwandelt ein `INSERT` in eine kombinierte Schreib-und-Lese-Operation: Die Datenbank führt das Einfügen durch und gibt sofort die angegebenen Spalten der neuen Zeile zurück. Das vermeidet eine zweite Round-Trip-Abfrage, um die automatisch generierte `id` oder den serverseitig gesetzten `created_at`-Wert abzurufen. Mindestens `RETURNING id` immer verwenden, damit die Anwendung sofort den Primärschlüssel der neuen Zeile kennt.",
         "analogy": {
           "title": "Schritt 1 — INSERT: eine neue Zeile hinzufügen",
@@ -813,7 +813,7 @@
       {
         "animationStep": 2,
         "heading": "UPDATE — Zeilen ändern",
-        "text": "`UPDATE` ändert bestehende Zeilen. Verwende immer `WHERE` — ohne es wird jede Zeile in der Tabelle aktualisiert.",
+        "text": "`UPDATE` ändert bestehende Zeilen. Verwende immer `WHERE` — ohne es wird jede Zeile in der Tabelle aktualisiert. Teste deine `WHERE`-Bedingung zuerst mit einem `SELECT`, bevor du das `UPDATE` ausführst.",
         "expandedText": "⚠️ `UPDATE` ändert bestehende Zeilen. Die `WHERE`-Klausel bestimmt, welche Zeilen betroffen sind. **Das Weglassen von `WHERE` aktualisiert jede einzelne Zeile in der Tabelle** – das ist einer der häufigsten und destruktivsten SQL-Fehler. Vor dem Ausführen eines `UPDATE` in Produktion immer prüfen, dass `WHERE` vorhanden ist.\n\n📖 `RETURNING *` (oder spezifische Spalten) veranlasst `UPDATE`, die geänderten Zeilen zurückzugeben, was wiederum ein folgendes `SELECT` vermeidet. Parametrierte Abfragen (`$1`, `$2`) für alle Werte verwenden. In Node.js mit dem `pg`-Treiber: `pool.query(\"UPDATE users SET name=$1 WHERE id=$2 RETURNING *\", [name, id])`.",
         "analogy": {
           "title": "Schritt 2 — UPDATE: eine Zelle korrigieren",
@@ -826,7 +826,7 @@
       {
         "animationStep": 3,
         "heading": "DELETE — Zeilen entfernen",
-        "text": "`DELETE` entfernt Zeilen. Verwende immer `WHERE` — ohne es werden alle Zeilen gelöscht.",
+        "text": "`DELETE` entfernt Zeilen — verwende immer `WHERE`, sonst werden alle Zeilen gelöscht. Einmal gelöschte Zeilen können nicht einfach wiederhergestellt werden. Für kritische Daten solltest du Soft Deletes (`is_deleted = true`) in Betracht ziehen.",
         "expandedText": "📖 `DELETE FROM table WHERE condition` entfernt übereinstimmende Zeilen dauerhaft. Wie bei `UPDATE` **löscht das Weglassen von `WHERE` jede Zeile** in der Tabelle – die Tabellenstruktur bleibt, aber alle Daten sind weg. Es gibt kein Rückgängigmachen, es sei denn, es gibt eine offene Transaktion oder ein Backup.\n\n📜 `RETURNING id` (oder andere Spalten) berichtet, welche Zeilen gelöscht wurden – nützlich für Logging oder zur Bestätigung der Operation. Für Soft-Deletes (historische Daten behalten) bevorzugt man `UPDATE ... SET deleted_at = NOW()` und filtert in Abfragen mit `WHERE deleted_at IS NULL`. Hard-Deletes entfernen die Zeile vollständig aus der Tabelle.",
         "analogy": {
           "title": "Schritt 3 — DELETE: eine Zeile herausreißen",
@@ -839,7 +839,7 @@
       {
         "animationStep": 4,
         "heading": "Constraints schützen Daten",
-        "text": "Constraints erzwingen Regeln auf Datenbankebene. `PRIMARY KEY`, `NOT NULL`, `UNIQUE` und `FOREIGN KEY` verhindern, dass ungültige Daten gespeichert werden.",
+        "text": "Constraints erzwingen Regeln auf Datenbankebene: `PRIMARY KEY`, `NOT NULL`, `UNIQUE` und `CHECK`. Diese werden beim Einfügen oder Aktualisieren geprüft und werfen einen Fehler wenn sie verletzt werden. `FOREIGN KEY` stellt sicher, dass eine Bestellung nicht auf einen nicht existierenden User verweisen kann.",
         "expandedText": "🔬 **Constraints** sind deklarative Regeln, die von der Datenbank-Engine erzwungen werden. `PRIMARY KEY` macht eine Spalte zur eindeutigen Kennung jeder Zeile und erstellt automatisch einen Index. `NOT NULL` lehnt `NULL`-Werte ab. `UNIQUE` verhindert Duplikate und erstellt einen Index. `REFERENCES` (Fremdschlüssel) lehnt Werte ab, die nicht in der referenzierten Tabelle existieren. `DEFAULT` füllt einen Wert ein, wenn die Spalte im `INSERT` weggelassen wird.\n\n📖 `ON CONFLICT` ermöglicht **Upsert**-Logik: `INSERT ... ON CONFLICT (col) DO UPDATE SET ...` fügt entweder eine neue Zeile ein oder aktualisiert die kollidierende atomar. Das ist weitaus sauberer als eine Read-Then-Write-Prüfung im Anwendungscode, die Race Conditions haben kann.",
         "analogy": {
           "title": "Schritt 4 — Constraints: die Formularvalidierungsregeln",
@@ -900,7 +900,7 @@
       {
         "animationStep": 0,
         "heading": "JavaScript-Typen sind implizit",
-        "text": "In JavaScript haben Variablen zur Laufzeit Typen, aber du deklarierst sie nie. Der Typ wird aus dem Wert abgeleitet.",
+        "text": "In JavaScript haben Variablen zur Laufzeit Typen, aber du deklarierst sie nie — du weißt nicht ob `x` eine Zahl oder ein String ist bis dein Code läuft. TypeScript fügt ein statisches Typsystem hinzu: Typfehler werden vor der Ausführung beim Kompilieren erkannt. Das verhindert eine ganze Klasse häufiger Bugs wie das Aufrufen von Methoden auf `undefined`.",
         "expandedText": "⚠️ JavaScript ist **dynamisch typisiert**: Variablen haben keinen deklarierten Typ – die Engine ermittelt den Typ erst zur Laufzeit anhand des aktuellen Werts. Diese Flexibilität ist für kleine Skripte praktisch, erzeugt aber eine Klasse von Fehlern, die erst beim tatsächlichen Ausführen auftreten – oft in der Produktion.\n\n📖 **TypeScript** fügt JavaScript eine optionale statische Typebene hinzu. Du annotierst Variablen, Funktionsparameter und Rückgabewerte mit Typen. Der TypeScript-Compiler (`tsc`) prüft all diese Annotationen, bevor der Code jemals ausgeführt wird, und verwandelt Überraschungen zur Laufzeit in Compile-Zeit-Fehler, die direkt im Editor sichtbar sind.",
         "analogy": {
           "title": "Schritt 0 — Implizite JS-Typen: die unbezeichneten Zutaten",
@@ -913,7 +913,7 @@
       {
         "animationStep": 1,
         "heading": "TypeScript macht Typen explizit",
-        "text": "TypeScript fügt Typ-Annotationen mit einem Doppelpunkt nach dem Variablennamen hinzu. Das teilt dem Compiler genau mit, welcher Typ erwartet wird.",
+        "text": "TypeScript fügt Typ-Annotationen mit einem Doppelpunkt hinzu: `let name: string`. Der Compiler prüft, dass Werte dem deklarierten Typ entsprechen. Annotationen für primitive Typen sind oft optional — TypeScript inferiert den Typ aus dem Initialisierungswert.",
         "expandedText": "📖 Typ-**Annotationen** werden nach einem Doppelpunkt geschrieben: `let age: number = 25`. Sie teilen dem Compiler genau mit, welchen Typ eine Variable haben soll. TypeScript nutzt diese Information, um Typkonflikte zu erkennen, bevor der Code ausgeführt wird.\n\n📖 In der Praxis annotierst du nicht jede Variable – TypeScript **inferiert** Typen aus zugewiesenen Werten. `let age = 25` inferiert automatisch `number`. Annotationen sind am wertvollsten bei Funktionsparametern und Rückgabetypen, wo TypeScript ohne zusätzlichen Kontext nicht immer inferieren kann.",
         "analogy": {
           "title": "Schritt 1 — Explizite Typen: jeden Behälter beschriften",
@@ -926,7 +926,7 @@
       {
         "animationStep": 2,
         "heading": "Typfehler werden zur Kompilierzeit erkannt",
-        "text": "Wenn du versuchst, den falschen Typ zuzuweisen, markiert TypeScript es sofort — bevor der Code jemals ausgeführt wird.",
+        "text": "Wenn du versuchst, den falschen Typ zuzuweisen, markiert TypeScript es sofort — im Editor, vor dem Ausführen. Diese Früherkennung ist der Hauptvorteil gegenüber JavaScript. IDE-Plugins wie VS Code nutzen TypeScript-Informationen für präzise Autovervollständigung und sichere Refactorings.",
         "expandedText": "⚠️ Wenn TypeScript einen Typkonflikt erkennt, erzeugt es einen **Compile-Zeit-Fehler** – eine rote Unterwellung im Editor und einen Fehler in `tsc`. Der Code wird abgelehnt, bevor er ausgeführt werden kann. Das ist grundlegend anders als in JavaScript, wo der entsprechende Fehler still ausgeführt würde und erst zur Laufzeit scheitert.\n\n⚠️ Die Fehlermeldung benennt die genaue Variable und beschreibt den Konflikt: „Type `string` is not assignable to type `number`.\" Diese Präzision beseitigt Raterei. Viele TypeScript-Fehler werden im Moment des Tippens erkannt, noch bevor du die Datei speicherst – dank der Language-Server-Integration in VS Code und anderen Editoren.",
         "analogy": {
           "title": "Schritt 2 — Compile-Zeit-Fehler: Qualitätssicherung vor dem Versand",
@@ -1183,7 +1183,7 @@
       {
         "animationStep": 0,
         "heading": "Die Fetch API",
-        "text": "`fetch()` ist die moderne Browser-API für HTTP-Anfragen. Sie ersetzt `XMLHttpRequest` und gibt ein Promise zurück.",
+        "text": "`fetch()` ist die moderne Browser-API für HTTP-Anfragen und ersetzt das ältere `XMLHttpRequest`. Sie gibt sofort ein Promise zurück — die Netzwerkanfrage läuft asynchron im Hintergrund. `fetch()` ist in allen modernen Browsern und seit Node.js 18 ohne zusätzliche Bibliotheken verfügbar.",
         "expandedText": "📖 `fetch()` ist eine **Promise-basierte** API – sie gibt ein `Promise<Response>` zurück, das sich auflöst, wenn der Server antwortet. Der Browser sendet die Anfrage im Hintergrund, während das andere JavaScript weiter läuft. Dieses nicht-blockierende Modell ist der Grund, warum Web-Apps auch bei langsamen Netzwerk-Aufrufen reaktionsfähig bleiben.\n\n📖 Die `fetch`-API ersetzte `XMLHttpRequest`. Anders als `XMLHttpRequest`, das Callbacks verwendete und eine verbose API hatte, integriert sich `fetch` sauber mit `async`/`await`. Dieselbe API funktioniert in allen modernen Browsern und in Node.js 18+ nativ – keine Bibliothek erforderlich.",
         "analogy": {
           "title": "Einen Brief schicken",
@@ -1196,7 +1196,7 @@
       {
         "animationStep": 1,
         "heading": "fetch() gibt ein Promise zurück",
-        "text": "Die Anfrage wird sofort gesendet, aber die Antwort kommt später. `fetch()` gibt ein Promise zurück, das aufgelöst wird, wenn der Server antwortet.",
+        "text": "Die Anfrage wird sofort gesendet, aber die Antwort kommt später — `fetch()` gibt ein Promise zurück, das zu einem `Response`-Objekt auflöst. Das `Response`-Objekt enthält Status, Header und Body, aber der Body muss noch separat geparst werden. Dieser zweistufige Prozess ermöglicht das effiziente Streamen großer Antworten.",
         "expandedText": "📖 Ein `fetch()`-Aufruf gibt ein **`Promise`** zurück, das zwei Phasen durchläuft. Zuerst löst es sich zu einem `Response`-Objekt auf, wenn die Header eintreffen. Dann ruft man `response.json()` (oder `.text()`, `.blob()`) auf, um ein weiteres Promise zu erhalten, das sich auflöst, wenn der vollständige Body geparst ist.\n\n📖 Das zweistufige Design ermöglicht es, Header zu inspizieren und zu entscheiden, ob der Body weitergelesen werden soll. Es ermöglicht auch das Streamen großer Antworten – man kann eine große Datei Stück für Stück über `response.body` als `ReadableStream` verarbeiten, ohne auf den vollständigen Download zu warten.",
         "analogy": {
           "title": "Der Restaurantbeleg",
@@ -1209,7 +1209,7 @@
       {
         "animationStep": 2,
         "heading": "Das Response-Objekt",
-        "text": "Der aufgelöste Wert ist eine Response. Sie enthält Status, Header und den Body — der Body muss jedoch explizit geparst werden.",
+        "text": "Der aufgelöste Wert ist ein `Response`-Objekt mit Status, Headern und einem noch ungeparstem Body. `response.ok` ist `true` wenn der Statuscode 200–299 ist. Achtung: `fetch()` schlägt nur bei Netzwerkfehlern fehl — HTTP-Fehlercodes wie 404 werden als aufgelöste Promises zurückgegeben. Prüfe immer `response.ok`.",
         "expandedText": "📖 Das `Response`-Objekt ist das Gateway zu allem, was der Server zurückgeschickt hat. `status` ist der HTTP-Code (200, 404, 500). `ok` ist `true` für Codes 200–299. `headers` ist ein `Headers`-Objekt mit den Methoden `get(name)` und `has(name)`. `url` spiegelt die endgültige URL nach Weiterleitungen wider.\n\n⚠️ `response.ok` ist die wichtigste zu prüfende Eigenschaft. `fetch()` lehnt das Promise nur bei **Netzwerkfehlern** ab (keine Verbindung, DNS-Fehler). Ein HTTP-404 oder -500 löst sich normal mit `ok: false` auf. Immer `if (!response.ok) throw new Error(...)` prüfen, bevor der Body gelesen wird.",
         "analogy": {
           "title": "Ein versiegelter Umschlag",
@@ -1222,7 +1222,7 @@
       {
         "animationStep": 3,
         "heading": "Den Antwort-Body parsen",
-        "text": "`response.json()` parst den Body als JSON und gibt ein weiteres Promise zurück. `response.text()` gibt rohen Text zurück.",
+        "text": "`response.json()` parst den Body als JSON und gibt ein weiteres Promise zurück — warte auf beide Promises. `response.text()` gibt den Body als String zurück, `response.blob()` für Binärdaten. Jede Body-Lese-Methode kann nur einmal aufgerufen werden — danach ist der Stream erschöpft.",
         "expandedText": "✅ `response.json()` liest den gesamten Response-Body und parst ihn als JSON, wobei ein weiteres Promise zurückgegeben wird. Dieses zweistufige Muster (`await fetch` dann `await response.json()`) ist die Standard-Redewendung für REST-APIs. Wenn der Body kein gültiges JSON ist, lehnt `json()` mit einem `SyntaxError` ab.\n\n⚠️ Andere Body-Lesemethoden: `response.text()` gibt den rohen String zurück, `response.blob()` gibt Binärdaten zurück (für Bilder/Dateien), `response.arrayBuffer()` liefert rohe Bytes. Den Body kann man nur einmal lesen – das Aufrufen von `json()` nach `text()` auf derselben Antwort wirft einen Fehler, weil der Stream bereits verbraucht ist.",
         "analogy": {
           "title": "Den Umschlag öffnen",
@@ -1235,7 +1235,7 @@
       {
         "animationStep": 4,
         "heading": "async/await-Syntax",
-        "text": "`async/await` lässt `fetch`-Code wie synchronen Code aussehen. Immer in `try/catch` einwickeln für Fehlerbehandlung.",
+        "text": "`async/await` lässt `fetch`-Code wie synchronen Code aussehen — immer in `try/catch` wrappen. Netzwerkfehler (kein Internet, Server nicht erreichbar) lösen eine Exception aus, die `catch` auffängt. HTTP-Fehlercodes (404, 500) lösen keine Exception aus — prüfe `response.ok` separat.",
         "expandedText": "📖 `async`/`await` lässt Fetch-Ketten wie sequenziellen, synchronen Code lesen, bleibt aber nicht-blockierend. Das `await`-Schlüsselwort pausiert die Ausführung der `async`-Funktion, bis das Promise aufgelöst ist, und gibt dann den aufgelösten Wert zurück. Kein `.then()`-Verschachteln erforderlich.\n\n⚠️ Fetch-Code immer in einem `try`/`catch`-Block einhüllen. Netzwerkfehler und nicht-ok-Antworten müssen beide behandelt werden. Ein gutes Muster: `response.ok` innerhalb von `try` prüfen und einen benutzerdefinierten Fehler mit dem Statuscode werfen, sodass der `catch`-Block zwischen Netzwerkfehlern und API-Fehlern unterscheiden kann.",
         "analogy": {
           "title": "In der Schlange warten",
@@ -1353,7 +1353,7 @@
       {
         "animationStep": 0,
         "heading": "Events sind Benutzeraktionen",
-        "text": "Der Browser löst Events aus, wenn Benutzer interagieren — klicken, tippen, scrollen, hovern. JavaScript kann zuhören und reagieren.",
+        "text": "Der Browser löst Events aus, wenn Benutzer interagieren — klicken, tippen, scrollen. Es gibt über 70 eingebaute Event-Typen: Maus-, Tastatur-, Touch-, Formular- und Fenster-Events. Jedes Event trägt Informationen über die Interaktion im Event-Objekt.",
         "expandedText": "📖 Der Browser ist **ereignisgesteuert**: Statt dass dein Code auf Benutzeraktionen pollt, löst der Browser Ereignisse aus und ruft deine Listener-Funktionen auf, wenn etwas passiert. Ereignisse decken Benutzereingaben (click, keydown, submit), den Browser-Lebenszyklus (DOMContentLoaded, load, beforeunload) und Netzwerkaktivität (online, offline) ab.\n\n📖 Ereignisse sind Objekte mit Eigenschaften, die die Aktion beschreiben – was passiert ist, wo, wann und mit welchen Modifikatoren. Das Ereignissystem zu verstehen entsperrt interaktive UIs, Formularverarbeitung, Tastaturkürzel, Drag-and-Drop und benutzerdefinierte komponentenübergreifende Kommunikation – alles ohne Framework.",
         "analogy": {
           "title": "Rauchmelder",
@@ -1366,7 +1366,7 @@
       {
         "animationStep": 1,
         "heading": "addEventListener",
-        "text": "`addEventListener` hängt eine Callback-Funktion an ein Element. Der Callback wird jedes Mal ausgeführt, wenn das Event ausgelöst wird.",
+        "text": "`addEventListener` hängt einen Callback an ein Element, der bei jedem Auftreten des Events aufgerufen wird. Mehrere Listener für dasselbe Event auf demselben Element sind möglich. `removeEventListener` entfernt einen Listener wieder — wichtig um Memory Leaks bei dynamisch erstellten Elementen zu vermeiden.",
         "expandedText": "📖 `addEventListener(type, handler)` hängt eine Funktion an, die aufgerufen wird, wenn ein Ereignis auf dem Element ausgelöst wird. Das dritte Argument (Capture-Phase) ist standardmäßig `false` – Ereignisse bubbling standardmäßig. Man kann mehrere Listener an dasselbe Element und denselben Ereignistyp hängen; sie werden alle in der Reihenfolge aufgerufen, in der sie hinzugefügt wurden.\n\n📖 `removeEventListener` erfordert **genau dieselbe Funktionsreferenz**, die in `addEventListener` verwendet wurde – Inline-Arrow-Funktionen können nicht entfernt werden, weil jede Definition ein neues Objekt erstellt. Den Handler in einer Variablen speichern, wenn er entfernt werden muss. Das Ablösen von Listenern verhindert Speicherlecks, besonders in Single-Page-Apps, wo Elemente wiederholt erstellt und zerstört werden.",
         "analogy": {
           "title": "Newsletter-Abonnement",
@@ -1379,7 +1379,7 @@
       {
         "animationStep": 2,
         "heading": "Das Event-Objekt",
-        "text": "Der Callback erhält ein Event-Objekt mit Informationen über das Geschehene: das Zielelement, Mausposition, gedrückte Taste und mehr.",
+        "text": "Der Callback erhält ein Event-Objekt mit allen Informationen: Zielelement, Koordinaten bei Maus-Events, Wert bei Input-Events. `event.target` ist das Element, auf dem das Event ausgelöst wurde. `event.currentTarget` ist das Element mit dem Listener — diese unterscheiden sich bei Event-Bubbling.",
         "expandedText": "📖 Jeder Event-Listener empfängt ein **`Event`-Objekt** als erstes Argument. Das Basis-`Event` hat `type`, `target`, `currentTarget`, `timeStamp`, `bubbles` und `cancelable`. Spezifischere Ereignis-Interfaces fügen eigene Eigenschaften hinzu: `MouseEvent` hat `clientX`/`clientY` und `button`. `KeyboardEvent` hat `key`, `code` und Modifier-Flags. `InputEvent` und `SubmitEvent` haben formularbezogene Eigenschaften.\n\n📖 `event.target` ist das Element, auf dem das Ereignis seinen Ursprung hat – was tatsächlich geklickt oder in das getippt wurde. `event.currentTarget` ist das Element, an dem der Listener hängt. In bubbling Event-Handlern sind diese oft unterschiedlich: `target` ist ein Button, `currentTarget` ist das Formular, an dem der Listener hängt.",
         "analogy": {
           "title": "Ein Paket mit Metadaten",
@@ -1392,7 +1392,7 @@
       {
         "animationStep": 3,
         "heading": "Event-Bubbling",
-        "text": "Events blubbern standardmäßig den DOM-Baum hinauf. Ein Klick auf ein inneres Element löst auch auf allen Vorfahren aus — außer er wird gestoppt.",
+        "text": "Events blubbern standardmäßig den DOM-Baum hinauf — ein Klick auf ein Kind-Element löst auch Click-Handler auf Elternelementen aus. Event-Bubbling ermöglicht Event-Delegation: einen einzigen Handler am Parent statt auf jedem Kind-Element. Das ist performanter bei dynamisch hinzugefügten Elementen.",
         "expandedText": "📖 **Event-Bubbling** bedeutet, dass das Ereignis zuerst auf dem Zielelement, dann auf seinem Elternteil, dann auf dem Großelternteil ausgelöst wird, den ganzen Weg bis zu `document` und `window`. Jedes Vorfahrenelement, das einen Listener für denselben Ereignistyp hat, wird der Reihe nach aufgerufen.\n\n✅ Bubbling ermöglicht **Event-Delegation** – eines der wichtigsten DOM-Muster. Einen einzigen Listener an einen Eltern-Container hängen statt an jedes Kind. `event.target` verwenden, um zu identifizieren, welches Kind geklickt wurde. Das ist effizienter (ein Listener vs. viele) und behandelt automatisch dynamisch hinzugefügte Kinder – neue Elemente, die später hinzugefügt werden, werden vom Eltern-Listener ohne zusätzliches Setup abgedeckt.",
         "analogy": {
           "title": "In einem Gebäude schreien",
@@ -1405,7 +1405,7 @@
       {
         "animationStep": 4,
         "heading": "stopPropagation und preventDefault",
-        "text": "`stopPropagation()` stoppt das Bubbling des Events. `preventDefault()` bricht die Standard-Browseraktion ab (z. B. einem Link folgen, ein Formular absenden).",
+        "text": "`stopPropagation()` stoppt das Bubbling des Events, `preventDefault()` bricht die Standardaktion des Browsers ab. Beide Methoden sind unabhängig — du kannst eine, beide oder keine aufrufen. Ein typisches Muster: `e.preventDefault()` im Formular-Submit-Handler, um JavaScript die volle Kontrolle zu geben.",
         "expandedText": "📖 `stopPropagation()` verhindert, dass das Ereignis weiter im DOM-Baum nach oben (oder in der Capture-Phase nach unten) wandert. Verwende es, wenn ein verschachteltes Element das Ereignis unabhängig behandeln soll und das Elternteil nicht auch reagieren soll – beispielsweise ein Button innerhalb einer klickbaren Karte.\n\n📖 `preventDefault()` bricht die Standard-Browser-Aktion für das Ereignis ab. Für Formular-Submit-Ereignisse ist der Standard die Navigation zur Formular-`action`-URL – durch Aufrufen von `preventDefault()` erhält JavaScript die volle Kontrolle. Für Links verhindert es die Navigation. Für `keydown` kann es die Zeicheneingabe blockieren. Die beiden Methoden sind unabhängig: man kann eine, beide oder keine aufrufen.",
         "analogy": {
           "title": "Türsteher an der Tür",
@@ -1510,7 +1510,7 @@
       {
         "animationStep": 0,
         "heading": "Browser-Speicher",
-        "text": "Browser bieten eingebauten Schlüssel-Wert-Speicher, der ohne Server funktioniert. Nützlich für Einstellungen, gecachte Daten und Offline-Zustand.",
+        "text": "Browser bieten eingebauten Schlüssel-Wert-Speicher, der ohne Server funktioniert und in JavaScript lesbar und schreibbar ist. Der Speicher ist domänengebunden — Daten auf `example.com` sind getrennt von `other.com`. Es gibt zwei APIs: `localStorage` (persistent) und `sessionStorage` (temporär pro Tab).",
         "expandedText": "📖 `localStorage` und `sessionStorage` sind **synchrone, nur-String**-Key-Value-Stores, die in den Browser eingebaut sind. Sie speichern Daten zwischen Seitenladevorgängen ohne Server und eignen sich ideal für Benutzerpräferenzen, gecachte API-Antworten und Anwendungszustand, der einen Refresh überleben soll.\n\n⚠️ Beide APIs sind synchron – Lesen und Schreiben blockiert den Haupt-Thread kurz. Für große Datenmengen oder häufige Schreibvorgänge sollte `IndexedDB` (async, unterstützt Binärdaten und Indizes) oder ein Service-Worker-Cache in Betracht gezogen werden. Für flüchtigen In-Memory-Zustand, der nur einen Re-Render (nicht einen Refresh) überleben muss, sind JavaScript-Variablen oder React-State einfacher.",
         "analogy": {
           "title": "Haftnotiz vs. Whiteboard",
@@ -1523,7 +1523,7 @@
       {
         "animationStep": 1,
         "heading": "setItem",
-        "text": "`setItem(key, value)` speichert einen String-Wert. Nicht-String-Werte müssen mit `JSON.stringify` serialisiert werden.",
+        "text": "`setItem(key, value)` speichert einen String-Wert — alle anderen Typen müssen mit `JSON.stringify()` konvertiert werden. Zahlen, Booleans und Objekte werden automatisch in Strings umgewandelt. Beim Lesen zurückkonvertieren: `Number(localStorage.getItem('count'))` oder `JSON.parse()`.",
         "expandedText": "📖 `localStorage.setItem(key, value)` speichert einen **String**. Nicht-String-Werte werden umgewandelt: Zahlen und Booleans werden zu ihren String-Darstellungen, aber Objekte werden zu `\"[object Object]\"`. Immer `JSON.stringify` verwenden, wenn Objekte oder Arrays gespeichert werden, und `JSON.parse` beim Zurücklesen.\n\n📖 Auch Keys sind Strings. Keys mit einem Präfix versehen (`myapp:theme`, `myapp:cart`), um Kollisionen mit Drittanbieter-Scripts oder Bibliotheken zu vermeiden, die ebenfalls `localStorage` verwenden. Der Speicherplatz ist typischerweise 5–10 MB pro Origin (variiert je nach Browser). Das Überschreiten des Kontingents wirft einen `QuotaExceededError`.",
         "analogy": {
           "title": "In ein Notizbuch schreiben",
@@ -1536,7 +1536,7 @@
       {
         "animationStep": 2,
         "heading": "getItem",
-        "text": "`getItem(key)` ruft den gespeicherten Wert ab. Gibt `null` zurück, wenn der Schlüssel nicht existiert. JSON-Werte mit `JSON.parse` parsen.",
+        "text": "`getItem(key)` ruft den gespeicherten Wert ab und gibt `null` zurück wenn der Schlüssel nicht existiert. Prüfe immer auf `null` bevor du parsest: `const raw = localStorage.getItem('prefs'); const data = raw ? JSON.parse(raw) : defaults`. `JSON.parse(null)` wirft sonst einen Fehler.",
         "expandedText": "📖 `getItem(key)` gibt den gespeicherten Wert als **String** zurück oder `null`, wenn der Key nicht existiert. Sowohl \"Wert nicht gesetzt\" als auch \"Wert wurde explizit auf null gesetzt\" geben `null` zurück – es gibt keine Möglichkeit, sie über die API zu unterscheiden. Ein Sentinel-Wert oder JSON-Kodierung verwenden, um Abwesenheit explizit zu verfolgen.\n\n📖 Immer den Null-Fall behandeln, bevor geparst wird: `const raw = localStorage.getItem(\"user\"); const user = raw ? JSON.parse(raw) : null`. Den Null-Check weglassen und `null` an `JSON.parse` übergeben wirft in manchen Browsern einen `SyntaxError`. Storage-Lesevorgänge in try/catch einhüllen, um beschädigte gespeicherte Daten elegant zu behandeln.",
         "analogy": {
           "title": "Etwas nachschlagen",
@@ -1549,7 +1549,7 @@
       {
         "animationStep": 3,
         "heading": "localStorage ist persistent",
-        "text": "Daten in `localStorage` überleben Seitenaktualisierungen, Tab-Schließungen und Browser-Neustarts. Sie bleiben bestehen, bis sie explizit gelöscht werden.",
+        "text": "Daten in `localStorage` überleben Seitenaktualisierungen, Tab-Schließungen und Browser-Neustarts bei einem Limit von typischerweise 5–10 MB. Speichere keine sensiblen Daten (Tokens, Passwörter) — `localStorage` ist über JavaScript zugänglich und anfällig für XSS. Geeignet für UI-Einstellungen, Drafts und nicht-sensible Cache-Daten.",
         "expandedText": "📖 `localStorage` ist **persistent**: Daten überleben Tab-Schließungen, Browser-Neustarts und Geräteneustarts. Es ist auf den **Origin** beschränkt (Protokoll + Domain + Port) – `localStorage` auf `http://localhost:3000` ist von `https://example.com` getrennt. Diese Abgrenzung bietet Isolation, bedeutet aber auch, dass Daten nicht zwischen Subdomains ohne explizites Kopieren geteilt werden können.\n\n📖 Das `storage`-Ereignis wird auf anderen offenen Tabs ausgelöst (nicht dem aktuellen), wenn sich `localStorage` ändert. Es verwenden, um den Zustand über Tabs zu synchronisieren: Ein Benutzer, der sich in einem Tab ausloggt, kann in anderen Tabs über das Storage-Ereignis einen Logout auslösen. Mit `window.addEventListener(\"storage\", handler)` lauschen.",
         "analogy": {
           "title": "Überlebt einen Stromausfall",
@@ -1562,7 +1562,7 @@
       {
         "animationStep": 4,
         "heading": "sessionStorage — Tab-scoped",
-        "text": "`sessionStorage` hat dieselbe API wie `localStorage`, wird aber gelöscht, wenn der Tab oder das Fenster geschlossen wird.",
+        "text": "`sessionStorage` hat dieselbe API wie `localStorage`, wird aber gelöscht wenn der Tab oder das Browserfenster geschlossen wird. Jeder Tab hat seinen eigenen `sessionStorage` — Daten werden nicht zwischen Tabs geteilt. Nützlich für mehrstufige Formulare oder Wizard-Daten die nicht persistent sein sollen.",
         "expandedText": "📖 `sessionStorage` hat genau dieselbe API wie `localStorage`, aber eine andere Lebensdauer. Daten werden **gelöscht, wenn der Tab oder das Browser-Fenster geschlossen wird**. Jeder Tab bekommt sein eigenes isoliertes `sessionStorage` – zwei Tabs auf demselben Origin können keine `sessionStorage`-Daten teilen.\n\n⚠️ `sessionStorage` für Daten verwenden, die nicht zwischen Browsersitzungen persistieren sollen: Wizard-Formular-Zustand, Einmalig-Fehlermeldungen, temporäre Auswahlen oder Navigations-Verlauf innerhalb eines Flows. `sessionStorage` gegenüber `localStorage` für alles Sicherheitssensible bevorzugen, das nicht persistieren soll, da `localStorage`-Daten von jedem Script auf demselben Origin auf unbestimmte Zeit zugänglich sind.",
         "analogy": {
           "title": "Whiteboard im Konferenzraum",
@@ -1773,7 +1773,7 @@
       {
         "animationStep": 0,
         "heading": "HTML ist statisches Markup",
-        "text": "Einfaches HTML definiert die Struktur einmalig. Um einen Button wiederzuverwenden, kopierst du das Markup — was schnell schwer zu warten wird.",
+        "text": "Einfaches HTML definiert die Struktur einmalig. Um einen Button wiederzuverwenden, müsste man denselben HTML-Block kopieren und einfügen — bei Designänderungen jede Kopie manuell anpassen. React-Komponenten lösen das: einmal definieren, überall verwenden, Änderungen werden überall sofort übernommen.",
         "expandedText": "📖 **Komponentenbasierte Architektur** ist der grundlegende Wandel, den React gegenüber traditionellem HTML-Templating eingeführt hat. In einem Komponentenmodell ist jedes UI-Element eine in sich geschlossene Einheit, die ihre Markup-Struktur, Styles und das Verhalten besitzt. Wenn ein Button geändert werden muss, aktualisiert man eine Datei statt jeder kopierten Instanz zu suchen. Dies entspricht dem Prinzip der **Einzelverantwortung** aus der Softwaretechnik, angewendet auf UI-Elemente.\n\n📖 Der praktische Gewinn zeigt sich bei der Wartung: Eine `Button`-Komponente kapselt ihre Hover-Zustände, Loading-Indikatoren und Klicklogik. Wenn das Designsystem ändert, dass Buttons eine andere Farbe haben sollen, aktualisiert man die Komponente — nicht 200 Stellen im HTML. Tests laufen gegen die Komponente isoliert, ohne die gesamte App zu mounten.",
         "analogy": {
           "title": "Schritt 0 — HTML ist statisches Markup: ein gedrucktes Foto",
@@ -1799,7 +1799,7 @@
       {
         "animationStep": 2,
         "heading": "Eine Komponente ist eine Funktion",
-        "text": "Eine React-Komponente ist eine Funktion, die `props` akzeptiert und `JSX` zurückgibt. Der Funktionsname muss mit einem Großbuchstaben beginnen.",
+        "text": "Eine React-Komponente ist eine Funktion, die `props` akzeptiert und JSX zurückgibt. JSX wird von Babel zu `React.createElement()`-Aufrufen transformiert — es ist kein HTML. Unterschiede: `className` statt `class`, `htmlFor` statt `for`, camelCase für alle Attribute.",
         "expandedText": "🔬 **Props** sind der primäre Mechanismus zur Weitergabe von Daten zwischen Komponenten. Sie fließen in eine Richtung — vom Elternteil zum Kind — was den Datenfluss leicht nachverfolgbar macht. Eine Komponente deklariert, welche Props sie akzeptiert (normalerweise mit einem TypeScript-Interface), und das Elternteil stellt sie an der Aufrufstelle bereit. Die Kindkomponente ist eine **reine Funktion ihrer Props**: Gleiche Props ergeben immer dasselbe gerenderte Ergebnis.\n\n📖 Diese Unidirektionalität macht Debugging vorhersehbar. Wenn eine Komponente falsch aussieht, gibt es genau einen Ort, an dem die Props herkommen: das Elternteil. Im Gegensatz zu bidirektionalen Datenbindungssystemen, bei denen Daten von überall modifiziert werden können, kann man in React den Wert einer Prop bis zum Root-State zurückverfolgen, indem man den Baum aufwärts geht.",
         "analogy": {
           "title": "Schritt 2 — Eine Komponente ist eine Funktion: ein Stempel",
@@ -1812,7 +1812,7 @@
       {
         "animationStep": 3,
         "heading": "Komponenten kombinieren",
-        "text": "Du baust komplexe UIs durch das Verschachteln von Komponenten. Jede Komponente kann andere Komponenten enthalten — und bildet so einen Baum.",
+        "text": "Du baust komplexe UIs durch das Verschachteln kleiner, fokussierter Komponenten. Jede Komponente sollte eine einzige Verantwortung haben. Kleine Komponenten sind einfacher zu testen, zu verstehen und zu warten als ein großes monolithisches Template.",
         "expandedText": "🔬 Das **`children`-Prop** ist ein spezielles Prop, das React automatisch mit dem JSX befüllt, das zwischen öffnendem und schließendem Tag einer Komponente platziert wird. Es ist der Mechanismus hinter jeder Wrapper-Komponente: `<Card>`, `<Modal>`, `<Layout>` und `<ErrorBoundary>` verwenden alle `children`, um Inhalte zu rendern, über die sie nichts wissen. Dies wird manchmal als **Inversion of Control**-Muster bezeichnet.\n\n📖 Das `children`-Prop hat den TypeScript-Typ `React.ReactNode`, der Strings, Zahlen, JSX-Elemente, Arrays und `null`/`undefined` umfasst. Wrapper-Komponenten sind typischerweise reiner als man denkt: Sie erhalten unbekannte Kinder und platzieren sie in einer bestimmten Struktur. Eine `<TwoColumnLayout>`-Komponente weiß nicht und sollte nicht wissen, was in jede Spalte gerendert wird — das ist Aufgabe des Aufrufers.",
         "analogy": {
           "title": "Schritt 3 — Komponenten kombinieren: Lego-Bausteine",
@@ -1825,7 +1825,7 @@
       {
         "animationStep": 4,
         "heading": "Props — Daten fließen nach unten",
-        "text": "`props` sind Argumente, die an Komponenten übergeben werden. Sie fließen nur vom Elternteil zum Kind — niemals umgekehrt.",
+        "text": "`props` sind Argumente für Komponenten und fließen nur vom Elternteil zum Kind — Einwegdatenfluss. Eine Komponente kann ihre eigenen Props nicht ändern. Wenn Kinder mit dem Elternteil kommunizieren müssen, wird eine Callback-Funktion als Prop übergeben.",
         "expandedText": "📖 **Komposition** — das Zusammensetzen kleiner Komponenten zu größeren — ist der Weg, wie React-Anwendungen skalieren. Ein `PageHeader` könnte ein `Logo`, eine `NavBar` und ein `UserMenu` zusammensetzen. Die `NavBar` setzt eine Liste von `NavLink`-Komponenten zusammen. Jede Ebene kennt ihre unmittelbaren Kinder, aber nichts über den breiteren Baum. Dies spiegelt wider, wie Funktionen komponieren: Jede Funktion kennt ihre Argumente, nicht die aufrufende Kette.\n\n⚠️ Komposition verhindert die **Prop-Drilling**-Falle, bei der Daten durch mehrere Ebenen von Zwischenkomponenten weitergegeben werden, die sie nicht benötigen. Wenn eine Komponente zu viele Props benötigt, um ihre Kinder zu konfigurieren, ist das ein Signal, sie in kleinere Einheiten aufzuteilen oder Kontext für Daten zu verwenden, die viele Kinder benötigen.",
         "analogy": {
           "title": "Schritt 4 — Props: Daten fließen nach unten: Bestellformular",
@@ -1851,7 +1851,7 @@
       {
         "animationStep": 6,
         "heading": "Conditional Rendering",
-        "text": "Verwende einfaches JavaScript innerhalb von JSX, um UI bedingt anzuzeigen. Ternary für entweder/oder, && für zeigen-oder-nichts, Early Return für komplexe Verzweigungen.",
+        "text": "Verwende JavaScript innerhalb von JSX, um UI bedingt anzuzeigen — ternäre Ausdrücke für Entweder-Oder, `&&` zum Anzeigen oder Ausblenden. Vermeide `if/else` direkt in JSX; berechne stattdessen den Wert vorher in einer Variable. Achtung mit `&&`: wenn die linke Seite `0` ist, rendert React die `0` statt nichts.",
         "expandedText": "⚠️ **Bedingtes Rendern** in JSX erfolgt mit JavaScript-Ausdrücken statt Template-Direktiven. Der Kurzschlussoperator `bedingung && <Komponente />` rendert die Komponente, wenn die Bedingung wahr ist — aber Vorsicht: Wenn `bedingung` `0` ist, rendert React die Zahl `0` im DOM statt nichts. Die Verwendung von `!!anzahl && <Komponente />` oder eines ternären Ausdrucks vermeidet dies.\n\n📖 Der **ternäre Ausdruck** `bedingung ? <A /> : <B />` ist der standardmäßige Weg, zwischen zwei Zuständen zu wechseln. Für komplexere Logik mit mehr als zwei Zweigen extrahiert man einen Ausdruck in eine Variable vor dem Return-Statement: `const content = isLoading ? <Skeleton /> : isError ? <Error /> : <Data />`. JSX ist ein Ausdruck — er kann in Variablen gespeichert, von Funktionen zurückgegeben und wie jeder andere JavaScript-Wert übergeben werden.",
         "analogy": {
           "title": "Schritt 6 — Conditional Rendering: Ampel",
@@ -1921,7 +1921,7 @@
       {
         "animationStep": 0,
         "heading": "State sind dynamische Daten",
-        "text": "State sind Daten, die sich im Laufe der Zeit ändern können und bei Änderungen ein Re-Render der Komponente verursachen. Props kommen von außen; State lebt innen.",
+        "text": "State sind Daten, die sich im Laufe der Zeit ändern können und bei Änderungen ein Re-Render auslösen. Props kommen von außen; State lebt innerhalb der Komponente. Ohne State würden Variablen bei jedem Render zurückgesetzt, da React die Komponentenfunktion jedes Mal neu aufruft. Der `useState`-Hook speichert Werte in einem persistenten Slot, sodass sie Re-Renders überstehen.",
         "expandedText": "📖 **`useState`** ist der grundlegende Hook zur Verwaltung des lokalen Komponentenzustands. Ohne ihn würden innerhalb einer Funktionskomponente deklarierte Variablen bei jedem Render auf ihren Anfangswert zurückgesetzt, da React die Funktion bei jedem Render frisch aufruft. `useState` speichert den Wert in einem Slot, der zwischen Renders bestehen bleibt, und die **Setter-Funktion** löst ein Re-Render aus, wenn sie aufgerufen wird.\n\n📖 Der Anfangswert von `useState` wird **nur einmal** verwendet — beim ersten Render. Nachfolgende Renders ignorieren das Argument und lesen den aktuellen Zustandswert aus dem Slot. Das Übergeben einer sich ändernden Prop als Anfangszustand — `useState(props.initialCount)` — funktioniert daher nicht wie erwartet: Nach dem ersten Render verfolgt der Zustand Prop-Änderungen nicht mehr.",
         "analogy": {
           "title": "Schritt 0 — State: dynamische Daten: Anzeigetafel im Stadion",
@@ -1934,7 +1934,7 @@
       {
         "animationStep": 1,
         "heading": "useState",
-        "text": "`useState` ist ein Hook, der den aktuellen Wert und eine Setter-Funktion zurückgibt. React verfolgt den Wert zwischen Renders.",
+        "text": "`useState` gibt ein Paar zurück: den aktuellen Wert und eine Setter-Funktion. React speichert den Wert außerhalb der Komponente, sodass er Re-Renders übersteht. Rufe den Setter auf, um den Wert zu aktualisieren — React rendert die Komponente beim nächsten Zyklus mit dem neuen State neu.",
         "expandedText": "✅ Die **Destrukturierungssyntax** `const [count, setCount] = useState(0)` entpackt das Tupel, das `useState` zurückgibt: `[currentValue, setter]`. Den Setter `set` plus den Variablennamen zu benennen ist eine starke Konvention. Die Tupelstruktur bedeutet, dass beide Werte frei umbenannt werden können, was mehrere unabhängige Zustandsvariablen mit sauberen Namen ermöglicht: `const [name, setName] = useState('')`.\n\n📖 Der **Initialisierungs-Callback** — `useState(() => teureBerechnung())` — wertet den Wert lazy aus, nur beim ersten Render. Dies ist wichtig für teure Berechnungen wie das Parsen von `localStorage`: `useState(() => JSON.parse(localStorage.getItem('cart') ?? '[]'))`. Ohne den Callback würde `JSON.parse` bei jedem Render aufgerufen — das Ergebnis würde ignoriert, aber die Kosten fallen trotzdem an.",
         "analogy": {
           "title": "Schritt 1 — useState: Lichtschalter mit Merker",
@@ -1947,7 +1947,7 @@
       {
         "animationStep": 2,
         "heading": "Den Setter aufrufen löst Re-Render aus",
-        "text": "Wenn du `setCount` aufrufst, plant React ein Re-Render. Die Komponentenfunktion wird erneut mit dem neuen State-Wert ausgeführt.",
+        "text": "Wenn du `setCount` aufrufst, plant React ein Re-Render — die Variable wird nicht sofort aktualisiert. Die Komponentenfunktion wird von oben nach unten neu ausgeführt, diesmal mit dem neuen State-Wert. Mehrere State-Updates im selben Event-Handler werden gebatcht, sodass React nur einmal neu rendert.",
         "expandedText": "📖 React **bündelt mehrere `setState`-Aufrufe** aus demselben Event-Handler in ein einziges Re-Render. Wenn man `setCount(c + 1)` dreimal in einem Click-Handler aufruft, rendert die Komponente einmal mit einem inkrementellen Count — nicht dreimal. Das liegt daran, dass jeder Aufruf denselben veralteten `c`-Wert liest, der im Closure erfasst wurde. Die Lösung ist die **funktionale Aktualisierungsform** `setCount(c => c + 1)`.\n\n📖 Seit React 18 bündelt React Zustandsaktualisierungen aus Promises und `setTimeout`-Callbacks — nicht nur aus React-Event-Handlern — standardmäßig. Dies verbessert die Performance, kann aber unerwartetes Verhalten bei Tests einführen. `flushSync` aus `react-dom` erzwingt synchrones Flushing, wenn ein sofortiges DOM-Update erforderlich ist.",
         "analogy": {
           "title": "Schritt 2 — Setter löst Re-Render aus: Fotoautomat",
@@ -1960,7 +1960,7 @@
       {
         "animationStep": 3,
         "heading": "State ist lokal für jede Instanz",
-        "text": "Wenn du zwei `<Counter />`-Komponenten renderst, hat jede ihren eigenen unabhängigen `count`. State wird nicht geteilt, außer du hebst ihn hoch.",
+        "text": "Wenn du zwei `<Counter />`-Komponenten renderst, hat jede ihren eigenen unabhängigen `count` — State ist lokal für die Instanz, nicht den Typ. State wird nicht geteilt, außer du hebst ihn zum nächsten gemeinsamen Elternteil hoch und gibst ihn als Props nach unten weiter. Das ist der grundlegende Mechanismus zur Koordination von State zwischen Geschwisterkomponenten.",
         "expandedText": "📖 Die **funktionale Aktualisierungsform** `setState(prev => neuesBerechnen(prev))` garantiert, dass die Funktion immer den **neuesten gereihten Zustand** erhält, nicht den Wert, der durch den umgebenden Closure erfasst wurde. Dies ist besonders wichtig in `useEffect` mit veralteten Abhängigkeiten, in `setTimeout`-Callbacks und in Event-Handlern, die an DOM-Elemente außerhalb der React-Kontrolle gebunden sind.\n\n📖 Die wichtigste Erkenntnis: Wenn man eine Setter-Funktion mit einem Callback aufruft, **stellt React sicher, dass das Argument `prev` der aktuell gebundene Zustand ist**, unabhängig davon, was der Code um den Callback herum sieht. Dies ermöglicht das sichere Schreiben von Closures, die `setState` aufrufen, ohne sich um veraltete Werte zu sorgen.",
         "analogy": {
           "title": "Schritt 3 — State ist lokal für jede Instanz: eigene Geldbörse",
@@ -1973,7 +1973,7 @@
       {
         "animationStep": 4,
         "heading": "Regeln der Hooks",
-        "text": "Hooks müssen immer auf der obersten Ebene einer Komponente aufgerufen werden — niemals innerhalb von Bedingungen, Schleifen oder verschachtelten Funktionen.",
+        "text": "Hooks müssen immer auf der obersten Ebene einer Komponente aufgerufen werden — niemals in Bedingungen, Schleifen oder verschachtelten Funktionen. React verlässt sich auf die konstante Reihenfolge der Hook-Aufrufe, um State der richtigen Variable zuzuordnen. Das Brechen dieser Regel führt zu schwer nachverfolgbaren Bugs. ESLints `eslint-plugin-react-hooks` erzwingt dies automatisch.",
         "expandedText": "📖 **Abgeleiteter Zustand** ist ein Wert, der aus bestehendem Zustand oder Props berechnet werden kann und daher kein eigenes `useState` benötigt. Wenn man `firstName`, `lastName` und `fullName` alle als Zustand speichert, muss man daran denken, `fullName` jedes Mal zu aktualisieren, wenn einer der Namen sich ändert. Leitet man `fullName = firstName + \" \" + lastName` inline während des Renderns ab, ist es immer synchron.\n\n📖 **Abgeleiteter Zustand** hat keine Setter, kann nicht veraltet sein und erfordert kein manuelles Synchronisieren. Wenn man `useState` aufruft, sollte man fragen: Kann dieser Wert aus bestehendem Zustand oder Props berechnet werden? Wenn ja, ist es abgeleiteter Zustand. Die einzige Ausnahme ist, wenn die Berechnung teuer ist — dann kommt `useMemo` ins Spiel.",
         "analogy": {
           "title": "Schritt 4 — Regeln der Hooks: Rezept mit fester Reihenfolge",
@@ -2065,7 +2065,7 @@
       {
         "animationStep": 0,
         "heading": "Seiteneffekte passieren nach dem Render",
-        "text": "Ein Seiteneffekt ist jede Arbeit, die etwas außerhalb der Komponente beeinflusst: Netzwerkanfragen, Timer, DOM-Manipulation. `useEffect` führt diese nach dem Render aus.",
+        "text": "Ein Seiteneffekt ist jede Arbeit, die etwas außerhalb der Komponente beeinflusst: Datenabruf, DOM-Manipulation, Timer, Abonnements. React trennt Rendering (rein, vorhersehbar) von Seiteneffekten (impure, asynchron). Das Rendering sollte immer dasselbe Ergebnis für dieselben Props/State liefern — Seiteneffekte in `useEffect` zu halten bewahrt diese Garantie.",
         "expandedText": "📖 **`useEffect`** ist der Hook für die Synchronisation einer React-Komponente mit einem externen System — dem Netzwerk, dem DOM, einem Timer, einem WebSocket oder einem anderen Seiteneffekt. React hält die Render-Funktion rein: Sie beschreibt die UI anhand des aktuellen Zustands. Alles, was außerhalb der Komponente greift — Lesen von einem Server, Schreiben ins DOM, Abonnieren von Ereignissen — gehört in einen Effekt.\n\n📖 Der kritische Unterschied zwischen einem Seiteneffekt und einer Render-Berechnung: **Seiteneffekte sind nicht idempotent**. Das Setzen von `document.title` beim ersten und zweiten Render produziert dasselbe Ergebnis. Das Ausführen eines `fetch(url)` zweimal erzeugt zwei Netzwerkanfragen — ein grundlegend anderes Verhalten. React ruft den Render-Body in Strict Mode zweimal auf, um zu entdecken, ob Code fälschlicherweise Seiteneffekte im Render platziert.",
         "analogy": {
           "title": "Schritt 0 — Seiteneffekte nach dem Render: Aufräumen nach der Party",
@@ -2078,7 +2078,7 @@
       {
         "animationStep": 1,
         "heading": "Leere deps — einmalig ausführen",
-        "text": "Ein leeres Array `[]` als zweites Argument zu übergeben teilt React mit, den Effect nur einmal auszuführen — wenn die Komponente zum ersten Mal mountet.",
+        "text": "Ein leeres Array `[]` als zweites Argument teilt React mit, den Effect nur einmal auszuführen — nach dem ersten Render. Das entspricht `componentDidMount` in Klassenkomponenten. Kein zweites Argument ist nicht dasselbe wie `[]` — ohne Dependency Array läuft der Effect nach jedem Render, was bei fetch-Calls zu Endlosschleifen führt.",
         "expandedText": "📖 Das **Abhängigkeits-Array** ist das zweite Argument von `useEffect` und steuert, wann der Effekt erneut ausgeführt wird. Ein **leeres Array `[]`** bedeutet, dass der Effekt einmal nach dem ersten Render ausgeführt wird. Ein **nicht-leeres Array** wie `[userId]` bedeutet, dass der Effekt erneut ausgeführt wird, wann immer sich `userId` ändert. **Kein zweites Argument** bedeutet: nach jedem Render ausführen — selten das, was man will.\n\n⚠️ **Der häufigste Bug**: Das Abhängigkeits-Array zu lügen — eine Variable zu verwenden, ohne sie aufzulisten. React's ESLint-Regel `exhaustive-deps` erkennt diese Diskrepanz und sollte aktiviert werden. Wenn es wie ein Kampf erscheint, Abhängigkeiten zu entfernen, ist es ein Zeichen, die Logik umzustrukturieren: entweder den Wert aus dem Closure herausbewegen oder das Muster in Frage stellen.",
         "analogy": {
           "title": "Schritt 1 — Leere deps: einmalig ausführen: Grundsteinlegung",
@@ -2091,7 +2091,7 @@
       {
         "animationStep": 2,
         "heading": "Deps-Array — bei Änderung erneut ausführen",
-        "text": "Liste die Werte auf, von denen der Effect abhängt. React führt den Effect neu aus, wenn sich einer dieser Werte ändert.",
+        "text": "Liste alle Werte auf, von denen der Effect abhängt — React führt ihn neu aus, wenn sich diese zwischen Renders ändern. Füge alle Props, State und Context ein, die du im Effect verwendest. ESLints `react-hooks/exhaustive-deps` erkennt fehlende Abhängigkeiten automatisch — einen Wert wegzulassen führt zu stale-closure-Bugs.",
         "expandedText": "📖 Die **Cleanup-Funktion** wird aus dem Effekt zurückgegeben und läuft, bevor der Effekt das nächste Mal ausgeführt wird und wenn die Komponente ausgehängt wird. Ohne Cleanup hinterlässt eine Komponente, die einen WebSocket abonniert und dann ausgehängt wird, ein aktives Abonnement, das Zustandsaktualisierungen an eine tote Komponente sendet.\n\n✅ Das Cleanup-Muster passt zu jedem Ressource-Akquisitions-Muster: Abonnements, Event-Listener, Timer und Animationsframes benötigen alle eine entsprechende Bereinigung. `clearTimeout(timerId)`, `subscription.unsubscribe()`, `element.removeEventListener(...)` — die Cleanup-Funktion führt den Teardown durch. Ohne sie leckt jede Re-Render-Iteration Ressourcen, die sich im Laufe der Zeit ansammeln.",
         "analogy": {
           "title": "Schritt 2 — Deps-Array: bei Änderung erneut ausführen: Wetterstation",
@@ -2104,7 +2104,7 @@
       {
         "animationStep": 3,
         "heading": "Cleanup-Funktion",
-        "text": "Gib eine Funktion von `useEffect` zurück, um vor dem nächsten Ausführen oder beim Unmount aufzuräumen. Unerlässlich für Timer, Abonnements und Event-Listener.",
+        "text": "Gib eine Funktion von `useEffect` zurück, um vor dem nächsten Ausführen oder bei der Demontage aufzuräumen. Cleanup verhindert Memory Leaks bei Abonnements und Timern — und den berühmten \"Can't update state on an unmounted component\"-Fehler. Beim Navigieren zu einer anderen Route wird die Komponente ausgehängt und Cleanup läuft automatisch.",
         "expandedText": "✅ **Datenabruf innerhalb von `useEffect`** ist ein gängiges Muster, hat aber bekannte Einschränkungen. Der Effekt wird nach dem ersten Render ausgeführt, daher gibt es immer ein Render ohne Daten, bevor der Fetch abgeschlossen ist — man muss den anfänglichen `undefined`- oder `null`-Zustand explizit behandeln. Das Muster erfordert drei Zustandsvariablen: `data`, `loading` und `error`.\n\n📖 Die Haupteinschränkungen von `useEffect`-Datenabruf: keine Server-Seitigkeit, kein Caching zwischen Navigationen, keine Deduplication wenn mehrere Komponenten dieselben Daten anfordern, und keine Hintergrund-Aktualisierung. Bibliotheken wie TanStack Query oder SWR beheben alle diese Einschränkungen und sind die empfohlene Lösung für Produktionsanwendungen.",
         "analogy": {
           "title": "Schritt 3 — Cleanup-Funktion: Vertrag kündigen vor dem Umzug",
@@ -2117,7 +2117,7 @@
       {
         "animationStep": 4,
         "heading": "Häufige Anwendungsfälle",
-        "text": "`useEffect` ist für alles, was außerhalb des Render-Zyklus passieren muss: Daten fetchen, Abonnements, DOM-Manipulation, Analytics.",
+        "text": "`useEffect` ist für alles, was außerhalb des Render-Zyklus passieren muss: Datenabruf, Event-Listener, direkte DOM-Manipulation. Für abgeleitete Werte, die auf State oder Props basieren, kein `useEffect` verwenden — einfach im Render berechnen. `useEffect` für Berechnungen führt zu unnötigen Re-Renders.",
         "expandedText": "📖 Ein **veralteter Closure** tritt auf, wenn der Effekt einen Wert aus einem vorherigen Render erfasst und ihn verwendet, auch nachdem sich der Wert geändert hat. Da JavaScript-Closures die Variablen im Gültigkeitsbereich zum Zeitpunkt ihrer Erstellung schließen, sieht ein Effekt, der erstellt wurde, als `count` 0 war, `count` immer als 0, es sei denn, `count` ist im Abhängigkeits-Array.\n\n📖 Die Regel der erschöpfenden Abhängigkeiten schützt vor veralteten Closures: Wenn der Effekt auf `count` zugreift, muss `count` im Array sein. Wenn man ein veraltetes Closure bemerkt — ein Effekt liest offensichtlich den falschen Wert — ist fast immer eine fehlende Abhängigkeit der Grund. Das Herausbewegen unveränderlicher Werte und Funktionen aus dem Effekt (oder das Memoieren mit `useCallback`) ist die andere Technik.",
         "analogy": {
           "title": "Schritt 4 — Häufige Anwendungsfälle: Schweizer Taschenmesser",
@@ -2209,7 +2209,7 @@
       {
         "animationStep": 1,
         "heading": "BrowserRouter umhüllt deine App",
-        "text": "BrowserRouter stellt Routing-Kontext für die gesamte App bereit. Es verwendet die HTML5-History-API, um die URL mit der UI synchron zu halten.",
+        "text": "BrowserRouter stellt Routing-Kontext für die gesamte App bereit und nutzt die HTML5 History API für saubere URLs ohne Hash-Zeichen. Er benötigt serverseitige Konfiguration: der Server muss für alle Routen `index.html` zurückgeben, sonst gibt es 404-Fehler beim direkten URL-Aufruf. HashRouter umgeht dieses Problem mit `#`-Präfix im Pfad.",
         "expandedText": "⚠️ `BrowserRouter` muss genau einmal an der Root-Ebene die gesamte Anwendung umhüllen. Er stellt den Routing-Kontext bereit, den alle anderen React-Router-Hooks und -Komponenten verbrauchen. Ein häufiger Fehler ist das Rendern zweier `BrowserRouter`-Komponenten, was zwei separate Routing-Kontexte erstellt. Hooks wie `useNavigate` lesen vom nächsten Eltern-Router; wenn zwei vorhanden sind, lesen sie vom falschen.\n\n📜 Für Tests ist `MemoryRouter` die richtige Wahl — er verwendet einen internen Array als History-Stack statt dem Browser-`window.history`, wodurch Tests ohne Browser-Umgebung laufen können. `StaticRouter` ist für Server-seitiges Rendering gedacht, wo keine echte Navigation stattfindet.",
         "analogy": {
           "title": "Schritt 1 — BrowserRouter umhüllt deine App: Rahmen eines Gemäldes",
@@ -2222,7 +2222,7 @@
       {
         "animationStep": 2,
         "heading": "Routes und Route",
-        "text": "Routes wählt die erste passende Route aus und rendert ihr Element. Jede Route ordnet einem URL-Pfad eine Komponente zu.",
+        "text": "`<Routes>` wählt die erste passende Route aus und rendert ihr Element. React Router v6 verwendet exaktes Matching standardmäßig — `/about` matched nicht `/about/team`. Verschachtele Routen in Layouts, um gemeinsame UI-Wrapper für mehrere Seiten zu teilen.",
         "expandedText": "📖 In React Router v6 verwendet `Routes` einen **spezifitätsbasierten Matching-Algorithmus**, der Routen automatisch nach Spezifität einordnet — statische Segmente schlagen dynamische, längere Pfade schlagen kürzere. Das bedeutet, dass die Reihenfolge der Routen für die Korrektheit meist keine Rolle spielt, anders als in v5, wo der erste Treffer immer gewann.\n\n📖 Das `element`-Prop akzeptiert ein JSX-Element — nicht einen Komponentenverweis. `<Route path=\"/about\" element={<About />} />` — nicht `element={About}`. Dieser Unterschied ist wichtig: Mit JSX können Props direkt an die Komponente weitergegeben werden `element={<About title=\"Über uns\" />}`, ohne einen Router-Wrapper-Mechanismus zu benötigen.",
         "analogy": {
           "title": "Schritt 2 — Routes und Route: Wegweiser am Kreisverkehr",
@@ -2235,7 +2235,7 @@
       {
         "animationStep": 3,
         "heading": "Link — ohne Neuladen navigieren",
-        "text": "Verwende `Link` statt `<a href>`. `Link` aktualisiert die URL und rendert die passende Komponente ohne vollständiges Seitenneuladen.",
+        "text": "Verwende `<Link>` statt `<a href>` — ein normales Ankerelement lädt die gesamte Seite neu und vernichtet den React-State. `<Link>` nutzt die History API für clientseitige Navigation. `<NavLink>` ist eine Variante, die automatisch eine `active`-Klasse für das aktuelle Route-Element hinzufügt.",
         "expandedText": "📜 `Link` rendert ein Standard-`<a>`-Element im DOM, was bedeutet, dass es alle eingebauten Browser-Verhaltensweisen erbt: Tastaturfokus, Vorleseprogramm-Ankündigungen, Rechtsklick zum Öffnen in einem neuen Tab und Cmd+Click auf macOS. React Router fängt das Click-Event ab und ruft `history.pushState` auf, um die Standard-Ganzseitennavigation zu verhindern.\n\n📖 `NavLink` erweitert `Link` mit aktiver Zustandsverwaltung: Es wendet automatisch eine `active`-Klasse an, wenn der `href` mit dem aktuellen Pfad übereinstimmt. Dies ist die idiomatische Methode für Navigationsmenüs. Das `end`-Prop auf einem `NavLink` stellt sicher, dass `/dashboard` nur als aktiv gilt, wenn der Pfad exakt übereinstimmt — nicht wenn er mit `/dashboard/settings` übereinstimmt.",
         "analogy": {
           "title": "Schritt 3 — Link: ohne Neuladen navigieren: Teleporter statt Bus",
@@ -2248,7 +2248,7 @@
       {
         "animationStep": 4,
         "heading": "useParams — dynamische Segmente",
-        "text": "URL-Segmente mit `:` als Präfix sind dynamisch. `useParams` gibt ein Objekt mit den gematchten Werten zurück.",
+        "text": "URL-Segmente mit `:` als Präfix sind dynamisch — `useParams` gibt ein Objekt mit den aufgelösten Werten zurück. `useNavigate()` ermöglicht programmatisches Navigieren z.B. nach einem erfolgreichen Formular-Submit. `useLocation()` gibt das aktuelle Location-Objekt zurück — nützlich um den aktuellen Pfad zu lesen.",
         "expandedText": "⚠️ `useParams` gibt ein Objekt der **dynamischen Segment-Werte** aus der aktuellen URL zurück. Alle Werte sind Strings — React Router kann nicht wissen, ob `:id` eine Zahl oder eine UUID sein soll. Ein häufiger Bug ist das direkte Vergleichen eines Params mit einer Zahl: `userId === 42` ist immer falsch, weil `\"42\" !== 42`. Numerische Params müssen immer mit `parseInt` oder `Number` geparst und validiert werden.\n\n📖 Bei TypeScript-Projekten liefert `useParams` `{ [key: string]: string | undefined }` — alle Felder sind potenziell `undefined`. Der richtige Ansatz: Defensiv destrukturieren und sicherstellen, dass der Param vor der Verwendung existiert. Generische Route-Typen können mit einer Typ-Parameter-Erweiterung verbessert werden.",
         "analogy": {
           "title": "Schritt 4 — useParams: dynamische Segmente: Namensschilder",
@@ -2445,7 +2445,7 @@
       {
         "animationStep": 1,
         "heading": "Optionale und readonly-Eigenschaften",
-        "text": "Markiere eine Eigenschaft mit `?`, um sie optional zu machen. Markiere sie mit `readonly`, um Mutation nach der Erstellung zu verhindern.",
+        "text": "Markiere eine Eigenschaft mit `?`, um sie optional zu machen — optionale Eigenschaften können `undefined` sein und TypeScript zwingt dich, das zu berücksichtigen. `readonly` verhindert Zuweisungen nach der Erstellung. Kombiniere beides: `readonly id?: number`.",
         "expandedText": "✅ **Optionale Eigenschaften** (`?`) erlauben es, eine Eigenschaft wegzulassen oder `undefined` zu sein. TypeScript beschwert sich nicht, wenn die Eigenschaft fehlt, aber es beschwert sich, wenn du sie verwendest, ohne vorher auf `undefined` zu prüfen. Das entspricht dem realen Muster von Objekten mit optionalen Feldern wie `middleName` oder `phoneNumber`.\n\n⚠️ **Readonly**-Eigenschaften können nur bei der Objekterstellung gesetzt werden. Jeder spätere Versuch, sie neu zuzuweisen, ist ein Compile-Zeit-Fehler. Das ist schwächer als `Object.freeze()` (das zur Laufzeit wirkt), aber viel günstiger – TypeScript readonly ist ein Design-Time-Schutz, der Absicht kommuniziert und versehentliche Mutationen im Code abfängt.",
         "analogy": {
           "title": "Schritt 1 — Optional und readonly: unveränderliche Felder",
@@ -2458,7 +2458,7 @@
       {
         "animationStep": 2,
         "heading": "Interfaces erweitern",
-        "text": "Verwende `extends`, um auf einem bestehenden Interface aufzubauen. Das Kind-Interface erbt alle Eltern-Eigenschaften und fügt eigene hinzu.",
+        "text": "Verwende `extends`, um auf einem bestehenden Interface aufzubauen — das Kind-Interface erbt alle Eigenschaften und kann neue hinzufügen. Mehrfachvererbung ist möglich: `interface Admin extends User, Permissions`. Das macht Typen modular und wiederverwendbar.",
         "expandedText": "📖 Interface-**Erweiterung** ist die Art, wie TypeScript Hierarchien modelliert. `interface Dog extends Animal` bedeutet, dass Dog alle erforderlichen Eigenschaften von Animal plus seine eigenen hat. Du kannst mehrere Interfaces gleichzeitig erweitern: `interface C extends A, B`. Dies ist der primäre Mechanismus für den Aufbau geschichteter Typhierarchien.\n\n📖 `extends` bei Interfaces ist rein additiv – das untergeordnete Interface kann keine Eigenschaften des übergeordneten entfernen oder einengen. Wenn du einen geerbten Eigenschaftstyp ändern musst, verwende stattdessen Schnittmengentypen (`A & { prop: enger }`) oder einen separaten Typ-Alias.",
         "analogy": {
           "title": "Schritt 2 — Interfaces erweitern: die aufgewertete Stellenbeschreibung",
@@ -2484,7 +2484,7 @@
       {
         "animationStep": 4,
         "heading": "Index-Signaturen für dynamische Schlüssel",
-        "text": "Wenn du nicht alle Eigenschaftsnamen im Voraus kennst, verwende eine Index-Signatur, um beliebige String-Schlüssel mit einem spezifischen Werttyp zu erlauben.",
+        "text": "Wenn du nicht alle Eigenschaftsnamen im Voraus kennst, verwende eine Index-Signatur (`[key: string]: T`), um beliebige String-Schlüssel mit einem einheitlichen Werttyp zu erlauben. Alle explizit benannten Eigenschaften im Interface müssen ebenfalls dem Werttyp entsprechen. `Record<string, T>` ist die lesbarere Kurzform für dasselbe Muster.",
         "expandedText": "📖 Eine **Indexsignatur** `[key: string]: T` teilt TypeScript mit, dass ein Objekt eine beliebige Anzahl von string-basierten Eigenschaften haben kann, alle mit demselben Werttyp `T`. Dies modelliert Wörterbücher, Lookup-Tabellen und Konfigurationsmaps.\n\n📖 Indexsignaturen interagieren mit expliziten Eigenschaften: Wenn du `[key: string]: number` deklarierst, muss auch jede benannte Eigenschaft vom Typ `number` sein. Wenn du sowohl `string`- als auch `number`-Werte willst, verwende `[key: string]: string | number`. Bevorzuge in den meisten Fällen `Record<string, T>` (ein Hilfstyp) gegenüber rohen Indexsignaturen – das ist lesbarer.",
         "analogy": {
           "title": "Schritt 4 — Index-Signaturen: das offene Wörterbuch",
@@ -2544,7 +2544,7 @@
       {
         "animationStep": 0,
         "heading": "Das Problem: starre Typen",
-        "text": "Ohne Generics benötigst du für jeden Typ eine separate Funktion — firstNumber, firstString, firstBoolean. Das verletzt das DRY-Prinzip.",
+        "text": "Ohne Generics benötigst du für jeden Typ eine separate Funktion — `firstNumber`, `firstString`, `firstBoolean`. Das verletzt das DRY-Prinzip und führt zu doppeltem Code. Generics lösen dieses Problem, indem sie Typen parametrierbar machen, ohne die Typsicherheit aufzugeben.",
         "expandedText": "📖 Ohne Generics hast du zwei Möglichkeiten: Schreibe für jeden Typ eine separate Funktion (repetitiv und schwer wartbar) oder verwende `any` (was alle Typinformationen verliert). Keine davon ist für wiederverwendbare Hilfsfunktionen befriedigend.\n\n📖 Das Symptom ist meist Copy-Paste: `firstNumber`, `firstString`, `firstBoolean` – identische Logik, nur die Typ-Annotation unterscheidet sich. Generics lösen dies, indem sie den Typ selbst parametrisieren, sodass eine gut typisierte Funktion für alle Typen funktioniert und den Aufrufern trotzdem genaue Typen liefert.",
         "analogy": {
           "title": "Schritt 0 — Starre Typen: eine Box, die nur eine Größe fasst",
@@ -2557,7 +2557,7 @@
       {
         "animationStep": 1,
         "heading": "Generische Funktionen mit <T>",
-        "text": "Ein Typparameter <T> ist ein Platzhalter, der zur Aufrufzeit durch einen echten Typ ersetzt wird. Eine Funktion funktioniert für alle Typen.",
+        "text": "Ein Typparameter `<T>` ist ein Platzhalter, der zur Aufrufzeit durch einen echten Typ ersetzt wird. TypeScript inferiert `T` meist automatisch aus dem Argument: `first([1, 2, 3])` ergibt `T = number` ohne explizite Annotation. Das `T` kann beliebig benannt werden — `T`, `K` (Key) und `V` (Value) sind Konventionen.",
         "expandedText": "📖 Ein **Typparameter** `<T>` ist ein Platzhalter zur Compile-Zeit. Wenn du eine generische Funktion aufrufst, ersetzt TypeScript den tatsächlichen Typ für `T` in der gesamten Funktionssignatur. Der Rückgabetyp `T` und der Parametertyp `T[]` bleiben synchron: Wenn du `number[]` übergibst, ist der Rückgabetyp `number`.\n\n✅ Typparameter können beliebige Namen haben – `T`, `U`, `K`, `V` sind konventionelle Einzelbuchstaben. Mehrere Typparameter werden durch Kommas getrennt: `function zip<A, B>(a: A[], b: B[]): [A, B][]`. Jeder Parameter ist unabhängig und wird separat aus den Argumenten inferiert.",
         "analogy": {
           "title": "Schritt 1 — Generische Funktionen: der anpassbare Behälter",
@@ -2570,7 +2570,7 @@
       {
         "animationStep": 2,
         "heading": "TypeScript leitet T automatisch ab",
-        "text": "Du musst das Typargument selten explizit schreiben — TypeScript leitet es aus dem ab, was du übergibst.",
+        "text": "Du musst das Typargument selten explizit schreiben — TypeScript leitet es aus dem Argument ab. Explizite Typargumente sind nötig wenn TypeScript nicht inferieren kann: `useState<User | null>(null)` — ohne `<User | null>` würde TypeScript nur `null` inferieren.",
         "expandedText": "📖 **Typinferenz** bedeutet, dass TypeScript `T` aus den übergebenen Argumenten ableitet. In `first([1, 2, 3])` sieht TypeScript ein Array von `number` und schließt `T = number`, was den Rückgabetyp zu `number` macht. Du schreibst nie `first<number>([1, 2, 3])` – die Inferenz erfolgt automatisch.\n\n📖 Explizite Typargumente werden nur benötigt, wenn die Inferenz mehrdeutig ist oder wenn du einen bestimmten Typ bestätigen willst: `useState<User | null>(null)` – hier kann `null` allein TypeScript nicht mitteilen, dass du `User | null` willst, also ist das explizite Generic notwendig. In den meisten anderen Fällen lass TypeScript inferieren.",
         "analogy": {
           "title": "Schritt 2 — Typinferenz: der Detektiv leitet T ab",
@@ -2583,7 +2583,7 @@
       {
         "animationStep": 3,
         "heading": "Generische Interfaces",
-        "text": "Interfaces können auch Typparameter haben. Der Typ wird bei der Verwendung des Interfaces angegeben.",
+        "text": "Interfaces können auch Typparameter haben — der Typ wird bei der Verwendung angegeben. Generische Interfaces sind der Baustein für wiederverwendbare Datenstrukturen: `interface Pair<A, B>`. Bibliotheken wie React nutzen generische Types intensiv: `useState<T>`, `useRef<T>` und `Promise<T>` sind alle generisch.",
         "expandedText": "📖 **Generische Interfaces** parametrisieren die Form des Objekts anstatt einer Funktion. `interface Box<T> { value: T }` erstellt eine Typfamilie: `Box<number>`, `Box<string>`, `Box<User[]>`. Das Typargument wird zur Verwendungszeit angegeben.\n\n📖 Generische Interfaces bilden die Grundlage der TypeScript-Standardbibliothek: `Array<T>`, `Promise<T>`, `Map<K, V>`, `Set<T>`, `Record<K, V>`. Das Erstellen eigener generischer Interfaces für API-Antworten (`ApiResponse<T>`), paginierte Listen (`Page<T>`) und Ereignis-Payloads hält deine Codebasis konsistent und reduziert doppelte Typdefinitionen.",
         "analogy": {
           "title": "Schritt 3 — Generische Interfaces: die universelle Formularvorlage",
@@ -2595,7 +2595,7 @@
       {
         "animationStep": 4,
         "heading": "Einschränkungen mit extends",
-        "text": "Verwende extends, um einzuschränken, welche Typen T sein kann. So kannst du sicher auf Eigenschaften zugreifen, die garantiert existieren.",
+        "text": "Verwende `extends`, um einzuschränken, welche Typen `T` sein kann — so kannst du sicher auf Eigenschaften zugreifen, die der Constraint garantiert. `T extends { length: number }` erlaubt Strings, Arrays und jedes Objekt mit `length`. Ohne Constraint ist `T` effektiv `unknown` und du kannst keine Eigenschaften aufrufen.",
         "expandedText": "📖 Eine **Einschränkung** (`<T extends SomeType>`) begrenzt, welche Typen für `T` eingesetzt werden können. Ohne Einschränkung geht TypeScript davon aus, dass `T` alles sein kann – du kannst daher keine Eigenschaft darauf sicher zugreifen. Das Hinzufügen von `extends { length: number }` teilt TypeScript mit, dass `T` garantiert eine `.length`-Eigenschaft hat, was `val.length` typsicher macht.\n\n📖 `extends keyof T` ist eine besonders leistungsstarke Einschränkung: `<T, K extends keyof T>` bedeutet „K muss einer der Eigenschaftsnamen von T sein.\" So erreicht `getProperty<T, K extends keyof T>(obj: T, key: K): T[K]` typisierten Eigenschaftszugriff – `any` in generischen Lookup-Hilfsfunktionen wird eliminiert.",
         "analogy": {
           "title": "Schritt 4 — Constraints: der Schraubenschlüssel mit Mindest-Maulweite",
@@ -2652,7 +2652,7 @@
       {
         "animationStep": 0,
         "heading": "typeof- und instanceof-Guards",
-        "text": "TypeScript engt Typen innerhalb von Bedingungsblöcken ein. Nach einer typeof-Prüfung wird der Typ automatisch verfeinert.",
+        "text": "TypeScript engt Typen innerhalb von Bedingungsblöcken ein — das nennt sich Control Flow Analysis. Nach einer `typeof`-Prüfung weiß TypeScript genau, welcher Typ in diesem Block vorliegt. TypeScript verfolgt den Typ einer Variable durch if/else, switch, Loops und Returns.",
         "expandedText": "📖 **Type Narrowing** ist TypeScripts Fähigkeit, einen breiten Union-Typ in einem bedingten Zweig auf einen spezifischen Typ einzuengen. Nach einer `typeof val === \"string\"`-Prüfung weiß TypeScript, dass `val` im true-Zweig ein `string` ist und engt `number | boolean` im false-Zweig ein. Das geschieht automatisch – kein Cast nötig.\n\n📖 `typeof` funktioniert für primitive Typen (`string`, `number`, `boolean`, `bigint`, `symbol`, `undefined`). `instanceof` funktioniert für Klasseninstanzen (`err instanceof Error`). Beide sind **Type Guards**: Laufzeitprüfungen, die TypeScript versteht und nutzt, um sein internes Typmodell zu aktualisieren.",
         "analogy": {
           "title": "Schritt 0 — typeof und instanceof: das Etikett prüfen",
@@ -2665,7 +2665,7 @@
       {
         "animationStep": 1,
         "heading": "Discriminated Unions",
-        "text": "Eine Discriminated Union verwendet eine gemeinsame Literal-Eigenschaft, um zwischen Typen zu unterscheiden. TypeScript engt anhand dieses Feldes ein.",
+        "text": "Eine Discriminated Union verwendet eine gemeinsame Literal-Eigenschaft, um zwischen Union-Members zu unterscheiden. TypeScript engt den Typ vollständig ein, wenn du auf das `kind`-Feld prüfst. In switch/case-Statements garantiert TypeScript, dass alle Fälle abgedeckt sind — der `default`-Case fängt den `never`-Typ.",
         "expandedText": "📖 Eine **diskriminierte Union** ist eine Union von Objekttypen, die eine gemeinsame literal-typisierte Eigenschaft teilen – den Diskriminanten. Jedes Mitglied hat einen anderen Literalwert für diese Eigenschaft. TypeScript nutzt die Diskriminanten-Prüfung, um die Union innerhalb des Zweigs auf das spezifische Mitglied einzuengen.\n\n✅ Dieses Muster ist der idiomatische TypeScript-Weg zur Modellierung von Zustandsmaschinen, Action-Payloads (Redux), Ergebnistypen und jeder Situation mit einem festen Satz von Varianten. Ein `switch (shape.kind)` über eine diskriminierte Union ist sowohl erschöpfend (TypeScript erkennt fehlende Fälle) als auch präzise (jeder Fall hat den richtigen eingeengten Typ).",
         "analogy": {
           "title": "Schritt 1 — Diskriminierte Unions: das Versandetikett",
@@ -2678,7 +2678,7 @@
       {
         "animationStep": 2,
         "heading": "Benutzerdefinierte Typ-Guards",
-        "text": "Eine Typprädikats-Funktion (x is T) teilt TypeScript den genauen eingeengten Typ mit, wenn die Funktion true zurückgibt.",
+        "text": "Eine Typprädikats-Funktion (`x is T`) teilt TypeScript den genauen eingeengten Typ nach dem Check mit. Typprädikate sind nötig, wenn TypeScript nicht selbst inferieren kann welcher Typ vorliegt — z.B. bei benutzerdefinierten Validierungen. Der Compiler vertraut deinem Urteil: wenn die Funktion `true` zurückgibt, behandelt TypeScript den Parameter als `T`.",
         "expandedText": "📖 Ein **Typenprädikat** ist eine Funktion, deren Rückgabetyp `param is Type` ist. Wenn die Funktion `true` zurückgibt, engt TypeScript `param` an der Aufrufstelle auf `Type` ein. So kannst du eine wiederverwendbare Laufzeitprüfung kapseln und ihr eine TypeScript-Typsignatur geben.\n\n📖 Typenprädikate sind unerlässlich, wenn die Einengungslogik komplex genug ist, um eine eigene Funktion zu rechtfertigen – mehrere Eigenschaften prüfen, Array-Formen validieren oder zwischen zwei Interfaces unterscheiden. Die Funktion muss eine korrekte Laufzeitprüfung durchführen; TypeScript vertraut dem Prädikat und überprüft seine Logik nicht.",
         "analogy": {
           "title": "Schritt 2 — Benutzerdefinierte Type Guards: der Experten-Test",
@@ -2691,7 +2691,7 @@
       {
         "animationStep": 3,
         "heading": "Gleichheitseinengung",
-        "text": "TypeScript engt den Typ ein, wenn du mit === oder !== vergleichst. Wenn beide Seiten auf Gleichheit geprüft werden, eliminiert TypeScript unmögliche Typen.",
+        "text": "TypeScript engt den Typ ein, wenn du mit `===` oder `!==` vergleichst — wenn beide Seiten Literal-Typen haben, schließt TypeScript andere Möglichkeiten aus. Truthy/Falsy-Checks funktionieren ebenfalls: `if (value)` schließt `null`, `undefined`, `0` und `''` aus. Nullable Typen (`T | null`) sind nach einer `!== null`-Prüfung sicher verwendbar.",
         "expandedText": "📖 **Gleichheits-Narrowing** tritt auf, wenn TypeScript eine strikte Gleichheitsprüfung (`===` oder `!==`) zwischen zwei Werten sieht. Wenn eine Seite ein Literaltyp ist, entfernt TypeScript unmögliche Typen aus der Union in beiden Zweigen. Das funktioniert für `null`, `undefined` und String-/Number-Literale.\n\n📖 Gleichheits-Narrowing kombiniert sich natürlich mit diskriminierten Unions: `if (x.kind === \"circle\")` engt die Union auf die `circle`-Variante ein. Es funktioniert auch, um `null` auszuschließen: `if (x !== null)` macht `x` innerhalb des Blocks nicht-nullbar. Bevorzuge `===` gegenüber `==`, um JavaScript's lockere Gleichheitskoerzionen zu vermeiden.",
         "analogy": {
           "title": "Schritt 3 — Gleichheits-Verengung: die übereinstimmenden Namensschilder",
@@ -2770,7 +2770,7 @@
       {
         "animationStep": 0,
         "heading": "Partial und Required",
-        "text": "Partial<T> macht alle Eigenschaften optional. Required<T> macht alle Eigenschaften erforderlich. Beide leiten einen neuen Typ aus einem bestehenden Interface ab.",
+        "text": "`Partial<T>` macht alle Eigenschaften optional — ideal für Formular-State oder Update-Payloads. `Required<T>` macht alle optionalen Eigenschaften pflichtend. Beide sind nützlich um Typen für spezifische Verwendungskontexte anzupassen, ohne den Original-Typ zu ändern.",
         "expandedText": "📖 **`Partial<T>`** wandelt jede Eigenschaft in `T` in eine optionale um und ermöglicht es, partielle Aktualisierungen darzustellen, ohne ein separates Entwurfs-Interface zu definieren. Das ist der korrekte Typ für `PATCH`-Anfrage-Bodies und Formzustandsobjekte, die möglicherweise nur teilweise ausgefüllt sind.\n\n🔬 **`Required<T>`** ist das Gegenteil: Es entfernt das `?` von jeder Eigenschaft. Verwende es, wenn du einen `Partial`-Wert erhältst und alle Standardwerte eingetragen hast und somit ein vollständig befülltes Objekt produzierst. Beide sind intern **gemappte Typen** – sie iterieren über alle Schlüssel von `T` und transformieren jeden einzelnen.",
         "analogy": {
           "title": "Schritt 0 — Partial und Required: Entwurf vs. Endformular",
@@ -2783,7 +2783,7 @@
       {
         "animationStep": 1,
         "heading": "Pick und Omit",
-        "text": "Pick<T, K> behält nur die aufgelisteten Schlüssel. Omit<T, K> entfernt die aufgelisteten Schlüssel. Beide erstellen einen Teilmengen-Typ.",
+        "text": "`Pick<T, K>` behält nur die aufgelisteten Schlüssel, `Omit<T, K>` entfernt sie. `Pick<User, 'id' | 'name'>` ist nützlich für API-Antworten, die nur Teilobjekte zurückgeben. `Omit<User, 'password'>` entfernt sensible Felder aus einem Typ für die Client-Seite.",
         "expandedText": "📖 **`Pick<T, K>`** erstellt einen neuen Typ, der nur die aufgelisteten Schlüssel enthält. Es ist das TypeScript-Äquivalent zur Auswahl bestimmter Spalten in einer SQL-Abfrage – ein fokussierter View-Typ mit nur dem, was der Verbraucher benötigt. Verwende es für View-Models, API-Antwortformen und Komponentenprops, die aus einem größeren Entitätstyp abgeleitet werden.\n\n📖 **`Omit<T, K>`** macht das Gegenteil: Es kopiert alle Eigenschaften von `T` außer den aufgelisteten Schlüsseln. Verwende `Omit<User, \"password\">` für sichere öffentlich zugängliche Typen oder `Omit<User, \"id\" | \"createdAt\">` für Erstellungs-Payloads, bei denen die Datenbank diese Felder generiert.",
         "analogy": {
           "title": "Schritt 1 — Pick und Omit: der maßgeschneiderte Extrakt",
@@ -2796,7 +2796,7 @@
       {
         "animationStep": 2,
         "heading": "Record, Readonly und ReturnType",
-        "text": "Record<K, V> erstellt einen Objekttyp mit Schlüsseln K und Werten V. Readonly<T> verhindert Mutation. ReturnType<F> extrahiert den Rückgabetyp einer Funktion.",
+        "text": "`Record<K, V>` erstellt einen Objekttyp mit Schlüsseln `K` und Werten `V` — klarer als eine Index-Signatur. `Readonly<T>` verhindert Mutation. `ReturnType<F>` extrahiert den Rückgabetyp einer Funktion. Kombiniere: `Readonly<Partial<User>>` erstellt einen unveränderlichen Update-Payload in einem Ausdruck.",
         "expandedText": "📖 **`Record<K, V>`** erstellt einen Objekttyp, bei dem jeder Schlüssel vom Typ `K` und jeder Wert vom Typ `V` ist. Es ist die kanonische Art, Wörterbücher und Lookup-Tabellen zu typisieren: `Record<string, number>` ist klarer als eine Indexsignatur von Hand zu schreiben.\n\n📖 **`Readonly<T>`** markiert alle Eigenschaften als `readonly`. **`ReturnType<F>`** extrahiert den Rückgabetyp einer Funktion – nützlich, wenn du eine Variable typisieren möchtest, die ein Funktionsergebnis hält, ohne die Typdefinition zu duplizieren. Kombiniere diese Hilfstypen: `Readonly<Partial<User>>` erstellt in einem Ausdruck ein readonly-Aktualisierungs-Payload.",
         "analogy": {
           "title": "Schritt 2 — Record, Readonly und ReturnType: drei weitere Power-Werkzeuge",
@@ -3122,7 +3122,7 @@
       {
         "animationStep": 3,
         "heading": "Praxisbeispiel: RBAC-Rollen",
-        "text": "String-Enums eignen sich gut für Rollen, Status und Konfigurationskonstanten, die in Logs, APIs und Datenbanken erscheinen — der String-Wert ist selbstdokumentierend.",
+        "text": "String-Enums eignen sich für Rollen, Status und Konfigurationskonstanten, die im Code lesbar sein sollen — der Wert erscheint in Logs und JSON statt einer Zahl. Im Gegensatz zu numerischen Enums sind String-Enum-Werte selbstdokumentierend: `status: 'pending'` in einer API-Response ist sofort verständlich. Verwende String-Enums immer wenn Werte in externen Systemen, Logs oder der Datenbank erscheinen.",
         "expandedText": "📖 String-Enums für **RBAC-Rollen** sind eine hervorragende Wahl, da der String-Wert in API-Anfragen, Datenbankeinträgen und Logs erscheint – alles profitiert von menschenlesbaren Werten statt undurchsichtiger Zahlen. Das Übergeben von `Role.Admin` an eine Funktion, die `Role` erwartet, gibt TypeScript genug Informationen, um versehentliche String-Literale zur Compile-Zeit abzufangen.\n\n📖 Eine verbreitete moderne Alternative zu Enums ist ein `const`-Objekt mit `as const`: `const Role = { Admin: \"admin\", User: \"user\" } as const`. Das vermeidet Enum-Kompilierungsbesonderheiten und funktioniert identisch in reinem JavaScript. Der Kompromiss ist, dass `Role` ein Objekt ist, kein Typ – du benötigst `type Role = typeof Role[keyof typeof Role]`, um den Union-Typ zu erhalten.",
         "analogy": {
           "title": "Schritt 3 — Enums für RBAC: die Rollenhierarchie",
@@ -4020,7 +4020,7 @@
       {
         "animationStep": 2,
         "heading": "Muster-Syntax",
-        "text": "Jede Zeile ist ein Muster. Verwende / für Verzeichnisse, * als Wildcard, ! um etwas gezielt nicht zu ignorieren. Muster werden vom Projekt-Root aus gematcht.",
+        "text": "Jede Zeile ist ein Muster: `/` für Verzeichnisse, `*` als Wildcard, `!` um etwas zu un-ignorieren. `node_modules/` ignoriert den gesamten Ordner, `*.log` ignoriert alle Log-Dateien. Bereits getrackte Dateien werden von `.gitignore` nicht entfernt — dafür muss `git rm --cached` verwendet werden.",
         "expandedText": "✅ Muster-**Wildcards** ermöglichen flexibles Matching. `*` passt auf jeden String innerhalb einer einzelnen Pfadkomponente (nicht über `/` hinweg); `**` passt auf beliebig viele Pfadkomponenten: `**/logs` passt auf `logs/`, `build/logs/` und `packages/api/logs/`. `?` passt auf ein einzelnes Zeichen. Negation mit `!` hebt ein Muster auf: `!src/generated-important-file.ts` schließt eine durch ein breiteres Muster ausgeschlossene Datei wieder ein.\n\n📜 Ein häufiges Muster: `*.log` ignoriert alle Log-Dateien; `!important.log` schließt eine bestimmte Log-Datei wieder ein. Die Reihenfolge der Muster ist wichtig — spätere Muster überschreiben frühere. Verwende `git check-ignore -v path/to/file`, um herauszufinden, welche `.gitignore`-Regel eine bestimmte Datei ignoriert.",
         "analogy": {
           "title": "Schritt 2 — Muster-Syntax: Platzhalter im Rezept",

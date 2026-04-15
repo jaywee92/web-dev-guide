@@ -283,7 +283,7 @@
       {
         "animationStep": 0,
         "heading": "Das Anker-Element",
-        "text": "Der <a>-Tag (Anker) erstellt einen Link. Das href-Attribut enthält das Ziel — eine URL, einen Pfad oder sogar eine E-Mail-Adresse. Ohne href ist es kein Link.",
+        "text": "Der `<a>`-Tag (Anker) erstellt einen Link. Das `href`-Attribut enthält das Ziel — eine URL, einen Pfad, eine E-Mail-Adresse oder ein `#Fragment` für seiteninternen Sprung. Das Element hat implizit `role=\"link\"` und ist standardmäßig per Tastatur navigierbar. Ein `<div onclick>` als Fake-Link bricht die Tastaturzugänglichkeit und erfordert ARIA-Remediation.",
         "expandedText": "🔬 Ein `<a>`-Element **ohne** `href`-Attribut ist technisch gültig, wird aber als nicht interaktiver Text ohne implizite Rolle gerendert. Fragment-Links (`href=\"#section-id\"`) scrollen zum passenden `id`-Attribut — sie sind die Grundlage der Seitennavigation und barrierefreier Skip-Links.\n\n📖 Das `<a>`-Element hat eine implizite `role=\"link\"`, die es standardmäßig per Tastatur navigierbar macht. Die Verwendung von `<div onclick>` oder `<span onclick>` als Pseudo-Links bricht die Tastaturnavigation, verliert die implizite Rolle und erfordert zusätzliches ARIA-Markup.",
         "analogy": {
           "title": "Schritt 1 — Anker-Element: ein Portal-Schild",
@@ -556,7 +556,7 @@
       {
         "animationStep": 0,
         "heading": "HTML ist nur Text",
-        "text": "Wenn dein Browser eine HTML-Datei empfängt, sieht er reinen Text — Tags, Attribute, Inhalt. Das DOM ist das, was der Browser aus diesem Text aufbaut.",
+        "text": "Wenn dein Browser eine HTML-Datei empfängt, sieht er reinen Text — Tags, Attribute, Inhalte. Er parst diesen Text und baut eine baumartige Datenstruktur im Speicher: das Document Object Model. JavaScript kann diesen Baum lesen und verändern, was interaktive Webseiten erst möglich macht.",
         "analogy": {
           "title": "Schritt 1 — HTML als Text: ein Bauplan für ein Gebäude",
           "text": [
@@ -569,7 +569,7 @@
       {
         "animationStep": 1,
         "heading": "Das Parsen beginnt oben",
-        "text": "Der Browser liest dein HTML von oben nach unten und erstellt für jedes Element einen Knoten. Der <html>-Tag wird zur Wurzel.",
+        "text": "Der Browser liest dein HTML von oben nach unten und erstellt für jedes Element einen Knoten im Baum. Jeder Knoten hat eine Eltern-Kind-Beziehung zu benachbarten Elementen. Der gesamte Baum ist über `document` zugänglich — `document.body` ist der Wurzelknoten des sichtbaren Bereichs.",
         "analogy": {
           "title": "Schritt 2 — Top-down-Parsing: ein Rezept lesen",
           "text": [
@@ -582,7 +582,7 @@
       {
         "animationStep": 2,
         "heading": "Kinder verzweigen sich nach außen",
-        "text": "Verschachtelte Elemente werden zu Kindknoten. Der Baum wächst, während jedes Tag geparst wird.",
+        "text": "Verschachtelte Elemente werden zu Kindknoten — ein `<li>` innerhalb `<ul>` ist ein Kind des `<ul>`-Knotens. Der Baum wächst, während jedes Tag geparst wird. Mit `element.children` und `element.parentElement` kann man im Baum navigieren.",
         "analogy": {
           "title": "Schritt 3 — Kinder verzweigen nach außen: ein Stammbaum",
           "text": [
@@ -595,7 +595,7 @@
       {
         "animationStep": 3,
         "heading": "Text ist auch ein Knoten",
-        "text": "Jedes Textstück zwischen Tags ist sein eigener Textknoten im Baum.",
+        "text": "Jedes Textstück zwischen Tags ist sein eigener Textknoten im Baum. Auch Leerzeichen und Zeilenumbrüche zwischen Elementen erzeugen Textknoten — das ist der Grund für unerwartete Abstände in Inline-Layouts. `element.textContent` liest oder setzt den gesamten Textinhalt eines Knotens.",
         "analogy": {
           "title": "Schritt 4 — Textknoten: die eigentlichen Wörter auf der Seite",
           "text": [
@@ -711,7 +711,7 @@
       {
         "animationStep": 0,
         "heading": "Das Div-Suppen-Problem",
-        "text": "Wenn man nur <div>-Elemente verwendet, teilt das Browsern und Screenreadern nichts über die Struktur der Seite mit. Jede Box sieht gleich aus.",
+        "text": "Wenn man nur `<div>`-Elemente verwendet, teilt das Browsern und Screenreadern nichts über die Seitenstruktur mit — jede Box sieht gleich aus. Semantische Elemente wie `<header>`, `<main>` und `<nav>` kommunizieren Bedeutung an assistive Technologien und Suchmaschinen. Sie erzeugen zugängliche Landmarks, zwischen denen Screenreader-Nutzer direkt springen können.",
         "expandedText": "📖 Eine Seite kann **mehrere `<header>`-Elemente** haben — eines für den seitenweiten Header und eines innerhalb jedes `<article>` oder `<section>`. Das oberste `<header>` wird auf ARIA `role=\"banner\"` (ein Landmark) abgebildet; Header innerhalb von Abschnitten erhalten diese Landmark-Rolle nicht.\n\n📖 Das `<header>`-Element ist für sichtbaren Seiteninhalt gedacht. Verwechsle es nicht mit dem `<head>`-Element, das unsichtbare Metadaten enthält. `<header>` kann das Logo, Navigation, Suche und Autorhinweise enthalten — alle Inhalte, die den Abschnitt einleiten oder kontextualisieren.",
         "analogy": {
           "title": "Schritt 1 — Div-Suppe: ein unbeschrifteter Aktenschrank",
@@ -724,7 +724,7 @@
       {
         "animationStep": 1,
         "heading": "<header>",
-        "text": "Das <header>-Element enthält einleitenden Inhalt — Logo, Seitenname, Hauptnavigation. Es kann einmal pro Seite oder einmal pro Abschnitt vorkommen.",
+        "text": "Das `<header>`-Element enthält einleitenden Inhalt — Logo, Seitenname, Hauptnavigation. Als Landmark mit `role=\"banner\"` kann es von Screenreader-Nutzern direkt angesprungen werden. Pro Seite sollte es nur einen `<header>` auf oberster Ebene geben.",
         "expandedText": "📖 Eine Seite kann **mehrere `<header>`-Elemente** haben — eines für den seitenweiten Header und je eines innerhalb jedes `<article>` oder `<section>`. Der oberste `<header>` ist der ARIA-Rolle `role=\"banner\"` zugeordnet (ein Landmark); Header innerhalb von Abschnitten erhalten diese Landmark-Rolle nicht.\n\n📖 Das `<header>`-Element ist für sichtbare Seiteninhalte gedacht. Es nicht mit dem `<head>`-Element verwechseln, das unsichtbare Metadaten enthält. `<header>` kann das Site-Logo, Navigation, Suche und Bylines enthalten — alle Inhalte, die den Abschnitt, in dem sie sich befinden, einführen oder kontextualisieren.",
         "analogy": {
           "title": "Schritt 2 — header: die Frontfassade eines Gebäudes",
@@ -737,7 +737,7 @@
       {
         "animationStep": 2,
         "heading": "<nav>",
-        "text": "Das <nav>-Element markiert einen Block mit Navigationslinks. Screenreader und Suchmaschinen verwenden es, um die Seitenstruktur zu verstehen.",
+        "text": "Das `<nav>`-Element markiert einen Block mit Navigationslinks. Screenreader und Suchmaschinen erkennen es als Navigationsbereich. Mehrere `<nav>`-Elemente auf einer Seite sollten mit `aria-label` beschriftet werden, um sie zu unterscheiden.",
         "expandedText": "📖 Eine Seite kann **mehrere `<nav>`-Elemente** haben — Hauptnavigation, Breadcrumbs, Inhaltsverzeichnis. Screenreader stellen `<nav>` als \"Navigation\"-Landmark bereit, zu dem Benutzer direkt springen können. `aria-label` verwenden, um mehrere Nav-Landmarks zu unterscheiden: `<nav aria-label=\"Hauptnavigation\">` vs. `<nav aria-label=\"Breadcrumbs\">`.\n\n📖 Nicht jede Gruppe von Links erfordert ein `<nav>`-Element. Rechtliche Footer-Links oder Social-Media-Icon-Links sind keine primäre Navigation. `<nav>` für wichtige Navigationsblöcke reservieren, die Benutzern helfen, sich durch die primären Sektionen zu bewegen.",
         "analogy": {
           "title": "Schritt 3 — nav: das Wegweiserschild",
@@ -750,7 +750,7 @@
       {
         "animationStep": 3,
         "heading": "<main> und <article>",
-        "text": "<main> enthält den primären einzigartigen Inhalt der Seite. <article> ist für in sich abgeschlossenen Inhalt wie einen Blog-Beitrag oder eine Neuigkeit.",
+        "text": "`<main>` enthält den primären einzigartigen Inhalt der Seite — pro Seite nur einmal. `<article>` ist für in sich abgeschlossene Inhalte wie Blogbeiträge, `<section>` für thematisch gruppierte Inhalte innerhalb einer Seite. Diese Unterscheidung hilft sowohl der Barrierefreiheit als auch der SEO.",
         "expandedText": "📖 Pro Seite darf es **nur ein `<main>`-Element** geben. Es ist der ARIA-Rolle `role=\"main\"` zugeordnet und ist das Ziel von \"Zum Hauptinhalt springen\"-Links — eine WCAG-Barrierefreiheitsanforderung, die es Tastaturnutzern ermöglicht, wiederholte Navigationselemente zu überspringen.\n\n📖 `<article>` stellt eigenständige Inhalte dar, die unabhängig verteilt oder syndiziert werden könnten — ein Blogbeitrag, ein Forumsbeitrag, eine Produktkarte. Jedes `<article>` kann sein eigenes `<header>` und `<footer>` haben. `<section>` gruppiert thematisch verwandte Inhalte, ist aber nicht unabhängig verteilbar — es benötigt immer seinen umgebenden Kontext.",
         "analogy": {
           "title": "Schritt 4 — main und article: die Haupthalle und Ausstellungen",
@@ -763,7 +763,7 @@
       {
         "animationStep": 4,
         "heading": "Das Gesamtbild",
-        "text": "Mit semantischem HTML verstehen Browser, Suchmaschinen und assistive Technologien die Seitenstruktur — ohne CSS-Klassen für die Bedeutung.",
+        "text": "Mit semantischem HTML verstehen Browser, Suchmaschinen und assistive Technologien deine Seite ohne zusätzliche ARIA-Attribute. Suchmaschinen gewichten semantisch korrekte Inhalte stärker. Für Elemente ohne semantische Alternative füge `role`- und `aria-*`-Attribute hinzu.",
         "expandedText": "📖 Die **ARIA-Landmark-Rollen** sind direkt HTML5-Semantikelementen zugeordnet: `<main>` = `role=\"main\"`, `<nav>` = `role=\"navigation\"`, oberster `<header>` = `role=\"banner\"`, oberstes `<footer>` = `role=\"contentinfo\"`, `<aside>` = `role=\"complementary\"`. Screenreader-Benutzer navigieren Landmarks mit einem einzigen Tastendruck.\n\n📖 Suchmaschinen nutzen semantische Struktur zur Bestimmung der Inhaltshierarchie. Die `<h1>`-bis-`<h6>`-Gliederung, `<article>`-Grenzen und `<aside>`-Ausschlüsse beeinflussen alle, wie Inhalte indexiert und eingestuft werden. Semantisches Markup ist kostenlose SEO und Barrierefreiheit durch korrekte Elementwahl.",
         "analogy": {
           "title": "Schritt 5 — Vollständiges semantisches Layout: eine gut organisierte Zeitung",
@@ -852,7 +852,7 @@
       {
         "animationStep": 0,
         "heading": "Das <form>-Element",
-        "text": "Ein <form> umschließt alle Eingabefelder und sendet Daten an einen Server. Das action-Attribut setzt die URL; method setzt GET oder POST.",
+        "text": "Ein `<form>` umschließt alle Eingabefelder und sendet Daten an einen Server. Das `action`-Attribut gibt die Ziel-URL an, `method` die HTTP-Methode (GET oder POST). Ohne `action` sendet das Formular an die aktuelle URL — nützlich für Single-Page-Apps die den Submit mit JavaScript abfangen.",
         "analogy": {
           "title": "Schritt 1 — form-Element: ein Postumschlag",
           "text": [
@@ -865,7 +865,7 @@
       {
         "animationStep": 1,
         "heading": "<label> und <input>",
-        "text": "Jedes Eingabefeld sollte ein Label haben. Die Verbindung mit for/id macht das Label anklickbar und verbessert die Barrierefreiheit.",
+        "text": "Jedes Eingabefeld sollte ein `<label>` haben — die Verbindung über `for`/`id` macht das Label anklickbar und teilt Screenreadern mit, was das Feld bedeutet. Ein fehlendes Label ist der häufigste Barrierefreiheitsfehler in Formularen. `placeholder` ersetzt kein Label — er verschwindet beim Eingeben.",
         "analogy": {
           "title": "Schritt 2 — label und input: ein Hotelzimmerschlüssel",
           "text": [
@@ -878,7 +878,7 @@
       {
         "animationStep": 2,
         "heading": "<select> und <option>",
-        "text": "<select> erstellt ein Dropdown-Menü. Jede <option> ist eine Auswahlmöglichkeit. Das value-Attribut ist das, was beim Absenden übertragen wird.",
+        "text": "`<select>` erstellt ein Dropdown-Menü, jede `<option>` ist eine Auswahlmöglichkeit. Das `name`-Attribut definiert den Schlüssel beim Absenden. Das `value`-Attribut der gewählten Option wird übermittelt — ohne `value` wird der Textinhalt der Option gesendet.",
         "analogy": {
           "title": "Schritt 3 — select: ein Dropdown-Menü im Restaurant",
           "text": [
@@ -891,7 +891,7 @@
       {
         "animationStep": 3,
         "heading": "Checkbox und Radio",
-        "text": "Checkboxen erlauben Mehrfachauswahl. Radio-Buttons in derselben Gruppe erlauben nur eine Auswahl.",
+        "text": "Checkboxen erlauben Mehrfachauswahl — mehrere Checkboxen können gleichzeitig ausgewählt sein. Radio-Buttons in derselben `name`-Gruppe erlauben nur eine Auswahl. Nur aktivierte Checkboxen und der ausgewählte Radio-Button werden beim Absenden übermittelt.",
         "analogy": {
           "title": "Schritt 4 — checkbox und radio: Kippschalter und Radioknöpfe",
           "text": [
@@ -904,7 +904,7 @@
       {
         "animationStep": 4,
         "heading": "<button type=\"submit\">",
-        "text": "Der Absende-Button sendet das Formular. type=\"submit\" ist die Standardeinstellung. type=\"button\" verhindert das Absenden — nützlich für JavaScript-Aktionen.",
+        "text": "Der Absendebutton sendet das Formular — `type=\"submit\"` ist die Standardeinstellung für Buttons in einem Formular. Vergisst man `type=\"button\"`, löst ein Button-Klick versehentlich das Absenden aus. Verwende `type=\"button\"` für alle Buttons, die nicht das Formular abschicken sollen.",
         "analogy": {
           "title": "Schritt 5 — Submit-Button: der Senden-Button in einer E-Mail",
           "text": [
