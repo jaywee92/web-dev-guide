@@ -617,7 +617,7 @@
       {
         "animationStep": 1,
         "heading": "aria-label and aria-labelledby",
-        "text": "When visible text isn't enough, aria-label provides an accessible name. Icons-only buttons, close buttons, and form inputs all need descriptive labels."
+        "text": "When visible text isn't enough, `aria-label` provides an accessible name directly. Icons-only buttons, close buttons, and image-only inputs all need descriptive labels for screen readers. Without a label, assistive technology reads the element type only — \"button\" — which tells the user nothing. Use `aria-labelledby` to point to an existing visible element instead of duplicating text."
       },
       {
         "animationStep": 2,

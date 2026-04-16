@@ -154,7 +154,7 @@
       {
         "animationStep": 4,
         "heading": "5xx — Server errors",
-        "text": "5xx errors mean something went wrong on the server side — not the client's fault."
+        "text": "5xx errors mean something went wrong on the server side — not the client's fault. 500 Internal Server Error is the general catch-all for unhandled exceptions. 503 Service Unavailable means the server is overloaded or down for maintenance — the client can retry later. Unlike 4xx errors, the client request was valid; the server simply could not fulfill it."
       }
     ],
     "cheatSheet": {

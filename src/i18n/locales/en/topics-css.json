@@ -738,7 +738,7 @@
       {
         "animationStep": 1,
         "heading": "Assign children",
-        "text": "Each child gets a grid-area name matching the template. The browser places it exactly — no tracking column/row numbers."
+        "text": "Each child gets a `grid-area` name matching the template — the browser places it exactly, no manual column/row tracking needed. The name is arbitrary: `header`, `sidebar`, `main`, `footer` are conventions, not keywords. Renaming an area in the template instantly moves it everywhere in the layout."
       },
       {
         "animationStep": 2,
@@ -997,7 +997,7 @@
       {
         "animationStep": 3,
         "heading": "prefers-color-scheme",
-        "text": "Respect the user's OS preference automatically. Media query reads the system setting and activates the dark token overrides — no JavaScript needed for the initial state."
+        "text": "Respect the user's OS preference automatically with `prefers-color-scheme`. The media query reads the system setting and activates the dark token overrides — no JavaScript needed for the initial paint. Toggle a `data-theme` attribute with JavaScript for a user-controlled switch that overrides the OS default."
       }
     ],
     "cheatSheet": {
