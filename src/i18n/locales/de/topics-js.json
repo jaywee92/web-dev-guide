@@ -34,7 +34,7 @@
       {
         "animationStep": 2,
         "heading": "const — kann nicht neu zugewiesen werden",
-        "text": "`const`-Bindungen können nach der Erstellung nicht neu zugewiesen werden. Bei Objekten und Arrays verhindert `const` die Neuzuweisung, nicht die Mutation — du kannst Eigenschaften ändern, aber nicht die Variable auf ein neues Objekt zeigen lassen. Verwende `const` standardmäßig und wechsle zu `let` nur wenn du neu zuweisen musst.",
+        "text": "`const`-Bindungen können nach der Erstellung nicht neu zugewiesen werden. Bei Objekten und Arrays verhindert `const` die Neuzuweisung, nicht die Mutation — du kannst Eigenschaften ändern, aber nicht die Variable auf ein neues Objekt zeigen lassen. Ein nützliches Mentales Modell: Variablen sind *Labels*, die auf Daten zeigen, keine Behälter die Daten enthalten. `const` sperrt das Label, lässt aber die Daten dahinter offen für Änderungen. Verwende `const` standardmäßig und wechsle zu `let` nur wenn du neu zuweisen musst.",
         "analogy": {
           "title": "Schritt 3 — const: das Namensschild, nicht der Inhalt",
           "text": [
@@ -1389,7 +1389,7 @@
       {
         "animationStep": 0,
         "heading": "Was ist ein Promise?",
-        "text": "Ein Promise repräsentiert einen Wert, der in der Zukunft verfügbar sein wird. Es hat drei Zustände: `pending` (ausstehend), `fulfilled` (erfüllt mit einem Wert) oder `rejected` (abgelehnt mit einem Fehler). Einmal resolved oder rejected ändert sich der Zustand nie mehr.",
+        "text": "JavaScript ist single-threaded — es kann nur eine Sache gleichzeitig tun und hat keine Möglichkeit zu pausieren und zu warten. Ein Promise repräsentiert das zukünftige Ergebnis einer asynchronen Operation, ohne den Thread zu blockieren: die Engine führt anderen Code weiter aus, während die Arbeit im Hintergrund läuft. Ein Promise hat drei Zustände: `pending` (ausstehend), `fulfilled` (erfüllt mit einem Wert) oder `rejected` (abgelehnt mit einem Fehler). Einmal settled ändert sich der Zustand nie mehr.",
         "analogy": {
           "title": "Der Bestellzettel",
           "text": [

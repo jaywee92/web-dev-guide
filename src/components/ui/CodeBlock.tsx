@@ -26,35 +26,73 @@ export default function CodeBlock({ code, language = 'code', label }: Props) {
   }, [code, language])
 
   return (
-    <div style={{ borderRadius: 8, overflow: 'hidden', border: '1px solid var(--border)' }}>
-      {label && (
-        <div
-          className="flex items-center justify-between px-4 py-2"
-          style={{ background: 'var(--surface-bright)', borderBottom: '1px solid var(--border)' }}
-        >
-          <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}>
-            {label}
-          </span>
-          <span style={{ fontSize: 10, color: 'var(--text-faint)', fontFamily: 'var(--font-mono)' }}>
-            {language}
-          </span>
+    <div style={{
+      borderRadius: 10,
+      overflow: 'hidden',
+      border: '1px solid #252838',
+      background: '#0d0f17',
+      fontFamily: 'var(--font-mono)',
+    }}>
+      {/* Terminal title bar */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        padding: '8px 14px',
+        background: '#131520',
+        borderBottom: '1px solid #252838',
+      }}>
+        {/* Traffic lights */}
+        <div style={{ display: 'flex', gap: 5, flexShrink: 0 }}>
+          <div style={{ width: 11, height: 11, borderRadius: '50%', background: '#ff5f57' }} />
+          <div style={{ width: 11, height: 11, borderRadius: '50%', background: '#febc2e' }} />
+          <div style={{ width: 11, height: 11, borderRadius: '50%', background: '#28c840' }} />
         </div>
-      )}
+
+        {/* Label / filename — centred in bar, only when explicitly provided */}
+        <span style={{
+          flex: 1,
+          textAlign: 'center',
+          fontSize: 11,
+          fontFamily: 'var(--font-mono)',
+          color: '#555a73',
+          letterSpacing: '0.02em',
+        }}>
+          {label ?? ''}
+        </span>
+
+        {/* Language badge */}
+        <span style={{
+          fontSize: 10,
+          fontFamily: 'var(--font-mono)',
+          color: '#3e4260',
+          background: '#1c1f2e',
+          padding: '2px 7px',
+          borderRadius: 4,
+          letterSpacing: '0.04em',
+          flexShrink: 0,
+        }}>
+          {language}
+        </span>
+      </div>
+
+      {/* Code area */}
       {highlightedHtml ? (
         // Shiki output is from our own static topic data — not user input
         // eslint-disable-next-line react/no-danger
         <div
           dangerouslySetInnerHTML={{ __html: highlightedHtml }}
-          style={{ fontSize: 13, lineHeight: 1.6, overflowX: 'auto' }}
+          style={{ fontSize: 12.5, lineHeight: 1.7, overflowX: 'auto' }}
+          className="shiki-block"
         />
       ) : (
         <pre style={{
-          background: 'var(--surface)',
-          padding: '16px',
-          fontSize: 13,
-          lineHeight: 1.6,
+          background: '#0d0f17',
+          padding: '14px 18px',
+          fontSize: 12.5,
+          lineHeight: 1.7,
           fontFamily: 'var(--font-mono)',
-          color: 'var(--text)',
+          color: '#abb2bf',
           overflowX: 'auto',
           margin: 0,
         }}>

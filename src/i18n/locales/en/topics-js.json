@@ -16,7 +16,7 @@
       {
         "animationStep": 2,
         "heading": "const — cannot be reassigned",
-        "text": "`const` prevents the binding from being reassigned to a different value after declaration — the name is permanently locked to that first value. However, `const` does not make the value itself immutable: the properties of a `const` object and the elements of a `const` array can both still be changed freely. Use `const` by default and reach for `let` only when you genuinely need to reassign the variable."
+        "text": "`const` prevents the binding from being reassigned to a different value after declaration — the name is permanently locked to that first value. However, `const` does not make the value itself immutable: the properties of a `const` object and the elements of a `const` array can both still be changed freely. A useful mental model: variables are *labels* pointing to data, not containers holding it. `const` locks the label in place, but leaves the data it points to open for modification. Use `const` by default and reach for `let` only when you genuinely need to reassign the variable."
       },
       {
         "animationStep": 3,
@@ -596,7 +596,7 @@
       {
         "animationStep": 0,
         "heading": "What is a Promise?",
-        "text": "A Promise represents the eventual result of an asynchronous operation. It is always in one of three states: pending (still in progress), fulfilled (succeeded with a value), or rejected (failed with a reason). Once a Promise settles to fulfilled or rejected, it never changes state, and any `.then()` or `.catch()` handlers attached later still receive the original outcome."
+        "text": "JavaScript is single-threaded — it can only do one thing at a time and has no way to pause and wait. A Promise represents the eventual result of an asynchronous operation without blocking the thread: the engine keeps running other code while the work is in progress. A Promise is always in one of three states: `pending` (still in progress), `fulfilled` (succeeded with a value), or `rejected` (failed with a reason). Once settled, a Promise never changes state."
       },
       {
         "animationStep": 1,

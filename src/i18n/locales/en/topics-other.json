@@ -1054,7 +1054,7 @@
       {
         "animationStep": 5,
         "heading": "Events",
-        "text": "React uses camelCase event props (onClick, onChange, onSubmit). You pass a function reference — not a call. React wraps the native event in a SyntheticEvent that works the same across all browsers."
+        "text": "React uses camelCase event props (`onClick`, `onChange`, `onSubmit`). You pass a function reference — not a call. React wraps the native event in a SyntheticEvent that works the same across all browsers. For text inputs, `onChange` is the key to controlled components: bind `value` to state and update it on every keystroke. Always initialize text input state with an empty string (`useState('')`) — starting with `null` or `undefined` causes React to warn about switching from uncontrolled to controlled. For checkboxes, read `event.target.checked`, not `event.target.value`."
       },
       {
         "animationStep": 6,
@@ -1064,7 +1064,7 @@
       {
         "animationStep": 7,
         "heading": "Rendering Lists",
-        "text": "Use .map() to turn an array into JSX elements. Every sibling in a list needs a stable key prop — React uses it to track which items changed. Use a unique ID from your data, never the array index."
+        "text": "Use `.map()` to turn an array into JSX elements. Every sibling in a list needs a stable `key` prop — React uses it to track which items were added, removed, or reordered. Use a unique ID from your data, never the array index. Generate IDs when the data is created — not during render — so keys stay stable across re-renders; generating them inside `.map()` assigns a new key on every render, making React treat every item as brand new."
       }
     ],
     "cheatSheet": {
@@ -1123,7 +1123,7 @@
       {
         "animationStep": 2,
         "heading": "Calling the setter re-renders",
-        "text": "When you call `setCount`, React schedules a re-render — it does not update the variable immediately. The component function runs again from top to bottom with the new state value. State updates within the same event handler are batched together so React only re-renders once."
+        "text": "When you call `setCount`, React schedules a re-render — it does not update the variable immediately. The component function runs again from top to bottom with the new state value, and every child component re-renders as well. React then compares the new output to the previous snapshot and updates only what actually changed in the DOM. State updates within the same event handler are batched together so React only re-renders once per event."
       },
       {
         "animationStep": 3,
@@ -1143,7 +1143,7 @@
       {
         "animationStep": 6,
         "heading": "State with objects & arrays",
-        "text": "Never mutate state directly — React won't detect the change. Always create a new object or array using spread. For objects: spread and override. For arrays: use map, filter, or spread."
+        "text": "Never mutate state directly — React compares state by reference, not by value. Calling `.push()` on an array or changing a property on an object keeps the same reference, so React sees no change and skips the re-render entirely. Always create a new array or object: use spread to copy and override for objects (`{...user, email: nextEmail}`), and `.map()`, `.filter()`, or spread for arrays."
       },
       {
         "animationStep": 7,
@@ -1218,7 +1218,7 @@
       {
         "animationStep": 5,
         "heading": "Fetching & race conditions",
-        "text": "When fetching inside useEffect, a fast second request can resolve before a slow first one — causing stale data to win. Fix it: set an ignore flag in the cleanup function so only the latest request updates state."
+        "text": "When fetching inside useEffect, a fast second request can resolve before a slow first one — causing stale data to overwrite the correct result. The classic fix is an `ignore` flag: initialize it as `false`, set it to `true` in the cleanup function, and check it before updating state so earlier in-flight responses are discarded. Alternatively, pass an `AbortController` signal to `fetch` to cancel the in-flight request outright when the dependency changes or the component unmounts."
       },
       {
         "animationStep": 6,
@@ -1366,7 +1366,7 @@
       {
         "animationStep": 3,
         "heading": "When to use Context",
-        "text": "Context works best for data that is truly global or shared across many components. Avoid it for frequently-changing data — every context value change re-renders all its consumers."
+        "text": "Context works best for data that is truly global or shared across many components — like the current user, theme, or language. Avoid it for frequently-changing values: every context change re-renders all consumers, even those that only use a small part of the data. When your context value is an object, wrap it in `useMemo` so a new reference is not created on every parent render."
       },
       {
         "animationStep": 4,

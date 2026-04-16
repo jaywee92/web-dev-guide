@@ -6,7 +6,7 @@
       {
         "animationStep": 0,
         "heading": "Browser-Standardstile",
-        "text": "Ohne CSS wenden Browser ihre eigenen eingebauten Stile an — Serifenschriften, Abstände bei Überschriften, blau unterstrichene Links. Jedes Stylesheet, das du schreibst, überschreibt diese Standardwerte.",
+        "text": "Ohne CSS wenden Browser ihre eigenen eingebauten Stile an — Serifenschriften, Abstände bei Überschriften, blau unterstrichene Links. Jedes Stylesheet, das du schreibst, überschreibt diese Standardwerte. Eine oft übersehene Regel gehört in jeden CSS-Reset: `input, button, textarea, select { font: inherit }` — Formularelemente erben die Seitenschrift standardmäßig nicht, werden in einer winzigen Systemschrift dargestellt und lösen auf Mobile Auto-Zoom aus, wenn die Schrift unter 16px liegt.",
         "expandedText": "📖 Browser-Standardstile unterscheiden sich leicht zwischen Browsern — Chrome, Firefox und Safari liefern jeweils ihr eigenes **User-Agent-Stylesheet** mit. CSS-Resets und Normalizer (wie `normalize.css`) gleichen diese Unterschiede aus. Der moderne Ansatz ist ein minimaler Reset mit `*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }`, der die Größenberechnung vorhersehbar macht und alle Standardabstände entfernt.\n\n✅ Standardstile existieren, weil das Web als Dokumentformat begann — `<h1>` groß und fett, `<a>` blau und unterstrichen, `<em>` kursiv. Diese Konventionen stammen aus der Zeit vor CSS. Heute sind sie Basis-Fallbacks für ungestyltes HTML, keine Designstandards.",
         "analogy": {
           "title": "Schritt 0 — Browser-Standards: die Werkseinstellungen",
@@ -712,7 +712,7 @@
       {
         "animationStep": 1,
         "heading": "Einfacher Schlagschatten",
-        "text": "Ein einzelner Schatten mit leichtem y-Versatz und Unschärfe erzeugt Tiefe. Subtile Schatten geben Karten Höhe. Mehrere Schatten durch Kommas trennen — sie stapeln sich von vorne nach hinten.",
+        "text": "Ein einzelner Schatten mit leichtem y-Versatz und Unschärfe erzeugt Tiefe. Subtile Schatten geben Karten Höhe. Für einen realistischen Look reines Schwarz vermeiden: den Farbton des Hintergrunds aufgreifen und die Helligkeit senken (`hsl(220deg 60% 20% / 0.3)` auf einer blauen Fläche). Reines `rgba(0,0,0)` entsättigt den Hintergrund und lässt Schatten wie graue Kästen wirken.",
         "expandedText": "📖 Die Verwendung von **rgba() für Schattenfarbe** lässt Schatten natürlich mit jedem Hintergrund verschmelzen. `rgba(0, 0, 0, 0.15)` wirkt subtil auf weiß und bleibt auf grauen Hintergründen sichtbar. Ein reiner `#000`-Schatten sieht immer schwer und unnatürlich aus.\n\n📖 Für Dark-Mode-Designs werden Schatten auf dunklen Hintergründen weniger sichtbar. Viele Design-Systeme verwenden leicht getönte Schatten in der Farbe des Hintergrunds oder verwenden Glüheffekte (helle Schatten) anstelle dunkler Schatten im Dark Mode.",
         "analogy": {
           "title": "Schritt 1 — Einfacher Schlagschatten: die schwebende Karte",
@@ -821,7 +821,7 @@
       {
         "animationStep": 1,
         "heading": "max-width: 100%",
-        "text": "`max-width: 100%` ist die einfachste Lösung für responsive Bilder — das Bild ist nie breiter als sein Container und skaliert proportional nach unten. Kombiniere mit `height: auto` um das Seitenverhältnis zu erhalten. Diese zwei Regeln gelten als CSS-Reset-Standard für Bilder.",
+        "text": "`max-width: 100%` ist die einfachste Lösung für responsive Bilder — das Bild ist nie breiter als sein Container und skaliert proportional nach unten. Kombiniere immer mit `height: auto; display: block`: Bilder sind standardmäßig `inline`, was durch Line-Height einen kleinen unsichtbaren Leerraum darunter erzeugt. `display: block` entfernt diesen Abstand und verhindert unerwartetes Überlaufen aus dem Parent-Container.",
         "expandedText": "📖 `max-width: 100%` setzt **keine Breite** — es verhindert nur, dass das Bild seinen Container überschreitet. Das Bild wird in natürlicher Größe gerendert, wenn kleiner, und schrumpft proportional, wenn der Container schmaler ist. Der responsive Bild-Baseline: `img { max-width: 100%; height: auto; display: block; }`.\n\n📖 Für Performance verwenden `srcset` und `sizes`, um verschiedene Bildauflösungen für verschiedene Viewports zu liefern: `<img srcset=\"img-400.jpg 400w, img-800.jpg 800w\" sizes=\"(max-width: 600px) 400px, 800px\">`. Der Browser wählt die geeignetste Quelle basierend auf Viewport-Breite und Geräte-Pixel-Ratio.",
         "analogy": {
           "title": "Schritt 1 — object-fit: das Foto zuschneiden",
@@ -917,7 +917,7 @@
       {
         "animationStep": 0,
         "heading": "Block-Fluss",
-        "text": "Block-Elemente stapeln sich vertikal — jedes beginnt auf einer neuen Zeile und erstreckt sich über die verfügbare Breite. div, p, h1–h6 und section sind standardmäßig Block-Elemente.",
+        "text": "Block-Elemente stapeln sich vertikal — jedes beginnt auf einer neuen Zeile und erstreckt sich über die verfügbare Breite. div, p, h1–h6 und section sind standardmäßig Block-Elemente. Ein häufiges Rätsel: `height: 50%` auf einem Kind funktioniert oft nicht. Browser berechnen Breiten top-down (Elternteil → Kind), Höhen aber bottom-up (Kind → Elternteil) — eine zirkuläre Abhängigkeit, die Browser ignorieren. Fix: dem Elternteil eine explizite Höhe geben, oder Flexbox/Grid nutzen, die Kinder ohne dieses Problem dehnen.",
         "analogy": {
           "title": "Schritt 0 — display block: Steine stapeln",
           "text": [
@@ -969,7 +969,7 @@
       {
         "animationStep": 4,
         "heading": "position: absolute",
-        "text": "Entfernt das Element aus dem normalen Fluss — andere Elemente ignorieren es. Positioniert relativ zum nächsten Vorfahren mit position: relative (oder dem Viewport, wenn keiner vorhanden ist). Unverzichtbar für Tooltips, Dropdowns und Overlays.",
+        "text": "Entfernt das Element aus dem normalen Fluss — andere Elemente ignorieren es. Positioniert relativ zum nächsten Vorfahren mit `position: relative` (oder dem Viewport, wenn keiner vorhanden ist). Unverzichtbar für Tooltips, Dropdowns und Overlays. Für Modals und floating UI ist `position: fixed; inset: 0; margin: auto` mit expliziten `width`/`height` der sauberste Ansatz — `inset: 0` spannt das Element über alle Kanten, `margin: auto` verteilt den Rest gleichmäßig und zentriert ohne `transform: translate(-50%, -50%)`-Hacks.",
         "analogy": {
           "title": "Schritt 4 — position absolute fixed sticky: Verankerungsstrategien",
           "text": [
@@ -1043,7 +1043,7 @@
       {
         "animationStep": 1,
         "heading": "Responsive Karten-Zeilen",
-        "text": "flex-wrap: wrap hinzufügen, damit Karten automatisch in die nächste Zeile rutschen, wenn kein Platz mehr ist. gap ersetzt Margin-Hacks. Jede Karte bekommt flex: 1 1 250px — wachsen, schrumpfen, mindestens 250px breit.",
+        "text": "`flex-wrap: wrap` hinzufügen, damit Karten automatisch in die nächste Zeile rutschen, wenn kein Platz mehr ist. `gap` ersetzt Margin-Hacks. Jede Karte bekommt `flex: 1 1 250px` — wachsen, schrumpfen, mindestens 250px breit. In Flexbox sind deklarierte Breiten nur Vorschläge — der Algorithmus verkleinert Items unter ihre gesetzte Breite, wenn nötig. Überlaufen Items trotzdem, liegt es oft an einer Mindestgröße: Inputs und lange Wörter verhindern weiteres Schrumpfen, behoben mit `min-width: 0` am Flex-Child.",
         "expandedText": "📖 Flexbox ist für **eindimensionale Layouts** — jeweils eine Reihe oder eine Spalte. CSS Grid verarbeitet zweidimensionale Layouts gleichzeitig. Die Entscheidungsregel: Flexbox verwenden, wenn Elemente ihre Größe selbst bestimmen und natürlich umbrechen sollen; Grid für präzise Kontrolle über beide Achsen.\n\n📜 `flex-wrap: wrap` ermöglicht Zeilen- oder Spaltenumbruch. `gap` (früher `grid-gap`) funktioniert mit Flexbox zum Setzen von Abständen zwischen Flex-Items ohne Außenabstands-Hacks. `align-content` steuert die Ausrichtung mehrerer umgebrochener Zeilen.",
         "analogy": {
           "title": "Schritt 1 — Kartenreihen: Spielkarten die umbrechen",
@@ -1146,7 +1146,7 @@
       {
         "animationStep": 1,
         "heading": "Kinder zuweisen",
-        "text": "Jedes Kind bekommt einen `grid-area`-Namen, der zur Template-Vorlage passt. Der Browser platziert sie automatisch entsprechend dem Muster — keine absolute Positionierung nötig. Das Template lässt sich in einer einzigen Zeile vollständig überblicken.",
+        "text": "Jedes Kind bekommt einen `grid-area`-Namen, der zur Template-Vorlage passt. Der Browser platziert sie automatisch entsprechend dem Muster — keine absolute Positionierung nötig. Das Template lässt sich in einer einzigen Zeile vollständig überblicken. Für verschachtelte Layouts, bei denen innere Elemente am äußeren Grid ausgerichtet sein sollen, nutze `grid-template-columns: subgrid` — das Kind-Grid erbt die Spalten des Elternteils statt eigene zu erstellen und hält Cards mit unterschiedlichem Inhalt automatisch bündig.",
         "expandedText": "✅ Die Neudefinition von `grid-template-areas` innerhalb einer `@media`-Abfrage ist das **wartungsfreundlichste Muster** für responsive Grid-Layouts. Statt individuelle `grid-column`- und `grid-row`-Werte auf jedem Kind zu überschreiben, aktualisiert man einen einzigen ASCII-Art-String am Elternelement und jedes benannte Kind repositioniert sich automatisch.\n\n📖 Grid-Layouts lassen sich durch Kombination von `auto-fill` oder `auto-fit` mit `minmax()` vollständig ohne Breakpoints gestalten: `grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))` erstellt eine responsive Galerie ohne Media Queries.",
         "analogy": {
           "title": "Schritt 1 — Kinder zuweisen: Möbel platzieren",
@@ -1172,7 +1172,7 @@
       {
         "animationStep": 3,
         "heading": "fr-Einheit und auto-fit",
-        "text": "`fr` (Brucheinheit) füllt verbleibenden Platz proportional. `repeat(auto-fill, minmax(200px, 1fr))` erstellt eine responsive Galerie ohne Media Queries. `auto-fill` erstellt so viele Spalten wie möglich, `auto-fit` streckt die verbleibenden Spalten.",
+        "text": "`fr` (Brucheinheit) füllt verbleibenden Platz proportional. `repeat(auto-fill, minmax(200px, 1fr))` erstellt eine responsive Galerie ohne Media Queries. `auto-fill` erstellt so viele Spalten wie möglich, `auto-fit` streckt die verbleibenden Spalten. Beim manuellen Platzieren gilt: Ein 4-Spalten-Grid hat 5 Grid-Lines. `grid-column: 1 / 4` überspannt daher nur 3 Spalten — die Zahlen bezeichnen Lines, keine Spalten-Indizes.",
         "analogy": {
           "title": "Schritt 3 — fr und auto-fit: elastische Regale",
           "text": [
@@ -1550,7 +1550,7 @@
       {
         "animationStep": 2,
         "heading": "Dark Mode mit Klassen-Override",
-        "text": "Dieselben Variablennamen in einer .dark-Klasse überschreiben. Diese Klasse in JavaScript zu <html> oder <body> hinzufügen/entfernen. Kein Komponentencode ändert sich — alle lesen dieselben Variablennamen.",
+        "text": "Dieselben Variablennamen in einer `.dark`-Klasse überschreiben. Diese Klasse in JavaScript zu `<html>` oder `<body>` hinzufügen/entfernen — kein Komponentencode ändert sich. Das Prinzip 'Werte ändern, nicht Variablen' gilt auch für Responsive Design: Root-Variablen in `@media`-Queries neu definieren, damit Komponenten responsive Werte automatisch erben, ohne selbst Breakpoint-Logik zu benötigen.",
         "expandedText": "📖 Der **Klassen-Toggle-Ansatz** funktioniert mit `localStorage`, um die Theme-Präferenz beizubehalten. Den Toggle-Zustand speichern, vor dem ersten Render lesen, um die korrekte Klasse in `<html>` anzuwenden, bevor JavaScript vollständig ausgeführt wird — das verhindert einen Flash des falschen Themes.\n\n📖 Server-gerenderte Apps können eine Theme-Präferenz aus einem Cookie lesen und die Klasse beim ersten Rendern server-seitig setzen. Das CSS Media Query `prefers-color-scheme: dark` erkennt die OS-Einstellung, kann aber von Benutzern mit einem expliziten Theme-Toggle überschrieben werden.",
         "analogy": {
           "title": "Schritt 2 — Komponenten-Tokens: der lokale Dialekt",
@@ -1756,7 +1756,7 @@
       {
         "animationStep": 3,
         "heading": "Timing-Funktionen",
-        "text": "Die Timing-Funktion steuert das Tempo der Animation. `ease-in-out` beginnt langsam, beschleunigt in der Mitte und verlangsamt am Ende — wirkt natürlich. `linear` hat konstantem Tempo — gut für rotierende Loader. `cubic-bezier()` für vollständige Kontrolle.",
+        "text": "Die Timing-Funktion steuert das Tempo der Animation. `ease-in-out` beginnt langsam, beschleunigt in der Mitte und verlangsamt am Ende — wirkt natürlich für die meisten UI-Übergänge. `ease-out` für Elemente die eintreten (schnell rein, weiches Stopp); `ease-in` für Elemente die die Seite verlassen (sanfter Start, verschwindet). `cubic-bezier()` für vollständige Kontrolle über die Kurve.",
         "expandedText": "📖 **Timing-Funktionen** definieren die Geschwindigkeitskurve der Animation. `ease` startet schnell und verlangsamt sich — fühlt sich für die meisten UI-Aktionen natürlich an. `ease-in` beschleunigt in die Bewegung — gut für Elemente, die den Bildschirm verlassen. `ease-out` verlangsamt sich in die Ruhe — gut für Elemente, die eintreten. `ease-in-out` ist an beiden Enden langsam.\n\n📖 `cubic-bezier(x1, y1, x2, y2)` definiert benutzerdefinierte Kurven. Chrome DevTools hat einen visuellen Kurven-Editor. `steps(n)` erzeugt eine diskrete schrittweise Änderung — nützlich für Sprite-Animationen und Ladeindikator-Ticks.",
         "analogy": {
           "title": "Schritt 3 — Timing-Funktionen: das Achterbahn-Profil",

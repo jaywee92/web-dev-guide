@@ -6,6 +6,7 @@
   --surface-bright: #222633;
   --border: #2e3348;
   --text: #e2e4ed;
+  --text-secondary: #b0b4c8;
   --text-muted: #8b8fa7;
   --text-faint: #555a73;
   --green: #4ade80;
@@ -34,6 +35,7 @@
   --surface-bright: #f0f2f8;
   --border: #dde0ec;
   --text: #1a1d27;
+  --text-secondary: #404460;
   --text-muted: #5a5e78;
   --text-faint: #9094b0;
 }
@@ -51,6 +53,20 @@ body {
 }
 
 code, pre, .mono { font-family: var(--font-mono); }
+
+/* Terminal code block — Shiki overrides */
+.shiki-block .shiki,
+.shiki-block pre.shiki {
+  background: #0d0f17 !important;
+  margin: 0;
+  padding: 14px 18px;
+  border-radius: 0;
+}
+.shiki-block .shiki code {
+  font-family: var(--font-mono);
+  font-size: inherit;
+  counter-reset: none;
+}
 
 ::selection { background: var(--blue-dim); }
 

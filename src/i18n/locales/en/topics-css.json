@@ -6,7 +6,7 @@
       {
         "animationStep": 0,
         "heading": "Browser defaults",
-        "text": "Without any CSS, browsers apply their own built-in styles — serif fonts, margins on headings, blue underlined links. Every stylesheet you write overrides these defaults. CSS resets remove them entirely; normalizers like `normalize.css` make them consistent across browsers instead."
+        "text": "Without any CSS, browsers apply their own built-in styles — serif fonts, margins on headings, blue underlined links. Every stylesheet you write overrides these defaults. CSS resets address these inconsistencies; one non-obvious rule belongs in every reset: `input, button, textarea, select { font: inherit }` — form elements don't inherit the page font by default, causing them to render in a tiny system font and triggering unwanted auto-zoom on mobile when the font falls below 16px."
       },
       {
         "animationStep": 1,
@@ -456,7 +456,7 @@
       {
         "animationStep": 1,
         "heading": "Simple drop shadow",
-        "text": "A single shadow with a slight y-offset and blur creates the illusion of depth. Keep the shadow subtle — large opaque shadows look dated and heavy. Using `rgba(0, 0, 0, 0.15)` rather than a solid color lets the shadow blend naturally with any background color behind it."
+        "text": "A single shadow with a slight y-offset and blur creates the illusion of depth. Keep the shadow subtle — large opaque shadows look dated and heavy. For a realistic result, avoid pure black: match the shadow hue to your background color and lower the lightness (`hsl(220deg 60% 20% / 0.3)` on a blue surface). Pure `rgba(0,0,0)` desaturates the background color beneath it, making shadows look like flat grey boxes."
       },
       {
         "animationStep": 2,
@@ -525,7 +525,7 @@
       {
         "animationStep": 1,
         "heading": "max-width: 100%",
-        "text": "The simplest responsive image fix. The image will never be wider than its container and scales down proportionally if the container is smaller — but still renders at full natural size if space allows. Combine with `height: auto; display: block` for the full baseline responsive image setup."
+        "text": "The simplest responsive image fix. The image will never be wider than its container and scales down proportionally if the container is smaller. Always add `height: auto; display: block` to complete the baseline setup — images are `inline` by default, which creates a small gap of invisible space below them caused by line-height. Setting `display: block` removes this gap and prevents images from unexpectedly overflowing their parent container."
       },
       {
         "animationStep": 2,
@@ -589,7 +589,7 @@
       {
         "animationStep": 0,
         "heading": "Block flow",
-        "text": "Block elements stack vertically — each one starts on a new line and stretches to fill available width. `div`, `p`, `h1–h6`, and `section` are block elements by default. Adjacent vertical margins between block elements collapse to the larger value rather than adding together, which keeps paragraph spacing consistent. Understanding block flow is the foundation before learning Flexbox and Grid."
+        "text": "Block elements stack vertically — each one starts on a new line and stretches to fill available width. `div`, `p`, `h1–h6`, and `section` are block elements by default. Adjacent vertical margins between block elements collapse to the larger value rather than adding together, which keeps paragraph spacing consistent. One persistent gotcha: `height: 50%` on a child often does nothing. Browsers derive width top-down (parent → child) but height bottom-up (child → parent), creating a circular dependency. Fix it by giving the parent an explicit height, or switch to Flexbox or Grid which stretch children without this paradox."
       },
       {
         "animationStep": 1,
@@ -609,7 +609,7 @@
       {
         "animationStep": 4,
         "heading": "position: absolute",
-        "text": "Removes the element from the normal flow — other elements ignore it. Positions relative to the nearest ancestor with position: relative (or the viewport if none). Essential for tooltips, dropdowns, and overlays."
+        "text": "Removes the element from the normal flow — other elements ignore it. Positions relative to the nearest ancestor with `position: relative` (or the viewport if none). Essential for tooltips, dropdowns, and overlays. For modals and floating UI, `position: fixed; inset: 0; margin: auto` with an explicit `width` and `height` is the cleanest centering approach — `inset: 0` stretches the element to all edges, and `margin: auto` distributes the remaining space equally, centering it without `transform: translate(-50%, -50%)` hacks."
       }
     ],
     "cheatSheet": {
@@ -667,7 +667,7 @@
       {
         "animationStep": 1,
         "heading": "Responsive card rows",
-        "text": "Add flex-wrap: wrap so cards automatically drop to the next row when there's no space. gap replaces margin hacks. Each card gets flex: 1 1 250px — grow, shrink, minimum 250px wide."
+        "text": "Add `flex-wrap: wrap` so cards automatically drop to the next row when there's no space. `gap` replaces margin hacks. Each card gets `flex: 1 1 250px` — grow, shrink, minimum 250px wide. In Flexbox, declared widths are hypothetical — the algorithm can shrink items below their set size to fit the container. If items still overflow unexpectedly, check for a minimum size: text inputs and long unbreakable words prevent shrinking below their natural width, fixed with `min-width: 0` on the flex child."
       },
       {
         "animationStep": 2,
@@ -738,7 +738,7 @@
       {
         "animationStep": 1,
         "heading": "Assign children",
-        "text": "Each child gets a `grid-area` name matching the template — the browser places it exactly, no manual column/row tracking needed. The name is arbitrary: `header`, `sidebar`, `main`, `footer` are conventions, not keywords. Renaming an area in the template instantly moves it everywhere in the layout."
+        "text": "Each child gets a `grid-area` name matching the template — the browser places it exactly, no manual column/row tracking needed. The name is arbitrary: `header`, `sidebar`, `main`, `footer` are conventions, not keywords. Renaming an area in the template instantly moves it everywhere in the layout. For nested layouts where inner elements must align with the outer grid's columns, use `grid-template-columns: subgrid` — the child grid inherits the parent's tracks instead of creating its own, keeping cards with varying content heights perfectly aligned without extra wrappers."
       },
       {
         "animationStep": 2,
@@ -748,7 +748,7 @@
       {
         "animationStep": 3,
         "heading": "fr unit and auto-fit",
-        "text": "`fr` (fractional unit) fills remaining space proportionally — unlike `%`, it accounts for `gap` automatically. Combine with `repeat(auto-fill, minmax(250px, 1fr))` to create grids that automatically add or remove columns as the container resizes, with no media queries required."
+        "text": "`fr` (fractional unit) fills remaining space proportionally — unlike `%`, it accounts for `gap` automatically. Combine with `repeat(auto-fill, minmax(250px, 1fr))` to create grids that automatically add or remove columns as the container resizes, with no media queries required. When placing items manually, watch the line-count trap: a 4-column grid has 5 grid lines. `grid-column: 1 / 4` spans only 3 columns — the numbers refer to lines, not column indexes."
       }
     ],
     "cheatSheet": {
@@ -992,7 +992,7 @@
       {
         "animationStep": 2,
         "heading": "Dark mode with class override",
-        "text": "Override the same variable names in a .dark class. Add/remove this class from <html> or <body> in JavaScript. No component code changes — they all read the same variable names."
+        "text": "Override the same variable names in a `.dark` class. Add/remove this class on `<html>` or `<body>` in JavaScript to swap the entire theme — no component code changes needed. This \"change values, not variables\" principle extends beyond dark mode: redefine root variables inside `@media` queries so components inherit responsive values automatically, without needing breakpoint logic in every individual rule."
       },
       {
         "animationStep": 3,

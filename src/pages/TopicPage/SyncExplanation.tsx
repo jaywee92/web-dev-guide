@@ -161,7 +161,7 @@ function renderInlineText(text: string, color: string): React.ReactNode {
     if (part.startsWith('`') && part.endsWith('`')) {
       return (
         <code key={i} style={{
-          fontFamily: 'var(--font-mono)', fontSize: 11,
+          fontFamily: 'var(--font-mono)', fontSize: '0.85em',
           background: `${color}14`,
           border: `1px solid ${color}33`,
           borderRadius: 3,
@@ -268,7 +268,7 @@ function StepBlock({ step, index, active, onActivate, color }: {
 
       {/* Body */}
       <div style={{ padding: '13px 18px 15px 21px', display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <p style={{ fontSize: 13.5, color: '#c5c8d8', lineHeight: 1.8, margin: 0, letterSpacing: '-0.01em' }}>
+        <p style={{ fontSize: 13.5, color: 'var(--text)', lineHeight: 1.8, margin: 0, letterSpacing: '-0.01em' }}>
           {renderInlineText(step.text, color)}
         </p>
 
@@ -307,14 +307,14 @@ function StepBlock({ step, index, active, onActivate, color }: {
                   <div style={{ flex: 1, minWidth: 0 }}>
                     {label && (
                       <div style={{
-                        fontSize: 8.5, fontFamily: 'var(--font-mono)', fontWeight: 800,
+                        fontSize: 9.5, fontFamily: 'var(--font-mono)', fontWeight: 800,
                         letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 5,
                         color: accent ? `${accent}aa` : `${color}99`,
                       }}>
                         {label}
                       </div>
                     )}
-                    <p style={{ fontSize: 12.5, lineHeight: 1.68, margin: 0, color: 'var(--text-muted)' }}>
+                    <p style={{ fontSize: 13, lineHeight: 1.75, margin: 0, color: 'var(--text-secondary)' }}>
                       {renderInlineText(bodyForRender, accent || color)}
                     </p>
                   </div>
