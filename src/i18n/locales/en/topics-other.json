@@ -540,16 +540,19 @@
       {
         "animationStep": 0,
         "heading": "JavaScript types are implicit",
+        "videoClip": "videos/ts/ts-what-is-ts.mp4",
         "text": "In JavaScript, variables have types at runtime but you never declare them — the engine infers the type from whatever value is assigned. This flexibility is convenient for small scripts but means type errors only surface when the code actually runs, often in production. TypeScript adds an optional static type layer that catches these mismatches before the code ever executes."
       },
       {
         "animationStep": 1,
         "heading": "TypeScript makes types explicit",
+        "videoClip": "videos/ts/ts-primitives.mp4",
         "text": "TypeScript adds type annotations written after a colon — `let age: number = 25` tells the compiler the variable must always hold a number. Annotations are most valuable on function parameters and return types where TypeScript cannot always infer the type automatically. In practice, you omit annotations on local variables where TypeScript can infer the type from the assigned value, keeping code clean."
       },
       {
         "animationStep": 2,
         "heading": "Type errors caught at compile time",
+        "videoClip": "videos/ts/ts-what-is-ts.mp4",
         "text": "If you try to assign the wrong type, TypeScript flags it immediately with a red squiggle in your editor — before the code ever runs. The error message names the exact variable and describes the conflict: \"Type 'string' is not assignable to type 'number'.\" This turns runtime surprises that would crash in production into compile-time errors you see while writing code."
       },
       {
@@ -565,6 +568,7 @@
       {
         "animationStep": 5,
         "heading": "Why TypeScript? A practical story",
+        "videoClip": "videos/ts/ts-what-is-ts.mp4",
         "text": "JavaScript only fails at runtime — often in production. TypeScript moves mistakes to development time: the compiler blocks the build and highlights every broken call in your editor. Rename a field, change a function signature, pass the wrong type — TypeScript flags it instantly instead of at 2 AM."
       }
     ],
@@ -1416,6 +1420,7 @@
       {
         "animationStep": 0,
         "heading": "Interfaces describe object shapes",
+        "videoClip": "videos/ts/ts-objects.mp4",
         "text": "An interface defines a contract: any object assigned that type must have exactly those properties with those types. It documents intent and lets TypeScript enforce it. TypeScript uses structural typing — it checks the shape of the value, not which class it comes from, so any object with the right properties satisfies the interface."
       },
       {
@@ -1558,6 +1563,7 @@
       {
         "animationStep": 0,
         "heading": "typeof and instanceof guards",
+        "videoClip": "videos/ts/ts-union-narrowing.mp4",
         "text": "TypeScript narrows the inferred type inside conditional blocks based on the checks you perform. After `typeof val === \"string\"`, TypeScript knows `val` is `string` in the true branch — no type cast needed. This narrowing is automatic: TypeScript tracks which types are possible after each check and refines the type accordingly throughout the block."
       },
       {
@@ -1573,6 +1579,7 @@
       {
         "animationStep": 3,
         "heading": "Equality narrowing",
+        "videoClip": "videos/ts/ts-nullable.mp4",
         "text": "TypeScript narrows the type when you compare with `===` or `!==`. If one side is a literal value, TypeScript eliminates all union members that cannot equal it, leaving only the compatible types in the true branch. This composes naturally with discriminated unions — `if (x.kind === \"circle\")` narrows the entire object type — and with null checks: `if (x !== null)` makes `x` non-nullable inside the block."
       },
       {
@@ -1704,6 +1711,7 @@
       {
         "animationStep": 0,
         "heading": "Typed arrays",
+        "videoClip": "videos/ts/ts-typed-arrays.mp4",
         "text": "TypeScript allows you to specify that an array should only contain elements of a particular type. Use the `T[]` syntax or the generic `Array<T>` form — both are equivalent. TypeScript uses this information to type the return values of array methods: `scores.map(s => s * 2)` returns `number[]` automatically. The compiler also catches type violations like pushing a string into a `number[]` array before the code runs."
       },
       {
@@ -1714,6 +1722,7 @@
       {
         "animationStep": 2,
         "heading": "Tuples — fixed-length arrays",
+        "videoClip": "videos/ts/ts-tuples.mp4",
         "text": "A tuple is a typed array with a fixed number of elements where each position has its own type. Tuples are useful for positional data like coordinates, key-value pairs, or function return values."
       },
       {
@@ -1841,11 +1850,13 @@
       {
         "animationStep": 0,
         "heading": "Numeric enums",
+        "videoClip": "videos/ts/ts-enums.mp4",
         "text": "An enum declares a set of named constants. By default, values are auto-incremented numbers starting at 0. You can override the start value or set explicit values for any member."
       },
       {
         "animationStep": 1,
         "heading": "String enums",
+        "videoClip": "videos/ts/ts-enums.mp4",
         "text": "String enums require explicit string values for every member. They are more readable in logs and debugging because the value itself is meaningful — unlike numeric enums where you only see a number."
       },
       {
