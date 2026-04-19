@@ -74,6 +74,7 @@ export interface ExplanationStep {
   codeExample?: string
   language?: string
   expandedText?: string  // deeper explanation, shown on demand via "+ Learn more"
+  videoClip?: string   // path relative to public/, e.g. "videos/react/rc-jsx.mp4"
   analogy?: {
     icon: string     // emoji, e.g. "🎒"
     title: string    // shown in analogy panel header
