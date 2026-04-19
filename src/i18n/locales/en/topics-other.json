@@ -1029,41 +1029,49 @@
       {
         "animationStep": 0,
         "heading": "HTML is static markup",
+        "videoClip": "videos/react/rc-html-static.mp4",
         "text": "Plain HTML defines the structure once. To reuse a button, you copy-paste the markup — which quickly becomes hard to maintain. If the button style changes, every copy has to be updated manually. React solves this by letting you define a component once and use it anywhere."
       },
       {
         "animationStep": 1,
         "heading": "JSX — HTML in JavaScript",
+        "videoClip": "videos/react/rc-jsx.mp4",
         "text": "`JSX` lets you write HTML-like syntax inside JavaScript. It looks like HTML but is transformed into JavaScript function calls by a build tool like Vite or Babel. This means you can use the full power of JavaScript — variables, conditionals, loops — directly inside your markup."
       },
       {
         "animationStep": 2,
         "heading": "A component is a function",
+        "videoClip": "videos/react/rc-component-fn.mp4",
         "text": "A React component is a function that accepts `props` and returns `JSX`. The function name must start with a capital letter so React can distinguish it from a plain HTML tag. You define a component once and render it as many times as needed — each instance is independent."
       },
       {
         "animationStep": 3,
         "heading": "Components compose",
+        "videoClip": "videos/react/rc-components-compose.mp4",
         "text": "You build complex UIs by nesting components inside one another — forming a component tree. The top-level component (usually `App`) is the root; everything else branches from it. Each component only knows about its direct children, which keeps the codebase modular and easy to navigate."
       },
       {
         "animationStep": 4,
         "heading": "Props — data flows down",
+        "videoClip": "videos/react/rc-props.mp4",
         "text": "`props` are the arguments you pass to a component, just like function arguments. They flow only from parent to child — never the other way — which makes data flow predictable. A component should treat its props as read-only and never modify them directly."
       },
       {
         "animationStep": 5,
         "heading": "Events",
+        "videoClip": "videos/react/rc-events.mp4",
         "text": "React uses camelCase event props (`onClick`, `onChange`, `onSubmit`). You pass a function reference — not a call. React wraps the native event in a SyntheticEvent that works the same across all browsers. For text inputs, `onChange` is the key to controlled components: bind `value` to state and update it on every keystroke. Always initialize text input state with an empty string (`useState('')`) — starting with `null` or `undefined` causes React to warn about switching from uncontrolled to controlled. For checkboxes, read `event.target.checked`, not `event.target.value`."
       },
       {
         "animationStep": 6,
         "heading": "Conditional Rendering",
+        "videoClip": "videos/react/rc-conditional.mp4",
         "text": "Use plain JavaScript inside JSX to conditionally show UI. Ternary for either/or, `&&` for show-or-nothing, and early return for complex branches. Watch out: if the condition is `0`, the `&&` operator renders the number `0` in the DOM rather than nothing — use `!!count` to coerce to boolean."
       },
       {
         "animationStep": 7,
         "heading": "Rendering Lists",
+        "videoClip": "videos/react/rc-lists.mp4",
         "text": "Use `.map()` to turn an array into JSX elements. Every sibling in a list needs a stable `key` prop — React uses it to track which items were added, removed, or reordered. Use a unique ID from your data, never the array index. Generate IDs when the data is created — not during render — so keys stay stable across re-renders; generating them inside `.map()` assigns a new key on every render, making React treat every item as brand new."
       }
     ],
@@ -1113,21 +1121,25 @@
       {
         "animationStep": 0,
         "heading": "State is dynamic data",
+        "videoClip": "videos/react/rs-state-intro.mp4",
         "text": "State is data that can change over time and causes the component to re-render when it does. Props come from outside; state lives inside the component. Without state, variables reset to their initial value on every render because React calls the component function fresh each time. The `useState` hook stores values in a persistent slot so they survive re-renders."
       },
       {
         "animationStep": 1,
         "heading": "useState",
+        "videoClip": "videos/react/rs-usestate.mp4",
         "text": "`useState` is a Hook that returns a pair: the current value and a setter function. React stores the value outside the component so it survives re-renders. Call the setter to update the value — React will re-render the component with the new state on the next cycle."
       },
       {
         "animationStep": 2,
         "heading": "Calling the setter re-renders",
+        "videoClip": "videos/react/rs-setter-rerenders.mp4",
         "text": "When you call `setCount`, React schedules a re-render — it does not update the variable immediately. The component function runs again from top to bottom with the new state value, and every child component re-renders as well. React then compares the new output to the previous snapshot and updates only what actually changed in the DOM. State updates within the same event handler are batched together so React only re-renders once per event."
       },
       {
         "animationStep": 3,
         "heading": "State is local to each instance",
+        "videoClip": "videos/react/rs-state-local.mp4",
         "text": "If you render two `<Counter />` components, each has its own independent count — state is local to the component instance, not to the component type. State is not shared unless you lift it up to a common parent and pass it down as props. This is the fundamental mechanism for coordinating state between sibling components in React."
       },
       {
@@ -1148,6 +1160,7 @@
       {
         "animationStep": 7,
         "heading": "Lifting state up",
+        "videoClip": "videos/react/rs-lifting-state.mp4",
         "text": "Siblings cannot share state directly. Lift state to their closest common parent. The parent owns the state and passes it down via props — along with the setter so children can trigger updates."
       }
     ],
