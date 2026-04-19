@@ -967,6 +967,7 @@
       {
         "animationStep": 0,
         "heading": "2013 — JSX & the component idea",
+        "videoClip": "videos/react/ri-what-is-react.mp4",
         "text": "React was open-sourced by Facebook in 2013. Its core insight: build UIs from small, reusable pieces called components. JSX — an HTML-like syntax inside JavaScript — was created alongside it. React could run on a server from day one, but it was mainly used to build interactive SPAs in the browser."
       },
       {
@@ -987,6 +988,7 @@
       {
         "animationStep": 4,
         "heading": "Starting a React project today",
+        "videoClip": "videos/react/ri-vite-setup.mp4",
         "text": "Two strategies: use a meta-framework (recommended for production) or assemble your own tooling.\n\nMeta-frameworks handle routing, data fetching, bundling, and rendering strategy for you:\n• Next.js 15 — full-stack web apps, file-system routing, Server Components\n• Remix / React Router v7 — nested routes, server mutations, progressive enhancement\n• Expo SDK 52+ — iOS/Android native apps with React Native\n\nDIY tooling gives you full control and teaches fundamentals:\n• Vite (used in this course) — instant dev server, Rollup-powered builds\n• Parcel — zero-config bundler\n• Rsbuild + Rspack — Rust-powered, 5–10× faster than Webpack"
       }
     ],
