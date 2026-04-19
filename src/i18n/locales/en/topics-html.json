@@ -18,11 +18,13 @@
       {
         "animationStep": 2,
         "heading": "Content",
+        "videoClip": "videos/html/hb-element-anatomy.mp4",
         "text": "Content lives between the tags. It can be text, other elements, or a mix of both. Nesting elements inside each other builds the tree structure of the page. Invalid nesting — like a block element inside an inline — triggers silent browser error correction that can break layout in unexpected ways."
       },
       {
         "animationStep": 3,
         "heading": "Closing tag",
+        "videoClip": "videos/html/hb-element-anatomy.mp4",
         "text": "The closing tag has a slash before the name. It ends the element. Some elements — like `<img>`, `<br>`, `<hr>`, `<input>` — are void elements with no content and no closing tag."
       },
       {
