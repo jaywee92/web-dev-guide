@@ -114,7 +114,7 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
               <div style={{ flex: 1, minHeight: 200, borderRadius: 'var(--radius)', overflow: 'hidden', background: '#000', position: 'relative' }}>
                 <video
                   key={activeStep.videoClip}
-                  src={`/${activeStep.videoClip}`}
+                  src={`${import.meta.env.BASE_URL}${activeStep.videoClip}`}
                   controls
                   style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
                 />
