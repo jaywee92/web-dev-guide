@@ -1291,26 +1291,31 @@
       {
         "animationStep": 0,
         "heading": "Client-side routing",
+        "videoClip": "videos/react/rr-setup.mp4",
         "text": "Traditional websites load a new HTML page on every navigation. React Router intercepts the URL change and swaps components instead — no full page reload. This preserves JavaScript state in memory and makes transitions feel instant because only the changed components re-render. The browser History API updates the URL bar so the back button and bookmarks still work as expected."
       },
       {
         "animationStep": 1,
         "heading": "BrowserRouter wraps your app",
+        "videoClip": "videos/react/rr-setup.mp4",
         "text": "`BrowserRouter` provides routing context to your entire app — it must wrap the root of your component tree exactly once. It uses the HTML5 History API to keep the URL in sync with the UI. In production, the server must be configured to serve `index.html` for all paths, or a hard refresh on any route other than `/` will return a 404."
       },
       {
         "animationStep": 2,
         "heading": "Routes and Route",
+        "videoClip": "videos/react/rr-setup.mp4",
         "text": "`Routes` scans its children and renders the first `Route` whose `path` matches the current URL. Each `Route` maps a path pattern to a component via the `element` prop. Wrapping all routes inside a single `<Routes>` ensures only one route is active at a time."
       },
       {
         "animationStep": 3,
         "heading": "Link — navigate without reload",
+        "videoClip": "videos/react/rr-link.mp4",
         "text": "Use `Link` instead of `<a href>` for in-app navigation. `Link` updates the URL and swaps the matched component without a full page reload — preserving JavaScript state and avoiding a network round-trip. The `to` prop accepts both static strings and dynamic expressions."
       },
       {
         "animationStep": 4,
         "heading": "useParams — dynamic segments",
+        "videoClip": "videos/react/rr-dynamic.mp4",
         "text": "URL segments prefixed with `:` are dynamic — they match any value in that position. `useParams` returns an object containing the matched values, keyed by the segment name. Use them to load the right data for a specific user, product, or post based on the URL."
       },
       {
@@ -3393,6 +3398,7 @@
       {
         "animationStep": 0,
         "heading": "The caching problem",
+        "videoClip": "videos/react/rq-usequery.mp4",
         "text": "Every time a user navigates back to a route, a plain useEffect fetch fires again — even if the data has not changed. Client-side caching stores fetch results keyed by query, so subsequent visits are instant and the network is only hit when data is stale."
       },
       {
@@ -3403,16 +3409,19 @@
       {
         "animationStep": 2,
         "heading": "useQuery",
+        "videoClip": "videos/react/rq-usequery.mp4",
         "text": "useQuery takes a queryKey and a queryFn. queryKey is an array that uniquely identifies the query — include all variables the fetch depends on. queryFn is the async function. Returns data, isLoading, isError, and error."
       },
       {
         "animationStep": 3,
         "heading": "Background refetch",
+        "videoClip": "videos/react/rq-usequery.mp4",
         "text": "When a stale query mounts again, TanStack Query shows the cached data immediately and refetches in the background. If new data arrives, the UI updates automatically. Users see content instantly on return visits — no full spinner."
       },
       {
         "animationStep": 4,
         "heading": "useMutation",
+        "videoClip": "videos/react/rq-mutation.mp4",
         "text": "useMutation handles write operations. Call mutate with your variables to trigger it. Use onSuccess to invalidate related queries — queryClient.invalidateQueries() marks matching queries stale and triggers a refetch, keeping the UI in sync after mutations."
       }
     ]
