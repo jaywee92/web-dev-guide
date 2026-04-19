@@ -413,6 +413,7 @@ function TabButton({ label, icon, active, onClick, color }: {
     <button
       role="tab"
       aria-selected={active}
+      tabIndex={active ? 0 : -1}
       onClick={onClick}
       style={{
         flex: 1,
