@@ -6,26 +6,31 @@
       {
         "animationStep": 0,
         "heading": "var — the old way",
+        "videoClip": "videos/js/js-var-let.mp4",
         "text": "`var` is function-scoped rather than block-scoped — it leaks out of `if` blocks and `for` loops into the surrounding function. The engine also hoists `var` declarations to the top of the function and initialises them to `undefined`, so reading a `var` before its declaration gives `undefined` silently instead of an error. These silent behaviours cause subtle, hard-to-trace bugs; modern JavaScript replaces `var` entirely with `let` and `const`."
       },
       {
         "animationStep": 1,
         "heading": "let — block-scoped",
+        "videoClip": "videos/js/js-var-let.mp4",
         "text": "`let` declares a block-scoped variable that exists only between the `{` and `}` where it was created — it cannot leak into outer scopes the way `var` does. You can reassign it freely after declaration. Inside a `for` loop, `let` creates a fresh, independent binding per iteration, which is why closures captured in a `let`-based loop each see their own copy of the counter."
       },
       {
         "animationStep": 2,
         "heading": "const — cannot be reassigned",
+        "videoClip": "videos/js/js-const.mp4",
         "text": "`const` prevents the binding from being reassigned to a different value after declaration — the name is permanently locked to that first value. However, `const` does not make the value itself immutable: the properties of a `const` object and the elements of a `const` array can both still be changed freely. A useful mental model: variables are *labels* pointing to data, not containers holding it. `const` locks the label in place, but leaves the data it points to open for modification. Use `const` by default and reach for `let` only when you genuinely need to reassign the variable."
       },
       {
         "animationStep": 3,
         "heading": "Primitive types",
+        "videoClip": "videos/js/js-primitives.mp4",
         "text": "JavaScript has six primitive types: `string`, `number`, `boolean`, `null`, `undefined`, and `symbol`. They are immutable values — not objects — and are compared by value, so two strings with the same characters are always strictly equal. When you call methods on a primitive, JavaScript temporarily wraps it in an object and discards the wrapper."
       },
       {
         "animationStep": 4,
         "heading": "typeof operator",
+        "videoClip": "videos/js/js-typeof.mp4",
         "text": "The `typeof` operator returns a lowercase string describing the type — even for undeclared variables, making it safe for feature detection. Watch out: `typeof null` returns `\"object\"` — a 30-year-old bug frozen in the language. Always use `=== null` to test for null explicitly."
       },
       {
@@ -90,6 +95,7 @@
       {
         "animationStep": 0,
         "heading": "Arrays — ordered lists",
+        "videoClip": "videos/js/js-arrays-intro.mp4",
         "text": "An array holds an ordered list of values accessible by zero-based numeric index — `arr[0]` is the first element, `arr[arr.length - 1]` is the last. Arrays in JavaScript are dynamic objects: they can hold mixed types, grow or shrink at runtime, and come with dozens of built-in methods on `Array.prototype` for transforming, searching, and sorting data."
       },
       {
@@ -110,6 +116,7 @@
       {
         "animationStep": 4,
         "heading": "Objects — key-value pairs",
+        "videoClip": "videos/js/js-objects.mp4",
         "text": "Objects store an unordered collection of named properties (key-value pairs) where keys are strings or Symbols. Access properties with dot notation (`obj.name`) for static keys, or bracket notation (`obj[\"key\"]`) when the key is dynamic or contains special characters. Objects are reference types — two variables can point to the same object, so changes through one variable are visible through the other."
       },
       {
@@ -211,11 +218,13 @@
       {
         "animationStep": 0,
         "heading": "Function declarations vs expressions",
+        "videoClip": "videos/js/js-functions-intro.mp4",
         "text": "Functions can be declared with the `function` keyword or assigned as expressions. Declarations are hoisted — the whole definition is available before the line where it appears. Expressions (including arrow functions) are only available from the line of assignment onwards. Arrow functions also lack their own `this`, making them ideal for callbacks."
       },
       {
         "animationStep": 1,
         "heading": "Scope and the scope chain",
+        "videoClip": "videos/js/js-functions-intro.mp4",
         "text": "Each function creates a new scope. Inner functions can access variables from outer scopes — this chain of outward-looking scopes is called the scope chain. JavaScript resolves a variable name by searching inward-to-outward until it finds a match or reaches the global scope. Variables in inner scopes can shadow outer ones with the same name."
       },
       {
