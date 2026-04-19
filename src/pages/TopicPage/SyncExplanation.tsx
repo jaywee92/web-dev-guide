@@ -20,6 +20,13 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
   const steps = explanationSection?.steps ?? []
   const ctrl = useAnimationStep({ totalSteps: Math.max(steps.length, 1), autoPlay: false })
 
+  const activeStep = steps[ctrl.step]
+  const [activeTab, setActiveTab] = useState<'anim' | 'video'>('anim')
+
+  useEffect(() => {
+    setActiveTab('anim')
+  }, [ctrl.step])
+
   const [AnalogyComp, setAnalogyComp] = useState<ComponentType<{ step: number }> | null>(
     () => getAnalogyComponent(topic.analogyComponent)
   )
@@ -51,35 +58,80 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
             height: 'calc(100dvh - 96px)',
             minHeight: 480,
           }}>
-            {/* Animation panel — click to advance */}
-            <div
-              onClick={ctrl.next}
-              style={{
-                background: 'var(--surface)',
-                border: '1px solid var(--border)',
-                borderRadius: 'var(--radius)',
-                padding: '24px',
-                flex: 1,
-                minHeight: 200,
+            {/* Animation / Video tab bar — only when active step has a clip */}
+            {activeStep?.videoClip && (
+              <div style={{
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: ctrl.step < steps.length - 1 ? 'pointer' : 'default',
-                userSelect: 'none',
+                borderRadius: 8,
                 overflow: 'hidden',
-              }}
-            >
-              {AnimComp ? (
-                <AnimComp step={ctrl.step} />
-              ) : animLoading ? (
+                border: '1px solid var(--border)',
+                background: '#131520',
+                marginBottom: 12,
+                flexShrink: 0,
+              }}>
+                <TabButton label="ANIMATION" icon="⚛" active={activeTab === 'anim'} onClick={() => setActiveTab('anim')} color={topic.color} />
+                <TabButton label="VIDEO" icon="▶" active={activeTab === 'video'} onClick={() => setActiveTab('video')} color={topic.color} />
+              </div>
+            )}
+
+            {/* Animation panel — click to advance (hidden when Video tab active) */}
+            {activeTab === 'anim' && (
+              <div
+                onClick={ctrl.next}
+                style={{
+                  background: 'var(--surface)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 'var(--radius)',
+                  padding: '24px',
+                  flex: 1,
+                  minHeight: 200,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: ctrl.step < steps.length - 1 ? 'pointer' : 'default',
+                  userSelect: 'none',
+                  overflow: 'hidden',
+                }}
+              >
+                {AnimComp ? (
+                  <AnimComp step={ctrl.step} />
+                ) : animLoading ? (
+                  <div style={{
+                    width: 60, height: 60, borderRadius: '50%',
+                    border: `2px solid ${topic.color}20`,
+                    borderTopColor: topic.color,
+                    animation: 'spin 1s linear infinite',
+                  }} />
+                ) : null}
+              </div>
+            )}
+
+            {/* Video panel — shown when Video tab active and step has a clip */}
+            {activeTab === 'video' && activeStep?.videoClip && (
+              <div style={{ flex: 1, minHeight: 200, borderRadius: 'var(--radius)', overflow: 'hidden', background: '#000', position: 'relative' }}>
+                <video
+                  key={activeStep.videoClip}
+                  src={`/${activeStep.videoClip}`}
+                  autoPlay
+                  controls
+                  style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+                />
                 <div style={{
-                  width: 60, height: 60, borderRadius: '50%',
-                  border: `2px solid ${topic.color}20`,
-                  borderTopColor: topic.color,
-                  animation: 'spin 1s linear infinite',
-                }} />
-              ) : null}
-            </div>
+                  position: 'absolute', top: 8, left: 8,
+                  background: 'rgba(0,0,0,0.65)',
+                  borderRadius: 4,
+                  padding: '3px 7px',
+                  fontSize: 9,
+                  fontFamily: 'var(--font-mono)',
+                  fontWeight: 700,
+                  letterSpacing: '.06em',
+                  color: topic.color,
+                  pointerEvents: 'none',
+                }}>
+                  TUTORIAL CLIP
+                </div>
+              </div>
+            )}
 
             {/* Step dots */}
             <div style={{ display: 'flex', gap: 6, alignItems: 'center', justifyContent: 'center', marginTop: 14 }}>
@@ -345,5 +397,42 @@ function StepBlock({ step, index, active, onActivate, color }: {
         )}
       </div>
     </motion.div>
+  )
+}
+
+function TabButton({ label, icon, active, onClick, color }: {
+  label: string
+  icon: string
+  active: boolean
+  onClick: () => void
+  color: string
+}) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        flex: 1,
+        padding: '8px 0',
+        border: 'none',
+        cursor: 'pointer',
+        background: active ? 'var(--surface)' : 'transparent',
+        borderBottom: `2px solid ${active ? color : 'transparent'}`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 6,
+      }}
+    >
+      <span style={{ fontSize: 13 }}>{icon}</span>
+      <span style={{
+        fontSize: 11,
+        fontFamily: 'var(--font-mono)',
+        fontWeight: 700,
+        letterSpacing: '.04em',
+        color: active ? color : 'var(--text-faint)',
+      }}>
+        {label}
+      </span>
+    </button>
   )
 }
