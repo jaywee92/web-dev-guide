@@ -2721,21 +2721,25 @@
       {
         "animationStep": 0,
         "heading": "What is Next.js?",
+        "videoClip": "videos/nextjs/nj-what-is-nextjs.mp4",
         "text": "Next.js is a React framework for production apps that provides routing, data fetching, code-splitting, and deployment out of the box. With React 19 and React Server Components (RSC), it now embraces a fullstack model: components can run permanently on the server, fetch data without useEffect, and query databases directly — all in the same component tree as your client-side UI."
       },
       {
         "animationStep": 1,
         "heading": "App Router & project structure",
+        "videoClip": "videos/nextjs/nj-project-structure.mp4",
         "text": "Create a Next.js project with `npx create-next-app@latest`. The App Router uses the file system to define routes: every folder under `src/app/` becomes a URL segment. Special files control what renders at each segment — page.js is the UI, layout.js wraps it with shared chrome, loading.js shows a Suspense fallback, and error.js catches uncaught exceptions."
       },
       {
         "animationStep": 2,
         "heading": "Server vs Client Components",
+        "videoClip": "videos/nextjs/nj-server-vs-client.mp4",
         "text": "In the App Router, every component is a Server Component by default — it runs on the server, can be async, and never ships to the client bundle. Add 'use client' at the top of a file to opt into a Client Component when you need interactivity, state, or browser APIs. The rule: start with Server Components, reach for Client Components only when necessary."
       },
       {
         "animationStep": 3,
         "heading": "Data fetching & streaming",
+        "videoClip": "videos/nextjs/nj-data-fetching.mp4",
         "text": "Server Components can use fetch() or call a database client directly — no API layer needed. For slow data, pass a Promise to a Client Component and use use() with Suspense to stream content progressively. A loading.js file is the shortcut: Next.js automatically wraps the page in a Suspense boundary and shows the loading UI while rendering."
       },
       {
@@ -2807,6 +2811,7 @@
       {
         "animationStep": 0,
         "heading": "Folders = Routes",
+        "videoClip": "videos/nextjs/nj-routing.mp4",
         "text": "Every folder inside `src/app/` becomes a URL path segment. A file named `page.tsx` inside that folder makes it a real route. No router config, no imports — just create the folder and file. Nested folders create nested URLs."
       },
       {
@@ -2858,6 +2863,7 @@
       {
         "animationStep": 0,
         "heading": "Nested Layouts",
+        "videoClip": "videos/nextjs/nj-project-structure.mp4",
         "text": "`layout.tsx` wraps `page.tsx` and all child routes. Layouts persist across navigations — they do not re-render when the child page changes. Nest layout files to build complex UI: a root layout with html and body, a dashboard layout with a sidebar, a settings layout with a tab bar."
       },
       {
@@ -2912,6 +2918,7 @@
       {
         "animationStep": 0,
         "heading": "Link Component",
+        "videoClip": "videos/nextjs/nj-link.mp4",
         "text": "Use `Link` from `next/link` instead of a for client-side navigation — no full page reload. Next.js automatically prefetches linked pages in the background when they appear in the viewport, making navigation feel instant."
       },
       {
@@ -2972,21 +2979,25 @@
       {
         "animationStep": 0,
         "heading": "Always on the Server",
+        "videoClip": "videos/nextjs/nj-server-vs-client.mp4",
         "text": "React Server Components run exclusively on the server and are never shipped to the browser bundle. They can be `async`, access databases and secrets directly, and read from the filesystem. Every component in the App Router is a Server Component by default — no directive needed."
       },
       {
         "animationStep": 1,
         "heading": "Direct Data Access",
+        "videoClip": "videos/nextjs/nj-data-fetching.mp4",
         "text": "Server Components can call databases, read files, and fetch from internal APIs directly — no separate API endpoint required. Sensitive credentials never leave the server because the component never runs in the browser."
       },
       {
         "animationStep": 2,
         "heading": "What You Cannot Do",
+        "videoClip": "videos/nextjs/nj-use-client.mp4",
         "text": "Server Components cannot use React state, effects, or any browser API. No `useState`, `useEffect`, `useContext`, `useRef`. No event handlers like `onClick` or `onChange`. No `window`, `document`, `localStorage`. If you need any of these, add `'use client'` or extract the interactive part into a separate Client Component."
       },
       {
         "animationStep": 3,
         "heading": "Composing with Client Components",
+        "videoClip": "videos/nextjs/nj-use-client.mp4",
         "text": "Server Components can render Client Components as children. Pass serializable data (strings, numbers, plain objects, arrays) as props. The component tree can freely mix server and client — each component renders in the environment it belongs to."
       }
     ],
@@ -3020,11 +3031,13 @@
       {
         "animationStep": 0,
         "heading": "'use client' Directive",
+        "videoClip": "videos/nextjs/nj-use-client.mp4",
         "text": "Add 'use client' as the very first line of a file to mark it as a Client Component. This opts the entire file — and everything it imports — into the client bundle. The directive is a boundary declaration: it tells Next.js where the server-to-client handoff happens."
       },
       {
         "animationStep": 1,
         "heading": "When to Use Client Components",
+        "videoClip": "videos/nextjs/nj-server-vs-client.mp4",
         "text": "Use 'use client' when your component needs: React hooks (useState, useEffect, useRef, useContext), event handlers (onClick, onChange, onSubmit), browser APIs (window, document, localStorage, navigator), or real-time updates. If none of these apply, keep it as a Server Component."
       },
       {
@@ -3111,11 +3124,13 @@
       {
         "animationStep": 0,
         "heading": "fetch() in Server Components",
+        "videoClip": "videos/nextjs/nj-data-fetching.mp4",
         "text": "Server Components can call fetch() directly — no useEffect, no loading state, no API route. Next.js extends the native fetch with caching options. The response is automatically deduped: if multiple Server Components call the same URL during one render, Next.js makes only one network request."
       },
       {
         "animationStep": 1,
         "heading": "Cache Options & Revalidation",
+        "videoClip": "videos/nextjs/nj-caching.mp4",
         "text": "Control how Next.js caches fetch responses with the next option. force-cache (default) caches indefinitely. no-store always fetches fresh. revalidate: 60 caches but refreshes every 60 seconds. Use revalidateTag() or revalidatePath() to manually bust the cache from a Server Action."
       },
       {
