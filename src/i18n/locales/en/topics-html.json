@@ -6,11 +6,13 @@
       {
         "animationStep": 0,
         "heading": "HTML is made of elements",
+        "videoClip": "videos/html/hb-element-anatomy.mp4",
         "text": "Every visible thing on a webpage is an HTML element — a heading, a paragraph, a link, an image. Elements tell the browser what the content means, not just how it looks. Choosing the right element is the most important HTML decision you make because it affects accessibility, SEO, and default browser behavior."
       },
       {
         "animationStep": 1,
         "heading": "Opening tag",
+        "videoClip": "videos/html/hb-element-anatomy.mp4",
         "text": "The opening tag names the element. `<p>` means paragraph. `<h1>` means main heading. `<a>` means anchor (link). The name determines how the browser renders the content and maps to an implicit ARIA role that screen readers use to identify what the element is."
       },
       {
@@ -26,6 +28,7 @@
       {
         "animationStep": 4,
         "heading": "Attributes",
+        "videoClip": "videos/html/hb-attributes.mp4",
         "text": "Attributes go inside the opening tag and provide extra information. They come in name=\"value\" pairs. Common ones: href (link URL), src (image source), alt (alt text), id (unique name), class (styling group)."
       },
       {
@@ -89,6 +92,7 @@
       {
         "animationStep": 0,
         "heading": "Heading hierarchy",
+        "videoClip": "videos/html/ht-headings.mp4",
         "text": "HTML has six heading levels: <h1> through <h6>. <h1> is the most important — used once per page for the main title. Subsequent headings create a document outline that browsers, search engines, and screen readers all use."
       },
       {
@@ -99,6 +103,7 @@
       {
         "animationStep": 2,
         "heading": "Semantic vs presentational",
+        "videoClip": "videos/html/ht-semantic-presentational.mp4",
         "text": "<strong> and <em> carry meaning: importance and emphasis. Screen readers announce them differently. <b> and <i> are purely visual with no semantic weight. Prefer <strong>/<em> when the meaning matters."
       },
       {
@@ -119,6 +124,7 @@
       {
         "animationStep": 6,
         "heading": "HTML entities",
+        "videoClip": "videos/html/ht-entities.mp4",
         "text": "Some characters cannot be typed in HTML directly because they would be interpreted as markup. HTML entities encode them: `&lt;` for `<`, `&gt;` for `>`, `&amp;` for `&`, `&nbsp;` for a non-breaking space, `&copy;` for ©, `&mdash;` for —."
       }
     ],
@@ -169,26 +175,31 @@
       {
         "animationStep": 0,
         "heading": "The anchor element",
+        "videoClip": "videos/html/hli-anchor.mp4",
         "text": "The `<a>` (anchor) tag creates a link. The `href` attribute holds the destination — a URL, a path, an email address, or a `#fragment` for same-page jumps. The element has an implicit `role=\"link\"` and is keyboard-navigable by default. Using `<div onclick>` as a fake link breaks keyboard access and requires ARIA remediation."
       },
       {
         "animationStep": 1,
         "heading": "Absolute vs relative URLs",
+        "videoClip": "videos/html/hli-relative-absolute.mp4",
         "text": "Absolute URLs start with https:// — they work from anywhere. Relative URLs describe a path from the current page. Use relative links for internal navigation so the site works in any environment."
       },
       {
         "animationStep": 2,
         "heading": "target and download",
+        "videoClip": "videos/html/hli-target.mp4",
         "text": "target=\"_blank\" opens the link in a new tab. Always add rel=\"noopener\" with it for security. The download attribute tells the browser to download the file instead of navigating to it."
       },
       {
         "animationStep": 3,
         "heading": "The <img> element",
+        "videoClip": "videos/html/hb-attributes.mp4",
         "text": "<img> is a void element — no closing tag. src points to the image file. alt provides text for screen readers and when the image fails to load. width and height prevent layout shift."
       },
       {
         "animationStep": 4,
         "heading": "Why alt text matters",
+        "videoClip": "videos/html/hli-alt-text.mp4",
         "text": "Alt text is read aloud by screen readers for blind users. It also appears when the image fails to load. Describe what is in the image, not just its file name. For decorative images, use an empty alt=\"\" so screen readers skip it."
       },
       {
