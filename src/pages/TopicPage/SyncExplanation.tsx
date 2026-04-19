@@ -60,7 +60,10 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
           }}>
             {/* Animation / Video tab bar — only when active step has a clip */}
             {activeStep?.videoClip && (
-              <div style={{
+              <div
+                role="tablist"
+                aria-label="View mode"
+                style={{
                 display: 'flex',
                 borderRadius: 8,
                 overflow: 'hidden',
@@ -112,7 +115,6 @@ export default function SyncExplanation({ topic, AnimComp, animLoading }: Props)
                 <video
                   key={activeStep.videoClip}
                   src={`/${activeStep.videoClip}`}
-                  autoPlay
                   controls
                   style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
                 />
@@ -409,6 +411,8 @@ function TabButton({ label, icon, active, onClick, color }: {
 }) {
   return (
     <button
+      role="tab"
+      aria-selected={active}
       onClick={onClick}
       style={{
         flex: 1,
@@ -423,7 +427,7 @@ function TabButton({ label, icon, active, onClick, color }: {
         gap: 6,
       }}
     >
-      <span style={{ fontSize: 13 }}>{icon}</span>
+      <span style={{ fontSize: 13 }} aria-hidden="true">{icon}</span>
       <span style={{
         fontSize: 11,
         fontFamily: 'var(--font-mono)',
